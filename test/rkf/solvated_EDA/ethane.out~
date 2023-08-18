@@ -1,0 +1,205 @@
+
+
+ Parallel Execution: Process Information
+ ==============================================================================
+ Rank   Node Name                              NodeID   MyNodeRank  NodeMaster
+    0   Yumans-MacBook-Pro.local                  0          0          0
+    1   Yumans-MacBook-Pro.local                  0          1         -1
+    2   Yumans-MacBook-Pro.local                  0          2         -1
+    3   Yumans-MacBook-Pro.local                  0          3         -1
+    4   Yumans-MacBook-Pro.local                  0          4         -1
+    5   Yumans-MacBook-Pro.local                  0          5         -1
+    6   Yumans-MacBook-Pro.local                  0          6         -1
+    7   Yumans-MacBook-Pro.local                  0          7         -1
+    8   Yumans-MacBook-Pro.local                  0          8         -1
+    9   Yumans-MacBook-Pro.local                  0          9         -1
+ ==============================================================================
+
+
+May use up to 15625MB of RAM as shared memory on node 0
+
+ *******************************************************************************
+ *                                                                             *
+ *  --------------------------------                                           *
+ *   Amsterdam Modeling Suite (AMS)              2022.103                      *
+ *  --------------------------------                                           *
+ *                                               r104886 2022-06-17            *
+ *                                                                             *
+ *                                                                             *
+ *                              =================                              *
+ *                              |               |                              *
+ *                              |     A M S     |                              *
+ *                              |               |                              *
+ *                              =================                              *
+ *                                                                             *
+ *                                                                             *
+ *   Online information and documentation:  https://www.scm.com/support/       *
+ *   E-mail:  support@scm.com   info@scm.com                                   *
+ *                                                                             *
+ *   Scientific publications using AMS results must be properly referenced     *
+ *   See the User Manuals (or the web site) for recommended citations          *
+ *   The terms and conditions of the End User License Agreement apply to       *
+ *   the use of AMS, https://www.scm.com/license-terms/                        *
+ *                                                                             *
+ **********************  x86_64_darwin_intel / openmpi  ************************
+ 
+ Licensed to: Prof Visscher, Prof Bickelhaupt, Prof Fonseca Guerra / Vrije Universiteit, Theoretische Chemie / Amsterdam / NETHERLANDS 2022-12-13 09:59:29
+ SCM User ID: u21794
+  
+ AMS 2022.103  RunTime: Jul07-2023 11:20:13  ShM Nodes: 1  Procs: 10
+
+ AMS jobname: ams
+ AMS jobid  : 1351459794
+
+ Start   directory: /Users/yumanhordijk/ADF_DATA/solvated_EDA/tmp.yumanhordijk.28382.0.noindex/
+ Results directory: /Users/yumanhordijk/ADF_DATA/solvated_EDA/ethane.results/
+ Scratch directory: /tmp/amstmp_ams_kid0.1351459794/
+
+
+ Communication costs MPI_COMM_WORLD:      2.006 usec per message,   0.0250 usec per 8-byte item
+ Communication costs for intra-node:      0.979 usec per message,   0.0260 usec per 8-byte item
+
+ RNG seed: -1561406889 -1763680504 689029147 -854490426 -1914568908 126748879 -1053240841 1107757228
+
+
+
+                     *************************************************************************
+                     *  ADF 2022.103  RunTime: Jul07-2023 11:20:15  ShM Nodes: 1  Procs: 10  *
+                     *************************************************************************
+  
+       ****************************
+       * SINGLE POINT CALCULATION *
+       ****************************
+ 
+--------
+Geometry
+--------
+Formula: C2H6
+Atoms
+  Index Symbol   x (angstrom)   y (angstrom)   z (angstrom)
+      1      C    -0.85788043    -1.96266426    -0.57345772       region=right adf.R=1.700 adf.f=right
+      2      C     0.42956150    -1.18980580    -0.30380813       region=left adf.R=1.700 adf.f=left
+      3      H     1.22574524    -1.87140043     0.00002989       region=left adf.R=1.350 adf.f=left
+      4      H     0.27523132    -0.45984606     0.49251988       region=left adf.R=1.350 adf.f=left
+      5      H     0.75048829    -0.66020857    -1.20232363       region=left adf.R=1.350 adf.f=left
+      6      H    -0.70355026    -2.69262399    -1.36978574       region=right adf.R=1.350 adf.f=right
+      7      H    -1.65406417    -1.28106962    -0.87729572       region=right adf.R=1.350 adf.f=right
+      8      H    -1.17880722    -2.49226149     0.32505778       region=right adf.R=1.350 adf.f=right
+ 
+Total System Charge             0.00000
+Bonding info available!
+ 
+ 
+----------------
+ADF Engine Input
+----------------
+ 
+ SpinPolarization 0.0
+ Fragments
+ left left.rkf
+ right right.rkf
+ End
+ Symmetry NOSYM
+ Unrestricted Yes
+ Solvation
+ Surf Delley
+ Solv name=EthylAcetate cav0=0.0 cav1=0.0067639
+ Charged method=CONJ
+ C-Mat POT
+ SCF VAR ALL
+ CSMRSP
+ End
+ UnrestrictedFragments Yes
+ 
+
+ Title: *** (NO TITLE) ***
+
+ *** adf ***
+
+
+
+ ===========================
+ A T T A C H E D   F I L E S
+ ===========================
+  
+
+
+
+ ===============================
+ M O D E L   P A R A M E T E R S
+ ===============================
+  
+ DENSITY FUNCTIONAL POTENTIAL (scf)
+    LDA:                               VWN                                      
+    Gradient Corrections:              ---                                      
+
+ SPIN  (restricted / unrestr.)
+    Molecule:                          UNrestricted                            == Not Default ==
+    Fragments:                         UNrestricted                            == Not Default ==
+
+ OTHER ASPECTS
+    Relativistic Corrections:          scalar (ZORA,MAPA)                       
+
+    Nuclear Charge Density Model:      Point Charge Nuclei                      
+    Core Treatment:                    Frozen Orbital(s)                        
+
+    Hyperfine or Zeeman Interaction:   ---                                      
+
+ SOLVATION
+-------------------------------------------
+
+  The Delley construction of COSMO surface surface is calculated
+
+       Division Level for Surface Triangles (NDIV)                  3
+       Final Division Level for Triangles (NFDIV)                   1
+       Radius of the Solvent (RSOL)                           3.39000 angstr
+  Dielectric Constant (EPSL)                                  6.02000
+
+       COSMO equation is solved iteratively-               conjugate-gradient
+
+       Maximun of Iterations for Charges (NCIX)                  1000
+       Criterion for Charge convergence (CCNV)                1.0E-08
+
+  COSMO charges included variationally in SCF
+
+       COSMO included at every SCF cycle
+
+  Geometry-dependent empirical factor                         0.00000
+
+  C-Matrix calculated in cspmtx
+
+  In cspmtx, C-Matrix calculated using fitted potential
+
+-------------------------------------------
+
+  (KFERR) Missing file: left.rkf
+ iu:   1   cursec/var:   NONE                             % NONE                             in /Users/yumanhordijk/ADF_DATA/solvated_EDA/ethane.results/ams.rkf
+ iu:   2   cursec/var:   NONE                             % NONE                             in /tmp/amstmp_ams_kid0.1351459794/adf.rkf
+ iu:   3   cursec/var:   NONE                             % NONE                             in /tmp/amstmp_ams_kid0.1351459794/TAPE10
+ iu:   4   cursec/var:   NONE                             % NONE                             in /tmp/amstmp_ams_kid0.1351459794/TAPE14
+ iu:   5   cursec/var:   NONE                             % NONE                             in /tmp/amstmp_ams_kid0.1351459794/TAPE15
+ iu:   6   cursec/var:   NONE                             % NONE                             in /tmp/amstmp_ams_kid0.1351459794/RIHartreeFock
+ iu:   7   cursec/var:   NONE                             % NONE                             in /tmp/amstmp_ams_kid0.1351459794/GW
+ 
+ ============
+ Timer stack:
+ ------------
+  1688721613.18  AMS
+  1688721615.91  ADFEngine%Solve
+  1688721616.92  Geomet
+  1688721616.92  geoinp
+  1688721617.02  kfopflpp left.rkf
+ ============
+
+Missing file: left.rkf
+ WARNING: Nr of shared arrays in use at the end:            1
+ Names of the Shared Arrays that have not been deleted
+ projCoeff
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 0 in communicator MPI_COMM_WORLD
+with errorcode 666.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
