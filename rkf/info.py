@@ -170,7 +170,7 @@ def calculation_status(calc_dir: str) -> dictfunc.DotDict:
         ret.code = 'F'
         return ret
 
-    # if we have not excited the function yet we do not know what the status is
+    # if we have not exited the function yet we do not know what the status is
     # probably means that there was a parsing error in ams, which will be placed in termination status
     ret.reasons.append(termination_status)
     ret.success = False
