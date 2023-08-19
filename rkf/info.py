@@ -1,7 +1,6 @@
 """This module provides basic and general information about calculations done using AMS given a calculation directory. This includes information about the engine used (ADF, DFTB, BAND, ...), general information such as timings, files, status of the calculation, ... This information is used in further analysis programs.
 """
 
-import numpy as np
 from yutility import dictfunc
 from scm import plams
 import os
@@ -72,6 +71,7 @@ def get_calc_info(calc_dir: str) -> dictfunc.DotDict:
 
     # store information about the version of AMS
     ret.ams_version.string = reader_ams.read('General', 'release')
+
     # decompose the version string
     ret.ams_version.major = ret.ams_version.string.split('.')[0]
     ret.ams_version.minor = ret.ams_version.string.split()[0].split('.')[1]
@@ -117,9 +117,9 @@ def calculation_status(calc_dir: str) -> dictfunc.DotDict:
         reasons: list[str] - list of reasons to explain the status, they can be errors, warnings, etc.
         name: str - calculation status written as a string, ex. "RUNNING", "FAILED", etc.
         code: str - calculation status written as a single character, ex. "S", "F", etc.
-
     '''
     files = get_calc_files(calc_dir)
+
     # termination info is stored in ams.rkf
     reader_ams = plams.KFReader(files['ams.rkf'])
 
@@ -177,4 +177,3 @@ def calculation_status(calc_dir: str) -> dictfunc.DotDict:
     ret.name = 'UNKNOWN'
     ret.code = 'U'
     return ret
-
