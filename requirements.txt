@@ -1,3 +1,4 @@
 plams
 numpy
-pyplot
+matplotlib
+yutility
