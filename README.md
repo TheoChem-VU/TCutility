@@ -13,6 +13,8 @@ It is also possible to install in locally by first cloning this repository in yo
 and then moving into the new directory and installing the package:
 
 ``` cd TCutility ```
+``` python -m pip install --upgrade build ```
+``` python -m build ```
 ``` pythom -m pip install -e . ```
 
 # Usage

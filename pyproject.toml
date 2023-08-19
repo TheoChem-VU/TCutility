@@ -3,10 +3,10 @@ requires = ["setuptools==63.4.3", "wheel", "numpy>=1.20.0", "matplotlib>=3.4.0",
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "TCUtility"
+name = "TCutility"
 authors = [
   { name="SiebeLeDe", email="s.j.lekanne.deprez@vu.nl" },
-  { name="Yuman Hordijk", email=y.hordijk@vu.nl"
+  { name="Yuman Hordijk", email="y.hordijk@vu.nl"},
 ]
 description = "Utility package for working with AMS/ADF within the Theoretical Chemistry group at the Vrije Universiteit Amsterdam (TheoCheM). Makes use of plams - a package developed by SCM"
 readme = "README.md"
