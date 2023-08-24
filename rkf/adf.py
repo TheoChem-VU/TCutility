@@ -1,11 +1,11 @@
 from yutility import log, dictfunc
 from TCutility.rkf import info as rkf_info
-from scm import plams
+from TCutility.rkf import cache
 
 
 def get_calc_settings(info: dictfunc.DotDict) -> dictfunc.DotDict:
     '''
-    Function to read useful info about orbitals from kf reader
+    Function to read useful calculation settings from kf reader
     '''
 
     assert info.engine == 'adf', f'This function reads ADF data, not {info.engine} data'

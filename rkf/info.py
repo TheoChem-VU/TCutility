@@ -4,6 +4,7 @@
 import numpy as np
 from yutility import dictfunc
 from scm import plams
+from TCutility.rkf import cache
 import os
 
 j = os.path.join
@@ -67,8 +68,7 @@ def get_calc_info(calc_dir: str) -> dictfunc.DotDict:
     '''
     ret = dictfunc.DotDict()
     ret.files = get_calc_files(calc_dir)
-
-    reader_ams = plams.KFReader(ret.files['ams.rkf'])
+    reader_ams = cache.get(ret.files['ams.rkf'])
 
     # store information about the version of AMS
     ret.ams_version.string = reader_ams.read('General', 'release')
@@ -100,7 +100,10 @@ def get_calc_info(calc_dir: str) -> dictfunc.DotDict:
     ret.is_multijob = False
     if len([file for file in ret.files if file.endswith('.rkf')]) > 2:
         ret.is_multijob = True
+    ret.molecule = get_molecules(calc_dir)
+    ret.history = get_history(calc_dir)
 
+    cache.unload(ret.files['ams.rkf'])
     return ret
 
 
