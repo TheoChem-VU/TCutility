@@ -11,7 +11,8 @@ def get_calc_settings(info: dictfunc.DotDict) -> dictfunc.DotDict:
     assert info.engine == 'adf', f'This function reads ADF data, not {info.engine} data'
     assert 'adf.rkf' in info.files, f'Missing adf.rkf file, [{", ".join([": ".join(item) for item in info.files.items()])}]'
 
-    reader = plams.KFReader(info.files['adf.rkf'])
+    reader_adf = cache.get(info.files['adf.rkf'])
+    reader_ams = cache.get(info.files['ams.rkf'])
     ret = dictfunc.DotDict()
 
     # determine if calculation used relativistic corrections
