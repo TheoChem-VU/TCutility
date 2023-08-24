@@ -28,6 +28,18 @@ def get_calc_files(calc_dir: str) -> dict:
         if os.path.split(root)[1].endswith('.results') and len(os.path.split(root)[1].split('.')) > 2:
             continue
 
+        # we only need the rkf files in the .results directories
+        if root.endswith('.rkf') and '.results' not in root:
+            continue
+
+        # opened files end in ~ and should be ignored
+        if root.endswith('~'):
+            continue
+
+        # t21 files for specific atoms are not usefull and should be ignored
+        if 't21.' in root:
+            continue
+
         # if a calculation is running or did not finish correctly there might be tmp. dirs, which should be ignored
         if os.path.split(root)[1].startswith('tmp.'):
             continue
