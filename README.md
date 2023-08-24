@@ -19,7 +19,7 @@ and then moving into the new directory and installing the package:
 
 # Usage
 List of available utilities and their usage:
-- RKF | getting calculation information such as timings, settings, etc. from rkf files associated with a certain engine (e.g. BAND, ADF, DFTB, etc.)
+- TCutility.rkf | Read information from AMS calculations such as timings, settings, etc. from files in the calculation directory. Currently supports the ADF and DFTB engines
 
 
 # Examples
