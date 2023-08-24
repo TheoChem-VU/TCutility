@@ -194,6 +194,9 @@ def get_molecules(calc_dir: str) -> dictfunc.DotDict:
     atnums = reader_ams.read('InputMolecule', 'AtomicNumbers')
     natoms = len(atnums)
     ret.number_of_atoms = natoms
+    ret.atom_numbers = atnums
+    ret.atom_symbols = reader_ams.read('InputMolecule', 'AtomSymbols').split()
+    ret.atom_masses = reader_ams.read('InputMolecule', 'AtomMasses')
 
     # read input molecule
     ret.input = plams.Molecule()
