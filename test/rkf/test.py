@@ -14,8 +14,12 @@ for calc_dir in os.listdir():
 
     try: 
         info = rkf.read(calc_dir)
-        pprint(info)
+        if info.engine == 'dftb':
+            pprint(info)
     except AssertionError:
         pass
+    except:
+        log.warn(calc_dir)
+        raise
 
     log.log()
