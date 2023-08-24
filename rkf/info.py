@@ -117,14 +117,12 @@ def calculation_status(calc_dir: str) -> dictfunc.DotDict:
         reasons: list[str] - list of reasons to explain the status, they can be errors, warnings, etc.
         name: str - calculation status written as a string, ex. "RUNNING", "FAILED", etc.
         code: str - calculation status written as a single character, ex. "S", "F", etc.
-
     '''
     files = get_calc_files(calc_dir)
-    # termination info is stored in ams.rkf
-    reader_ams = plams.KFReader(files['ams.rkf'])
+    reader_ams = cache.get(files['ams.rkf'])
 
     ret = dictfunc.DotDict()
-    ret.success = False
+    ret.fatal = True
     ret.name = None
     ret.code = None
     ret.reasons = []
@@ -138,11 +136,11 @@ def calculation_status(calc_dir: str) -> dictfunc.DotDict:
                 # the first 25 characters include the timestamp and two spaces
                 line_ = line.strip()[25:]
                 # errors and warnings have a predictable format
-                if line_.startswith('ERROR:') or line_.startswith('WARNING: '):
+                if line_.lower().startswith('error:') or line_.lower().startswith('warning: '):
                     ret.reasons.append(line_)
 
     if termination_status == 'NORMAL TERMINATION':
-        ret.success = True
+        ret.fatal = False
         ret.name = 'SUCCESS'
         ret.code = 'S'
         return ret
@@ -160,12 +158,12 @@ def calculation_status(calc_dir: str) -> dictfunc.DotDict:
         return ret
 
     if termination_status == 'NORMAL TERMINATION with warnings':
-        ret.success = True
+        ret.fatal = False
         ret.name = 'SUCCESS(W)'
         ret.code = 'W'
         return ret
 
-    if termination_status == 'NORMAL TERMINATION with warnings':
+    if termination_status == 'NORMAL TERMINATION with errors':
         ret.name = 'FAILED'
         ret.code = 'F'
         return ret
@@ -173,8 +171,89 @@ def calculation_status(calc_dir: str) -> dictfunc.DotDict:
     # if we have not excited the function yet we do not know what the status is
     # probably means that there was a parsing error in ams, which will be placed in termination status
     ret.reasons.append(termination_status)
-    ret.success = False
     ret.name = 'UNKNOWN'
     ret.code = 'U'
     return ret
 
+
+def get_molecules(calc_dir: str) -> dictfunc.DotDict:
+    '''
+    Function to get molecules from the calculation, including input, output and history molecules
+    It will also add bonds to the molecule if they are given in the rkf file, else it will guess them.
+    '''
+    files = get_calc_files(calc_dir)
+    # all info is stored in reader_ams
+    reader_ams = cache.get(files['ams.rkf'])
+
+    ret = dictfunc.DotDict()
+
+    # read general
+    atnums = reader_ams.read('InputMolecule', 'AtomicNumbers')
+    natoms = len(atnums)
+    ret.number_of_atoms = natoms
+
+    # read input molecule
+    ret.input = plams.Molecule()
+    coords = np.array(reader_ams.read('InputMolecule', 'Coords')).reshape(natoms, 3) * 0.529177
+    for atnum, coord in zip(atnums, coords):
+        ret.input.add_atom(plams.Atom(atnum=atnum, coords=coord))
+    if ('Molecule', 'fromAtoms') in reader_ams and ('Molecule', 'toAtoms') in reader_ams and ('Molecule', 'bondOrders'):
+        for at1, at2, order in zip(reader_ams.read('InputMolecule', 'fromAtoms'), reader_ams.read('InputMolecule', 'toAtoms'), reader_ams.read('InputMolecule', 'bondOrders')):
+            ret.input.add_bond(plams.Bond(ret.input[at1], ret.input[at2], order=order))
+    else:
+        ret.input.guess_bonds()
+
+    # output molecule
+    ret.output = plams.Molecule()
+    coords = np.array(reader_ams.read('Molecule', 'Coords')).reshape(natoms, 3) * 0.529177
+    for atnum, coord in zip(atnums, coords):
+        ret.output.add_atom(plams.Atom(atnum=atnum, coords=coord))
+    if ('Molecule', 'fromAtoms') in reader_ams and ('Molecule', 'toAtoms') in reader_ams and ('Molecule', 'bondOrders'):
+        for at1, at2, order in zip(reader_ams.read('Molecule', 'fromAtoms'), reader_ams.read('Molecule', 'toAtoms'), reader_ams.read('Molecule', 'bondOrders')):
+            ret.output.add_bond(plams.Bond(ret.output[at1], ret.output[at2], order=order))
+    else:
+        ret.output.guess_bonds()
+
+    return ret
+
+def get_history(calc_dir: str) -> dictfunc.DotDict:
+    # read history mols
+    files = get_calc_files(calc_dir)
+    # all info is stored in reader_ams
+    reader_ams = cache.get(files['ams.rkf'])
+
+    ret = dictfunc.DotDict()
+
+    # read general
+    atnums = reader_ams.read('InputMolecule', 'AtomicNumbers')
+    natoms = len(atnums)
+
+    if ('History', 'nEntries') in reader_ams:
+        ret.number_of_entries = reader_ams.read('History', 'nEntries')
+        # for history we read the other items in the rkf file
+        index = 1
+        items = []
+        while index:
+            try:
+                item_name = reader_ams.read(f'History', f'ItemName({index})')
+                items.append(item_name)
+                index += 1
+            except KeyError:
+                index = False
+        for item in items:
+            ret[item.lower()] = []
+
+        for i in range(ret.number_of_entries):
+            for item in items:
+                val = reader_ams.read('History', f'{item}({i+1})')
+                if item == 'Coords':
+                    mol = plams.Molecule()
+                    coords = np.array(val).reshape(natoms, 3) * 0.529177
+                    for atnum, coord in zip(atnums, coords):
+                        mol.add_atom(plams.Atom(atnum=atnum, coords=coord))
+                    mol.guess_bonds()
+                    ret.coords.append(mol)
+                else:
+                    ret[item.lower()].append(val)
+
+    return ret
