@@ -1,5 +1,4 @@
 from yutility import log, dictfunc
-from TCutility.rkf import info as rkf_info
 from TCutility.rkf import cache
 
 
