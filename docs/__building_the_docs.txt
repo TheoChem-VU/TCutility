@@ -1,0 +1,7 @@
+cd docs
+sphinx-apidoc -o . ..
+rm ../setup.rst
+# on windows:
+.\make.bat html
+# on linux:
+make html
