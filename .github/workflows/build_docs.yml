@@ -34,5 +34,6 @@ jobs:
         with:
             commit_message: Documentation build
             file_pattern: 'docs/_build/*'
+            add_options: '-f'
 
   
