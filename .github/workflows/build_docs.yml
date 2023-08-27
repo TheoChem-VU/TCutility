@@ -1,0 +1,19 @@
+name: 'Sphinx build'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  apidoc:
+    steps:
+      -name: Install sphinx
+       run: pip install sphinx
+
+      -name: Move to doc directory
+       run: cd docs
+
+      -name: Run sphinx-apidoc
+       run: sphinx-apidoc -f -o . .. ../setup.py
+  
