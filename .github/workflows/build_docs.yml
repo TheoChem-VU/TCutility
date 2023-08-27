@@ -7,6 +7,7 @@ on:
 
 jobs:
   apidoc:
+    runs-on: ${{ fromJSON('["ubuntu-latest", "self-hosted"]')[github.repository == 'github/docs-internal'] }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
