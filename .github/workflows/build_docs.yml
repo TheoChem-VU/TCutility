@@ -29,6 +29,9 @@ jobs:
       - name: Build the docs
         run: cd docs; make html
 
+      - name: ls
+        run: ls docs
+
       - name: Upload build to repo
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
