@@ -35,5 +35,6 @@ jobs:
             commit_message: Documentation build
             file_pattern: 'docs/*'
             add_options: '-f'
+            status_options: '--untracked-files=all'
 
   
