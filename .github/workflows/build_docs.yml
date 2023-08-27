@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-
+      
 jobs:
   Build_Docs:
     runs-on: ubuntu-latest
@@ -24,5 +24,5 @@ jobs:
         run: cd docs; sphinx-apidoc -f -o . .. ../setup.py
         
       - name: Build the docs
-        run: cd docs; ./make.bat html
+        run: cd docs; make html
   
