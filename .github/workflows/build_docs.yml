@@ -37,10 +37,7 @@ jobs:
 
       - name: Install yutility
         run: pip install git+https://github.com/YHordijk/yutility.git
-
-      - name: Delete old _build
-        run: rm -rf docs/_build
-
+        
       - name: Run sphinx-apidoc
         run: cd docs; sphinx-apidoc -f -o . .. ../setup.py
         
