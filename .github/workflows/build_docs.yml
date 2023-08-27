@@ -39,6 +39,7 @@ jobs:
             file_pattern: 'docs/*'
             add_options: '-f'
             status_options: '-uall --ignored'
+            push_options: '--force'
 
   Deploy:
     runs-on: ubuntu-20.04
