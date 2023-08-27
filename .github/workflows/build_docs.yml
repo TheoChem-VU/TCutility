@@ -37,6 +37,9 @@ jobs:
 
       - name: Install yutility
         run: pip install git+https://github.com/YHordijk/yutility.git
+
+      - name: checking yutility
+        run: python -c "import yutility"
         
       - name: Run sphinx-apidoc
         run: cd docs; sphinx-apidoc -f -o . .. ../setup.py
