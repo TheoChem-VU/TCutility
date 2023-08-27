@@ -1,4 +1,4 @@
 plams
 numpy
 matplotlib
-yutility
+git+ssh://git@github.com/YHordijk/yutility.git
