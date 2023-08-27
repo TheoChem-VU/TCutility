@@ -30,5 +30,5 @@ jobs:
         run: cd docs; make html
 
       - name: Send docs to github
-        run: git add docs/_build; git commit -m "Automatic docs generation $GITHUB_SHA"; git push
+        run: git add -f docs/_build; git commit -m "Automatic docs generation $GITHUB_SHA"; git push
   
