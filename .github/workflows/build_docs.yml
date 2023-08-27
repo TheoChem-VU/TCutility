@@ -35,6 +35,9 @@ jobs:
       - name: Install sphinx theme
         run: pip install pydata-sphinx-theme
 
+      - name: Install yutility
+        run: pip install git+ssh://git@github.com/YHordijk/yutility.git
+
       - name: Delete old _build
         run: rm -rf docs/_build
 
