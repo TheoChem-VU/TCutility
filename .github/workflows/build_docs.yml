@@ -40,4 +40,16 @@ jobs:
             add_options: '-f'
             status_options: '-uall --ignored'
 
+  Deploy:
+    runs-on: ubuntu-20.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+    - id: deployment
+      uses: sphinx-notes/pages@v3
+
   
