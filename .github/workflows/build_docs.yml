@@ -29,9 +29,20 @@ jobs:
         with:
           python-version: '3.8' 
         
-      - uses: ammaraskar/sphinx-action@master
-        with:
-          docs-folder: "docs/"
+      - name: Install sphinx
+        run: pip install sphinx
+
+      - name: Install sphinx theme
+        run: pip install pydata-sphinx-theme
+
+      - name: Delete old _build
+        run: rm -rf docs/_build
+
+      - name: Run sphinx-apidoc
+        run: cd docs; sphinx-apidoc -f -o . .. ../setup.py
+        
+      - name: Build the docs
+        run: cd docs; make html
 
       - name: Upload build to repo
         uses: stefanzweifel/git-auto-commit-action@v4
