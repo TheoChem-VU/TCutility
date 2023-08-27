@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  apidoc:
-    runs-on: ${{ fromJSON('["ubuntu-latest", "self-hosted"]')[github.repository == 'github/docs-internal'] }}
+  Build_Docs:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -25,4 +25,7 @@ jobs:
 
       - name: Run sphinx-apidoc
         run: sphinx-apidoc -f -o . .. ../setup.py
+
+      - name: Build the docs
+        run: make html
   
