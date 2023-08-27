@@ -33,7 +33,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
             commit_message: Documentation build
-            file_pattern: 'docs/_build/*'
+            file_pattern: 'docs/*'
             add_options: '-f'
 
   
