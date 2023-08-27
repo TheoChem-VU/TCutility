@@ -29,6 +29,9 @@ jobs:
       - name: Build the docs
         run: cd docs; make html
 
-      - name: Send docs to github
-        run: git add -f docs/_build; git commit -m "Automatic docs generation $GITHUB_SHA"; git push
+      - name: Upload build
+        uses: actions/upload-artifact@v3
+        with:
+          name: _build
+          path: docs/_build/
   
