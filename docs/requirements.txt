@@ -1,2 +1,3 @@
 sphinx
 pydata-sphinx-theme
+git+ssh://git@github.com/YHordijk/yutility.git
