@@ -27,7 +27,7 @@ jobs:
         run: sphinx-apidoc -f -o . .. ../setup.py
         
       - name: print wdir
-        run: cd
+        run: ls
         
       - name: Build the docs
         run: ./make.bat html
