@@ -20,15 +20,9 @@ jobs:
       - name: Install sphinx
         run: pip install sphinx
 
-      - name: Move to doc directory
-        run: cd docs
-
       - name: Run sphinx-apidoc
-        run: sphinx-apidoc -f -o . .. ../setup.py
-        
-      - name: print wdir
-        run: ls
+        run: cd docs; sphinx-apidoc -f -o . .. ../setup.py
         
       - name: Build the docs
-        run: ./make.bat html
+        run: cd docs; ./make.bat html
   
