@@ -29,9 +29,10 @@ jobs:
       - name: Build the docs
         run: cd docs; make html
 
-      - name: Upload build
-        uses: actions/upload-artifact@v3
+      - name: Upload build to repo
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          name: _build
-          path: docs/_build/
+            commit_message: Documentation build
+            file_pattern: 'docs/_build/*'
+
   
