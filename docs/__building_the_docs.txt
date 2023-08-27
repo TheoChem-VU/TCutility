@@ -1,5 +1,5 @@
 cd docs
-sphinx-apidoc -o . ..
+sphinx-apidoc -f -o . .. ../setup.py
 rm ../setup.rst
 # on windows:
 .\make.bat html
