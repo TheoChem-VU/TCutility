@@ -42,7 +42,7 @@ jobs:
         run: |
           cd ~
           git clone https://github.com/YHordijk/yutility.git
-          echo "PATH=~/yutility:PATH" >> "$GITHUB_ENV"
+          echo "PYTHONPATH=~/yutility:$PYTHONPATH" >> "$GITHUB_ENV"
 
       - name: checking yutility
         run: python -c "import yutility"
