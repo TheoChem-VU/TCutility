@@ -412,10 +412,37 @@ In case of non-succes it will also give possible reasons for the errors/warnings
 <dd class="field-even"><p><p>Dictionary containing information about the calculation status:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>success (bool)</strong> – True if calculation reported normal termination, with or without warnings, False otherwise</p></li>
-<li><p><strong>reasons (list[str])</strong> – list of reasons to explain the status, they can be errors, warnings, etc.</p></li>
-<li><p><strong>name (str)</strong> – calculation status written as a string, ex. “RUNNING”, “FAILED”, etc.</p></li>
-<li><p><strong>code (str)</strong> – calculation status written as a single character, ex. “S”, “F”, etc.</p></li>
+<li><p><strong>ret.fatal (bool)</strong> – True if calculation cannot be analysed correctly, False otherwise</p></li>
+<li><p><strong>ret.reasons (list[str])</strong> – list of reasons to explain the status, they can be errors, warnings, etc.</p></li>
+<li><p><strong>ret.name (str)</strong> – calculation status written as a string, one of (“SUCCESS”, “RUNNING”, “UNKNOWN”, “SUCCESS(W)”, “FAILED”)</p></li>
+<li><p><strong>ret.code (str)</strong> – calculation status written as a single character, one of (“S”, “R”, “U”, “W” “F”)</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rkf.info.get_ams_version">
+<span class="sig-prename descclassname"><span class="pre">rkf.info.</span></span><span class="sig-name descname"><span class="pre">get_ams_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DotDict</span></span></span><a class="reference internal" href="_modules/rkf/info.html#get_ams_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rkf.info.get_ams_version" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to get the AMS version used in the calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Dictionary containing results about the AMS version:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>string (str)</strong> – the full version string as written by SCM.</p></li>
+<li><p><strong>major (str)</strong> – major AMS version, should correspond to the year of release.</p></li>
+<li><p><strong>minor (str)</strong> – minor AMS version.</p></li>
+<li><p><strong>micro (str)</strong> – micro AMS version, should correspond to the internal revision number.</p></li>
+<li><p><strong>date (datetime.datetime)</strong> – date the AMS version was released.</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -443,14 +470,25 @@ In case of non-succes it will also give possible reasons for the errors/warnings
 <dl class="py function">
 <dt class="sig sig-object py" id="rkf.info.get_calc_info">
 <span class="sig-prename descclassname"><span class="pre">rkf.info.</span></span><span class="sig-name descname"><span class="pre">get_calc_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DotDict</span></span></span><a class="reference internal" href="_modules/rkf/info.html#get_calc_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rkf.info.get_calc_info" title="Permalink to this definition">#</a></dt>
-<dd><p>Function to read useful info about the calculation in calc_dir.
-Returned information will depend on the type of file that is provided</p>
+<dd><p>Function to read useful info about the calculation in calc_dir. Returned information will depend on the type of file that is provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation</p>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary containing information about the calculation</p>
+<dd class="field-even"><p><p>Dictionary containing results about the calculation and AMS:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>ret.ams_version (dict)</strong> – information about the AMS version used, includes <code class="docutils literal notranslate"><span class="pre">string</span></code> the full version string and <code class="docutils literal notranslate"><span class="pre">major</span></code>, <code class="docutils literal notranslate"><span class="pre">minor</span></code>, <code class="docutils literal notranslate"><span class="pre">micro</span></code>, and <code class="docutils literal notranslate"><span class="pre">date</span></code> which is the decomposed version.</p></li>
+<li><p><strong>ret.engine (str)</strong> – the engine that was used to perform the calculation.</p></li>
+<li><p><strong>ret.job_id (str)</strong> - the ID of the job, can be used to check if two calculations are the same. Might also be used as a unique identifier for the calculation.</p></li>
+<li></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -465,6 +503,31 @@ Returned information will depend on the type of file that is provided</p>
 <span class="sig-prename descclassname"><span class="pre">rkf.info.</span></span><span class="sig-name descname"><span class="pre">get_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DotDict</span></span></span><a class="reference internal" href="_modules/rkf/info.html#get_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rkf.info.get_molecules" title="Permalink to this definition">#</a></dt>
 <dd><p>Function to get molecules from the calculation, including input, output and history molecules
 It will also add bonds to the molecule if they are given in the rkf file, else it will guess them.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rkf.info.get_timing">
+<span class="sig-prename descclassname"><span class="pre">rkf.info.</span></span><span class="sig-name descname"><span class="pre">get_timing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DotDict</span></span></span><a class="reference internal" href="_modules/rkf/info.html#get_timing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rkf.info.get_timing" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to get the timings from the calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Dictionary containing results about the timings:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>cpu (float)</strong> – time spent performing calculations on the cpu.</p></li>
+<li><p><strong>sys (float)</strong> – time spent by the system (file IO, process creation/destruction, etc …).</p></li>
+<li><p><strong>total (float)</strong> – total time spent by AMS on the calculation, can be larger than the sum of cpu and sys.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -548,10 +611,12 @@ It will also add bonds to the molecule if they are given in the rkf file, else i
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-rkf.info">rkf.info module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rkf.info.calculation_status"><code class="docutils literal notranslate"><span class="pre">calculation_status()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rkf.info.get_ams_version"><code class="docutils literal notranslate"><span class="pre">get_ams_version()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rkf.info.get_calc_files"><code class="docutils literal notranslate"><span class="pre">get_calc_files()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rkf.info.get_calc_info"><code class="docutils literal notranslate"><span class="pre">get_calc_info()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rkf.info.get_history"><code class="docutils literal notranslate"><span class="pre">get_history()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rkf.info.get_molecules"><code class="docutils literal notranslate"><span class="pre">get_molecules()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rkf.info.get_timing"><code class="docutils literal notranslate"><span class="pre">get_timing()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-rkf">Module contents</a><ul class="nav section-nav flex-column">
