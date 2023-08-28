@@ -8,7 +8,7 @@ class Result(dict):
             val = Result()
             self.__setitem__(key, val)
             return val
-            
+
         val = self.__getitem__(key)
         if isinstance(val, dict):
             val = Result(val)

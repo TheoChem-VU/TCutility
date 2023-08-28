@@ -1,8 +1,8 @@
-"""This module provides basic and general information about calculations done using AMS given a calculation directory. 
-This includes information about the engine used (ADF, DFTB, BAND, ...), general information such as timings, files, status of the calculation, ... 
+"""
+This module provides basic and general information about calculations done using AMS given a calculation directory.
+This includes information about the engine used (ADF, DFTB, BAND, ...), general information such as timings, files, status of the calculation, etc.
 This information is used in further analysis programs.
 """
-
 import numpy as np
 from scm import plams
 from TCutility.results import cache, Result
@@ -26,7 +26,7 @@ def get_calc_files(calc_dir: str) -> dict:
     for root, _, files_ in os.walk(calc_dir):
         # some results are stored in dirs called {name}.results, if the calculations uses fragments there will be additional dirs called
         # {name}.{fragname}.results, which do not contain new information as the required info is copied over to {name}.results. Therefore
-        # we should skip the fragment directories 
+        # we should skip the fragment directories
         if os.path.split(root)[1].endswith('.results') and len(os.path.split(root)[1].split('.')) > 2:
             continue
 
@@ -90,7 +90,7 @@ def get_ams_version(calc_dir: str) -> Result:
     reader_ams = cache.get(files['ams.rkf'])
 
     # store information about the version of AMS
-    ret.string = reader_ams.read('General', 'release')
+    ret.string = str(reader_ams.read('General', 'release'))
     # decompose the version string
     ret.major = ret.string.split('.')[0]
     ret.minor = ret.string.split()[0].split('.')[1]
@@ -133,7 +133,7 @@ def get_ams_info(calc_dir: str) -> Result:
     Returns:
         dict: Dictionary containing results about the calculation and AMS:
 
-            - **ret.ams_version (dict)** – information about the AMS version used, includes ``string`` the full version string and ``major``, ``minor``, ``micro``, and ``date`` 
+            - **ret.ams_version (dict)** – information about the AMS version used, includes ``string`` the full version string and ``major``, ``minor``, ``micro``, and ``date``
                 which is the decomposed version.
             - **ret.engine (str)** – the engine that was used to perform the calculation.
             - **ret.job_id (str)** - the ID of the job, can be used to check if two calculations are the same. Might also be used as a unique identifier for the calculation.
@@ -144,7 +144,7 @@ def get_ams_info(calc_dir: str) -> Result:
 
     # check what the program is first. The program can be either AMS or one of the engines (ADF, DFTB, ...)
     if ('General', 'engine') in reader_ams:
-        ret.engine = reader_ams.read('General', 'engine').strip().lower()
+        ret.engine = str(reader_ams.read('General', 'engine')).strip().lower()
     # if program cannot be read from reader it is probably an old version of ADF, so we should default to ADF
     else:
         ret.engine = 'adf'
@@ -177,7 +177,7 @@ def get_ams_info(calc_dir: str) -> Result:
 
 
 def calculation_status(calc_dir: str) -> Result:
-    '''Function that returns the status of the calculation described in reader. 
+    '''Function that returns the status of the calculation described in reader.
     In case of non-succes it will also give possible reasons for the errors/warnings.
 
     Args:
@@ -200,7 +200,7 @@ def calculation_status(calc_dir: str) -> Result:
     ret.code = None
     ret.reasons = []
 
-    termination_status = reader_ams.read('General', 'termination status').strip()
+    termination_status = str(reader_ams.read('General', 'termination status')).strip()
 
     # parse the logfile to find errors and warnings
     if 'log' in files:
@@ -265,7 +265,7 @@ def get_molecules(calc_dir: str) -> Result:
             - **atom_symbols (list[str])** – list of elements for each atom in the molecule.
             - **atom_masses (list[float])** – list of atomic masses for each atom in the molecule.
             - **input (plams.Molecule)** – molecule that was given in the input for the calculation.
-            - **output (plams.Molecule)** – final molecule that was given as the output for the calculation. 
+            - **output (plams.Molecule)** – final molecule that was given as the output for the calculation.
                 If the calculation was a singlepoint calculation output and input molecules will be the same.
     '''
     files = get_calc_files(calc_dir)
@@ -275,11 +275,11 @@ def get_molecules(calc_dir: str) -> Result:
     ret = Result()
 
     # read general
-    atnums = reader_ams.read('InputMolecule', 'AtomicNumbers')
+    atnums = list(reader_ams.read('InputMolecule', 'AtomicNumbers'))  # type: ignore plams does not include type hints. Returns list[int]
     natoms = len(atnums)
     ret.number_of_atoms = natoms
     ret.atom_numbers = atnums
-    ret.atom_symbols = reader_ams.read('InputMolecule', 'AtomSymbols').split()
+    ret.atom_symbols = str(reader_ams.read('InputMolecule', 'AtomSymbols')).split()
     ret.atom_masses = reader_ams.read('InputMolecule', 'AtomMasses')
 
     # read input molecule
@@ -323,7 +323,7 @@ def get_history(calc_dir: str) -> Result:
 
             - **number_of_entries (int)** – number of steps in the history.
             - **{variable} (list[Any])** – variable read from the history section. The number of variables and type of variables depend on the nature of the calculation.
-              
+
               Common variables:
             - **coords (list[plams.Molecule])** – list of molecules from the history, for example from a geometry optimization or PES scan.
             - **energy (list[float])** – list of energies associated with each geometry step.
@@ -337,7 +337,7 @@ def get_history(calc_dir: str) -> Result:
     ret = Result()
 
     # read general
-    atnums = reader_ams.read('InputMolecule', 'AtomicNumbers')
+    atnums = list(reader_ams.read('InputMolecule', 'AtomicNumbers'))  # type: ignore plams does not include type hints. Returns list[int]
     natoms = len(atnums)
 
     if ('History', 'nEntries') in reader_ams:
