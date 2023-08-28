@@ -26,7 +26,8 @@ release = '0.0.2'
 
 extensions = [
     'sphinx.ext.duration',
-    "sphinx.ext.autodoc"
+    "sphinx.ext.autodoc",
+    'sphinx.ext.napoleon',
 ]
 
 templates_path = ['_templates']
