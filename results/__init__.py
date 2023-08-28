@@ -1,5 +1,5 @@
 from yutility import dictfunc
-from . import adf, dftb, info
+from . import adf, dftb, ams
 
 
 def read(calc_dir: str) -> dictfunc.DotDict:
@@ -12,7 +12,7 @@ def read(calc_dir: str) -> dictfunc.DotDict:
         dictionary containing information about the calculation
     '''
     ret = dictfunc.DotDict()
-    ret.update(info.get_calc_info(calc_dir))
+    ret.update(ams.get_ams_info(calc_dir))
     if ret.engine == 'adf':
         ret.adf = adf.get_calc_settings(ret)
     elif ret.engine == 'dftb':

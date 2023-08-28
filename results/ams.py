@@ -4,7 +4,7 @@
 import numpy as np
 from yutility import dictfunc
 from scm import plams
-from TCutility.rkf import cache
+from TCutility.results import cache
 import os
 from datetime import datetime
 
@@ -123,7 +123,7 @@ def get_timing(calc_dir: str) -> dictfunc.DotDict:
     return ret
 
 
-def get_calc_info(calc_dir: str) -> dictfunc.DotDict:
+def get_ams_info(calc_dir: str) -> dictfunc.DotDict:
     '''Function to read useful info about the calculation in calc_dir. Returned information will depend on the type of file that is provided.
 
     Args:

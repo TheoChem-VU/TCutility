@@ -1,5 +1,5 @@
 from yutility import log, dictfunc
-from TCutility.rkf import cache
+from TCutility.results import cache
 
 
 def get_calc_settings(info: dictfunc.DotDict) -> dictfunc.DotDict:
