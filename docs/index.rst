@@ -12,7 +12,7 @@ TCutility |ProjectVersion| documentation
    :maxdepth: 2
    :caption: Contents:
 
-   TCutility/results
+   results
 
 
 Indices and tables
