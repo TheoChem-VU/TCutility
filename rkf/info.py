@@ -185,10 +185,10 @@ def calculation_status(calc_dir: str) -> dictfunc.DotDict:
     Returns:
         dict: Dictionary containing information about the calculation status:
 
-            - **ret.fatal (bool)** – True if calculation cannot be analysed correctly, False otherwise
-            - **ret.reasons (list[str])** – list of reasons to explain the status, they can be errors, warnings, etc.
-            - **ret.name (str)** – calculation status written as a string, one of ("SUCCESS", "RUNNING", "UNKNOWN", "SUCCESS(W)", "FAILED")
-            - **ret.code (str)** – calculation status written as a single character, one of ("S", "R", "U", "W" "F")
+            - **fatal (bool)** – True if calculation cannot be analysed correctly, False otherwise
+            - **reasons (list[str])** – list of reasons to explain the status, they can be errors, warnings, etc.
+            - **name (str)** – calculation status written as a string, one of ("SUCCESS", "RUNNING", "UNKNOWN", "SUCCESS(W)", "FAILED")
+            - **code (str)** – calculation status written as a single character, one of ("S", "R", "U", "W" "F")
     '''
     files = get_calc_files(calc_dir)
     reader_ams = cache.get(files['ams.rkf'])
@@ -250,8 +250,21 @@ def calculation_status(calc_dir: str) -> dictfunc.DotDict:
 
 def get_molecules(calc_dir: str) -> dictfunc.DotDict:
     '''
-    Function to get molecules from the calculation, including input, output and history molecules
+    Function to get molecules from the calculation, including input, output and history molecules.
     It will also add bonds to the molecule if they are given in the rkf file, else it will guess them.
+
+    Args:
+        calc_dir: path pointing to the desired calculation.
+
+    Returns:
+        dict: Dictionary containing information about the molecular systems:
+
+            - **number_of_atoms (int)** – number of atoms in the molecule.
+            - **atom_numbers (list[int])** – list of atomic numbers for each atom in the molecule.
+            - **atom_symbols (list[str])** – list of elements for each atom in the molecule.
+            - **atom_masses (list[float])** – list of atomic masses for each atom in the molecule.
+            - **input (plams.Molecule)** – molecule that was given in the input for the calculation.
+            - **output (plams.Molecule)** – final molecule that was given as the output for the calculation. If the calculation was a singlepoint calculation output and input molecules will be the same.
     '''
     files = get_calc_files(calc_dir)
     # all info is stored in reader_ams
@@ -269,16 +282,20 @@ def get_molecules(calc_dir: str) -> dictfunc.DotDict:
 
     # read input molecule
     ret.input = plams.Molecule()
+    # read in the coordinates, they are given in Bohr, so convert them to Angstrom
     coords = np.array(reader_ams.read('InputMolecule', 'Coords')).reshape(natoms, 3) * 0.529177
+    # add the atoms to the molecule
     for atnum, coord in zip(atnums, coords):
         ret.input.add_atom(plams.Atom(atnum=atnum, coords=coord))
+    # try to add the bonds if they were given in the rkf file
     if ('Molecule', 'fromAtoms') in reader_ams and ('Molecule', 'toAtoms') in reader_ams and ('Molecule', 'bondOrders'):
         for at1, at2, order in zip(reader_ams.read('InputMolecule', 'fromAtoms'), reader_ams.read('InputMolecule', 'toAtoms'), reader_ams.read('InputMolecule', 'bondOrders')):
             ret.input.add_bond(plams.Bond(ret.input[at1], ret.input[at2], order=order))
+    # if the bonds were not given, guess them
     else:
         ret.input.guess_bonds()
 
-    # output molecule
+    # read output molecule
     ret.output = plams.Molecule()
     coords = np.array(reader_ams.read('Molecule', 'Coords')).reshape(natoms, 3) * 0.529177
     for atnum, coord in zip(atnums, coords):
@@ -291,7 +308,24 @@ def get_molecules(calc_dir: str) -> dictfunc.DotDict:
 
     return ret
 
+
 def get_history(calc_dir: str) -> dictfunc.DotDict:
+    '''
+    Function to get history variables. The type of variables read depends on the type of calculation.
+
+    Args:
+        calc_dir: path pointing to the desired calculation.
+
+    Returns:
+        dict: Dictionary containing information about the calculation status:
+
+            - **number_of_entries (int)** – number of steps in the history.
+            - **{variable} (list[Any])** – variable read from the history section. The number of variables and type of variables depend on the nature of the calculation.
+            Common variables:
+            - **coords (list[plams.Molecule])** – list of molecules from the history, for example from a geometry optimization or PES scan.
+            - **energy (list[float])** – list of energies associated with each geometry step.
+            - **gradient (list[list[float]])** – array of gradients for each geometry step and each atom.
+    '''
     # read history mols
     files = get_calc_files(calc_dir)
     # all info is stored in reader_ams
