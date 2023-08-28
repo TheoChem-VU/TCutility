@@ -29,11 +29,16 @@ extensions = [
     "sphinx.ext.autodoc",
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
+    'autodocsumm',
 ]
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
+
+autodoc_default_options = {
+    'autosummary': True,
+}
 
 html_theme_options = {
   "show_nav_level": 2,
