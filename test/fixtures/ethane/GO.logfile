@@ -1,0 +1,79 @@
+<Aug21-2023> <07:59:53>  AMS 2022.103  RunTime: Aug21-2023 07:59:53  ShM Nodes: 1  Procs: 10
+<Aug21-2023> <07:59:55>  Iteration 1
+<Aug21-2023> <07:59:55>  current energy                               -7.24681132 Hartree
+<Aug21-2023> <07:59:55>  energy change                      -7.24681132     0.00008000    F
+<Aug21-2023> <07:59:55>  constrained gradient max            1.12272064     0.00100000    F
+<Aug21-2023> <07:59:55>  constrained gradient rms            0.40722375     0.00066667    F
+<Aug21-2023> <07:59:55>  gradient max                        1.12272064
+<Aug21-2023> <07:59:55>  gradient rms                        0.40722375
+<Aug21-2023> <07:59:55>  cart. step max                      0.04726480     0.01000000    F
+<Aug21-2023> <07:59:55>  cart. step rms                      0.03323684     0.00666667    F
+<Aug21-2023> <07:59:55>  Iteration 2
+<Aug21-2023> <07:59:55>  current energy                               -7.37022370 Hartree
+<Aug21-2023> <07:59:55>  energy change                      -0.12341238     0.00008000    F
+<Aug21-2023> <07:59:55>  constrained gradient max            0.59287377     0.00100000    F
+<Aug21-2023> <07:59:55>  constrained gradient rms            0.21512933     0.00066667    F
+<Aug21-2023> <07:59:55>  gradient max                        0.59287377
+<Aug21-2023> <07:59:55>  gradient rms                        0.21512933
+<Aug21-2023> <07:59:55>  cart. step max                      0.07040842     0.01000000    F
+<Aug21-2023> <07:59:55>  cart. step rms                      0.04458255     0.00666667    F
+<Aug21-2023> <07:59:55>  Iteration 3
+<Aug21-2023> <07:59:55>  current energy                               -7.43980244 Hartree
+<Aug21-2023> <07:59:55>  energy change                      -0.06957873     0.00008000    F
+<Aug21-2023> <07:59:55>  constrained gradient max            0.26059899     0.00100000    F
+<Aug21-2023> <07:59:55>  constrained gradient rms            0.09442960     0.00066667    F
+<Aug21-2023> <07:59:55>  gradient max                        0.26059899
+<Aug21-2023> <07:59:55>  gradient rms                        0.09442960
+<Aug21-2023> <07:59:55>  cart. step max                      0.03910123     0.01000000    F
+<Aug21-2023> <07:59:55>  cart. step rms                      0.02573817     0.00666667    F
+<Aug21-2023> <07:59:55>  Iteration 4
+<Aug21-2023> <07:59:55>  current energy                               -7.46110623 Hartree
+<Aug21-2023> <07:59:55>  energy change                      -0.02130379     0.00008000    F
+<Aug21-2023> <07:59:55>  constrained gradient max            0.11509151     0.00100000    F
+<Aug21-2023> <07:59:55>  constrained gradient rms            0.04166650     0.00066667    F
+<Aug21-2023> <07:59:55>  gradient max                        0.11509151
+<Aug21-2023> <07:59:55>  gradient rms                        0.04166650
+<Aug21-2023> <07:59:55>  cart. step max                      0.02571991     0.01000000    F
+<Aug21-2023> <07:59:55>  cart. step rms                      0.01444715     0.00666667    F
+<Aug21-2023> <07:59:55>  Iteration 5
+<Aug21-2023> <07:59:55>  current energy                               -7.46714335 Hartree
+<Aug21-2023> <07:59:55>  energy change                      -0.00603712     0.00008000    F
+<Aug21-2023> <07:59:55>  constrained gradient max            0.04072797     0.00100000    F
+<Aug21-2023> <07:59:55>  constrained gradient rms            0.01477129     0.00066667    F
+<Aug21-2023> <07:59:55>  gradient max                        0.04072797
+<Aug21-2023> <07:59:55>  gradient rms                        0.01477129
+<Aug21-2023> <07:59:55>  cart. step max                      0.01289510     0.01000000    F
+<Aug21-2023> <07:59:55>  cart. step rms                      0.00625781     0.00666667    T
+<Aug21-2023> <07:59:55>  Iteration 6
+<Aug21-2023> <07:59:55>  current energy                               -7.46810943 Hartree
+<Aug21-2023> <07:59:55>  energy change                      -0.00096608     0.00008000    F
+<Aug21-2023> <07:59:55>  constrained gradient max            0.00965073     0.00100000    F
+<Aug21-2023> <07:59:55>  constrained gradient rms            0.00353299     0.00066667    F
+<Aug21-2023> <07:59:55>  gradient max                        0.00965073
+<Aug21-2023> <07:59:55>  gradient rms                        0.00353299
+<Aug21-2023> <07:59:55>  cart. step max                      0.00383595     0.01000000    T
+<Aug21-2023> <07:59:55>  cart. step rms                      0.00235014     0.00666667    T
+<Aug21-2023> <07:59:55>  Iteration 7
+<Aug21-2023> <07:59:55>  current energy                               -7.46817407 Hartree
+<Aug21-2023> <07:59:55>  energy change                      -0.00006464     0.00008000    T
+<Aug21-2023> <07:59:55>  constrained gradient max            0.00100327     0.00100000    F
+<Aug21-2023> <07:59:55>  constrained gradient rms            0.00041198     0.00066667    T
+<Aug21-2023> <07:59:55>  gradient max                        0.00100327
+<Aug21-2023> <07:59:55>  gradient rms                        0.00041198
+<Aug21-2023> <07:59:55>  cart. step max                      0.00220338     0.01000000    T
+<Aug21-2023> <07:59:55>  cart. step rms                      0.00119374     0.00666667    T
+<Aug21-2023> <07:59:55>  Iteration 8
+<Aug21-2023> <07:59:55>  current energy                               -7.46817711 Hartree
+<Aug21-2023> <07:59:55>  energy change                      -0.00000304     0.00008000    T
+<Aug21-2023> <07:59:55>  constrained gradient max            0.00018750     0.00100000    T
+<Aug21-2023> <07:59:55>  constrained gradient rms            0.00010567     0.00066667    T
+<Aug21-2023> <07:59:55>  gradient max                        0.00018750
+<Aug21-2023> <07:59:55>  gradient rms                        0.00010567
+<Aug21-2023> <07:59:55>  cart. step max                      0.00308233     0.01000000    T
+<Aug21-2023> <07:59:55>  cart. step rms                      0.00168091     0.00666667    T
+<Aug21-2023> <07:59:55>  Geometry optimization converged
+<Aug21-2023> <07:59:55>  DFTB: SCC cycle
+<Aug21-2023> <07:59:55>      Cycle:   1, MaxQDiff:   0.000000000042, PartialEnergy:      -7.5783876721, Used mix:   0.150 nvec:    0
+<Aug21-2023> <07:59:55>  SCC cycle converged!
+<Aug21-2023> <07:59:55>  NORMAL TERMINATION
+Job GO has finished

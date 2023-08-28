@@ -1,0 +1,13 @@
+== Starting run at Wed Jul 19 10:15:27 CEST 2023
+== Job ID: 357623
+== Node list: node116
+== Submit dir. : /scistor/tc/eti201/metallylene/imi_SiP/again
+== Scratch dir. : /scratch/357623
+
+Currently Loaded Modules:
+  1) shared           3) 2022                  5) ams/2022.103
+  2) DefaultModules   4) slurm/bazis/current
+
+ 
+
+NORMAL TERMINATION with errors

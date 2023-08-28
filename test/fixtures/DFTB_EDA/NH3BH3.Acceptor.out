@@ -1,0 +1,230 @@
+
+
+ Parallel Execution: Process Information
+ ==============================================================================
+ Rank   Node Name                              NodeID   MyNodeRank  NodeMaster
+    0   yumans-mbp.home                           0          0          0
+    1   yumans-mbp.home                           0          1         -1
+    2   yumans-mbp.home                           0          2         -1
+    3   yumans-mbp.home                           0          3         -1
+    4   yumans-mbp.home                           0          4         -1
+    5   yumans-mbp.home                           0          5         -1
+    6   yumans-mbp.home                           0          6         -1
+    7   yumans-mbp.home                           0          7         -1
+    8   yumans-mbp.home                           0          8         -1
+    9   yumans-mbp.home                           0          9         -1
+ ==============================================================================
+
+
+May use up to 15625MB of RAM as shared memory on node 0
+
+ *******************************************************************************
+ *                                                                             *
+ *  --------------------------------                                           *
+ *   Amsterdam Modeling Suite (AMS)              2022.103                      *
+ *  --------------------------------                                           *
+ *                                               r104886 2022-06-17            *
+ *                                                                             *
+ *                                                                             *
+ *                              =================                              *
+ *                              |               |                              *
+ *                              |     A M S     |                              *
+ *                              |               |                              *
+ *                              =================                              *
+ *                                                                             *
+ *                                                                             *
+ *   Online information and documentation:  https://www.scm.com/support/       *
+ *   E-mail:  support@scm.com   info@scm.com                                   *
+ *                                                                             *
+ *   Scientific publications using AMS results must be properly referenced     *
+ *   See the User Manuals (or the web site) for recommended citations          *
+ *   The terms and conditions of the End User License Agreement apply to       *
+ *   the use of AMS, https://www.scm.com/license-terms/                        *
+ *                                                                             *
+ **********************  x86_64_darwin_intel / openmpi  ************************
+ 
+ Licensed to: Prof Visscher, Prof Bickelhaupt, Prof Fonseca Guerra / Vrije Universiteit, Theoretische Chemie / Amsterdam / NETHERLANDS 2022-12-13 09:59:29
+ SCM User ID: u21794
+  
+ AMS 2022.103  RunTime: Aug25-2023 09:49:13  ShM Nodes: 1  Procs: 10
+
+ AMS jobname: ams
+ AMS jobid  : 681384543
+
+ Start   directory: /Users/yumanhordijk/ADF_DATA/dftb/EDA/tmp.yumanhordijk.40590.0.noindex/
+ Results directory: /Users/yumanhordijk/ADF_DATA/dftb/EDA/NH3BH3.Acceptor.results/
+ Scratch directory: /tmp/amstmp_ams_kid0.681384543/
+
+
+ Communication costs MPI_COMM_WORLD:      2.611 usec per message,   0.0246 usec per 8-byte item
+ Communication costs for intra-node:      1.201 usec per message,   0.0416 usec per 8-byte item
+
+ RNG seed: -883993234 1473861114 1080367418 -588804492 -1405949696 1159389663 121606620 -1509475178
+       ****************************
+       * SINGLE POINT CALCULATION *
+       ****************************
+ 
+--------
+Geometry
+--------
+Formula: H3B
+Atoms
+  Index Symbol   x (angstrom)   y (angstrom)   z (angstrom)
+      1      H     1.16299585    -0.00000000     1.13712667       region=Acceptor
+      2      B    -0.00000000    -0.00000000     0.83567034       region=Acceptor
+      3      H    -0.58149793     1.00718395     1.13712667       region=Acceptor
+      4      H    -0.58149793    -1.00718395     1.13712667       region=Acceptor
+ 
+Total System Charge             0.00000
+Bonding info available!
+ 
+ 
+-------------------------
+DFTB Engine configuration
+-------------------------
+DFTB Resources dir                     /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/DFTB/GFN1-xTB
+ 
+SCC convergence enabled.
+Maximum SCC cycles                       500
+SCC charge convergence                   0.000000010000
+SCC charge mixing                        0.150000000000
+DIIS max dimension                       20
+DIIS maximum coeff.                     10.000000000000
+Adaptive SCC charge mixing             T
+Adaptive SCC mixing strategy              3
+Spin polarization                      F
+Orbital-dependent SCC                  T
+Orbital fill strategy                  Fermi
+Fermi temperature (kelvin)                     300.0000
+  ... kT (Hartree)                               0.0010
+Use of symmetry                        T
+Radial function extrapolation method   Auto
+
+ Settings for Grimme D3 dispersion correction
+
+      damping                        BJ
+      s6                          1.000
+      s8                          2.400
+      a1                          0.630
+      a2                          5.000
+
+ Other (technical) parameters
+
+      alpha                      14.000
+      version                         4
+ 
+
+---------------------
+Periodic DFTB options
+---------------------
+ kpoints config
+ grid method with params
+Assume insulator                        F
+Ewald tolerance                    1.00E-10
+Ewald range factor                  2.00
+
+ BZStruct config
+ ---------------
+ Enabled        T
+ Automatic      T
+ CalcFatBands   T
+ useSymmetry    T
+ deltaK          0.100000000000000     
+ 
+Estimated upper bound for memory consumption:    0.024 MiB
+
+Number of basis functions:           10
+    Cycle:   1, MaxQDiff:   1.041419148934, PartialEnergy:      -2.9574484320, Used mix:   0.150 nvec:    0
+    Cycle:   2, MaxQDiff:   0.957748029503, PartialEnergy:      -2.9580073470, Used mix:   0.150 nvec:    1
+    Cycle:   3, MaxQDiff:   0.802572416485, PartialEnergy:      -2.9589860988, Used mix:   0.150 nvec:    1
+    Cycle:   4, MaxQDiff:   0.148654535089, PartialEnergy:      -2.9593021633, Used mix:   0.150 nvec:    2
+    Cycle:   5, MaxQDiff:   0.113548571464, PartialEnergy:      -2.9600858923, Used mix:   0.150 nvec:    2
+    Cycle:   6, MaxQDiff:   0.006071221977, PartialEnergy:      -2.9606334730, Used mix:   0.150 nvec:    3
+    Cycle:   7, MaxQDiff:   0.003413279456, PartialEnergy:      -2.9606355597, Used mix:   0.150 nvec:    4
+    Cycle:   8, MaxQDiff:   0.001253420787, PartialEnergy:      -2.9606363856, Used mix:   0.150 nvec:    4
+    Cycle:   9, MaxQDiff:   0.000002063215, PartialEnergy:      -2.9606365144, Used mix:   0.150 nvec:    4
+    Cycle:  10, MaxQDiff:   0.000000020674, PartialEnergy:      -2.9606365144, Used mix:   0.150 nvec:    4
+    Cycle:  11, MaxQDiff:   0.000000000006, PartialEnergy:      -2.9606365144, Used mix:   0.150 nvec:    2
+ Evaluation was successful
+
+
+    =====================
+     CALCULATION RESULTS
+    =====================
+
+Energy (hartree)            -2.92871071
+
+
+--------------
+Atomic charges
+--------------
+  Index   Atom    Charge
+      1      H   -0.0774
+      2      B    0.2321
+      3      H   -0.0774
+      4      H   -0.0774
+
+
+Dipole moment vector    (Debye):     0.00000001   -0.00000000   -0.33611975
+              magnitude (Debye):     0.33611975
+
+ 
+--------------------
+Energy Decomposition
+--------------------
+Total Energy (hartree)                -2.92871071
+Total Energy (eV)                    -79.69427341
+Electronic Energy (hartree)           -2.96264498
+Coulomb Energy (hartree)               0.00200846
+Repulsion Energy (hartree)             0.03224588
+Dispersion Energy (hartree)           -0.00032008
+ 
+----------------
+Mulliken Charges
+----------------
+  Index   Atom          Charge      Population
+      1      H   -0.0773779640        1.077378
+      2      B    0.2321338931        2.767866
+      3      H   -0.0773779645        1.077378
+      4      H   -0.0773779645        1.077378
+         Total   -0.0000000000        6.000000
+ 
+----------------------
+Mulliken Shell Charges
+----------------------
+  Index   Atom      L          Charge      Population
+      1      H      0   -0.0721414745        1.072141
+      2      H      0   -0.0052364895        0.005236
+      3      B      0    0.9793713406        1.020629
+      4      B      1   -0.7472374475        1.747237
+      5      H      0   -0.0721414749        1.072141
+      6      H      0   -0.0052364896        0.005236
+      7      H      0   -0.0721414749        1.072141
+      8      H      0   -0.0052364896        0.005236
+                Total   -0.0000000000        6.000000
+ 
+ 
+--------
+Orbitals
+--------
+Index of HOMO                    3
+Fermi Energy (hartree)           -0.36052449
+Orbitals
+   Index  Energy (hartree)       Energy (eV)        Occupation  Degeneracy
+       1       -0.56769707      -15.44782315        2.00000000           1
+       2       -0.46394545      -12.62459813        2.00000000           2
+       3       -0.46394545      -12.62459810        2.00000000           2
+       4       -0.31181129       -8.48481680        0.00000000           1
+       5       -0.09004963       -2.45037517        0.00000000           1
+       6       -0.05798294       -1.57779607        0.00000000           2
+       7       -0.05798294       -1.57779605        0.00000000           2
+       8        0.23675762        6.44250266        0.00000000           1
+       9        0.28011621        7.62234997        0.00000000           2
+      10        0.28011622        7.62235014        0.00000000           2
+ 
+
+AMS application finished. Exiting.
+NORMAL TERMINATION
+     Total cpu time:       0.82
+  Total system time:       0.73
+ Total elapsed time:       1.82
