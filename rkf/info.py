@@ -124,15 +124,15 @@ def calculation_status(calc_dir: str) -> dictfunc.DotDict:
     In case of non-succes it will also give possible reasons for the errors/warnings.
 
     Args:
-        reader: plams.KFReader or plams.KFFile object pointing to the desired calculation
+        reader: ``plams.KFReader`` or ``plams.KFFile`` object pointing to the desired calculation
 
     Returns:
-        
-        | Dictionary containing information about the calculation status
-        | success: bool - True if calculation reported normal termination, with or without warnings, False otherwise
-        | reasons: list[str] - list of reasons to explain the status, they can be errors, warnings, etc.
-        | name: str - calculation status written as a string, ex. "RUNNING", "FAILED", etc.
-        | code: str - calculation status written as a single character, ex. "S", "F", etc.
+        (dict): dict containing information about the calculation status:
+
+            success(bool): True if calculation reported normal termination, with or without warnings, False otherwise
+            reasons(list[str]): list of reasons to explain the status, they can be errors, warnings, etc.
+            name(str): calculation status written as a string, ex. "RUNNING", "FAILED", etc.
+            code(str): calculation status written as a single character, ex. "S", "F", etc.
     '''
     files = get_calc_files(calc_dir)
     reader_ams = cache.get(files['ams.rkf'])
