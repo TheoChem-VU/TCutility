@@ -1,6 +1,14 @@
 rkf package
 ===========
 
+.. autosummary::
+   :toctree: generated
+
+   info
+   adf
+   dftb
+   cache
+
 Submodules
 ----------
 
