@@ -36,7 +36,12 @@ jobs:
         run: pip install pydata-sphinx-theme
 
       - name: Install yutility
-        run: pip install git+https://github.com/YHordijk/yutility.git
+        run: |
+          git clone https://github.com/YHordijk/yutility.git
+          cd yutility
+          python -m pip install --upgrade build
+          python -m build
+          pythom -m pip install -e .
 
       - name: checking yutility
         run: python -c "import yutility"
