@@ -5,7 +5,8 @@ TCutility.results package
    :toctree: generated
 
    results.ams
-   results.cache
    results.adf
    results.dftb
+   results.cache
+   results.result
 
