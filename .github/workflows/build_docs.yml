@@ -41,7 +41,7 @@ jobs:
         run: pip install pydata-sphinx-theme
 
       - name: Install yutility dependencies
-        run: pip install numpy plams
+        run: pip install numpy plams autodocsumm
 
       - name: Install yutility
         run: |
