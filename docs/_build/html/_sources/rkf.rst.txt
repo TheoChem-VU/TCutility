@@ -4,13 +4,11 @@ rkf package
 .. autosummary::
    :toctree: generated
 
-   info
-   adf
-   dftb
-   cache
+   rkf.info
+   rkf.adf
+   rkf.dftb
+   rkf.cache
 
-Submodules
-----------
 
 rkf.adf module
 --------------
@@ -44,8 +42,8 @@ rkf.info module
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
+Module wide contents
+--------------------
 
 .. automodule:: rkf
    :members:
