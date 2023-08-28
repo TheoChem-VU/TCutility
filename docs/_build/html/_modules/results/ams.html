@@ -121,8 +121,8 @@
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../modules.html">
-                        TCutility
+                      <a class="nav-link nav-internal" href="../../results.html">
+                        TCutility.results
                       </a>
                     </li>
                 
@@ -200,8 +200,8 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../modules.html">
-                        TCutility
+                      <a class="nav-link nav-internal" href="../../results.html">
+                        TCutility.results
                       </a>
                     </li>
                 
@@ -285,7 +285,9 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for results.ams</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;This module provides basic and general information about calculations done using AMS given a calculation directory. This includes information about the engine used (ADF, DFTB, BAND, ...), general information such as timings, files, status of the calculation, ... This information is used in further analysis programs.</span>
+<span></span><span class="sd">&quot;&quot;&quot;This module provides basic and general information about calculations done using AMS given a calculation directory. </span>
+<span class="sd">This includes information about the engine used (ADF, DFTB, BAND, ...), general information such as timings, files, status of the calculation, ... </span>
+<span class="sd">This information is used in further analysis programs.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -418,10 +420,10 @@ document.write(`
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: Dictionary containing results about the calculation and AMS:</span>
 
-<span class="sd">            - **ret.ams_version (dict)** – information about the AMS version used, includes ``string`` the full version string and ``major``, ``minor``, ``micro``, and ``date`` which is the decomposed version.</span>
+<span class="sd">            - **ret.ams_version (dict)** – information about the AMS version used, includes ``string`` the full version string and ``major``, ``minor``, ``micro``, and ``date`` </span>
+<span class="sd">                which is the decomposed version.</span>
 <span class="sd">            - **ret.engine (str)** – the engine that was used to perform the calculation.</span>
 <span class="sd">            - **ret.job_id (str)** - the ID of the job, can be used to check if two calculations are the same. Might also be used as a unique identifier for the calculation.</span>
-<span class="sd">            - </span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">files</span> <span class="o">=</span> <span class="n">get_calc_files</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
@@ -550,7 +552,8 @@ document.write(`
 <span class="sd">            - **atom_symbols (list[str])** – list of elements for each atom in the molecule.</span>
 <span class="sd">            - **atom_masses (list[float])** – list of atomic masses for each atom in the molecule.</span>
 <span class="sd">            - **input (plams.Molecule)** – molecule that was given in the input for the calculation.</span>
-<span class="sd">            - **output (plams.Molecule)** – final molecule that was given as the output for the calculation. If the calculation was a singlepoint calculation output and input molecules will be the same.</span>
+<span class="sd">            - **output (plams.Molecule)** – final molecule that was given as the output for the calculation. </span>
+<span class="sd">                If the calculation was a singlepoint calculation output and input molecules will be the same.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">files</span> <span class="o">=</span> <span class="n">get_calc_files</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
     <span class="c1"># all info is stored in reader_ams</span>
@@ -631,7 +634,7 @@ document.write(`
         <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">while</span> <span class="n">index</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">item_name</span> <span class="o">=</span> <span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;History&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;ItemName(</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+                <span class="n">item_name</span> <span class="o">=</span> <span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;History&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;ItemName(</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
                 <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span>
                 <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>

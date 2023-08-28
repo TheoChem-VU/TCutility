@@ -121,8 +121,8 @@
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../modules.html">
-                        TCutility
+                      <a class="nav-link nav-internal" href="../../results.html">
+                        TCutility.results
                       </a>
                     </li>
                 
@@ -200,8 +200,8 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../modules.html">
-                        TCutility
+                      <a class="nav-link nav-internal" href="../../results.html">
+                        TCutility.results
                       </a>
                     </li>
                 
@@ -327,10 +327,6 @@ document.write(`
     <span class="c1"># get the symmetry labels</span>
     <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;Symmetry&#39;</span><span class="p">,</span> <span class="s1">&#39;symlab&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">reader_adf</span><span class="p">:</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">symmetry</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Symmetry&#39;</span><span class="p">,</span> <span class="s1">&#39;symlab&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="p">(</span><span class="s1">&#39;Geometry&#39;</span><span class="p">,</span> <span class="s1">&#39;grouplabel&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">reader_adf</span><span class="p">:</span>
-        <span class="n">ret</span><span class="o">.</span><span class="n">symmetry</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">symmetry</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Geometry&#39;</span><span class="p">,</span> <span class="s1">&#39;grouplabel&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">ret</span><span class="o">.</span><span class="n">symmetry</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">symmetry</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="s1">&#39;NOSYM&#39;</span><span class="p">]</span>
 
     <span class="c1"># determine if MOs are unrestricted or not</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">unrestricted_mos</span> <span class="o">=</span> <span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">symmetry</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;eps_B&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">reader_adf</span>
