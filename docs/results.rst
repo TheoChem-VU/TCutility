@@ -4,7 +4,7 @@ TCutility.results
 Module-wide contents
 ++++++++++++++++++++
 
-.. automodule:: results
+.. automodule:: TCutility.results
    :members:
    :undoc-members:
    :show-inheritance:
@@ -14,42 +14,42 @@ TCutility.results submodules
 ++++++++++++++++++++++++++++
 
 
-results.adf
------------
+TCutility.results.adf
+---------------------
 
-.. automodule:: results.adf
+.. automodule:: TCutility.results.adf
    :members:
    :undoc-members:
    :show-inheritance:
 
-results.ams
------------
+TCutility.results.ams
+---------------------
 
-.. automodule:: results.ams
+.. automodule:: TCutility.results.ams
    :members:
    :undoc-members:
    :show-inheritance:
 
-results.cache
--------------
+TCutility.results.cache
+-----------------------
 
-.. automodule:: results.cache
+.. automodule:: TCutility.results.cache
    :members:
    :undoc-members:
    :show-inheritance:
 
-results.dftb
-------------
+TCutility.results.dftb
+----------------------
 
-.. automodule:: results.dftb
+.. automodule:: TCutility.results.dftb
    :members:
    :undoc-members:
    :show-inheritance:
 
-results.result
---------------
+TCutility.results.result
+------------------------
 
-.. automodule:: results.result
+.. automodule:: TCutility.results.result
    :members:
    :undoc-members:
    :show-inheritance:
