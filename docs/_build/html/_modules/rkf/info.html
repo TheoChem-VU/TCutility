@@ -414,11 +414,12 @@ document.write(`
 <span class="sd">        reader: plams.KFReader or plams.KFFile object pointing to the desired calculation</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Dictionary containing information about the calculation status</span>
-<span class="sd">        success: bool - True if calculation reported normal termination, with or without warnings, False otherwise</span>
-<span class="sd">        reasons: list[str] - list of reasons to explain the status, they can be errors, warnings, etc.</span>
-<span class="sd">        name: str - calculation status written as a string, ex. &quot;RUNNING&quot;, &quot;FAILED&quot;, etc.</span>
-<span class="sd">        code: str - calculation status written as a single character, ex. &quot;S&quot;, &quot;F&quot;, etc.</span>
+<span class="sd">        </span>
+<span class="sd">        | Dictionary containing information about the calculation status</span>
+<span class="sd">        | success: bool - True if calculation reported normal termination, with or without warnings, False otherwise</span>
+<span class="sd">        | reasons: list[str] - list of reasons to explain the status, they can be errors, warnings, etc.</span>
+<span class="sd">        | name: str - calculation status written as a string, ex. &quot;RUNNING&quot;, &quot;FAILED&quot;, etc.</span>
+<span class="sd">        | code: str - calculation status written as a single character, ex. &quot;S&quot;, &quot;F&quot;, etc.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">files</span> <span class="o">=</span> <span class="n">get_calc_files</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
     <span class="n">reader_ams</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="s1">&#39;ams.rkf&#39;</span><span class="p">])</span>
