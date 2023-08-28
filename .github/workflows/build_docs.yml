@@ -40,9 +40,9 @@ jobs:
 
       - name: Install yutility
         run: |
+          cd
           git clone https://github.com/YHordijk/yutility.git
-          echo "PATH=./yutility:PATH" >> "$GITHUB_ENV"
-
+          echo "PATH=~/yutility:PATH" >> "$GITHUB_ENV"
 
       - name: checking yutility
         run: python -c "import yutility"
