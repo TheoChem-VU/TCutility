@@ -4,7 +4,7 @@ rkf package
 .. autosummary::
    :toctree: generated
 
-   rkf.info
+   rkf.ams
    rkf.adf
    rkf.dftb
    rkf.cache
