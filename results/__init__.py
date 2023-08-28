@@ -1,7 +1,7 @@
-from . import result
+from TCutility import result
 Result = result.Result
 
-from . import adf, dftb, ams  # noqa: E402
+from TCutility import adf, dftb, ams  # noqa: E402
 
 
 def read(calc_dir: str) -> Result:
