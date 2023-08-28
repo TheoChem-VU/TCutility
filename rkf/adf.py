@@ -22,10 +22,10 @@ def get_calc_settings(info: dictfunc.DotDict) -> dictfunc.DotDict:
     # default task is SinglePoint
     ret.task = 'SinglePoint'
     for i, word in enumerate(words):
-    	# task is always given with the task keyword
-    	if word.lower() == 'task':
-    		ret.task = words[i+1]
-    		break
+        # task is always given with the task keyword
+        if word.lower() == 'task':
+            ret.task = words[i+1]
+            break
 
     # determine if calculation used relativistic corrections
     # if it did, variable 'escale' will be present in 'SFOs'
@@ -36,7 +36,7 @@ def get_calc_settings(info: dictfunc.DotDict) -> dictfunc.DotDict:
     ret.unrestricted_sfos = ('SFOs', 'energy_B') in reader_adf
 
     if ('Geometry', 'grouplabel') in reader_adf:
-    	ret.symmetry.group = reader_adf.read('Geometry', 'grouplabel').strip()
+        ret.symmetry.group = reader_adf.read('Geometry', 'grouplabel').strip()
 
     # get the symmetry labels
     if ('Symmetry', 'symlab') in reader_adf:
@@ -58,6 +58,6 @@ def get_calc_settings(info: dictfunc.DotDict) -> dictfunc.DotDict:
 
 
 def get_properties(info: dictfunc.DotDict) -> dictfunc.DotDict:
-	'''
-	
-	'''
+    '''
+    
+    '''
