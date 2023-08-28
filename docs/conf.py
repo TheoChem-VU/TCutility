@@ -42,6 +42,8 @@ autodoc_default_options = {
     'autosummary': False,
 }
 
+modindex_common_prefix = ['TCutility']
+
 html_theme_options = {
   "show_nav_level": 2,
   "navigation_depth": 2,
