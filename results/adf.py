@@ -40,10 +40,6 @@ def get_calc_settings(info: Result) -> Result:
     # get the symmetry labels
     if ('Symmetry', 'symlab') in reader_adf:
         ret.symmetry.labels = reader_adf.read('Symmetry', 'symlab').strip().split()
-    elif ('Geometry', 'grouplabel') in reader_adf:
-        ret.symmetry.labels = symmetry.labels[reader_adf.read('Geometry', 'grouplabel').strip()]
-    else:
-        ret.symmetry.labels = symmetry.labels['NOSYM']
 
     # determine if MOs are unrestricted or not
     ret.unrestricted_mos = (ret.symmetry.labels[0], 'eps_B') in reader_adf
