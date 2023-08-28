@@ -19,7 +19,7 @@ print('TARGET DIR', target_dir)
 project = 'TCutility'
 copyright = '2023, Yuman Hordijk, Siebe Lekanne Deprez'
 author = 'Yuman Hordijk, Siebe Lekanne Deprez'
-release = '0.0.1'
+release = '0.0.2'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
