@@ -6,6 +6,7 @@ from yutility import dictfunc
 from scm import plams
 from TCutility.rkf import cache
 import os
+from datetime import datetime
 
 j = os.path.join
 
@@ -68,27 +69,77 @@ def get_calc_files(calc_dir: str) -> dict:
     return ret
 
 
-def get_calc_info(calc_dir: str) -> dictfunc.DotDict:
-    '''Function to read useful info about the calculation in calc_dir.
-    Returned information will depend on the type of file that is provided
+def get_ams_version(calc_dir: str) -> dictfunc.DotDict:
+    '''Function to get the AMS version used in the calculation.
 
     Args:
-        calc_dir: path pointing to the desired calculation
+        calc_dir: path pointing to the desired calculation.
 
     Returns:
-        Dictionary containing information about the calculation
+        dict: Dictionary containing results about the AMS version:
+
+            - **string (str)** – the full version string as written by SCM.
+            - **major (str)** – major AMS version, should correspond to the year of release.
+            - **minor (str)** – minor AMS version.
+            - **micro (str)** – micro AMS version, should correspond to the internal revision number.
+            - **date (datetime.datetime)** – date the AMS version was released.
+    '''
+    ret = dictfunc.DotDict()
+    files = get_calc_files(calc_dir)
+    reader_ams = cache.get(files['ams.rkf'])
+
+    # store information about the version of AMS
+    ret.string = reader_ams.read('General', 'release')
+    # decompose the version string
+    ret.major = ret.string.split('.')[0]
+    ret.minor = ret.string.split()[0].split('.')[1]
+    ret.micro = ret.string.split()[1]
+    ret.date = datetime.strptime(ret.string.split()[-1][1:-1], '%Y-%m-%d')
+
+    return ret
+
+
+def get_timing(calc_dir: str) -> dictfunc.DotDict:
+    '''Function to get the timings from the calculation.
+
+    Args:
+        calc_dir: path pointing to the desired calculation.
+
+    Returns:
+        dict: Dictionary containing results about the timings:
+
+            - **cpu (float)** – time spent performing calculations on the cpu.
+            - **sys (float)** – time spent by the system (file IO, process creation/destruction, etc ...).
+            - **total (float)** – total time spent by AMS on the calculation, can be larger than the sum of cpu and sys.
+    '''
+    ret = dictfunc.DotDict()
+    files = get_calc_files(calc_dir)
+    reader_ams = cache.get(files['ams.rkf'])
+
+    ret.cpu = reader_ams.read('General', 'CPUTime') if ('General', 'CPUTime') in reader_ams else None
+    ret.sys = reader_ams.read('General', 'SysTime') if ('General', 'SysTime') in reader_ams else None
+    ret.total = reader_ams.read('General', 'ElapsedTime') if ('General', 'ElapsedTime') in reader_ams else None
+
+    return ret
+
+
+def get_calc_info(calc_dir: str) -> dictfunc.DotDict:
+    '''Function to read useful info about the calculation in calc_dir. Returned information will depend on the type of file that is provided.
+
+    Args:
+        calc_dir: path pointing to the desired calculation.
+
+    Returns:
+        dict: Dictionary containing results about the calculation and AMS:
+
+            - **ret.ams_version (dict)** – information about the AMS version used, includes ``string`` the full version string and ``major``, ``minor``, ``micro``, and ``date`` which is the decomposed version.
+            - **ret.engine (str)** – the engine that was used to perform the calculation.
+            - **ret.job_id (str)** - the ID of the job, can be used to check if two calculations are the same. Might also be used as a unique identifier for the calculation.
+            - 
     '''
     ret = dictfunc.DotDict()
     ret.files = get_calc_files(calc_dir)
     reader_ams = cache.get(ret.files['ams.rkf'])
-
-    # store information about the version of AMS
-    ret.ams_version.string = reader_ams.read('General', 'release')
-    # decompose the version string
-    ret.ams_version.major = ret.ams_version.string.split('.')[0]
-    ret.ams_version.minor = ret.ams_version.string.split()[0].split('.')[1]
-    ret.ams_version.micro = ret.ams_version.string.split()[1]
-    ret.ams_version.date = ret.ams_version.string.split()[-1][1:-1]
 
     # check what the program is first. The program can be either AMS or one of the engines (ADF, DFTB, ...)
     if ('General', 'engine') in reader_ams:
@@ -100,10 +151,11 @@ def get_calc_info(calc_dir: str) -> dictfunc.DotDict:
     # store the job id, which should be unique for the job
     ret.job_id = reader_ams.read('General', 'jobid') if ('General', 'jobid') in reader_ams else None
 
+    # store information about the version of AMS
+    ret.ams_version = get_ams_version(calc_dir)
+
     # store the computation timings, only available in ams.rkf
-    ret.timing.cpu = reader_ams.read('General', 'CPUTime') if ('General', 'CPUTime') in reader_ams else None
-    ret.timing.sys = reader_ams.read('General', 'SysTime') if ('General', 'SysTime') in reader_ams else None
-    ret.timing.total = reader_ams.read('General', 'ElapsedTime') if ('General', 'ElapsedTime') in reader_ams else None
+    ret.timing = get_timing(calc_dir)
 
     # store the calculation status
     ret.status = calculation_status(calc_dir)
@@ -112,7 +164,11 @@ def get_calc_info(calc_dir: str) -> dictfunc.DotDict:
     ret.is_multijob = False
     if len([file for file in ret.files if file.endswith('.rkf')]) > 2:
         ret.is_multijob = True
+
+    # read molecules
     ret.molecule = get_molecules(calc_dir)
+
+    # and history variables
     ret.history = get_history(calc_dir)
 
     cache.unload(ret.files['ams.rkf'])
@@ -129,10 +185,10 @@ def calculation_status(calc_dir: str) -> dictfunc.DotDict:
     Returns:
         dict: Dictionary containing information about the calculation status:
 
-            - **success (bool)** – True if calculation reported normal termination, with or without warnings, False otherwise
-            - **reasons (list[str])** – list of reasons to explain the status, they can be errors, warnings, etc.
-            - **name (str)** – calculation status written as a string, ex. "RUNNING", "FAILED", etc.
-            - **code (str)** – calculation status written as a single character, ex. "S", "F", etc.
+            - **ret.fatal (bool)** – True if calculation cannot be analysed correctly, False otherwise
+            - **ret.reasons (list[str])** – list of reasons to explain the status, they can be errors, warnings, etc.
+            - **ret.name (str)** – calculation status written as a string, one of ("SUCCESS", "RUNNING", "UNKNOWN", "SUCCESS(W)", "FAILED")
+            - **ret.code (str)** – calculation status written as a single character, one of ("S", "R", "U", "W" "F")
     '''
     files = get_calc_files(calc_dir)
     reader_ams = cache.get(files['ams.rkf'])
