@@ -41,6 +41,7 @@ jobs:
       - name: Install yutility
         run: |
           cd ~
+          ls
           git clone https://github.com/YHordijk/yutility.git
           echo "PYTHONPATH=~/yutility:$PYTHONPATH" >> "$GITHUB_ENV"
 
