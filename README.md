@@ -1,3 +1,5 @@
+[![Documentation](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml)
+
 # TCutility
 Utility functions/classes for the TheoCheM programs
 
