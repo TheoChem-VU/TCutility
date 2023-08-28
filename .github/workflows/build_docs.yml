@@ -40,21 +40,6 @@ jobs:
       - name: Install sphinx theme
         run: pip install pydata-sphinx-theme
 
-      - name: Install yutility dependencies
-        run: pip install numpy plams autodocsumm
-
-      - name: Install yutility
-        run: |
-          cd ~
-          git clone https://github.com/YHordijk/yutility.git
-          echo "PYTHONPATH=/home/runner/work/TCutility:/home/runner:$PYTHONPATH" >> "$GITHUB_ENV"
-          pwd
-          ls ~
-          ls ~/yutility
-
-      - name: checking yutility
-        run: python -c "import yutility"
-        
       # - name: Run sphinx-apidoc
       #   run: cd docs; sphinx-apidoc -f -o . .. ../setup.py
         

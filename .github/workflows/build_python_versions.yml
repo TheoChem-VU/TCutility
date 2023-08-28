@@ -2,6 +2,10 @@ name: TCutility python versions
 
 on: [push]
 
+concurrency:
+  group: "testing"
+  cancel-in-progress: true
+
 jobs:
   build:
 
