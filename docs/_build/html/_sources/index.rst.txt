@@ -8,16 +8,11 @@ TCutility |ProjectVersion| documentation
 
 **TCutility** is a Python library containing many helper functions and classes for use in programs written in the TheoCheM group.
 
-.. note::
-
-   This library is under heavy development, so there are no guarantees that older code will work with newer versions.
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    modules
-
 
 
 Indices and tables
@@ -26,3 +21,8 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+.. note::
+
+   This library is under heavy development, so there are no guarantees that older code will work with newer versions.

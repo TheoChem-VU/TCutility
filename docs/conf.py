@@ -19,7 +19,7 @@ print('TARGET DIR', target_dir)
 project = 'TCutility'
 copyright = '2023, TheoCheM VU Amsterdam'
 author = 'TheoCheM VU Amsterdam'
-release = '0.0.3'
+release = '0.1.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -29,8 +29,7 @@ extensions = [
     "sphinx.ext.autodoc",
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
+    # 'sphinx.ext.autosummary',
 ]
 
 templates_path = ['_templates']
@@ -38,7 +37,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 
 autodoc_default_options = {
-    'autosummary': True,
+    'autosummary': False,
 }
 
 html_theme_options = {
