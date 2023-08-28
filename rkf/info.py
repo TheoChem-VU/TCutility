@@ -321,7 +321,8 @@ def get_history(calc_dir: str) -> dictfunc.DotDict:
 
             - **number_of_entries (int)** – number of steps in the history.
             - **{variable} (list[Any])** – variable read from the history section. The number of variables and type of variables depend on the nature of the calculation.
-            Common variables:
+              
+              Common variables:
             - **coords (list[plams.Molecule])** – list of molecules from the history, for example from a geometry optimization or PES scan.
             - **energy (list[float])** – list of energies associated with each geometry step.
             - **gradient (list[list[float]])** – array of gradients for each geometry step and each atom.
