@@ -406,17 +406,20 @@ rkf files take a long time to open (especially {engine}.rkf), so it is better to
 In case of non-succes it will also give possible reasons for the errors/warnings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>reader</strong> – plams.KFReader or plams.KFFile object pointing to the desired calculation</p>
+<dd class="field-odd"><p><strong>reader</strong> – <code class="docutils literal notranslate"><span class="pre">plams.KFReader</span></code> or <code class="docutils literal notranslate"><span class="pre">plams.KFFile</span></code> object pointing to the desired calculation</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><div class="line-block">
-<div class="line">Dictionary containing information about the calculation status</div>
-<div class="line">success: bool - True if calculation reported normal termination, with or without warnings, False otherwise</div>
-<div class="line">reasons: list[str] - list of reasons to explain the status, they can be errors, warnings, etc.</div>
-<div class="line">name: str - calculation status written as a string, ex. “RUNNING”, “FAILED”, etc.</div>
-<div class="line">code: str - calculation status written as a single character, ex. “S”, “F”, etc.</div>
-</div>
+<dd class="field-even"><p><p>dict containing information about the calculation status:</p>
+<blockquote>
+<div><p>success(bool): True if calculation reported normal termination, with or without warnings, False otherwise
+reasons(list[str]): list of reasons to explain the status, they can be errors, warnings, etc.
+name(str): calculation status written as a string, ex. “RUNNING”, “FAILED”, etc.
+code(str): calculation status written as a single character, ex. “S”, “F”, etc.</p>
+</div></blockquote>
 </p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(dict)</p>
 </dd>
 </dl>
 </dd></dl>
