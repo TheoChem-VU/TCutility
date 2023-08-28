@@ -286,22 +286,15 @@ document.write(`
                   
   <section id="rkf-package">
 <h1>rkf package<a class="headerlink" href="#rkf-package" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">#</a></h2>
 </section>
 <section id="module-rkf.adf">
 <span id="rkf-adf-module"></span><h2>rkf.adf module<a class="headerlink" href="#module-rkf.adf" title="Permalink to this heading">#</a></h2>
-<p><strong>Functions:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rkf.adf.get_calc_settings" title="rkf.adf.get_calc_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_calc_settings</span></code></a>(info)</p></td>
-<td><p>Function to read useful calculation settings from kf reader</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rkf.adf.get_properties" title="rkf.adf.get_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_properties</span></code></a>(info)</p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py function">
 <dt class="sig sig-object py" id="rkf.adf.get_calc_settings">
 <span class="sig-prename descclassname"><span class="pre">rkf.adf.</span></span><span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DotDict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DotDict</span></span></span><a class="reference internal" href="_modules/rkf/adf.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rkf.adf.get_calc_settings" title="Permalink to this definition">#</a></dt>
@@ -318,41 +311,11 @@ document.write(`
 <span id="rkf-cache-module"></span><h2>rkf.cache module<a class="headerlink" href="#module-rkf.cache" title="Permalink to this heading">#</a></h2>
 <p>Tiny module that handles caching rkf files.
 rkf files take a long time to open (especially {engine}.rkf), so it is better to open them once and cache them for later use</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rkf.cache.TrackKFReader" title="rkf.cache.TrackKFReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrackKFReader</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Subclass of plams.KFReader that also tracks the variables that were read.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Functions:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rkf.cache.get" title="rkf.cache.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(path)</p></td>
-<td><p>Retrieve an rkf reader from storage using its path.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rkf.cache.store" title="rkf.cache.store"><code class="xref py py-obj docutils literal notranslate"><span class="pre">store</span></code></a>(reader)</p></td>
-<td><p>Store an rkf reader in the cache.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rkf.cache.unload" title="rkf.cache.unload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unload</span></code></a>(arg)</p></td>
-<td><p>Delete an rkf reader from storage.</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="rkf.cache.TrackKFReader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rkf.cache.</span></span><span class="sig-name descname"><span class="pre">TrackKFReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rkf/cache.html#TrackKFReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rkf.cache.TrackKFReader" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">KFReader</span></code></p>
 <p>Subclass of plams.KFReader that also tracks the variables that were read. This class can be useful to figure out which variables are important. For example, we can then trim rkf files to reduce their filesizes.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rkf.cache.TrackKFReader.read" title="rkf.cache.TrackKFReader.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(section, variable)</p></td>
-<td><p>Read a variable from a section of an rkf file and store the accessed section and variable in the tracker.</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="rkf.cache.TrackKFReader.read">
 <span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/rkf/cache.html#TrackKFReader.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rkf.cache.TrackKFReader.read" title="Permalink to this definition">#</a></dt>
@@ -411,17 +374,6 @@ rkf files take a long time to open (especially {engine}.rkf), so it is better to
 </section>
 <section id="module-rkf.dftb">
 <span id="rkf-dftb-module"></span><h2>rkf.dftb module<a class="headerlink" href="#module-rkf.dftb" title="Permalink to this heading">#</a></h2>
-<p><strong>Functions:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rkf.dftb.get_calc_settings" title="rkf.dftb.get_calc_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_calc_settings</span></code></a>(info)</p></td>
-<td><p>Function to read useful calculation settings from kf reader</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rkf.dftb.get_properties" title="rkf.dftb.get_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_properties</span></code></a>(info)</p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py function">
 <dt class="sig sig-object py" id="rkf.dftb.get_calc_settings">
 <span class="sig-prename descclassname"><span class="pre">rkf.dftb.</span></span><span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DotDict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DotDict</span></span></span><a class="reference internal" href="_modules/rkf/dftb.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rkf.dftb.get_calc_settings" title="Permalink to this definition">#</a></dt>
@@ -437,32 +389,6 @@ rkf files take a long time to open (especially {engine}.rkf), so it is better to
 <section id="module-rkf.info">
 <span id="rkf-info-module"></span><h2>rkf.info module<a class="headerlink" href="#module-rkf.info" title="Permalink to this heading">#</a></h2>
 <p>This module provides basic and general information about calculations done using AMS given a calculation directory. This includes information about the engine used (ADF, DFTB, BAND, …), general information such as timings, files, status of the calculation, … This information is used in further analysis programs.</p>
-<p><strong>Functions:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rkf.info.calculation_status" title="rkf.info.calculation_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculation_status</span></code></a>(calc_dir)</p></td>
-<td><p>Function that returns the status of the calculation described in reader.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rkf.info.get_ams_version" title="rkf.info.get_ams_version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_ams_version</span></code></a>(calc_dir)</p></td>
-<td><p>Function to get the AMS version used in the calculation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rkf.info.get_calc_files" title="rkf.info.get_calc_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_calc_files</span></code></a>(calc_dir)</p></td>
-<td><p>Function that returns files relevant to AMS calculations stored in calc_dir.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rkf.info.get_calc_info" title="rkf.info.get_calc_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_calc_info</span></code></a>(calc_dir)</p></td>
-<td><p>Function to read useful info about the calculation in calc_dir.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rkf.info.get_history" title="rkf.info.get_history"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_history</span></code></a>(calc_dir)</p></td>
-<td><p>Function to get history variables.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rkf.info.get_molecules" title="rkf.info.get_molecules"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_molecules</span></code></a>(calc_dir)</p></td>
-<td><p>Function to get molecules from the calculation, including input, output and history molecules.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rkf.info.get_timing" title="rkf.info.get_timing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_timing</span></code></a>(calc_dir)</p></td>
-<td><p>Function to get the timings from the calculation.</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py function">
 <dt class="sig sig-object py" id="rkf.info.calculation_status">
 <span class="sig-prename descclassname"><span class="pre">rkf.info.</span></span><span class="sig-name descname"><span class="pre">calculation_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DotDict</span></span></span><a class="reference internal" href="_modules/rkf/info.html#calculation_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rkf.info.calculation_status" title="Permalink to this definition">#</a></dt>
@@ -643,14 +569,6 @@ It will also add bonds to the molecule if they are given in the rkf file, else i
 </section>
 <section id="module-rkf">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rkf" title="Permalink to this heading">#</a></h2>
-<p><strong>Functions:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rkf.read" title="rkf.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(calc_dir)</p></td>
-<td><p>Master function for reading data from calculations.</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py function">
 <dt class="sig sig-object py" id="rkf.read">
 <span class="sig-prename descclassname"><span class="pre">rkf.</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DotDict</span></span></span><a class="reference internal" href="_modules/rkf.html#read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rkf.read" title="Permalink to this definition">#</a></dt>
