@@ -10,11 +10,11 @@ Module-wide contents
    :show-inheritance:
 
 
-TCutility.results submodules
+TCutility.TCutility.results submodules
 ++++++++++++++++++++++++++++
 
 
-results.adf
+TCutility.results.adf
 -----------
 
 .. automodule:: results.adf
@@ -22,7 +22,7 @@ results.adf
    :undoc-members:
    :show-inheritance:
 
-results.ams
+TCutility.results.ams
 -----------
 
 .. automodule:: results.ams
@@ -30,7 +30,7 @@ results.ams
    :undoc-members:
    :show-inheritance:
 
-results.cache
+TCutility.results.cache
 -------------
 
 .. automodule:: results.cache
@@ -38,7 +38,7 @@ results.cache
    :undoc-members:
    :show-inheritance:
 
-results.dftb
+TCutility.results.dftb
 ------------
 
 .. automodule:: results.dftb
@@ -46,7 +46,7 @@ results.dftb
    :undoc-members:
    :show-inheritance:
 
-results.result
+TCutility.results.result
 --------------
 
 .. automodule:: results.result
