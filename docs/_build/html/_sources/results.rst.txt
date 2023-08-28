@@ -1,5 +1,8 @@
+TCutility.results
+=================
+
 Module-wide contents
-====================
+++++++++++++++++++++
 
 .. automodule:: results
    :members:
@@ -8,7 +11,7 @@ Module-wide contents
 
 
 TCutility.results submodules
-============================
+++++++++++++++++++++++++++++
 
 
 results.adf
