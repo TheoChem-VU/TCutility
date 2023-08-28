@@ -319,7 +319,7 @@ document.write(`
 </section>
 <section id="module-rkf.cache">
 <span id="rkf-cache-module"></span><h2>rkf.cache module<a class="headerlink" href="#module-rkf.cache" title="Permalink to this heading">#</a></h2>
-<p>Tiny module that handles caching rkf files. 
+<p>Tiny module that handles caching rkf files.
 rkf files take a long time to open (especially {engine}.rkf), so it is better to open them once and cache them for later use</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="rkf.cache.TrackKFReader">
@@ -330,11 +330,15 @@ rkf files take a long time to open (especially {engine}.rkf), so it is better to
 <dt class="sig sig-object py" id="rkf.cache.TrackKFReader.read">
 <span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#rkf.cache.TrackKFReader.read" title="Permalink to this definition">#</a></dt>
 <dd><p>Read a variable from a section of an rkf file and store the accessed section and variable in the tracker.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>section: Name of the section to read from.
-variable: Name of the variable inside the section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>section</strong> – Name of the section to read from.</p></li>
+<li><p><strong>variable</strong> – Name of the variable inside the section.</p></li>
+</ul>
 </dd>
-<dt>Returns:</dt><dd><p>Any value returned will be automatically converted into the correct type. E.g. text-based data will be converted to a string, numbers to floats or integers, etc.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Any value returned will be automatically converted into the correct type. E.g. text-based data will be converted to a string, numbers to floats or integers, etc.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -345,10 +349,12 @@ variable: Name of the variable inside the section.</p>
 <dt class="sig sig-object py" id="rkf.cache.get">
 <span class="sig-prename descclassname"><span class="pre">rkf.cache.</span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">KFReader</span></span></span><a class="headerlink" href="#rkf.cache.get" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieve an rkf reader from storage using its path. If the file was not opened yet, open it first and then store and return the new object.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>path: path to the rkf file location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> – path to the rkf file location.</p>
 </dd>
-<dt>Returns:</dt><dd><p>An rkf file reader that can be used for reading data from a calculation.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An rkf file reader that can be used for reading data from a calculation.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -357,8 +363,9 @@ variable: Name of the variable inside the section.</p>
 <dt class="sig sig-object py" id="rkf.cache.store">
 <span class="sig-prename descclassname"><span class="pre">rkf.cache.</span></span><span class="sig-name descname"><span class="pre">store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">KFReader</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#rkf.cache.store" title="Permalink to this definition">#</a></dt>
 <dd><p>Store an rkf reader in the cache. It can later be indexed by its path.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>reader: An rkf file reader object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reader</strong> – An rkf file reader object.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -367,8 +374,9 @@ variable: Name of the variable inside the section.</p>
 <dt class="sig sig-object py" id="rkf.cache.unload">
 <span class="sig-prename descclassname"><span class="pre">rkf.cache.</span></span><span class="sig-name descname"><span class="pre">unload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">KFReader</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rkf.cache.unload" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete an rkf reader from storage. Since rkf files can be quite large, we should not forget to unload them after we have finished reading from them, lest we run into memory issues.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>arg: Either a path pointing to the rkf file location or the reader itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>arg</strong> – Either a path pointing to the rkf file location or the reader itself.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -394,12 +402,14 @@ variable: Name of the variable inside the section.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="rkf.info.calculation_status">
 <span class="sig-prename descclassname"><span class="pre">rkf.info.</span></span><span class="sig-name descname"><span class="pre">calculation_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DotDict</span></span></span><a class="headerlink" href="#rkf.info.calculation_status" title="Permalink to this definition">#</a></dt>
-<dd><p>Function that returns the status of the calculation described in reader. 
+<dd><p>Function that returns the status of the calculation described in reader.
 In case of non-succes it will also give possible reasons for the errors/warnings.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>reader: plams.KFReader or plams.KFFile object pointing to the desired calculation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reader</strong> – plams.KFReader or plams.KFFile object pointing to the desired calculation</p>
 </dd>
-<dt>Returns:</dt><dd><p>Dictionary containing information about the calculation status
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing information about the calculation status
 success: bool - True if calculation reported normal termination, with or without warnings, False otherwise
 reasons: list[str] - list of reasons to explain the status, they can be errors, warnings, etc.
 name: str - calculation status written as a string, ex. “RUNNING”, “FAILED”, etc.
@@ -412,10 +422,12 @@ code: str - calculation status written as a single character, ex. “S”, “F�
 <dt class="sig sig-object py" id="rkf.info.get_calc_files">
 <span class="sig-prename descclassname"><span class="pre">rkf.info.</span></span><span class="sig-name descname"><span class="pre">get_calc_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#rkf.info.get_calc_files" title="Permalink to this definition">#</a></dt>
 <dd><p>Function that returns files relevant to AMS calculations stored in calc_dir.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>calc_dir: path pointing to the desired calculation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation</p>
 </dd>
-<dt>Returns:</dt><dd><p>Dictionary containing filenames and paths</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing filenames and paths</p>
 </dd>
 </dl>
 </dd></dl>
@@ -425,10 +437,12 @@ code: str - calculation status written as a single character, ex. “S”, “F�
 <span class="sig-prename descclassname"><span class="pre">rkf.info.</span></span><span class="sig-name descname"><span class="pre">get_calc_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DotDict</span></span></span><a class="headerlink" href="#rkf.info.get_calc_info" title="Permalink to this definition">#</a></dt>
 <dd><p>Function to read useful info about the calculation in calc_dir.
 Returned information will depend on the type of file that is provided</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>calc_dir: path pointing to the desired calculation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation</p>
 </dd>
-<dt>Returns:</dt><dd><p>Dictionary containing information about the calculation</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing information about the calculation</p>
 </dd>
 </dl>
 </dd></dl>
@@ -452,10 +466,12 @@ It will also add bonds to the molecule if they are given in the rkf file, else i
 <dt class="sig sig-object py" id="rkf.read">
 <span class="sig-prename descclassname"><span class="pre">rkf.</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DotDict</span></span></span><a class="headerlink" href="#rkf.read" title="Permalink to this definition">#</a></dt>
 <dd><p>Master function for reading data from calculations. It reads general information as well as engine-specific information.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>calc_dir: path pointing to the working directory for the desired calculation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the working directory for the desired calculation</p>
 </dd>
-<dt>Returns:</dt><dd><p>dictionary containing information about the calculation</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary containing information about the calculation</p>
 </dd>
 </dl>
 </dd></dl>
