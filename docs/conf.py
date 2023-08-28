@@ -17,9 +17,9 @@ print('TARGET DIR', target_dir)
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'TCutility'
-copyright = '2023, Yuman Hordijk, Siebe Lekanne Deprez'
-author = 'Yuman Hordijk, Siebe Lekanne Deprez'
-release = '0.0.2'
+copyright = '2023, TheoCheM VU Amsterdam'
+author = 'TheoCheM VU Amsterdam'
+release = '0.0.3'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -36,7 +36,8 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 
 html_theme_options = {
-  "show_nav_level": 2
+  "show_nav_level": 2,
+  "navigation_depth": 2,
 }
 
 # -- Options for HTML output -------------------------------------------------
