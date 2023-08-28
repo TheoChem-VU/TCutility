@@ -5,7 +5,7 @@ Utility functions/classes for the TheoCheM programs
 
 # Installation
 
-Most easy way is installing this python package via pip:
+The easiest way is installing this python package via pip:
 ``` pythom -m pip install TCutility ```
 
 It is also possible to install in locally by first cloning this repository in your terminal: 
