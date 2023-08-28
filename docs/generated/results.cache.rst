@@ -1,7 +1,7 @@
-﻿rkf.cache
-=========
+﻿results.cache
+=============
 
-.. automodule:: rkf.cache
+.. automodule:: results.cache
 
    
    

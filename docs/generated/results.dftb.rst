@@ -1,7 +1,7 @@
-﻿rkf.dftb
-========
+﻿results.dftb
+============
 
-.. automodule:: rkf.dftb
+.. automodule:: results.dftb
 
    
    

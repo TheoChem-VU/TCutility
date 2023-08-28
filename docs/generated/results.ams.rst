@@ -1,7 +1,7 @@
-﻿rkf.info
-========
+﻿results.ams
+===========
 
-.. automodule:: rkf.info
+.. automodule:: results.ams
 
    
    
@@ -14,9 +14,9 @@
    .. autosummary::
    
       calculation_status
+      get_ams_info
       get_ams_version
       get_calc_files
-      get_calc_info
       get_history
       get_molecules
       get_timing

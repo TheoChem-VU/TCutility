@@ -6,7 +6,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>rkf.cache &#8212; TCutility 0.0.3 documentation</title>
   
@@ -28,19 +28,18 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=0408d661"></script>
+    <script src="../_static/documentation_options.js?v=7cc827d7"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'generated/rkf.cache';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="rkf.dftb" href="rkf.dftb.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -122,9 +121,9 @@
   </p>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="../rkf.html">
-                        rkf package
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../modules.html">
+                        TCutility
                       </a>
                     </li>
                 
@@ -187,7 +186,7 @@ document.write(`
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -205,9 +204,9 @@ document.write(`
   </p>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="../rkf.html">
-                        rkf package
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../modules.html">
+                        TCutility
                       </a>
                     </li>
                 
@@ -234,20 +233,6 @@ document.write(`
       </div>
     
   </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
-     aria-label="Section Navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="rkf.info.html">rkf.info</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rkf.adf.html">rkf.adf</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rkf.dftb.html">rkf.dftb</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">rkf.cache</a></li>
-</ul>
-</div>
-</nav></div>
-    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -281,9 +266,6 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
-    <li class="breadcrumb-item"><a href="../rkf.html" class="nav-link">rkf package</a></li>
-    
     <li class="breadcrumb-item active" aria-current="page">rkf.cache</li>
   </ul>
 </nav>
@@ -301,32 +283,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="module-rkf.cache">
-<span id="rkf-cache"></span><h1>rkf.cache<a class="headerlink" href="#module-rkf.cache" title="Permalink to this heading">#</a></h1>
-<p>Tiny module that handles caching rkf files.
-rkf files take a long time to open (especially {engine}.rkf), so it is better to open them once and cache them for later use</p>
-<p class="rubric">Functions</p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code>(path)</p></td>
-<td><p>Retrieve an rkf reader from storage using its path.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">store</span></code>(reader)</p></td>
-<td><p>Store an rkf reader in the cache.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unload</span></code>(arg)</p></td>
-<td><p>Delete an rkf reader from storage.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Classes</p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrackKFReader</span></code>(*args, **kwargs)</p></td>
-<td><p>Subclass of plams.KFReader that also tracks the variables that were read.</p></td>
-</tr>
-</tbody>
-</table>
+  <section id="rkf-cache">
+<h1>rkf.cache<a class="headerlink" href="#rkf-cache" title="Link to this heading">#</a></h1>
 </section>
 
 
@@ -340,15 +298,6 @@ rkf files take a long time to open (especially {engine}.rkf), so it is better to
   
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="rkf.dftb.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">rkf.dftb</p>
-      </div>
-    </a>
 </div></div>
   
 </div>
@@ -401,7 +350,7 @@ rkf files take a long time to open (especially {engine}.rkf), so it is better to
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.3.
     <br/>
   </p>
 </div>
