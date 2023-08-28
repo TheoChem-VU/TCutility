@@ -42,8 +42,8 @@ jobs:
         run: |
           cd ~
           git clone https://github.com/YHordijk/yutility.git
-          echo "PYTHONPATH='pwd':$PYTHONPATH" >> "$GITHUB_ENV"
-          echo "PATH='pwd':$PATH" >> "$GITHUB_ENV"
+          echo "PYTHONPATH=/home/runner:$PYTHONPATH" >> "$GITHUB_ENV"
+          echo "PATH=/home/runner:$PATH" >> "$GITHUB_ENV"
           pwd
           ls ~
           ls ~/yutility
