@@ -38,10 +38,8 @@ jobs:
       - name: Install yutility
         run: |
           git clone https://github.com/YHordijk/yutility.git
-          cd yutility
-          python -m pip install --upgrade build
-          python -m build
-          pythom -m pip install -e .
+          echo "PATH=./yutility:PATH" >> "$GITHUB_ENV"
+
 
       - name: checking yutility
         run: python -c "import yutility"
