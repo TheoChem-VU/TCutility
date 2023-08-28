@@ -412,10 +412,10 @@ In case of non-succes it will also give possible reasons for the errors/warnings
 <dd class="field-even"><p><p>Dictionary containing information about the calculation status:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>ret.fatal (bool)</strong> – True if calculation cannot be analysed correctly, False otherwise</p></li>
-<li><p><strong>ret.reasons (list[str])</strong> – list of reasons to explain the status, they can be errors, warnings, etc.</p></li>
-<li><p><strong>ret.name (str)</strong> – calculation status written as a string, one of (“SUCCESS”, “RUNNING”, “UNKNOWN”, “SUCCESS(W)”, “FAILED”)</p></li>
-<li><p><strong>ret.code (str)</strong> – calculation status written as a single character, one of (“S”, “R”, “U”, “W” “F”)</p></li>
+<li><p><strong>fatal (bool)</strong> – True if calculation cannot be analysed correctly, False otherwise</p></li>
+<li><p><strong>reasons (list[str])</strong> – list of reasons to explain the status, they can be errors, warnings, etc.</p></li>
+<li><p><strong>name (str)</strong> – calculation status written as a string, one of (“SUCCESS”, “RUNNING”, “UNKNOWN”, “SUCCESS(W)”, “FAILED”)</p></li>
+<li><p><strong>code (str)</strong> – calculation status written as a single character, one of (“S”, “R”, “U”, “W” “F”)</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -496,13 +496,58 @@ In case of non-succes it will also give possible reasons for the errors/warnings
 <dl class="py function">
 <dt class="sig sig-object py" id="rkf.info.get_history">
 <span class="sig-prename descclassname"><span class="pre">rkf.info.</span></span><span class="sig-name descname"><span class="pre">get_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DotDict</span></span></span><a class="reference internal" href="_modules/rkf/info.html#get_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rkf.info.get_history" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Function to get history variables. The type of variables read depends on the type of calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Dictionary containing information about the calculation status:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>number_of_entries (int)</strong> – number of steps in the history.</p></li>
+<li><p><strong>{variable} (list[Any])</strong> – variable read from the history section. The number of variables and type of variables depend on the nature of the calculation.</p></li>
+</ul>
+<p>Common variables:
+- <strong>coords (list[plams.Molecule])</strong> – list of molecules from the history, for example from a geometry optimization or PES scan.
+- <strong>energy (list[float])</strong> – list of energies associated with each geometry step.
+- <strong>gradient (list[list[float]])</strong> – array of gradients for each geometry step and each atom.</p>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rkf.info.get_molecules">
 <span class="sig-prename descclassname"><span class="pre">rkf.info.</span></span><span class="sig-name descname"><span class="pre">get_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DotDict</span></span></span><a class="reference internal" href="_modules/rkf/info.html#get_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rkf.info.get_molecules" title="Permalink to this definition">#</a></dt>
-<dd><p>Function to get molecules from the calculation, including input, output and history molecules
+<dd><p>Function to get molecules from the calculation, including input, output and history molecules.
 It will also add bonds to the molecule if they are given in the rkf file, else it will guess them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Dictionary containing information about the molecular systems:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>number_of_atoms (int)</strong> – number of atoms in the molecule.</p></li>
+<li><p><strong>atom_numbers (list[int])</strong> – list of atomic numbers for each atom in the molecule.</p></li>
+<li><p><strong>atom_symbols (list[str])</strong> – list of elements for each atom in the molecule.</p></li>
+<li><p><strong>atom_masses (list[float])</strong> – list of atomic masses for each atom in the molecule.</p></li>
+<li><p><strong>input (plams.Molecule)</strong> – molecule that was given in the input for the calculation.</p></li>
+<li><p><strong>output (plams.Molecule)</strong> – final molecule that was given as the output for the calculation. If the calculation was a singlepoint calculation output and input molecules will be the same.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">

@@ -472,10 +472,10 @@ document.write(`
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: Dictionary containing information about the calculation status:</span>
 
-<span class="sd">            - **ret.fatal (bool)** – True if calculation cannot be analysed correctly, False otherwise</span>
-<span class="sd">            - **ret.reasons (list[str])** – list of reasons to explain the status, they can be errors, warnings, etc.</span>
-<span class="sd">            - **ret.name (str)** – calculation status written as a string, one of (&quot;SUCCESS&quot;, &quot;RUNNING&quot;, &quot;UNKNOWN&quot;, &quot;SUCCESS(W)&quot;, &quot;FAILED&quot;)</span>
-<span class="sd">            - **ret.code (str)** – calculation status written as a single character, one of (&quot;S&quot;, &quot;R&quot;, &quot;U&quot;, &quot;W&quot; &quot;F&quot;)</span>
+<span class="sd">            - **fatal (bool)** – True if calculation cannot be analysed correctly, False otherwise</span>
+<span class="sd">            - **reasons (list[str])** – list of reasons to explain the status, they can be errors, warnings, etc.</span>
+<span class="sd">            - **name (str)** – calculation status written as a string, one of (&quot;SUCCESS&quot;, &quot;RUNNING&quot;, &quot;UNKNOWN&quot;, &quot;SUCCESS(W)&quot;, &quot;FAILED&quot;)</span>
+<span class="sd">            - **code (str)** – calculation status written as a single character, one of (&quot;S&quot;, &quot;R&quot;, &quot;U&quot;, &quot;W&quot; &quot;F&quot;)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">files</span> <span class="o">=</span> <span class="n">get_calc_files</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
     <span class="n">reader_ams</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="s1">&#39;ams.rkf&#39;</span><span class="p">])</span>
@@ -537,8 +537,21 @@ document.write(`
 
 <div class="viewcode-block" id="get_molecules"><a class="viewcode-back" href="../../rkf.html#rkf.info.get_molecules">[docs]</a><span class="k">def</span> <span class="nf">get_molecules</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dictfunc</span><span class="o">.</span><span class="n">DotDict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Function to get molecules from the calculation, including input, output and history molecules</span>
+<span class="sd">    Function to get molecules from the calculation, including input, output and history molecules.</span>
 <span class="sd">    It will also add bonds to the molecule if they are given in the rkf file, else it will guess them.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        calc_dir: path pointing to the desired calculation.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Dictionary containing information about the molecular systems:</span>
+
+<span class="sd">            - **number_of_atoms (int)** – number of atoms in the molecule.</span>
+<span class="sd">            - **atom_numbers (list[int])** – list of atomic numbers for each atom in the molecule.</span>
+<span class="sd">            - **atom_symbols (list[str])** – list of elements for each atom in the molecule.</span>
+<span class="sd">            - **atom_masses (list[float])** – list of atomic masses for each atom in the molecule.</span>
+<span class="sd">            - **input (plams.Molecule)** – molecule that was given in the input for the calculation.</span>
+<span class="sd">            - **output (plams.Molecule)** – final molecule that was given as the output for the calculation. If the calculation was a singlepoint calculation output and input molecules will be the same.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">files</span> <span class="o">=</span> <span class="n">get_calc_files</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
     <span class="c1"># all info is stored in reader_ams</span>
@@ -556,16 +569,20 @@ document.write(`
 
     <span class="c1"># read input molecule</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
+    <span class="c1"># read in the coordinates, they are given in Bohr, so convert them to Angstrom</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;InputMolecule&#39;</span><span class="p">,</span> <span class="s1">&#39;Coords&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">natoms</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.529177</span>
+    <span class="c1"># add the atoms to the molecule</span>
     <span class="k">for</span> <span class="n">atnum</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">atnums</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="n">atnum</span><span class="o">=</span><span class="n">atnum</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coord</span><span class="p">))</span>
+    <span class="c1"># try to add the bonds if they were given in the rkf file</span>
     <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;Molecule&#39;</span><span class="p">,</span> <span class="s1">&#39;fromAtoms&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">reader_ams</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;Molecule&#39;</span><span class="p">,</span> <span class="s1">&#39;toAtoms&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">reader_ams</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;Molecule&#39;</span><span class="p">,</span> <span class="s1">&#39;bondOrders&#39;</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">at1</span><span class="p">,</span> <span class="n">at2</span><span class="p">,</span> <span class="n">order</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;InputMolecule&#39;</span><span class="p">,</span> <span class="s1">&#39;fromAtoms&#39;</span><span class="p">),</span> <span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;InputMolecule&#39;</span><span class="p">,</span> <span class="s1">&#39;toAtoms&#39;</span><span class="p">),</span> <span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;InputMolecule&#39;</span><span class="p">,</span> <span class="s1">&#39;bondOrders&#39;</span><span class="p">)):</span>
             <span class="n">ret</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">add_bond</span><span class="p">(</span><span class="n">plams</span><span class="o">.</span><span class="n">Bond</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="n">at1</span><span class="p">],</span> <span class="n">ret</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="n">at2</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">))</span>
+    <span class="c1"># if the bonds were not given, guess them</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">guess_bonds</span><span class="p">()</span>
 
-    <span class="c1"># output molecule</span>
+    <span class="c1"># read output molecule</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Molecule&#39;</span><span class="p">,</span> <span class="s1">&#39;Coords&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">natoms</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.529177</span>
     <span class="k">for</span> <span class="n">atnum</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">atnums</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
@@ -578,7 +595,24 @@ document.write(`
 
     <span class="k">return</span> <span class="n">ret</span></div>
 
+
 <div class="viewcode-block" id="get_history"><a class="viewcode-back" href="../../rkf.html#rkf.info.get_history">[docs]</a><span class="k">def</span> <span class="nf">get_history</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dictfunc</span><span class="o">.</span><span class="n">DotDict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Function to get history variables. The type of variables read depends on the type of calculation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        calc_dir: path pointing to the desired calculation.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Dictionary containing information about the calculation status:</span>
+
+<span class="sd">            - **number_of_entries (int)** – number of steps in the history.</span>
+<span class="sd">            - **{variable} (list[Any])** – variable read from the history section. The number of variables and type of variables depend on the nature of the calculation.</span>
+<span class="sd">            Common variables:</span>
+<span class="sd">            - **coords (list[plams.Molecule])** – list of molecules from the history, for example from a geometry optimization or PES scan.</span>
+<span class="sd">            - **energy (list[float])** – list of energies associated with each geometry step.</span>
+<span class="sd">            - **gradient (list[list[float]])** – array of gradients for each geometry step and each atom.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="c1"># read history mols</span>
     <span class="n">files</span> <span class="o">=</span> <span class="n">get_calc_files</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
     <span class="c1"># all info is stored in reader_ams</span>
