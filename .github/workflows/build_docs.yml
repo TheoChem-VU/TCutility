@@ -55,8 +55,8 @@ jobs:
       - name: checking yutility
         run: python -c "import yutility"
         
-      - name: Run sphinx-apidoc
-        run: cd docs; sphinx-apidoc -f -o . .. ../setup.py
+      # - name: Run sphinx-apidoc
+      #   run: cd docs; sphinx-apidoc -f -o . .. ../setup.py
         
       - name: Build the docs
         run: cd docs; make html
