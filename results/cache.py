@@ -10,7 +10,8 @@ _cache = {}
 
 
 class TrackKFReader(plams.KFReader):
-    """Subclass of plams.KFReader that also tracks the variables that were read. This class can be useful to figure out which variables are important. For example, we can then trim rkf files to reduce their filesizes."""
+    """Subclass of plams.KFReader that also tracks the variables that were read. This class can be useful to figure out which variables are important. 
+    For example, we can then trim rkf files to reduce their filesizes."""
     def __init__(self, *args, **kwargs):
         self.tracker = []
         super().__init__(*args, **kwargs)

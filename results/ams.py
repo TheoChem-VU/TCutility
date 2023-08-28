@@ -1,4 +1,6 @@
-"""This module provides basic and general information about calculations done using AMS given a calculation directory. This includes information about the engine used (ADF, DFTB, BAND, ...), general information such as timings, files, status of the calculation, ... This information is used in further analysis programs.
+"""This module provides basic and general information about calculations done using AMS given a calculation directory. 
+This includes information about the engine used (ADF, DFTB, BAND, ...), general information such as timings, files, status of the calculation, ... 
+This information is used in further analysis programs.
 """
 
 import numpy as np
@@ -131,10 +133,10 @@ def get_ams_info(calc_dir: str) -> Result:
     Returns:
         dict: Dictionary containing results about the calculation and AMS:
 
-            - **ret.ams_version (dict)** – information about the AMS version used, includes ``string`` the full version string and ``major``, ``minor``, ``micro``, and ``date`` which is the decomposed version.
+            - **ret.ams_version (dict)** – information about the AMS version used, includes ``string`` the full version string and ``major``, ``minor``, ``micro``, and ``date`` 
+                which is the decomposed version.
             - **ret.engine (str)** – the engine that was used to perform the calculation.
             - **ret.job_id (str)** - the ID of the job, can be used to check if two calculations are the same. Might also be used as a unique identifier for the calculation.
-            - 
     '''
     ret = Result()
     ret.files = get_calc_files(calc_dir)
@@ -263,7 +265,8 @@ def get_molecules(calc_dir: str) -> Result:
             - **atom_symbols (list[str])** – list of elements for each atom in the molecule.
             - **atom_masses (list[float])** – list of atomic masses for each atom in the molecule.
             - **input (plams.Molecule)** – molecule that was given in the input for the calculation.
-            - **output (plams.Molecule)** – final molecule that was given as the output for the calculation. If the calculation was a singlepoint calculation output and input molecules will be the same.
+            - **output (plams.Molecule)** – final molecule that was given as the output for the calculation. 
+                If the calculation was a singlepoint calculation output and input molecules will be the same.
     '''
     files = get_calc_files(calc_dir)
     # all info is stored in reader_ams
@@ -344,7 +347,7 @@ def get_history(calc_dir: str) -> Result:
         items = []
         while index:
             try:
-                item_name = reader_ams.read(f'History', f'ItemName({index})')
+                item_name = reader_ams.read('History', f'ItemName({index})')
                 items.append(item_name)
                 index += 1
             except KeyError:
