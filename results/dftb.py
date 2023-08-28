@@ -1,8 +1,7 @@
-from yutility import log, dictfunc
-from TCutility.results import cache
+from TCutility.results import cache, Result
 
 
-def get_calc_settings(info: dictfunc.DotDict) -> dictfunc.DotDict:
+def get_calc_settings(info: Result) -> Result:
     '''
     Function to read useful calculation settings from kf reader
     '''
@@ -12,7 +11,7 @@ def get_calc_settings(info: dictfunc.DotDict) -> dictfunc.DotDict:
 
     reader_dftb = cache.get(info.files['dftb.rkf'])
     reader_ams = cache.get(info.files['ams.rkf'])
-    ret = dictfunc.DotDict()
+    ret = Result()
 
     # get the run type of the calculation
     # read and split user input into words
@@ -22,22 +21,22 @@ def get_calc_settings(info: dictfunc.DotDict) -> dictfunc.DotDict:
     # default task is SinglePoint
     ret.task = 'SinglePoint'
     for i, word in enumerate(words):
-    	# task is always given with the task keyword
-    	if word.lower() == 'task':
-    		ret.task = words[i+1]
-    		break
+        # task is always given with the task keyword
+        if word.lower() == 'task':
+            ret.task = words[i+1]
+            break
 
     # read properties of the calculation
     number_of_properties = reader_dftb.read('Properties', 'nEntries')
     for i in range(1, number_of_properties + 1):
-    	prop_type = reader_dftb.read('Properties', f'Type({i})').strip()
-    	prop_subtype = reader_dftb.read('Properties', f'Subtype({i})').strip()
-    	ret.properties[prop_type][prop_subtype] = reader_dftb.read('Properties', f'Value({i})')
+        prop_type = reader_dftb.read('Properties', f'Type({i})').strip()
+        prop_subtype = reader_dftb.read('Properties', f'Subtype({i})').strip()
+        ret.properties[prop_type][prop_subtype] = reader_dftb.read('Properties', f'Value({i})')
 
     return ret
 
 
-def get_properties(info: dictfunc.DotDict) -> dictfunc.DotDict:
-	'''
-	
-	'''
+def get_properties(info: Result) -> Result:
+    '''
+    
+    '''

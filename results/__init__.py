@@ -1,8 +1,10 @@
-from yutility import dictfunc
+from . import result
+Result = result.Result
+
 from . import adf, dftb, ams
 
 
-def read(calc_dir: str) -> dictfunc.DotDict:
+def read(calc_dir: str) -> Result:
     '''Master function for reading data from calculations. It reads general information as well as engine-specific information.
 
     Args:
@@ -11,7 +13,7 @@ def read(calc_dir: str) -> dictfunc.DotDict:
     Returns:
         dictionary containing information about the calculation
     '''
-    ret = dictfunc.DotDict()
+    ret = Result()
     ret.update(ams.get_ams_info(calc_dir))
     if ret.engine == 'adf':
         ret.adf = adf.get_calc_settings(ret)

@@ -1,9 +1,6 @@
-from yutility import log
 import os
 from TCutility import results
 from pprint import pprint
-from yviewer import viewer
-import matplotlib.pyplot as plt
 
 
 for calc_dir in os.listdir():
@@ -19,7 +16,7 @@ for calc_dir in os.listdir():
     except AssertionError:
         pass
     except:
-        log.warn(calc_dir)
+        print('Warning:', calc_dir)
         raise
 
-    log.log()
+    print()

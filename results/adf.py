@@ -1,8 +1,7 @@
-from yutility import dictfunc
-from TCutility.results import cache
+from TCutility.results import cache, Result
 
 
-def get_calc_settings(info: dictfunc.DotDict) -> dictfunc.DotDict:
+def get_calc_settings(info: Result) -> Result:
     '''
     Function to read useful calculation settings from kf reader
     '''
@@ -12,7 +11,7 @@ def get_calc_settings(info: dictfunc.DotDict) -> dictfunc.DotDict:
 
     reader_adf = cache.get(info.files['adf.rkf'])
     reader_ams = cache.get(info.files['ams.rkf'])
-    ret = dictfunc.DotDict()
+    ret = Result()
 
     # get the run type of the calculation
     # read and split user input into words
@@ -57,7 +56,7 @@ def get_calc_settings(info: dictfunc.DotDict) -> dictfunc.DotDict:
     return ret
 
 
-def get_properties(info: dictfunc.DotDict) -> dictfunc.DotDict:
+def get_properties(info: Result) -> Result:
     '''
     
     '''

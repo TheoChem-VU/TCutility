@@ -2,9 +2,8 @@
 """
 
 import numpy as np
-from yutility import dictfunc
 from scm import plams
-from TCutility.results import cache
+from TCutility.results import cache, Result
 import os
 from datetime import datetime
 
@@ -69,7 +68,7 @@ def get_calc_files(calc_dir: str) -> dict:
     return ret
 
 
-def get_ams_version(calc_dir: str) -> dictfunc.DotDict:
+def get_ams_version(calc_dir: str) -> Result:
     '''Function to get the AMS version used in the calculation.
 
     Args:
@@ -84,7 +83,7 @@ def get_ams_version(calc_dir: str) -> dictfunc.DotDict:
             - **micro (str)** – micro AMS version, should correspond to the internal revision number.
             - **date (datetime.datetime)** – date the AMS version was released.
     '''
-    ret = dictfunc.DotDict()
+    ret = Result()
     files = get_calc_files(calc_dir)
     reader_ams = cache.get(files['ams.rkf'])
 
@@ -99,7 +98,7 @@ def get_ams_version(calc_dir: str) -> dictfunc.DotDict:
     return ret
 
 
-def get_timing(calc_dir: str) -> dictfunc.DotDict:
+def get_timing(calc_dir: str) -> Result:
     '''Function to get the timings from the calculation.
 
     Args:
@@ -112,7 +111,7 @@ def get_timing(calc_dir: str) -> dictfunc.DotDict:
             - **sys (float)** – time spent by the system (file IO, process creation/destruction, etc ...).
             - **total (float)** – total time spent by AMS on the calculation, can be larger than the sum of cpu and sys.
     '''
-    ret = dictfunc.DotDict()
+    ret = Result()
     files = get_calc_files(calc_dir)
     reader_ams = cache.get(files['ams.rkf'])
 
@@ -123,7 +122,7 @@ def get_timing(calc_dir: str) -> dictfunc.DotDict:
     return ret
 
 
-def get_ams_info(calc_dir: str) -> dictfunc.DotDict:
+def get_ams_info(calc_dir: str) -> Result:
     '''Function to read useful info about the calculation in calc_dir. Returned information will depend on the type of file that is provided.
 
     Args:
@@ -137,7 +136,7 @@ def get_ams_info(calc_dir: str) -> dictfunc.DotDict:
             - **ret.job_id (str)** - the ID of the job, can be used to check if two calculations are the same. Might also be used as a unique identifier for the calculation.
             - 
     '''
-    ret = dictfunc.DotDict()
+    ret = Result()
     ret.files = get_calc_files(calc_dir)
     reader_ams = cache.get(ret.files['ams.rkf'])
 
@@ -175,7 +174,7 @@ def get_ams_info(calc_dir: str) -> dictfunc.DotDict:
     return ret
 
 
-def calculation_status(calc_dir: str) -> dictfunc.DotDict:
+def calculation_status(calc_dir: str) -> Result:
     '''Function that returns the status of the calculation described in reader. 
     In case of non-succes it will also give possible reasons for the errors/warnings.
 
@@ -193,7 +192,7 @@ def calculation_status(calc_dir: str) -> dictfunc.DotDict:
     files = get_calc_files(calc_dir)
     reader_ams = cache.get(files['ams.rkf'])
 
-    ret = dictfunc.DotDict()
+    ret = Result()
     ret.fatal = True
     ret.name = None
     ret.code = None
@@ -248,7 +247,7 @@ def calculation_status(calc_dir: str) -> dictfunc.DotDict:
     return ret
 
 
-def get_molecules(calc_dir: str) -> dictfunc.DotDict:
+def get_molecules(calc_dir: str) -> Result:
     '''
     Function to get molecules from the calculation, including input, output and history molecules.
     It will also add bonds to the molecule if they are given in the rkf file, else it will guess them.
@@ -270,7 +269,7 @@ def get_molecules(calc_dir: str) -> dictfunc.DotDict:
     # all info is stored in reader_ams
     reader_ams = cache.get(files['ams.rkf'])
 
-    ret = dictfunc.DotDict()
+    ret = Result()
 
     # read general
     atnums = reader_ams.read('InputMolecule', 'AtomicNumbers')
@@ -309,7 +308,7 @@ def get_molecules(calc_dir: str) -> dictfunc.DotDict:
     return ret
 
 
-def get_history(calc_dir: str) -> dictfunc.DotDict:
+def get_history(calc_dir: str) -> Result:
     '''
     Function to get history variables. The type of variables read depends on the type of calculation.
 
@@ -332,7 +331,7 @@ def get_history(calc_dir: str) -> dictfunc.DotDict:
     # all info is stored in reader_ams
     reader_ams = cache.get(files['ams.rkf'])
 
-    ret = dictfunc.DotDict()
+    ret = Result()
 
     # read general
     atnums = reader_ams.read('InputMolecule', 'AtomicNumbers')
