@@ -504,14 +504,15 @@ In case of non-succes it will also give possible reasons for the errors/warnings
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Dictionary containing information about the calculation status:</p>
 <blockquote>
-<div><ul class="simple">
+<div><ul>
 <li><p><strong>number_of_entries (int)</strong> – number of steps in the history.</p></li>
-<li><p><strong>{variable} (list[Any])</strong> – variable read from the history section. The number of variables and type of variables depend on the nature of the calculation.</p></li>
+<li><p><strong>{variable} (list[Any])</strong> – variable read from the history section. The number of variables and type of variables depend on the nature of the calculation.</p>
+<p>Common variables:</p>
+</li>
+<li><p><strong>coords (list[plams.Molecule])</strong> – list of molecules from the history, for example from a geometry optimization or PES scan.</p></li>
+<li><p><strong>energy (list[float])</strong> – list of energies associated with each geometry step.</p></li>
+<li><p><strong>gradient (list[list[float]])</strong> – array of gradients for each geometry step and each atom.</p></li>
 </ul>
-<p>Common variables:
-- <strong>coords (list[plams.Molecule])</strong> – list of molecules from the history, for example from a geometry optimization or PES scan.
-- <strong>energy (list[float])</strong> – list of energies associated with each geometry step.
-- <strong>gradient (list[list[float]])</strong> – array of gradients for each geometry step and each atom.</p>
 </div></blockquote>
 </p>
 </dd>
