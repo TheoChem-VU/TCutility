@@ -13,7 +13,7 @@ j = os.path.join
 
 
 def get_calc_files(calc_dir: str) -> dict:
-    '''Function that returns files relevant to AMS calculations stored in calc_dir.
+    '''Function that returns files relevant to AMS calculations stored in ``calc_dir``.
 
     Args:
         calc_dir: path pointing to the desired calculation
@@ -138,7 +138,7 @@ def get_ams_info(calc_dir: str) -> Result:
     ret.timing = get_timing(calc_dir)
 
     # store the calculation status
-    ret.status = calculation_status(calc_dir)
+    ret.status = get_calculation_status(calc_dir)
 
     # check if this was a multijob
     ret.is_multijob = False
@@ -155,7 +155,31 @@ def get_ams_info(calc_dir: str) -> Result:
     return ret
 
 
-def calculation_status(calc_dir: str) -> Result:
+def get_timing(calc_dir: str) -> Result:
+    '''Function to get the timings from the calculation.
+
+    Args:
+        calc_dir: path pointing to the desired calculation.
+
+    Returns:
+        :Dictionary containing results about the timings:
+
+            - **cpu (float)** – time spent performing calculations on the cpu.
+            - **sys (float)** – time spent by the system (file IO, process creation/destruction, etc ...).
+            - **total (float)** – total time spent by AMS on the calculation, can be larger than the sum of cpu and sys.
+    '''
+    ret = Result()
+    files = get_calc_files(calc_dir)
+    reader_ams = cache.get(files['ams.rkf'])
+
+    ret.cpu = reader_ams.read('General', 'CPUTime') if ('General', 'CPUTime') in reader_ams else None
+    ret.sys = reader_ams.read('General', 'SysTime') if ('General', 'SysTime') in reader_ams else None
+    ret.total = reader_ams.read('General', 'ElapsedTime') if ('General', 'ElapsedTime') in reader_ams else None
+
+    return ret
+
+
+def get_calculation_status(calc_dir: str) -> Result:
     '''Function that returns the status of the calculation described in reader.
     In case of non-succes it will also give possible reasons for the errors/warnings.
 
@@ -163,7 +187,7 @@ def calculation_status(calc_dir: str) -> Result:
         reader: ``plams.KFReader`` or ``plams.KFFile`` object pointing to the desired calculation
 
     Returns:
-        dict: Dictionary containing information about the calculation status:
+        :Dictionary containing information about the calculation status:
 
             - **fatal (bool)** – True if calculation cannot be analysed correctly, False otherwise
             - **reasons (list[str])** – list of reasons to explain the status, they can be errors, warnings, etc.
@@ -237,15 +261,14 @@ def get_molecules(calc_dir: str) -> Result:
         calc_dir: path pointing to the desired calculation.
 
     Returns:
-        dict: Dictionary containing information about the molecular systems:
+        :Dictionary containing information about the molecular systems:
 
             - **number_of_atoms (int)** – number of atoms in the molecule.
             - **atom_numbers (list[int])** – list of atomic numbers for each atom in the molecule.
             - **atom_symbols (list[str])** – list of elements for each atom in the molecule.
             - **atom_masses (list[float])** – list of atomic masses for each atom in the molecule.
             - **input (plams.Molecule)** – molecule that was given in the input for the calculation.
-            - **output (plams.Molecule)** – final molecule that was given as the output for the calculation.
-                If the calculation was a singlepoint calculation output and input molecules will be the same.
+            - **output (plams.Molecule)** – final molecule that was given as the output for the calculation. If the calculation was a singlepoint calculation output and input molecules will be the same.
     '''
     files = get_calc_files(calc_dir)
     # all info is stored in reader_ams
@@ -298,7 +321,7 @@ def get_history(calc_dir: str) -> Result:
         calc_dir: path pointing to the desired calculation.
 
     Returns:
-        dict: Dictionary containing information about the calculation status:
+        :Dictionary containing information about the calculation status:
 
             - **number_of_entries (int)** – number of steps in the history.
             - **{variable} (list[Any])** – variable read from the history section. The number of variables and type of variables depend on the nature of the calculation.
@@ -315,28 +338,35 @@ def get_history(calc_dir: str) -> Result:
 
     ret = Result()
 
-    # read general
+    # read general info
     atnums = list(reader_ams.read('InputMolecule', 'AtomicNumbers'))  # type: ignore plams does not include type hints. Returns list[int]
     natoms = len(atnums)
 
     if ('History', 'nEntries') in reader_ams:
+        # the number of elements per history variable (e.g. number of steps in a geometry optimization)
         ret.number_of_entries = reader_ams.read('History', 'nEntries')
-        # for history we read the other items in the rkf file
-        index = 1
+        # for history we read the other variables in the rkf file
+        # the variables are given in ('History', f'ItemName({index})') so we have to find all of those
+        index = 1  # tracks the current index of the variable. Will be set to False to stop the search
         items = []
         while index:
+            # try to access ItemName, if it cannot find it stop iteration
             try:
                 item_name = reader_ams.read('History', f'ItemName({index})')
                 items.append(item_name)
                 index += 1
             except KeyError:
                 index = False
+
+        # create variable in result for each variable found
         for item in items:
             ret[item.lower()] = []
 
+        # collect the elements for each history variable
         for i in range(ret.number_of_entries):
             for item in items:
                 val = reader_ams.read('History', f'{item}({i+1})')
+                # coords are special, because we will convert them to plams.Molecule objects first
                 if item == 'Coords':
                     mol = plams.Molecule()
                     coords = np.array(val).reshape(natoms, 3) * 0.529177
@@ -344,6 +374,7 @@ def get_history(calc_dir: str) -> Result:
                         mol.add_atom(plams.Atom(atnum=atnum, coords=coord))
                     mol.guess_bonds()
                     ret.coords.append(mol)
+                # other variables are just added as-is
                 else:
                     ret[item.lower()].append(val)
 
