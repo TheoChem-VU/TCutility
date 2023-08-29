@@ -1,4 +1,4 @@
-[![Documentation](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml) [![TCutility python versions](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml)
+[![Documentation](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml) [![Testing](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml)
 
 # TCutility
 Utility functions/classes for the TheoCheM programs
@@ -14,10 +14,12 @@ It is also possible to install in locally by first cloning this repository in yo
 
 and then moving into the new directory and installing the package:
 
-``` cd TCutility ```
-``` python -m pip install --upgrade build ```
-``` python -m build ```
-``` pythom -m pip install -e . ```
+```
+cd TCutility
+python -m pip install --upgrade build 
+python -m build 
+pythom -m pip install -e .
+```
 
 # Documentation
 Documentation can be found here https://theochem-vu.github.io/TCutility/ (work in progress)
