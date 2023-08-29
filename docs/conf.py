@@ -6,13 +6,6 @@ import os
 import sys
 
 
-current_dir = os.path.dirname(__file__)
-
-target_dir = os.path.abspath(os.path.join(current_dir, '..', 'TCutility'))
-sys.path.insert(0, target_dir)
-
-# target_dir = os.path.abspath(os.path.join(current_dir, '..', '..'))
-# sys.path.insert(0, target_dir)
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
