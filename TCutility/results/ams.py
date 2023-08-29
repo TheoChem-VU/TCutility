@@ -77,9 +77,9 @@ def get_ams_version(calc_dir: str) -> Result:
         calc_dir: path pointing to the desired calculation.
 
     Returns:
-        dict: Dictionary containing results about the AMS version:
+        :Dictionary containing results about the AMS version:
 
-            - **string (str)** – the full version string as written by SCM.
+            - **full (str)** – the full version string as written by SCM.
             - **major (str)** – major AMS version, should correspond to the year of release.
             - **minor (str)** – minor AMS version.
             - **micro (str)** – micro AMS version, should correspond to the internal revision number.
@@ -90,53 +90,32 @@ def get_ams_version(calc_dir: str) -> Result:
     reader_ams = cache.get(files['ams.rkf'])
 
     # store information about the version of AMS
-    ret.string = str(reader_ams.read('General', 'release'))
-    # decompose the version string
-    ret.major = ret.string.split('.')[0]
-    ret.minor = ret.string.split()[0].split('.')[1]
-    ret.micro = ret.string.split()[1]
-    ret.date = datetime.strptime(ret.string.split()[-1][1:-1], '%Y-%m-%d')
-
-    return ret
-
-
-def get_timing(calc_dir: str) -> Result:
-    '''Function to get the timings from the calculation.
-
-    Args:
-        calc_dir: path pointing to the desired calculation.
-
-    Returns:
-        dict: Dictionary containing results about the timings:
-
-            - **cpu (float)** – time spent performing calculations on the cpu.
-            - **sys (float)** – time spent by the system (file IO, process creation/destruction, etc ...).
-            - **total (float)** – total time spent by AMS on the calculation, can be larger than the sum of cpu and sys.
-    '''
-    ret = Result()
-    files = get_calc_files(calc_dir)
-    reader_ams = cache.get(files['ams.rkf'])
-
-    ret.cpu = reader_ams.read('General', 'CPUTime') if ('General', 'CPUTime') in reader_ams else None
-    ret.sys = reader_ams.read('General', 'SysTime') if ('General', 'SysTime') in reader_ams else None
-    ret.total = reader_ams.read('General', 'ElapsedTime') if ('General', 'ElapsedTime') in reader_ams else None
+    ret.full = str(reader_ams.read('General', 'release'))
+    # decompose the full version string
+    ret.major = ret.full.split('.')[0]
+    ret.minor = ret.full.split()[0].split('.')[1]
+    ret.micro = ret.full.split()[1]
+    ret.date = datetime.strptime(ret.full.split()[-1][1:-1], '%Y-%m-%d')
 
     return ret
 
 
 def get_ams_info(calc_dir: str) -> Result:
-    '''Function to read useful info about the calculation in calc_dir. Returned information will depend on the type of file that is provided.
+    '''Function to read useful info about the calculation in ``calc_dir``. Returned information will depend on the type of file that is provided.
 
     Args:
         calc_dir: path pointing to the desired calculation.
 
     Returns:
-        dict: Dictionary containing results about the calculation and AMS:
+        :Dictionary containing results about the calculation and AMS:
 
-            - **ret.ams_version (dict)** – information about the AMS version used, includes ``string`` the full version string and ``major``, ``minor``, ``micro``, and ``date``
-                which is the decomposed version.
-            - **ret.engine (str)** – the engine that was used to perform the calculation.
-            - **ret.job_id (str)** - the ID of the job, can be used to check if two calculations are the same. Might also be used as a unique identifier for the calculation.
+            - **ams_version (Result)** – information about the AMS version used, see :func:`get_ams_version`.
+            - **engine (str)** – the engine that was used to perform the calculation, for example 'adf', 'dftb', ...
+            - **job_id (str)** – the ID of the job, can be used to check if two calculations are the same. Might also be used as a unique identifier for the calculation.
+            - **status (Result)** – information about calculation status, see :func:`get_calculation_status`.
+            - **is_multijob (bool)** – whether the job was a multijob, for example a fragment analysis.
+            - **molecule (Result)** – information about the input and output molecules and the molecular system in general, see :func:`get_molecules`.
+            - **history (Result)** – information about history variables, see :func:`get_history`.
     '''
     ret = Result()
     ret.files = get_calc_files(calc_dir)
