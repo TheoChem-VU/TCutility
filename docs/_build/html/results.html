@@ -325,8 +325,72 @@ document.write(`
 This includes information about the engine used (ADF, DFTB, BAND, …), general information such as timings, files, status of the calculation, etc.
 This information is used in further analysis programs.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="TCutility.results.ams.calculation_status">
-<span class="sig-prename descclassname"><span class="pre">TCutility.results.ams.</span></span><span class="sig-name descname"><span class="pre">calculation_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#calculation_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.calculation_status" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="TCutility.results.ams.get_ams_info">
+<span class="sig-prename descclassname"><span class="pre">TCutility.results.ams.</span></span><span class="sig-name descname"><span class="pre">get_ams_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_ams_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_ams_info" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to read useful info about the calculation in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>. Returned information will depend on the type of file that is provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Dictionary containing results about the calculation and AMS:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>ams_version (Result)</strong> – information about the AMS version used, see <a class="reference internal" href="#TCutility.results.ams.get_ams_version" title="TCutility.results.ams.get_ams_version"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_ams_version()</span></code></a>.</p></li>
+<li><p><strong>engine (str)</strong> – the engine that was used to perform the calculation, for example ‘adf’, ‘dftb’, …</p></li>
+<li><p><strong>job_id (str)</strong> – the ID of the job, can be used to check if two calculations are the same. Might also be used as a unique identifier for the calculation.</p></li>
+<li><p><strong>status (Result)</strong> – information about calculation status, see <a class="reference internal" href="#TCutility.results.ams.get_calculation_status" title="TCutility.results.ams.get_calculation_status"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_calculation_status()</span></code></a>.</p></li>
+<li><p><strong>is_multijob (bool)</strong> – whether the job was a multijob, for example a fragment analysis.</p></li>
+<li><p><strong>molecule (Result)</strong> – information about the input and output molecules and the molecular system in general, see <a class="reference internal" href="#TCutility.results.ams.get_molecules" title="TCutility.results.ams.get_molecules"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_molecules()</span></code></a>.</p></li>
+<li><p><strong>history (Result)</strong> – information about history variables, see <a class="reference internal" href="#TCutility.results.ams.get_history" title="TCutility.results.ams.get_history"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_history()</span></code></a>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TCutility.results.ams.get_ams_version">
+<span class="sig-prename descclassname"><span class="pre">TCutility.results.ams.</span></span><span class="sig-name descname"><span class="pre">get_ams_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_ams_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_ams_version" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to get the AMS version used in the calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Dictionary containing results about the AMS version:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>full (str)</strong> – the full version string as written by SCM.</p></li>
+<li><p><strong>major (str)</strong> – major AMS version, should correspond to the year of release.</p></li>
+<li><p><strong>minor (str)</strong> – minor AMS version.</p></li>
+<li><p><strong>micro (str)</strong> – micro AMS version, should correspond to the internal revision number.</p></li>
+<li><p><strong>date (datetime.datetime)</strong> – date the AMS version was released.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TCutility.results.ams.get_calc_files">
+<span class="sig-prename descclassname"><span class="pre">TCutility.results.ams.</span></span><span class="sig-name descname"><span class="pre">get_calc_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_calc_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_calc_files" title="Permalink to this definition">#</a></dt>
+<dd><p>Function that returns files relevant to AMS calculations stored in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing filenames and paths</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TCutility.results.ams.get_calculation_status">
+<span class="sig-prename descclassname"><span class="pre">TCutility.results.ams.</span></span><span class="sig-name descname"><span class="pre">get_calculation_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_calculation_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_calculation_status" title="Permalink to this definition">#</a></dt>
 <dd><p>Function that returns the status of the calculation described in reader.
 In case of non-succes it will also give possible reasons for the errors/warnings.</p>
 <dl class="field-list simple">
@@ -344,79 +408,6 @@ In case of non-succes it will also give possible reasons for the errors/warnings
 </ul>
 </div></blockquote>
 </p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="TCutility.results.ams.get_ams_info">
-<span class="sig-prename descclassname"><span class="pre">TCutility.results.ams.</span></span><span class="sig-name descname"><span class="pre">get_ams_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_ams_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_ams_info" title="Permalink to this definition">#</a></dt>
-<dd><p>Function to read useful info about the calculation in calc_dir. Returned information will depend on the type of file that is provided.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Dictionary containing results about the calculation and AMS:</p>
-<blockquote>
-<div><ul class="simple">
-<li><dl class="simple">
-<dt><strong>ret.ams_version (dict)</strong> – information about the AMS version used, includes <code class="docutils literal notranslate"><span class="pre">string</span></code> the full version string and <code class="docutils literal notranslate"><span class="pre">major</span></code>, <code class="docutils literal notranslate"><span class="pre">minor</span></code>, <code class="docutils literal notranslate"><span class="pre">micro</span></code>, and <code class="docutils literal notranslate"><span class="pre">date</span></code></dt><dd><p>which is the decomposed version.</p>
-</dd>
-</dl>
-</li>
-<li><p><strong>ret.engine (str)</strong> – the engine that was used to perform the calculation.</p></li>
-<li><p><strong>ret.job_id (str)</strong> - the ID of the job, can be used to check if two calculations are the same. Might also be used as a unique identifier for the calculation.</p></li>
-</ul>
-</div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="TCutility.results.ams.get_ams_version">
-<span class="sig-prename descclassname"><span class="pre">TCutility.results.ams.</span></span><span class="sig-name descname"><span class="pre">get_ams_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_ams_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_ams_version" title="Permalink to this definition">#</a></dt>
-<dd><p>Function to get the AMS version used in the calculation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Dictionary containing results about the AMS version:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>string (str)</strong> – the full version string as written by SCM.</p></li>
-<li><p><strong>major (str)</strong> – major AMS version, should correspond to the year of release.</p></li>
-<li><p><strong>minor (str)</strong> – minor AMS version.</p></li>
-<li><p><strong>micro (str)</strong> – micro AMS version, should correspond to the internal revision number.</p></li>
-<li><p><strong>date (datetime.datetime)</strong> – date the AMS version was released.</p></li>
-</ul>
-</div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="TCutility.results.ams.get_calc_files">
-<span class="sig-prename descclassname"><span class="pre">TCutility.results.ams.</span></span><span class="sig-name descname"><span class="pre">get_calc_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_calc_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_calc_files" title="Permalink to this definition">#</a></dt>
-<dd><p>Function that returns files relevant to AMS calculations stored in calc_dir.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary containing filenames and paths</p>
 </dd>
 </dl>
 </dd></dl>
@@ -444,9 +435,6 @@ In case of non-succes it will also give possible reasons for the errors/warnings
 </div></blockquote>
 </p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -468,17 +456,10 @@ It will also add bonds to the molecule if they are given in the rkf file, else i
 <li><p><strong>atom_symbols (list[str])</strong> – list of elements for each atom in the molecule.</p></li>
 <li><p><strong>atom_masses (list[float])</strong> – list of atomic masses for each atom in the molecule.</p></li>
 <li><p><strong>input (plams.Molecule)</strong> – molecule that was given in the input for the calculation.</p></li>
-<li><dl class="simple">
-<dt><strong>output (plams.Molecule)</strong> – final molecule that was given as the output for the calculation.</dt><dd><p>If the calculation was a singlepoint calculation output and input molecules will be the same.</p>
-</dd>
-</dl>
-</li>
+<li><p><strong>output (plams.Molecule)</strong> – final molecule that was given as the output for the calculation. If the calculation was a singlepoint calculation output and input molecules will be the same.</p></li>
 </ul>
 </div></blockquote>
 </p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -501,9 +482,6 @@ It will also add bonds to the molecule if they are given in the rkf file, else i
 </ul>
 </div></blockquote>
 </p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -652,10 +630,10 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.ams">TCutility.results.ams</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.calculation_status"><code class="docutils literal notranslate"><span class="pre">calculation_status()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_ams_info"><code class="docutils literal notranslate"><span class="pre">get_ams_info()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_ams_version"><code class="docutils literal notranslate"><span class="pre">get_ams_version()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_calc_files"><code class="docutils literal notranslate"><span class="pre">get_calc_files()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_calculation_status"><code class="docutils literal notranslate"><span class="pre">get_calculation_status()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_history"><code class="docutils literal notranslate"><span class="pre">get_history()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_molecules"><code class="docutils literal notranslate"><span class="pre">get_molecules()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_timing"><code class="docutils literal notranslate"><span class="pre">get_timing()</span></code></a></li>
