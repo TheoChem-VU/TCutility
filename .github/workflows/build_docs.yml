@@ -43,8 +43,8 @@ jobs:
       - name: Install other dependencies
         run: pip install plams
 
-      - name: Run sphinx-apidoc
-        run: cd docs; sphinx-apidoc -f -o . .. ../setup.py
+      # - name: Run sphinx-apidoc
+      #   run: cd docs; sphinx-apidoc -f -o . .. ../setup.py
         
       - name: Build the docs
         run: cd docs; make html
