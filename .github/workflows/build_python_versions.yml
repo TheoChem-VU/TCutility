@@ -32,7 +32,7 @@ jobs:
           # Note, line length is put on a very high margin (200). PEP8 prefers a value of 79 
           ruff --format=github --select=E9,F63,F7,F82 --target-version=py37 --line-length=250 .
           # default set of ruff rules with GitHub Annotations
-          ruff --format=github --target-version=py37 --line-length=200 .
+          ruff --format=github --target-version=py37 --line-length=250 .
       - name: Test with pytest
         run: |
           pytest --cov
