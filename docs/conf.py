@@ -8,12 +8,11 @@ import sys
 
 current_dir = os.path.dirname(__file__)
 
-target_dir = os.path.abspath(os.path.join(current_dir, '..'))
+target_dir = os.path.abspath(os.path.join(current_dir, '..', 'TCutility'))
 sys.path.insert(0, target_dir)
 
-target_dir = os.path.abspath(os.path.join(current_dir, '..', '..'))
-sys.path.insert(0, target_dir)
-
+# target_dir = os.path.abspath(os.path.join(current_dir, '..', '..'))
+# sys.path.insert(0, target_dir)
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
@@ -54,9 +53,10 @@ html_theme_options = {
 
 html_theme = 'pydata_sphinx_theme'  # pip install pydata-sphinx-theme
 html_static_path = ['_static']
-
+add_module_names = False
 
 # custom variables
 rst_epilog = f"""
 .. |ProjectVersion| replace:: v{release}
+.. 
 """
