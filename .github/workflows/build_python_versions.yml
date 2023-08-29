@@ -1,4 +1,4 @@
-name: TCutility python versions
+name: Testing
 
 on: [push]
 
