@@ -1,8 +1,5 @@
-from TCutility.results import cache, Result
+from TCutility.results import cache, Result, constants
 from typing import List
-
-
-ha2kcalmol = 627.509474
 
 
 def get_calc_settings(info: Result) -> Result:
@@ -99,14 +96,14 @@ def get_properties(info: Result) -> Result:
     ret = Result()
 
     # read energies (given in Ha in rkf files)
-    ret.energy.bond = reader_adf.read('Energy', 'Bond Energy') * ha2kcalmol
-    ret.energy.elstat = reader_adf.read('Energy', 'elstat') * ha2kcalmol
-    ret.energy.orbint.total = reader_adf.read('Energy', 'Orb.Int. Total') * ha2kcalmol
+    ret.energy.bond = reader_adf.read('Energy', 'Bond Energy') * constants.ha2kcalmol
+    ret.energy.elstat = reader_adf.read('Energy', 'elstat') * constants.ha2kcalmol
+    ret.energy.orbint.total = reader_adf.read('Energy', 'Orb.Int. Total') * constants.ha2kcalmol
     for symlabel in info.adf.symmetry.labels:
         symlabel = symlabel.split(':')[0]
-        ret.energy.orbint[symlabel] = reader_adf.read('Energy', f'Orb.Int. {symlabel}') * ha2kcalmol
-    ret.energy.pauli.total = reader_adf.read('Energy', 'Pauli Total') * ha2kcalmol
-    ret.energy.dispersion = reader_adf.read('Energy', 'Dispersion Energy') * ha2kcalmol
+        ret.energy.orbint[symlabel] = reader_adf.read('Energy', f'Orb.Int. {symlabel}') * constants.ha2kcalmol
+    ret.energy.pauli.total = reader_adf.read('Energy', 'Pauli Total') * constants.ha2kcalmol
+    ret.energy.dispersion = reader_adf.read('Energy', 'Dispersion Energy') * constants.ha2kcalmol
 
     # vibrational information
     if ('Vibrations', 'nNormalModes') in reader_adf:
