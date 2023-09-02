@@ -89,6 +89,7 @@ def get_properties(info: Result) -> Result:
             - **vibrations.frequencies (float)** – vibrational frequencies associated with the vibrational modes, sorted from low to high (|cm-1|).
             - **vibrations.intensities (float)** – vibrational intensities associated with the vibrational modes (|km/mol|).
             - **vibrations.modes (list[float])** – list of vibrational modes sorted from low frequency to high frequency.
+            - **vdd.charges (list[float]) ** - list of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges. 
     '''
 
     assert info.engine == 'adf', f'This function reads ADF data, not {info.engine} data'
@@ -119,12 +120,12 @@ def get_properties(info: Result) -> Result:
         for i in range(ret.vibrations.number_of_modes):
             ret.vibrations.modes.append(reader_adf.read('Vibrations', f'NoWeightNormalMode({i+1})'))
 
-    # read the Voronoi Deformation Charges (vdd) before and after SCF convergence (being "inital" and "SCF")
+    # read the Voronoi Deformation Charges Deformation (VDD) before and after SCF convergence (being "inital" and "SCF")
     vdd_scf: List[float] = reader_adf.read('Properties', 'AtomCharge_SCF Voronoi')  # type: ignore since plams does not include typing for KFReader. List[float] is returned
     vdd_ini: List[float] = reader_adf.read('Properties', 'AtomCharge_initial Voronoi')  # type: ignore since plams does not include typing for KFReader. List[float] is returned
 
     # VDD charges are scf - initial charges. Note, these are in units of electrons while most often these are denoted in mili-electrons
-    ret.vdd.charges = [(scf - ini) for scf, ini in zip(vdd_scf, vdd_ini)]
+    ret.vdd.charges = [float((scf - ini)) for scf, ini in zip(vdd_scf, vdd_ini)]
 
     # Possible enhancement: get the VDD charges per irrep, denoted by the "Voronoi chrg per irrep" in the "Properties" section in the adf.rkf. 
     # The ordering is not very straightfoward so this is a suggestion for the future with keys: ret.vdd.[IRREP]
