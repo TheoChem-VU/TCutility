@@ -15,6 +15,7 @@ author = 'TheoCheM VU Amsterdam'
 
 # get release information
 repo = git.Repo('..')
+print(repo)
 tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
 print(tags)
 latest_tag = tags[-1]
