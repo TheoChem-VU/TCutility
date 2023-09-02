@@ -5,8 +5,21 @@ ha2kcalmol = 627.509474
 
 
 def get_calc_settings(info: Result) -> Result:
-    '''
-    Function to read useful calculation settings from kf reader
+    '''Function to read calculation settings for an ADF calculation.
+
+    Args:
+        info: Result object containing ADF calculation settings.
+
+    Returns:
+        :Result object containing properties from the ADF calculation:
+
+            - **task (str)** – the task that was set for the calculation.
+            - **relativistic (bool)** – whether or not relativistic effects were enabled.
+            - **unrestricted_sfos (bool)** – whether or not SFOs are treated in a nunrestricted manner.
+            - **unrestricted_mos (bool)** – whether or not MOs are treated in a nunrestricted manner.
+            - **symmetry.group (str)** – the symmetry group selected for the molecule.
+            - **symmetry.labels (list[str])** – the symmetry labels associated with the symmetry group.
+            - **used_regions (bool)** – whether regions were used in the calculation.
     '''
 
     assert info.engine == 'adf', f'This function reads ADF data, not {info.engine} data'
@@ -56,15 +69,31 @@ def get_calc_settings(info: Result) -> Result:
 
 
 def get_properties(info: Result) -> Result:
-    '''
-    
+    '''Function to get properties from an ADF calculation.
+
+    Args:
+        info: Result object containing ADF properties.
+
+    Returns:
+        :Result object containing properties from the ADF calculation:
+
+            - **energy.bond (float)** – bonding energy (|kcal/mol|).
+            - **energy.elstat (float)** – total electrostatic potential (|kcal/mol|).
+            - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label (|kcal/mol|).
+            - **energy.orbint.{symmetry label} (float)** – orbital interaction energy from a specific symmetry label (|kcal/mol|).
+            - **energy.pauli.total (float)** – total Pauli repulsion energy (|kcal/mol|).
+            - **energy.dispersion (float)** – total dispersion energy (|kcal/mol|).
+            - **vibrations.number_of_modes (int)** – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.
+            - **vibrations.number_of_imaginary_modes (int)** – number of imaginary vibrational modes for this molecule.
+            - **vibrations.frequencies (float)** – vibrational frequencies associated with the vibrational modes, sorted from low to high (|cm-1|).
+            - **vibrations.intensities (float)** – vibrational intensities associated with the vibrational modes (|km/mol|).
+            - **vibrations.modes (list[float])** – list of vibrational modes sorted from low frequency to high frequency.
     '''
 
     assert info.engine == 'adf', f'This function reads ADF data, not {info.engine} data'
     assert 'adf.rkf' in info.files, f'Missing adf.rkf file, [{", ".join([": ".join(item) for item in info.files.items()])}]'
 
     reader_adf = cache.get(info.files['adf.rkf'])
-    reader_ams = cache.get(info.files['ams.rkf'])
     ret = Result()
 
     # read energies (given in Ha in rkf files)
