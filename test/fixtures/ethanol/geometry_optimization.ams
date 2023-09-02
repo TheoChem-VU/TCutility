@@ -8,9 +8,9 @@ Number of bonds
 0 8
 
 Atom data
-0,0,1 -1.90259028206049
-0,0,2 -0.8533196630630263
-0,0,3 -0.05216661707323949
+0,0,1 0.94569149
+0,0,2 0.39248533
+0,0,3 0.0
 0,0,bondlist {0 1 2 3}
 0,0,conns 4
 0,0,element C
@@ -23,9 +23,9 @@ Atom data
 0,0,property,hidden 0
 0,0,property,showatom 1
 0,0,property,style {Balls And Sticks}
-0,1,1 -0.4273251813273309
-0,1,2 -0.4738026688338454
-0,1,3 -0.0232185025999441
+0,1,1 -0.33261023
+0,1,2 -0.42764769
+0,1,3 0.0
 0,1,bondlist {0 4 5 6}
 0,1,conns 4
 0,1,element C
@@ -38,9 +38,9 @@ Atom data
 0,1,property,hidden 0
 0,1,property,showatom 1
 0,1,property,style {Balls And Sticks}
-0,2,1 -0.3408832151043752
-0,2,2 0.9265934192666114
-0,2,3 0.1596900427213554
+0,2,1 -1.45175843
+0,2,2 0.46610866
+0,2,3 0.0
 0,2,bondlist {4 7}
 0,2,conns 4
 0,2,element O
@@ -53,9 +53,9 @@ Atom data
 0,2,property,hidden 0
 0,2,property,showatom 1
 0,2,property,style {Balls And Sticks}
-0,3,1 -2.008949789320011
-0,3,2 -1.928416472978149
-0,3,3 -0.1922885247109148
+0,3,1 1.81644305
+0,3,2 -0.2722078
+0,3,3 0.0
 0,3,bondlist 1
 0,3,conns 1
 0,3,element H
@@ -69,9 +69,9 @@ Atom data
 0,3,property,hidden 0
 0,3,property,showatom 1
 0,3,property,style {Balls And Sticks}
-0,4,1 -2.402467625748101
-0,4,2 -0.3342391401876793
-0,4,3 -0.8695479549179066
+0,4,1 0.99946072
+0,4,2 1.03126009
+0,4,3 0.8876093
 0,4,bondlist 2
 0,4,conns 1
 0,4,element H
@@ -85,9 +85,9 @@ Atom data
 0,4,property,hidden 0
 0,4,property,showatom 1
 0,4,property,style {Balls And Sticks}
-0,5,1 -2.377491260931333
-0,5,2 -0.5654853986081424
-0,5,3 0.88541574315453
+0,5,1 0.99946072
+0,5,2 1.03126009
+0,5,3 -0.8876093
 0,5,bondlist 3
 0,5,conns 1
 0,5,element H
@@ -101,9 +101,9 @@ Atom data
 0,5,property,hidden 0
 0,5,property,showatom 1
 0,5,property,style {Balls And Sticks}
-0,6,1 0.05451337390345656
-0,6,2 -0.7712894663852908
-0,6,3 -0.9703407592911565
+0,6,1 -0.35987093
+0,6,2 -1.07792625
+0,6,3 0.88954503
 0,6,bondlist 5
 0,6,conns 1
 0,6,element H
@@ -117,9 +117,9 @@ Atom data
 0,6,property,hidden 0
 0,6,property,showatom 1
 0,6,property,style {Balls And Sticks}
-0,7,1 0.07976428751522517
-0,7,2 -1.004187992844772
-0,7,3 0.800888514193981
+0,7,1 -0.35987093
+0,7,2 -1.07792625
+0,7,3 -0.88954503
 0,7,bondlist 6
 0,7,conns 1
 0,7,element H
@@ -133,9 +133,9 @@ Atom data
 0,7,property,hidden 0
 0,7,property,showatom 1
 0,7,property,style {Balls And Sticks}
-0,8,1 0.5808440151575955
-0,8,2 1.20621865565738
-0,8,3 0.1830422289730498
+0,8,1 -2.25694545
+0,8,2 -0.06540617
+0,8,3 0.0
 0,8,bondlist 7
 0,8,conns 1
 0,8,element H
@@ -808,6 +808,9 @@ band.xc.dfthalf.enabled 0
 band.xc.dfthalf.prepare 0
 band.xc.dfthalf.selfconsistent 1
 band.zlmfit.quality Auto
+basis,C {}
+basis,H {}
+basis,O {}
 basisdoc {}
 bzpath.band {}
 bzpath.dftb {}

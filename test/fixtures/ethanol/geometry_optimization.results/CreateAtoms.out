@@ -6,7 +6,7 @@ JSONified input:
   "Create": "C m=12.0000000000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/C",
   "CorePotentials": {
     "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
+    "_h": "/tmp/amstmp_ams_kid0.732277961/t12.rel"
   },
   "xc": {
     "gga": "OLYP"
@@ -29,7 +29,7 @@ JSONified input traversal:
 
 
                      **************************************************************************
-                     *  DIRAC 2022.103  RunTime: Sep02-2023 11:04:14  ShM Nodes: 1  Procs: 1  *
+                     *  DIRAC 2022.103  RunTime: Sep02-2023 11:47:12  ShM Nodes: 1  Procs: 1  *
                      **************************************************************************
   
 1
@@ -86,7 +86,7 @@ JSONified input traversal:
  CREATE - Data File:    /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/C
                         Carbon (TZ2P)
  Core Potentials:
-         file : /tmp/amstmp_ams_kid0.580605988/t12.rel
+         file : /tmp/amstmp_ams_kid0.732277961/t12.rel
 
 
 
@@ -653,7 +653,7 @@ JSONified input:
   "Create": "O m=15.9949140000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/O",
   "CorePotentials": {
     "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
+    "_h": "/tmp/amstmp_ams_kid0.732277961/t12.rel"
   },
   "xc": {
     "gga": "OLYP"
@@ -676,7 +676,7 @@ JSONified input traversal:
 
 
                      **************************************************************************
-                     *  DIRAC 2022.103  RunTime: Sep02-2023 11:04:18  ShM Nodes: 1  Procs: 1  *
+                     *  DIRAC 2022.103  RunTime: Sep02-2023 11:47:16  ShM Nodes: 1  Procs: 1  *
                      **************************************************************************
   
 1
@@ -733,7 +733,7 @@ JSONified input traversal:
  CREATE - Data File:    /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/O
                         Oxygen (TZ2P)
  Core Potentials:
-         file : /tmp/amstmp_ams_kid0.580605988/t12.rel
+         file : /tmp/amstmp_ams_kid0.732277961/t12.rel
 
 
 
@@ -1288,7 +1288,7 @@ JSONified input:
   "Create": "H m=1.00782500000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/H",
   "CorePotentials": {
     "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
+    "_h": "/tmp/amstmp_ams_kid0.732277961/t12.rel"
   },
   "xc": {
     "gga": "OLYP"
@@ -1311,7 +1311,7 @@ JSONified input traversal:
 
 
                      **************************************************************************
-                     *  DIRAC 2022.103  RunTime: Sep02-2023 11:04:22  ShM Nodes: 1  Procs: 1  *
+                     *  DIRAC 2022.103  RunTime: Sep02-2023 11:47:19  ShM Nodes: 1  Procs: 1  *
                      **************************************************************************
   
 1
@@ -1362,7 +1362,7 @@ JSONified input traversal:
  CREATE - Data File:    /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/H
                         Hydrogen (TZ2P)
  Core Potentials:
-         file : /tmp/amstmp_ams_kid0.580605988/t12.rel
+         file : /tmp/amstmp_ams_kid0.732277961/t12.rel
 
 
 
@@ -1803,7 +1803,7 @@ JSONified input:
   "Create": "C m=12.0000000000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/C",
   "CorePotentials": {
     "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
+    "_h": "/tmp/amstmp_ams_kid0.732277961/t12.rel"
   },
   "xc": {
     "gga": "OLYP"
@@ -1830,7 +1830,7 @@ JSONified input:
   "Create": "O m=15.9949140000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/O",
   "CorePotentials": {
     "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
+    "_h": "/tmp/amstmp_ams_kid0.732277961/t12.rel"
   },
   "xc": {
     "gga": "OLYP"
@@ -1857,7 +1857,7 @@ JSONified input:
   "Create": "H m=1.00782500000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/H",
   "CorePotentials": {
     "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
+    "_h": "/tmp/amstmp_ams_kid0.732277961/t12.rel"
   },
   "xc": {
     "gga": "OLYP"
@@ -1884,7 +1884,7 @@ JSONified input:
   "Create": "C m=12.0000000000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/C",
   "CorePotentials": {
     "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
+    "_h": "/tmp/amstmp_ams_kid0.732277961/t12.rel"
   },
   "xc": {
     "gga": "OLYP"
@@ -1911,7 +1911,7 @@ JSONified input:
   "Create": "O m=15.9949140000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/O",
   "CorePotentials": {
     "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
+    "_h": "/tmp/amstmp_ams_kid0.732277961/t12.rel"
   },
   "xc": {
     "gga": "OLYP"
@@ -1938,250 +1938,7 @@ JSONified input:
   "Create": "H m=1.00782500000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/H",
   "CorePotentials": {
     "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
-  },
-  "xc": {
-    "gga": "OLYP"
-  }
-}
-
-
-JSONified input traversal:
-++++++++++++++++++++++++++
-2 3 , path = 
-7 0 Create, path = Create
-2 2 CorePotentials, path = CorePotentials
-3 0 _1, path = CorePotentials%_1
-7 0 _h, path = CorePotentials%_h
-2 1 xc, path = xc
-7 0 gga, path = xc%gga
- Using the following fragment file: /Users/yumanhordijk/PhD/TheoCheM_stack/TCuti
- lity/test/fixtures/ethanol/geometry_optimization.results/t21.4DC4E5D.H
-
-
-JSONified input:
-++++++++++++++++
-{
-  "Create": "C m=12.0000000000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/C",
-  "CorePotentials": {
-    "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
-  },
-  "xc": {
-    "gga": "OLYP"
-  }
-}
-
-
-JSONified input traversal:
-++++++++++++++++++++++++++
-2 3 , path = 
-7 0 Create, path = Create
-2 2 CorePotentials, path = CorePotentials
-3 0 _1, path = CorePotentials%_1
-7 0 _h, path = CorePotentials%_h
-2 1 xc, path = xc
-7 0 gga, path = xc%gga
- Using the following fragment file: /Users/yumanhordijk/PhD/TheoCheM_stack/TCuti
- lity/test/fixtures/ethanol/geometry_optimization.results/t21.5384E61.C
-
-
-JSONified input:
-++++++++++++++++
-{
-  "Create": "O m=15.9949140000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/O",
-  "CorePotentials": {
-    "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
-  },
-  "xc": {
-    "gga": "OLYP"
-  }
-}
-
-
-JSONified input traversal:
-++++++++++++++++++++++++++
-2 3 , path = 
-7 0 Create, path = Create
-2 2 CorePotentials, path = CorePotentials
-3 0 _1, path = CorePotentials%_1
-7 0 _h, path = CorePotentials%_h
-2 1 xc, path = xc
-7 0 gga, path = xc%gga
- Using the following fragment file: /Users/yumanhordijk/PhD/TheoCheM_stack/TCuti
- lity/test/fixtures/ethanol/geometry_optimization.results/t21.1E104CD6.O
-
-
-JSONified input:
-++++++++++++++++
-{
-  "Create": "H m=1.00782500000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/H",
-  "CorePotentials": {
-    "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
-  },
-  "xc": {
-    "gga": "OLYP"
-  }
-}
-
-
-JSONified input traversal:
-++++++++++++++++++++++++++
-2 3 , path = 
-7 0 Create, path = Create
-2 2 CorePotentials, path = CorePotentials
-3 0 _1, path = CorePotentials%_1
-7 0 _h, path = CorePotentials%_h
-2 1 xc, path = xc
-7 0 gga, path = xc%gga
- Using the following fragment file: /Users/yumanhordijk/PhD/TheoCheM_stack/TCuti
- lity/test/fixtures/ethanol/geometry_optimization.results/t21.4DC4E5D.H
-
-
-JSONified input:
-++++++++++++++++
-{
-  "Create": "C m=12.0000000000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/C",
-  "CorePotentials": {
-    "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
-  },
-  "xc": {
-    "gga": "OLYP"
-  }
-}
-
-
-JSONified input traversal:
-++++++++++++++++++++++++++
-2 3 , path = 
-7 0 Create, path = Create
-2 2 CorePotentials, path = CorePotentials
-3 0 _1, path = CorePotentials%_1
-7 0 _h, path = CorePotentials%_h
-2 1 xc, path = xc
-7 0 gga, path = xc%gga
- Using the following fragment file: /Users/yumanhordijk/PhD/TheoCheM_stack/TCuti
- lity/test/fixtures/ethanol/geometry_optimization.results/t21.5384E61.C
-
-
-JSONified input:
-++++++++++++++++
-{
-  "Create": "O m=15.9949140000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/O",
-  "CorePotentials": {
-    "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
-  },
-  "xc": {
-    "gga": "OLYP"
-  }
-}
-
-
-JSONified input traversal:
-++++++++++++++++++++++++++
-2 3 , path = 
-7 0 Create, path = Create
-2 2 CorePotentials, path = CorePotentials
-3 0 _1, path = CorePotentials%_1
-7 0 _h, path = CorePotentials%_h
-2 1 xc, path = xc
-7 0 gga, path = xc%gga
- Using the following fragment file: /Users/yumanhordijk/PhD/TheoCheM_stack/TCuti
- lity/test/fixtures/ethanol/geometry_optimization.results/t21.1E104CD6.O
-
-
-JSONified input:
-++++++++++++++++
-{
-  "Create": "H m=1.00782500000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/H",
-  "CorePotentials": {
-    "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
-  },
-  "xc": {
-    "gga": "OLYP"
-  }
-}
-
-
-JSONified input traversal:
-++++++++++++++++++++++++++
-2 3 , path = 
-7 0 Create, path = Create
-2 2 CorePotentials, path = CorePotentials
-3 0 _1, path = CorePotentials%_1
-7 0 _h, path = CorePotentials%_h
-2 1 xc, path = xc
-7 0 gga, path = xc%gga
- Using the following fragment file: /Users/yumanhordijk/PhD/TheoCheM_stack/TCuti
- lity/test/fixtures/ethanol/geometry_optimization.results/t21.4DC4E5D.H
-
-
-JSONified input:
-++++++++++++++++
-{
-  "Create": "C m=12.0000000000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/C",
-  "CorePotentials": {
-    "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
-  },
-  "xc": {
-    "gga": "OLYP"
-  }
-}
-
-
-JSONified input traversal:
-++++++++++++++++++++++++++
-2 3 , path = 
-7 0 Create, path = Create
-2 2 CorePotentials, path = CorePotentials
-3 0 _1, path = CorePotentials%_1
-7 0 _h, path = CorePotentials%_h
-2 1 xc, path = xc
-7 0 gga, path = xc%gga
- Using the following fragment file: /Users/yumanhordijk/PhD/TheoCheM_stack/TCuti
- lity/test/fixtures/ethanol/geometry_optimization.results/t21.5384E61.C
-
-
-JSONified input:
-++++++++++++++++
-{
-  "Create": "O m=15.9949140000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/O",
-  "CorePotentials": {
-    "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
-  },
-  "xc": {
-    "gga": "OLYP"
-  }
-}
-
-
-JSONified input traversal:
-++++++++++++++++++++++++++
-2 3 , path = 
-7 0 Create, path = Create
-2 2 CorePotentials, path = CorePotentials
-3 0 _1, path = CorePotentials%_1
-7 0 _h, path = CorePotentials%_h
-2 1 xc, path = xc
-7 0 gga, path = xc%gga
- Using the following fragment file: /Users/yumanhordijk/PhD/TheoCheM_stack/TCuti
- lity/test/fixtures/ethanol/geometry_optimization.results/t21.1E104CD6.O
-
-
-JSONified input:
-++++++++++++++++
-{
-  "Create": "H m=1.00782500000000 /Applications/AMS2022.103.app/Contents/Resources/amshome/atomicdata/ADF/ZORA/TZ2P/H",
-  "CorePotentials": {
-    "_1": [],
-    "_h": "/tmp/amstmp_ams_kid0.580605988/t12.rel"
+    "_h": "/tmp/amstmp_ams_kid0.732277961/t12.rel"
   },
   "xc": {
     "gga": "OLYP"
