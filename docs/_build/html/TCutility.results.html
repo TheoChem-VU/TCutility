@@ -37,7 +37,6 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=40769cce"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=4825356b"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'TCutility.results';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -287,51 +286,28 @@ document.write(`
                   
   <section id="tcutility-results-package">
 <h1>TCutility.results package<a class="headerlink" href="#tcutility-results-package" title="Permalink to this heading">#</a></h1>
-<p>The TCutility.results package enables you to easily retrieve information and results from a calculation done using AMS.
-This includes results and settings from AMS as well as the calculation engine used (e.g. ADF, BAND, DFTB, …).
-Recommended usage is to use the <a class="reference internal" href="#TCutility.results.read" title="TCutility.results.read"><code class="xref py py-func docutils literal notranslate"><span class="pre">TCutility.results.read()</span></code></a> function to read the information.
-One can also access specific information by calling one the functions in the submodules below.
-Information will be given as <a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">TCutility.results.result.Result</span></code></a> objects and can be used just like a <a class="reference external" href="https://docs.python.org/3.8/library/stdtypes.html#dict">dict</a>.</p>
-<section id="module-TCutility.results">
-<span id="tcutility-results"></span><h2>TCutility.results<a class="headerlink" href="#module-TCutility.results" title="Permalink to this heading">#</a></h2>
-<p>This module provides basic and general information about calculations done using AMS given a calculation directory.
-This includes information about the engine used (ADF, DFTB, BAND, …), general information such as timings, files, status of the calculation, etc.
-This information is used in further analysis programs.</p>
-<p>Typical usage example:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">TCutility.results</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">calc_dir</span> <span class="o">=</span> <span class="s1">&#39;../test/fixtures/ethanol&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">TCutility</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">engine</span>
-<span class="go">adf</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">ams_version</span><span class="o">.</span><span class="n">full</span>
-<span class="go">2022.103 r104886 (2022-06-17)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">symmetry</span>
-<span class="go">{&#39;group&#39;: &#39;C(S)&#39;, &#39;labels&#39;: [&#39;AA&#39;, &#39;AAA&#39;]}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span>
-<span class="go">{&#39;AA&#39;: -2738.644830445246,</span>
-<span class="go"> &#39;AAA&#39;: -1056.9706925183411,</span>
-<span class="go"> &#39;total&#39;: -3795.615522963587}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">vibrations</span><span class="o">.</span><span class="n">number_of_imag_modes</span>
-<span class="go">0</span>
-</pre></div>
-</div>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="module-TCutility.results.adf">
+<span id="tcutility-results-adf-module"></span><h2>TCutility.results.adf module<a class="headerlink" href="#module-TCutility.results.adf" title="Permalink to this heading">#</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="TCutility.results.read">
-<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results.html#read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.read" title="Permalink to this definition">#</a></dt>
-<dd><p>Master function for reading data from calculations. It reads general information as well as engine-specific information.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the working directory for the desired calculation</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>dictionary containing information about the calculation</p>
-</dd>
-</dl>
+<dt class="sig sig-object py" id="TCutility.results.adf.get_calc_settings">
+<span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/adf.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.adf.get_calc_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to read useful calculation settings from kf reader</p>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TCutility.results.adf.get_properties">
+<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/adf.html#get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.adf.get_properties" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-TCutility.results.ams">
-<span id="tcutility-results-ams"></span><h2>TCutility.results.ams<a class="headerlink" href="#module-TCutility.results.ams" title="Permalink to this heading">#</a></h2>
+<span id="tcutility-results-ams-module"></span><h2>TCutility.results.ams module<a class="headerlink" href="#module-TCutility.results.ams" title="Permalink to this heading">#</a></h2>
+<p>This module provides basic and general information about calculations done using AMS given a calculation directory.
+This includes information about the engine used (ADF, DFTB, BAND, …), general information such as timings, files, status of the calculation, etc.
+This information is used in further analysis programs.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="TCutility.results.ams.get_ams_info">
 <span class="sig-name descname"><span class="pre">get_ams_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_ams_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_ams_info" title="Permalink to this definition">#</a></dt>
@@ -495,92 +471,8 @@ It will also add bonds to the molecule if they are given in the rkf file, else i
 </dd></dl>
 
 </section>
-<section id="module-TCutility.results.adf">
-<span id="tcutility-results-adf"></span><h2>TCutility.results.adf<a class="headerlink" href="#module-TCutility.results.adf" title="Permalink to this heading">#</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="TCutility.results.adf.get_calc_settings">
-<span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/adf.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.adf.get_calc_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Function to read calculation settings for an ADF calculation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> – Result object containing ADF calculation settings.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing properties from the ADF calculation:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>task (str)</strong> – the task that was set for the calculation.</p></li>
-<li><p><strong>relativistic (bool)</strong> – whether or not relativistic effects were enabled.</p></li>
-<li><p><strong>unrestricted_sfos (bool)</strong> – whether or not SFOs are treated in an unrestricted manner.</p></li>
-<li><p><strong>unrestricted_mos (bool)</strong> – whether or not MOs are treated in an unrestricted manner.</p></li>
-<li><p><strong>symmetry.group (str)</strong> – the symmetry group selected for the molecule.</p></li>
-<li><p><strong>symmetry.labels (list[str])</strong> – the symmetry labels associated with the symmetry group.</p></li>
-<li><p><strong>used_regions (bool)</strong> – whether regions were used in the calculation.</p></li>
-</ul>
-</div></blockquote>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="TCutility.results.adf.get_properties">
-<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/adf.html#get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.adf.get_properties" title="Permalink to this definition">#</a></dt>
-<dd><p>Function to get properties from an ADF calculation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> – Result object containing ADF properties.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing properties from the ADF calculation:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>energy.bond (float)</strong> – bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.elstat (float)</strong> – total electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.orbint.total (float)</strong> – total orbital interaction energy containing contributions from each symmetry label (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.orbint.{symmetry label} (float)</strong> – orbital interaction energy from a specific symmetry label (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.pauli.total (float)</strong> – total Pauli repulsion energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.dispersion (float)</strong> – total dispersion energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>vibrations.number_of_modes (int)</strong> – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.</p></li>
-<li><p><strong>vibrations.number_of_imaginary_modes (int)</strong> – number of imaginary vibrational modes for this molecule.</p></li>
-<li><p><strong>vibrations.frequencies (float)</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-1\)</span>).</p></li>
-<li><p><strong>vibrations.intensities (float)</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-1\)</span>).</p></li>
-<li><p><strong>vibrations.modes (list[float])</strong> – list of vibrational modes sorted from low frequency to high frequency.</p></li>
-</ul>
-</div></blockquote>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<section id="module-TCutility.results.dftb">
-<span id="tcutility-results-dftb"></span><h2>TCutility.results.dftb<a class="headerlink" href="#module-TCutility.results.dftb" title="Permalink to this heading">#</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="TCutility.results.dftb.get_calc_settings">
-<span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/dftb.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.dftb.get_calc_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Function to read useful calculation settings from kf reader</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="TCutility.results.dftb.get_properties">
-<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/dftb.html#get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.dftb.get_properties" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-</section>
-<section id="module-TCutility.results.result">
-<span id="tcutility-results-result"></span><h2>TCutility.results.result<a class="headerlink" href="#module-TCutility.results.result" title="Permalink to this heading">#</a></h2>
-<p>Module containing the TCutility.results.result.Result class.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="TCutility.results.result.Result">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><a class="reference internal" href="_modules/TCutility/results/result.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.result.Result" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary.</p>
-</dd></dl>
-
-</section>
 <section id="module-TCutility.results.cache">
-<span id="tcutility-results-cache"></span><h2>TCutility.results.cache<a class="headerlink" href="#module-TCutility.results.cache" title="Permalink to this heading">#</a></h2>
+<span id="tcutility-results-cache-module"></span><h2>TCutility.results.cache module<a class="headerlink" href="#module-TCutility.results.cache" title="Permalink to this heading">#</a></h2>
 <p>Tiny module that handles caching rkf files.
 rkf files take a long time to open (especially {engine}.rkf), so it is better to open them once and cache them for later use</p>
 <dl class="py class">
@@ -645,6 +537,48 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 </dd></dl>
 
 </section>
+<section id="module-TCutility.results.dftb">
+<span id="tcutility-results-dftb-module"></span><h2>TCutility.results.dftb module<a class="headerlink" href="#module-TCutility.results.dftb" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="TCutility.results.dftb.get_calc_settings">
+<span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/dftb.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.dftb.get_calc_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to read useful calculation settings from kf reader</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TCutility.results.dftb.get_properties">
+<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/dftb.html#get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.dftb.get_properties" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-TCutility.results.result">
+<span id="tcutility-results-result-module"></span><h2>TCutility.results.result module<a class="headerlink" href="#module-TCutility.results.result" title="Permalink to this heading">#</a></h2>
+<p>Module containing the TCutility.results.result.Result class.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="TCutility.results.result.Result">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><a class="reference internal" href="_modules/TCutility/results/result.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.result.Result" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary.</p>
+</dd></dl>
+
+</section>
+<section id="module-TCutility.results">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-TCutility.results" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="TCutility.results.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results.html#read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.read" title="Permalink to this definition">#</a></dt>
+<dd><p>Master function for reading data from calculations. It reads general information as well as engine-specific information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the working directory for the desired calculation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary containing information about the calculation</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 
 
@@ -685,11 +619,13 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results">TCutility.results</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.read"><code class="docutils literal notranslate"><span class="pre">read()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.adf">TCutility.results.adf module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.adf.get_calc_settings"><code class="docutils literal notranslate"><span class="pre">get_calc_settings()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.adf.get_properties"><code class="docutils literal notranslate"><span class="pre">get_properties()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.ams">TCutility.results.ams</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.ams">TCutility.results.ams module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_ams_info"><code class="docutils literal notranslate"><span class="pre">get_ams_info()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_ams_version"><code class="docutils literal notranslate"><span class="pre">get_ams_version()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_calc_files"><code class="docutils literal notranslate"><span class="pre">get_calc_files()</span></code></a></li>
@@ -699,21 +635,7 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_timing"><code class="docutils literal notranslate"><span class="pre">get_timing()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.adf">TCutility.results.adf</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.adf.get_calc_settings"><code class="docutils literal notranslate"><span class="pre">get_calc_settings()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.adf.get_properties"><code class="docutils literal notranslate"><span class="pre">get_properties()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.dftb">TCutility.results.dftb</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.dftb.get_calc_settings"><code class="docutils literal notranslate"><span class="pre">get_calc_settings()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.dftb.get_properties"><code class="docutils literal notranslate"><span class="pre">get_properties()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.result">TCutility.results.result</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.result.Result"><code class="docutils literal notranslate"><span class="pre">Result</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.cache">TCutility.results.cache</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.cache">TCutility.results.cache module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.cache.TrackKFReader"><code class="docutils literal notranslate"><span class="pre">TrackKFReader</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.cache.TrackKFReader.read"><code class="docutils literal notranslate"><span class="pre">TrackKFReader.read()</span></code></a></li>
 </ul>
@@ -721,6 +643,19 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.cache.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.cache.store"><code class="docutils literal notranslate"><span class="pre">store()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.cache.unload"><code class="docutils literal notranslate"><span class="pre">unload()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.dftb">TCutility.results.dftb module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.dftb.get_calc_settings"><code class="docutils literal notranslate"><span class="pre">get_calc_settings()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.dftb.get_properties"><code class="docutils literal notranslate"><span class="pre">get_properties()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.result">TCutility.results.result module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.result.Result"><code class="docutils literal notranslate"><span class="pre">Result</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results">Module contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.read"><code class="docutils literal notranslate"><span class="pre">read()</span></code></a></li>
 </ul>
 </li>
 </ul>
