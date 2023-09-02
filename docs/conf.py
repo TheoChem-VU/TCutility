@@ -1,3 +1,5 @@
+import git
+
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -10,7 +12,13 @@
 project = 'TCutility'
 copyright = '2023, TheoCheM VU Amsterdam'
 author = 'TheoCheM VU Amsterdam'
-release = '0.1.0'
+
+# get release information
+repo = git.Repo('..')
+tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
+latest_tag = tags[-1]
+release = latest_tag.name
+print(release)
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -36,6 +44,7 @@ modindex_common_prefix = ['TCutility.']
 html_theme_options = {
   "show_nav_level": 2,
   "navigation_depth": 2,
+  "navbar_start": ["navbar-logo", "star"],
 }
 
 # -- Options for HTML output -------------------------------------------------
@@ -47,7 +56,7 @@ add_module_names = False
 
 # custom variables
 rst_epilog = f"""
-.. |ProjectVersion| replace:: v{release}
+.. |ProjectVersion| replace:: {release}
 .. |cm-1| replace:: :math:`\\text{{cm}}^{-1}`
 .. |kcal/mol| replace:: :math:`\\text{{kcal mol}}^{-1}`
 .. |km/mol| replace:: :math:`\\text{{km mol}}^{-1}`
