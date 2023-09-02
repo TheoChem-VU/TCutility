@@ -16,14 +16,6 @@ TCutility.results
    :undoc-members:
    :show-inheritance:
 
-TCutility.results.adf
----------------------
-
-.. automodule:: TCutility.results.adf
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 TCutility.results.ams
 ---------------------
 
@@ -32,10 +24,10 @@ TCutility.results.ams
    :undoc-members:
    :show-inheritance:
 
-TCutility.results.cache
------------------------
+TCutility.results.adf
+---------------------
 
-.. automodule:: TCutility.results.cache
+.. automodule:: TCutility.results.adf
    :members:
    :undoc-members:
    :show-inheritance:
@@ -56,5 +48,12 @@ TCutility.results.result
    :undoc-members:
    :show-inheritance:
 
+TCutility.results.cache
+-----------------------
+
+.. automodule:: TCutility.results.cache
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 .. _dict: https://docs.python.org/3.8/library/stdtypes.html#dict
