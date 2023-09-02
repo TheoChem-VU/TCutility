@@ -1,3 +1,7 @@
+'''
+This script demonstrates how to get properties from a finished calculation. In this case, we optimized ethanol using ADF. Using the read function, we can extract information such as the symmetry and vibrations.
+'''
+
 import TCutility.results
 from pprint import pprint
 
