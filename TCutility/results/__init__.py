@@ -1,3 +1,17 @@
+"""
+This module provides basic and general information about calculations done using AMS given a calculation directory.
+This includes information about the engine used (ADF, DFTB, BAND, ...), general information such as timings, files, status of the calculation, etc.
+This information is used in further analysis programs.
+
+Typical usage example:
+    
+    >>> import TCutility.results
+    >>> calc_dir = '../test/fixtures/ethanol'
+    >>> info = TCutility.results.read(calc_dir)
+    >>> print(info.engine)
+    >>> print(info.properties.energy.bond)
+"""
+
 from . import result
 Result = result.Result
 

@@ -1,8 +1,3 @@
-"""
-This module provides basic and general information about calculations done using AMS given a calculation directory.
-This includes information about the engine used (ADF, DFTB, BAND, ...), general information such as timings, files, status of the calculation, etc.
-This information is used in further analysis programs.
-"""
 import numpy as np
 from scm import plams
 from TCutility.results import cache, Result
