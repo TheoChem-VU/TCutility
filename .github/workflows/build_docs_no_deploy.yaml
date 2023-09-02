@@ -44,6 +44,3 @@ jobs:
         
       - name: Build the docs
         run: cd docs; make html
-
-            status_options: '-uall --ignored'
-            push_options: '--force'
