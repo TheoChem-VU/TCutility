@@ -19,8 +19,11 @@ print(repo)
 print(repo.heads)
 tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
 print(tags)
-latest_tag = tags[-1]
-release = latest_tag.name
+if len(tags) == 0:
+    release = 'vUnknown'
+else:
+    latest_tag = tags[-1]
+    release = latest_tag.name
 print(release)
 
 # -- General configuration ---------------------------------------------------
