@@ -15,16 +15,21 @@ author = 'TheoCheM VU Amsterdam'
 
 # get release information
 repo = git.Repo('..')
-print(repo)
-print(repo.heads)
+
 tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
-print(tags)
 if len(tags) == 0:
+    latest_tag = None
     release = 'vUnknown'
 else:
     latest_tag = tags[-1]
     release = latest_tag.name
-print(release)
+
+print('Git data:')
+print('\tRepository:    ', repo)
+print('\tHeads:         ', repo.heads)
+print('\tTags:          ', tags)
+print('\tLatest Tag:    ', repr(latest_tag))
+print('\tLatest Version:', release)
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
