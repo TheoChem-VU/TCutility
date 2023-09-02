@@ -1,4 +1,5 @@
-from TCutility.results import cache, Result, constants
+from TCutility.results import cache, Result
+from TCutility import constants
 from typing import List
 
 
@@ -86,7 +87,7 @@ def get_properties(info: Result) -> Result:
             - **vibrations.frequencies (float)** – vibrational frequencies associated with the vibrational modes, sorted from low to high (|cm-1|).
             - **vibrations.intensities (float)** – vibrational intensities associated with the vibrational modes (|km/mol|).
             - **vibrations.modes (list[float])** – list of vibrational modes sorted from low frequency to high frequency.
-            - **vdd.charges (list[float]) ** - list of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges. 
+            - **vdd.charges (list[float])** - list of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges. 
     '''
 
     assert info.engine == 'adf', f'This function reads ADF data, not {info.engine} data'
