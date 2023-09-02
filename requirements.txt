@@ -1,3 +1,4 @@
 plams
 numpy
 matplotlib
+GitPython
