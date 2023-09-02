@@ -101,19 +101,21 @@ def get_properties(info: Result) -> Result:
     ret.energy.elstat = reader_adf.read('Energy', 'elstat') * ha2kcalmol
     ret.energy.orbint.total = reader_adf.read('Energy', 'Orb.Int. Total') * ha2kcalmol
     for symlabel in info.adf.symmetry.labels:
+        symlabel = symlabel.split(':')[0]
         ret.energy.orbint[symlabel] = reader_adf.read('Energy', f'Orb.Int. {symlabel}') * ha2kcalmol
     ret.energy.pauli.total = reader_adf.read('Energy', 'Pauli Total') * ha2kcalmol
     ret.energy.dispersion = reader_adf.read('Energy', 'Dispersion Energy') * ha2kcalmol
 
     # vibrational information
-    ret.vibrations.number_of_modes = reader_adf.read('Vibrations', 'nNormalModes')
-    freqs = reader_adf.read('Vibrations', 'Frequencies[cm-1]')
-    ints = reader_adf.read('Vibrations', 'Intensities[km/mol]')
-    ret.vibrations.frequencies = freqs if isinstance(freqs, list) else [freqs]
-    ret.vibrations.intensities = ints if isinstance(ints, list) else [ints]
-    ret.vibrations.number_of_imag_modes = len([freq for freq in freqs if freq < 0])
-    ret.vibrations.modes = []    
-    for i in range(ret.vibrations.number_of_modes):
-        ret.vibrations.modes.append(reader_adf.read('Vibrations', f'NoWeightNormalMode({i+1})'))
+    if ('Vibrations', 'nNormalModes') in reader_adf:
+        ret.vibrations.number_of_modes = reader_adf.read('Vibrations', 'nNormalModes')
+        freqs = reader_adf.read('Vibrations', 'Frequencies[cm-1]')
+        ints = reader_adf.read('Vibrations', 'Intensities[km/mol]')
+        ret.vibrations.frequencies = freqs if isinstance(freqs, list) else [freqs]
+        ret.vibrations.intensities = ints if isinstance(ints, list) else [ints]
+        ret.vibrations.number_of_imag_modes = len([freq for freq in freqs if freq < 0])
+        ret.vibrations.modes = []    
+        for i in range(ret.vibrations.number_of_modes):
+            ret.vibrations.modes.append(reader_adf.read('Vibrations', f'NoWeightNormalMode({i+1})'))
 
     return ret
