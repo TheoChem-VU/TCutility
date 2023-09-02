@@ -15,8 +15,8 @@ def get_calc_settings(info: Result) -> Result:
 
             - **task (str)** – the task that was set for the calculation.
             - **relativistic (bool)** – whether or not relativistic effects were enabled.
-            - **unrestricted_sfos (bool)** – whether or not SFOs are treated in a nunrestricted manner.
-            - **unrestricted_mos (bool)** – whether or not MOs are treated in a nunrestricted manner.
+            - **unrestricted_sfos (bool)** – whether or not SFOs are treated in an unrestricted manner.
+            - **unrestricted_mos (bool)** – whether or not MOs are treated in an unrestricted manner.
             - **symmetry.group (str)** – the symmetry group selected for the molecule.
             - **symmetry.labels (list[str])** – the symmetry labels associated with the symmetry group.
             - **used_regions (bool)** – whether regions were used in the calculation.
