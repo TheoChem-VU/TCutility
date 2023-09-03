@@ -1,1 +1,3 @@
-ha2kcalmol = 627.509474 
+from typing import Final
+
+HA2KCALMOL: Final[float] = 627.509474 
