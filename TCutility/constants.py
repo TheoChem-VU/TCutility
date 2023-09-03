@@ -1,1 +1,1 @@
-HA2KCALMOL: Final[float] = 627.509474 
+HA2KCALMOL: float = 627.509474 
