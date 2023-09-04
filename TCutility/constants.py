@@ -1,0 +1,1 @@
+HA2KCALMOL: float = 627.509474 

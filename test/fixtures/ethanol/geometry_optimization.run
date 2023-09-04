@@ -1,0 +1,44 @@
+#!/bin/sh
+
+"$AMSBIN/ams" << eor
+
+Task GeometryOptimization
+Properties
+    NormalModes Yes
+End
+System
+    Atoms
+        C 0.94569149 0.39248533 0.0 
+        C -0.33261023 -0.42764769 0.0 
+        O -1.45175843 0.46610866 0.0 
+        H 1.81644305 -0.2722078 0.0 
+        H 0.99946072 1.03126009 0.8876093 
+        H 0.99946072 1.03126009 -0.8876093 
+        H -0.35987093 -1.07792625 0.88954503 
+        H -0.35987093 -1.07792625 -0.88954503 
+        H -2.25694545 -0.06540617 0.0 
+    End
+    BondOrders
+         1 2 1.0
+         1 4 1.0
+         1 5 1.0
+         1 6 1.0
+         2 3 1.0
+         2 7 1.0
+         2 8 1.0
+         3 9 1.0
+    End
+End
+
+Engine ADF
+    Basis
+        Type TZ2P
+        Core None
+    End
+    XC
+        GGA OLYP
+    End
+    NumericalQuality Good
+EndEngine
+eor
+
