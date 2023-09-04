@@ -36,6 +36,9 @@ jobs:
         with:
           python-version: '3.8' 
 
+      - name: debug
+        run: git tag --sort=v:refname
+
       - name: Build package
         run: |
           python -m pip install --upgrade pip
