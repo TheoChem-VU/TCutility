@@ -1,1 +1,1 @@
-ha2kcalmol = 627.509474 
+HA2KCALMOL: float = 627.509474 
