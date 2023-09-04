@@ -30,15 +30,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - run: git fetch --prune --unshallow --tags
+
+      - name: Get git tags
+        run: git fetch --prune --unshallow --tags
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.8' 
-
-      - name: debug
-        run: git tag --sort=v:refname
 
       - name: Build package
         run: |
