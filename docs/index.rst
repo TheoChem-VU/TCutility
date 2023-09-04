@@ -13,6 +13,7 @@ TCutility |ProjectVersion| documentation
    :caption: Contents:
 
    TCutility.results
+   TCutility.constants
 
 
 Indices and tables
