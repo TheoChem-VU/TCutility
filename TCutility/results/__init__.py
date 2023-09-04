@@ -12,7 +12,7 @@ from . import result
 Result = result.Result
 
 from . import adf, dftb, ams, cache  # noqa: E402
-import os
+import os  # noqa: E402
 
 
 def read(calc_dir: str) -> Result:
