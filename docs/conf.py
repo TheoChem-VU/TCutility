@@ -53,14 +53,17 @@ autodoc_default_options = {
 modindex_common_prefix = ['TCutility.']
 
 html_theme_options = {
-  "show_nav_level": 2,
-  "navigation_depth": 2,
-  "navbar_start": ["navbar-logo", "star"],
+  # "show_nav_level": 2,
+  # "navigation_depth": 2,
+  "navbar_end": ["star"],
+  "navbar_center": [],
+  "navbar_start": ['logo'],
 }
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
+html_favicon = 'https://avatars.githubusercontent.com/u/119413491' 
 html_theme = 'pydata_sphinx_theme'  # pip install pydata-sphinx-theme
 html_static_path = ['_static']
 add_module_names = False
