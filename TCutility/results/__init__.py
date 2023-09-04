@@ -11,7 +11,8 @@ Typical usage example:
 from . import result
 Result = result.Result
 
-from . import adf, dftb, ams  # noqa: E402
+from . import adf, dftb, ams, cache  # noqa: E402
+import os
 
 
 def read(calc_dir: str) -> Result:
@@ -31,4 +32,8 @@ def read(calc_dir: str) -> Result:
     elif ret.engine == 'dftb':
         ret.dftb = dftb.get_calc_settings(ret)
         ret.properties = dftb.get_properties(ret)
+
+    # unload cached KFReaders associated with this calc_dir
+    to_delete = [key for key in cache._cache if key.startswith(os.path.abspath(calc_dir))]
+    [cache.unload(key) for key in to_delete]
     return ret
