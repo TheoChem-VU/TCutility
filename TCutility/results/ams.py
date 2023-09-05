@@ -1,6 +1,7 @@
 import numpy as np
 from scm import plams
 from TCutility.results import cache, Result
+from TCutility import ensure_list
 import os
 from datetime import datetime
 
@@ -272,7 +273,7 @@ def get_molecules(calc_dir: str) -> Result:
     ret = Result()
 
     # read general
-    atnums = list(reader_ams.read('InputMolecule', 'AtomicNumbers'))  # type: ignore plams does not include type hints. Returns list[int]
+    atnums = ensure_list(reader_ams.read('InputMolecule', 'AtomicNumbers'))  # type: ignore plams does not include type hints. Returns list[int]
     natoms = len(atnums)
     ret.number_of_atoms = natoms
     ret.atom_numbers = atnums
@@ -334,7 +335,7 @@ def get_history(calc_dir: str) -> Result:
     ret = Result()
 
     # read general info
-    atnums = list(reader_ams.read('InputMolecule', 'AtomicNumbers'))  # type: ignore plams does not include type hints. Returns list[int]
+    atnums = ensure_list(reader_ams.read('InputMolecule', 'AtomicNumbers'))  # type: ignore plams does not include type hints. Returns list[int]
     natoms = len(atnums)
 
     if ('History', 'nEntries') in reader_ams:
