@@ -29,6 +29,7 @@ def read(calc_dir: str) -> Result:
     if ret.engine == 'adf':
         ret.adf = adf.get_calc_settings(ret)
         ret.properties = adf.get_properties(ret)
+        ret.level = adf.get_level_of_theory(ret)
     elif ret.engine == 'dftb':
         ret.dftb = dftb.get_calc_settings(ret)
         ret.properties = dftb.get_properties(ret)
