@@ -23,14 +23,14 @@ class Result(dict):
     def __contains__(self, key):
         # Custom method to check if the key is defined in this object, case-insensitive.
         return key.lower() in [key_.lower() for key_ in self.keys()]
+
+    def __set_empty(self, key):
+        # This function checks if the key has been set. 
+        # If it has not, we create a new Result object and set it at the desired key
         if key not in self:
             val = Result()
             self.__setitem__(key, val)
-            return val
-        return super().__getitem__(key)
 
-    def __setattr__(self, key, val):
-        self.__setitem__(key, val)
     def __get_case(self, key):
         # Get the case of the key as it has been set in this object.
         # The first time a key-value pair has been assigned the case of the key will be set.
