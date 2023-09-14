@@ -1,7 +1,7 @@
 import numpy as np
 from scm import plams
 from TCutility.results import cache, Result
-from TCutility import ensure_list
+from TCutility import ensure_list, squeeze_list
 import os
 from datetime import datetime
 
@@ -123,6 +123,9 @@ def get_ams_info(calc_dir: str) -> Result:
     # if program cannot be read from reader it is probably an old version of ADF, so we should default to ADF
     else:
         ret.engine = 'adf'
+
+    # store the input of the calculation
+    ret.input = get_ams_input(calc_dir)
 
     # store the job id, which should be unique for the job
     ret.job_id = reader_ams.read('General', 'jobid') if ('General', 'jobid') in reader_ams else None
@@ -375,3 +378,88 @@ def get_history(calc_dir: str) -> Result:
                     ret[item.lower()].append(val)
 
     return ret
+
+
+def get_ams_input(calc_dir: str):
+    files = get_calc_files(calc_dir)
+    reader_ams = cache.get(files['ams.rkf'])
+    # the input settings are stored in a Result object
+    sett = Result()
+
+    # we define some blocks here. Missing ones should be added here
+    blocks = [
+        'engine', 
+        'basis', 
+        'xc', 
+        'system', 
+        'atoms', 
+        'bondorders',
+        'normalmodes', 
+        'pespointcharacter', 
+        'properties', 
+        'transitionstatesearch', 
+        'reactioncoordinate', 
+        'scf', 
+        'relativity',
+        ]
+
+    # special blocks are blocks that have multiple lines that can
+    # be defined using the same key.
+    # for example, reactioncoordinate can have multiple "Distance" keys
+    special_blocks = [
+        'atoms', 
+        'bondorders',
+        'reactioncoordinate',
+        ]
+
+    # open_blocks tracks the blocks that were opened. We start with the AMS block.
+    # a block is added to open_block if a line in the input is the same as the block name defined above
+    # open blocks are closed with "end" statements, in which case we remove the last added block
+    open_blocks = ['AMS']
+
+    # we open and look through each line in the input file
+    for line in reader_ams.read('General', 'user input').splitlines():
+        line = line.strip()
+
+        if line == '':
+            continue
+
+        # if the line starts with "end" an open block has been closed. Some blocks are ended in a special way
+        # for example, EndEngine closes an engine block. Thats why we use startswith, instead of a simple == comparison.
+        if line.lower().startswith('end'):
+            open_blocks.pop(-1)
+            continue
+
+        # check if a block is being opened. First requirement is that the line starts with a block name
+        if any(line.lower().startswith(block) for block in blocks):
+            # if the block is the engine block, the type of engine is given after: "engine {engine_name}"
+            if line.lower().startswith('engine'):
+                open_blocks.append(line.split()[1])
+            # in all other cases the block being opened should have only the blockname in the line
+            # for example the properties block can contain key-value pairs that correspond to block names, so we should not open a new block in those cases
+            elif len(line.split()) > 1:
+                continue
+            # if the requirements are met we have opened the block
+            else:
+                open_blocks.append(line)
+            continue
+
+        # if we are not opening or closing a block we are reading a key-value pair
+        # we first navigate to the correct level in the Result object
+        sett_ = sett
+        # go through all the blocks and reference the value at that block
+        for block in open_blocks:
+            # if the block is a special block and we have not assigned it yet, we have to set the value of the block to an empty list
+            if block.lower() in special_blocks and not sett_[block]:
+                sett_[block] = []
+            sett_ = sett_[block]
+
+        # read the key-value pairs
+        # if we are in a special block we append to a list instead of assigning a dictionary key
+        if open_blocks[-1].lower() in special_blocks:
+            sett_.append(line)
+        # if we arent in a special block we simply assign the key-value pair to the Result
+        else:
+            sett_[line.split()[0]] = squeeze_list(line.split()[1:])
+
+    return sett.ams
