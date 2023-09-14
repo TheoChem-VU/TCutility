@@ -38,3 +38,13 @@ class Result(dict):
             if key_.lower() == key.lower():
                 return key_
         return key
+
+
+if __name__ == '__main__':
+    ret = Result()
+    ret.aDf.x = {'a': 1, 'b': 2}
+    print(ret.adf.x.a)
+
+    ret.ADF.y = 2345
+    ret.dftb.z = 'hello'
+    print(ret)
