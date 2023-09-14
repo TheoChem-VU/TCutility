@@ -2,7 +2,8 @@
 
 
 class Result(dict):
-    '''Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary. The class works case-insensitively, but will retain the case of the key when it was first set.'''
+    '''Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary. 
+    The class works case-insensitively, but will retain the case of the key when it was first set.'''
     def __getitem__(self, key):
         self.__set_empty(key)
         val = super().__getitem__(self.__get_case(key))
