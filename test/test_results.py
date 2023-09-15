@@ -15,6 +15,7 @@ def test_dft_engine() -> None:
 
 
 def test_LOT() -> None:
+    # LOT = level of theory
     res = results.read(j('test', 'fixtures', 'DFT_EDA'))
     assert res.level.summary == 'OLYP/TZ2P'
 
