@@ -388,19 +388,25 @@ def get_ams_input(calc_dir: str):
 
     # we define some blocks here. Missing ones should be added here
     blocks = [
-        'engine', 
-        'basis', 
-        'xc', 
-        'system', 
-        'atoms', 
-        'bondorders',
-        'normalmodes', 
-        'pespointcharacter', 
-        'properties', 
-        'transitionstatesearch', 
-        'reactioncoordinate', 
-        'scf', 
-        'relativity',
+        'Engine', 
+        'Basis', 
+        'XC', 
+        'System', 
+        'Atoms', 
+        'BondOrders',
+        'NormalModes', 
+        'PESPointCharacter', 
+        'Properties', 
+        'TransitionStateSearch', 
+        'ReactionCoordinate', 
+        'SCF', 
+        'Relativity',
+        'Fragments',
+        'Lattice',
+        'ElectrostaticEmbedding',
+        'MultipolePotential',
+        'Coordinates',
+        'LoadSystem',
         ]
 
     # special blocks are blocks that have multiple lines that can
@@ -410,6 +416,8 @@ def get_ams_input(calc_dir: str):
         'atoms', 
         'bondorders',
         'reactioncoordinate',
+        'lattice',
+        'Coordinates',
         ]
 
     # open_blocks tracks the blocks that were opened. We start with the AMS block.
@@ -431,7 +439,7 @@ def get_ams_input(calc_dir: str):
             continue
 
         # check if a block is being opened. First requirement is that the line starts with a block name
-        if any(line.lower().startswith(block) for block in blocks):
+        if any(line.lower().startswith(block.lower()) for block in blocks):
             # if the block is the engine block, the type of engine is given after: "engine {engine_name}"
             if line.lower().startswith('engine'):
                 open_blocks.append(line.split()[1])
