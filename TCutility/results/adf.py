@@ -166,7 +166,7 @@ def get_level_of_theory(info: Result) -> Result:
 
     ret.xc.dispersion = None
     if 'dispersion' in [key.lower() for key in sett.adf.xc]:
-        ret.xc.dispersion = " ".join(sett.adf.xc.dispersion)
+        ret.xc.dispersion = " ".join(sett.adf.xc.dispersion.split())
 
     ret.xc.empirical_scaling = None
     if 'empiricalscaling' in [key.lower() for key in sett.adf.xc]:
