@@ -380,52 +380,73 @@ def get_history(calc_dir: str) -> Result:
     return ret
 
 
+def get_input_blocks():
+    '''
+    This function reads input_blocks and decomposes its content into a list of blocks and a list of non-standard blocks
+    The general format is as follows:
+
+    parentblock
+    - subblock
+    - - subsubblock
+    - subblock !nonstandard
+    parentblock
+    - subblock
+    - - subsubblock 
+    - - - subsubsubblock
+    - - - subsubsubblock !nonstandard
+    
+    Each subblock has to be defined within its parent block. !nonstandard indicates that the block is a non-standard block
+    These blocks are special in that they can contain multiple of the same entry
+    '''
+    blocks = []
+    nonstandard_blocks = []
+    parent_blocks = []  # this list tracks the parent blocks of the current block
+    with open(j(os.path.split(__file__)[0], 'input_blocks')) as inpblx:
+        lines = inpblx.readlines()
+
+    for line in lines:
+        line = line.strip().lower()
+        # we can ignore some lines
+        if line == '' or line.startswith('#'):
+            continue
+
+        # block_depth indicates how many parents the block has
+        block_depth = line.count('- ')
+        # we reduce the amount of parent_blocks using block_depth
+        # if we move from a subsubblock to a subblock we remove the last-added block
+        parent_blocks = parent_blocks[:block_depth]
+
+        # remove the "- " substrings
+        block = line.split('- ')[-1].strip()
+        # check if the block is non-standard. If it is, remove the !nonstandard substring
+        # and add it to the nonstandard_blocks list
+        if block.endswith('!nonstandard'):
+            block = block.split()[0]
+            nonstandard_blocks.append(parent_blocks.copy() + [block])
+        # in both standard and nonstandard cases add the block to blocks list
+        blocks.append(parent_blocks.copy() + [block])
+        # add the current block to parent_blocks for the next line
+        parent_blocks.append(block)
+
+    return blocks, nonstandard_blocks
+
+
 def get_ams_input(calc_dir: str):
     files = get_calc_files(calc_dir)
     reader_ams = cache.get(files['ams.rkf'])
+
     # the input settings are stored in a Result object
     sett = Result()
 
-    # we define some blocks here. Missing ones should be added here
-    blocks = [
-        'Engine', 
-        'Basis', 
-        'XC', 
-        'System', 
-        'Atoms', 
-        'BondOrders',
-        'NormalModes', 
-        'PESPointCharacter', 
-        'Properties', 
-        'TransitionStateSearch', 
-        'GeometryOptimization',
-        'ReactionCoordinate', 
-        'SCF', 
-        'Relativity',
-        'Fragments',
-        'Lattice',
-        'ElectrostaticEmbedding',
-        'MultipolePotential',
-        'Coordinates',
-        'LoadSystem',
-        ]
-
-    # special blocks are blocks that have multiple lines that can
-    # be defined using the same key.
-    # for example, reactioncoordinate can have multiple "Distance" keys
-    special_blocks = [
-        'atoms', 
-        'bondorders',
-        'reactioncoordinate',
-        'lattice',
-        'Coordinates',
-        ]
-
+    # we get the blocks and nonstandard blocks from input_blocks text file
+    blocks, nonstandard_blocks = get_input_blocks()
+    
     # open_blocks tracks the blocks that were opened. We start with the AMS block.
-    # a block is added to open_block if a line in the input is the same as the block name defined above
+    # a block is added to open_block if a line in the input is the same as a block name defined above
     # open blocks are closed with "end" statements, in which case we remove the last added block
-    open_blocks = ['AMS']
+    open_blocks = ['ams']
 
+    is_nonstandard = False
     # we open and look through each line in the input file
     for line in reader_ams.read('General', 'user input').splitlines():
         line = line.strip()
@@ -438,36 +459,29 @@ def get_ams_input(calc_dir: str):
             open_blocks.pop(-1)
             continue
 
-        # check if a block is being opened. First requirement is that the line starts with a block name
-        if any(line.lower().startswith(block.lower()) for block in blocks):
-            # if the block is the engine block, the type of engine is given after: "engine {engine_name}"
-            if line.lower().startswith('engine'):
-                open_blocks.append(line.split()[1])
-            # in all other cases the block being opened should have only the blockname in the line
-            # for example the properties block can contain key-value pairs that correspond to block names, so we should not open a new block in those cases
-            elif len(line.split()) > 1:
-                continue
-            # if the requirements are met we have opened the block
-            else:
-                open_blocks.append(line)
+        sett_ = sett
+        possible_blocks = blocks
+        for open_block in open_blocks:
+            if open_block != open_blocks[-1]:
+                sett_ = sett_[open_block]
+            possible_blocks = [blocks_[1:] for blocks_ in possible_blocks if len(blocks_) > 0 and blocks_[0] == open_block]
+        possible_blocks = set([blocks_[0].lower() for blocks_ in possible_blocks if len(blocks_) > 0])
+
+        if line.lower() in possible_blocks:
+            is_nonstandard = open_blocks + [line.lower()] in nonstandard_blocks
+            open_blocks.append(line.lower())
             continue
 
-        # if we are not opening or closing a block we are reading a key-value pair
-        # we first navigate to the correct level in the Result object
-        sett_ = sett
-        # go through all the blocks and reference the value at that block
-        for block in open_blocks:
-            # if the block is a special block and we have not assigned it yet, we have to set the value of the block to an empty list
-            if block.lower() in special_blocks and not sett_[block]:
-                sett_[block] = []
-            sett_ = sett_[block]
-
-        # read the key-value pairs
-        # if we are in a special block we append to a list instead of assigning a dictionary key
-        if open_blocks[-1].lower() in special_blocks:
-            sett_.append(line)
-        # if we arent in a special block we simply assign the key-value pair to the Result
+        if is_nonstandard:
+            if not sett_[open_blocks[-1]]:
+                sett_[open_blocks[-1]] = []
+            sett_[open_blocks[-1]].append(line)
         else:
-            sett_[line.split()[0]] = squeeze_list(line.split()[1:])
+            sett_[open_blocks[-1]][line.split()[0]] = squeeze_list(line.split()[1:])
 
-    return sett.ams
+    for engine_block in ['engine adf', 'engine dftb', 'engine band']:
+        if engine_block not in sett['ams']:
+            continue
+        sett['ams'][engine_block.split()[1]] = sett['ams'][engine_block]
+        del sett['ams'][engine_block]
+    return sett['ams']
