@@ -162,7 +162,7 @@ def get_level_of_theory(info: Result) -> Result:
 
     ret.basis.type = sett.adf.basis.type
     ret.basis.core = sett.adf.basis.core
-    ret.quality = sett.adf.NumericalQuality
+    ret.quality = sett.adf.NumericalQuality or 'Normal'
 
     ret.xc.dispersion = None
     if 'dispersion' in [key.lower() for key in sett.adf.xc]:
