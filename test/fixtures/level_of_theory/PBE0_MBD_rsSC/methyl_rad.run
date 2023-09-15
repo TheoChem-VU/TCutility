@@ -1,0 +1,34 @@
+#!/bin/sh
+
+"$AMSBIN/ams" << eor
+
+Task SinglePoint
+System
+    Atoms
+        H 0.5365546 -0.92933983 0.0 
+        C 0.0 -0.0 0.0 
+        H 0.5365546 0.92933983 0.0 
+        H -1.0731092 -0.0 0.0 
+    End
+    BondOrders
+         1 2 1.0
+         2 3 1.0
+         2 4 1.0
+    End
+End
+
+Engine ADF
+    Basis
+        Type TZ2P
+        Core Small
+    End
+    SpinPolarization 1
+    XC
+        Hybrid PBE0
+        DISPERSION MBD
+    End
+    Unrestricted Yes
+    NumericalQuality Good
+EndEngine
+eor
+

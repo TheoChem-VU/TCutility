@@ -1,0 +1,29 @@
+#!/bin/sh
+
+"$AMSBIN/ams" << eor
+
+Task SinglePoint
+System
+    Atoms
+        O 0.1331769927257709 -0.2030772604207501 -1.768979030450695e-15 
+        H -0.4799382680454834 -0.9373559798624606 -1.156523691034338e-15 
+        H 1.018807295902106 -0.5646495635410148 -1.200753917049575e-15 
+    End
+    BondOrders
+         1 2 1.0
+         1 3 1.0
+    End
+End
+
+Engine ADF
+    Basis
+        Type TZ2P
+        Core None
+    End
+    XC
+        MP2
+        EmpiricalScaling SOS
+    End
+EndEngine
+eor
+
