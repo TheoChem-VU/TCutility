@@ -398,6 +398,7 @@ def get_ams_input(calc_dir: str):
         'PESPointCharacter', 
         'Properties', 
         'TransitionStateSearch', 
+        'GeometryOptimization',
         'ReactionCoordinate', 
         'SCF', 
         'Relativity',
@@ -428,7 +429,6 @@ def get_ams_input(calc_dir: str):
     # we open and look through each line in the input file
     for line in reader_ams.read('General', 'user input').splitlines():
         line = line.strip()
-
         if line == '':
             continue
 
