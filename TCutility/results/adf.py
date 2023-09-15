@@ -191,12 +191,12 @@ def get_level_of_theory(info: Result) -> Result:
             ret.xc.summary += '-D4'
         if ret.xc.dispersion.lower() == 'ddsc':
             ret.xc.summary += '-dDsC'
-        if ret.xc.dispersion.lower() == 'UFF':
+        if ret.xc.dispersion.lower() == 'uff':
             ret.xc.summary += '-dUFF'
-        if ret.xc.dispersion.lower() == 'MBD':
+        if ret.xc.dispersion.lower() == 'mbd':
             ret.xc.summary += '-MBD@rsSC'
         if ret.xc.dispersion.lower() == 'default':
             ret.xc.summary += '-D'
 
-    ret.summary = ret.xc.summary + f'/{ret.basis.type}/{ret.quality}'
+    ret.summary = f'{ret.xc.summary}/{ret.basis.type}'
     return ret
