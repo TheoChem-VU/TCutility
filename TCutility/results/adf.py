@@ -152,7 +152,7 @@ def get_level_of_theory(info: Result) -> Result:
     sett = info.input
     ret = Result()
     # print(json.dumps(sett, indent=4))
-    xc_categories = ['GGA', 'LDA', 'MetaGGA', 'MetaHybrid', 'Model', 'LibXC', 'DoubleHybrid', 'Hybrid']
+    xc_categories = ['GGA', 'LDA', 'MetaGGA', 'MetaHybrid', 'Model', 'LibXC', 'DoubleHybrid', 'Hybrid', 'MP2', 'HartreeFock']
     ret.xc.functional = 'VWN'
     ret.xc.category = 'LDA'
     for cat in xc_categories:
@@ -167,6 +167,10 @@ def get_level_of_theory(info: Result) -> Result:
     ret.xc.dispersion = None
     if 'dispersion' in [key.lower() for key in sett.adf.xc]:
         ret.xc.dispersion = " ".join(sett.adf.xc.dispersion)
+
+    ret.xc.empirical_scaling = None
+    if 'empiricalscaling' in [key.lower() for key in sett.adf.xc]:
+        ret.xc.empiricalscaling = " ".join(sett.adf.xc.empiricalscaling)
 
     # build the level-of-theory string, as we often have in papers
     ret.xc.summary = f'{ret.xc.functional}'
