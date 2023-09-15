@@ -145,6 +145,7 @@ def get_level_of_theory(info: Result) -> Result:
             - **xc.category (str)** - category the XC-functional belongs to. E.g. GGA, MetaHybrid, etc ...
             - **xc.dispersion (str)** - the dispersion correction method used during the calculation.
             - **xc.summary (str)** - a summary string that gives the XC-functional information in a human-readable format.
+            - **xc.empiricalScaling (str)** - which empirical scaling parameter was used. Useful for MP2 calculations.
             - **basis.type (str)** - the size/type of the basis-set.
             - **basis.core (str)** - the size of the frozen-core approximation.
             - **quality (str)** - the numerical quality setting.
@@ -168,10 +169,13 @@ def get_level_of_theory(info: Result) -> Result:
     if 'dispersion' in [key.lower() for key in sett.adf.xc]:
         ret.xc.dispersion = " ".join(sett.adf.xc.dispersion.split())
 
+    # the empirical scaling value is used for MP2 calculations
     ret.xc.empirical_scaling = None
     if 'empiricalscaling' in [key.lower() for key in sett.adf.xc]:
         ret.xc.empiricalscaling = sett.adf.xc.empiricalscaling
 
+    # MP2 and HF are a little bit different from the usual xc categories. They are not key-value pairs but only the key
+    # we start building the ret.xc.summary string here already. This will contain the human-readable functional name
     if ret.xc.category == 'MP2':
         ret.xc.summary = 'MP2'
         if ret.xc.empiricalscaling:
@@ -181,7 +185,7 @@ def get_level_of_theory(info: Result) -> Result:
     else:
         ret.xc.summary = ret.xc.functional
 
-    # build the level-of-theory string, as we often have in papers
+    # If dispersion was used, we want to add it to the ret.xc.summary
     if ret.xc.dispersion:
         if ret.xc.dispersion.lower() == 'grimme3':
             ret.xc.summary += '-D3'
@@ -198,5 +202,6 @@ def get_level_of_theory(info: Result) -> Result:
         if ret.xc.dispersion.lower() == 'default':
             ret.xc.summary += '-D'
 
+    # ret.summary is simply the ret.xc.summary plus the basis set type
     ret.summary = f'{ret.xc.summary}/{ret.basis.type}'
     return ret
