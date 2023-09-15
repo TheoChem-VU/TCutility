@@ -170,10 +170,18 @@ def get_level_of_theory(info: Result) -> Result:
 
     ret.xc.empirical_scaling = None
     if 'empiricalscaling' in [key.lower() for key in sett.adf.xc]:
-        ret.xc.empiricalscaling = " ".join(sett.adf.xc.empiricalscaling)
+        ret.xc.empiricalscaling = sett.adf.xc.empiricalscaling
+
+    if ret.xc.category == 'MP2':
+        ret.xc.summary = 'MP2'
+        if ret.xc.empiricalscaling:
+            ret.xc.summary += f'-{ret.xc.empiricalscaling}'
+    elif ret.xc.category == 'HartreeFock':
+        ret.xc.summary = 'HF'
+    else:
+        ret.xc.summary = ret.xc.functional
 
     # build the level-of-theory string, as we often have in papers
-    ret.xc.summary = f'{ret.xc.functional}'
     if ret.xc.dispersion:
         if ret.xc.dispersion.lower() == 'grimme3':
             ret.xc.summary += '-D3'
