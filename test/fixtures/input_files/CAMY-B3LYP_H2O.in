@@ -1,0 +1,29 @@
+Task GeometryOptimization
+System
+   ATOMS
+      O     0.000000    0.000000    0.000000
+      H     0.000000    0.500000   -0.6         
+      H     0.000000   -0.500000   -0.6         
+   End
+End
+GeometryOptimization
+   Convergence Gradients=1.0E-4
+End
+Engine ADF 
+   TITLE  H2O geometry with LC-BP functional
+   NOPRINT BAS FIT FUNCTIONS SFO
+   XC
+      HYBRID CAMYB3LYP   
+      xcfun
+      RANGESEP GAMMA=0.34
+   End
+   BeckeGrid
+      Quality good
+   End
+   RIHartreeFock
+      UseMe False
+   End
+   basis
+      Type DZP
+   End
+EndEngine

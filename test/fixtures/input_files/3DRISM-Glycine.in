@@ -1,0 +1,50 @@
+System
+  atoms
+     C  0.0                  0.0                0.0                   adf.SigU=3.50    adf.EpsU=0.066
+     O  1.208031058311462    0.0                0.0                   adf.SigU=2.96    adf.EpsU=0.200
+     O -0.741720974445343    1.118348836898804  0.0                   adf.SigU=2.96    adf.EpsU=0.200
+     C -0.8529478907585144  -1.228639006614685  0.0                   adf.SigU=3.50    adf.EpsU=0.066
+     N -0.1451586186885834  -2.467742681503296  0.0                   adf.SigU=3.25    adf.EpsU=0.170
+     H -0.09300804138183594  1.869869947433472  0.0                   adf.SigU=1.00    adf.EpsU=0.046
+     H -1.528575420379639   -1.167157530784607  0.8756611347198486    adf.SigU=1.00    adf.EpsU=0.046
+     H -1.528575420379639   -1.167157530784607 -0.8756611347198486    adf.SigU=1.00    adf.EpsU=0.046
+     H  0.4767249822616577  -2.513782262802124  0.8179888725280762    adf.SigU=1.00    adf.EpsU=0.046
+     H  0.4767249822616577  -2.513782262802124 -0.8179888725280762    adf.SigU=1.00    adf.EpsU=0.046
+  end
+end
+
+Task SinglePoint
+
+Properties
+  Gradients Yes
+End
+
+Engine ADF
+  title 3D-RISM test
+  basis
+    core small
+    type DZP
+  end
+  nobeckegrid
+  Relativity Level=None
+  rism glycine 1N
+    RISM1D
+    SUBEND
+    SOLVENT1 water
+      UNITS      uWeight=g/mol  ULJsize=A  ULJenergy=kcal/mol Ucoord=A Udens=1/A3
+      Parameters Weight=18.015   nAtoms=2
+      1    -0.8476   3.166    0.1554       0.000000  0.00000  0.000000
+      2     0.4238   1.000    0.0460      -0.816490  0.00000  0.577359
+                                           0.816490  0.00000  0.577359
+      DenSpe=0.03333
+    SUBEND
+    SOLUTE  CO
+      BOXSIZE 32.0 32.0 32.0
+      BOXGRID   64   64   64
+    SUBEND
+  end
+  symmetry C(s)
+  xc
+    lda
+  end
+EndEngine

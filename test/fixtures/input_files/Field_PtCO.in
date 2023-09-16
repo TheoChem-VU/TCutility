@@ -1,0 +1,29 @@
+System
+  Atoms
+     Pt 0 0 0
+     C  0 0 1.70
+     O  0 0 2.85
+  End
+
+  ElectrostaticEmbedding
+    ElectricField 0 0 0.01 [a.u.]
+  End
+end
+
+Task SinglePoint
+
+Engine ADF
+  title Pt-CO in electric field
+  beckegrid
+    quality good
+  end
+  basis
+    Core None
+    Type DZ
+    PerAtomType Symbol=Pt File=DZ/Pt.4d
+  end
+  symmetry C(LIN)
+  scf
+    converge 1.0E-10
+  end
+EndEngine
