@@ -1,0 +1,8 @@
+adffile NR.results/adf.rkf
+tape10file NR.results/TAPE10
+NMR
+  U1K  BEST
+  Out  TENS
+  Nuc  1  2
+  SCF 1.0e-4
+End
