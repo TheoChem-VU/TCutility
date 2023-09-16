@@ -1,7 +1,7 @@
 import numpy as np
 from scm import plams
 from TCutility.results import cache, Result
-from TCutility import ensure_list, squeeze_list
+from TCutility import ensure_list
 import os
 from datetime import datetime
 import re
