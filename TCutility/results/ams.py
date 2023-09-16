@@ -4,6 +4,7 @@ from TCutility.results import cache, Result
 from TCutility import ensure_list, squeeze_list
 import os
 from datetime import datetime
+import re
 
 j = os.path.join
 
@@ -125,7 +126,7 @@ def get_ams_info(calc_dir: str) -> Result:
         ret.engine = 'adf'
 
     # store the input of the calculation
-    ret.input = get_ams_input(calc_dir)
+    ret.input = get_ams_input(reader_ams.read('General', 'user input'))
 
     # store the job id, which should be unique for the job
     ret.job_id = reader_ams.read('General', 'jobid') if ('General', 'jobid') in reader_ams else None
@@ -417,7 +418,7 @@ def get_input_blocks():
         parent_blocks = parent_blocks[:block_depth]
 
         # remove the "- " substrings
-        block = line.split('- ')[-1].strip()
+        block = line.split('- ')[-1].strip().lower()
         # check if the block is non-standard. If it is, remove the !nonstandard substring
         # and add it to the nonstandard_blocks list
         if block.endswith('!nonstandard'):
@@ -426,62 +427,104 @@ def get_input_blocks():
         # in both standard and nonstandard cases add the block to blocks list
         blocks.append(parent_blocks.copy() + [block])
         # add the current block to parent_blocks for the next line
-        parent_blocks.append(block)
+        parent_blocks.append(block.lower())
 
     return blocks, nonstandard_blocks
 
 
-def get_ams_input(calc_dir: str):
-    files = get_calc_files(calc_dir)
-    reader_ams = cache.get(files['ams.rkf'])
+def get_ams_input(inp: str) -> Result:
+    def get_possible_blocks():
+        # check which blocks are openable given the current open blocks
+        # we start by considering all blocks
+        possible_blocks = blocks
+        # we iterate through the open blocks and check if the first element in the possible_blocks is the same.
+        # this way we move down through the blocks
+        for open_block in open_blocks:
+            possible_blocks = [block[1:] for block in possible_blocks if len(block) > 0 and block[0].lower() == open_block.lower()]
+        # we want only the first element in the possible blocks, not the tails
+        possible_blocks = set([block[0] for block in possible_blocks if len(block) > 0])
+        return possible_blocks
 
-    # the input settings are stored in a Result object
     sett = Result()
 
-    # we get the blocks and nonstandard blocks from input_blocks text file
     blocks, nonstandard_blocks = get_input_blocks()
-    
-    # open_blocks tracks the blocks that were opened. We start with the AMS block.
-    # a block is added to open_block if a line in the input is the same as a block name defined above
-    # open blocks are closed with "end" statements, in which case we remove the last added block
+
     open_blocks = ['ams']
-
-    is_nonstandard = False
-    # we open and look through each line in the input file
-    for line in reader_ams.read('General', 'user input').splitlines():
+    for line in inp.splitlines():
         line = line.strip()
-        if line == '':
-            continue
 
-        # if the line starts with "end" an open block has been closed. Some blocks are ended in a special way
-        # for example, EndEngine closes an engine block. Thats why we use startswith, instead of a simple == comparison.
+        # we remove comments from the line
+        # comments can be either at the start of a line or after a real statement
+        # so we have to search the line for comment starters and remove the part after it
+        for comment_start in ['#', '!', '::']:
+            if comment_start in line:
+                idx = line.index(comment_start)
+                line = line[:idx]
+
+        # skip empty lines
+        if not line:
+            continue
+        
+        # if we encounter an end statement we can close the last openblock
         if line.lower().startswith('end'):
             open_blocks.pop(-1)
             continue
+        
+        # check if we are opening a block
+        # We have to store the parts of a compact block (if it is compact) 
+        # it will be a list of tuples of key-value pairs
+        compact_parts = None
+        skip = False
+        # check if the current line corresponds to a possible block
+        for possible_block in get_possible_blocks():
+            if line.lower().startswith(possible_block.lower()):
+                # a block opening can either span multiple lines or can be use with compact notation
+                # compact notation will always have = signs
+                if '=' in line:
+                    # split the key-values using some regex magic
+                    compact = line[len(possible_block):].strip()  # remove the block name
+                    compact_parts = re.findall(r"""(\S+)=['"]{0,1}([^'"\n]*)['"]{0,1}""", compact)
+                else:
+                    skip = True
+                # add the new block to the open_blocks
+                open_blocks.append(possible_block)
 
-        sett_ = sett
-        possible_blocks = blocks
-        for open_block in open_blocks:
-            if open_block != open_blocks[-1]:
-                sett_ = sett_[open_block]
-            possible_blocks = [blocks_[1:] for blocks_ in possible_blocks if len(blocks_) > 0 and blocks_[0] == open_block]
-        possible_blocks = set([blocks_[0].lower() for blocks_ in possible_blocks if len(blocks_) > 0])
-
-        if line.lower() in possible_blocks:
-            is_nonstandard = open_blocks + [line.lower()] in nonstandard_blocks
-            open_blocks.append(line.lower())
+        # if we are not in a compact block we can just skip
+        if skip:
             continue
 
-        if is_nonstandard:
-            if not sett_[open_blocks[-1]]:
-                sett_[open_blocks[-1]] = []
-            sett_[open_blocks[-1]].append(line)
+        # get the sett to the correct level
+        # first check if the block is nonstandard
+        is_nonstandard = [block.lower() for block in open_blocks] in nonstandard_blocks
+        sett_ = sett
+        # go to the layer one above the lowest
+        for open_block in open_blocks[:-1]:
+            sett_ = sett_[open_block]
+        # at the lowest level we have to check if the block is nonstandard. If it is, we add the whole line to the settings object
+        if is_nonstandard and not sett_[open_blocks[-1]]:
+            sett_[open_blocks[-1]] = []
+        # then finally go to the lowest sett layer
+        sett_ = sett_[open_blocks[-1]]
+
+        # if we are in a compact block we just add all the key-value pairs
+        if compact_parts:
+            for key, val in compact_parts:
+                sett_[key] = val
+            # compact blocks do not have end statements, so we can remove it again from the open_blocks
+            open_blocks.pop(-1)
+        # in a normal block we split the line and add them to the settings
         else:
-            sett_[open_blocks[-1]][line.split()[0]] = squeeze_list(line.split()[1:])
+            # for nonstandard blocks we add the line to the list
+            if is_nonstandard:
+                sett_.append(line.strip())    
+            # for normal blocks we split the line and set it as a key, the rest of the line is the value
+            else:
+                sett_[line.split()[0]] = line[len(line.split()[0]):].strip()   
 
     for engine_block in ['engine adf', 'engine dftb', 'engine band']:
         if engine_block not in sett['ams']:
             continue
         sett['ams'][engine_block.split()[1]] = sett['ams'][engine_block]
         del sett['ams'][engine_block]
+
     return sett['ams']
