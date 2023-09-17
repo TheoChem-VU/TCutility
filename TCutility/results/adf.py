@@ -41,6 +41,14 @@ def get_calc_settings(info: Result) -> Result:
             ret.task = words[i+1]
             break
 
+    # the VibrationalAnalysis task does not produce adf.rkf files
+    # in that case we end the reading here, since the following 
+    # variables do not apply
+    if ret.task.lower() == 'vibrationalanalysis':
+        return ret
+
+    reader_adf = cache.get(info.files['adf.rkf'])
+
     # determine if calculation used relativistic corrections
     # if it did, variable 'escale' will be present in 'SFOs'
     # if it didnt, only variable 'energy' will be present
@@ -90,11 +98,31 @@ def get_properties(info: Result) -> Result:
             - **vdd.charges (list[float])** - list of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges. 
     '''
 
+    def read_vibrations(reader: cache.TrackKFReader) -> Result:
+        ret = Result()
+        ret.number_of_modes = reader.read('Vibrations', 'nNormalModes')
+        freqs = reader.read('Vibrations', 'Frequencies[cm-1]')
+        ints = reader.read('Vibrations', 'Intensities[km/mol]')
+        ret.frequencies = freqs if isinstance(freqs, list) else [freqs]
+        ret.intensities = ints if isinstance(ints, list) else [ints]
+        ret.number_of_imag_modes = len([freq for freq in freqs if freq < 0])
+        ret.modes = []    
+        for i in range(ret.number_of_modes):
+            ret.modes.append(reader.read('Vibrations', f'NoWeightNormalMode({i+1})'))
+        return ret
+
+
     assert info.engine == 'adf', f'This function reads ADF data, not {info.engine} data'
-    assert 'adf.rkf' in info.files, f'Missing adf.rkf file, [{", ".join([": ".join(item) for item in info.files.items()])}]'
+
+
+    ret = Result()
+
+    if info.adf.task.lower() == 'vibrationalanalysis':
+        reader_ams = cache.get(info.files['ams.rkf'])
+        ret.vibrations = read_vibrations(reader_ams)
+        return ret
 
     reader_adf = cache.get(info.files['adf.rkf'])
-    ret = Result()
 
     # read energies (given in Ha in rkf files)
     ret.energy.bond = reader_adf.read('Energy', 'Bond Energy') * constants.HA2KCALMOL
@@ -108,15 +136,7 @@ def get_properties(info: Result) -> Result:
 
     # vibrational information
     if ('Vibrations', 'nNormalModes') in reader_adf:
-        ret.vibrations.number_of_modes = reader_adf.read('Vibrations', 'nNormalModes')
-        freqs = reader_adf.read('Vibrations', 'Frequencies[cm-1]')
-        ints = reader_adf.read('Vibrations', 'Intensities[km/mol]')
-        ret.vibrations.frequencies = freqs if isinstance(freqs, list) else [freqs]
-        ret.vibrations.intensities = ints if isinstance(ints, list) else [ints]
-        ret.vibrations.number_of_imag_modes = len([freq for freq in freqs if freq < 0])
-        ret.vibrations.modes = []    
-        for i in range(ret.vibrations.number_of_modes):
-            ret.vibrations.modes.append(reader_adf.read('Vibrations', f'NoWeightNormalMode({i+1})'))
+        ret.vibrations = read_vibrations(reader_adf)
 
     # read the Voronoi Deformation Charges Deformation (VDD) before and after SCF convergence (being "inital" and "SCF")
     vdd_scf: List[float] = ensure_list(reader_adf.read('Properties', 'AtomCharge_SCF Voronoi'))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
