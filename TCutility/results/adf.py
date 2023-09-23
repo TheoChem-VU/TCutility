@@ -100,11 +100,11 @@ def get_properties(info: Result) -> Result:
     def read_vibrations(reader: cache.TrackKFReader) -> Result:
         ret = Result()
         ret.number_of_modes = reader.read('Vibrations', 'nNormalModes')
-        freqs = reader.read('Vibrations', 'Frequencies[cm-1]')
-        ints = reader.read('Vibrations', 'Intensities[km/mol]')
-        ret.frequencies = freqs if isinstance(freqs, list) else [freqs]
-        ret.intensities = ints if isinstance(ints, list) else [ints]
-        ret.number_of_imag_modes = len([freq for freq in freqs if freq < 0])
+        ret.frequencies = ensure_list(reader.read('Vibrations', 'Frequencies[cm-1]'))
+        if ('Vibrations', 'Intensities[km/mol]') in reader:
+            ret.intensities = ensure_list(reader.read('Vibrations', 'Intensities[km/mol]'))
+        ret.number_of_imag_modes = len([freq for freq in ret.frequencies if freq < 0])
+        ret.character = 'minimum' if ret.number_of_imag_modes == 0 else 'transitionstate'
         ret.modes = []    
         for i in range(ret.number_of_modes):
             ret.modes.append(reader.read('Vibrations', f'NoWeightNormalMode({i+1})'))
