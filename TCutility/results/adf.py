@@ -25,12 +25,11 @@ def get_calc_settings(info: Result) -> Result:
     assert 'adf.rkf' in info.files, f'Missing adf.rkf file, [{", ".join([": ".join(item) for item in info.files.items()])}]'
 
     reader_adf = cache.get(info.files['adf.rkf'])
-    reader_ams = cache.get(info.files['ams.rkf'])
     ret = Result()
 
     # set the calculation task at a higher level
     ret.task = info.input.task
-    
+
     # determine if calculation used relativistic corrections
     # if it did, variable 'escale' will be present in 'SFOs'
     # if it didnt, only variable 'energy' will be present
