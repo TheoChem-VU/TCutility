@@ -27,13 +27,6 @@ def get_calc_settings(info: Result) -> Result:
             ret.task = words[i+1]
             break
 
-    # read properties of the calculation
-    number_of_properties = int(reader_dftb.read('Properties', 'nEntries'))  # type: ignore plams does not include type hints. Returns int
-    for i in range(1, number_of_properties + 1):
-        prop_type = str(reader_dftb.read('Properties', f'Type({i})')).strip()
-        prop_subtype = str(reader_dftb.read('Properties', f'Subtype({i})')).strip()
-        ret.properties[prop_type][prop_subtype] = reader_dftb.read('Properties', f'Value({i})')
-
     return ret
 
 
