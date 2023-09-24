@@ -10,7 +10,6 @@ def get_calc_settings(info: Result) -> Result:
     assert info.engine == 'dftb', f'This function reads DFTB data, not {info.engine} data'
     assert 'dftb.rkf' in info.files, f'Missing dftb.rkf file, [{", ".join([": ".join(item) for item in info.files.items()])}]'
 
-    reader_dftb = cache.get(info.files['dftb.rkf'])
     reader_ams = cache.get(info.files['ams.rkf'])
     ret = Result()
 
