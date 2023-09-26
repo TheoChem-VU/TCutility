@@ -319,6 +319,11 @@ This information is used in further analysis programs.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="TCutility.results.ams.get_ams_input">
+<span class="sig-name descname"><span class="pre">get_ams_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_ams_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_ams_input" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="TCutility.results.ams.get_ams_version">
 <span class="sig-name descname"><span class="pre">get_ams_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_ams_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_ams_version" title="Permalink to this definition">#</a></dt>
 <dd><p>Function to get the AMS version used in the calculation.</p>
@@ -407,6 +412,24 @@ In case of non-succes it will also give possible reasons for the errors/warnings
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="TCutility.results.ams.get_input_blocks">
+<span class="sig-name descname"><span class="pre">get_input_blocks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_input_blocks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_input_blocks" title="Permalink to this definition">#</a></dt>
+<dd><p>This function reads input_blocks and decomposes its content into a list of blocks and a list of non-standard blocks
+The general format is as follows:</p>
+<p>parentblock
+- subblock
+- - subsubblock
+- subblock !nonstandard
+parentblock
+- subblock
+- - subsubblock
+- - - subsubsubblock
+- - - subsubsubblock !nonstandard</p>
+<p>Each subblock has to be defined within its parent block. !nonstandard indicates that the block is a non-standard block
+These blocks are special in that they can contain multiple of the same entry</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="TCutility.results.ams.get_molecules">
 <span class="sig-name descname"><span class="pre">get_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_molecules" title="Permalink to this definition">#</a></dt>
 <dd><p>Function to get molecules from the calculation, including input, output and history molecules.
@@ -476,6 +499,34 @@ It will also add bonds to the molecule if they are given in the rkf file, else i
 <li><p><strong>symmetry.group (str)</strong> – the symmetry group selected for the molecule.</p></li>
 <li><p><strong>symmetry.labels (list[str])</strong> – the symmetry labels associated with the symmetry group.</p></li>
 <li><p><strong>used_regions (bool)</strong> – whether regions were used in the calculation.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TCutility.results.adf.get_level_of_theory">
+<span class="sig-name descname"><span class="pre">get_level_of_theory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/adf.html#get_level_of_theory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.adf.get_level_of_theory" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to get the level-of-theory from an input-file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inp_path</strong> – Path to the input file. Can be a .run or .in file create for AMS</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Dictionary containing information about the level-of-theory:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>summary (str)</strong> - a summary string that gives the level-of-theory in a human-readable format.</p></li>
+<li><p><strong>xc.functional (str)</strong> - XC-functional used in the calculation.</p></li>
+<li><p><strong>xc.category (str)</strong> - category the XC-functional belongs to. E.g. GGA, MetaHybrid, etc …</p></li>
+<li><p><strong>xc.dispersion (str)</strong> - the dispersion correction method used during the calculation.</p></li>
+<li><p><strong>xc.summary (str)</strong> - a summary string that gives the XC-functional information in a human-readable format.</p></li>
+<li><p><strong>xc.empiricalScaling (str)</strong> - which empirical scaling parameter was used. Useful for MP2 calculations.</p></li>
+<li><p><strong>basis.type (str)</strong> - the size/type of the basis-set.</p></li>
+<li><p><strong>basis.core (str)</strong> - the size of the frozen-core approximation.</p></li>
+<li><p><strong>quality (str)</strong> - the numerical quality setting.</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -673,16 +724,19 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.ams">TCutility.results.ams</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_ams_info"><code class="docutils literal notranslate"><span class="pre">get_ams_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_ams_input"><code class="docutils literal notranslate"><span class="pre">get_ams_input()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_ams_version"><code class="docutils literal notranslate"><span class="pre">get_ams_version()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_calc_files"><code class="docutils literal notranslate"><span class="pre">get_calc_files()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_calculation_status"><code class="docutils literal notranslate"><span class="pre">get_calculation_status()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_history"><code class="docutils literal notranslate"><span class="pre">get_history()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_input_blocks"><code class="docutils literal notranslate"><span class="pre">get_input_blocks()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_molecules"><code class="docutils literal notranslate"><span class="pre">get_molecules()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_timing"><code class="docutils literal notranslate"><span class="pre">get_timing()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.adf">TCutility.results.adf</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.adf.get_calc_settings"><code class="docutils literal notranslate"><span class="pre">get_calc_settings()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.adf.get_level_of_theory"><code class="docutils literal notranslate"><span class="pre">get_level_of_theory()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.adf.get_properties"><code class="docutils literal notranslate"><span class="pre">get_properties()</span></code></a></li>
 </ul>
 </li>
