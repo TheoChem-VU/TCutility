@@ -129,3 +129,79 @@ def get_properties(info: Result) -> Result:
     # The ordering is not very straightfoward so this is a suggestion for the future with keys: ret.vdd.[IRREP]
 
     return ret
+
+
+def get_level_of_theory(info: Result) -> Result:
+    '''Function to get the level-of-theory from an input-file.
+
+    Args:
+        inp_path: Path to the input file. Can be a .run or .in file create for AMS
+
+    Returns:
+        :Dictionary containing information about the level-of-theory:
+            
+            - **summary (str)** - a summary string that gives the level-of-theory in a human-readable format.
+            - **xc.functional (str)** - XC-functional used in the calculation.
+            - **xc.category (str)** - category the XC-functional belongs to. E.g. GGA, MetaHybrid, etc ...
+            - **xc.dispersion (str)** - the dispersion correction method used during the calculation.
+            - **xc.summary (str)** - a summary string that gives the XC-functional information in a human-readable format.
+            - **xc.empiricalScaling (str)** - which empirical scaling parameter was used. Useful for MP2 calculations.
+            - **basis.type (str)** - the size/type of the basis-set.
+            - **basis.core (str)** - the size of the frozen-core approximation.
+            - **quality (str)** - the numerical quality setting.
+    '''
+    sett = info.input
+    ret = Result()
+    # print(json.dumps(sett, indent=4))
+    xc_categories = ['GGA', 'LDA', 'MetaGGA', 'MetaHybrid', 'Model', 'LibXC', 'DoubleHybrid', 'Hybrid', 'MP2', 'HartreeFock']
+    ret.xc.functional = 'VWN'
+    ret.xc.category = 'LDA'
+    for cat in xc_categories:
+        if cat.lower() in [key.lower() for key in sett.adf.xc]:
+            ret.xc.functional = sett.adf.xc[cat]
+            ret.xc.category = cat
+
+    ret.basis.type = sett.adf.basis.type
+    ret.basis.core = sett.adf.basis.core
+    ret.quality = sett.adf.NumericalQuality or 'Normal'
+
+    ret.xc.dispersion = None
+    if 'dispersion' in [key.lower() for key in sett.adf.xc]:
+        ret.xc.dispersion = " ".join(sett.adf.xc.dispersion.split())
+
+    # the empirical scaling value is used for MP2 calculations
+    ret.xc.empirical_scaling = None
+    if 'empiricalscaling' in [key.lower() for key in sett.adf.xc]:
+        ret.xc.empiricalscaling = sett.adf.xc.empiricalscaling
+
+    # MP2 and HF are a little bit different from the usual xc categories. They are not key-value pairs but only the key
+    # we start building the ret.xc.summary string here already. This will contain the human-readable functional name
+    if ret.xc.category == 'MP2':
+        ret.xc.summary = 'MP2'
+        if ret.xc.empiricalscaling:
+            ret.xc.summary += f'-{ret.xc.empiricalscaling}'
+    elif ret.xc.category == 'HartreeFock':
+        ret.xc.summary = 'HF'
+    else:
+        ret.xc.summary = ret.xc.functional
+
+    # If dispersion was used, we want to add it to the ret.xc.summary
+    if ret.xc.dispersion:
+        if ret.xc.dispersion.lower() == 'grimme3':
+            ret.xc.summary += '-D3'
+        if ret.xc.dispersion.lower() == 'grimme3 bjdamp':
+            ret.xc.summary += '-D3(BJ)'
+        if ret.xc.dispersion.lower() == 'grimme4':
+            ret.xc.summary += '-D4'
+        if ret.xc.dispersion.lower() == 'ddsc':
+            ret.xc.summary += '-dDsC'
+        if ret.xc.dispersion.lower() == 'uff':
+            ret.xc.summary += '-dUFF'
+        if ret.xc.dispersion.lower() == 'mbd':
+            ret.xc.summary += '-MBD@rsSC'
+        if ret.xc.dispersion.lower() == 'default':
+            ret.xc.summary += '-D'
+
+    # ret.summary is simply the ret.xc.summary plus the basis set type
+    ret.summary = f'{ret.xc.summary}/{ret.basis.type}'
+    return ret

@@ -1,0 +1,49 @@
+System
+  atoms
+     C             0.000000     0.000000     0.000000
+     H            -0.530807     0.919384693  0.012892
+     H            -0.530807    -0.919384693  0.012892
+     H             1.061614     0.000000     0.012892
+     Cl            0.000000     0.000000    -2.124300
+     F             0.000000     0.000000     2.019100
+  end
+  charge -1
+end
+
+Task TransitionStateSearch
+
+TransitionStateSearch
+  ReactionCoordinate
+     distance 1 5  1.0
+     distance 1 6 -1.0
+  end
+End
+
+Properties
+  PESPointCharacter Yes
+End
+
+Engine ADF
+  title Transition state search for Sn2 reaction of F- + CH3Cl
+  beckegrid
+    quality good
+  end
+  eprint
+    sfo noeig noovl
+  end
+  basis
+    core NONE
+    type TZ2P
+  end
+  scf
+    converge 1.0e-6 1.0e-6
+    diis
+      ok 0.01
+    end
+    iterations 99
+  end
+  xc
+    gga OPBE
+    lda VWN
+  end
+EndEngine
