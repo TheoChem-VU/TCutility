@@ -25,21 +25,10 @@ def get_calc_settings(info: Result) -> Result:
     assert 'adf.rkf' in info.files, f'Missing adf.rkf file, [{", ".join([": ".join(item) for item in info.files.items()])}]'
 
     reader_adf = cache.get(info.files['adf.rkf'])
-    reader_ams = cache.get(info.files['ams.rkf'])
     ret = Result()
 
-    # get the run type of the calculation
-    # read and split user input into words
-    user_input = reader_ams.read('General', 'user input').strip()
-    words = user_input.split()
-
-    # default task is SinglePoint
-    ret.task = 'SinglePoint'
-    for i, word in enumerate(words):
-        # task is always given with the task keyword
-        if word.lower() == 'task':
-            ret.task = words[i+1]
-            break
+    # set the calculation task at a higher level
+    ret.task = info.input.task
 
     # determine if calculation used relativistic corrections
     # if it did, variable 'escale' will be present in 'SFOs'
