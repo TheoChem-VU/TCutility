@@ -1,0 +1,16 @@
+System
+  GeometryFile $AMSHOME/examples/adf/r2SCAN-3c/struc.xyz
+end
+
+Task SinglePoint
+
+Engine ADF
+  basis
+    core None
+    type mTZ2P
+  end
+  xc
+    metagga r2scan-3c
+  end
+  numericalquality good
+EndEngine

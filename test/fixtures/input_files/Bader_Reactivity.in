@@ -1,0 +1,43 @@
+
+Task SinglePoint
+
+System
+  Atoms
+    C       1.06434610      -0.70982731      -0.00004522
+    C      -0.17846421      -1.32042953      -0.00163715
+    C      -0.19884953      -2.73466243      -0.00296149
+    C       1.00825259      -3.45497625      -0.00262955
+    C       2.24377213      -2.78457605      -0.00098836
+    C       2.28117568      -1.37069091       0.00034973
+    H      -1.10692850      -0.74587638      -0.00187350
+    H      -1.15592647      -3.26173790      -0.00423999
+    H       0.98594687      -4.54659148      -0.00365721
+    H       3.17851894      -3.35030989      -0.00073866
+    H       3.23233560      -0.83454684       0.00163171
+  End
+End
+
+Engine ADF 
+  Title Calculate Bader analysis for benzene-radical
+  basis
+    Type TZ2P
+    Core none
+  End
+  Unrestricted
+  SpinPolarization  1
+  BeckeGrid
+     Quality good
+  End
+  ConceptualDFT
+    AnalysisLevel Full
+    Electronegativity true
+  End
+  Relativity 
+    Level None # QTAIM energies are incompatible with the Scalar-ZORA relativistic model
+  End 
+  Symmetry NOSYM
+  XC
+     GGA PBE
+  END
+EndEngine
+                         
