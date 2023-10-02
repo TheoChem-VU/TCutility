@@ -22,24 +22,20 @@ def get_calc_settings(info: Result) -> Result:
     '''
 
     assert info.engine == 'adf', f'This function reads ADF data, not {info.engine} data'
-    assert 'adf.rkf' in info.files, f'Missing adf.rkf file, [{", ".join([": ".join(item) for item in info.files.items()])}]'
+    # assert 'adf.rkf' in info.files, f'Missing adf.rkf file, [{", ".join([": ".join(item) for item in info.files.items()])}]'
 
-    reader_adf = cache.get(info.files['adf.rkf'])
-    reader_ams = cache.get(info.files['ams.rkf'])
     ret = Result()
 
-    # get the run type of the calculation
-    # read and split user input into words
-    user_input = reader_ams.read('General', 'user input').strip()
-    words = user_input.split()
+    # set the calculation task at a higher level
+    ret.task = info.input.task
 
-    # default task is SinglePoint
-    ret.task = 'SinglePoint'
-    for i, word in enumerate(words):
-        # task is always given with the task keyword
-        if word.lower() == 'task':
-            ret.task = words[i+1]
-            break
+    # the VibrationalAnalysis task does not produce adf.rkf files
+    # in that case we end the reading here, since the following 
+    # variables do not apply
+    if ret.task.lower() == 'vibrationalanalysis':
+        return ret
+
+    reader_adf = cache.get(info.files['adf.rkf'])
 
     # list of atom pairs involved in transition state 
     if ret.task == 'TransitionStateSearch':
@@ -101,11 +97,31 @@ def get_properties(info: Result) -> Result:
             - **vdd.charges (list[float])** - list of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges. 
     '''
 
+    def read_vibrations(reader: cache.TrackKFReader) -> Result:
+        ret = Result()
+        ret.number_of_modes = reader.read('Vibrations', 'nNormalModes')
+        ret.frequencies = ensure_list(reader.read('Vibrations', 'Frequencies[cm-1]'))
+        if ('Vibrations', 'Intensities[km/mol]') in reader:
+            ret.intensities = ensure_list(reader.read('Vibrations', 'Intensities[km/mol]'))
+        ret.number_of_imag_modes = len([freq for freq in ret.frequencies if freq < 0])
+        ret.character = 'minimum' if ret.number_of_imag_modes == 0 else 'transitionstate'
+        ret.modes = []    
+        for i in range(ret.number_of_modes):
+            ret.modes.append(reader.read('Vibrations', f'NoWeightNormalMode({i+1})'))
+        return ret
+
+
     assert info.engine == 'adf', f'This function reads ADF data, not {info.engine} data'
-    assert 'adf.rkf' in info.files, f'Missing adf.rkf file, [{", ".join([": ".join(item) for item in info.files.items()])}]'
+
+
+    ret = Result()
+
+    if info.adf.task.lower() == 'vibrationalanalysis':
+        reader_ams = cache.get(info.files['ams.rkf'])
+        ret.vibrations = read_vibrations(reader_ams)
+        return ret
 
     reader_adf = cache.get(info.files['adf.rkf'])
-    ret = Result()
 
     # read energies (given in Ha in rkf files)
     ret.energy.bond = reader_adf.read('Energy', 'Bond Energy') * constants.HA2KCALMOL
@@ -120,15 +136,7 @@ def get_properties(info: Result) -> Result:
 
     # vibrational information
     if ('Vibrations', 'nNormalModes') in reader_adf:
-        ret.vibrations.number_of_modes = reader_adf.read('Vibrations', 'nNormalModes')
-        freqs = reader_adf.read('Vibrations', 'Frequencies[cm-1]')
-        ints = reader_adf.read('Vibrations', 'Intensities[km/mol]')
-        ret.vibrations.frequencies = freqs if isinstance(freqs, list) else [freqs]
-        ret.vibrations.intensities = ints if isinstance(ints, list) else [ints]
-        ret.vibrations.number_of_imag_modes = len([freq for freq in freqs if freq < 0])
-        ret.vibrations.modes = []    
-        for i in range(ret.vibrations.number_of_modes):
-            ret.vibrations.modes.append(reader_adf.read('Vibrations', f'NoWeightNormalMode({i+1})'))
+        ret.vibrations = read_vibrations(reader_adf)
 
     # read the Voronoi Deformation Charges Deformation (VDD) before and after SCF convergence (being "inital" and "SCF")
     vdd_scf: List[float] = ensure_list(reader_adf.read('Properties', 'AtomCharge_SCF Voronoi'))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
@@ -140,4 +148,80 @@ def get_properties(info: Result) -> Result:
     # Possible enhancement: get the VDD charges per irrep, denoted by the "Voronoi chrg per irrep" in the "Properties" section in the adf.rkf. 
     # The ordering is not very straightfoward so this is a suggestion for the future with keys: ret.vdd.[IRREP]
 
+    return ret
+
+
+def get_level_of_theory(info: Result) -> Result:
+    '''Function to get the level-of-theory from an input-file.
+
+    Args:
+        inp_path: Path to the input file. Can be a .run or .in file create for AMS
+
+    Returns:
+        :Dictionary containing information about the level-of-theory:
+            
+            - **summary (str)** - a summary string that gives the level-of-theory in a human-readable format.
+            - **xc.functional (str)** - XC-functional used in the calculation.
+            - **xc.category (str)** - category the XC-functional belongs to. E.g. GGA, MetaHybrid, etc ...
+            - **xc.dispersion (str)** - the dispersion correction method used during the calculation.
+            - **xc.summary (str)** - a summary string that gives the XC-functional information in a human-readable format.
+            - **xc.empiricalScaling (str)** - which empirical scaling parameter was used. Useful for MP2 calculations.
+            - **basis.type (str)** - the size/type of the basis-set.
+            - **basis.core (str)** - the size of the frozen-core approximation.
+            - **quality (str)** - the numerical quality setting.
+    '''
+    sett = info.input
+    ret = Result()
+    # print(json.dumps(sett, indent=4))
+    xc_categories = ['GGA', 'LDA', 'MetaGGA', 'MetaHybrid', 'Model', 'LibXC', 'DoubleHybrid', 'Hybrid', 'MP2', 'HartreeFock']
+    ret.xc.functional = 'VWN'
+    ret.xc.category = 'LDA'
+    for cat in xc_categories:
+        if cat.lower() in [key.lower() for key in sett.adf.xc]:
+            ret.xc.functional = sett.adf.xc[cat]
+            ret.xc.category = cat
+
+    ret.basis.type = sett.adf.basis.type
+    ret.basis.core = sett.adf.basis.core
+    ret.quality = sett.adf.NumericalQuality or 'Normal'
+
+    ret.xc.dispersion = None
+    if 'dispersion' in [key.lower() for key in sett.adf.xc]:
+        ret.xc.dispersion = " ".join(sett.adf.xc.dispersion.split())
+
+    # the empirical scaling value is used for MP2 calculations
+    ret.xc.empirical_scaling = None
+    if 'empiricalscaling' in [key.lower() for key in sett.adf.xc]:
+        ret.xc.empiricalscaling = sett.adf.xc.empiricalscaling
+
+    # MP2 and HF are a little bit different from the usual xc categories. They are not key-value pairs but only the key
+    # we start building the ret.xc.summary string here already. This will contain the human-readable functional name
+    if ret.xc.category == 'MP2':
+        ret.xc.summary = 'MP2'
+        if ret.xc.empiricalscaling:
+            ret.xc.summary += f'-{ret.xc.empiricalscaling}'
+    elif ret.xc.category == 'HartreeFock':
+        ret.xc.summary = 'HF'
+    else:
+        ret.xc.summary = ret.xc.functional
+
+    # If dispersion was used, we want to add it to the ret.xc.summary
+    if ret.xc.dispersion:
+        if ret.xc.dispersion.lower() == 'grimme3':
+            ret.xc.summary += '-D3'
+        if ret.xc.dispersion.lower() == 'grimme3 bjdamp':
+            ret.xc.summary += '-D3(BJ)'
+        if ret.xc.dispersion.lower() == 'grimme4':
+            ret.xc.summary += '-D4'
+        if ret.xc.dispersion.lower() == 'ddsc':
+            ret.xc.summary += '-dDsC'
+        if ret.xc.dispersion.lower() == 'uff':
+            ret.xc.summary += '-dUFF'
+        if ret.xc.dispersion.lower() == 'mbd':
+            ret.xc.summary += '-MBD@rsSC'
+        if ret.xc.dispersion.lower() == 'default':
+            ret.xc.summary += '-D'
+
+    # ret.summary is simply the ret.xc.summary plus the basis set type
+    ret.summary = f'{ret.xc.summary}/{ret.basis.type}'
     return ret

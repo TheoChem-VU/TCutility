@@ -18,12 +18,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -31,8 +31,9 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=7a6ff16f"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
@@ -54,6 +55,15 @@
   
   
   <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
@@ -94,7 +104,8 @@
     <span class="fa-solid fa-bars"></span>
   </label>
   
-  <div class="navbar-header-items__start">
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item"><!-- _templates/logo.html -->
 <style>
@@ -115,7 +126,6 @@
     
   </div>
   
-  
   <div class="col-lg-9 navbar-header-items">
     
     
@@ -123,13 +133,15 @@
       
         <div class="navbar-item navbar-persistent--container">
           
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
         </div>
       
       
@@ -142,18 +154,20 @@ document.write(`
   
   
     <div class="navbar-persistent--mobile">
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
       <span class="fa-solid fa-outdent"></span>
     </label>
   
@@ -206,15 +220,15 @@ document.write(`
 
 
 
-<nav aria-label="Breadcrumbs">
-  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="index.html" class="nav-link" aria-label="Home">
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">TCutility.results package</li>
+    <li class="breadcrumb-item active" aria-current="page">TCutility.re...</li>
   </ul>
 </nav>
 </div>
@@ -305,6 +319,11 @@ This information is used in further analysis programs.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="TCutility.results.ams.get_ams_input">
+<span class="sig-name descname"><span class="pre">get_ams_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_ams_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_ams_input" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="TCutility.results.ams.get_ams_version">
 <span class="sig-name descname"><span class="pre">get_ams_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_ams_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_ams_version" title="Permalink to this definition">#</a></dt>
 <dd><p>Function to get the AMS version used in the calculation.</p>
@@ -393,6 +412,24 @@ In case of non-succes it will also give possible reasons for the errors/warnings
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="TCutility.results.ams.get_input_blocks">
+<span class="sig-name descname"><span class="pre">get_input_blocks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_input_blocks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_input_blocks" title="Permalink to this definition">#</a></dt>
+<dd><p>This function reads input_blocks and decomposes its content into a list of blocks and a list of non-standard blocks
+The general format is as follows:</p>
+<p>parentblock
+- subblock
+- - subsubblock
+- subblock !nonstandard
+parentblock
+- subblock
+- - subsubblock
+- - - subsubsubblock
+- - - subsubsubblock !nonstandard</p>
+<p>Each subblock has to be defined within its parent block. !nonstandard indicates that the block is a non-standard block
+These blocks are special in that they can contain multiple of the same entry</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="TCutility.results.ams.get_molecules">
 <span class="sig-name descname"><span class="pre">get_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/ams.html#get_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.ams.get_molecules" title="Permalink to this definition">#</a></dt>
 <dd><p>Function to get molecules from the calculation, including input, output and history molecules.
@@ -470,6 +507,34 @@ It will also add bonds to the molecule if they are given in the rkf file, else i
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="TCutility.results.adf.get_level_of_theory">
+<span class="sig-name descname"><span class="pre">get_level_of_theory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/adf.html#get_level_of_theory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.adf.get_level_of_theory" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to get the level-of-theory from an input-file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inp_path</strong> – Path to the input file. Can be a .run or .in file create for AMS</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Dictionary containing information about the level-of-theory:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>summary (str)</strong> - a summary string that gives the level-of-theory in a human-readable format.</p></li>
+<li><p><strong>xc.functional (str)</strong> - XC-functional used in the calculation.</p></li>
+<li><p><strong>xc.category (str)</strong> - category the XC-functional belongs to. E.g. GGA, MetaHybrid, etc …</p></li>
+<li><p><strong>xc.dispersion (str)</strong> - the dispersion correction method used during the calculation.</p></li>
+<li><p><strong>xc.summary (str)</strong> - a summary string that gives the XC-functional information in a human-readable format.</p></li>
+<li><p><strong>xc.empiricalScaling (str)</strong> - which empirical scaling parameter was used. Useful for MP2 calculations.</p></li>
+<li><p><strong>basis.type (str)</strong> - the size/type of the basis-set.</p></li>
+<li><p><strong>basis.core (str)</strong> - the size of the frozen-core approximation.</p></li>
+<li><p><strong>quality (str)</strong> - the numerical quality setting.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="TCutility.results.adf.get_properties">
 <span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#TCutility.results.result.Result" title="TCutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/TCutility/results/adf.html#get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.adf.get_properties" title="Permalink to this definition">#</a></dt>
 <dd><p>Function to get properties from an ADF calculation.</p>
@@ -537,7 +602,8 @@ It will also add bonds to the molecule if they are given in the rkf file, else i
 <dt class="sig sig-object py" id="TCutility.results.result.Result">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><a class="reference internal" href="_modules/TCutility/results/result.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.result.Result" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary.</p>
+<p>Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary.
+The class works case-insensitively, but will retain the case of the key when it was first set.</p>
 </dd></dl>
 
 </section>
@@ -614,11 +680,10 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
               
               
               
-                <footer class="bd-footer-article">
-                  
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="index.html"
@@ -638,10 +703,7 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -662,16 +724,19 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.ams">TCutility.results.ams</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_ams_info"><code class="docutils literal notranslate"><span class="pre">get_ams_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_ams_input"><code class="docutils literal notranslate"><span class="pre">get_ams_input()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_ams_version"><code class="docutils literal notranslate"><span class="pre">get_ams_version()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_calc_files"><code class="docutils literal notranslate"><span class="pre">get_calc_files()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_calculation_status"><code class="docutils literal notranslate"><span class="pre">get_calculation_status()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_history"><code class="docutils literal notranslate"><span class="pre">get_history()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_input_blocks"><code class="docutils literal notranslate"><span class="pre">get_input_blocks()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_molecules"><code class="docutils literal notranslate"><span class="pre">get_molecules()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.ams.get_timing"><code class="docutils literal notranslate"><span class="pre">get_timing()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.adf">TCutility.results.adf</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.adf.get_calc_settings"><code class="docutils literal notranslate"><span class="pre">get_calc_settings()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.adf.get_level_of_theory"><code class="docutils literal notranslate"><span class="pre">get_level_of_theory()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.adf.get_properties"><code class="docutils literal notranslate"><span class="pre">get_properties()</span></code></a></li>
 </ul>
 </li>
@@ -718,8 +783,8 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -745,10 +810,11 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
     </div>
   
   
+  
     <div class="footer-items__end">
       
         <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.1.
 </p></div>
       
     </div>

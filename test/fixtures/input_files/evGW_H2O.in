@@ -1,0 +1,37 @@
+Symmetry
+  SymmetrizeTolerance 0.001
+End
+
+System
+  Atoms
+    O  0.0000 0.0000 0.0000
+    H  0.7571 0.0000 0.5861
+    H -0.7571 0.0000 0.5861
+  End
+  Symmetrize Yes
+End
+
+task SinglePoint
+
+Engine adf
+  Basis
+    Core None
+    Type TZ2P
+  End
+  XC
+     libxc M06-2X
+  end
+  MBPT
+     nTime 20
+     nFrequency 20
+  End  
+  numericalQuality Good
+
+  GW
+     DIIS 5 
+     nStates 3
+     Converge HOMO=5e-3
+     selfconsistency evGW
+  END
+
+EndEngine
