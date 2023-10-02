@@ -1,7 +1,7 @@
 import numpy as np
 from scm import plams
 from TCutility.results import cache, Result
-from TCutility import ensure_list
+from TCutility import constants, ensure_list
 import os
 from datetime import datetime
 
@@ -283,7 +283,7 @@ def get_molecules(calc_dir: str) -> Result:
     # read input molecule
     ret.input = plams.Molecule()
     # read in the coordinates, they are given in Bohr, so convert them to Angstrom
-    coords = np.array(reader_ams.read('InputMolecule', 'Coords')).reshape(natoms, 3) * 0.529177
+    coords = np.array(reader_ams.read('InputMolecule', 'Coords')).reshape(natoms, 3) * constants.BOHR2ANG
     # add the atoms to the molecule
     for atnum, coord in zip(atnums, coords):
         ret.input.add_atom(plams.Atom(atnum=atnum, coords=coord))
@@ -297,7 +297,7 @@ def get_molecules(calc_dir: str) -> Result:
 
     # read output molecule
     ret.output = plams.Molecule()
-    coords = np.array(reader_ams.read('Molecule', 'Coords')).reshape(natoms, 3) * 0.529177
+    coords = np.array(reader_ams.read('Molecule', 'Coords')).reshape(natoms, 3) * constants.BOHR2ANG
     for atnum, coord in zip(atnums, coords):
         ret.output.add_atom(plams.Atom(atnum=atnum, coords=coord))
     if ('Molecule', 'fromAtoms') in reader_ams and ('Molecule', 'toAtoms') in reader_ams and ('Molecule', 'bondOrders'):

@@ -41,6 +41,17 @@ def get_calc_settings(info: Result) -> Result:
             ret.task = words[i+1]
             break
 
+    # list of atom pairs involved in transition state 
+    if ret.task == 'TransitionStateSearch':
+        ret.TransitionStateSearch.ReactionCoordinate = []
+        for i, word in enumerate(words):
+            if word == 'ReactionCoordinate':
+                break
+        offset = 1
+        while words[i+offset] == 'Distance':
+            ret.TransitionStateSearch.ReactionCoordinate.append([words[i+offset+1], words[i+offset+2], words[i+offset+3]])
+            offset += 4
+
     # determine if calculation used relativistic corrections
     # if it did, variable 'escale' will be present in 'SFOs'
     # if it didnt, only variable 'energy' will be present
@@ -100,9 +111,10 @@ def get_properties(info: Result) -> Result:
     ret.energy.bond = reader_adf.read('Energy', 'Bond Energy') * constants.HA2KCALMOL
     ret.energy.elstat = reader_adf.read('Energy', 'elstat') * constants.HA2KCALMOL
     ret.energy.orbint.total = reader_adf.read('Energy', 'Orb.Int. Total') * constants.HA2KCALMOL
-    for symlabel in info.adf.symmetry.labels:
-        symlabel = symlabel.split(':')[0]
-        ret.energy.orbint[symlabel] = reader_adf.read('Energy', f'Orb.Int. {symlabel}') * constants.HA2KCALMOL
+    if ('Symmetry', 'symlab') in reader_adf:
+        for symlabel in info.adf.symmetry.labels:
+            symlabel = symlabel.split(':')[0]
+            ret.energy.orbint[symlabel] = reader_adf.read('Energy', f'Orb.Int. {symlabel}') * constants.HA2KCALMOL
     ret.energy.pauli.total = reader_adf.read('Energy', 'Pauli Total') * constants.HA2KCALMOL
     ret.energy.dispersion = reader_adf.read('Energy', 'Dispersion Energy') * constants.HA2KCALMOL
 
