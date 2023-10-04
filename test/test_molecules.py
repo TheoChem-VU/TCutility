@@ -36,3 +36,9 @@ def test_mol_tags() -> None:
     xyzfile = j('test', 'fixtures', 'xyz', 'transitionstate_radical_addition.xyz')
     mol = molecule.load(xyzfile)
     assert 'vibrations' in mol.flags.tags
+
+
+def test_comment() -> None:
+    xyzfile = j('test', 'fixtures', 'xyz', 'transitionstate_radical_addition.xyz')
+    mol = molecule.load(xyzfile)
+    assert mol.comment == 'molecule used for testing the molecule module'

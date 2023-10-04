@@ -1,5 +1,5 @@
 14
-
+molecule used for testing the molecule module
 C	-1.6413000321	-0.3708368770	 1.0324112968	R2 R3 active_atoms_0 origin=substrate origin_name=acrolein_E 
 C	-0.8585521390	 0.7332896191	 0.9877728743	R4 active_atoms_1 origin=substrate origin_name=acrolein_E 
 C	 0.3909978760	 0.8145002892	 0.2726796717	R1 Rch origin=substrate origin_name=acrolein_E 
