@@ -1,113 +1,84 @@
 import numpy as np
-import TCutility.results
+import TCutility.results as tcr
 from TCutility.results import Result
-
-def active_atom_vibrations(calc_dir: str) -> Result:
-    '''
-    Function to get 
-
-    Args:
-        calc_dir: path pointing to the desired calculation.
-
-    Returns:
-        : :
-
-            - **number_of_atoms (int)** – number of atoms in the molecule.
-
-    '''
-    #assert data.transitionstate.reaction_coordinate, "transitionstate only"
-
-    data = TCutility.results.read(calc_dir)
-    #data.update(ams.get_molecules(calc_dir))
-    rcatoms = data.TransitionStateSearch.ReactionCoordinate
-
-    previbmol = data.output
-    postvibmol = previbmol.copy()
-    vibrationslist = np.array(data.vibrations.modes).reshape(-1,3)
-
-    pairs = []
-    reaction_coordinate = 0.00
+from scm import plams
+from scm.plams import *
 
 
+from yutility import molecule
+def extract_rc_from_xyz(calc_dir):
+    inputmol = molecule.load(calc_dir + '/input_mol.xyz')
+    return np.array([[idx+1 for idx in molecule.get_labeled_atoms(inputmol['molecule'], 'active_atoms_0', return_idx=True)] + [1]])
+
+def atom_distance(molecule, atom1, atom2):
+    res = 0.0
+    for i,j in zip(molecule[atom1],molecule[atom2]):
+        res += (i - j)**2
+    return np.sqrt(res)
+
+def determine_ts_reactioncoordinate(calc_dir, min_delta_dist=0.1):
+    data = tcr.read(calc_dir)
+    assert 'modes' in data.properties.vibrations, f'Vibrational data is required, but was not present in .rkf file'
+
+    outputmol = data.molecule.output
+
+    basepos = np.array(outputmol).reshape(-1,3)
+    tsimode = np.array(data.properties.vibrations.modes[0]).reshape(-1,3)
+
+    posvibmol = outputmol.copy()
+    posvibmol.from_array(basepos + tsimode)
+    posvibmol.guess_bonds()
+    negvibmol = outputmol.copy()
+    negvibmol.from_array(basepos - tsimode)
+    negvibmol.guess_bonds()
+
+    pairs = np.where(posvibmol.bond_matrix() - negvibmol.bond_matrix())
+    rc = np.array(
+                [   [int(a) + 1, int(b) + 1, int(np.sign(posvibmol.bond_matrix()[a][b] - negvibmol.bond_matrix()[a][b]))] 
+                    for a, b in np.c_[pairs[0], pairs[1]] 
+                    if a < b and abs(atom_distance(posvibmol, a+1, b+1) - atom_distance(negvibmol, a+1, b+1)) > min_delta_dist
+                ])
+    return rc
+
+
+def validate_transitionstate(calc_dir, rcatoms = None):
+    data = tcr.read(calc_dir)
+    result = determine_ts_reactioncoordinate(calc_dir)
+
+    if isinstance(rcatoms, list):
+        rcatoms = np.array(rcatoms)
+
+    if not isinstance(rcatoms, np.ndarray):
+        assert 'reactioncoordinate' in data.input.transitionstatesearch, f'Reaction coordinate is a required input, but was neither provided nor present in the .rkf file'
+        rcatoms = np.array([[int(float(y)) for y in x.split()[1:]] for x in data.input.transitionstatesearch.reactioncoordinate])
+    
+    # sort for consistency
+    for index, [a,b,c] in enumerate(rcatoms):
+        if a > b:
+            rcatoms[index] = [b,a,c]
+    rcatoms = rcatoms[rcatoms[:,1].argsort()]
+    rcatoms = rcatoms[rcatoms[:,0].argsort()]
+    result = result[result[:,1].argsort()]
+    result = result[result[:,0].argsort()]
+
+    # match arbitrary sign with reaction coordinate
+    result[:, 2] = result[:, 2] if np.sign(result[0][2]) == rcatoms[0][2] else -result[:, 2]
+    ret = np.all(result == rcatoms)    
+
+    return ret
 
 if __name__ == '__main__':
-	active_atom_vibrations('../test/fixtures/2')
+    file = '/Users/yumanhordijk/Koen/tcml2022/yuman/ychem/calculations2/cb564ea7b7ec6e28a09bbc474787fe71d8c0406b07a3444ae9e4e0196f3d7a1e/transitionstate'
+    print(determine_ts_reactioncoordinate(file))
+    print(extract_rc_from_xyz(file))
+    print(validate_transitionstate(file, extract_rc_from_xyz(file)))
 
-''' 
+    print('\n')
 
-def find_bonds_from_transitionstate(rkf: plams.KFFile, previbmol=None, num_bonds_formed=1, bond_order=1, max_rc=2, granularity=0.05, conv_AngAu=False):
-    angtoau = 1.8897259886 if conv_AngAu else 1
-    if previbmol == None:
-        previbmol = Molecule()._mol_from_rkf_section(rkf.read_section('Molecule'))
-    
-    coordslist = np.array(previbmol).reshape(-1,3)/angtoau
+    file = '/Users/yumanhordijk/Koen/temporary_going_to_delete/ts sn2.results'
+    print(determine_ts_reactioncoordinate(file))
 
-    try:
-        vibrationslist = np.array(rkf.read_section('Vibrations')['NoWeightNormalMode(1)']).reshape(-1,3)/angtoau
-    except KeyError:
-        #print(f'Warning: No transition state vibrations found', end='')
-        return [(0,0)]
+    print('\n')
 
-    previbmol.guess_bonds()
-    bond_tolerance = 1.28
-    while len(previbmol.separate()) < 2:
-        bond_tolerance -= 0.01
-        previbmol.guess_bonds(dmax=bond_tolerance)
-
-    postvibmol = previbmol.copy()
-    broke_loop = False
-    pairs = []
-    reaction_coordinate = 0.00
-    while len(pairs)/2 < num_bonds_formed:
-        if reaction_coordinate > max_rc:
-            broke_loop = True
-            break
-        reaction_coordinate += granularity
-        postvib = (coordslist + reaction_coordinate * vibrationslist)
-        postvibmol.from_array(postvib)
-        postvibmol.guess_bonds(dmax=bond_tolerance)
-        bonded_atoms = np.where(postvibmol.bond_matrix() - previbmol.bond_matrix() == bond_order)
-        pairs = [[a,b] for a,b in np.c_[bonded_atoms[0], bonded_atoms[1]] if postvibmol.bond_matrix()[a][b] == bond_order]
-
-    if broke_loop:
-        reaction_coordinate = 0.00
-        while len(pairs)/2 < num_bonds_formed:
-            if reaction_coordinate < -max_rc:
-                return [(0,0)]
-            reaction_coordinate -= granularity
-            postvib = (coordslist + reaction_coordinate * vibrationslist)
-            postvibmol.from_array(postvib)
-            postvibmol.guess_bonds(dmax=bond_tolerance)
-            bonded_atoms = np.where(postvibmol.bond_matrix() - previbmol.bond_matrix() == bond_order)
-            pairs = [[a,b] for a,b in np.c_[bonded_atoms[0], bonded_atoms[1]] if postvibmol.bond_matrix()[a][b] == bond_order]
-
-    return [(a1+1,a2+1) for (a1,a2) in pairs if a1 < a2]
-
-def check_correct_transition(path_to_ts):
-    inputfile = path_to_ts + '/input_mol.xyz'
-    
-    try:
-        mol = Molecule(inputfile)
-        rkf = plams.KFFile(j(path_to_ts, 'geometry', 'adf.rkf'))
-        atom_order = rkf.read('Geometry', 'atom order index')
-    except FileNotFoundError:
-        return 1
-
-    with open(inputfile, 'r') as f:
-        aa_intended = [x-1 for x,l in enumerate(f) if 'active_atoms_0' in l]
-        for idx, entry in enumerate(aa_intended):
-            aa_intended[idx] = atom_order[len(atom_order)//2:].index(entry) + 1
-        
-        aa_actual = []
-        for pair in find_bonds_from_transitionstate(rkf, mol):
-            fixed = []
-            for atom in pair:
-                try:
-                    fixed.append(atom_order[len(atom_order)//2:].index(atom) + 1)
-                except ValueError:
-                    pass
-            aa_actual = fixed
-    predicted_outlier = int(aa_intended == aa_actual)
-    return predicted_outlier
-
-'''
+    file = '../../test/fixtures/2'
+    print(determine_ts_reactioncoordinate(file))
