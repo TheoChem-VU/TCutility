@@ -1,0 +1,66 @@
+NormalModes
+  ReScanFreqRange -10000000.0 10.0
+End
+
+PESPointCharacter
+  NegativeFrequenciesTolerance -50
+End
+
+Properties
+  NormalModes Yes
+  PESPointCharacter Yes
+End
+
+System
+  Atoms
+              C       2.8309957737      -0.6134168791       0.0099448710 
+              C       1.6113119451      -0.9251062814       0.5579000237 
+              C       0.8822289580      -0.1063671341       1.4888721880 
+              C       1.4719006979       1.3038136367       1.7865500408 
+              F       0.7070388307       2.0072721417       2.6065354248 
+              F       1.6196659955       2.0095192930       0.6516577977 
+              F       2.6931750253       1.2023856693       2.3423683467 
+              C       3.4334343430      -1.4481192778      -0.9626954461 
+              N       3.9156097958      -2.1303406539      -1.7552204363 
+              H       3.2690239006       0.3701238377       0.1359401018 
+              H       1.1660694315      -1.8941157037       0.3588315397 
+              O      -0.1491592708      -0.4385973008       2.0397194582 
+              I      -2.6676354839       0.0843688363       0.5417118124 
+              I      -0.8683083912       0.3277178781      -1.4344591164 
+              H       4.1285665144      -2.4848105349       1.7200898695 
+              C       4.4538462746      -1.4608568783       1.7123554265 
+              H       4.1287379010      -0.8143943800       2.5064306751 
+              H       5.3623983168      -1.2174380282       1.1929099728 
+  End
+  Charge 0.0
+End
+
+TransitionStateSearch
+  ReactionCoordinate
+    Distance 1 16 1.0
+  End
+End
+
+task TransitionStateSearch
+
+Engine adf
+  NumericalQuality Good
+  Relativity
+    Level Scalar
+  End
+  SCF
+    Iterations 600
+  End
+  SpinPolarization 1.0
+  Unrestricted Yes
+  XC
+    Dispersion GRIMME3 BJDAMP
+    GGA BLYP
+  End
+  basis
+    Core None
+    Type TZ2P
+  End
+  symmetry NOSYM
+EndEngine
+

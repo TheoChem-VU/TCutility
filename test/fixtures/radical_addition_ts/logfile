@@ -1,0 +1,17 @@
+[11:56:06] Running PLAMS located in /scistor/tc/yhk800/.conda/envs/test_env/lib/python3.11/site-packages/scm/plams
+[11:56:06] Using Python 3.11.0 located in /scistor/tc/yhk800/.conda/envs/test_env/bin/python
+[11:56:06] PLAMS defaults were loaded from /cm/shared/package/ams2021.102/scripting/scm/plams/plams_defaults
+[11:56:06] PLAMS environment initialized
+[11:56:06] PLAMS working folder: /scistor/tc/yhk800/PhD/ychem/calculations2/cb564ea7b7ec6e28a09bbc474787fe71d8c0406b07a3444ae9e4e0196f3d7a1e/transitionstate
+[11:56:06] JOB geometry STARTED
+[11:56:06] Starting geometry.prerun()
+[11:56:06] geometry.prerun() finished
+[11:56:06] JOB geometry RUNNING
+[11:56:06] Executing geometry.run
+[15:14:54] Execution of geometry.run finished with returncode 0
+[15:14:54] JOB geometry FINISHED
+[15:14:54] Starting geometry.postrun()
+[15:14:54] geometry.postrun() finished
+[15:14:54] JOB geometry SUCCESSFUL
+[15:14:54] PLAMS environment cleaned up successfully
+[15:14:54] PLAMS run finished. Goodbye
