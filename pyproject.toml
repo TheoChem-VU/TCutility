@@ -13,4 +13,4 @@ dynamic = ["version"]
 
 [tool.setuptools-git-versioning]
 enabled = true
-version_format="{tag}"
+template = "{tag}"
