@@ -1,10 +1,7 @@
 import numpy as np
-import TCutility.results as tcr
-from TCutility.results import Result
-from scm import plams
-from scm.plams import *
+from TCutility.results import read
 
-
+# temp
 from yutility import molecule
 def extract_rc_from_xyz(calc_dir):
     inputmol = molecule.load(calc_dir + '/input_mol.xyz')
@@ -16,42 +13,53 @@ def atom_distance(molecule, atom1, atom2):
         res += (i - j)**2
     return np.sqrt(res)
 
-def determine_ts_reactioncoordinate(calc_dir, min_delta_dist=0.1):
-    data = tcr.read(calc_dir)
-    assert 'modes' in data.properties.vibrations, f'Vibrational data is required, but was not present in .rkf file'
+def relative_bond_length_delta(base,pos,neg,a1,a2):
+    basedist = atom_distance(base, a1+1, a2+1)
+    x = abs((atom_distance(pos, a1+1, a2+1)/basedist)-1)
+    y = abs((atom_distance(neg, a1+1, a2+1)/basedist)-1)
+    return (x+y)/2
+
+def determine_ts_reactioncoordinate(calc_dir, bond_tolerance=1.28, min_delta_dist=0.1):
+    data = read(calc_dir)
+    assert 'modes' in data.properties.vibrations, 'Vibrational data is required, but was not present in .rkf file'
 
     outputmol = data.molecule.output
 
-    basepos = np.array(outputmol).reshape(-1,3)
+    base = np.array(outputmol).reshape(-1,3)
     tsimode = np.array(data.properties.vibrations.modes[0]).reshape(-1,3)
 
-    posvibmol = outputmol.copy()
-    posvibmol.from_array(basepos + tsimode)
-    posvibmol.guess_bonds()
-    negvibmol = outputmol.copy()
-    negvibmol.from_array(basepos - tsimode)
-    negvibmol.guess_bonds()
+    posvib = outputmol.copy()
+    posvib.from_array(base + tsimode)
+    posvib.guess_bonds(dmax=bond_tolerance)
+    negvib = outputmol.copy()
+    negvib.from_array(base - tsimode)
+    negvib.guess_bonds(dmax=bond_tolerance)
 
-    pairs = np.where(posvibmol.bond_matrix() - negvibmol.bond_matrix())
+    pairs = np.where(posvib.bond_matrix() - negvib.bond_matrix())
     rc = np.array(
-                [   [int(a) + 1, int(b) + 1, int(np.sign(posvibmol.bond_matrix()[a][b] - negvibmol.bond_matrix()[a][b]))] 
+                [   [a+1, b+1, np.sign(posvib.bond_matrix()[a][b] - negvib.bond_matrix()[a][b])]
                     for a, b in np.c_[pairs[0], pairs[1]] 
-                    if a < b and abs(atom_distance(posvibmol, a+1, b+1) - atom_distance(negvibmol, a+1, b+1)) > min_delta_dist
-                ])
+                    if a < b and relative_bond_length_delta(outputmol, posvib, negvib, a, b) > min_delta_dist
+                ], dtype=int)
     return rc
 
 
 def validate_transitionstate(calc_dir, rcatoms = None):
-    data = tcr.read(calc_dir)
+    data = read(calc_dir)
     result = determine_ts_reactioncoordinate(calc_dir)
 
     if isinstance(rcatoms, list):
         rcatoms = np.array(rcatoms)
 
     if not isinstance(rcatoms, np.ndarray):
-        assert 'reactioncoordinate' in data.input.transitionstatesearch, f'Reaction coordinate is a required input, but was neither provided nor present in the .rkf file'
+        assert 'reactioncoordinate' in data.input.transitionstatesearch, 'Reaction coordinate is a required input, but was neither provided nor present in the .rkf file'
         rcatoms = np.array([[int(float(y)) for y in x.split()[1:]] for x in data.input.transitionstatesearch.reactioncoordinate])
-    
+
+    if not isinstance(rcatoms[0], np.ndarray):
+        rcatoms = np.array([rcatoms])
+
+    assert np.all([len(x)==3 for x in rcatoms]), 'Invalid format of reaction coordinate'
+
     # sort for consistency
     for index, [a,b,c] in enumerate(rcatoms):
         if a > b:
@@ -71,7 +79,10 @@ if __name__ == '__main__':
     file = '/Users/yumanhordijk/Koen/tcml2022/yuman/ychem/calculations2/cb564ea7b7ec6e28a09bbc474787fe71d8c0406b07a3444ae9e4e0196f3d7a1e/transitionstate'
     print(determine_ts_reactioncoordinate(file))
     print(extract_rc_from_xyz(file))
+    print(validate_transitionstate(file))
     print(validate_transitionstate(file, extract_rc_from_xyz(file)))
+    print(validate_transitionstate(file, [1,16,1]))
+    print(validate_transitionstate(file, [[1,16,1]]))
 
     print('\n')
 
