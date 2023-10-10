@@ -3,6 +3,8 @@ name: Publishing to PyPI
 on:
   release:
     types: [published]
+on: workflow_dispatch
+
     
 concurrency:
   group: "publishing"
