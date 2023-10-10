@@ -13,4 +13,4 @@ dynamic = ["version"]
 
 [tool.setuptools-git-versioning]
 enabled = true
-dirty_template = "{tag}"
+version_format="{tag}"
