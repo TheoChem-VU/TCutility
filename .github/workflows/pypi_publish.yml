@@ -3,7 +3,7 @@ name: Publishing to PyPI
 on:
   release:
     types: [published]
-on: workflow_dispatch
+  workflow_dispatch:
 
     
 concurrency:
