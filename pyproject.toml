@@ -7,11 +7,11 @@ name = "TCutility"
 
 # Original authors
 authors = [
-  { name="TheoCheM group", email="https://www.theochem.nl/" },
+  { name="TheoCheM group"},
 ]
 # Current maintainers
 maintainers = [
-  { name="TheoCheM group", email="https://www.theochem.nl/" },
+  { name="TheoCheM group"},
 ]
 
 description = "Utility package for working with AMS/ADF within the Theoretical Chemistry group at the Vrije Universiteit Amsterdam (TheoCheM). Makes use of plams - a package developed by SCM"
