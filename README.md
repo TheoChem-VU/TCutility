@@ -1,4 +1,4 @@
-[![Documentation](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml) [![Testing](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml)
+[![Documentation](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml) [![Testing](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml) [![TCutility version](https://badge.fury.io/py/TCutility.svg)](https://pypi.org/project/TCutility/)
 
 # TCutility
 Utility functions/classes for the TheoCheM programs
