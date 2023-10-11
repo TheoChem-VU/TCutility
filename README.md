@@ -1,6 +1,7 @@
-[![Documentation](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml) [![Testing](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml) [![TCutility version](https://badge.fury.io/py/TCutility.svg)](https://pypi.org/project/TCutility/)
+[![Documentation](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml) [![Testing](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml) [![TCutility version](https://badge.fury.io/py/TCutility.svg)](https://pypi.org/project/TCutility/)[![Publishing to PyPI](https://github.com/TheoChem-VU/TCutility/actions/workflows/pypi_publish.yml/badge.svg?branch=main)](https://github.com/TheoChem-VU/TCutility/actions/workflows/pypi_publish.yml)
 
-[![Publishing to PyPI](https://github.com/TheoChem-VU/TCutility/actions/workflows/pypi_publish.yml/badge.svg?branch=main)](https://github.com/TheoChem-VU/TCutility/actions/workflows/pypi_publish.yml)
+
+[![TCutility version](https://badge.fury.io/py/TCutility.svg)](https://pypi.org/project/TCutility/)
 
 # TCutility
 Utility functions/classes for the TheoCheM programs
