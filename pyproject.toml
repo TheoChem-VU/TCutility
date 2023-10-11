@@ -4,7 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "TCutility"
-authors = [{ name="SiebeLeDe", email="s.j.lekanne.deprez@vu.nl" }, { name="Yuman Hordijk", email="y.hordijk@vu.nl"}]
+authors = [
+    "TheoChem" <"https://www.theochem.nl/>",
+]
 description = "Utility package for working with AMS/ADF within the Theoretical Chemistry group at the Vrije Universiteit Amsterdam (TheoCheM). Makes use of plams - a package developed by SCM"
 readme = "README.md"
 requires-python = ">=3.7"
