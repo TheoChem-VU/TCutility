@@ -4,10 +4,30 @@ def test_init():
 	res = results.result.Result()  # noqa F841
 
 
-def test_assign_simple():
+def test_assign():
 	res = results.result.Result()
 	res.a = 10
 	assert res.a == 10
+
+
+def test_assign2():
+	res = results.result.Result()
+	res.a.b = 10
+	assert res.a.b == 10
+
+
+def test_assign3():
+	res = results.result.Result()
+	res.a.b = 10
+	res.a.c = 20
+	assert res.a.b == 10 and res.a.c == 20
+
+
+def test_assign4():
+	res = results.result.Result()
+	res.a.lst = []
+	res.a.lst.append(10)
+	assert len(res.a.lst) == 1
 
 
 def test_contains():
