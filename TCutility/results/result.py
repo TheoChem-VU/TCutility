@@ -33,7 +33,7 @@ class Result(dict):
 
     def __contains__(self, key):
         # Custom method to check if the key is defined in this object, case-insensitive.
-        return key.lower() in [key_.lower() for key_ in self.keys()]
+        return key.lower() in [key_.lower() for key_ in self.keys()] and self[key]
 
     def __hash__(self):
         raise KeyError(f'Tried to hash {self.get_parent_tree()}, but it is empty')
@@ -52,7 +52,7 @@ class Result(dict):
     def __set_empty(self, key):
         # This function checks if the key has been set. 
         # If it has not, we create a new Result object and set it at the desired key
-        if key not in self:
+        if self.__get_case(key) not in self.keys():
             val = Result()
             val.__parent__ = self
             val.__name__ = key
