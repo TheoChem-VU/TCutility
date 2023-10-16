@@ -1,7 +1,7 @@
 from TCutility import results
 
 def test_init():
-	res = results.result.Result()
+	res = results.result.Result()  # noqa F841
 
 
 def test_assign_simple():
