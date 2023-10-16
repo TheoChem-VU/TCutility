@@ -44,7 +44,7 @@ def test_contains_neg3():
 	assert 'b' not in res
 
 
-def test_contains_neg3():
+def test_contains_neg4():
 	res = results.result.Result()
 	res.a
 	assert 'a' not in res
