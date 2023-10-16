@@ -4,15 +4,15 @@
 class Result(dict):
     '''Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary. 
     The class works case-insensitively, but will retain the case of the key when it was first set.'''
-    def __repr__(self):
-        if not self:
-            return 'Result(empty)'
-        else:
-            return 'Result'
 
     def __call__(self):
         head, method = '.'.join(self.get_parent_tree().split('.')[:-1]), self.get_parent_tree().split('.')[-1]
         raise AttributeError(f'Tried to call method "{method}" from {head}, but {head} is empty')
+
+    def items(self):
+        original_keys = super().keys()
+        keys = [key for key in original_keys if not (key.startswith('__') and key.endswith('__'))]
+        return [(key, self[key]) for key in keys]
 
     def __getitem__(self, key):
         self.__set_empty(key)
@@ -37,6 +37,10 @@ class Result(dict):
 
     def __hash__(self):
         raise KeyError(f'Tried to hash {self.get_parent_tree()}, but it is empty')
+
+    def __bool__(self):
+        '''Make sure that keys starting and ending in "__" are skipped'''
+        return len([key for key in self.keys() if not (key.startswith('__') and key.endswith('__'))]) > 0
 
     def get_parent_tree(self):
         if '__parent__' not in self:
@@ -78,9 +82,12 @@ class Result(dict):
 
 if __name__ == '__main__':
     ret = Result()
+    print(dict(ret.adf))
+    print(bool(ret.adf))
+    # ret.adf.x = {'a': 1, 'b': 2}
+    # ret.adf.system.atoms = []
+    # ret.adf.system.atoms.append('test 1 2 3')
 
-    ret.adf.x = {'a': 1, 'b': 2}
-    test_dict = {}
     # test_dict[ret.adf.y] = 20
     # ret.adf.y.join()
     # {ret.test: 123}
