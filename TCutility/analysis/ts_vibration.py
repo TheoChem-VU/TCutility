@@ -118,7 +118,8 @@ def validate_transitionstate(calc_dir: str, rcatoms: list = None, analyze_modes:
                     foundmatch = True
                     break
             if not foundmatch: # at least one element of rcatoms is not present in result
-                return False 
+                ret.append(False)
+                continue
         
         ret.append(set(str(x) for x in rcatoms).issubset(set(str(y) for y in result)))
 
