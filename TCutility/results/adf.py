@@ -45,16 +45,11 @@ def get_calc_settings(info: Result) -> Result:
     # determine if SFOs are unrestricted or not
     ret.unrestricted_sfos = ('SFOs', 'energy_B') in reader_adf
 
-    if ('Geometry', 'grouplabel') in reader_adf:
-        ret.symmetry.group = reader_adf.read('Geometry', 'grouplabel').strip()
-    else:
-        ret.symmetry.group = 'NOSYM'
+    # get the symmetry group
+    ret.symmetry.group = reader_adf.read('Geometry', 'grouplabel').strip()
 
     # get the symmetry labels
-    if ('Symmetry', 'symlab') in reader_adf:
-        ret.symmetry.labels = reader_adf.read('Symmetry', 'symlab').strip().split()
-    else:
-        ret.symmetry.labels = ['A']
+    ret.symmetry.labels = reader_adf.read('Symmetry', 'symlab').strip().split()
 
     # determine if MOs are unrestricted or not
     ret.unrestricted_mos = (ret.symmetry.labels[0], 'eps_B') in reader_adf
@@ -120,10 +115,9 @@ def get_properties(info: Result) -> Result:
     ret.energy.bond = reader_adf.read('Energy', 'Bond Energy') * constants.HA2KCALMOL
     ret.energy.elstat = reader_adf.read('Energy', 'elstat') * constants.HA2KCALMOL
     ret.energy.orbint.total = reader_adf.read('Energy', 'Orb.Int. Total') * constants.HA2KCALMOL
-    if ('Symmetry', 'symlab') in reader_adf:
-        for symlabel in info.adf.symmetry.labels:
-            symlabel = symlabel.split(':')[0]
-            ret.energy.orbint[symlabel] = reader_adf.read('Energy', f'Orb.Int. {symlabel}') * constants.HA2KCALMOL
+    for symlabel in info.adf.symmetry.labels:
+        symlabel = symlabel.split(':')[0]
+        ret.energy.orbint[symlabel] = reader_adf.read('Energy', f'Orb.Int. {symlabel}') * constants.HA2KCALMOL
     ret.energy.pauli.total = reader_adf.read('Energy', 'Pauli Total') * constants.HA2KCALMOL
     ret.energy.dispersion = reader_adf.read('Energy', 'Dispersion Energy') * constants.HA2KCALMOL
 

@@ -25,6 +25,7 @@ def determine_ts_reactioncoordinate(data: results.Result, mode_index: int = 0, b
 
     Args:
         data: TCutility.results.Result object containing calculation data
+        mode_index: vibrational mode index to analyze
         bond_tolerance: parameter for plams.Molecule.guess_bonds() function
         min_delta_dist: minimum relative bond length change before qualifying as active atom. If 0, all bond changes are counted
 
@@ -61,12 +62,14 @@ def validate_transitionstate(calc_dir: str, rcatoms: list = None, analyze_modes:
 
     Args:
         calc_dir: path pointing to the desired calculation.
-        rcatoms: list or array containing expected reaction coordinates, to check against the transition state. If not defined, it is obtained from the ams.rkf user input. Only uses 'Distance' reaction coordinate. Format should be [atomlabel1, atomlabel2, (optional) sign]
+        rcatoms: list or array containing expected reaction coordinates, to check against the transition state. If not defined, it is obtained from the ams.rkf user input. 
+                  Only uses 'Distance' reaction coordinate. Format should be [atomlabel1, atomlabel2, (optional) sign]
         analyze_modes: (optional), number of imaginary modes to analyze. Modes are ordered lowest frequency first. If 0 or negative value is provided, analyze all modes with imaginary frequency.
         **kwargs: keyword arguments for use in :func:`determine_ts_reactioncoordinate`.
 
     Returns:
-        Boolean value, True if the found transition state reaction coordinates contain the expected reaction coordinates, False otherwise. If multiple modes are analyzed, returns True if at least one mode contains the expected reaction coordinates.
+        Boolean value, True if the found transition state reaction coordinates contain the expected reaction coordinates, False otherwise. 
+        If multiple modes are analyzed, returns True if at least one mode contains the expected reaction coordinates.
     '''
 
     data = results.read(calc_dir)
@@ -76,8 +79,8 @@ def validate_transitionstate(calc_dir: str, rcatoms: list = None, analyze_modes:
     if nimag == 0: 
         return False # no imaginary modes found in transitionstate
 
-    if analyze_modes > 0:
-        nimag = min(nimag, analyze_modes)
+    if analyze_modes > 0:                   # if positive value is provided, check that many imaginary vibrational modes. Otherwise all imaginary ones are analyzed
+        nimag = min(nimag, analyze_modes)   # limit to the actual number of vibrational modes
 
     if isinstance(rcatoms, type(None)):
         assert 'reactioncoordinate' in data.input.transitionstatesearch, 'Reaction coordinate is a required input, but was neither provided nor present in the .rkf file'
@@ -126,17 +129,17 @@ def validate_transitionstate(calc_dir: str, rcatoms: list = None, analyze_modes:
 
 if __name__ == '__main__':
     file = '../../test/fixtures/radical_addition_ts'
-    print(determine_ts_reactioncoordinate(results.read(file)))
-    print(validate_transitionstate(file), '\n') # True
-    print(validate_transitionstate(file, [1,16,1], min_delta_dist=0.1), '\n')   # True
-    print(validate_transitionstate(file, [8,9,1], min_delta_dist=0.1), '\n')    # False
-    print(validate_transitionstate(file, [9,8,1]), '\n')                        # True
-    print(validate_transitionstate(file, [9,8,-3], min_delta_dist=0.0), '\n')   # True
-    print(validate_transitionstate(file, [1,15,1]), '\n')                       # False
-    print(validate_transitionstate(file, [[1,16,1], [2,7,-1], [1,2,3]]), '\n')  # False
+    #print(determine_ts_reactioncoordinate(results.read(file)))
+    #print(validate_transitionstate(file), '\n') # True
+    #print(validate_transitionstate(file, [1,16,1], min_delta_dist=0.1), '\n')   # True
+    #print(validate_transitionstate(file, [8,9,1], min_delta_dist=0.1), '\n')    # False
+    #print(validate_transitionstate(file, [9,8,1]), '\n')                        # True
+    print(validate_transitionstate(file, [[9,8,-3],[16,1,-5]], min_delta_dist=0.0), '\n')   # True
+    #print(validate_transitionstate(file, [1,15,1]), '\n')                       # False
+    #print(validate_transitionstate(file, [[1,16,1], [2,7,-1], [1,2,3]]), '\n')  # False
 
 
     print('\n')
 
     file = '../../test/fixtures/chloromethane_sn2_ts'
-    print(determine_ts_reactioncoordinate(results.read(file)))
+    #print(determine_ts_reactioncoordinate(results.read(file)))
