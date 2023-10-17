@@ -10,15 +10,23 @@ class Result(dict):
         head, method = '.'.join(self.get_parent_tree().split('.')[:-1]), self.get_parent_tree().split('.')[-1]
         raise AttributeError(f'Tried to call method "{method}" from {head}, but {head} is empty')
 
+    def __str__(self):
+        '''Override str method to prevent printing of hidden keys. You can still print them if you call repr instead of str.'''
+        return '{' + ', '.join([f'{key}: {str(val)}' for key, val in self.items()]) + '}'
+
     def items(self):
         '''We override the items method from dict in order to skip certain keys. We want to hide keys starting and ending
         with dunders, as they should not be exposed to the user.
         '''
+        return [(key, self[key]) for key in self.keys()]
+
+    def keys(self):
         original_keys = super().keys()
-        keys = [key for key in original_keys if not (key.startswith('__') and key.endswith('__'))]
-        return [(key, self[key]) for key in keys]
+        return [key for key in original_keys if not (key.startswith('__') and key.endswith('__'))]
 
     def __getitem__(self, key):
+        if key.startswith('__') and key.endswith('__'):
+            return None
         self.__set_empty(key)
         val = super().__getitem__(self.__get_case(key))
         return val
@@ -93,15 +101,16 @@ class Result(dict):
 
 if __name__ == '__main__':
     ret = Result()
-    print(dict(ret.adf))
-    print(bool(ret.adf))
-    # ret.adf.x = {'a': 1, 'b': 2}
+    # print(ret.adf)
+    # print(dict(ret.adf))
+    # print(bool(ret.adf))
+    ret.adf.x = {'a': 1, 'b': 2}
     # ret.adf.system.atoms = []
     # ret.adf.system.atoms.append('test 1 2 3')
 
     # test_dict[ret.adf.y] = 20
     # ret.adf.y.join()
     # {ret.test: 123}
-    ret.__name = 'testname'
-    print(ret.__name)
-    print(ret.adf.y)
+    # ret.__name__ = 'testname'
+    # print(ret.__name__)
+    print(repr(ret))
