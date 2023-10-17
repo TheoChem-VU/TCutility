@@ -57,14 +57,16 @@ def determine_ts_reactioncoordinate(data: results.Result, mode_index: int = 0, b
     return rc
 
 
-def validate_transitionstate(calc_dir: str, rcatoms: list = None, analyze_modes: int = 0, **kwargs) -> bool:
-    '''Function to determine whether a transition state calculation yielded the expected transition state.
+def validate_transitionstate(calc_dir: str, rcatoms: list = None, analyze_modes: int = 1, **kwargs) -> bool:
+    ''' Function to determine whether a transition state calculation yielded the expected transition state. Checks the reaction coordinates provided by the user (or in the .rkf file User Input section) and compares
+        this against the reaction coordinates found in the imaginary modes of the transitionstate. If the transitionstate has multiple imaginary frequencies, it is possible to check multiple modes for the expected
+        reaction coordinate.
 
     Args:
         calc_dir: path pointing to the desired calculation.
         rcatoms: list or array containing expected reaction coordinates, to check against the transition state. If not defined, it is obtained from the ams.rkf user input. 
                   Only uses 'Distance' reaction coordinate. Format should be [atomlabel1, atomlabel2, (optional) sign]
-        analyze_modes: (optional), number of imaginary modes to analyze. Modes are ordered lowest frequency first. If 0 or negative value is provided, analyze all modes with imaginary frequency.
+        analyze_modes: Number of imaginary modes to analyze, default only the first mode. Modes are ordered lowest frequency first. If 0 or negative value is provided, analyze all modes with imaginary frequency.
         **kwargs: keyword arguments for use in :func:`determine_ts_reactioncoordinate`.
 
     Returns:
@@ -89,7 +91,9 @@ def validate_transitionstate(calc_dir: str, rcatoms: list = None, analyze_modes:
 
     rcatoms = np.atleast_2d(rcatoms)
 
+    assert type(rcatoms[0][0]) != list and type(rcatoms[0][0]) != np.ndarray, 'If reaction coordinate sign is provided, it must be provided for all reaction coordinates'
     assert np.all([len(x)==2 or len(x)==3 for x in rcatoms]), 'Invalid format of reaction coordinate. Reaction coordinate format must be [label1, label2, (optional) sign]'
+    
 
     ret = []
 
@@ -121,20 +125,24 @@ def validate_transitionstate(calc_dir: str, rcatoms: list = None, analyze_modes:
                     foundmatch = True
                     break
             if not foundmatch: # at least one element of rcatoms is not present in result
-                return False 
-        
+                ret.append(False)
+                continue
+        else:
+            result = result[:, :-1]
+
         ret.append(set(str(x) for x in rcatoms).issubset(set(str(y) for y in result)))
 
     return any(ret)
 
 if __name__ == '__main__':
     file = '../../test/fixtures/radical_addition_ts'
-    #print(determine_ts_reactioncoordinate(results.read(file)))
+    print(determine_ts_reactioncoordinate(results.read(file), min_delta_dist=0))
     #print(validate_transitionstate(file), '\n') # True
-    #print(validate_transitionstate(file, [1,16,1], min_delta_dist=0.1), '\n')   # True
+    #print(validate_transitionstate(file, [1,16]), '\n')   # True
+    #print(validate_transitionstate(file, [np.array([1,16]), np.array([8,9])] ), '\n')   # True
     #print(validate_transitionstate(file, [8,9,1], min_delta_dist=0.1), '\n')    # False
     #print(validate_transitionstate(file, [9,8,1]), '\n')                        # True
-    print(validate_transitionstate(file, [[9,8,-3],[16,1,-5]], min_delta_dist=0.0), '\n')   # True
+    #print(validate_transitionstate(file, [[9,8,-3],[16,1,-5]], min_delta_dist=0.0), '\n')   # True
     #print(validate_transitionstate(file, [1,15,1]), '\n')                       # False
     #print(validate_transitionstate(file, [[1,16,1], [2,7,-1], [1,2,3]]), '\n')  # False
 
