@@ -61,7 +61,8 @@ def validate_transitionstate(calc_dir: str, rcatoms: list = None, analyze_modes:
 
     Args:
         calc_dir: path pointing to the desired calculation.
-        rcatoms: list or array containing expected reaction coordinates, to check against the transition state. If not defined, it is obtained from the ams.rkf user input. Only uses 'Distance' reaction coordinate. Format should be [atomlabel1, atomlabel2, (optional) sign]
+        rcatoms: list or array containing expected reaction coordinates, to check against the transition state. If not defined, it is obtained from the ams.rkf user input. 
+        Only uses 'Distance' reaction coordinate. Format should be [atomlabel1, atomlabel2, (optional) sign]
         analyze_modes: (optional), number of imaginary modes to analyze. Modes are ordered lowest frequency first. If 0 or negative value is provided, analyze all modes with imaginary frequency.
         **kwargs: keyword arguments for use in :func:`determine_ts_reactioncoordinate`.
 
