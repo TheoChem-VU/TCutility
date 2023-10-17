@@ -1,12 +1,15 @@
-[![Documentation](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml) [![Testing](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml)
+[![Documentation](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_docs.yml) [![Testing](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml/badge.svg)](https://github.com/TheoChem-VU/TCutility/actions/workflows/build_python_versions.yml) [![Publishing to PyPI](https://github.com/TheoChem-VU/TCutility/actions/workflows/pypi_publish.yml/badge.svg?branch=main)](https://github.com/TheoChem-VU/TCutility/actions/workflows/pypi_publish.yml)
+
+
+[![TCutility version](https://badge.fury.io/py/TCutility.svg)](https://pypi.org/project/TCutility/)
 
 # TCutility
 Utility functions/classes for the TheoCheM programs
 
 # Installation
 
-The easiest way is installing this python package via pip (not yet working since it is not published on PyPI):
-``` python -m pip install TCutility ```
+The easiest way is installing this python package via pip:
+``` python -m pip install TCutility```
 
 It is also possible to install in locally by first cloning this repository in your terminal: 
 
