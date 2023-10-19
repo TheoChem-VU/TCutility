@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>TCutility.results package &#8212; TCutility v0.2.1 documentation</title>
+    <title>TCutility.results package &#8212; TCutility v0.2.2 documentation</title>
   
   
   
@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
   <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=7e7ff5c5"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=5ece6f2e"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -44,7 +44,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="TCutility.constants package" href="TCutility.constants.html" />
-    <link rel="prev" title="TCutility v0.2.1 documentation" href="index.html" />
+    <link rel="prev" title="TCutility v0.2.2 documentation" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -604,6 +604,30 @@ It will also add bonds to the molecule if they are given in the rkf file, else i
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary.
 The class works case-insensitively, but will retain the case of the key when it was first set.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TCutility.results.result.Result.get_parent_tree">
+<span class="sig-name descname"><span class="pre">get_parent_tree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCutility/results/result.html#Result.get_parent_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.result.Result.get_parent_tree" title="Permalink to this definition">#</a></dt>
+<dd><p>Method to get the path from this object to the parent object. The result is presented in a formatted string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TCutility.results.result.Result.items">
+<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCutility/results/result.html#Result.items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.result.Result.items" title="Permalink to this definition">#</a></dt>
+<dd><p>We override the items method from dict in order to skip certain keys. We want to hide keys starting and ending
+with dunders, as they should not be exposed to the user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TCutility.results.result.Result.keys">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">keys</span></span></span><a class="reference internal" href="_modules/TCutility/results/result.html#Result.keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.result.Result.keys" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TCutility.results.result.Result.prune">
+<span class="sig-name descname"><span class="pre">prune</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TCutility/results/result.html#Result.prune"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TCutility.results.result.Result.prune" title="Permalink to this definition">#</a></dt>
+<dd><p>Remove empty paths of this object.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -691,7 +715,7 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">TCutility v0.2.1 documentation</p>
+        <p class="prev-next-title">TCutility v0.2.2 documentation</p>
       </div>
     </a>
     <a class="right-next"
@@ -746,7 +770,13 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.result">TCutility.results.result</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.result.Result"><code class="docutils literal notranslate"><span class="pre">Result</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.result.Result"><code class="docutils literal notranslate"><span class="pre">Result</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.result.Result.get_parent_tree"><code class="docutils literal notranslate"><span class="pre">Result.get_parent_tree()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.result.Result.items"><code class="docutils literal notranslate"><span class="pre">Result.items()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.result.Result.keys"><code class="docutils literal notranslate"><span class="pre">Result.keys()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#TCutility.results.result.Result.prune"><code class="docutils literal notranslate"><span class="pre">Result.prune()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-TCutility.results.cache">TCutility.results.cache</a><ul class="nav section-nav flex-column">
