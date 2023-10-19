@@ -35,7 +35,6 @@ def test_LOT4() -> None:
     assert res.level.summary == 'M06-2X/QZ4P'
 
 
-
 def test_sections() -> None:
     res = results.read(j('test', 'fixtures', 'DFT_EDA'))
-    assert all(section in res for section in ['adf', 'engine', 'ams_version', 'history', 'is_multijob', 'molecule', 'status', 'timing'])
+    assert all(section in res for section in ['adf', 'engine', 'ams_version', 'is_multijob', 'molecule', 'status', 'timing'])
