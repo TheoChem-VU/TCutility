@@ -71,6 +71,7 @@ jobs:
             add_options: '-f'
             status_options: '-uall --ignored'
             push_options: '--force'
+            branch: main
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
