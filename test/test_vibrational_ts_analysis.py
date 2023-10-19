@@ -1,4 +1,4 @@
-from TCutility import results, analysis
+from TCutility import results
 from TCutility.analysis import ts_vibration
 import numpy as np
 import os
