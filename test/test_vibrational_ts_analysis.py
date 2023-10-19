@@ -50,8 +50,6 @@ def test_validate_rad_ts_6() -> None:
 	assert result is False # Should have equal signs
 
 def test_validate_rad_ts_7() -> None:
-	try:
-		result = ts_vibration.validate_transitionstate(j('test', 'fixtures', 'radical_addition_ts'), [[1,16], [8,9,1]])
-	except ValueError:  
-		result = 'ValueError'
-	assert result == 'ValueError' # Sign has to be provided for all reaction coordinates or none of them. ValueError should be raised otherwise
+	# Sign has to be provided for all reaction coordinates or none of them. ValueError should be raised otherwise
+	with pytest.raises(ValueError):
+		result = ts_vibration.validate_transitionstate(j('test', 'fixtures', 'radical_addition_ts'), [[1,16], [8,9,1]]) 
