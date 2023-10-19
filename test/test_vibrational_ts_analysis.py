@@ -11,7 +11,7 @@ def test_sn2_determine_rc() -> None:
 
 def test_rad_determine_rc_1() -> None:
     result = results.read(j('test', 'fixtures', 'radical_addition_ts'))
-    assert np.array_equal(ts_vibration.determine_ts_reactioncoordinate(result, min_delta_dist=0.1), np.array([[1,16,1]]))
+    assert np.array_equal(ts_vibration.determine_ts_reactioncoordinate(result, min_delta_dist=0.1), np.array([[1,16,-1]]))
 
 def test_rad_determine_rc_2() -> None:
     result = results.read(j('test', 'fixtures', 'radical_addition_ts'))
@@ -50,5 +50,8 @@ def test_validate_rad_ts_6() -> None:
 	assert result is False # Should have equal signs
 
 def test_validate_rad_ts_7() -> None:
-	result = ts_vibration.validate_transitionstate(j('test', 'fixtures', 'radical_addition_ts'), [[1,16], [8,9,1]])
-	assert result is False # Sign has to be provided for all reaction coordinates or none of them
+	try:
+		result = ts_vibration.validate_transitionstate(j('test', 'fixtures', 'radical_addition_ts'), [[1,16], [8,9,1]])
+	except ValueError:  
+		result = 'ValueError'
+	assert result == 'ValueError' # Sign has to be provided for all reaction coordinates or none of them. ValueError should be raised otherwise

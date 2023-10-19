@@ -1,4 +1,5 @@
 import numpy as np
+import warnings
 from TCutility import results
 from scm import plams
 
@@ -89,12 +90,15 @@ def validate_transitionstate(calc_dir: str, rcatoms: list = None, analyze_modes:
         rcatoms = np.array([[int(float(y)) for y in x.split()[1:]] for x in data.input.transitionstatesearch.reactioncoordinate if x.split()[0] == 'Distance'])
         assert len(rcatoms) > 0, 'Reaction coordinate data was present in .rkf file, but no reaction coordinate using Distance was provided'
 
-    rcatoms = np.atleast_2d(rcatoms)
+    # cast the reaction coordinate as 2d array. If reaction coordinate sign is provided, it must be provided for all reaction coordinates. 
+    # the np.atleast_2d() function will cause a deprecation warning if the dimensions mismatch, this is raised as a value error instead
+    with warnings.catch_warnings(record=True) as w:
+        rcatoms = np.atleast_2d(rcatoms)
+        if len(w) > 0:
+            raise ValueError(w[-1].message)
 
-    assert type(rcatoms[0][0]) != list and type(rcatoms[0][0]) != np.ndarray, 'If reaction coordinate sign is provided, it must be provided for all reaction coordinates'
     assert np.all([len(x)==2 or len(x)==3 for x in rcatoms]), 'Invalid format of reaction coordinate. Reaction coordinate format must be [label1, label2, (optional) sign]'
     
-
     ret = []
 
     for idx in range(nimag):
@@ -133,21 +137,3 @@ def validate_transitionstate(calc_dir: str, rcatoms: list = None, analyze_modes:
         ret.append(set(str(x) for x in rcatoms).issubset(set(str(y) for y in result)))
 
     return any(ret)
-
-if __name__ == '__main__':
-    file = '../../test/fixtures/radical_addition_ts'
-    print(determine_ts_reactioncoordinate(results.read(file), min_delta_dist=0))
-    #print(validate_transitionstate(file), '\n') # True
-    #print(validate_transitionstate(file, [1,16]), '\n')   # True
-    #print(validate_transitionstate(file, [np.array([1,16]), np.array([8,9])] ), '\n')   # True
-    #print(validate_transitionstate(file, [8,9,1], min_delta_dist=0.1), '\n')    # False
-    #print(validate_transitionstate(file, [9,8,1]), '\n')                        # True
-    #print(validate_transitionstate(file, [[9,8,-3],[16,1,-5]], min_delta_dist=0.0), '\n')   # True
-    #print(validate_transitionstate(file, [1,15,1]), '\n')                       # False
-    #print(validate_transitionstate(file, [[1,16,1], [2,7,-1], [1,2,3]]), '\n')  # False
-
-
-    print('\n')
-
-    file = '../../test/fixtures/chloromethane_sn2_ts'
-    #print(determine_ts_reactioncoordinate(results.read(file)))
