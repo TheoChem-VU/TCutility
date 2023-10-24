@@ -1,0 +1,29 @@
+#!/bin/sh
+
+"$AMSBIN/ams" << eor
+
+Task TransitionStateSearch
+Properties
+    NormalModes Yes
+End
+System
+    Atoms
+        C 0.0 0.0 0.0 
+        Cl 2.4 0.0 0.0 
+        H 0.0 0.90540836 0.5227377600000001 
+        H 0.0 -0.90540836 0.5227377600000001 
+        H 0.0 0.0 -1.04547552 
+        Cl -2.4 0.0 -0.0 
+    End
+    Charge -1
+    BondOrders
+         1 3 1.0
+         1 4 1.0
+         1 5 1.0
+    End
+End
+
+Engine ADF
+EndEngine
+eor
+

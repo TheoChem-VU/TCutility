@@ -1,0 +1,26 @@
+{
+    "name": "transitionstate",
+    "reactants": {
+        "catalyst": "catalyst",
+        "radical": "methyl",
+        "substrate": "acrolein_E"
+    },
+    "reaction": "Radical Addition",
+    "reaction_specific": {
+        "isomer": "R"
+    },
+    "settings_preset": "BLYP-D3(BJ)/TZ2P/Good",
+    "solvent": "vacuum",
+    "substituents": {
+        "catalyst": {
+            "Rcat": "I2"
+        },
+        "substrate": {
+            "R1": "CF3",
+            "R2": "CN",
+            "R3": "H",
+            "R4": "H",
+            "Rch": "O"
+        }
+    }
+}

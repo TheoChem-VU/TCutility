@@ -1,0 +1,25 @@
+18
+
+C	 2.8309957737	-0.6134168791	 0.0099448710	R2 R3 active_atoms_0 origin=substrate origin_name=acrolein_E 
+C	 1.6113119451	-0.9251062814	 0.5579000237	R4 active_atoms_1 origin=substrate origin_name=acrolein_E 
+C	 0.8822289580	-0.1063671341	 1.4888721880	R1 Rch origin=substrate origin_name=acrolein_E 
+C	 1.4719006979	 1.3038136367	 1.7865500408	conn origin=substrate origin_name=acrolein_E origin_R=R1 
+F	 0.7070388307	 2.0072721417	 2.6065354248	origin=substrate origin_name=acrolein_E origin_R=R1 
+F	 1.6196659955	 2.0095192930	 0.6516577977	origin=substrate origin_name=acrolein_E origin_R=R1 
+F	 2.6931750253	 1.2023856693	 2.3423683467	origin=substrate origin_name=acrolein_E origin_R=R1 
+C	 3.4334343430	-1.4481192778	-0.9626954461	conn origin=substrate origin_name=acrolein_E origin_R=R2 
+N	 3.9156097958	-2.1303406539	-1.7552204363	origin=substrate origin_name=acrolein_E origin_R=R2 
+H	 3.2690239006	 0.3701238377	 0.1359401018	conn origin=substrate origin_name=acrolein_E origin_R=R3 
+H	 1.1660694315	-1.8941157037	 0.3588315397	conn origin=substrate origin_name=acrolein_E origin_R=R4 
+O	-0.1491592708	-0.4385973008	 2.0397194582	conn origin=substrate origin_name=acrolein_E origin_R=Rch 
+I	-2.6676354839	 0.0843688363	 0.5417118124	anchor conn origin=catalyst origin_name=catalyst origin_R=Rcat 
+I	-0.8683083912	 0.3277178781	-1.4344591164	origin=catalyst origin_name=catalyst origin_R=Rcat 
+H	 4.1285665144	-2.4848105349	 1.7200898695	plane_0 align_1 origin=radical origin_name=methyl 
+C	 4.4538462746	-1.4608568783	 1.7123554265	center align_0 active_atoms_0 origin=radical origin_name=methyl 
+H	 4.1287379010	-0.8143943800	 2.5064306751	plane_1 origin=radical origin_name=methyl 
+H	 5.3623983168	-1.2174380282	 1.1929099728	plane_2 origin=radical origin_name=methyl 
+
+spinpol = 1.0
+charge = 0.0
+task = TransitionStateSearch
+isomer = R
