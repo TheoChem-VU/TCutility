@@ -13,6 +13,9 @@ def parse_str(s: str):
     if not isinstance(s, str):
         return s
 
+    if ',' in s:
+        return [parse_str(part.strip()) for part in s.split(',')]
+
     # to parse the string we use try/except method
     try:
         return int(s)
