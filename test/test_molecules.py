@@ -42,3 +42,15 @@ def test_comment() -> None:
     xyzfile = j('test', 'fixtures', 'xyz', 'transitionstate_radical_addition.xyz')
     mol = molecule.load(xyzfile)
     assert mol.comment == 'molecule used for testing the molecule module'
+
+
+def test_list_value() -> None:
+    xyzfile = j('test', 'fixtures', 'xyz', 'pyr.xyz')
+    mol = molecule.load(xyzfile)
+    assert mol.flags.conn == [6, 12]
+
+
+def test_list_value2() -> None:
+    xyzfile = j('test', 'fixtures', 'xyz', 'pyr.xyz')
+    mol = molecule.load(xyzfile)
+    assert mol.flags.test_list == [3.14, 'pi']
