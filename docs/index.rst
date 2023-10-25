@@ -13,7 +13,9 @@ TCutility |ProjectVersion| documentation
    :caption: Contents:
 
    TCutility.results
+   TCutility.analysis
    TCutility.constants
+   TCutility.molecule
 
 
 Indices and tables
