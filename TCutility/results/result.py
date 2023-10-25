@@ -53,6 +53,9 @@ class Result(dict):
         '''
         raise KeyError(f'Tried to hash {self.get_parent_tree()}, but it is empty')
 
+    def __reduce__(self):
+        return 'TCutility.results.result.Result'
+
     def __bool__(self):
         '''Make sure that keys starting and ending in "__" are skipped'''
         return len([key for key in self.keys() if not (key.startswith('__') and key.endswith('__'))]) > 0

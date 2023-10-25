@@ -13,6 +13,9 @@ def parse_str(s: str):
     if not isinstance(s, str):
         return s
 
+    if ',' in s:
+        return [parse_str(part.strip()) for part in s.split(',')]
+
     # to parse the string we use try/except method
     try:
         return int(s)
@@ -86,7 +89,7 @@ def load(path) -> plams.Molecule:
     '''
     def parse_flags(args):
         ret = result.Result()
-        ret.tags = []
+        ret.tags = set()
         for arg in args:
             # flags are given as key=value pairs
             # tags are given as loose keys
@@ -94,7 +97,7 @@ def load(path) -> plams.Molecule:
                 key, value = arg.split('=')
                 ret[key.strip()] = parse_str(value.strip())
             else:
-                ret.tags.append(parse_str(arg.strip()))
+                ret.tags.add(parse_str(arg.strip()))
         return ret
 
     with open(path) as f:
