@@ -5,7 +5,7 @@ from time import perf_counter
 import numpy as np
 import json
 from TCutility import ensure_2d
-from typing import Any, Iterable
+from typing import Any, Iterable, List
 
 ###########################################################
 # MODULE LEVEL VARIABLES USED TO CHANGE LOGGING BEHAVIOUR #
@@ -113,7 +113,7 @@ def log(message: str = '', end: str = '\n'):
         print(m, file=logfile, end=end, flush=True)
 
 
-def flow(message: str = '', tags: list[str] = ['straight']) -> None:
+def flow(message: str = '', tags: List[str] = ['straight']) -> None:
     '''
     Function to create flowchart-like output.
     It will print a message prepended by flow elements (arrows and lines).
@@ -136,7 +136,7 @@ def flow(message: str = '', tags: list[str] = ['straight']) -> None:
     log(s + message)
 
 
-def table(rows: list[list[Any]], header: list[str] = None, sep: str = '   ', hline: list[int] = []) -> str:
+def table(rows: List[List[Any]], header: List[str] = None, sep: str = '   ', hline: List[int] = []) -> str:
     r'''
     Print a table given rows and a header. Values in rows will be cast to strings first.
     
