@@ -7,18 +7,23 @@
 Utility functions/classes for the TheoCheM programs
 
 # Installation
-PIP
----
-The easiest way is installing this python package via pip:
+The easiest and recommended installation method is via pip:
+
 ``` python -m pip install TCutility```
 
-Cloning via Git
----------------
-It is also possible to install in locally by first cloning this repository in your terminal: 
+To update the package, please run:
+
+``` python -m pip install --upgrade TCutility```
+
+<details>
+<summary><h4>Manual Installation</h4></summary>
+The following is for people who would like to install the repository themselves. For example, to edit and/or contribute code to the project.
+  
+First clone this repository: 
 
 ``` git clone https://github.com/TheoChem-VU/TCutility.git ```
 
-and then moving into the new directory and installing the package:
+Then move into the new directory and install the package:
 
 ```
 cd TCutility
@@ -27,8 +32,14 @@ python -m build
 python -m pip install -e .
 ```
 
+To get new updates, simply run:
+
+``` git pull ```
+
+</details>
+
 # Documentation
-Documentation can be found here https://theochem-vu.github.io/TCutility/ (work in progress)
+Documentation of TCutility is hosted at https://theochem-vu.github.io/TCutility/ (work in progress)
 
 # Usage
 List of available utilities and their usage:
