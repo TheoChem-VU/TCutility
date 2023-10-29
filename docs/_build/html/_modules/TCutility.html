@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Overview: module code &#8212; TCutility v0.3.1 documentation</title>
+    <title>TCutility &#8212; TCutility v0.3.1 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=c5b00ed7"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/TCutility';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -220,7 +220,10 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Overview:...</li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">TCutility</li>
   </ul>
 </nav>
 </div>
@@ -237,15 +240,23 @@
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <h1>All modules for which code is available</h1>
-<ul><li><a href="TCutility.html">TCutility</a></li>
-<ul><li><a href="TCutility/results.html">TCutility.results</a></li>
-<ul><li><a href="TCutility/results/adf.html">TCutility.results.adf</a></li>
-<li><a href="TCutility/results/ams.html">TCutility.results.ams</a></li>
-<li><a href="TCutility/results/cache.html">TCutility.results.cache</a></li>
-<li><a href="TCutility/results/dftb.html">TCutility.results.dftb</a></li>
-<li><a href="TCutility/results/result.html">TCutility.results.result</a></li>
-</ul></ul></ul>
+  <h1>Source code for TCutility</h1><div class="highlight"><pre>
+<span></span><span class="n">ensure_list</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">set</span><span class="p">))</span> <span class="k">else</span> <span class="n">x</span>  <span class="c1"># noqa: E731</span>
+<span class="n">squeeze_list</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">x</span>  <span class="c1"># noqa: E731</span>
+
+
+<div class="viewcode-block" id="ensure_2d"><a class="viewcode-back" href="../TCutility.html#TCutility.ensure_2d">[docs]</a><span class="k">def</span> <span class="nf">ensure_2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">transposed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">ensure_list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">transposed</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">set</span><span class="p">)):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">ensure_list</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">x</span></div>
+
+
+<span class="kn">from</span> <span class="nn">TCutility</span> <span class="kn">import</span> <span class="n">analysis</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">constants</span>  <span class="c1"># noqa: F401, E402</span>
+</pre></div>
 
                 </article>
               
