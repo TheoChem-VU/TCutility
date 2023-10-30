@@ -13,6 +13,7 @@ logfile = sys.stdout  # stream or file to send prints to. Default sys.stdout is 
 tab_level = 0  # number of tabs to add before a logged message. This is useful to build a sense of structure in a long output
 max_width = 0  # maximum width of printed messages. Default 0 means unbounded
 print_date = True  # print time stamp before a logged message
+log_level = 20  # the level of verbosity. Messages with a log_level >= this number will be sent to logfile
 
 
 class Emojis:
@@ -74,27 +75,27 @@ def time_stamp():
     return f'[{now.year}/{str(now.month).zfill(2)}/{str(now.day).zfill(2)} {str(now.hour).zfill(2)}:{str(now.minute).zfill(2)}:{str(now.second).zfill(2)}] '
 
 
-def log(message: str = '', end: str = '\n'):
+def log(message: str = '', level: int = 20, end: str = '\n'):
     r'''
     Print a message to stream or file logfile.
     This function adds the current timestamp and supports multi-line printing (split on the "\n" escape character).
+    level is the verbosity level with which the message is sent.
+    Generally we follow:
+
+        NOTSET   = 0
+        DEBUG    = 10
+        INFO     = 20
+        WARN     = 30
+        ERROR    = 40
+        CRITICAL = 50
+    
+    We compare the level against the module-wide log_level variable (by default log_level = 20). If the level is below log_level we do not print it.
     '''
+    if level < log_level:
+        return
+
     # dictionaries are handled specially so that they look nice
     if isinstance(message, dict):
-        # # convert dictionary values into standard python variables
-        # lst = dictfunc.dict_to_list(message)
-        # lst_ = []
-        # for line in lst:
-        #     lst_.append([])
-        #     for item in line:
-        #         if isinstance(item, (str, int, float, bool)):
-        #             lst_[-1].append(item)
-        #         elif isinstance(item, list):
-        #             lst_[-1].append([element if isinstance(item, (str, int, float, bool)) else repr(element) for element in item])
-        #         else:
-        #             lst_[-1].append(repr(item))
-        # message = dictfunc.list_to_dict(lst_)
-        # use json to format the dictionary
         message = json.dumps(message, indent=4, sort_keys=True)
 
     message = str(message)
@@ -113,7 +114,7 @@ def log(message: str = '', end: str = '\n'):
         print(m, file=logfile, end=end, flush=True)
 
 
-def flow(message: str = '', tags: List[str] = ['straight']) -> None:
+def flow(message: str = '', tags: List[str] = ['straight'], level: int = 20) -> None:
     '''
     Function to create flowchart-like output.
     It will print a message prepended by flow elements (arrows and lines).
@@ -133,10 +134,10 @@ def flow(message: str = '', tags: List[str] = ['straight']) -> None:
     s = ''
     for tag in tags:
         s += elements[tag]
-    log(s + message)
+    log(s + message, level=level)
 
 
-def table(rows: List[List[Any]], header: List[str] = None, sep: str = '   ', hline: List[int] = []) -> str:
+def table(rows: List[List[Any]], header: List[str] = None, sep: str = '   ', hline: List[int] = [], level: int = 20) -> str:
     r'''
     Print a table given rows and a header. Values in rows will be cast to strings first.
     
@@ -170,11 +171,11 @@ def table(rows: List[List[Any]], header: List[str] = None, sep: str = '   ', hli
         if i in hline:
             return_str += '─' * len(row_str) + '\n'
 
-    log(return_str)
+    log(return_str, level=level)
     return return_str
 
 
-def loadbar(sequence: Iterable, comment: str = '', Nsegments: int = 50, Nsteps: int = 10) -> None:
+def loadbar(sequence: Iterable, comment: str = '', Nsegments: int = 50, Nsteps: int = 10, level: int = 20) -> None:
     '''
     Return values from an iterable `sequence` and also print a progress bar for the iteration over this sequence.
 
@@ -229,17 +230,17 @@ def loadbar(sequence: Iterable, comment: str = '', Nsegments: int = 50, Nsteps: 
 
         # update the max loading bar string length
         max_length = max(len(s), max_length)
-        log(s, end='\r')
+        log(s, end='\r', level=level)
     
         yield val
 
     # plot the final iteration at 100% filled
     s = f'{i+1:{Ndigits}}/{N} {"├"}{"─"*(Nsegments+1)}┤ 100% {comment}'.ljust(max_length)
-    log(s, end='\r')
-    log()
+    log(s, end='\r', level=level)
+    log(level=level)
 
 
-def boxed(message: str, title: str = None, message_align: str = 'left', title_align: str = 'left', round_corners: bool = True, double_edge: bool = False) -> str:
+def boxed(message: str, title: str = None, message_align: str = 'left', title_align: str = 'left', round_corners: bool = True, double_edge: bool = False, level: int = 20) -> str:
     r'''
     Print a message surrounded by a box with optional title.
 
@@ -295,21 +296,21 @@ def boxed(message: str, title: str = None, message_align: str = 'left', title_al
     # build bottom row
     s += corners[3] + straights[1]*(maxlen+2) + corners[2]
 
-    log(s)
+    log(s, level=level)
 
 
-def info(message):
+def info(message, level=20):
     '''
     Display informative message using the boxed function.
     '''
-    boxed(message, round_corners=True, double_edge=False, title='Info')
+    boxed(message, round_corners=True, double_edge=False, title='Info', level=level)
 
 
-def warn(message):
+def warn(message, level=30):
     '''
     Display a warning message using the boxed function.
     '''
-    boxed(message, double_edge=True, title='Warning', title_align='center')
+    boxed(message, double_edge=True, title='Warning', title_align='center', level=level)
 
 
 if __name__ == '__main__':
