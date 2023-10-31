@@ -293,7 +293,10 @@ def get_molecules(calc_dir: str) -> Result:
         ret.input.add_atom(plams.Atom(atnum=atnum, coords=coord))
     # try to add the bonds if they were given in the rkf file
     if ('Molecule', 'fromAtoms') in reader_ams and ('Molecule', 'toAtoms') in reader_ams and ('Molecule', 'bondOrders'):
-        for at1, at2, order in zip(reader_ams.read('InputMolecule', 'fromAtoms'), reader_ams.read('InputMolecule', 'toAtoms'), reader_ams.read('InputMolecule', 'bondOrders')):
+        at_from = ensure_list(reader_ams.read('InputMolecule', 'fromAtoms'))
+        at_to = ensure_list(reader_ams.read('InputMolecule', 'toAtoms'))
+        bos = ensure_list(reader_ams.read('InputMolecule', 'bondOrders'))
+        for at1, at2, order in zip(at_from, at_to, bos):
             ret.input.add_bond(plams.Bond(ret.input[at1], ret.input[at2], order=order))
     # if the bonds were not given, guess them
     else:
@@ -305,7 +308,10 @@ def get_molecules(calc_dir: str) -> Result:
     for atnum, coord in zip(atnums, coords):
         ret.output.add_atom(plams.Atom(atnum=atnum, coords=coord))
     if ('Molecule', 'fromAtoms') in reader_ams and ('Molecule', 'toAtoms') in reader_ams and ('Molecule', 'bondOrders'):
-        for at1, at2, order in zip(reader_ams.read('Molecule', 'fromAtoms'), reader_ams.read('Molecule', 'toAtoms'), reader_ams.read('Molecule', 'bondOrders')):
+        at_from = ensure_list(reader_ams.read('InputMolecule', 'fromAtoms'))
+        at_to = ensure_list(reader_ams.read('InputMolecule', 'toAtoms'))
+        bos = ensure_list(reader_ams.read('InputMolecule', 'bondOrders'))
+        for at1, at2, order in zip(at_from, at_to, bos):
             ret.output.add_bond(plams.Bond(ret.output[at1], ret.output[at2], order=order))
     else:
         ret.output.guess_bonds()
