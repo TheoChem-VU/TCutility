@@ -51,14 +51,15 @@ def apply_rotation_matrix(coords: np.ndarray, R: np.ndarray) -> np.ndarray:
     '''
     Apply a rotation matrix to a set of coordinates
     '''
-    return (R @ coords.T).T
+    coords = np.atleast_2d(coords)
+    return (R @ coords.T).T.squeeze()
 
 
 def rotate(coords: np.ndarray, x: float = None, y: float = None, z: float = None) -> np.ndarray:
     '''
     Shorthand function that builds and applies a rotation matrix to a set of coordinates.
     '''
-    return apply_rotmat(coords, get_rotation_matrix(x, y, z))
+    return apply_rotation_matrix(coords, get_rotation_matrix(x, y, z))
 
 
 def vector_align_rotmat(a: np.ndarray, b: np.ndarray) -> np.ndarray:
