@@ -69,12 +69,13 @@ def vector_align_rotmat(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     # normalize the vectors first
     a = np.array(a) / np.linalg.norm(a)
     b = np.array(b) / np.linalg.norm(b)
-
+    
+    c = a @ b
     # check if they are not already aligned
-    if a @ b == 1:
+    if c == 1:
         return np.eye(3)
-    if a @ b == -1:
-        return np.eye(3)
+    if c == -1:
+        raise ValueError('Inner product of a and b is 1, no rotation possible.')
 
     v = np.cross(a, b)
     skew = np.array([
@@ -82,9 +83,6 @@ def vector_align_rotmat(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         [v[2], 0, -v[0]],
         [-v[1], v[0], 0]
     ])
-
-    c = a @ b
-
     R = np.eye(3) + skew + skew @ skew / (1 + c)
     return R
 
