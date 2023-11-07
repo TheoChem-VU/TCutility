@@ -2,6 +2,7 @@ import numpy as np
 from math import sin, cos
 import itertools
 import scipy
+from typing import Tuple
 
 
 def get_rotation_matrix(x: float = None, y: float = None, z: float = None) -> 'Matrix(3, 3)':
@@ -310,9 +311,34 @@ def RMSD(X: np.ndarray,
     return np.sqrt(np.sum((X - Y)**2, axis=axis)/X.shape[0])
 
 
-def transform_mol(mol: plams.Molecule, transform: Transform):
-    for atom in mol:
-        atom.coords = transform.apply(atom.coords)[0]
-        return mol
+def random_points_on_sphere(shape: Tuple[int], radius: float = 1) -> np.ndarray:
+    '''
+    Generate a random points on a sphere with a specified radius.
 
+    Args:
+        shape: The shape of the resulting points, generally shape[0] coordinates with shape[1] dimensions
+        radius: The radius of the sphere to generate the points on.
+
+    Returns:
+        Array of coordinates on a sphere.
+    '''
+    x = np.random.randn(*shape)
+    x = x/np.linalg.norm(x, axis=1) * radius
+    return x
+
+
+def random_points_in_anular_sphere(shape: Tuple[int], min_radius: float = 0, max_radius: float = 1):
+    '''
+    Generate a random points in a sphere with specified radii.
+
+    Args:
+        shape: The shape of the resulting points, generally shape[0] coordinates with shape[1] dimensions
+        min_radius: The lowest radius of the sphere to generate the points in.
+        max_radius: The largest radius of the sphere to generate the points in.
+
+    Returns:
+        Array of coordinates on a sphere.
+    '''
+    random_radii = np.random.rand(N) * (max_radius - min_radius) + min_radius
+    return random_point_on_sphere(shape, random_radii)
 
