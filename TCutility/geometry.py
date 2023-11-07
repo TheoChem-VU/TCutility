@@ -5,7 +5,8 @@ import scipy
 from typing import Tuple
 
 
-def get_rotation_matrix(x: float = None, y: float = None, z: float = None) -> 'Matrix(3, 3)':
+
+def get_rotation_matrix(x: float = None, y: float = None, z: float = None) -> np.ndarray:
     ''' 
     Create a rotation matrix based on the Tait-Bryant sytem.
     In this system, x, y, and z are angles of rotation around
@@ -46,21 +47,21 @@ def get_rotation_matrix(x: float = None, y: float = None, z: float = None) -> 'M
     return R
 
 
-def apply_rotation_matrix(coords: 'Matrix(..., 3)', R: 'Matrix(3, 3)') -> 'Matrix(..., 3)':
+def apply_rotation_matrix(coords: np.ndarray, R: np.ndarray) -> np.ndarray:
     '''
     Apply a rotation matrix to a set of coordinates
     '''
     return (R @ coords.T).T
 
 
-def rotate(coords: 'Matrix(..., 3)', x: float = None, y: float = None, z: float = None) -> 'Matrix(..., 3)':
+def rotate(coords: np.ndarray, x: float = None, y: float = None, z: float = None) -> np.ndarray:
     '''
     Shorthand function that builds and applies a rotation matrix to a set of coordinates.
     '''
     return apply_rotmat(coords, get_rotation_matrix(x, y, z))
 
 
-def vector_align_rotmat(a: np.ndarray, b: np.ndarray) -> 'Matrix(3, 3)':
+def vector_align_rotmat(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     '''
     Calculate a rotation matrix that aligns vector a onto vector b.
     '''
@@ -89,16 +90,16 @@ def vector_align_rotmat(a: np.ndarray, b: np.ndarray) -> 'Matrix(3, 3)':
 
 class Transform:
     def __init__(self, 
-                 R: 'Matrix(3, 3)' = None, 
-                 T: 'Vector(3)' = None, 
-                 S: 'Vector(3)' = None):
+                 R: np.ndarray = None, 
+                 T: np.ndarray = None, 
+                 S: np.ndarray = None):
         self.M = self.build_matrix(R, T, S)
 
     def __str__(self):
         return str(self.M)
 
     def translate(self, 
-                  T: 'Vector(3)' = None, 
+                  T: np.ndarray = None, 
                   x: float = None, 
                   y: float = None, 
                   z: float = None):
@@ -118,7 +119,7 @@ class Transform:
         self.M = self.M @ self.build_matrix(T=T)
 
     def rotate(self, 
-               R: 'Matrix(3, 3)' = None, 
+               R: np.ndarray = None, 
                x: float = None, 
                y: float = None, 
                z: float = None):
@@ -136,7 +137,7 @@ class Transform:
         self.M = self.M @ self.build_matrix(R=R)
 
     def scale(self, 
-              S: 'Vector(3)' = None, 
+              S: np.ndarray = None, 
               x: float = None, 
               y: float = None, 
               z: float = None):
@@ -158,9 +159,9 @@ class Transform:
         self.M = self.M @ self.build_matrix(S=S)
 
     def build_matrix(self, 
-                     R: 'Matrix(3, 3)' = None, 
-                     T: 'Vector(3)' = None, 
-                     S: 'Vector(3)' = None) -> 'Matrix(4, 4)':
+                     R: np.ndarray = None, 
+                     T: np.ndarray = None, 
+                     S: np.ndarray = None) -> np.ndarray:
         r'''
         Build and return a transformation matrix. 
         This 4x4 matrix encodes rotations, translations and scaling.
@@ -190,7 +191,7 @@ class Transform:
     def __call__(self, *args, **kwargs):
         return self.apply(*args, **kwargs)
 
-    def apply(self, v: 'Matrix(..., 3)') -> 'Matrix(..., 3)':
+    def apply(self, v: np.ndarray) -> np.ndarray:
         r'''
         Applies the transformation matrix to vector(s) v \in R^Nx3
         v should be a series of column vectors.
@@ -228,8 +229,8 @@ class Transform:
 
 class KabschTransform(Transform):
     def __init__(self, 
-                 X: 'Matrix(..., 3)', 
-                 Y: 'Matrix(..., 3)'):
+                 X: np.ndarray, 
+                 Y: np.ndarray):
         '''
         Use Kabsch-Umeyama algorithm to calculate the optimal rotation matrix and translation
         to superimpose X onto Y. 
