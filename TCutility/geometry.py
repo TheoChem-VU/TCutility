@@ -6,17 +6,17 @@ from typing import Tuple
 
 
 def get_rotation_matrix(x: float = None, y: float = None, z: float = None) -> 'Matrix(3, 3)':
-	''' 
+    ''' 
     Create a rotation matrix based on the Tait-Bryant sytem.
     In this system, x, y, and z are angles of rotation around
     the corresponding axes. This function uses the right-handed 
     convention
 
     Args:
-    	x, y, z: Totation around the axes in radians.
+        x, y, z: Totation around the axes in radians.
 
     Returns:
-    	3x3 rotation matrix
+        3x3 rotation matrix
     '''
     # start with identity matrix
     R = np.eye(3)
@@ -47,23 +47,23 @@ def get_rotation_matrix(x: float = None, y: float = None, z: float = None) -> 'M
 
 
 def apply_rotation_matrix(coords: 'Matrix(..., 3)', R: 'Matrix(3, 3)') -> 'Matrix(..., 3)':
-	'''
-	Apply a rotation matrix to a set of coordinates
-	'''
+    '''
+    Apply a rotation matrix to a set of coordinates
+    '''
     return (R @ coords.T).T
 
 
 def rotate(coords: 'Matrix(..., 3)', x: float = None, y: float = None, z: float = None) -> 'Matrix(..., 3)':
-	'''
-	Shorthand function that builds and applies a rotation matrix to a set of coordinates.
-	'''
+    '''
+    Shorthand function that builds and applies a rotation matrix to a set of coordinates.
+    '''
     return apply_rotmat(coords, get_rotation_matrix(x, y, z))
 
 
 def vector_align_rotmat(a: np.ndarray, b: np.ndarray) -> 'Matrix(3, 3)':
-	'''
-	Calculate a rotation matrix that aligns vector a onto vector b.
-	'''
+    '''
+    Calculate a rotation matrix that aligns vector a onto vector b.
+    '''
     # normalize the vectors first
     a = np.array(a) / np.linalg.norm(a)
     b = np.array(b) / np.linalg.norm(b)
@@ -165,10 +165,10 @@ class Transform:
         Build and return a transformation matrix. 
         This 4x4 matrix encodes rotations, translations and scaling.
 
-	        M = | R@diag(S)   T |
-	            | 0_3         1 |
+            M = | R@diag(S)   T |
+                | 0_3         1 |
 
-		where R \in R^3x3, T \in R^3x1, 0_3 = [0, 0, 0] \in R^1x3 and 1 \in R
+        where R \in R^3x3, T \in R^3x1, 0_3 = [0, 0, 0] \in R^1x3 and 1 \in R
 
         When applied to a positional vector [x, y, z, 1] it will apply these 
         transformations simultaneously. 
@@ -291,22 +291,22 @@ def RMSD(X: np.ndarray,
 
     RMSD is given as
 
-    	$$ \frac{1}{N}\sqrt{\sum_i^N (X_i - Y_i)^2} $$
-	
-	Args:
-		X, Y: Arrays to compare. They should have the same shape.
-		axis: Axis to compare. Defaults to None.
-		use_kabsch: Whether to use Kabsch' algorithm to align X and Y before calculating the RMSD. Defaults to True.
-	
-	Returns:
-		RMSD in the units of X and Y.
+        $$ \frac{1}{N}\sqrt{\sum_i^N (X_i - Y_i)^2} $$
+    
+    Args:
+        X, Y: Arrays to compare. They should have the same shape.
+        axis: Axis to compare. Defaults to None.
+        use_kabsch: Whether to use Kabsch' algorithm to align X and Y before calculating the RMSD. Defaults to True.
+    
+    Returns:
+        RMSD in the units of X and Y.
     '''
     assert X.shape == Y.shape
 
     # apply Kabsch transform
     if use_kabsch:
-    	Tkabsch = KabschTransform(X, Y)
-    	X = Tkabsch(X)
+        Tkabsch = KabschTransform(X, Y)
+        X = Tkabsch(X)
 
     return np.sqrt(np.sum((X - Y)**2, axis=axis)/X.shape[0])
 
