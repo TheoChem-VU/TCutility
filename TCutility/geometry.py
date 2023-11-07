@@ -339,6 +339,6 @@ def random_points_in_anular_sphere(shape: Tuple[int], min_radius: float = 0, max
     Returns:
         Array of coordinates on a sphere.
     '''
-    random_radii = np.random.rand(N) * (max_radius - min_radius) + min_radius
-    return random_point_on_sphere(shape, random_radii)
+    random_radii = np.random.rand(shape[0]) * (max_radius - min_radius) + min_radius
+    return random_points_on_sphere(shape, random_radii)
 
