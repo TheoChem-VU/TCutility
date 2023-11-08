@@ -1,6 +1,5 @@
 import numpy as np
 from math import sin, cos
-import itertools
 import scipy
 from typing import Tuple
 
