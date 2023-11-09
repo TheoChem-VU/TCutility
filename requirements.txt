@@ -2,3 +2,4 @@ plams
 numpy
 matplotlib
 GitPython
+scipy
