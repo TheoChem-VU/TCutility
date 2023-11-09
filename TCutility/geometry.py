@@ -5,7 +5,7 @@ from typing import Tuple
 
 
 
-def get_rotation_matrix(x: float = None, y: float = None, z: float = None) -> np.ndarray:
+def get_rotmat(x: float = None, y: float = None, z: float = None) -> np.ndarray:
     ''' 
     Create a rotation matrix based on the Tait-Bryant sytem.
     In this system, x, y, and z are angles of rotation around
@@ -46,7 +46,7 @@ def get_rotation_matrix(x: float = None, y: float = None, z: float = None) -> np
     return R
 
 
-def apply_rotation_matrix(coords: np.ndarray, R: np.ndarray) -> np.ndarray:
+def apply_rotmat(coords: np.ndarray, R: np.ndarray) -> np.ndarray:
     '''
     Apply a rotation matrix to a set of coordinates
     '''
@@ -58,23 +58,35 @@ def rotate(coords: np.ndarray, x: float = None, y: float = None, z: float = None
     '''
     Shorthand function that builds and applies a rotation matrix to a set of coordinates.
     '''
-    return apply_rotation_matrix(coords, get_rotation_matrix(x, y, z))
+    return apply_rotmat(coords, get_rotmat(x, y, z))
 
 
 def vector_align_rotmat(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     '''
     Calculate a rotation matrix that aligns vector a onto vector b.
+
+    Args:
+        a: vector that is to be aligned.
+        b: vector that is the target of the alignment.
+
+    Returns:
+        Rotation matrix R, such that geometry.apply_rotmat(a, R) == b
     '''
     # normalize the vectors first
     a = np.array(a) / np.linalg.norm(a)
     b = np.array(b) / np.linalg.norm(b)
     
     c = a @ b
-    # check if they are not already aligned
     if c == 1:
+        # if a == b we simply return the identity matrix
         return np.eye(3)
     if c == -1:
-        raise ValueError('Inner product of a and b is 1, no rotation possible.')
+        # when a == -b we cannot directly calculate R, as 1/(1+c) is undefined
+        # instead, we first create a random rotation matrix and apply it to a
+        # to get a new vector aprime. We then align aprime to b, which is possible since aprime != -b
+        # to get the final rotation matrix we simply multiply the random and alignment rotation matrices
+        Rrand = get_rotmat(np.pi/3, np.pi/3, np.pi/3)
+        return vector_align_rotmat(apply_rotmat(a, Rrand), b) @ Rrand
 
     v = np.cross(a, b)
     skew = np.array([
@@ -126,11 +138,11 @@ class Transform:
         Arguments can be given as a rotation matrix R \in R^3x3 or by specifying the angle to rotate along the x, y or z axes
         
         Example usage:
-            Transform.rotate(get_rotation_matrix(x=1, y=-1))
+            Transform.rotate(get_rotmat(x=1, y=-1))
             Transform.rotate(x=1, y=-1)
         '''
         if R is None:
-            R = get_rotation_matrix(x=x, y=y, z=z)
+            R = get_rotmat(x=x, y=y, z=z)
 
         self.M = self.M @ self.build_matrix(R=R)
 
@@ -176,7 +188,7 @@ class Transform:
         '''
 
         # set the default matrix and vectors
-        R = R if R is not None else get_rotation_matrix()
+        R = R if R is not None else get_rotmat()
         T = T if T is not None else np.array([0, 0, 0])
         S = S if S is not None else np.array([1, 1, 1])
 
@@ -221,7 +233,7 @@ class Transform:
         new.M = self.M @ other.M
         return new
 
-    def get_rotation_matrix(self):
+    def get_rotmat(self):
         return self.M[:3, :3]
 
 
