@@ -21,7 +21,7 @@ def test_radius():
 	assert atom_data.radius('Tungsten') == 1.62
 
 def test_radius2():
-	with pytest.raises(KeyError) as e_info:
+	with pytest.raises(KeyError):
 		atom_data.radius('FakeElement')
 
 if __name__ == '__main__':
