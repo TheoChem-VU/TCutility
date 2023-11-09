@@ -2,7 +2,6 @@ import pathlib as pl
 
 
 # read data
-# data_dir = j(os.path.split(__file__)[0], 'atom_data')
 data_dir = pl.Path(__file__).parents[0] / 'atom_data'
 
 with open(data_dir / 'name.txt') as data:
@@ -23,12 +22,31 @@ _colors = {int(line.split(',')[0]): [int(x.strip()) for x in line.split(',')[1:]
 
 
 def parse_element(val):
+    '''
+    Parse a str or int to an atom number.
+
+    Args:
+        val: Element name, symbol or atom number.
+
+    Returns:
+        Atom number corresponding to val.
+
+    Examples:
+        parse_element('Hydrogen') == 1
+        parse_element('C') == 6
+        parse_element(23) == 23
+    '''
+    # we will assume an integer value is an atom number already
     if isinstance(val, int):
         return val
+    # if it is not an int it should be a string
     if val.lower() in _element_order:
+        # first try to get it in the element name list
         return _element_order.index(val.lower()) + 1
     if val in _symbol_order:
+        # alternatively try to get it in the symbol list
         return _symbol_order.index(val) + 1
+    raise KeyError(f'Element "{val}" not parsable.')
 
 
 def radius(element):
