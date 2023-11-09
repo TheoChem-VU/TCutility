@@ -20,7 +20,7 @@ def test_radius():
 	assert atom_data.radius('Tungsten') == 1.62
 
 def test_radius2():
-	assert atom_data.radius('Ogannesson') == None
+	assert atom_data.radius('Ogannesson') is None
 
 if __name__ == '__main__':
 	import pytest

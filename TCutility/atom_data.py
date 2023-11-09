@@ -1,4 +1,3 @@
-import periodictable as pt
 import os
 
 j = os.path.join
