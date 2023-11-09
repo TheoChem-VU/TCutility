@@ -1,4 +1,5 @@
 from TCutility import atom_data
+import pytest
 
 
 def test_parse():
@@ -20,8 +21,8 @@ def test_radius():
 	assert atom_data.radius('Tungsten') == 1.62
 
 def test_radius2():
-	assert atom_data.radius('Ogannesson') is None
+	with pytest.raises(KeyError) as e_info:
+		atom_data.radius('FakeElement')
 
 if __name__ == '__main__':
-	import pytest
 	pytest.main()
