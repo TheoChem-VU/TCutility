@@ -35,7 +35,7 @@ def parse_element(val):
 
 def radius(element):
     num = parse_element(element)
-    return radii.get(num)
+    return _radii.get(num)
 
 
 def color(element):
