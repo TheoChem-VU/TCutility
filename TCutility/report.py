@@ -4,8 +4,7 @@ from htmldocx import HtmlToDocx
 
 
 class SI:
-
-	def __init__(self, path: str, append_mode: bool = False):
+	def __init__(self, path: str):
 		'''
 		Class for creating supporting information (SI) files in Microsoft Word.
 
@@ -17,8 +16,8 @@ class SI:
 		self.path = path.removesuffix('.docx') + '.docx'
 		self.doc = docx.Document()
 
+		# set the font to Calibri
 		self.doc.styles['Normal'].font.name = 'Calibri'
-		self.append_mode = append_mode
 
 	def __enter__(self):
 		return self
@@ -76,10 +75,3 @@ class SI:
 		Add a heading to the file. This method has the same arguments and functionality as docx.Document.add_heading.
 		'''
 		self.doc.add_heading(text, level)
-
-
-if __name__ == '__main__':
-	with SI('test.docx') as si:
-		si.add_heading('Test molecules:')
-		si.add_xyz('/Users/yumanhordijk/PhD/TheoCheM_stack/TCutility/test/fixtures/level_of_theory/M06_2X', formula.molecule('C2H6'))
-		si.add_xyz('/Users/yumanhordijk/PhD/TheoCheM_stack/TCutility/test/fixtures/ethanol', formula.molecule('C2H5OH'))
