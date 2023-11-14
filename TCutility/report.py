@@ -1,4 +1,4 @@
-from TCutility import results, formula
+from TCutility import results
 import docx
 from htmldocx import HtmlToDocx
 
