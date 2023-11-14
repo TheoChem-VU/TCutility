@@ -121,6 +121,10 @@ def get_properties(info: Result) -> Result:
     ret.energy.pauli.total = reader_adf.read('Energy', 'Pauli Total') * constants.HA2KCALMOL
     ret.energy.dispersion = reader_adf.read('Energy', 'Dispersion Energy') * constants.HA2KCALMOL
 
+    if ('Thermodynamics', 'Gibbs free Energy') in reader_adf:
+        ret.energy.gibbs = reader_adf.read('Thermodynamics', 'Gibbs free Energy') * constants.HA2KCALMOL
+        ret.energy.enthalpy = reader_adf.read('Thermodynamics', 'Enthalpy') * constants.HA2KCALMOL
+
     # vibrational information
     if ('Vibrations', 'nNormalModes') in reader_adf:
         ret.vibrations = read_vibrations(reader_adf)
