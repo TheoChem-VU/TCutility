@@ -1,6 +1,3 @@
-from TCutility import ensure_list
-
-
 def molecule(molstring: str, mode: str = 'html') -> str:
 	'''
 	Parse and return a string containing a molecular formula that will show up properly in LaTeX or HTML.
