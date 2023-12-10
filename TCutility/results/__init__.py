@@ -18,13 +18,13 @@ import os  # noqa: E402
 def get_info(calc_dir: str):
     try:
         return ams.get_ams_info(calc_dir)
-    except:
+    except:  # noqa
         pass
 
     try:
         return orca.get_info(calc_dir)
-    except:
-        pass
+    except:  # noqa
+        raise
 
 
 def read(calc_dir: str) -> Result:
