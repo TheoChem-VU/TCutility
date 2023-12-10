@@ -32,7 +32,7 @@ def get_calc_files(calc_dir: str) -> Result:
 
             if any(['* O   R   C   A *' in line for line in lines]):
                 ret.out = os.path.abspath(file)
-        except:
+        except:  # noqa
             pass
 
     return ret
