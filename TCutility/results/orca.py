@@ -142,6 +142,43 @@ def get_calculation_status(info: Result) -> Result:
     return ret
 
 
+def get_molecules(info: Result) -> Result:
+    ret = Result()
+    ret.input = info.input.system.molecule
+    ret.number_of_atoms = len(ret.input.atoms)
+
+    ret.output = None
+
+    with open(info.files.out) as out:
+        lines = out.readlines()
+        lines = [line.strip() for line in lines]
+
+    start_reading = False
+    look_for_coords = False
+    coords = []
+    for line in lines:
+        if start_reading:
+            if len(line) == 0:
+                start_reading = False
+                break
+
+            coords.append(line)
+
+        if 'THE OPTIMIZATION HAS CONVERGED' in line:
+            look_for_coords = True
+
+        if look_for_coords and 'CARTESIAN COORDINATES (ANGSTROEM)' in line:
+            look_for_coords = False
+            start_reading = True
+
+    ret.output = plams.Molecule()
+    for coord in coords[1:]:
+        sym, x, y, z = coord.split()
+        ret.output.add_atom(plams.Atom(symbol=sym, coords=[float(x), float(y), float(z)]))
+
+    return ret
+
+
 def get_info(calc_dir: str) -> Result:
     '''Function to read useful info about the calculation in ``calc_dir``. Returned information will depend on the type of file that is provided.
 
@@ -154,9 +191,7 @@ def get_info(calc_dir: str) -> Result:
             - **version (Result)** – information about the AMS version used, see :func:`get_version`.
             - **engine (str)** – the engine that was used to perform the calculation, for example 'adf', 'dftb', ...
             - **status (Result)** – information about calculation status, see :func:`get_calculation_status`.
-            - **is_multijob (bool)** – whether the job was a multijob, for example a fragment analysis.
             - **molecule (Result)** – information about the input and output molecules and the molecular system in general, see :func:`get_molecules`.
-            - **history (Result)** – information about history variables, see :func:`get_history`.
     '''
     ret = Result()
     ret.files = get_calc_files(calc_dir)
@@ -181,7 +216,7 @@ def get_info(calc_dir: str) -> Result:
     #     ret.is_multijob = True
 
     # # read molecules
-    # ret.molecule = get_molecules(calc_dir)
+    ret.molecule = get_molecules(ret)
 
     # # and history variables
     # ret.history = get_history(calc_dir)
@@ -192,4 +227,4 @@ def get_info(calc_dir: str) -> Result:
 
 if __name__ == '__main__':
     ret = get_info('/Users/yumanhordijk/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/RadicalAdditionBenchmark/data/abinitio/P_C2H2_NH2/OPT_pVTZ')
-    print(ret.status)
+    print(ret.molecule)
