@@ -1,4 +1,5 @@
 from TCutility.results import Result
+from TCutility import constants
 import os
 from scm import plams
 
@@ -192,34 +193,35 @@ def get_info(calc_dir: str) -> Result:
             - **molecule (Result)** – information about the input and output molecules and the molecular system in general, see :func:`get_molecules`.
     '''
     ret = Result()
+
+    ret.engine = 'orca'
     ret.files = get_calc_files(calc_dir)
 
     # store the input of the calculation
     ret.input = get_input(ret)
 
-    # store the job id, which should be unique for the job
-
     # store information about the version of AMS
     ret.version = get_version(ret)
-
-    # store the computation timings, only available in ams.rkf
-    # ret.timing = get_timing(ret)
 
     # store the calculation status
     ret.status = get_calculation_status(ret)
 
-    # check if this was a multijob
-    # ret.is_multijob = False
-    # if len([file for file in ret.files if file.endswith('.rkf')]) > 2:
-    #     ret.is_multijob = True
-
-    # # read molecules
+    # read molecules
     ret.molecule = get_molecules(ret)
 
-    # # and history variables
-    # ret.history = get_history(calc_dir)
+    return ret
 
-    # cache.unload(ret.files['ams.rkf'])
+
+def get_properties(info: Result) -> Result:
+    ret = Result()
+
+    with open(info.files.out) as out:
+        lines = [line.strip() for line in out.readlines()]
+
+    for line in lines:
+        if 'FINAL SINGLE POINT ENERGY' in line:
+            ret.energy.bond = float(line.split()[4]) * constants.HA2KCALMOL
+
     return ret
 
 
