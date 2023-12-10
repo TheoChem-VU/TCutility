@@ -116,22 +116,30 @@ def get_input(info: Result) -> Result:
     return ret
 
 
-# def get_calculation_status(info: Result) -> Result:
-#     if slurm_dirs is None or slurm_status is None:
-#         slurm_dirs, slurm_status = squeue()
+def get_calculation_status(info: Result) -> Result:
+    ret = Result()
+    ret.fatal = True
+    ret.name = None
+    ret.code = None
+    ret.reasons = []
 
-#     if path in slurm_dirs:
-#         return slurm_status[slurm_dirs.index(path)].capitalize()
+    if 'out' not in info.files.out:
+        ret.reasons.append('Calculation status unknown')
+        ret.name = 'UNKNOWN'
+        ret.code = 'U'
+        return ret
 
-#     if not os.path.exists(f'{path}/run.out'):
-#         return 'NotFound'
+    with open(info.files.out) as out:
+        lines = out.readlines()
+        if any(['ORCA TERMINATED NORMALLY' in line for line in lines]):
+            ret.fatal = False
+            ret.name = 'SUCCESS'
+            ret.code = 'S'
+            return ret
 
-#     with open(f'{path}/run.out') as out:
-#         lines = out.readlines()
-#         if any(['ORCA TERMINATED NORMALLY' in line for line in lines]):
-#             return 'Success'
-
-#     return 'Failed'
+    ret.name = 'FAILED'
+    ret.code = 'F'
+    return ret
 
 
 def get_info(calc_dir: str) -> Result:
@@ -164,8 +172,8 @@ def get_info(calc_dir: str) -> Result:
     # store the computation timings, only available in ams.rkf
     # ret.timing = get_timing(ret)
 
-    store the calculation status
-    # ret.status = get_calculation_status(ret)
+    # store the calculation status
+    ret.status = get_calculation_status(ret)
 
     # check if this was a multijob
     # ret.is_multijob = False
@@ -184,4 +192,4 @@ def get_info(calc_dir: str) -> Result:
 
 if __name__ == '__main__':
     ret = get_info('/Users/yumanhordijk/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/RadicalAdditionBenchmark/data/abinitio/P_C2H2_NH2/OPT_pVTZ')
-    print(ret.input)
+    print(ret.status)
