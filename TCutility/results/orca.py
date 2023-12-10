@@ -217,15 +217,127 @@ def get_info(calc_dir: str) -> Result:
     return ret
 
 
+def get_vibrations(lines):
+    ret = Result()
+    start_reading = False
+    start_reading_idx = 0
+    freq_lines = []
+    for i, line in enumerate(lines):
+        if start_reading:
+            if len(line) == 0 and (i - start_reading_idx) > 4:
+                break
+            if ':' in line:
+                freq_lines.append(line)
+
+        if 'VIBRATIONAL FREQUENCIES' in line:
+            start_reading = True
+            start_reading_idx = i
+
+    nmodes = len(freq_lines)
+    frequencies = [float(line.split()[1]) for line in freq_lines]
+    nrotranslational = sum([freq == 0 for freq in frequencies])
+    ret.frequencies = frequencies[nrotranslational:]
+    ret.number_of_imag_modes = len([freq for freq in ret.frequencies if freq < 0])
+    ret.character = 'minimum' if ret.number_of_imag_modes == 0 else 'transitionstate' if ret.number_of_imag_modes == 1 else f'saddlepoint({ret.number_of_imag_modes})'
+
+    start_reading = False
+    mode_lines = []
+    for i, line in enumerate(lines):
+        if 'NORMAL MODES' in line:
+            start_reading = True
+            continue
+
+        if 'IR SPECTRUM' in line:
+            start_reading = False
+            break
+
+        if start_reading:
+            mode_lines.append(line)
+
+    mode_lines = mode_lines[6:-3]
+    mode_lines = [[float(x) for x in line.split()[1:]] for i, line in enumerate(mode_lines) if i % (nmodes + 1) != 0]
+
+    nblocks = len(mode_lines)//nmodes
+    blocks = []
+    for block in range(nblocks):
+        blocks.append(np.array(mode_lines[block * nmodes: (block + 1) * nmodes]))
+    ret.modes = np.hstack(blocks).T.tolist()[nrotranslational:]
+
+    start_reading = False
+    int_lines = []
+    for i, line in enumerate(lines):
+        if 'IR SPECTRUM' in line:
+            start_reading = True
+            continue
+
+        if 'The epsilon (eps) is given for a Dirac delta lineshape.' in line:
+            start_reading = False
+            break
+
+        if start_reading:
+            int_lines.append(line)
+
+    ints = [float(line.split()[3]) for line in int_lines[5:-1]]
+    ret.intensities = [0] * ret.number_of_imag_modes + ints
+    return ret
+
+
 def get_properties(info: Result) -> Result:
     ret = Result()
 
     with open(info.files.out) as out:
         lines = [line.strip() for line in out.readlines()]
 
+    ret.vibrations = get_vibrations(lines)
+
     for line in lines:
         if 'FINAL SINGLE POINT ENERGY' in line:
             ret.energy.bond = float(line.split()[4]) * constants.HA2KCALMOL
+            continue
+
+        if 'E(0)' in line:
+            ret.energy.HF = float(line.split()[-1]) * constants.HA2KCALMOL
+            continue
+
+        if 'Final correlation energy' in line:
+            ret.energy.corr = float(line.split()[-1]) * constants.HA2KCALMOL
+            continue
+
+        if 'E(MP2)' in line:
+            ret.energy.MP2 = float(line.split()[-1]) * constants.HA2KCALMOL + ret.energy.HF
+            continue
+
+        if 'E(CCSD) ' in line:
+            ret.energy.CCSD = float(line.split()[-1]) * constants.HA2KCALMOL
+            continue
+
+        if 'E(CCSD(T))' in line:
+            ret.energy.CCSD_T = float(line.split()[-1]) * constants.HA2KCALMOL
+            continue
+
+        if 'Final Gibbs free energy' in line:
+            ret.energy.gibbs = float(line.split()[-2]) * constants.HA2KCALMOL
+            continue
+
+        if 'Total enthalpy' in line:
+            ret.energy.enthalpy = float(line.split()[-2]) * constants.HA2KCALMOL
+            continue
+
+        if 'Final entropy term' in line:
+            ret.energy.entropy = float(line.split()[-2])
+            continue
+
+        if 'T1 diagnostic' in line:
+            ret.t1 = float(line.split()[3])
+            continue
+
+        if 'Expectation value of <S**2>' in line:
+            ret.s2 = float(line.split()[-1])
+            continue
+
+        if 'Ideal value' in line:
+            ret.s2_expected = float(line.split()[-1])
+            continue
 
     return ret
 
