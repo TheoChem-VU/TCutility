@@ -2,6 +2,8 @@ from TCutility.results import Result
 from TCutility import constants
 import os
 from scm import plams
+import numpy as np
+
 
 j = os.path.join
 
@@ -24,11 +26,14 @@ def get_calc_files(calc_dir: str) -> Result:
     ret = Result()
     ret.root = os.path.abspath(calc_dir)
     for file in files:
-        with open(file) as f:
-            lines = f.readlines()
+        try:
+            with open(file) as f:
+                lines = f.readlines()
 
-        if any(['* O   R   C   A *' in line for line in lines]):
-            ret.out = os.path.abspath(file)
+            if any(['* O   R   C   A *' in line for line in lines]):
+                ret.out = os.path.abspath(file)
+        except:
+            pass
 
     return ret
 
