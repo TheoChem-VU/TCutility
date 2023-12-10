@@ -100,18 +100,23 @@ def get_input(info: Result) -> Result:
 
         if line.startswith('*'):
             read_system = True
-            _, coordinates, charge, multiplicity = line.split()
+            _, coordinates, charge, multiplicity = line.split()[:4]
             if coordinates == 'xyz':
                 ret.system.coordinate_system = 'cartesian'
             elif coordinates == 'int':
                 ret.system.coordinate_system = 'internal'
+            elif coordinates == 'xyzfile':
+                ret.system.coordinate_system = 'cartesian'
+                # ret.system.coordinate_file = 
+                read_system = False
             ret.system.charge = charge
             ret.system.multiplicity = multiplicity
             continue
 
-    ret.system.molecule = plams.Molecule()
-    for line in system_lines:
-        ret.system.molecule.add_atom(plams.Atom(symbol=line.split()[0], coords=[float(x) for x in line.split()[1:4]]))
+    if coordinates in ['xyz', 'int']:
+        ret.system.molecule = plams.Molecule()
+        for line in system_lines:
+            ret.system.molecule.add_atom(plams.Atom(symbol=line.split()[0], coords=[float(x) for x in line.split()[1:4]]))
     return ret
 
 
