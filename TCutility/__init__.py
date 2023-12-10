@@ -14,4 +14,4 @@ def ensure_2d(x, transposed=False):
     return x
 
 
-from TCutility import analysis, results, constants, log, molecule  # noqa: F401, E402
+from TCutility import analysis, results, constants, log, molecule, formula  # noqa: F401, E402
