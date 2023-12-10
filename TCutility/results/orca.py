@@ -1,6 +1,4 @@
-from TCutility.results import cache, Result
-from TCutility import constants, ensure_list
-from typing import List
+from TCutility.results import Result
 import os
 from scm import plams
 
