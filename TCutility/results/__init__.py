@@ -11,8 +11,20 @@ Typical usage example:
 from . import result
 Result = result.Result
 
-from . import adf, dftb, ams, cache  # noqa: E402
+from . import adf, dftb, ams, orca, cache  # noqa: E402
 import os  # noqa: E402
+
+
+def get_info(calc_dir: str):
+    try:
+        return ams.get_ams_info(calc_dir)
+    except:
+        pass
+
+    try:
+        return orca.get_info(calc_dir)
+    except:
+        pass
 
 
 def read(calc_dir: str) -> Result:
@@ -25,7 +37,7 @@ def read(calc_dir: str) -> Result:
         dictionary containing information about the calculation
     '''
     ret = Result()
-    ret.update(ams.get_ams_info(calc_dir))
+    ret.update(get_info(calc_dir))
     if ret.engine == 'adf':
         ret.adf = adf.get_calc_settings(ret)
         ret.properties = adf.get_properties(ret)
@@ -33,8 +45,15 @@ def read(calc_dir: str) -> Result:
     elif ret.engine == 'dftb':
         ret.dftb = dftb.get_calc_settings(ret)
         ret.properties = dftb.get_properties(ret)
+    elif ret.engine == 'orca':
+        ret.properties = orca.get_properties(ret)
 
     # unload cached KFReaders associated with this calc_dir
     to_delete = [key for key in cache._cache if key.startswith(os.path.abspath(calc_dir))]
     [cache.unload(key) for key in to_delete]
     return ret
+
+
+if __name__ == '__main__':
+    res = read('/Users/yumanhordijk/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/RadicalAdditionBenchmark/data/abinitio/P_C2H2_NH2/OPT_pVTZ')
+    print(res.molecule)
