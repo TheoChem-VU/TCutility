@@ -122,6 +122,54 @@ def get_input(info: Result) -> Result:
         ret.system.molecule = plams.Molecule()
         for line in system_lines:
             ret.system.molecule.add_atom(plams.Atom(symbol=line.split()[0], coords=[float(x) for x in line.split()[1:4]]))
+
+    info.task = 'SinglePoint'
+    if 'optts' in [x.lower() for x in ret.main]:
+        info.task = 'TransitionStateSearch'
+    elif 'opt' in [x.lower() for x in ret.main]:
+        info.task = 'GeometryOptimization'
+
+    return ret
+
+
+
+def get_level_of_theory(info: Result) -> Result:
+    '''Function to get the level-of-theory from an input-file.
+
+    Args:
+        inp_path: Path to the input file. Can be a .run or .in file create for AMS
+
+    Returns:
+        :Dictionary containing information about the level-of-theory:
+            
+            - **summary (str)** - a summary string that gives the level-of-theory in a human-readable format.
+            - **basis.type (str)** - the size/type of the basis-set.
+            - **UsedQROs (bool)** - whether QROs were used.
+    '''
+    sett = info.input
+    ret = Result()
+    main = [x.lower() for x in sett.main]
+    for method in ['MP2', 'CCSD', 'CCSD(T)', 'CCSDT']:
+        if method.lower() in main:
+            ret.method = method
+            break
+
+    for method in ['MP2', 'CCSD', 'CCSD(T)', 'CCSDT']:
+        if method.lower() in main:
+            ret.method = method
+            break
+    
+    for bs in ['cc-pVSZ', 'cc-pVDZ', 'cc-pVTZ', 'cc-pVQZ', 'aug-cc-pVSZ', 'aug-cc-pVDZ', 'aug-cc-pVTZ', 'aug-cc-pVQZ']:
+        if bs.lower() in main:
+            ret.basis.type = bs
+
+    if sett.sections.mdci.UseQROs and sett.sections.mdci.UseQROs.lower() == 'true':
+        ret.UseQROs = True
+    else:
+        ret.UseQROs = False
+
+    ret.summary = f'{"QRO-" if ret.UseQROs else ""}{method}/{ret.basis.type}'
+
     return ret
 
 
@@ -209,6 +257,8 @@ def get_info(calc_dir: str) -> Result:
 
     # store the input of the calculation
     ret.input = get_input(ret)
+
+    ret.level = get_level_of_theory(ret)
 
     # store information about the version of AMS
     ret.version = get_version(ret)
