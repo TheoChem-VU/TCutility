@@ -427,6 +427,9 @@ def get_properties(info: Result) -> Result:
             ret.s2_expected = float(line.split()[-1])
             continue
 
+    if ret.s2 and ret.s2_expected:
+        ret.spin_contamination = (ret.s2 - ret.s2_expected) / ret.s2_expected
+
     return ret
 
 
