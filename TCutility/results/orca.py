@@ -375,7 +375,8 @@ def get_properties(info: Result) -> Result:
     with open(info.files.out) as out:
         lines = [line.strip() for line in out.readlines()]
 
-    ret.vibrations = get_vibrations(lines)
+    if info.orca.frequencies:
+        ret.vibrations = get_vibrations(lines)
 
     for line in lines:
         if 'FINAL SINGLE POINT ENERGY' in line:
