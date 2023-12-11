@@ -1,0 +1,63 @@
+***************************************************************************************************** 
+* WARNING: The 2021 software stack is not available on the 'genoa' partition.
+Please use the 2022 * 
+* software stack. * 
+* * 
+* If you have any question, please contact us via
+http://servicedesk.surfsara.nl. * 
+***************************************************************************************************** 
+Lmod Warning:
+-------------------------------------------------------------------------------
+The following dependent module(s) are not currently loaded: GCCcore/12.3.0
+(required by: bzip2/1.0.8-GCCcore-12.3.0, ncurses/6.4-GCCcore-12.3.0,
+libreadline/8.2-GCCcore-12.3.0, Tcl/8.6.13-GCCcore-12.3.0,
+SQLite/3.42.0-GCCcore-12.3.0, libffi/3.4.4-GCCcore-12.3.0,
+Python/3.11.3-GCCcore-12.3.0), XZ/5.4.2-GCCcore-12.3.0 (required by:
+Python/3.11.3-GCCcore-12.3.0), binutils/2.40-GCCcore-12.3.0 (required by:
+Python/3.11.3-GCCcore-12.3.0), zlib/1.2.13-GCCcore-12.3.0 (required by:
+Tcl/8.6.13-GCCcore-12.3.0, Python/3.11.3-GCCcore-12.3.0)
+-------------------------------------------------------------------------------
+
+
+
+
+The following have been reloaded with a version change:
+  1) GCCcore/12.3.0 => GCCcore/10.3.0
+  2) XZ/5.4.2-GCCcore-12.3.0 => XZ/5.2.5-GCCcore-10.3.0
+  3) binutils/2.40-GCCcore-12.3.0 => binutils/2.36.1-GCCcore-10.3.0
+  4) zlib/1.2.13-GCCcore-12.3.0 => zlib/1.2.11-GCCcore-10.3.0
+
+
+Currently Loaded Modules:
+  1) 2023                            14) GCC/10.3.0
+  2) bzip2/1.0.8-GCCcore-12.3.0      15) numactl/2.0.14-GCCcore-10.3.0
+  3) ncurses/6.4-GCCcore-12.3.0      16) XZ/5.2.5-GCCcore-10.3.0
+  4) libreadline/8.2-GCCcore-12.3.0  17) libxml2/2.9.10-GCCcore-10.3.0
+  5) Tcl/8.6.13-GCCcore-12.3.0       18) libpciaccess/0.16-GCCcore-10.3.0
+  6) SQLite/3.42.0-GCCcore-12.3.0    19) hwloc/2.4.1-GCCcore-10.3.0
+  7) libffi/3.4.4-GCCcore-12.3.0     20) libevent/2.1.12-GCCcore-10.3.0
+  8) OpenSSL/1.1                     21) UCX/1.10.0-GCCcore-10.3.0
+  9) Python/3.11.3-GCCcore-12.3.0    22) libfabric/1.12.1-GCCcore-10.3.0
+ 10) 2021                            23) OpenMPI/4.1.1-GCC-10.3.0
+ 11) GCCcore/10.3.0                  24) gompi/2021a
+ 12) zlib/1.2.11-GCCcore-10.3.0      25) ORCA/5.0.1-gompi-2021a
+ 13) binutils/2.36.1-GCCcore-10.3.0
+
+ 
+
+cp: cannot stat '/scratch-local/yuhordijk.4601902/4601902/*.out': No such file or directory
+cp: cannot stat '/scratch-local/yuhordijk.4601902/4601902/*.hess': No such file or directory
+
+JOB STATISTICS
+==============
+Job ID: 4601902
+Cluster: snellius
+User/Group: yuhordijk/yuhordijk
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 128
+CPU Utilized: 5-02:18:36
+CPU Efficiency: 9.47% of 53-19:35:28 core-walltime
+Job Wall-clock time: 10:05:26
+Memory Utilized: 45.21 GB
+Memory Efficiency: 20.67% of 218.75 GB
