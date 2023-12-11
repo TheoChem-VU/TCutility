@@ -163,13 +163,45 @@ def get_level_of_theory(info: Result) -> Result:
         if bs.lower() in main:
             ret.basis.type = bs
 
-    if sett.sections.mdci.UseQROs and sett.sections.mdci.UseQROs.lower() == 'true':
-        ret.UseQROs = True
-    else:
-        ret.UseQROs = False
+    used_qros = sett.sections.mdci.UseQROs and sett.sections.mdci.UseQROs.lower() == 'true'
+    ret.summary = f'{"QRO-" if used_qros else ""}{method}/{ret.basis.type}'
 
-    ret.summary = f'{"QRO-" if ret.UseQROs else ""}{method}/{ret.basis.type}'
+    return ret
 
+
+def get_calc_settings(info: Result) -> Result:
+    '''Function to read calculation settings for an ORCA calculation.
+
+    Args:
+        info: Result object containing ORCA calculation settings.
+
+    Returns:
+        :Result object containing properties from the ORCA calculation:
+
+            - **task (str)** – the task that was set for the calculation.
+            - **relativistic (bool)** – whether or not relativistic effects were enabled.
+            - **unrestricted_sfos (bool)** – whether or not SFOs are treated in an unrestricted manner.
+            - **unrestricted_mos (bool)** – whether or not MOs are treated in an unrestricted manner.
+            - **symmetry.group (str)** – the symmetry group selected for the molecule.
+            - **symmetry.labels (list[str])** – the symmetry labels associated with the symmetry group.
+            - **used_regions (bool)** – whether regions were used in the calculation.
+    '''
+
+    assert info.engine == 'orca', f'This function reads ORCA data, not {info.engine} data'
+
+    ret = Result()
+
+    # set the calculation task at a higher level
+    ret.task = info.input.task
+
+    main = [x.lower() for x in info.input.main]
+    # determine if the wavefunction are unrestricted or not
+    ret.unrestricted = any(tag in main for tag in ['uhf', 'uno'])
+    ret.used_qros = info.input.sections.mdci.UseQROs and info.input.sections.mdci.UseQROs.lower() == 'true'
+    ret.frequencies = 'freq' in main
+    ret.charge = int(info.input.system.charge)
+    ret.spin_polarization = int(info.input.system.multiplicity) - 1
+    ret.multiplicity = int(info.input.system.multiplicity)
     return ret
 
 
