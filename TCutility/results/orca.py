@@ -39,6 +39,19 @@ def get_calc_files(calc_dir: str) -> Result:
 
 
 def get_version(info: Result) -> Result:
+    '''Function to get the ORCA version used in the calculation.
+
+    Args:
+        info: Result object containing ORCA calculation settings.
+
+    Returns:
+        :Dictionary containing results about the ORCA version:
+
+            - **full (str)** – the full version string as written by ORCA.
+            - **major (str)** – major ORCA version.
+            - **minor (str)** – minor ORCA version.
+            - **micro (str)** – micro ORCA version.
+    '''
     ret = Result()
     with open(info.files.out) as out:
         for line in out.readlines():
@@ -54,6 +67,19 @@ def get_version(info: Result) -> Result:
 
 
 def get_input(info: Result) -> Result:
+    '''Function that parses the input file for this ORCA calculation.
+
+    Args:
+        info: Result object containing ORCA calculation settings.
+
+    Returns:
+        :Result object containing information about the calculation input:
+            
+            - **main (list[str])** - the main inputs for the calculation. These are the lines that start with a "!".
+            - **sections (Result)** - extra settings added to the calculation. These are the lines that start with a "%" and optionally end with "END" clause.
+            - **system (Result)** - settings related to the molecular system. This includes charge, multiplicity and the coordinates.
+            - **task (str)** - the task that was performed by the calculation, e.g. "SinglePoint", "TransitionStateSearch".
+    '''
     ret = Result()
     with open(info.files.out) as out:
         start_reading = False
@@ -137,7 +163,7 @@ def get_level_of_theory(info: Result) -> Result:
     '''Function to get the level-of-theory from an input-file.
 
     Args:
-        inp_path: Path to the input file. Can be a .run or .in file create for AMS
+        info: Result object containing ORCA calculation settings.
 
     Returns:
         :Dictionary containing information about the level-of-theory:
