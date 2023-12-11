@@ -80,7 +80,7 @@ def get_input(info: Result) -> Result:
         line = line.strip()
 
         if line.startswith('!'):
-            ret.main.extend(line.removeprefix('!').split())
+            ret.main.extend(line.strip('!').split())
 
         if curr_section:
             if line.lower() == 'end':
