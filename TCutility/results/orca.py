@@ -139,7 +139,6 @@ def get_input(info: Result) -> Result:
                 ret.system.coordinate_system = 'internal'
             elif coordinates == 'xyzfile':
                 ret.system.coordinate_system = 'cartesian'
-                # ret.system.coordinate_file = 
                 read_system = False
             ret.system.charge = charge
             ret.system.multiplicity = multiplicity
