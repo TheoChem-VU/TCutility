@@ -15,7 +15,7 @@ def get_calc_files(calc_dir: str) -> Result:
         calc_dir: path pointing to the desired calculation
 
     Returns:
-        Dictionary containing filenames and paths
+        Result object containing filenames and paths
     '''
     # collect all files in the current directory and subdirectories
     files = []
@@ -45,7 +45,7 @@ def get_version(info: Result) -> Result:
         info: Result object containing ORCA calculation settings.
 
     Returns:
-        :Dictionary containing results about the ORCA version:
+        :Result object containing results about the ORCA version:
 
             - **full (str)** – the full version string as written by ORCA.
             - **major (str)** – major ORCA version.
@@ -166,7 +166,7 @@ def get_level_of_theory(info: Result) -> Result:
         info: Result object containing ORCA calculation settings.
 
     Returns:
-        :Dictionary containing information about the level-of-theory:
+        :Result object containing information about the level-of-theory:
             
             - **summary (str)** - a summary string that gives the level-of-theory in a human-readable format.
             - **basis.type (str)** - the size/type of the basis-set.
@@ -205,12 +205,12 @@ def get_calc_settings(info: Result) -> Result:
         :Result object containing properties from the ORCA calculation:
 
             - **task (str)** – the task that was set for the calculation.
-            - **relativistic (bool)** – whether or not relativistic effects were enabled.
-            - **unrestricted_sfos (bool)** – whether or not SFOs are treated in an unrestricted manner.
-            - **unrestricted_mos (bool)** – whether or not MOs are treated in an unrestricted manner.
-            - **symmetry.group (str)** – the symmetry group selected for the molecule.
-            - **symmetry.labels (list[str])** – the symmetry labels associated with the symmetry group.
-            - **used_regions (bool)** – whether regions were used in the calculation.
+            - **unrestricted (bool)** – whether or not the wavefunction is treated in an unrestricted manner.
+            - **used_qros (bool)** - whether the reference wavefunction is transformed to a QRO wavefunction.
+            - **frequencies (bool)** - whether vibrational frequencies were calculated.
+            - **charge (int)** - the charge of the molecular system.
+            - **spin_polarization (int)** - the spin-polarization of the molecular system.
+            - **multiplicity (int)** - the multiplicity of the molecular system.
     '''
 
     assert info.engine == 'orca', f'This function reads ORCA data, not {info.engine} data'
@@ -324,7 +324,7 @@ def get_info(calc_dir: str) -> Result:
         calc_dir: path pointing to the desired calculation.
 
     Returns:
-        :Dictionary containing results about the calculation and AMS:
+        :Result object containing results about the calculation and AMS:
 
             - **version (Result)** – information about the AMS version used, see :func:`get_version`.
             - **files (Result)** - paths to files that are important for this calculation.
