@@ -314,6 +314,8 @@ def get_molecules(info: Result) -> Result:
         sym, x, y, z = coord.split()
         ret.output.add_atom(plams.Atom(symbol=sym, coords=[float(x), float(y), float(z)]))
 
+    if len(ret.output.atoms) == 0:
+        ret.output = ret.input.copy()
     return ret
 
 
