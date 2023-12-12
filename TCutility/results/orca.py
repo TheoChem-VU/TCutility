@@ -185,7 +185,7 @@ def get_level_of_theory(info: Result) -> Result:
             ret.method = method
             break
     
-    for bs in ['cc-pVSZ', 'cc-pVDZ', 'cc-pVTZ', 'cc-pVQZ', 'aug-cc-pVSZ', 'aug-cc-pVDZ', 'aug-cc-pVTZ', 'aug-cc-pVQZ']:
+    for bs in ['cc-pVDZ', 'cc-pVTZ', 'cc-pVQZ', 'cc-pV5Z', 'aug-cc-pVDZ', 'aug-cc-pVTZ', 'aug-cc-pVQZ', 'aug-cc-pV5Z']:
         if bs.lower() in main:
             ret.basis.type = bs
 
