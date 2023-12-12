@@ -102,6 +102,7 @@ def get_input(info: Result) -> Result:
     curr_section = None
     read_system = False
     system_lines = []
+    coordinates = None
     for line in lines:
         line = line.strip()
 
