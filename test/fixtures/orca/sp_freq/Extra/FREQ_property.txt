@@ -1,0 +1,209 @@
+-------------------------------------------------------------
+----------------------- !PROPERTIES! ------------------------
+-------------------------------------------------------------
+# -----------------------------------------------------------
+$ PAL_Flags
+   description: The PAL Flags
+   geom. index: 1
+   prop. index: 1
+        Diskflag:     2
+# -----------------------------------------------------------
+$ SCF_Energy
+   description: The SCF energy
+   geom. index: 1
+   prop. index: 1
+        SCF Energy:     -132.4385288495
+# -----------------------------------------------------------
+$ MDCI_Energies
+   description: The MDCI energies
+   geom. index: 1
+   prop. index: 1
+        Total number of Electrons                                                     23
+        Number of correlated Electrons                                                17
+        Number of alpha correlated Electrons                                           9
+        Number of beta correlated Electrons                                            8
+        Reference Energy:                                                -132.4335519126
+        Total Correlation Energy:                                          -0.5534308791
+        Alpha-Alpha Pairs Correlation Energy (No (T))                      -0.0585248943
+        Beta-Beta Pairs Correlation Energy (No (T))                        -0.0426718676
+        Alpha-Beta Pairs Correlation Energy (No (T))                       -0.4259844941
+        Singlet pairs energy of double amplitudes (No (T))                  0.0000000000
+        Triplet pairs energy of double amplitudes (No (T))                  0.0000000000
+        Singlet pairs energy of quadratic single amplitudes (No (T))        0.0000000000
+        Triplet pairs energy of quadratic single amplitudes (No (T))        0.0000000000
+        Triples Correction Energy:                                         -0.0225993602
+        Total MDCI Energy:                                               -132.9869827917
+# -----------------------------------------------------------
+$ Calculation_Info
+   description: Details of the calculation
+   geom. index: 1
+   prop. index: 1
+     Multiplicity:                          2
+     Charge:                                0
+     number of atoms:                       7
+     number of electrons:                   23
+     number of frozen core electrons:       1
+     number of correlated electrons:        0
+     number of basis functions:             146
+     number of aux C basis functions:       0
+     number of aux J basis functions:       0
+     number of aux JK basis functions:      0
+     number of aux CABS basis functions:    0
+     Total Energy                           -132.986983
+# -----------------------------------------------------------
+$ SCF_Electric_Properties
+   description: The SCF Calculated Electric Properties
+   geom. index: 1
+   prop. index: 1
+       Filename                          : FREQ.scfp 
+       Do Dipole Moment Calculation      : true 
+       Do Quadrupole Moment Calculation  : false 
+       Do Polarizability Calculation     : false 
+** Dipole moment part of electric properties **
+        Magnitude of dipole moment (Debye) :        2.5866054185
+        Electronic Contribution:
+                  0    
+      0      -1.205615
+      1       1.076714
+      2      -0.917978
+        Nuclear Contribution:
+                  0    
+      0       1.866183
+      1      -1.668960
+      2       1.416439
+        Total Dipole moment:
+                  0    
+      0       0.660567
+      1      -0.592246
+      2       0.498461
+# -----------------------------------------------------------
+$ MDCI_Electric_Properties
+   description: The MDCI Calculated Electric Properties
+   geom. index: 1
+   prop. index: 1
+       Filename                          : FREQ.mdcip 
+       Do Dipole Moment Calculation      : true 
+       Do Quadrupole Moment Calculation  : false 
+       Do Polarizability Calculation     : false 
+** Dipole moment part of electric properties **
+        Magnitude of dipole moment (Debye) :        2.4911570152
+        Electronic Contribution:
+                  0    
+      0      -1.229999
+      1       1.098569
+      2      -0.936361
+        Nuclear Contribution:
+                  0    
+      0       1.866183
+      1      -1.668960
+      2       1.416439
+        Total Dipole moment:
+                  0    
+      0       0.636183
+      1      -0.570391
+      2       0.480078
+# -----------------------------------------------------------
+$ PAL_Flags
+   description: The PAL Flags
+   geom. index: 2
+   prop. index: 1
+        Diskflag:     2
+# -----------------------------------------------------------
+$ SCF_Energy
+   description: The SCF energy
+   geom. index: 2
+   prop. index: 1
+        SCF Energy:     -132.4385288495
+# -----------------------------------------------------------
+$ MDCI_Energies
+   description: The MDCI energies
+   geom. index: 2
+   prop. index: 1
+        Total number of Electrons                                                     23
+        Number of correlated Electrons                                                17
+        Number of alpha correlated Electrons                                           9
+        Number of beta correlated Electrons                                            8
+        Reference Energy:                                                -132.4335519126
+        Total Correlation Energy:                                          -0.5534308791
+        Alpha-Alpha Pairs Correlation Energy (No (T))                      -0.0585248943
+        Beta-Beta Pairs Correlation Energy (No (T))                        -0.0426718676
+        Alpha-Beta Pairs Correlation Energy (No (T))                       -0.4259844941
+        Singlet pairs energy of double amplitudes (No (T))                  0.0000000000
+        Triplet pairs energy of double amplitudes (No (T))                  0.0000000000
+        Singlet pairs energy of quadratic single amplitudes (No (T))        0.0000000000
+        Triplet pairs energy of quadratic single amplitudes (No (T))        0.0000000000
+        Triples Correction Energy:                                         -0.0225993602
+        Total MDCI Energy:                                               -132.9869827917
+# -----------------------------------------------------------
+$ THERMOCHEMISTRY_Energies
+   description: The Thermochemistry energies
+   geom. index: 2
+   prop. index: 1
+        Temperature (Kelvin)           :        298.1500000000
+        Pressure (atm)                 :          1.0000000000
+        Total Mass (AMU)               :         42.0610000000
+        Spin Degeneracy                :          2.0000000000
+        Electronic Energy (Hartree)    :       -132.9869827917
+        Translational Energy (Hartree) :          0.0014162714
+        Rotational Energy (Hartree)    :          0.0014162714
+        Vibrational Energy (Hartree)   :          0.0030498022
+        Number of frequencies          :     21      
+        Scaling Factor for frequencies :          1.0000000000
+        Vibrational frequencies        :     
+                  0    
+      0       0.000000
+      1       0.000000
+      2       0.000000
+      3       0.000000
+      4       0.000000
+      5       0.000000
+      6     -47.034434
+      7      78.939656
+      8     122.227928
+      9     170.507593
+     10     219.620147
+     11     617.278488
+     12     620.938294
+     13     831.345722
+     14     838.404938
+     15     1549.313412
+     16     1989.016973
+     17     3354.238615
+     18     3380.009110
+     19     3474.422852
+     20     3485.760652
+        Zero Point Energy (Hartree)    :          0.0472310268
+        Inner Energy (Hartree)         :       -132.9338694198
+        Enthalpy (Hartree)             :       -132.9329252108
+        Electronic entropy             :          0.0006544564
+        Rotational entropy             :          0.0105307315
+        Vibrational entropy            :          0.0056326666
+        Translational entropy          :          0.0105307315
+        Entropy                        :          0.0344625358
+        Gibbs Energy (Hartree)         :       -132.9673877466
+        Is Linear                      :                 false
+# -------------------------------------------------------------
+----------------------- !GEOMETRIES! ------------------------
+# -------------------------------------------------------------
+------------------------ !GEOMETRY! -------------------------
+    Number of atoms:    7 
+    Geometry Index:     1 
+    Coordinates:
+               0 C     -0.892412000000    0.365350000000   -0.197050000000
+               1 C     -1.677631000000    1.063524000000   -0.799461000000
+               2 H     -2.367320000000    1.676532000000   -1.328183000000
+               3 N      1.290938000000   -1.582848000000    1.469501000000
+               4 H      1.923329000000   -2.293632000000    1.085739000000
+               5 H      1.487626000000   -1.616613000000    2.475716000000
+               6 H     -0.198732000000   -0.251557000000    0.334837000000
+------------------------ !GEOMETRY! -------------------------
+    Number of atoms:    7 
+    Geometry Index:     2 
+    Coordinates:
+               0 C     -0.892412000000    0.365350000000   -0.197050000000
+               1 C     -1.677631000000    1.063524000000   -0.799461000000
+               2 H     -2.367320000000    1.676532000000   -1.328183000000
+               3 N      1.290938000000   -1.582848000000    1.469501000000
+               4 H      1.923329000000   -2.293632000000    1.085739000000
+               5 H      1.487626000000   -1.616613000000    2.475716000000
+               6 H     -0.198732000000   -0.251557000000    0.334837000000

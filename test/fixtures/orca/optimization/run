@@ -1,0 +1,55 @@
+#!/bin/bash
+#SBATCH -n 128
+#SBATCH -t 120:00:00
+#SBATCH -p rome
+#SBATCH --mem=224000
+
+source /etc/bashrc
+module load 2021
+module load ORCA/5.0.1-gompi-2021a
+module list
+
+export ORCA_FP="/gpfs/admin/_hpc/sw/arch/AMD-ZEN2/Centos8/EB_production/2021/software/ORCA/5.0.1-gompi-2021a/bin/orca"
+export TMPDIR="$TMPDIR/$SLURM_JOB_ID"
+mkdir -p $TMPDIR
+cd $TMPDIR
+
+cat << eor > ./$SLURM_JOB_ID.inp
+
+!Opt CCSD(T) CC-pVTZ TightSCF UNO NUMGRAD
+
+	%BASE "OPT"
+
+	%mdci
+		UseQROs True
+	END
+
+	%PAL
+	  nprocs 18
+	END
+
+	%maxcore 9333
+
+	* xyz 0 2
+		C   -1.17087056451492     -0.21283010070605      0.00264806381362
+		C   -1.18625142492470      0.86403832242059     -0.54282039154477
+		H   -1.21353612687308      1.81062315931653     -1.02665493378260
+		N   1.15591063363264     -1.63787346388216      1.45050545176725
+		H   1.76975741340234     -1.49525467406345      0.64239431448136
+		H   1.34029153667540     -0.80904565356851      2.02445305524926
+		H   -1.12950300739769     -1.15890273951694      0.49057405001590
+	*
+
+eor
+
+
+$ORCA_FP ./$SLURM_JOB_ID.inp > $SLURM_SUBMIT_DIR/$SLURM_JOB_NAME.out
+
+### Copy back the files ####
+cp $TMPDIR/*.xyz $SLURM_SUBMIT_DIR
+cp $TMPDIR/*.out $SLURM_SUBMIT_DIR
+cp $TMPDIR/*.hess $SLURM_SUBMIT_DIR
+
+rm -rf $TMPDIR
+
+	
