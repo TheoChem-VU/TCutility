@@ -145,11 +145,10 @@ def table(rows: List[List[Any]], header: List[str] = None, sep: str = '   ', hli
         rows: list of `nrows` sequences containing `ncols` data inside the table.
         header: list of `ncols` strings that represent the column names of the table. They will be printed at the top of the table.
         sep: str representing the separation between columns.
-        hline: list of integers specifying rows after which lines will be drawn.
+        hline: list of integers specifying rows after which lines will be drawn. Supports negative indices, e.g. -1 will draw a line at the end of the table.
 
     Returns:
         str: the table in string format, where lines are separated by "\n"
-
     '''
     rows = ensure_2d(rows)
     nrows = len(rows)
