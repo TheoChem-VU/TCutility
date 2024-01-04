@@ -298,18 +298,39 @@ def boxed(message: str, title: str = None, message_align: str = 'left', title_al
     log(s, level=level)
 
 
-def info(message, level=20):
+def debug(message: str, level: int = 10):
     '''
-    Display informative message using the boxed function.
+    Print a debug message.
     '''
-    boxed(message, round_corners=True, double_edge=False, title='Info', level=level)
+    log(f'[DEBUG]({caller_name(2)}): ' + message, level=level)
 
 
-def warn(message, level=30):
+def info(message: str, level: int = 20):
     '''
-    Display a warning message using the boxed function.
+    Print an informative message.
     '''
-    boxed(message, double_edge=True, title='Warning', title_align='center', level=level)
+    log(f'[INFO]({caller_name(2)}): ' + message, level=level)
+
+
+def warn(message: str, level: int = 30):
+    '''
+    Print a warning message.
+    '''
+    log(f'[WARNING]({caller_name(2)}): ' + message, level=level)
+
+
+def error(message: str, level: int = 40):
+    '''
+    Print an error message.
+    '''
+    log(f'[ERROR]({caller_name(2)}): ' + message, level=level)
+
+
+def critical(message: str, level: int = 50):
+    '''
+    Print a critical message.
+    '''
+    log(f'[CRITICAL]({caller_name(2)}): ' + message, level=level)
 
 
 if __name__ == '__main__':
