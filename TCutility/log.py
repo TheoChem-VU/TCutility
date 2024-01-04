@@ -6,6 +6,7 @@ import numpy as np
 import json
 from TCutility import ensure_2d
 from typing import Any, Iterable, List
+import inspect
 
 ###########################################################
 # MODULE LEVEL VARIABLES USED TO CHANGE LOGGING BEHAVIOUR #
@@ -333,6 +334,37 @@ def critical(message: str, level: int = 50):
     log(f'[CRITICAL]({caller_name(2)}): ' + message, level=level)
 
 
+def caller_name(level: int = 1) -> str:
+    '''
+    Return the full name of the caller of a function.
+
+    Args:
+        level: the number of levels to skip when getting the caller name. Level 1 is always this function. When used by a different function it should be set to 2. E.g. when using the log.warn function level is set to 2.
+
+    Returns:
+        The full name of the caller function.
+    '''
+    stack = inspect.stack()
+    names = [stack[level][3]]  # add the original function, this should be at a certain levels, since this function is called by warn or info or error
+    for frame in stack[level:]:
+        if frame.function == '<module>':  # <module> is always there, so we can skip it
+            continue
+
+        # get the more interesting names
+        # first check if the 
+        if hasattr(frame[0], 'f_locals') and 'self' in frame[0].f_locals:
+            clas = frame[0].f_locals["self"].__class__
+            module = clas.__module__
+            if module == 'builtins':
+                names.append(clas.__qualname__)
+            else:
+                names.append(module + '.' + clas.__qualname__)
+        elif hasattr(frame[0], 'f_code'):
+            names.append(frame[0].f_code.co_name)
+        
+    return '.'.join(names[::-1])
+
+
 if __name__ == '__main__':
     boxed('testing, 1, 2, 3, 4, 5, 6, 7, 8\nsecond row, 1, 2, 3, 4, 5, 6\n...\n...\n\n...\n...\nLast row here', title='ReactionRunner')
 
@@ -373,3 +405,12 @@ if __name__ == '__main__':
     x = np.linspace(1, 12, 12)
     rows = np.vstack([x, x**2, x**3, x**4, x**5]).astype(int).T.tolist()
     table(rows, header=['X', 'y=x^2', 'y=x^3', 'y=x^4', 'y=x^5'], hline=[-1])
+
+
+    from TCutility import log
+
+    class TestClass:
+        def test_method(self):
+            log.warn('I am testing the warning function')
+
+    TestClass().test_method()
