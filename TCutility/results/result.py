@@ -111,6 +111,17 @@ class Result(dict):
             data = data[keypart]
         return data
 
+    def as_plams_settings(self):
+        '''
+        Returns this Result object as a plams.Settings object.
+        '''
+        from scm import plams
+        import dictfunc
+
+        clean_dict = dictfunc.list_to_dict(dictfunc.dict_to_list(self))
+        return plams.Settings(clean_dict)
+
+
 if __name__ == '__main__':
     ret = Result()
     # print(ret.adf)
