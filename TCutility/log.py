@@ -361,8 +361,11 @@ def caller_name(level: int = 1) -> str:
                 names.append(module + '.' + clas.__qualname__)
         elif hasattr(frame[0], 'f_code'):
             names.append(frame[0].f_code.co_name)
-        
-    return '.'.join(names[::-1])
+    names_ordered = []
+    for name in names[::-1]:
+        if name not in names_ordered:
+            names_ordered.append(name)
+    return '.'.join(names_ordered)
 
 
 if __name__ == '__main__':
