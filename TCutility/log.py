@@ -6,6 +6,7 @@ import numpy as np
 import json
 from TCutility import ensure_2d
 from typing import Any, Iterable, List
+import inspect
 
 ###########################################################
 # MODULE LEVEL VARIABLES USED TO CHANGE LOGGING BEHAVIOUR #
@@ -145,11 +146,10 @@ def table(rows: List[List[Any]], header: List[str] = None, sep: str = '   ', hli
         rows: list of `nrows` sequences containing `ncols` data inside the table.
         header: list of `ncols` strings that represent the column names of the table. They will be printed at the top of the table.
         sep: str representing the separation between columns.
-        hline: list of integers specifying rows after which lines will be drawn.
+        hline: list of integers specifying rows after which lines will be drawn. Supports negative indices, e.g. -1 will draw a line at the end of the table.
 
     Returns:
         str: the table in string format, where lines are separated by "\n"
-
     '''
     rows = ensure_2d(rows)
     nrows = len(rows)
@@ -299,18 +299,73 @@ def boxed(message: str, title: str = None, message_align: str = 'left', title_al
     log(s, level=level)
 
 
-def info(message, level=20):
+def debug(message: str, level: int = 10):
     '''
-    Display informative message using the boxed function.
+    Print a debug message.
     '''
-    boxed(message, round_corners=True, double_edge=False, title='Info', level=level)
+    log(f'[DEBUG]({caller_name(2)}): ' + message, level=level)
 
 
-def warn(message, level=30):
+def info(message: str, level: int = 20):
     '''
-    Display a warning message using the boxed function.
+    Print an informative message.
     '''
-    boxed(message, double_edge=True, title='Warning', title_align='center', level=level)
+    log(f'[INFO]({caller_name(2)}): ' + message, level=level)
+
+
+def warn(message: str, level: int = 30):
+    '''
+    Print a warning message.
+    '''
+    log(f'[WARNING]({caller_name(2)}): ' + message, level=level)
+
+
+def error(message: str, level: int = 40):
+    '''
+    Print an error message.
+    '''
+    log(f'[ERROR]({caller_name(2)}): ' + message, level=level)
+
+
+def critical(message: str, level: int = 50):
+    '''
+    Print a critical message.
+    '''
+    log(f'[CRITICAL]({caller_name(2)}): ' + message, level=level)
+
+
+def caller_name(level: int = 1) -> str:
+    '''
+    Return the full name of the caller of a function.
+
+    Args:
+        level: the number of levels to skip when getting the caller name. Level 1 is always this function. When used by a different function it should be set to 2. E.g. when using the log.warn function level is set to 2.
+
+    Returns:
+        The full name of the caller function.
+    '''
+    stack = inspect.stack()
+    names = [stack[level][3]]  # add the original function, this should be at a certain levels, since this function is called by warn or info or error
+    for frame in stack[level:]:
+        if frame.function == '<module>':  # <module> is always there, so we can skip it
+            continue
+
+        # get the more interesting names
+        # first check if the 
+        if hasattr(frame[0], 'f_locals') and 'self' in frame[0].f_locals:
+            clas = frame[0].f_locals["self"].__class__
+            module = clas.__module__
+            if module == 'builtins':
+                names.append(clas.__qualname__)
+            else:
+                names.append(module + '.' + clas.__qualname__)
+        elif hasattr(frame[0], 'f_code'):
+            names.append(frame[0].f_code.co_name)
+    names_ordered = []
+    for name in names[::-1]:
+        if name not in names_ordered:
+            names_ordered.append(name)
+    return '.'.join(names_ordered)
 
 
 if __name__ == '__main__':
@@ -353,3 +408,12 @@ if __name__ == '__main__':
     x = np.linspace(1, 12, 12)
     rows = np.vstack([x, x**2, x**3, x**4, x**5]).astype(int).T.tolist()
     table(rows, header=['X', 'y=x^2', 'y=x^3', 'y=x^4', 'y=x^5'], hline=[-1])
+
+
+    from TCutility import log
+
+    class TestClass:
+        def test_method(self):
+            log.warn('I am testing the warning function')
+
+    TestClass().test_method()
