@@ -101,6 +101,15 @@ class Result(dict):
             if not value:
                 del self[key]
 
+    def get_multi_key(self, key: str):
+        '''
+        Method that returns the value of a "multikey". The multikey is multiple keys joined by dots. 
+        E.g. res.properties.energy.bond can be gotten by calling res.get_multi_key("properties.energy.bond")
+        '''
+        data = self
+        for keypart in key.split('.'):
+            data = data[keypart]
+        return data
 
 if __name__ == '__main__':
     ret = Result()
