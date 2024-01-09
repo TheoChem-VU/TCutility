@@ -1,15 +1,14 @@
 import numpy as np
 from math import sin, cos
 import scipy
-from typing import Tuple
-
+from typing import Tuple, Union
 
 
 def get_rotmat(x: float = None, y: float = None, z: float = None) -> np.ndarray:
-    ''' 
+    """
     Create a rotation matrix based on the Tait-Bryant sytem.
     In this system, x, y, and z are angles of rotation around
-    the corresponding axes. This function uses the right-handed 
+    the corresponding axes. This function uses the right-handed
     convention
 
     Args:
@@ -17,7 +16,7 @@ def get_rotmat(x: float = None, y: float = None, z: float = None) -> np.ndarray:
 
     Returns:
         3x3 rotation matrix
-    '''
+    """
     # start with identity matrix
     R = np.eye(3)
 
@@ -25,44 +24,38 @@ def get_rotmat(x: float = None, y: float = None, z: float = None) -> np.ndarray:
     if x is not None:
         c = cos(x)
         s = sin(x)
-        R = R @ np.array(([1, 0, 0],
-                          [0, c, -s],
-                          [0, s, c]))
+        R = R @ np.array(([1, 0, 0], [0, c, -s], [0, s, c]))
 
     if y is not None:
         c = cos(y)
         s = sin(y)
-        R = R @ np.array(([c, 0, s],
-                          [0, 1, 0],
-                          [-s, 0, c]))
+        R = R @ np.array(([c, 0, s], [0, 1, 0], [-s, 0, c]))
 
     if z is not None:
         c = cos(z)
         s = sin(z)
-        R = R @ np.array(([c, -s, 0],
-                          [s, c, 0],
-                          [0, 0, 1]))
+        R = R @ np.array(([c, -s, 0], [s, c, 0], [0, 0, 1]))
 
     return R
 
 
 def apply_rotmat(coords: np.ndarray, R: np.ndarray) -> np.ndarray:
-    '''
+    """
     Apply a rotation matrix to a set of coordinates
-    '''
+    """
     coords = np.atleast_2d(coords)
     return (R @ coords.T).T.squeeze()
 
 
 def rotate(coords: np.ndarray, x: float = None, y: float = None, z: float = None) -> np.ndarray:
-    '''
+    """
     Shorthand function that builds and applies a rotation matrix to a set of coordinates.
-    '''
+    """
     return apply_rotmat(coords, get_rotmat(x, y, z))
 
 
 def vector_align_rotmat(a: np.ndarray, b: np.ndarray) -> np.ndarray:
-    '''
+    """
     Calculate a rotation matrix that aligns vector a onto vector b.
 
     Args:
@@ -71,11 +64,11 @@ def vector_align_rotmat(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 
     Returns:
         Rotation matrix R, such that geometry.apply_rotmat(a, R) == b
-    '''
+    """
     # normalize the vectors first
     a = np.array(a) / np.linalg.norm(a)
     b = np.array(b) / np.linalg.norm(b)
-    
+
     c = a @ b
     if c == 1:
         # if a == b we simply return the identity matrix
@@ -85,35 +78,24 @@ def vector_align_rotmat(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         # instead, we first create a random rotation matrix and apply it to a
         # to get a new vector aprime. We then align aprime to b, which is possible since aprime != -b
         # to get the final rotation matrix we simply multiply the random and alignment rotation matrices
-        Rrand = get_rotmat(np.pi/3, np.pi/3, np.pi/3)
+        Rrand = get_rotmat(np.pi / 3, np.pi / 3, np.pi / 3)
         return vector_align_rotmat(apply_rotmat(a, Rrand), b) @ Rrand
 
     v = np.cross(a, b)
-    skew = np.array([
-        [0, -v[2], v[1]],
-        [v[2], 0, -v[0]],
-        [-v[1], v[0], 0]
-    ])
+    skew = np.array([[0, -v[2], v[1]], [v[2], 0, -v[0]], [-v[1], v[0], 0]])
     R = np.eye(3) + skew + skew @ skew / (1 + c)
     return R
 
 
 class Transform:
-    def __init__(self, 
-                 R: np.ndarray = None, 
-                 T: np.ndarray = None, 
-                 S: np.ndarray = None):
+    def __init__(self, R: np.ndarray = None, T: np.ndarray = None, S: np.ndarray = None):
         self.M = self.build_matrix(R, T, S)
 
     def __str__(self):
         return str(self.M)
 
-    def translate(self, 
-                  T: np.ndarray = None, 
-                  x: float = None, 
-                  y: float = None, 
-                  z: float = None):
-        '''
+    def translate(self, T: np.ndarray = None, x: float = None, y: float = None, z: float = None):
+        """
         Add a translation component to the transformation matrix.
         Arguments can be given as a container of x, y, z values. They can also be given separately.
         You can also specify x, y and z components separately
@@ -121,37 +103,29 @@ class Transform:
         Example usage:
             Transform.translate([2, 3, 0])
             Transform.translate(x=2, y=3)
-        '''
+        """
 
         if T is None:
             T = [x or 0, y or 0, z or 0]
 
         self.M = self.M @ self.build_matrix(T=T)
 
-    def rotate(self, 
-               R: np.ndarray = None, 
-               x: float = None, 
-               y: float = None, 
-               z: float = None):
-        r'''
+    def rotate(self, R: np.ndarray = None, x: float = None, y: float = None, z: float = None):
+        r"""
         Add a rotational component to transformation matrix.
         Arguments can be given as a rotation matrix R \in R^3x3 or by specifying the angle to rotate along the x, y or z axes
-        
+
         Example usage:
             Transform.rotate(get_rotmat(x=1, y=-1))
             Transform.rotate(x=1, y=-1)
-        '''
+        """
         if R is None:
             R = get_rotmat(x=x, y=y, z=z)
 
         self.M = self.M @ self.build_matrix(R=R)
 
-    def scale(self, 
-              S: np.ndarray = None, 
-              x: float = None, 
-              y: float = None, 
-              z: float = None):
-        '''
+    def scale(self, S: np.ndarray = None, x: float = None, y: float = None, z: float = None):
+        """
         Add a scaling component to the transformation matrix.
         Arguments can be given as a container of x, y, z values.
         You can also specify x, y and z components separately
@@ -159,7 +133,7 @@ class Transform:
         Example usage:
             Transform.scale([0, 0, 3])
             Transform.scale(z=3)
-        '''
+        """
 
         if S is None:
             S = [x or 1, y or 1, z or 1]
@@ -168,12 +142,9 @@ class Transform:
 
         self.M = self.M @ self.build_matrix(S=S)
 
-    def build_matrix(self, 
-                     R: np.ndarray = None, 
-                     T: np.ndarray = None, 
-                     S: np.ndarray = None) -> np.ndarray:
-        r'''
-        Build and return a transformation matrix. 
+    def build_matrix(self, R: np.ndarray = None, T: np.ndarray = None, S: np.ndarray = None) -> np.ndarray:
+        r"""
+        Build and return a transformation matrix.
         This 4x4 matrix encodes rotations, translations and scaling.
 
             M = | R@diag(S)   T |
@@ -181,28 +152,24 @@ class Transform:
 
         where R \in R^3x3, T \in R^3x1, 0_3 = [0, 0, 0] \in R^1x3 and 1 \in R
 
-        When applied to a positional vector [x, y, z, 1] it will apply these 
-        transformations simultaneously. 
+        When applied to a positional vector [x, y, z, 1] it will apply these
+        transformations simultaneously.
 
         Note: This matrix is an element of the special SE(3) Lie group.
-        '''
+        """
 
         # set the default matrix and vectors
         R = R if R is not None else get_rotmat()
         T = T if T is not None else np.array([0, 0, 0])
         S = S if S is not None else np.array([1, 1, 1])
 
-        return np.array([
-            [R[0, 0]*S[0], R[0, 1],      R[0, 2],      T[0]],
-            [R[1, 0],      R[1, 1]*S[1], R[1, 2],      T[1]],
-            [R[2, 0],      R[2, 1],      R[2, 2]*S[2], T[2]],
-            [0,            0,            0,            1]])
-        
+        return np.array([[R[0, 0] * S[0], R[0, 1], R[0, 2], T[0]], [R[1, 0], R[1, 1] * S[1], R[1, 2], T[1]], [R[2, 0], R[2, 1], R[2, 2] * S[2], T[2]], [0, 0, 0, 1]])
+
     def __call__(self, *args, **kwargs):
         return self.apply(*args, **kwargs)
 
     def apply(self, v: np.ndarray) -> np.ndarray:
-        r'''
+        r"""
         Applies the transformation matrix to vector(s) v \in R^Nx3
         v should be a series of column vectors.
 
@@ -210,7 +177,7 @@ class Transform:
          1) Append row vector of ones to the bottom of v
          2) Apply the transformation matrix M \dot v
          3) Remove the bottom row vector of ones and return the result
-        '''
+        """
         v = np.atleast_2d(v)
         v = np.asarray(v).T
         N = v.shape[1]
@@ -222,12 +189,12 @@ class Transform:
         if isinstance(other, Transform):
             return self.combine_transforms(other)
 
-    def combine_transforms(self, other: 'Transform') -> 'Transform':
-        '''
-        Combine two different transform objects. This involves creating 
+    def combine_transforms(self, other: "Transform") -> "Transform":
+        """
+        Combine two different transform objects. This involves creating
         a new Transform object and multiplying the two transform matrices
         and assigning it to the new object.
-        '''
+        """
 
         new = Transform()
         new.M = self.M @ other.M
@@ -238,22 +205,20 @@ class Transform:
 
 
 class KabschTransform(Transform):
-    def __init__(self, 
-                 X: np.ndarray, 
-                 Y: np.ndarray):
-        '''
+    def __init__(self, X: np.ndarray, Y: np.ndarray):
+        """
         Use Kabsch-Umeyama algorithm to calculate the optimal rotation matrix and translation
-        to superimpose X onto Y. 
+        to superimpose X onto Y.
 
         It is numerically stable and works when the covariance matrix is singular.
         Both sets of points must be the same size for this algorithm to work.
-        The coordinates are first centered onto their centroids before determining the 
+        The coordinates are first centered onto their centroids before determining the
         optimal rotation matrix.
 
         References
             https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem
             https://en.wikipedia.org/wiki/Kabsch_algorithm
-        '''
+        """
 
         # make sure arrays are 2d and the same size
         X, Y = np.atleast_2d(X), np.atleast_2d(Y)
@@ -274,7 +239,7 @@ class KabschTransform(Transform):
         U, _, V = scipy.linalg.svd(H)
 
         # get the sign of the determinant of V.T @ U.T
-        sign = np.sign(np.linalg.det(V.T@U.T))
+        sign = np.sign(np.linalg.det(V.T @ U.T))
         # then build the optimal rotation matrix
         d = np.diag([1, 1, sign])
         R = V.T @ d @ U.T
@@ -291,11 +256,8 @@ class KabschTransform(Transform):
         self.translate(-centroid_x)
 
 
-def RMSD(X: np.ndarray, 
-         Y: np.ndarray,
-         axis: int = None,
-         use_kabsch: bool = True) -> float:
-    r'''
+def RMSD(X: np.ndarray, Y: np.ndarray, axis: Union[int, None] = None, use_kabsch: bool = True) -> float:
+    r"""
     Calculate Root Mean Squared Deviations between two sets of points X and Y.
     By default Kabsch' algorithm is used to align the sets of points prior to calculating the RMSD.
     Optionally the axis can be given to calculate the RMSD along different axes.
@@ -303,15 +265,15 @@ def RMSD(X: np.ndarray,
     RMSD is given as
 
         $$ \frac{1}{N}\sqrt{\sum_i^N (X_i - Y_i)^2} $$
-    
+
     Args:
         X, Y: Arrays to compare. They should have the same shape.
         axis: Axis to compare. Defaults to None.
         use_kabsch: Whether to use Kabsch' algorithm to align X and Y before calculating the RMSD. Defaults to True.
-    
+
     Returns:
         RMSD in the units of X and Y.
-    '''
+    """
     assert X.shape == Y.shape
 
     # apply Kabsch transform
@@ -319,11 +281,11 @@ def RMSD(X: np.ndarray,
         Tkabsch = KabschTransform(X, Y)
         X = Tkabsch(X)
 
-    return np.sqrt(np.sum((X - Y)**2, axis=axis)/X.shape[0])
+    return np.sqrt(np.sum((X - Y) ** 2, axis=axis) / X.shape[0])
 
 
 def random_points_on_sphere(shape: Tuple[int], radius: float = 1) -> np.ndarray:
-    '''
+    """
     Generate a random points on a sphere with a specified radius.
 
     Args:
@@ -332,14 +294,14 @@ def random_points_on_sphere(shape: Tuple[int], radius: float = 1) -> np.ndarray:
 
     Returns:
         Array of coordinates on a sphere.
-    '''
+    """
     x = np.random.randn(*shape)
-    x = x/np.linalg.norm(x, axis=1) * radius
+    x = x / np.linalg.norm(x, axis=1) * radius
     return x
 
 
 def random_points_in_anular_sphere(shape: Tuple[int], min_radius: float = 0, max_radius: float = 1):
-    '''
+    """
     Generate a random points in a sphere with specified radii.
 
     Args:
@@ -349,7 +311,6 @@ def random_points_in_anular_sphere(shape: Tuple[int], min_radius: float = 0, max
 
     Returns:
         Array of coordinates on a sphere.
-    '''
+    """
     random_radii = np.random.rand(shape[0]) * (max_radius - min_radius) + min_radius
     return random_points_on_sphere(shape, random_radii)
-
