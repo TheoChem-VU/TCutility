@@ -101,6 +101,26 @@ class Result(dict):
             if not value:
                 del self[key]
 
+    def get_multi_key(self, key: str):
+        '''
+        Method that returns the value of a "multikey". The multikey is multiple keys joined by dots. 
+        E.g. res.properties.energy.bond can be gotten by calling res.get_multi_key("properties.energy.bond")
+        '''
+        data = self
+        for keypart in key.split('.'):
+            data = data[keypart]
+        return data
+
+    def as_plams_settings(self):
+        '''
+        Returns this Result object as a plams.Settings object.
+        '''
+        from scm import plams
+        import dictfunc
+
+        clean_dict = dictfunc.list_to_dict(dictfunc.dict_to_list(self))
+        return plams.Settings(clean_dict)
+
 
 if __name__ == '__main__':
     ret = Result()
