@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
     steps:
       - uses: actions/checkout@v3
@@ -29,7 +29,7 @@ jobs:
       - name: Lint with ruff
         run: |
           # stop the build if there are Python syntax errors or undefined names
-          # Note, line length is put on a very high margin (200). PEP8 prefers a value of 79 
+          # Note, line length is put on a very high margin (200). PEP8 prefers a value of 79
           ruff --format=github --select=E9,F63,F7,F82 --target-version=py37 --line-length=250 .
           # default set of ruff rules with GitHub Annotations
           ruff --format=github --target-version=py37 --line-length=250 .
