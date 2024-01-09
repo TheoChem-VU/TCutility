@@ -3,3 +3,6 @@ numpy
 matplotlib
 GitPython
 scipy
+pytest
+docs
+htmldocx
