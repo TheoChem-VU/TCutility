@@ -2,7 +2,7 @@ from scm import plams
 
 
 def parse_molecule(molecule: plams.Molecule) -> str:
-    '''
+    """
     Analyse a molecule and return the molstring describing its parts. Each part will then be separated by a + sign in the new string.
 
     Args:
@@ -10,7 +10,7 @@ def parse_molecule(molecule: plams.Molecule) -> str:
 
     Returns:
         A string that contains each part of the molecule separated by a + sign, for use in TCutility.formula.molecule function for further formatting.
-    '''
+    """
     # to separate a molecule we need to have bonds
     molecule.guess_bonds()
     parts = []
@@ -20,12 +20,12 @@ def parse_molecule(molecule: plams.Molecule) -> str:
         form = part.get_formula(True)
         # add all elements with their number, but only if the number is larger than 1.
         # this prevents the creation of strings containing e.g. C1H3Cl2
-        parts.append(''.join([sym + (str(num) if num > 1 else '') for sym, num in form.items()]))
-    return ' + '.join(parts)
+        parts.append("".join([sym + (str(num) if num > 1 else "") for sym, num in form.items()]))
+    return " + ".join(parts)
 
 
-def molecule(molecule: str or plams.Molecule, mode: str = 'unicode') -> str:
-    '''
+def molecule(molecule: str | plams.Molecule, mode: str = "unicode") -> str:
+    """
     Parse and return a string containing a molecular formula that will show up properly in LaTeX or HTML.
 
     Args:
@@ -34,8 +34,8 @@ def molecule(molecule: str or plams.Molecule, mode: str = 'unicode') -> str:
 
     Returns:
         A string that is formatted to be rendered nicely in either HTML or LaTeX.
-    '''
-    # to take care of plus-signs used to denote reactions we have to first split 
+    """
+    # to take care of plus-signs used to denote reactions we have to first split
     # the molstring into its parts.
     if isinstance(molecule, plams.Molecule):
         molstring = parse_molecule(molecule)
@@ -45,36 +45,36 @@ def molecule(molecule: str or plams.Molecule, mode: str = 'unicode') -> str:
     for part in molstring.split():
         # if part is only a plus-sign we skip this part. This is only true when the plus-sign
         # is used to denote a reaction
-        if part in ['+', '->']:
+        if part in ["+", "->"]:
             continue
 
         # parse the part
         partret = part
         # numbers should be subscript
-        for num in '0123456789':
-            if mode == 'latex':
-                partret = partret.replace(num, f'_{num}')
-            if mode == 'html':
-                partret = partret.replace(num, f'<sub>{num}</sub>')
-            if mode == 'unicode':
-                partret = partret.replace(num, '₀₁₂₃₄₅₆₇₈₉'[int(num)])
+        for num in "0123456789":
+            if mode == "latex":
+                partret = partret.replace(num, f"_{num}")
+            if mode == "html":
+                partret = partret.replace(num, f"<sub>{num}</sub>")
+            if mode == "unicode":
+                partret = partret.replace(num, "₀₁₂₃₄₅₆₇₈₉"[int(num)])
 
         # signs should be superscript
-        for sign in '+-':
+        for sign in "+-":
             # negative charges should be denoted by em dash and not a normal dash
-            if mode == 'latex':
+            if mode == "latex":
                 partret = partret.replace(sign, f'^{sign.replace("-", "—")}')
-            if mode == 'html':
+            if mode == "html":
                 partret = partret.replace(sign, f'<sup>{sign.replace("-", "—")}</sup>')
-            if mode == 'unicode':
-                partret = partret.replace(num, '⁺⁻'['+-'.index(sign)])
+            if mode == "unicode":
+                partret = partret.replace(sign, "⁺⁻"["+-".index(sign)])
         # replace the part in the original string
         molstring = molstring.replace(part, partret)
 
     return molstring
 
 
-if __name__ == '__main__':
-    print(molecule('F- + CH3Cl', 'html'))
+if __name__ == "__main__":
+    print(molecule("F- + CH3Cl", "html"))
     mol = plams.Molecule(r"D:\Users\Yuman\Desktop\PhD\TCutility\test\fixtures\chloromethane_sn2_ts\ts sn2.results\output.xyz")
     print(molecule(mol))
