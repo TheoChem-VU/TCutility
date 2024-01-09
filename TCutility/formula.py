@@ -1,3 +1,4 @@
+from typing import Union
 from scm import plams
 
 
@@ -24,7 +25,7 @@ def parse_molecule(molecule: plams.Molecule) -> str:
     return " + ".join(parts)
 
 
-def molecule(molecule: str | plams.Molecule, mode: str = "unicode") -> str:
+def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str:
     """
     Parse and return a string containing a molecular formula that will show up properly in LaTeX or HTML.
 
