@@ -10,7 +10,7 @@ def test_0d_2():
 
 
 def test_0d_3():
-    assert ensure_2d('abcdefghijklmnopqrstuvwxyz') == [['abcdefghijklmnopqrstuvwxyz']]
+    assert ensure_2d("abcdefghijklmnopqrstuvwxyz") == [["abcdefghijklmnopqrstuvwxyz"]]
 
 
 def test_1d_1():
@@ -22,7 +22,7 @@ def test_1d_2():
 
 
 def test_1d_3():
-    assert ensure_2d(['abcdefghijklmnopqrstuvwxyz']) == [['abcdefghijklmnopqrstuvwxyz']]
+    assert ensure_2d(["abcdefghijklmnopqrstuvwxyz"]) == [["abcdefghijklmnopqrstuvwxyz"]]
 
 
 def test_1d_4():
@@ -54,7 +54,7 @@ def test_2d_1():
 
 
 def test_2d_2():
-    assert ensure_2d(((1, 2, 3, 4, 5), )) == [[1, 2, 3, 4, 5]]
+    assert ensure_2d(((1, 2, 3, 4, 5),)) == [[1, 2, 3, 4, 5]]
 
 
 def test_2d_3():
@@ -66,13 +66,14 @@ def test_2d_4():
 
 
 def test_2d_5():
-    assert ensure_2d(((1, 2, 3, 4, 5), ), transposed=True) == [[1, 2, 3, 4, 5]]
+    assert ensure_2d(((1, 2, 3, 4, 5),), transposed=True) == [[1, 2, 3, 4, 5]]
 
 
 def test_2d_6():
     assert ensure_2d([{1, 2, 3, 4, 5}], transposed=True) == [[1, 2, 3, 4, 5]]
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import pytest
+
     pytest.main()
