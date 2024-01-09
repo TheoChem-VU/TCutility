@@ -11,7 +11,7 @@ permissions:
 concurrency:
   group: "pages"
   cancel-in-progress: true
-  
+
 on:
   push:
     branches:
@@ -21,7 +21,7 @@ on:
     branches: [main]
   release:
     types: [published]
-      
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -29,7 +29,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-      
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -40,14 +40,14 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.8' 
+          python-version: '3.11'
 
       - name: Build package
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install -e .
-        
+
       - name: Install sphinx
         run: pip install sphinx
 
@@ -59,7 +59,7 @@ jobs:
 
       # - name: Run sphinx-apidoc
       #   run: cd docs; sphinx-apidoc -f -o . .. ../setup.py
-        
+
       - name: Build the docs
         run: cd docs; make html
 
@@ -75,13 +75,13 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
-        
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
           # Upload entire repository
           path: './docs/_build/html/'
-          
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
