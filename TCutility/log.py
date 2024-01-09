@@ -5,7 +5,7 @@ from time import perf_counter
 import numpy as np
 import json
 from TCutility import ensure_2d
-from typing import Any, Iterable, List
+from typing import Any, Iterable, List, Union
 import inspect
 
 ###########################################################
@@ -18,44 +18,46 @@ log_level = 20  # the level of verbosity. Messages with a log_level >= this numb
 
 
 class Emojis:
-    '''
+    """
     Class containing some useful emojis and other characters.
     Supports dot-notation and indexation to get a character.
 
     E.g. Emojis.wait == Emojis['wait']
-    '''
-    wait = '🕒'
-    good = '✅'
-    cancel = '🛑'
-    sleep = '💤'
-    fail = '❌'
-    send = '📤'
-    receive = '📥'
-    empty = '⠀⠀'
-    finish = '🏁'
-    warning = '⚠️'
-    question = '❔'
-    info = 'ℹ️'
-    rarrow = '─>'
-    larrow = '<─'
-    lrarrow = rlarrow = '<─>'
-    angstrom = 'Å' 
+    """
+
+    wait = "🕒"
+    good = "✅"
+    cancel = "🛑"
+    sleep = "💤"
+    fail = "❌"
+    send = "📤"
+    receive = "📥"
+    empty = "⠀⠀"
+    finish = "🏁"
+    warning = "⚠️"
+    question = "❔"
+    info = "ℹ️"
+    rarrow = "─>"
+    larrow = "<─"
+    lrarrow = rlarrow = "<─>"
+    angstrom = "Å"
 
     def __init__(self):
-        raise SyntaxError('Do not instantiate the Emojis-class.')
+        raise SyntaxError("Do not instantiate the Emojis-class.")
 
     def __class_getitem__(cls, item):
         return getattr(cls, item)
 
 
 class NoPrint:
-    '''
-    Context-manager that suppresses printing. It works by redirecting prints to a temporary output file. 
+    """
+    Context-manager that suppresses printing. It works by redirecting prints to a temporary output file.
     This file is deleted after exiting the context-manager.
-    '''
+    """
+
     def __init__(self, stdout=None):
         self.stdout = stdout or logfile
-        self.overflow = open(str(os.getpid()) + '_NOPRINT.tmp', 'w+')
+        self.overflow = open(str(os.getpid()) + "_NOPRINT.tmp", "w+")
 
     def __enter__(self):
         global logfile
@@ -65,19 +67,19 @@ class NoPrint:
         global logfile
         logfile = self.stdout
         self.overflow.close()
-        os.remove(str(os.getpid()) + '_NOPRINT.tmp')
+        os.remove(str(os.getpid()) + "_NOPRINT.tmp")
 
 
 def time_stamp():
-    '''
+    """
     Return the current timestamp in a "[YYYY/MM/DD HH:MM:SS] "" format.
-    '''
+    """
     now = datetime.now()
-    return f'[{now.year}/{str(now.month).zfill(2)}/{str(now.day).zfill(2)} {str(now.hour).zfill(2)}:{str(now.minute).zfill(2)}:{str(now.second).zfill(2)}] '
+    return f"[{now.year}/{str(now.month).zfill(2)}/{str(now.day).zfill(2)} {str(now.hour).zfill(2)}:{str(now.minute).zfill(2)}:{str(now.second).zfill(2)}] "
 
 
-def log(message: str = '', level: int = 20, end: str = '\n'):
-    r'''
+def log(message: str = "", level: int = 20, end: str = "\n"):
+    r"""
     Print a message to stream or file logfile.
     This function adds the current timestamp and supports multi-line printing (split on the "\n" escape character).
     level is the verbosity level with which the message is sent.
@@ -89,9 +91,9 @@ def log(message: str = '', level: int = 20, end: str = '\n'):
         WARN     = 30
         ERROR    = 40
         CRITICAL = 50
-    
+
     We compare the level against the module-wide log_level variable (by default log_level = 20). If the level is below log_level we do not print it.
-    '''
+    """
     if level < log_level:
         return
 
@@ -99,49 +101,48 @@ def log(message: str = '', level: int = 20, end: str = '\n'):
     if isinstance(message, dict):
         message = json.dumps(message, indent=4, sort_keys=True)
 
-    message = str(message)
     # Print each line separately
-    message = message.split('\n')
-    for m in message:
+    splitted_message = str(message).split("\n")
+    for m in splitted_message:
         # handle lines that exceed the maximum print width
         if max_width > 0 and len(m) > max_width:
-            m = m[:max_width - 4] + ' ...' 
+            m = m[: max_width - 4] + " ..."
 
         # add the tab-levels and timestamp
-        m = '\t'*tab_level + m
+        m = "\t" * tab_level + m
         if print_date:
             m = time_stamp() + m
 
         print(m, file=logfile, end=end, flush=True)
 
 
-def flow(message: str = '', tags: List[str] = ['straight'], level: int = 20) -> None:
-    '''
+def flow(message: str = "", tags: List[str] = ["straight"], level: int = 20) -> None:
+    """
     Function to create flowchart-like output.
     It will print a message prepended by flow elements (arrows and lines).
     The flow elements are determined based on the given tags.
-    '''
+    """
     elements = {
-        'start':     '┯ ',
-        'startinv':  '┷ ',
-        'end':       '╰─> ',
-        'straight':  '│   ',
-        'split':     '├─> ',
-        'skip':      '    ',
-        'vert':      '────',
-        'endvert':   '╰──> ',
-        'splitvert': '├──> ',
+        "start": "┯ ",
+        "startinv": "┷ ",
+        "end": "╰─> ",
+        "straight": "│   ",
+        "split": "├─> ",
+        "skip": "    ",
+        "vert": "────",
+        "endvert": "╰──> ",
+        "splitvert": "├──> ",
     }
-    s = ''
+    s = ""
     for tag in tags:
         s += elements[tag]
     log(s + message, level=level)
 
 
-def table(rows: List[List[Any]], header: List[str] = None, sep: str = '   ', hline: List[int] = [], level: int = 20) -> str:
-    r'''
+def table(rows: List[List[Any]], header: Union[List[str], None] = None, sep: str = "   ", hline: List[int] = [], level: int = 20) -> str:
+    r"""
     Print a table given rows and a header. Values in rows will be cast to strings first.
-    
+
     Args:
         rows: list of `nrows` sequences containing `ncols` data inside the table.
         header: list of `ncols` strings that represent the column names of the table. They will be printed at the top of the table.
@@ -150,7 +151,7 @@ def table(rows: List[List[Any]], header: List[str] = None, sep: str = '   ', hli
 
     Returns:
         str: the table in string format, where lines are separated by "\n"
-    '''
+    """
     rows = ensure_2d(rows)
     nrows = len(rows)
     ncols = len(rows[0])
@@ -164,19 +165,19 @@ def table(rows: List[List[Any]], header: List[str] = None, sep: str = '   ', hli
     rows = [[str(x) for x in row] for row in rows]
 
     column_sizes = [max(len(row[i]) for row in rows) for i in range(ncols)]
-    return_str = ''
+    return_str = ""
     for i, row in enumerate(rows):
-        row_str = sep.join([x.ljust(column_size) for x, column_size in zip(row, column_sizes)]) + '\n'
+        row_str = sep.join([x.ljust(column_size) for x, column_size in zip(row, column_sizes)]) + "\n"
         return_str += row_str
         if i in hline:
-            return_str += '─' * len(row_str) + '\n'
+            return_str += "─" * len(row_str) + "\n"
 
     log(return_str, level=level)
     return return_str
 
 
-def loadbar(sequence: Iterable, comment: str = '', Nsegments: int = 50, Nsteps: int = 10, level: int = 20) -> None:
-    '''
+def loadbar(sequence: Iterable, comment: str = "", Nsegments: int = 50, Nsteps: int = 10, level: int = 20) -> None:
+    """
     Return values from an iterable `sequence` and also print a progress bar for the iteration over this sequence.
 
     Args:
@@ -184,28 +185,28 @@ def loadbar(sequence: Iterable, comment: str = '', Nsegments: int = 50, Nsteps: 
         comment: a string to be printed at the end of the loading bar to give information about the loading bar.
         Nsegments: length of the loading bar in characters.
         Nsteps: number of times to print the loading bar during iteration. If the output is a tty-type stream Nsteps will be set to the length of sequence.
-    '''
+    """
     N = len(sequence)
     # if the output stream is tty-type we set the number of steps to the lenth of the sequence so the loading bar looks smoother
-    Nsteps = N if logfile.isatty() else Nsteps 
-    Ndigits = int(np.log10(N))+1  # well-known method to get number of digits of an integer
-    # we track what the maximum length of the loading bar is. 
-    # We use the '\r' return carriage when logging, so we have to overwrite the whole previous line. 
+    Nsteps = N if logfile.isatty() else Nsteps
+    Ndigits = int(np.log10(N)) + 1  # well-known method to get number of digits of an integer
+    # we track what the maximum length of the loading bar is.
+    # We use the '\r' return carriage when logging, so we have to overwrite the whole previous line.
     # For this we must know the largest length of our loading bar strings.
-    max_length = 0  
+    max_length = 0
 
     # track when the loading bar started. We use this to calculate the ETA later
     loading_bar_start_time = perf_counter()
     for i, val in enumerate(sequence):
         # we only print the loading bar on every Nsteps iterations
-        if i % (N//min(N, Nsteps)) != 0:
+        if i % (N // min(N, Nsteps)) != 0:
             yield val
             continue
 
         # calculate how many segments should be filled and empty
-        Nfilled_segments = int(i/N*Nsegments)
-        filled = "─"*Nfilled_segments
-        empty = " "*(Nsegments-Nfilled_segments)
+        Nfilled_segments = int(i / N * Nsegments)
+        filled = "─" * Nfilled_segments
+        empty = " " * (Nsegments - Nfilled_segments)
 
         # determine what the cursor should look like
         if Nfilled_segments == Nsegments:  # if the bar is fully filled it should be just a stripe
@@ -217,31 +218,31 @@ def loadbar(sequence: Iterable, comment: str = '', Nsegments: int = 50, Nsteps: 
 
         # calculate the ETA. In the first iteration we cannot know yet
         if i == 0:
-            eta = '???'
+            eta = "???"
         else:
             # the algorithm simply extrapolates the current time taken to the case of the final iteration
             time_taken = perf_counter() - loading_bar_start_time
-            time_per_step = time_taken/i
-            time_left = time_per_step * (N-i)
-            eta = f'{time_left:.1f}'
+            time_per_step = time_taken / i
+            time_left = time_per_step * (N - i)
+            eta = f"{time_left:.1f}"
 
         # build the loading bar string
         s = f'{i:{Ndigits}}/{N} {"├" if i > 0 else "|"}{filled + cursor + empty}{"│"} {i/N:4.0%} {comment} [ETA: {eta}s]'.ljust(max_length)
 
         # update the max loading bar string length
         max_length = max(len(s), max_length)
-        log(s, end='\r', level=level)
-    
+        log(s, end="\r", level=level)
+
         yield val
 
     # plot the final iteration at 100% filled
     s = f'{i+1:{Ndigits}}/{N} {"├"}{"─"*(Nsegments+1)}┤ 100% {comment}'.ljust(max_length)
-    log(s, end='\r', level=level)
+    log(s, end="\r", level=level)
     log(level=level)
 
 
-def boxed(message: str, title: str = None, message_align: str = 'left', title_align: str = 'left', round_corners: bool = True, double_edge: bool = False, level: int = 20) -> str:
-    r'''
+def boxed(message: str, title: Union[str, None] = None, message_align: str = "left", title_align: str = "left", round_corners: bool = True, double_edge: bool = False, level: int = 20) -> str:
+    r"""
     Print a message surrounded by a box with optional title.
 
     Args:
@@ -254,88 +255,85 @@ def boxed(message: str, title: str = None, message_align: str = 'left', title_al
 
     Returns:
         The printed message in strings format.
-    '''
+    """
     # define the edges and corners
-    straights = ['│', '─']
+    straights = ["│", "─"]
     if round_corners and not double_edge:
-        corners = ['╭', '╮', '╯', '╰']
+        corners = ["╭", "╮", "╯", "╰"]
     elif double_edge:
-        corners = ['╔', '╗', '╝', '╚']
-        straights = ['║', '═']
+        corners = ["╔", "╗", "╝", "╚"]
+        straights = ["║", "═"]
     else:
-        corners = ['┌', '┐', '┘', '└']
+        corners = ["┌", "┐", "┘", "└"]
 
     # get the width the box should have
-    messages = message.split('\n')
+    messages = message.split("\n")
     # the length is influenced by both the messages as well as the title
-    maxlen = max(
-        max(len(message) for message in messages), 
-        len(title or '')
-        )
+    maxlen = max(max(len(message) for message in messages), len(title or ""))
 
     # build first row containing the title
     if title is not None:
-        if title_align == 'left':
-            s = corners[0] + (' ' + title + ' ').ljust(maxlen+2, straights[1]) + corners[1] + '\n'
-        elif title_align == 'right':
-            s = corners[0] + (' ' + title + ' ').rjust(maxlen+2, straights[1]) + corners[1] + '\n'
+        if title_align == "left":
+            s = corners[0] + (" " + title + " ").ljust(maxlen + 2, straights[1]) + corners[1] + "\n"
+        elif title_align == "right":
+            s = corners[0] + (" " + title + " ").rjust(maxlen + 2, straights[1]) + corners[1] + "\n"
         else:
-            s = corners[0] + (' ' + title + ' ').center(maxlen+2, straights[1]) + corners[1] + '\n'
+            s = corners[0] + (" " + title + " ").center(maxlen + 2, straights[1]) + corners[1] + "\n"
     else:
-        s = corners[0] + straights[1]*(maxlen+2) + corners[1] + '\n'
+        s = corners[0] + straights[1] * (maxlen + 2) + corners[1] + "\n"
 
     # build main body of box
     for message in messages:
-        if message_align == 'left':
-            s += f'{straights[0]} ' + message.ljust(maxlen) + f' {straights[0]}\n'
-        if message_align == 'right':
-            s += f'{straights[0]} ' + message.rjust(maxlen) + f' {straights[0]}\n'
-        if message_align == 'center':
-            s += f'{straights[0]} ' + message.center(maxlen) + f' {straights[0]}\n'
+        if message_align == "left":
+            s += f"{straights[0]} " + message.ljust(maxlen) + f" {straights[0]}\n"
+        if message_align == "right":
+            s += f"{straights[0]} " + message.rjust(maxlen) + f" {straights[0]}\n"
+        if message_align == "center":
+            s += f"{straights[0]} " + message.center(maxlen) + f" {straights[0]}\n"
 
     # build bottom row
-    s += corners[3] + straights[1]*(maxlen+2) + corners[2]
+    s += corners[3] + straights[1] * (maxlen + 2) + corners[2]
 
     log(s, level=level)
 
 
 def debug(message: str, level: int = 10):
-    '''
+    """
     Print a debug message.
-    '''
-    log(f'[DEBUG]({caller_name(2)}): ' + message, level=level)
+    """
+    log(f"[DEBUG]({caller_name(2)}): " + message, level=level)
 
 
 def info(message: str, level: int = 20):
-    '''
+    """
     Print an informative message.
-    '''
-    log(f'[INFO]({caller_name(2)}): ' + message, level=level)
+    """
+    log(f"[INFO]({caller_name(2)}): " + message, level=level)
 
 
 def warn(message: str, level: int = 30):
-    '''
+    """
     Print a warning message.
-    '''
-    log(f'[WARNING]({caller_name(2)}): ' + message, level=level)
+    """
+    log(f"[WARNING]({caller_name(2)}): " + message, level=level)
 
 
 def error(message: str, level: int = 40):
-    '''
+    """
     Print an error message.
-    '''
-    log(f'[ERROR]({caller_name(2)}): ' + message, level=level)
+    """
+    log(f"[ERROR]({caller_name(2)}): " + message, level=level)
 
 
 def critical(message: str, level: int = 50):
-    '''
+    """
     Print a critical message.
-    '''
-    log(f'[CRITICAL]({caller_name(2)}): ' + message, level=level)
+    """
+    log(f"[CRITICAL]({caller_name(2)}): " + message, level=level)
 
 
 def caller_name(level: int = 1) -> str:
-    '''
+    """
     Return the full name of the caller of a function.
 
     Args:
@@ -343,77 +341,77 @@ def caller_name(level: int = 1) -> str:
 
     Returns:
         The full name of the caller function.
-    '''
+    """
     stack = inspect.stack()
     names = [stack[level][3]]  # add the original function, this should be at a certain levels, since this function is called by warn or info or error
     for frame in stack[level:]:
-        if frame.function == '<module>':  # <module> is always there, so we can skip it
+        if frame.function == "<module>":  # <module> is always there, so we can skip it
             continue
 
         # get the more interesting names
-        # first check if the 
-        if hasattr(frame[0], 'f_locals') and 'self' in frame[0].f_locals:
+        # first check if the
+        if hasattr(frame[0], "f_locals") and "self" in frame[0].f_locals:
             clas = frame[0].f_locals["self"].__class__
             module = clas.__module__
-            if module == 'builtins':
+            if module == "builtins":
                 names.append(clas.__qualname__)
             else:
-                names.append(module + '.' + clas.__qualname__)
-        elif hasattr(frame[0], 'f_code'):
+                names.append(module + "." + clas.__qualname__)
+        elif hasattr(frame[0], "f_code"):
             names.append(frame[0].f_code.co_name)
     names_ordered = []
     for name in names[::-1]:
         if name not in names_ordered:
             names_ordered.append(name)
-    return '.'.join(names_ordered)
+    return ".".join(names_ordered)
 
 
-if __name__ == '__main__':
-    boxed('testing, 1, 2, 3, 4, 5, 6, 7, 8\nsecond row, 1, 2, 3, 4, 5, 6\n...\n...\n\n...\n...\nLast row here', title='ReactionRunner')
+if __name__ == "__main__":
+    boxed("testing, 1, 2, 3, 4, 5, 6, 7, 8\nsecond row, 1, 2, 3, 4, 5, 6\n...\n...\n\n...\n...\nLast row here", title="ReactionRunner")
 
     with NoPrint():
-        log('test test test')
-        log('test test test')
-        log('test test test')
-        log('test test test')
+        log("test test test")
+        log("test test test")
+        log("test test test")
+        log("test test test")
 
     log()
 
-    flow('Start', ['start'])
+    flow("Start", ["start"])
     flow()
-    flow('First step', ['split'])
-    flow('First substep of first step', ['straight', 'split'])
-    flow('Second substep of first step', ['straight', 'split'])
-    flow('Third and final substep of first step', ['straight', 'end'])
+    flow("First step", ["split"])
+    flow("First substep of first step", ["straight", "split"])
+    flow("Second substep of first step", ["straight", "split"])
+    flow("Third and final substep of first step", ["straight", "end"])
     flow()
-    flow('Second step', ['split'])
-    flow('Substep of second step', ['straight', 'split'])
-    flow('Substep of substep of second step', ['straight', 'straight', 'end'])
-    flow('Substep of substep of substep of second step', ['straight', 'straight', 'skip', 'end'])
-    flow('Substep of second step', ['straight', 'end'])
+    flow("Second step", ["split"])
+    flow("Substep of second step", ["straight", "split"])
+    flow("Substep of substep of second step", ["straight", "straight", "end"])
+    flow("Substep of substep of substep of second step", ["straight", "straight", "skip", "end"])
+    flow("Substep of second step", ["straight", "end"])
     flow()
-    flow('Final step', ['split'])
+    flow("Final step", ["split"])
     flow()
-    flow(f'{Emojis.good} The end', ['startinv'])
+    flow(f"{Emojis.good} The end", ["startinv"])
 
     log()
 
-    info('This is important info')
-    warn('This is an important warning!')
+    info("This is important info")
+    warn("This is an important warning!")
 
     import time
-    for x in loadbar(range(100), 'Sleeping test'):
-        time.sleep(.01)
+
+    for x in loadbar(range(100), "Sleeping test"):
+        time.sleep(0.01)
 
     x = np.linspace(1, 12, 12)
     rows = np.vstack([x, x**2, x**3, x**4, x**5]).astype(int).T.tolist()
-    table(rows, header=['X', 'y=x^2', 'y=x^3', 'y=x^4', 'y=x^5'], hline=[-1])
-
+    table(rows, header=["X", "y=x^2", "y=x^3", "y=x^4", "y=x^5"], hline=[-1])
 
     from TCutility import log
 
     class TestClass:
         def test_method(self):
-            log.warn('I am testing the warning function')
+            log.warn("I am testing the warning function")
 
     TestClass().test_method()
