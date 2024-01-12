@@ -7,12 +7,12 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   TCutility.results
+   tcutility.results
 
 Module contents
 ---------------
 
-.. automodule:: TCutility
+.. automodule:: tcutility
    :members:
    :undoc-members:
    :show-inheritance:

@@ -12,10 +12,8 @@ TCutility |ProjectVersion| documentation
    :maxdepth: 2
    :caption: Contents:
 
-   TCutility.results
-   TCutility.analysis
-   TCutility.constants
-   TCutility.molecule
+   tcutility.results
+   tcutility.constants
 
 
 Indices and tables

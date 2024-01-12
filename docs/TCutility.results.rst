@@ -1,57 +1,57 @@
-TCutility.results package
+tcutility.results package
 =========================
 
-The TCutility.results package enables you to easily retrieve information and results from a calculation done using AMS.
+The tcutility.results package enables you to easily retrieve information and results from a calculation done using AMS.
 This includes results and settings from AMS as well as the calculation engine used (e.g. ADF, BAND, DFTB, ...).
-Recommended usage is to use the :func:`TCutility.results.read` function to read the information. 
+Recommended usage is to use the :func:`tcutility.results.read` function to read the information.
 One can also access specific information by calling one the functions in the submodules below.
-Information will be given as :class:`TCutility.results.result.Result` objects and can be used just like a `dict`_.
+Information will be given as :class:`tcutility.results.result.Result` objects and can be used just like a `dict`_.
 
 
-TCutility.results
+tcutility.results
 -----------------
 
-.. automodule:: TCutility.results
+.. automodule:: tcutility.results
    :members:
    :undoc-members:
    :show-inheritance:
 
-TCutility.results.ams
+tcutility.results.ams
 ---------------------
 
-.. automodule:: TCutility.results.ams
+.. automodule:: tcutility.results.ams
    :members:
    :undoc-members:
    :show-inheritance:
 
-TCutility.results.adf
+tcutility.results.adf
 ---------------------
 
-.. automodule:: TCutility.results.adf
+.. automodule:: tcutility.results.adf
    :members:
    :undoc-members:
    :show-inheritance:
 
-TCutility.results.dftb
+tcutility.results.dftb
 ----------------------
 
-.. automodule:: TCutility.results.dftb
+.. automodule:: tcutility.results.dftb
    :members:
    :undoc-members:
    :show-inheritance:
 
-TCutility.results.result
+tcutility.results.result
 ------------------------
 
-.. automodule:: TCutility.results.result
+.. automodule:: tcutility.results.result
    :members:
    :undoc-members:
    :show-inheritance:
 
-TCutility.results.cache
+tcutility.results.cache
 -----------------------
 
-.. automodule:: TCutility.results.cache
+.. automodule:: tcutility.results.cache
    :members:
    :undoc-members:
    :show-inheritance:
