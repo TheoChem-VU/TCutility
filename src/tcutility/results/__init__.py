@@ -8,6 +8,7 @@ Typical usage example:
 .. literalinclude:: ../docs/shared/usage_results.rst
 """
 
+from typing import Union
 from . import result
 
 Result = result.Result
@@ -29,7 +30,7 @@ def get_info(calc_dir: str):
         raise
 
 
-def read(calc_dir: str | pl.Path) -> Result:
+def read(calc_dir: Union[str, pl.Path]) -> Result:
     """Master function for reading data from calculations. It reads general information as well as engine-specific information.
 
     Args:
