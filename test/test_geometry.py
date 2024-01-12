@@ -1,4 +1,4 @@
-from TCutility import geometry
+from tcutility import geometry
 import numpy as np
 
 

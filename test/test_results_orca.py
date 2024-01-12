@@ -1,4 +1,4 @@
-from TCutility import results, constants
+from tcutility import results, constants
 import os
 
 j = os.path.join
