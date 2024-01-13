@@ -1,5 +1,5 @@
-from TCutility import results
-from TCutility.analysis import ts_vibration
+from tcutility import results
+from tcutility.analysis import ts_vibration
 import pytest
 import numpy as np
 import os

@@ -1,4 +1,4 @@
-from TCutility import results
+from tcutility import results
 
 
 def test_init():

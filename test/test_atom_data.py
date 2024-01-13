@@ -1,4 +1,4 @@
-from TCutility import atom_data
+from tcutility import atom_data
 import pytest
 
 

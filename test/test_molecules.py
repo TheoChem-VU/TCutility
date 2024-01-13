@@ -1,5 +1,5 @@
 import os
-from TCutility import molecule
+from tcutility import molecule
 from scm import plams
 
 j = os.path.join

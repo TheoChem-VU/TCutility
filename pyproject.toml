@@ -1,12 +1,5 @@
 [build-system]
-requires = [
-  "setuptools>=68.2.2",
-  "wheel",
-  "numpy>=1.20.0",
-  "matplotlib>=3.4.0",
-  "attrs>=21.2.0",
-  "setuptools-git-versioning",
-]
+requires = ["setuptools>=68.2.2", "wheel", "gitpython"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -14,14 +7,30 @@ name = "TCutility"
 
 # Original authors
 authors = [{ name = "TheoCheM group" }]
+dependencies = [
+  "gitpython",
+  "numpy>=1.20.0",
+  "matplotlib>=3.4.0",
+  "attrs>=21.2.0",
+  "docx>=0.2.4",
+  "htmldocx>=0.0.6",
+  "plams",
+  "scipy>=1.8",
+  "dictfunc",
+  "pytest>=7.4.4",
+]
 # Current maintainers
 maintainers = [{ name = "TheoCheM group" }]
-
+license = { text = "MIT" }
 description = "Utility package for working with AMS/ADF within the Theoretical Chemistry group at the Vrije Universiteit Amsterdam (TheoCheM). Makes use of plams - a package developed by SCM"
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
-  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
 ]
@@ -32,3 +41,14 @@ enabled = true
 template = "{tag}"
 dev_template = "{tag}"
 dirty_template = "{tag}"
+
+[tool.setuptools.packages.find]
+where = ["src"] # list of folders that contain the packages (["."] by default)
+include = [
+  "tcutility*",
+] # package names should match these glob patterns (["*"] by default)
+exclude = [
+  "tests*",
+  "docs*",
+] # exclude packages matching these glob patterns (empty by default)
+namespaces = false # to disable scanning PEP 420 namespaces (true by default)
