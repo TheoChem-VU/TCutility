@@ -16,6 +16,20 @@ Result = result.Result
 from . import adf, dftb, ams, orca, cache  # noqa: E402
 import os  # noqa: E402
 import pathlib as pl  # noqa: E402
+import subprocess as sp
+
+
+def squeue():
+    try:
+        output = sp.check_output(['squeue', '--me', '--format', "%Z %A %t"]).decode()
+        output = [line for line in output.splitlines()[1:] if line.strip()]
+        slurm_dirs, slurm_ids, slurm_states = [os.path.abspath(line.split()[0]) for line in output], [line.split()[1] for line in output], [line.split()[2] for line in output]
+    except:
+        slurm_dirs = []
+        slurm_ids = []
+        slurm_states = []
+
+    return slurm_dirs, slurm_ids, slurm_states
 
 
 def get_info(calc_dir: str):
@@ -30,20 +44,38 @@ def get_info(calc_dir: str):
         pass
 
     # if we cannot correctly read the info, we return some generic result object
-    res = Result()
-    res.engine = 'unknown'
-    res.status.fatal = True
-    res.status.name = 'UNKNOWN'
-    res.status.code = 'U'
-    res.status.reasons = []
+    slurm_dirs, _, slurm_states = squeue()  # check if the calculation is running by running squeue
+    if os.path.abspath(calc_dir) in slurm_dirs:
+        res = Result()
+        res.engine = 'unknown'
+        state = slurm_states[slurm_dirs.index(os.path.abspath(calc_dir))]
 
-    # give a little more specific information about the error
-    if not os.path.exists(calc_dir):
-        res.status.reasons.append(f'Could not find folder {calc_dir}')
-    elif not os.path.isdir(calc_dir):
-        res.status.reasons.append(f'Path {calc_dir} is not a directory')
+        state_name = {
+            'CG': 'COMPLETING',
+            'PD': 'PENDING',
+            'R': 'RUNNING'
+        }[state]
+
+        res.status.fatal = False
+        res.status.name = state_name
+        res.status.code = 'state'
+        res.status.reasons = []
     else:
-        res.status.reasons.append(f'Could not read calculation in {calc_dir}')
+        res = Result()
+        res.engine = 'unknown'
+        res.status.fatal = True
+        res.status.name = 'UNKNOWN'
+        res.status.code = 'U'
+        res.status.reasons = []
+
+        # give a little more specific information about the error
+        if not os.path.exists(calc_dir):
+            res.status.reasons.append(f'Could not find folder {calc_dir}')
+        elif not os.path.isdir(calc_dir):
+            res.status.reasons.append(f'Path {calc_dir} is not a directory')
+        else:
+            res.status.reasons.append(f'Could not read calculation in {calc_dir}')
+
     return res
 
 
