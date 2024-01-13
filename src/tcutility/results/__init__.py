@@ -16,7 +16,7 @@ Result = result.Result
 from . import adf, dftb, ams, orca, cache  # noqa: E402
 import os  # noqa: E402
 import pathlib as pl  # noqa: E402
-import subprocess as sp
+import subprocess as sp  # noqa: E402
 
 
 def squeue():
@@ -24,7 +24,7 @@ def squeue():
         output = sp.check_output(['squeue', '--me', '--format', "%Z %A %t"]).decode()
         output = [line for line in output.splitlines()[1:] if line.strip()]
         slurm_dirs, slurm_ids, slurm_states = [os.path.abspath(line.split()[0]) for line in output], [line.split()[1] for line in output], [line.split()[2] for line in output]
-    except:
+    except:  # noqa
         slurm_dirs = []
         slurm_ids = []
         slurm_states = []
