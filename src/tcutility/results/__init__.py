@@ -35,7 +35,15 @@ def get_info(calc_dir: str):
     res.status.fatal = True
     res.status.name = 'UNKNOWN'
     res.status.code = 'U'
-    res.status.reasons = [f'Could not read calculation in {calc_dir}']
+    res.status.reasons = []
+
+    # give a little more specific information about the error
+    if not os.path.exists(calc_dir):
+        res.status.reasons.append(f'Could not find folder {calc_dir}')
+    elif not os.path.isdir(calc_dir):
+        res.status.reasons.append(f'Path {calc_dir} is not a directory')
+    else:
+        res.status.reasons.append(f'Could not read calculation in {calc_dir}')
     return res
 
 
@@ -49,8 +57,6 @@ def read(calc_dir: Union[str, pl.Path]) -> Result:
         dictionary containing information about the calculation
     """
     calc_dir = str(calc_dir) if isinstance(calc_dir, pl.Path) else calc_dir
-    if not os.path.isdir(calc_dir):
-        raise FileNotFoundError(f"Calculation directory {calc_dir} not found.")
 
     ret = Result()
     ret.update(get_info(calc_dir))
