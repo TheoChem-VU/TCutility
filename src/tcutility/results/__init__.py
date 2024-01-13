@@ -52,6 +52,7 @@ def get_info(calc_dir: str):
 
         state_name = {
             'CG': 'COMPLETING',
+            'CF': 'CONFIGURING',
             'PD': 'PENDING',
             'R': 'RUNNING'
         }[state]
