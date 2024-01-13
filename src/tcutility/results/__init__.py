@@ -27,7 +27,16 @@ def get_info(calc_dir: str):
     try:
         return orca.get_info(calc_dir)
     except:  # noqa
-        raise
+        pass
+
+    # if we cannot correctly read the info, we return some generic result object
+    res = Result()
+    res.engine = 'unknown'
+    res.status.fatal = True
+    res.status.name = 'UNKNOWN'
+    res.status.code = 'U'
+    res.status.reasons = [f'Could not read calculation in {calc_dir}']
+    return res
 
 
 def read(calc_dir: Union[str, pl.Path]) -> Result:
