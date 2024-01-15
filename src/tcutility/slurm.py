@@ -18,7 +18,7 @@ def squeue():
 
     # specify the columns here
     columns = ['directory', 'id', 'statuscode', 'status']
-    options = ['%Z', '%A', '%t', 'T']
+    options = ['%Z', '%A', '%t', '%T']
     # set each column as an empty list in the return object
     for col in columns:
         ret[col] = []
