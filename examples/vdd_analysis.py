@@ -12,7 +12,7 @@ def main():
     test_dir = test_dir / DIRS[2]
     calc_res = results.read(test_dir)
     vdd_manager = manager.create_vdd_charge_manager(calc_res)
-    print(vdd_manager)
+    print(calc_res.molecule.output)
     # print(calc_res.properties.vdd.AA + calc_res.properties.vdd.AAA)
 
 

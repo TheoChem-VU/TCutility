@@ -1,3 +1,4 @@
+from typing import List
 import numpy as np
 import os
 from datetime import datetime
@@ -274,6 +275,24 @@ def _get_fragment_indices_from_input_order(results_type) -> arrays.Array1D:
 # ------------------------ Molecule -------------------------- #
 
 
+def _make_molecule(kf_variable: str, reader_ams: plams.KFReader, natoms: int, atnums: List[int]) -> plams.Molecule:
+    """Makes a plams.Molecule object from the given kf_variable ("InputMolecule" or "Molecule") and reader."""
+    # read output molecule
+    ret_mol = plams.Molecule()
+    coords = np.array(reader_ams.read(kf_variable, "Coords")).reshape(natoms, 3) * constants.BOHR2ANG
+    for atnum, coord in zip(atnums, coords):
+        ret_mol.add_atom(plams.Atom(atnum=atnum, coords=coord))
+    if ("Molecule", "fromAtoms") in reader_ams and ("Molecule", "toAtoms") in reader_ams and ("Molecule", "bondOrders"):
+        at_from = ensure_list(reader_ams.read("InputMolecule", "fromAtoms"))
+        at_to = ensure_list(reader_ams.read("InputMolecule", "toAtoms"))
+        bos = ensure_list(reader_ams.read("InputMolecule", "bondOrders"))
+        for at1, at2, order in zip(at_from, at_to, bos):
+            ret_mol.add_bond(plams.Bond(ret_mol[at1], ret_mol[at2], order=order))
+    else:
+        ret_mol.guess_bonds()
+    return ret_mol
+
+
 def get_molecules(calc_dir: str) -> Result:
     """
     Function to get molecules from the calculation, including input, output and history molecules.
@@ -308,26 +327,10 @@ def get_molecules(calc_dir: str) -> Result:
     ret.atom_masses = reader_ams.read("InputMolecule", "AtomMasses")
 
     # read input molecule
-    ret.input = plams.Molecule()
-    # read in the coordinates, they are given in Bohr, so convert them to Angstrom
-    coords = np.array(reader_ams.read("InputMolecule", "Coords")).reshape(natoms, 3) * constants.BOHR2ANG
-    # add the atoms to the molecule
-    for atnum, coord in zip(atnums, coords):
-        ret.input.add_atom(plams.Atom(atnum=atnum, coords=coord))
-    # try to add the bonds if they were given in the rkf file
-    if ("Molecule", "fromAtoms") in reader_ams and ("Molecule", "toAtoms") in reader_ams and ("Molecule", "bondOrders"):
-        at_from = ensure_list(reader_ams.read("InputMolecule", "fromAtoms"))
-        at_to = ensure_list(reader_ams.read("InputMolecule", "toAtoms"))
-        bos = ensure_list(reader_ams.read("InputMolecule", "bondOrders"))
-        for at1, at2, order in zip(at_from, at_to, bos):
-            ret.input.add_bond(plams.Bond(ret.input[at1], ret.input[at2], order=order))
-    # if the bonds were not given, guess them
-    else:
-        ret.input.guess_bonds()
+    ret.input = _make_molecule("InputMolecule", reader_ams, natoms, atnums)
 
     # read output molecule
-    ret.output = plams.Molecule()
-    coords = np.array(reader_ams.read("Molecule", "Coords")).reshape(natoms, 3) * constants.BOHR2ANG
+    ret.output = _make_molecule("Molecule", reader_ams, natoms, atnums)
 
     # add fragment indices to the molecule using adf file
     try:
