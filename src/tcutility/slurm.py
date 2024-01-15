@@ -1,5 +1,5 @@
 import subprocess as sp
-from tcutility import results
+from tcutility import results, log
 
 
 def has_slurm():
@@ -24,7 +24,7 @@ def squeue():
         ret[col] = []
 
     # run the squeue command with the formatting options
-    output = sp.check_output(['squeue', '--me', '--format', '"' + ' '.join(options) + '"']).decode()
+    output = sp.check_output(['squeue', '--me', '--format', '' + ' '.join(options) + '']).decode()
     output = [line for line in output.splitlines()[1:] if line.strip()]
 
     # then add the data to the return object's lists
@@ -34,5 +34,8 @@ def squeue():
     return ret
 
 
-print(has_slurm())
-print(squeue())
+if __name__ == '__main__':
+    if has_slurm():
+        log.info('This platform has SLURM.')
+    else:
+        log.info('This platform does not have SLURM.')
