@@ -32,10 +32,10 @@ def get_info(calc_dir: str):
 
     res = Result()
 
-    print(calc_dir, slurm.workdir_info(calc_dir), slurm.squeue())
+    print(calc_dir, slurm.workdir_info(os.path.abspath(calc_dir)))
     # if we cannot correctly read the info, we return some generic result object
     # before that, we check the job status by checking slurm
-    if slurm.workdir_info(calc_dir):
+    if slurm.workdir_info(os.path.abspath(calc_dir)):
         res.engine = 'unknown'
 
         state = slurm.workdir_info(calc_dir).statuscode
