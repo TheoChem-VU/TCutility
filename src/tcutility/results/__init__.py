@@ -31,6 +31,8 @@ def get_info(calc_dir: str):
         pass
 
     res = Result()
+
+    print(calc_dir, slurm.workdir_info(calc_dir), slurm.squeue())
     # if we cannot correctly read the info, we return some generic result object
     # before that, we check the job status by checking slurm
     if slurm.workdir_info(calc_dir):
