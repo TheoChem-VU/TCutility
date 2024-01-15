@@ -4,7 +4,7 @@ from tcutility import results, log
 
 def has_slurm():
     try:
-        output = sp.check_output(['which', 'sbatch']).decode()
+        sp.check_output(['which', 'sbatch']).decode()
         return True
     except sp.CalledProcessError:
         return False
