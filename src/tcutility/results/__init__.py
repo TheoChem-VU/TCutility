@@ -38,13 +38,15 @@ def get_info(calc_dir: str):
         res.engine = 'unknown'
 
         state = slurm.workdir_info(os.path.abspath(calc_dir)).statuscode
-
         state_name = {
             'CG': 'COMPLETING',
             'CF': 'CONFIGURING',
             'PD': 'PENDING',
             'R': 'RUNNING'
         }.get(state, 'UNKNOWN')
+
+        print(state, state_name)
+
 
         res.status.fatal = False
         res.status.name = state_name
