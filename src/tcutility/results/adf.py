@@ -46,7 +46,10 @@ def get_calc_settings(info: Result) -> Result:
     ret.unrestricted_sfos = ("SFOs", "energy_B") in reader_adf
 
     # get the symmetry group
-    ret.symmetry.group = reader_adf.read("Geometry", "grouplabel").strip()
+    try:
+        ret.symmetry.group = reader_adf.read("Geometry", "grouplabel").strip()
+    except:
+        ret.symmetry.group = 'None'
 
     # get the symmetry labels
     ret.symmetry.labels = reader_adf.read("Symmetry", "symlab").strip().split()
