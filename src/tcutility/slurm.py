@@ -1,8 +1,12 @@
 import subprocess as sp
 from tcutility import results, log
+import os
 
 
 def has_slurm():
+    '''
+    Function to check if the current platform uses slurm. 
+    '''
     try:
         sp.check_output(['which', 'sbatch']).decode()
         return True
@@ -30,6 +34,25 @@ def squeue():
     # then add the data to the return object's lists
     for line in output:
         [ret[col].append(val) for col, val in zip(columns, line.split())]
+
+    return ret
+
+
+def workdir_info(workdir):
+    '''
+    Function that gets information
+    '''
+    if not has_slurm():
+        return None
+
+    sq = squeue()
+    if workdir not in sq.directory:
+        return None
+
+    workdir_index = sq.directory.index(workdir)
+    ret = results.Result()
+    for key, vals in sq.items():
+        ret[key] = vals[workdir_index]
 
     return ret
 
