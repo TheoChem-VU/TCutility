@@ -38,7 +38,7 @@ def get_info(calc_dir: str):
     if slurm.workdir_info(os.path.abspath(calc_dir)):
         res.engine = 'unknown'
 
-        state = slurm.workdir_info(calc_dir).statuscode
+        state = slurm.workdir_info(os.path.abspath(calc_dir)).statuscode
 
         state_name = {
             'CG': 'COMPLETING',
