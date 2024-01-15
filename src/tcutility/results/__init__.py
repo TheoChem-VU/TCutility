@@ -14,22 +14,23 @@ from . import result
 Result = result.Result
 
 from . import adf, dftb, ams, orca, cache  # noqa: E402
+from .. import slurm
 import os  # noqa: E402
 import pathlib as pl  # noqa: E402
 import subprocess as sp  # noqa: E402
 
 
-def squeue():
-    try:
-        output = sp.check_output(['squeue', '--me', '--format', "%Z %A %t"]).decode()
-        output = [line for line in output.splitlines()[1:] if line.strip()]
-        slurm_dirs, slurm_ids, slurm_states = [os.path.abspath(line.split()[0]) for line in output], [line.split()[1] for line in output], [line.split()[2] for line in output]
-    except:  # noqa
-        slurm_dirs = []
-        slurm_ids = []
-        slurm_states = []
+# def squeue():
+#     try:
+#         output = sp.check_output(['squeue', '--me', '--format', "%Z %A %t"]).decode()
+#         output = [line for line in output.splitlines()[1:] if line.strip()]
+#         slurm_dirs, slurm_ids, slurm_states = [os.path.abspath(line.split()[0]) for line in output], [line.split()[1] for line in output], [line.split()[2] for line in output]
+#     except:  # noqa
+#         slurm_dirs = []
+#         slurm_ids = []
+#         slurm_states = []
 
-    return slurm_dirs, slurm_ids, slurm_states
+#     return slurm_dirs, slurm_ids, slurm_states
 
 
 def get_info(calc_dir: str):
@@ -43,26 +44,26 @@ def get_info(calc_dir: str):
     except:  # noqa
         pass
 
+    res = Result()
     # if we cannot correctly read the info, we return some generic result object
-    slurm_dirs, _, slurm_states = squeue()  # check if the calculation is running by running squeue
-    if os.path.abspath(calc_dir) in slurm_dirs:
-        res = Result()
+    # before that, we check the job status by checking slurm
+    if slurm.workdir_info(calc_dir):
         res.engine = 'unknown'
-        state = slurm_states[slurm_dirs.index(os.path.abspath(calc_dir))]
+
+        state = slurm.workdir_info(calc_dir).statuscode
 
         state_name = {
             'CG': 'COMPLETING',
             'CF': 'CONFIGURING',
             'PD': 'PENDING',
             'R': 'RUNNING'
-        }[state]
+        }.get(state, 'UNKNOWN')
 
         res.status.fatal = False
         res.status.name = state_name
-        res.status.code = 'state'
+        res.status.code = state
         res.status.reasons = []
     else:
-        res = Result()
         res.engine = 'unknown'
         res.status.fatal = True
         res.status.name = 'UNKNOWN'
