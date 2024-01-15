@@ -10,4 +10,5 @@ calc_dir = pl.Path(__file__).parent.parent / "test" / "fixtures" / "ethanol"
 info = results.read(calc_dir)
 pprint(info.adf.symmetry)
 pprint(info.properties.vibrations.number_of_imag_modes)
+pprint(info.properties.vibrations.vdd)
 pprint(info.level)

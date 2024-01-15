@@ -1,10 +1,11 @@
 import numpy as np
-from scm import plams
-from tcutility.results import cache, Result
-from tcutility import constants, ensure_list
 import os
 from datetime import datetime
 import re
+from scm import plams
+from tcutility.results import cache, Result
+from tcutility import constants, ensure_list
+from tcutility.typing import arrays
 
 j = os.path.join
 
@@ -252,6 +253,27 @@ def get_calculation_status(calc_dir: str) -> Result:
     return ret
 
 
+# ------------------------------------------------------------- #
+# ------------------------- Geometry -------------------------- #
+# ------------------------------------------------------------- #
+
+
+# -------------------- Fragment indices ----------------------- #
+
+
+def _get_fragment_indices_from_input_order(results_type) -> arrays.Array1D:
+    """Function to get the fragment indices from the input order. This is needed because the fragment indices are stored in internal order in the rkf file."""
+    frag_indices = np.array(results_type.read("Geometry", "fragment and atomtype index")).reshape(2, -1)  # 1st row: Fragment index; 2nd row atomtype index
+    atom_order = np.array(results_type.read("Geometry", "atom order index")).reshape(2, -1)  # 1st row: input order; 2nd row: internal order
+    combined = np.concatenate((frag_indices, atom_order), axis=0)
+    sorted_by_input_order = np.array(sorted(combined.T, key=lambda x: x[2]))  # sort the fragment indices by input order
+    frag_order = sorted_by_input_order[:, 0]
+    return frag_order
+
+
+# ------------------------ Molecule -------------------------- #
+
+
 def get_molecules(calc_dir: str) -> Result:
     """
     Function to get molecules from the calculation, including input, output and history molecules.
@@ -269,6 +291,7 @@ def get_molecules(calc_dir: str) -> Result:
             - **atom_masses (list[float])** – list of atomic masses for each atom in the molecule.
             - **input (plams.Molecule)** – molecule that was given in the input for the calculation.
             - **output (plams.Molecule)** – final molecule that was given as the output for the calculation. If the calculation was a singlepoint calculation output and input molecules will be the same.
+            - **frag_indices (numpy array[int] (1D))** – list of fragment indices for each atom in the molecule. The indices are given in the order of the atoms in the molecule.
     """
     files = get_calc_files(calc_dir)
     # all info is stored in reader_ams
@@ -305,16 +328,13 @@ def get_molecules(calc_dir: str) -> Result:
     # read output molecule
     ret.output = plams.Molecule()
     coords = np.array(reader_ams.read("Molecule", "Coords")).reshape(natoms, 3) * constants.BOHR2ANG
-    for atnum, coord in zip(atnums, coords):
-        ret.output.add_atom(plams.Atom(atnum=atnum, coords=coord))
-    if ("Molecule", "fromAtoms") in reader_ams and ("Molecule", "toAtoms") in reader_ams and ("Molecule", "bondOrders"):
-        at_from = ensure_list(reader_ams.read("InputMolecule", "fromAtoms"))
-        at_to = ensure_list(reader_ams.read("InputMolecule", "toAtoms"))
-        bos = ensure_list(reader_ams.read("InputMolecule", "bondOrders"))
-        for at1, at2, order in zip(at_from, at_to, bos):
-            ret.output.add_bond(plams.Bond(ret.output[at1], ret.output[at2], order=order))
-    else:
-        ret.output.guess_bonds()
+
+    # add fragment indices to the molecule using adf file
+    try:
+        reader_adf = cache.get(files["adf.rkf"])
+        ret.frag_indices = _get_fragment_indices_from_input_order(reader_adf)
+    except KeyError:
+        ret.frag_indices = np.ones(natoms)
 
     return ret
 
