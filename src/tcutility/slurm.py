@@ -1,6 +1,5 @@
 import subprocess as sp
 from tcutility import results, log
-import os
 
 
 def has_slurm():
