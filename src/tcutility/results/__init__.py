@@ -83,9 +83,21 @@ def read(calc_dir: Union[str, pl.Path]) -> Result:
     ret = Result()
     ret.update(get_info(calc_dir))
     if ret.engine == "adf":
-        ret.adf = adf.get_calc_settings(ret)
-        ret.properties = adf.get_properties(ret)
-        ret.level = adf.get_level_of_theory(ret)
+        try:
+            ret.adf = adf.get_calc_settings(ret)
+        except:  # noqa
+            ret.adf = None
+
+        try:
+            ret.properties = adf.get_properties(ret)
+        except:  # noqa
+            ret.properties = None
+
+        try:
+            ret.level = adf.get_level_of_theory(ret)
+        except:  # noqa
+            ret.level = None
+
     elif ret.engine == "dftb":
         ret.dftb = dftb.get_calc_settings(ret)
         ret.properties = dftb.get_properties(ret)
