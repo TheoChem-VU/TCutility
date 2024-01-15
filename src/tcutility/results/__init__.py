@@ -45,9 +45,6 @@ def get_info(calc_dir: str):
             'R': 'RUNNING'
         }.get(state, 'UNKNOWN')
 
-        print(state, state_name)
-
-
         res.status.fatal = False
         res.status.name = state_name
         res.status.code = state
