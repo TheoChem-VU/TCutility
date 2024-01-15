@@ -49,7 +49,7 @@ def get(path: str) -> plams.KFReader:
         An rkf file reader that can be used for reading data from a calculation.
     '''
     # if the path is already in the cache, simply return it
-    if path in _cache:
+    if path and path in _cache:
         return _cache[path]
     # else we will load the rkf file and store it in the cache
     reader = TrackKFReader(path)
