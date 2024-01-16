@@ -1,5 +1,6 @@
 ﻿from __future__ import annotations
 import pandas as pd
+import numpy as np
 from typing import Dict, List, Optional, Sequence, Union
 import attrs
 import pathlib as pl
@@ -38,12 +39,16 @@ class VDDChargeManager:
     unit: str = attrs.field(init=False, default="e")  # unit of the VDD charges. Available units are "me" (mili-electrons) and "e" (electrons)
     irreps: List[str] = attrs.field(init=False, default=set())
 
+    def __attrs_post_init__(self):
+        self.irreps = list(self.vdd_charges.keys())
+        self.change_unit("me")
+
     def __str__(self) -> str:
         """Prints the VDD charges in a nice table. Checks if the calculation is a fragment calculation and prints the summed VDD charges if it is."""
         individual_charges_table = self.get_vdd_charges_table(self.unit)
         summed_charges_table = self.get_summed_vdd_charges_table(self.unit)
 
-        ret_str = f"VDD charges (in unit {self.unit}):\n{individual_charges_table}"
+        ret_str = f"{self.name}\nVDD charges (in unit {self.unit}):\n{individual_charges_table}"
         if self.is_fragment_calculation:
             ret_str += f"\n\nSummed VDD charges (in unit {self.unit}):\n{summed_charges_table}"
 
@@ -51,9 +56,19 @@ class VDDChargeManager:
 
     @property
     def is_fragment_calculation(self) -> bool:
-        """Check if the calculation is a fragment calculation by checking if all fragment indices are the same."""
-        frag_indices = set([charge.frag_index for charge in self.vdd_charges["vdd"]])
-        return len(frag_indices) == 1
+        """Check if the calculation is a fragment calculation by checking if the highest fragment index is equal to the number of atoms."""
+        print(max([charge.frag_index for charges in self.vdd_charges.values() for charge in charges]))
+        print(len(self.vdd_charges["vdd"]))
+
+        return max([charge.frag_index for charges in self.vdd_charges.values() for charge in charges]) == len(self.vdd_charges["vdd"])
+
+    def charge_is_conserved(self, mol_charge: int) -> bool:
+        """Check if the total charge of the molecule is conserved. The total charge is the sum of the VDD charges."""
+        current_unit = self.unit
+        self.change_unit("e")
+        is_conserved = np.isclose(mol_charge, sum([charge.charge for charge in self.vdd_charges["vdd"]]), atol=1e-4)
+        self.change_unit(current_unit)
+        return is_conserved  # type: ignore since numpy _bool is not recognized as bool
 
     def change_unit(self, new_unit: str) -> None:
         """Change the unit of the VDD charges. Available units are "me" (mili-electrons) and "e" (electrons)."""
