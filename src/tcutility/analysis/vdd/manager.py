@@ -57,9 +57,6 @@ class VDDChargeManager:
     @property
     def is_fragment_calculation(self) -> bool:
         """Check if the calculation is a fragment calculation by checking if the highest fragment index is equal to the number of atoms."""
-        print(max([charge.frag_index for charges in self.vdd_charges.values() for charge in charges]))
-        print(len(self.vdd_charges["vdd"]))
-
         return max([charge.frag_index for charges in self.vdd_charges.values() for charge in charges]) == len(self.vdd_charges["vdd"])
 
     def charge_is_conserved(self, mol_charge: int) -> bool:
