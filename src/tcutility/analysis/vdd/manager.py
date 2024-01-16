@@ -79,7 +79,7 @@ class VDDChargeManager:
         [charge.change_unit(ratio) for charges in self.vdd_charges.values() for charge in charges]
         self.unit = new_unit
 
-    def get_vdd_charges(self, unit: str) -> Dict[str, List[charge.VDDCharge]]:
+    def get_vdd_charges(self, unit: str = "me") -> Dict[str, List[charge.VDDCharge]]:
         """Get the VDD charges in the specified unit."""
         self.change_unit(unit)
         return self.vdd_charges
