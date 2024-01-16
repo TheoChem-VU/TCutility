@@ -38,14 +38,22 @@ class VDDChargeManager:
     unit: str = attrs.field(init=False, default="e")  # unit of the VDD charges. Available units are "me" (mili-electrons) and "e" (electrons)
     irreps: List[str] = attrs.field(init=False, default=set())
 
-    def __attrs_post_init__(self):
-        self.irreps = list(self.vdd_charges.keys())
-        self.change_unit("me")
-
     def __str__(self) -> str:
+        """Prints the VDD charges in a nice table. Checks if the calculation is a fragment calculation and prints the summed VDD charges if it is."""
         individual_charges_table = self.get_vdd_charges_table(self.unit)
         summed_charges_table = self.get_summed_vdd_charges_table(self.unit)
-        return f"VDD charges (in unit {self.unit}):\n{individual_charges_table}\n\nSummed VDD charges (in unit {self.unit}):\n{summed_charges_table}"
+
+        ret_str = f"VDD charges (in unit {self.unit}):\n{individual_charges_table}"
+        if self.is_fragment_calculation:
+            ret_str += f"\n\nSummed VDD charges (in unit {self.unit}):\n{summed_charges_table}"
+
+        return ret_str
+
+    @property
+    def is_fragment_calculation(self) -> bool:
+        """Check if the calculation is a fragment calculation by checking if all fragment indices are the same."""
+        frag_indices = set([charge.frag_index for charge in self.vdd_charges["vdd"]])
+        return len(frag_indices) == 1
 
     def change_unit(self, new_unit: str) -> None:
         """Change the unit of the VDD charges. Available units are "me" (mili-electrons) and "e" (electrons)."""
@@ -106,23 +114,32 @@ class VDDChargeManager:
         return df.to_string(float_format=lambda x: PRINT_FORMAT[self.unit] % x, justify="center", col_space=6, index=False)
 
     @staticmethod
-    def write_to_txt(file: Union[str, pl.Path], managers: Union[VDDChargeManager, Sequence[VDDChargeManager]], unit: str = "me") -> None:
+    def write_to_txt(output_dir: Union[str, pl.Path], managers: Union[VDDChargeManager, Sequence[VDDChargeManager]], unit: str = "me") -> None:
         """Write the VDD charges to a text file."""
-        file = pl.Path(file) if not isinstance(file, pl.Path) else file
-        file = file.with_suffix(".txt") if file.suffix != ".txt" else file
+        out_dir = pl.Path(output_dir) if not isinstance(output_dir, pl.Path) else output_dir
+        files = [out_dir / "VDD_charges_per_atom.txt", out_dir / "VDD_charges_per_fragment.txt"]
         managers = managers if isinstance(managers, Sequence) else [managers]
-        with open(file, "w") as f:
-            for manager in managers:
-                f.write(manager.name + "\n")
-                f.write(str(manager))
-                f.write("\n\n")
 
-    def write_to_excel(self, file: Union[str, pl.Path], unit: str = "me") -> None:
+        # Print charges per atom and per fragment in seperate files
+        for i, file in enumerate(files):
+            with open(file, "w") as f:
+                f.write(f"VDD charges (in unit {unit}):\n")
+                for manager in managers:
+                    f.write(f"{manager.name}\n")
+                    if i == 0:
+                        f.write(manager.get_vdd_charges_table(unit))
+                    else:
+                        f.write(manager.get_summed_vdd_charges_table(unit))
+                    f.write("\n\n")
+
+    def write_to_excel(self, output_dir: Union[str, pl.Path], unit: str = "me") -> None:
         """Write the VDD charges to an excel file. Results are written to two sheets: "VDD charges" and "Summed VDD charges"."""
-        file = pl.Path(file) if not isinstance(file, pl.Path) else file
-        file = file.with_suffix(".xlsx") if file.suffix != ".xlsx" else file
+        out_dir = pl.Path(output_dir) if not isinstance(output_dir, pl.Path) else output_dir
+        file = out_dir / f"vdd_charges_{self.name}.xlsx"
         df = self.get_vdd_charges_dataframe(unit)
-        df_summed = self.get_summed_vdd_charges_dataframe(unit)
+
         with pd.ExcelWriter(file) as writer:
             df.to_excel(writer, sheet_name=f"VDD charges (in {unit})", index=False, float_format=PRINT_FORMAT[self.unit])
-            df_summed.to_excel(writer, sheet_name=f"Summed VDD charges  (in {unit})", index=False, float_format=PRINT_FORMAT[self.unit])
+            if self.is_fragment_calculation:
+                df_summed = self.get_summed_vdd_charges_dataframe(unit)
+                df_summed.to_excel(writer, sheet_name=f"Summed VDD charges  (in {unit})", index=False, float_format=PRINT_FORMAT[self.unit])
