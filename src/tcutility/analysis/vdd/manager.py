@@ -50,7 +50,7 @@ class VDDChargeManager:
 
         ret_str = f"{self.name}\nVDD charges (in unit {self.unit}):\n{individual_charges_table}"
         if self.is_fragment_calculation:
-            ret_str += f"\n\nSummed VDD charges (in unit {self.unit}):\n{summed_charges_table}"
+            ret_str += f"\n\nSummed VDD charges (in unit {self.unit}):\n{summed_charges_table}\n"
 
         return ret_str
 
