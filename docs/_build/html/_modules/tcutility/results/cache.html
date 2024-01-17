@@ -263,10 +263,10 @@
                 <article class="bd-article">
                   
   <h1>Source code for tcutility.results.cache</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">Tiny module that handles caching rkf files. </span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Tiny module that handles caching rkf files.</span>
 <span class="sd">rkf files take a long time to open (especially {engine}.rkf), so it is better to open them once and cache them for later use</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">scm</span> <span class="kn">import</span> <span class="n">plams</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
 
@@ -277,8 +277,9 @@
 <div class="viewcode-block" id="TrackKFReader">
 <a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.cache.TrackKFReader">[docs]</a>
 <span class="k">class</span> <span class="nc">TrackKFReader</span><span class="p">(</span><span class="n">plams</span><span class="o">.</span><span class="n">KFReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of plams.KFReader that also tracks the variables that were read. This class can be useful to figure out which variables are important. </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of plams.KFReader that also tracks the variables that were read. This class can be useful to figure out which variables are important.</span>
 <span class="sd">    For example, we can then trim rkf files to reduce their filesizes.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -286,15 +287,15 @@
 <div class="viewcode-block" id="TrackKFReader.read">
 <a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.cache.TrackKFReader.read">[docs]</a>
     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">variable</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;Read a variable from a section of an rkf file and store the accessed section and variable in the tracker.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a variable from a section of an rkf file and store the accessed section and variable in the tracker.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            section: Name of the section to read from.</span>
 <span class="sd">            variable: Name of the variable inside the section.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Any value returned will be automatically converted into the correct type. E.g. text-based data will be converted to a string, numbers to floats or integers, etc.&#39;&#39;&#39;</span>
-            
+<span class="sd">            Any value returned will be automatically converted into the correct type. E.g. text-based data will be converted to a string, numbers to floats or integers, etc.&quot;&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">tracker</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">section</span><span class="p">,</span> <span class="n">variable</span><span class="p">))</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">variable</span><span class="p">)</span></div>
 </div>
@@ -304,10 +305,10 @@
 <div class="viewcode-block" id="store">
 <a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.cache.store">[docs]</a>
 <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="n">reader</span><span class="p">:</span> <span class="n">plams</span><span class="o">.</span><span class="n">KFReader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Store an rkf reader in the cache. It can later be indexed by its path.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Store an rkf reader in the cache. It can later be indexed by its path.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        reader: An rkf file reader object.&#39;&#39;&#39;</span>
+<span class="sd">        reader: An rkf file reader object.&quot;&quot;&quot;</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">path</span>
     <span class="n">_cache</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">reader</span></div>
 
@@ -316,14 +317,14 @@
 <div class="viewcode-block" id="get">
 <a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.cache.get">[docs]</a>
 <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plams</span><span class="o">.</span><span class="n">KFReader</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Retrieve an rkf reader from storage using its path. If the file was not opened yet, open it first and then store and return the new object.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve an rkf reader from storage using its path. If the file was not opened yet, open it first and then store and return the new object.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        path: path to the rkf file location.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        An rkf file reader that can be used for reading data from a calculation.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># if the path is already in the cache, simply return it</span>
     <span class="k">if</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">_cache</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_cache</span><span class="p">[</span><span class="n">path</span><span class="p">]</span>
@@ -337,10 +338,10 @@
 <div class="viewcode-block" id="unload">
 <a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.cache.unload">[docs]</a>
 <span class="k">def</span> <span class="nf">unload</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">KFReader</span><span class="p">]):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Delete an rkf reader from storage. Since rkf files can be quite large, we should not forget to unload them after we have finished reading from them, lest we run into memory issues.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete an rkf reader from storage. Since rkf files can be quite large, we should not forget to unload them after we have finished reading from them, lest we run into memory issues.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        arg: Either a path pointing to the rkf file location or the reader itself.&#39;&#39;&#39;</span>
+<span class="sd">        arg: Either a path pointing to the rkf file location or the reader itself.&quot;&quot;&quot;</span>
     <span class="c1"># if the arg is a key in the cache we will delete the key</span>
     <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">_cache</span><span class="p">:</span>
         <span class="k">del</span> <span class="n">_cache</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>

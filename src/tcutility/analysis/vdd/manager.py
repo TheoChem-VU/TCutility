@@ -5,12 +5,27 @@ from typing import Dict, List, Optional, Sequence, Union
 import attrs
 import pathlib as pl
 from itertools import zip_longest
+import copy
+import functools
 from tcutility.analysis.vdd import charge
 from tcutility.results import result
+import matplotlib.pyplot as plt
 
 
 AVAILABLE_UNITS_RATIO = {"me": 1000, "e": 1}
 PRINT_FORMAT = {"me": "%+.0f", "e": "%+.3f"}
+
+
+def change_unit_decorator(func):
+    @functools.wraps(func)
+    def wrapper(self, unit: str = "me", *args, **kwargs):
+        current_unit = self.unit
+        self.change_unit(unit)
+        result = func(self, *args, **kwargs)
+        self.change_unit(current_unit)
+        return result
+
+    return wrapper
 
 
 def create_vdd_charge_manager(results: result.Result, name: str = "VDDChargeManager") -> VDDChargeManager:
@@ -48,23 +63,21 @@ class VDDChargeManager:
         individual_charges_table = self.get_vdd_charges_table(self.unit)
         summed_charges_table = self.get_summed_vdd_charges_table(self.unit)
 
-        ret_str = f"{self.name}\nVDD charges (in unit {self.unit}):\n{individual_charges_table}"
+        ret_str = f"{self.name}\nVDD charges (in unit {self.unit}):\n{individual_charges_table}\n\n"
         if self.is_fragment_calculation:
-            ret_str += f"\n\nSummed VDD charges (in unit {self.unit}):\n{summed_charges_table}\n"
+            ret_str += f"Summed VDD charges (in unit {self.unit}):\n{summed_charges_table}\n"
 
         return ret_str
 
     @property
     def is_fragment_calculation(self) -> bool:
         """Check if the calculation is a fragment calculation by checking if the highest fragment index is equal to the number of atoms."""
-        return max([charge.frag_index for charges in self.vdd_charges.values() for charge in charges]) == len(self.vdd_charges["vdd"])
+        return max([charge.frag_index for charges in self.vdd_charges.values() for charge in charges]) != len(self.vdd_charges["vdd"])
 
     def charge_is_conserved(self, mol_charge: int) -> bool:
         """Check if the total charge of the molecule is conserved. The total charge is the sum of the VDD charges."""
-        current_unit = self.unit
-        self.change_unit("e")
-        is_conserved = np.isclose(mol_charge, sum([charge.charge for charge in self.vdd_charges["vdd"]]), atol=1e-4)
-        self.change_unit(current_unit)
+        tolerance = 1e-4 if self.unit == "e" else 1e-1
+        is_conserved = np.isclose(mol_charge, sum([charge.charge for charge in self.vdd_charges["vdd"]]), atol=tolerance)
         return is_conserved  # type: ignore since numpy _bool is not recognized as bool
 
     def change_unit(self, new_unit: str) -> None:
@@ -79,15 +92,15 @@ class VDDChargeManager:
         [charge.change_unit(ratio) for charges in self.vdd_charges.values() for charge in charges]
         self.unit = new_unit
 
+    @change_unit_decorator
     def get_vdd_charges(self, unit: str = "me") -> Dict[str, List[charge.VDDCharge]]:
-        """Get the VDD charges in the specified unit."""
-        self.change_unit(unit)
-        return self.vdd_charges
+        """Get the VDD charges in the specified unit ([me] or [e])."""
+        return copy.deepcopy(self.vdd_charges)
 
+    @change_unit_decorator
     def get_summed_vdd_charges(self, unit: str = "me", irreps: Optional[Sequence[str]] = None) -> Dict[str, Dict[str, float]]:
-        """Get the summed VDD charges per fragment."""
+        """Get the summed VDD charges per fragment for the specified unit ([me] or [e])."""
         irreps = irreps if irreps is not None else self.irreps
-        self.change_unit(unit)
         summed_vdd_charges: Dict[str, Dict[str, float]] = {}
 
         for irrep in irreps:
@@ -97,10 +110,10 @@ class VDDChargeManager:
                 summed_vdd_charges[irrep].setdefault(frag_index, 0.0)
                 summed_vdd_charges[irrep][frag_index] += vdd_charge.charge
 
-        return summed_vdd_charges
+        return copy.deepcopy(summed_vdd_charges)
 
     def get_vdd_charges_dataframe(self, unit: str = "me") -> pd.DataFrame:
-        """Get the VDD charges as a pandas DataFrame."""
+        """Get the VDD charges as a pandas DataFrame in a specified unit ([me] or [e])."""
         self.change_unit(unit)
         frag_indices = [charge.frag_index for charge in self.vdd_charges["vdd"]]
         atom_symbols = [f"{charge.atom_index}{charge.atom_symbol}" for charge in self.vdd_charges["vdd"]]
@@ -111,7 +124,7 @@ class VDDChargeManager:
         return df
 
     def get_summed_vdd_charges_dataframe(self, unit: str = "me") -> pd.DataFrame:
-        """Get the summed VDD charges as a pandas DataFrame."""
+        """Get the summed VDD charges as a pandas DataFrame in a specified unit ([me] or [e])."""
         summed_data = self.get_summed_vdd_charges(unit)
         summed_data["Frag"] = {str(key): int(key) for key in summed_data["vdd"].keys()}
         df = pd.DataFrame(summed_data).pipe(lambda df: df[df.columns.tolist()[-1:] + df.columns.tolist()[:-1]])  # move the "Frag" column to the front
@@ -127,7 +140,7 @@ class VDDChargeManager:
 
     @staticmethod
     def write_to_txt(output_dir: Union[str, pl.Path], managers: Union[VDDChargeManager, Sequence[VDDChargeManager]], unit: str = "me") -> None:
-        """Write the VDD charges to a text file."""
+        """Write the VDD charges to a text file. It is a static method because multiple managers can be written to the same file."""
         out_dir = pl.Path(output_dir) if not isinstance(output_dir, pl.Path) else output_dir
         files = [out_dir / "VDD_charges_per_atom.txt", out_dir / "VDD_charges_per_fragment.txt"]
         managers = managers if isinstance(managers, Sequence) else [managers]
@@ -141,13 +154,12 @@ class VDDChargeManager:
                     if i == 0:
                         f.write(manager.get_vdd_charges_table(unit))
                     else:
-                        f.write(manager.get_summed_vdd_charges_table(unit))
+                        f.write(manager.get_summed_vdd_charges_table(unit)) if manager.is_fragment_calculation else f.write("No fragment calculation\n")
                     f.write("\n\n")
 
     def write_to_excel(self, output_dir: Union[str, pl.Path], unit: str = "me") -> None:
         """Write the VDD charges to an excel file. Results are written to two sheets: "VDD charges" and "Summed VDD charges"."""
-        out_dir = pl.Path(output_dir) if not isinstance(output_dir, pl.Path) else output_dir
-        file = out_dir / f"vdd_charges_{self.name}.xlsx"
+        file = pl.Path(output_dir) / f"vdd_charges_{self.name}.xlsx"
         df = self.get_vdd_charges_dataframe(unit)
 
         with pd.ExcelWriter(file) as writer:
@@ -155,3 +167,36 @@ class VDDChargeManager:
             if self.is_fragment_calculation:
                 df_summed = self.get_summed_vdd_charges_dataframe(unit)
                 df_summed.to_excel(writer, sheet_name=f"Summed VDD charges  (in {unit})", index=False, float_format=PRINT_FORMAT[self.unit])
+
+    def plot_vdd_charges_per_atom(self, output_dir: Union[str, pl.Path], unit: str = "me") -> None:
+        """Plot the VDD charges as a bar graph for each irrep."""
+        file = pl.Path(output_dir) / f"vdd_charges_{self.name}.png"
+        self.change_unit(unit)
+
+        num_irreps = len(self.vdd_charges)
+        fig, axs = plt.subplots(num_irreps, 1, figsize=(10, 5 * num_irreps), sharey=True)
+
+        counter = 1
+        for ax, (irrep, charges) in zip(axs, self.vdd_charges.items()):
+            atom_symbols = [f"{charge.atom_index}{charge.atom_symbol} ({charge.frag_index})" for charge in charges]
+            charge_values = [charge.charge for charge in charges]
+
+            bars = ax.bar(atom_symbols, charge_values, color="sandybrown", edgecolor="black")
+            if counter == len(axs):
+                ax.set_xlabel("Atom (#Fragment Number)")
+            ax.set_ylabel(f"Charge ({unit})")
+            ax.set_title(f"VDD Charges {self.name} - {irrep}")
+            ax.yaxis.grid(True)  # Only display vertical grid lines
+
+            # Add the value on top of each bar
+            for bar in bars:
+                yval = bar.get_height()
+                x_pos = bar.get_x() + bar.get_width() / 4
+
+                if yval <= 0:
+                    ax.text(x_pos, yval - 4, int(yval), va="top")
+                else:
+                    ax.text(x_pos, yval + 4, int(yval), va="bottom")
+            counter += 1
+        # plt.tight_layout()
+        plt.savefig(file, dpi=300)

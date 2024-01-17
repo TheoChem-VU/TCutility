@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; TCutility v0.7.1 documentation</title>
+    <title>Reading a calculation directory &#8212; TCutility v0.7.1 documentation</title>
   
   
   
@@ -43,6 +43,8 @@
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="tcutility.results package" href="../tcutility.results.html" />
+    <link rel="prev" title="TCutility v0.7.1 documentation" href="../index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -236,7 +238,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">&lt;no title&gt;</li>
+    <li class="breadcrumb-item active" aria-current="page">Reading a...</li>
   </ul>
 </nav>
 </div>
@@ -253,7 +255,9 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">TCutility.results</span>
+  <section id="reading-a-calculation-directory">
+<h1>Reading a calculation directory<a class="headerlink" href="#reading-a-calculation-directory" title="Link to this heading">#</a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">TCutility.results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">calc_dir</span> <span class="o">=</span> <span class="s1">&#39;../test/fixtures/ethanol&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">TCutility</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">engine</span>
@@ -264,12 +268,13 @@
 <span class="go">{&#39;group&#39;: &#39;C(S)&#39;, &#39;labels&#39;: [&#39;AA&#39;, &#39;AAA&#39;]}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span>
 <span class="go">{&#39;AA&#39;: -2738.644830445246,</span>
-<span class="go"> &#39;AAA&#39;: -1056.9706925183411,</span>
-<span class="go"> &#39;total&#39;: -3795.615522963587}</span>
+<span class="go">&#39;AAA&#39;: -1056.9706925183411,</span>
+<span class="go">&#39;total&#39;: -3795.615522963587}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">vibrations</span><span class="o">.</span><span class="n">number_of_imag_modes</span>
 <span class="go">0</span>
 </pre></div>
 </div>
+</section>
 
 
                 </article>
@@ -281,6 +286,24 @@
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">TCutility v0.7.1 documentation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../tcutility.results.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">tcutility.results package</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -290,18 +313,6 @@
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
-
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-  </nav></div>
 
   <div class="sidebar-secondary-item">
 

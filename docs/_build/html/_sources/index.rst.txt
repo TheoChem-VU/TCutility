@@ -10,10 +10,21 @@ TCutility |ProjectVersion| documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
    tcutility.results
+   analysis/analysis
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Extra (utility) modules are:
+
    tcutility.constants
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Full API:
+
+   api/modules
 
 
 Indices and tables

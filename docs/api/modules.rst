@@ -1,4 +1,4 @@
-TCutility
+tcutility
 =========
 
 .. toctree::

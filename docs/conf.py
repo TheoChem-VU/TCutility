@@ -3,6 +3,7 @@ import pathlib as pl
 import sys
 
 sys.path.insert(0, str(pl.Path(__file__).parent.parent / "src" / "tcutility"))
+
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -73,6 +74,10 @@ add_module_names = False
 
 # custom variables
 rst_epilog = f"""
+.. |read| replace:: :func:`tcutility.results.read`
+.. |VDDmanager| replace:: :class:`tcutility.analysis.vdd.manager.VDDChargeManager`
+.. |VDDcharge| replace:: :class:`tcutility.analysis.vdd.charge.VDDCharge`
+.. |change_unit| replace:: :func:`tcutility.analysis.vdd.manager.VDDChargeManager.change_unit`
 .. |ProjectVersion| replace:: {release}
 .. |cm-1| replace:: :math:`\\text{{cm}}^{-1}`
 .. |kcal/mol| replace:: :math:`\\text{{kcal mol}}^{-1}`

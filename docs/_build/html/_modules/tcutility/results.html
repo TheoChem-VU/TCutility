@@ -265,7 +265,7 @@
 
 <span class="sd">Typical usage example:</span>
 
-<span class="sd">.. literalinclude:: ../docs/shared/usage_results.rst</span>
+<span class="sd">.. literalinclude:: ../tcutility.results.rst</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
@@ -279,7 +279,7 @@
 
 
 <div class="viewcode-block" id="get_info">
-<a class="viewcode-back" href="../../tcutility.results.html#tcutility.results.get_info">[docs]</a>
+<a class="viewcode-back" href="../../api/tcutility.results.html#tcutility.results.get_info">[docs]</a>
 <span class="k">def</span> <span class="nf">get_info</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">ams</span><span class="o">.</span><span class="n">get_ams_info</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
@@ -294,7 +294,7 @@
 
 
 <div class="viewcode-block" id="read">
-<a class="viewcode-back" href="../../tcutility.results.html#tcutility.results.read">[docs]</a>
+<a class="viewcode-back" href="../../api/tcutility.results.html#tcutility.results.read">[docs]</a>
 <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Master function for reading data from calculations. It reads general information as well as engine-specific information.</span>
 

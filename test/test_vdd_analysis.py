@@ -77,6 +77,21 @@ def test_get_fragment_indices_from_input_order_ordered(kfreader_fa_ordered_fragi
 # ----------------------------------------------------------
 
 
+def test_change_unit(vdd_manager_fa_ordered_fragindices_cs: manager.VDDChargeManager):
+    manager = vdd_manager_fa_ordered_fragindices_cs
+    initial_charges = manager.get_vdd_charges("e")
+    manager.change_unit("e")
+    manager.change_unit("me")
+    manager.change_unit("me")
+    manager.change_unit("e")
+    manager.change_unit("me")
+    second_charges = manager.get_vdd_charges("e")
+    other_unit_charges = manager.get_vdd_charges("me")
+
+    assert np.allclose([charge.charge for charge in initial_charges["vdd"]], [charge.charge for charge in second_charges["vdd"]]), "Charges are not the same after changing units"
+    assert np.allclose([charge.charge for charge in initial_charges["vdd"]], [charge.charge / 1000 for charge in other_unit_charges["vdd"]])
+
+
 def test_get_vdd_charges_irrep_cs(vdd_manager_fa_ordered_fragindices_cs: manager.VDDChargeManager):
     vdd_charges = vdd_manager_fa_ordered_fragindices_cs.get_vdd_charges("e")
 
