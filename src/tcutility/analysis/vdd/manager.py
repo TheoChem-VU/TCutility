@@ -173,8 +173,16 @@ class VDDChargeManager:
         file = pl.Path(output_dir) / f"vdd_charges_{self.name}.png"
         self.change_unit(unit)
 
+        # Increase the global font size
+        plt.rcParams.update({"font.size": 14})
+
         num_irreps = len(self.vdd_charges)
-        fig, axs = plt.subplots(num_irreps, 1, figsize=(10, 5 * num_irreps), sharey=True)
+        n_max_charges = max([len(charges) for charges in self.vdd_charges.values()])
+        fig, axs = plt.subplots(num_irreps, 1, figsize=(n_max_charges * 1.15, 5 * num_irreps), sharey=True)
+        axs = [axs] if num_irreps == 1 else axs
+
+        # Initialize a variable to keep track of the most positive/negative values
+        adjusted_abs_max_values = []
 
         counter = 1
         for ax, (irrep, charges) in zip(axs, self.vdd_charges.items()):
@@ -188,15 +196,25 @@ class VDDChargeManager:
             ax.set_title(f"VDD Charges {self.name} - {irrep}")
             ax.yaxis.grid(True)  # Only display vertical grid lines
 
-            # Add the value on top of each bar
+            # Add the charge value on top of each bar. If the value is negative, place the text below the bar
             for bar in bars:
                 yval = bar.get_height()
-                x_pos = bar.get_x() + bar.get_width() / 4
+                x_pos = bar.get_x() + bar.get_width() / 2
 
                 if yval <= 0:
-                    ax.text(x_pos, yval - 4, int(yval), va="top")
+                    ax.text(x_pos, yval + yval * 0.1, int(yval), va="top", ha="center")
                 else:
-                    ax.text(x_pos, yval + 4, int(yval), va="bottom")
+                    ax.text(x_pos, yval + yval * 0.1, int(yval), va="bottom", ha="center")
+                adjusted_abs_max_values.append(yval + yval * 0.1)
             counter += 1
+
+        # Making sure the values do not extend outside the plot. Also determines the y-axis limits for all subplotss
+        min_value, max_value = min(adjusted_abs_max_values), max(adjusted_abs_max_values)
+
+        # Axes adjustments
+        # Set the y-axis limits for all subplots based on the most positive/negative values
+        for ax in axs:
+            ax.set_ylim([min_value - abs(min_value) * 0.2, max_value + abs(max_value) * 0.2])
+
         # plt.tight_layout()
         plt.savefig(file, dpi=300)

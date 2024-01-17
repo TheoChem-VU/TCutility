@@ -99,7 +99,7 @@ To visualize the VDD charges further, the charge for each atom can be plotted in
     # Plot the VDD charges per atom in a bar graph
     vdd_manager.plot_vdd_charges_per_atom(output_dir)
 
-.. image:: ../_static/analyisis/VDD/vdd_charges_per_atom.png
+.. image:: ../_static/analyisis/VDD/VDD_charges_per_atom.png
     :align: center
 
 
@@ -124,10 +124,5 @@ VDD analysis API
 Here is the implementation of the |VDDmanager| and |VDDcharge| classes. The central information contained in the |VDDmanager| is a dictionary containing the total charge, and irreps (if present) as keys and the a list of |VDDcharge| as value.
 A |VDDcharge| does not only contain the charge itself, but also to which atom and frag index it belongs.
 
-.. automodule::  tcutility.analysis.vdd
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :inherited-members:
 
 .. _VDD test directory: https://github.com/TheoChem-VU/TCutility/tree/VDD-charge-implementation-and-pathlib-rewrite/test/fixtures/VDD

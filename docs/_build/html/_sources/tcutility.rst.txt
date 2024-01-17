@@ -1,7 +1,0 @@
-TCutility package
-=================
-
-.. automodule:: tcutility
-   :members:
-   :undoc-members:
-   :show-inheritance:

@@ -267,7 +267,7 @@
 
 
 <div class="viewcode-block" id="Result">
-<a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.result.Result">[docs]</a>
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result">[docs]</a>
 <span class="k">class</span> <span class="nc">Result</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary. </span>
 <span class="sd">    The class works case-insensitively, but will retain the case of the key when it was first set.&#39;&#39;&#39;</span>
@@ -282,7 +282,7 @@
         <span class="k">return</span> <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span>
 
 <div class="viewcode-block" id="Result.items">
-<a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.result.Result.items">[docs]</a>
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.items">[docs]</a>
     <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;We override the items method from dict in order to skip certain keys. We want to hide keys starting and ending</span>
 <span class="sd">        with dunders, as they should not be exposed to the user.</span>
@@ -291,7 +291,7 @@
 
 
 <div class="viewcode-block" id="Result.keys">
-<a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.result.Result.keys">[docs]</a>
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.keys">[docs]</a>
     <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">original_keys</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">original_keys</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">))]</span></div>
@@ -334,7 +334,7 @@
         <span class="k">return</span> <span class="nb">len</span><span class="p">([</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">))])</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="Result.get_parent_tree">
-<a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.result.Result.get_parent_tree">[docs]</a>
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.get_parent_tree">[docs]</a>
     <span class="k">def</span> <span class="nf">get_parent_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;Method to get the path from this object to the parent object. The result is presented in a formatted string&#39;&#39;&#39;</span>
         <span class="c1"># every parent except the top-most parent has defined a __parent__ attribute</span>
@@ -365,7 +365,7 @@
         <span class="k">return</span> <span class="n">key</span>
 
 <div class="viewcode-block" id="Result.prune">
-<a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.result.Result.prune">[docs]</a>
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.prune">[docs]</a>
     <span class="k">def</span> <span class="nf">prune</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;Remove empty paths of this object.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -381,7 +381,7 @@
 
 
 <div class="viewcode-block" id="Result.get_multi_key">
-<a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.result.Result.get_multi_key">[docs]</a>
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.get_multi_key">[docs]</a>
     <span class="k">def</span> <span class="nf">get_multi_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Method that returns the value of a &quot;multikey&quot;. The multikey is multiple keys joined by dots. </span>
@@ -394,7 +394,7 @@
 
 
 <div class="viewcode-block" id="Result.as_plams_settings">
-<a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.result.Result.as_plams_settings">[docs]</a>
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.as_plams_settings">[docs]</a>
     <span class="k">def</span> <span class="nf">as_plams_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Returns this Result object as a plams.Settings object.</span>

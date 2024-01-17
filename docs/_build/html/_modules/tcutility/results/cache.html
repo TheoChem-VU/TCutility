@@ -275,7 +275,7 @@
 
 
 <div class="viewcode-block" id="TrackKFReader">
-<a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.cache.TrackKFReader">[docs]</a>
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.cache.TrackKFReader">[docs]</a>
 <span class="k">class</span> <span class="nc">TrackKFReader</span><span class="p">(</span><span class="n">plams</span><span class="o">.</span><span class="n">KFReader</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Subclass of plams.KFReader that also tracks the variables that were read. This class can be useful to figure out which variables are important.</span>
 <span class="sd">    For example, we can then trim rkf files to reduce their filesizes.&quot;&quot;&quot;</span>
@@ -285,7 +285,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TrackKFReader.read">
-<a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.cache.TrackKFReader.read">[docs]</a>
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.cache.TrackKFReader.read">[docs]</a>
     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">variable</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a variable from a section of an rkf file and store the accessed section and variable in the tracker.</span>
 
@@ -303,7 +303,7 @@
 
 
 <div class="viewcode-block" id="store">
-<a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.cache.store">[docs]</a>
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.cache.store">[docs]</a>
 <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="n">reader</span><span class="p">:</span> <span class="n">plams</span><span class="o">.</span><span class="n">KFReader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Store an rkf reader in the cache. It can later be indexed by its path.</span>
 
@@ -315,7 +315,7 @@
 
 
 <div class="viewcode-block" id="get">
-<a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.cache.get">[docs]</a>
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.cache.get">[docs]</a>
 <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plams</span><span class="o">.</span><span class="n">KFReader</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve an rkf reader from storage using its path. If the file was not opened yet, open it first and then store and return the new object.</span>
 
@@ -336,7 +336,7 @@
 
 
 <div class="viewcode-block" id="unload">
-<a class="viewcode-back" href="../../../tcutility.results.html#tcutility.results.cache.unload">[docs]</a>
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.cache.unload">[docs]</a>
 <span class="k">def</span> <span class="nf">unload</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">KFReader</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete an rkf reader from storage. Since rkf files can be quite large, we should not forget to unload them after we have finished reading from them, lest we run into memory issues.</span>
 

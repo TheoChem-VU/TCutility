@@ -1,6 +1,7 @@
-import git
 import pathlib as pl
 import sys
+
+import git
 
 sys.path.insert(0, str(pl.Path(__file__).parent.parent / "src" / "tcutility"))
 
@@ -51,10 +52,10 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 
 autodoc_default_options = {
-    "autosummary": False,
+    "autosummary": True,
 }
 
-modindex_common_prefix = ["tcutility."]
+modindex_common_prefix = ["tcutility"]
 
 html_theme_options = {
     # "show_nav_level": 2,
