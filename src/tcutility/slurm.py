@@ -2,9 +2,12 @@ import subprocess as sp
 from tcutility import results, log
 
 
-def has_slurm():
+def has_slurm() -> bool:
     '''
     Function to check if the current platform uses slurm. 
+
+    Returns:
+        has_slurm: whether slurm is available on this platform.
     '''
     try:
         sp.check_output(['which', 'sbatch']).decode()
@@ -13,15 +16,27 @@ def has_slurm():
         return False
 
 
-def squeue():
+def squeue() -> results.Result:
+    '''
+    Get information about jobs managed by slurm using squeue.
+
+    Returns:
+        :Result object containing information about the calculation status:
+
+            - **directory (list[str])** – path to slurm directories.
+            - **id (list[str])** – slurm job id's.
+            - **status (list[str])** – slurm job status name. See squeue documentation.
+            - **statuscode (list[str])** – slurm job status codes. See squeue documentation
+    '''
     ret = results.Result()
 
     if not has_slurm():
         return ret
 
-    # specify the columns here
+    # specify the columns to get here
     columns = ['directory', 'id', 'statuscode', 'status']
-    options = ['%Z', '%A', '%t', '%T']
+    options = ['%Z', '%A', '%t', '%T']  # these are the squeue format codes
+
     # set each column as an empty list in the return object
     for col in columns:
         ret[col] = []
@@ -37,9 +52,12 @@ def squeue():
     return ret
 
 
-def workdir_info(workdir):
+def workdir_info(workdir: str) -> results.Result:
     '''
-    Function that gets information
+    Function that gets squeue information given a working directory. This will return None if the directory is not being actively referenced by slurm.
+
+    Returns:
+        :Result object containing information about the calculation status, see :func:`squeue`.
     '''
     if not has_slurm():
         return None
