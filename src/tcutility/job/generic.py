@@ -73,6 +73,7 @@ class Job:
     def setup_job(self):
         '''
         Set up the current job. This method should create the working directory, runscript and input file.
+        Method must return True if it was successful.
         '''
         NotImplemented
 
@@ -84,6 +85,7 @@ class Job:
             log.info(f'Skipping calculation {j(self.rundir, self.name)}, it is already finished or currently pending or running.')
             return
 
+        # setup the job and check if it was successfull
         setup_success = self.setup_job()
 
         if self.test_mode or not setup_success:
