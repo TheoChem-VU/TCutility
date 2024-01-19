@@ -28,6 +28,17 @@ class AMSJob(Job):
         self._task = 'SP'
         self.settings.input.ams.task = 'SinglePoint'
 
+    def geometry_convergence(self, gradients: float = 1e-5, energy: float = 1e-5):
+        '''
+        Set the convergence criteria for the geometry optimization.
+
+        Args:
+            gradients: the convergence criteria for the gradients during geometry optimizations. Defaults to 1e-5.
+            energy: the convergence criteria for the energy during geometry optimizations. Default to 1e-5.
+        '''
+        self.settings.input.ams.GeometryOptimization.Convergence.Gradients = gradients
+        self.settings.input.ams.GeometryOptimization.Convergence.Energy = energy
+
     def transition_state(self, distances: list = None, angles: list = None, dihedrals: list = None, ModeToFollow: int = 1):
         '''
         Set the task of the job to transition state search. Optionally you can give some TS coordinates to accelerate convergence.

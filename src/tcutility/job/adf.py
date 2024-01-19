@@ -13,7 +13,8 @@ class ADFJob(AMSJob):
         self._functional = None
         self.basis_set('TZ2P')
         self.quality('Good')
-        self.convergence(scf=1e-8, gradients=1e-5, energy=1e-5)
+        self.SCF_convergence(scf=1e-8)
+        self.geometry_convergence(gradients=1e-5, energy=1e-5)
         self.single_point()
         self.solvent('vacuum')
 
@@ -73,7 +74,7 @@ class ADFJob(AMSJob):
         '''
         self.settings.input.adf.NumericalQuality = val
 
-    def convergence(self, scf: float = 1e-8, gradients: float = 1e-5, energy: float = 1e-5):
+    def SCF_convergence(self, scf: float = 1e-8):
         '''
         Set the convergence criteria for the job. Currently supports criteria for the scf procedure as well as gradients and energy during optimization.
 
@@ -83,9 +84,6 @@ class ADFJob(AMSJob):
             energy: the convergence criteria for the energy during geometry optimizations. Default to 1e-5.
         '''
         self.settings.input.adf.SCF.converge = scf
-        self.settings.input.adf.GeometryOptimization.Convergence.Gradients = gradients
-        self.settings.input.adf.GeometryOptimization.Convergence.Energy = energy
-
 
     def functional(self, funtional_name: str, dispersion: str = None):
         '''
