@@ -22,15 +22,10 @@ class CRESTJob(Job):
     def setup_job(self):
         self.add_postamble('mkdir rotamers')
         self.add_postamble('mkdir conformers')
-        self.add_postamble(f'split -d -l {len(self._molecule.atoms) + 2} crest_conformers.xyz conformers/')
-        self.add_postamble(f'split -d -l {len(self._molecule.atoms) + 2} crest_rotamers.xyz rotamers/')
+        self.add_postamble(f'split -d -l {len(self._molecule.atoms) + 2} -a 5 crest_conformers.xyz conformers/')
+        self.add_postamble(f'split -d -l {len(self._molecule.atoms) + 2} -a 5 crest_rotamers.xyz rotamers/')
 
-        self.add_postamble('for file in conformers/*')
-        self.add_postamble('do')
-        self.add_postamble('    mv "$file" "$file.xyz"')
-        self.add_postamble('done')
-
-        self.add_postamble('for file in rotamers/*')
+        self.add_postamble('for file in conformers/* rotamers/*')
         self.add_postamble('do')
         self.add_postamble('    mv "$file" "$file.xyz"')
         self.add_postamble('done')
@@ -71,7 +66,7 @@ class CRESTJob(Job):
         '''
         self._charge = val
 
-    def md_temp(self, val: float):
+    def md_temperature(self, val: float):
         '''
         Set the temperature of the molecular dynamics steps. Defaults to 400K.
         '''
@@ -103,3 +98,10 @@ if __name__ == '__main__':
         job.name = 'CREST'
         job.molecule('../../../test/fixtures/xyz/transitionstate_radical_addition.xyz')
         job.sbatch(p='tc', ntasks_per_node=32)
+
+    for i in range(4):
+        with CRESTJob(test_mode=False, overwrite=True) as job:
+            job.rundir = 'tmp/SN2'
+            job.name = 'CREST'
+            job.molecule('../../../test/fixtures/xyz/transitionstate_radical_addition.xyz')
+            job.sbatch(p='tc', ntasks_per_node=32)
