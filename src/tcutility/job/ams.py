@@ -91,7 +91,7 @@ class AMSJob(Job):
         os.makedirs(self.rundir, exist_ok=True)
 
         if not self._molecule and not self._molecule_path:
-            log.error('You did not supply a molecule for this job. Call the ADFJob.molecule method to add one.')
+            log.error(f'You did not supply a molecule for this job. Call the {self.__class__}.molecule method to add one.')
             return
 
         if not self._molecule:
