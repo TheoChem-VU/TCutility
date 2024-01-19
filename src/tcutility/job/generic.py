@@ -84,9 +84,9 @@ class Job:
             log.info(f'Skipping calculation {j(self.rundir, self.name)}, it is already finished or currently pending or running.')
             return
 
-        self.setup_job()
+        setup_success = self.setup_job()
 
-        if self.test_mode:
+        if self.test_mode or not setup_success:
             return
 
         # we call the run command here and redirect all output to devnull so that the job runs silently without printing a bunch of stuff
