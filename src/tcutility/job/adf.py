@@ -1,10 +1,8 @@
 from scm import plams
-from tcutility import log, results, formula, slurm
+from tcutility import log, results, formula
 from tcutility.data import functionals
 from tcutility.job.ams import AMSJob
-import subprocess as sp
 import os
-from typing import Union
 
 
 j = os.path.join
@@ -110,7 +108,7 @@ class ADFJob(AMSJob):
             self.basis_set('mTZ2P')
 
         if functional == 'SSB-D':
-            log.error(f'There are two functionals called SSB-D, please use "GGA:SSB-D" or "MetaGGA:SSB-D".')
+            log.error('There are two functionals called SSB-D, please use "GGA:SSB-D" or "MetaGGA:SSB-D".')
             return
 
         if not functionals.get(functional):
@@ -250,11 +248,11 @@ class ADFFragmentJob(ADFJob):
             self.settings.input.adf.fragments[childname] = j(child.workdir, 'adf.rkf')
 
             if child.can_skip():
-                log.flow(log.Emojis.warning + f' Already ran, skipping', ['straight', 'end'])
+                log.flow(log.Emojis.warning + ' Already ran, skipping', ['straight', 'end'])
                 log.flow()
                 continue
 
-            log.flow(log.Emojis.good + f' Submitting', ['straight', 'end'])
+            log.flow(log.Emojis.good + ' Submitting', ['straight', 'end'])
             # recast the plams.Settings object into a Result object as that is what run expects
             child.settings = results.Result(child_setts[childname])
             child.run()
@@ -274,7 +272,7 @@ class ADFFragmentJob(ADFJob):
                     if (atom.symbol, atom.x, atom.y, atom.z) == (childatom.symbol, childatom.x, childatom.y, childatom.z):
                         # now write the symbol and coords as a string with the correct suffix
                         atom_lines.append(f'\t\t{atom.symbol} {atom.x} {atom.y} {atom.z} region={childname} adf.f={childname}')
-                        
+
         # write the atoms block as a string with new line characters
         self.settings.input.ams.system.atoms = ('\n' + '\n'.join(atom_lines) + '\n\tEnd').expandtabs(4)
         # set the _molecule to None, otherwise it will overwrite the atoms block
