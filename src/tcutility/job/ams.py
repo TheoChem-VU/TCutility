@@ -10,6 +10,10 @@ from typing import Union
 j = os.path.join
 
 class AMSJob(Job):
+	'''
+	This is the AMS base job which will serve as the parent class for ADFJob, DFTBJob and the future BANDJob.
+	It holds all methods related to changing the settings at the AMS level. It also handles preparing the jobs, e.g. writing runfiles and inputs.
+	'''
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.single_point()
