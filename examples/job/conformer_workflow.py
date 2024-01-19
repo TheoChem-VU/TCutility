@@ -40,7 +40,7 @@ for i in range(nconformers):
 		dftb_job.molecule(j(crest_job.conformer_directory, f'{str(i).zfill(5)}.xyz'))
 		dftb_job.sbatch(p='tc', n=32)
 		dftb_job.optimization()
-		dftb_job.rundir = f'calculations/DFTB/{mol_name}'
+		dftb_job.rundir = f'calculations/{mol_name}/DFTB'
 		dftb_job.name = f'conformer_{i}'
 		dftb_job.dependency(crest_job)
 
@@ -50,6 +50,6 @@ for i in range(nconformers):
 		adf_job.optimization()
 		adf_job.functional('BLYP-D3(BJ)')
 		adf_job.basis_set('TZ2P')
-		adf_job.rundir = f'calculations/ADF/{mol_name}'
+		adf_job.rundir = f'calculations/{mol_name}/ADF'
 		adf_job.name = f'conformer_{i}'
 		adf_job.dependency(dftb_job)
