@@ -13,7 +13,7 @@ class ADFJob(AMSJob):
         self._functional = None
         self.basis_set('TZ2P')
         self.quality('Good')
-        self.converge(scf=1e-8, gradients=1e-5, energy=1e-5)
+        self.convergence(scf=1e-8, gradients=1e-5, energy=1e-5)
         self.single_point()
         self.solvent('vacuum')
 
