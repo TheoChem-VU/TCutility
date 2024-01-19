@@ -45,6 +45,8 @@ class CRESTJob(Job):
             runf.write(f'{self.crest_path} coords.xyz -xnam "{self.xtb_path}" --noreftopo -rthr 1 -c {self._charge} -u {self._spinpol} -tnmd {self._temp} -mdlen {self._mdlen}\n')
             runf.write('\n'.join(self._postambles))
 
+        return True
+
     def spin_polarization(self, val: int):
         '''
         Set the spin-polarization of the system.

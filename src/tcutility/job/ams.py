@@ -115,6 +115,8 @@ class AMSJob(Job):
             runf.write(job.get_runscript())
             runf.write('\n'.join(self._postambles))
 
+        return True
+
     @property
     def output_mol_path(self):
         '''
