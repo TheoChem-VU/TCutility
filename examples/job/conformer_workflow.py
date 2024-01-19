@@ -1,4 +1,4 @@
-from tcutility.job import DFTBJob, CRESTJob
+from tcutility.job import ADFJob, DFTBJob, CRESTJob
 from scm import plams
 import os
 
