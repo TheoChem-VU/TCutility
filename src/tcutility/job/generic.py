@@ -3,6 +3,7 @@ import subprocess as sp
 import os
 import stat
 from typing import Union
+from scm import plams
 
 j = os.path.join
 
@@ -14,6 +15,7 @@ class Job:
         self.settings = results.Result()
         self._sbatch = results.Result()
         self._molecule = None
+        self._molecule_path = None
         self.slurm_job_id = None
         self.name = 'calc'
         self.rundir = 'tmp'
@@ -101,7 +103,7 @@ class Job:
             else:
                 # if we are not using slurm, we can execute the file. For this we need special permissions, so we have to set that first.
                 os.chmod(self.runfile_path, stat.S_IRWXU)
-                sp.run(self.runfile_path, cwd=os.path.split(self.runfile_path)[0], stdout=devnull, stderr=sp.STDOUT)
+                sp.run(self.runfile_path, cwd=os.path.split(self.runfile_path)[0])
 
     def add_preamble(self, line):
         '''
@@ -145,3 +147,27 @@ class Job:
         E.g. for ADF it will be output.xyz in the workdir for optimization jobs.
         '''
         NotImplemented
+
+    def molecule(self, mol: Union[str, plams.Molecule, plams.Atom, list[plams.Atom]]):
+        '''
+        Add a molecule to this calculation in various formats.
+
+        Args:
+            mol: the molecule to read, can be a path (str). If the path exists already we read it. If it does not exist yet, it will be read in later. mol can also be a plams.Molecule object or a single or a list of plams.Atom objects.
+        '''
+        if isinstance(mol, plams.Molecule):
+            self._molecule = mol
+
+        elif isinstance(mol, str) and os.path.exists(mol):
+            self._molecule = plams.Molecule(mol)
+
+        elif isinstance(mol, str):
+            self._molecule_path = os.path.abspath(mol)
+
+        elif isinstance(mol, list) and isinstance(mol[0], plams.Atom):
+            self._molecule = plams.Molecule()
+            [self._molecule.add_atom(atom) for atom in mol]
+
+        elif isinstance(mol, plams.Atom):
+            self._molecule = plams.Molecule()
+            self._molecule.add_atom(mol)

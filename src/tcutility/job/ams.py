@@ -10,10 +10,10 @@ from typing import Union
 j = os.path.join
 
 class AMSJob(Job):
-	'''
-	This is the AMS base job which will serve as the parent class for ADFJob, DFTBJob and the future BANDJob.
-	It holds all methods related to changing the settings at the AMS level. It also handles preparing the jobs, e.g. writing runfiles and inputs.
-	'''
+    '''
+    This is the AMS base job which will serve as the parent class for ADFJob, DFTBJob and the future BANDJob.
+    It holds all methods related to changing the settings at the AMS level. It also handles preparing the jobs, e.g. writing runfiles and inputs.
+    '''
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.single_point()
@@ -84,40 +84,22 @@ class AMSJob(Job):
         '''
         self.settings.input.ams.System.Charge = val
 
-    def molecule(self, mol: Union[str, plams.Molecule, plams.Atom, list[plams.Atom]]):
-        '''
-        Add a molecule to this calculation in various formats.
-
-        Args:
-            mol: the molecule to read, can be a path (str). If the path exists already we read it. If it does not exist yet, it will be read in later. mol can also be a plams.Molecule object or a single or a list of plams.Atom objects.
-        '''
-        if isinstance(mol, plams.Molecule):
-            self._molecule = mol
-
-        elif isinstance(mol, str) and os.path.exists(mol):
-            self._molecule = plams.Molecule(mol)
-
-        elif isinstance(mol, str):
-            self._molecule = None
-            self.settings.input.ams.system.GeometryFile = mol
-
-        elif isinstance(mol, list) and isinstance(mol[0], plams.Atom):
-            self._molecule = plams.Molecule()
-            [self._molecule.add_atom(atom) for atom in mol]
-
-        elif isinstance(mol, plams.Atom):
-            self._molecule = plams.Molecule()
-            self._molecule.add_atom(mol)
-
     def setup_job(self):
         '''
         Set up the calculation. This will create the working directory and write the runscript and input file for ADF to use.
         '''
         os.makedirs(self.rundir, exist_ok=True)
 
-        if not self._molecule:
+        if not self._molecule and not self._molecule_path:
             log.error('You did not supply a molecule for this job. Call the ADFJob.molecule method to add one.')
             return
+
+        if not self._molecule:
+            if os.path.exists(self._molecule_path):
+                self.settings.input.ams.system.GeometryFile = self._molecule_path
+            else:
+                log.error(f'Molecule path {self._molecule_path} does not exist.')
+                return
 
         # we will use plams to write the input and runscript
         sett = self.settings.as_plams_settings()
