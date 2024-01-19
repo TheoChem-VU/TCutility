@@ -14,15 +14,17 @@ def get_calc_settings(info: Result) -> Result:
 
             - **task (str)** – the task that was set for the calculation.
             - **relativistic (bool)** – whether or not relativistic effects were enabled.
+            - **relativistic_type (str)** – the name of the relativistic approximation used.
             - **unrestricted_sfos (bool)** – whether or not SFOs are treated in an unrestricted manner.
             - **unrestricted_mos (bool)** – whether or not MOs are treated in an unrestricted manner.
             - **symmetry.group (str)** – the symmetry group selected for the molecule.
             - **symmetry.labels (list[str])** – the symmetry labels associated with the symmetry group.
             - **used_regions (bool)** – whether regions were used in the calculation.
+            - **charge (int)** - the charge of the system.
+            - **spin_polarization (int)** - the spin-polarization of the system.
+            - **multiplicity (int)** - the multiplicity of the system. This is equal to 2|S|+1 for spin-polarization S.
     """
-
     assert info.engine == "adf", f"This function reads ADF data, not {info.engine} data"
-    # assert 'adf.rkf' in info.files, f'Missing adf.rkf file, [{", ".join([": ".join(item) for item in info.files.items()])}]'
 
     ret = Result()
 
@@ -37,13 +39,32 @@ def get_calc_settings(info: Result) -> Result:
 
     reader_adf = cache.get(info.files["adf.rkf"])
 
+    relativistic_type_map = {
+        1: 'scalar Pauli',
+        3: 'scalar ZORA',  # scalar ZORA + MAPA
+        4: 'scalar ZORA + full pot.',
+        5: 'scalar ZORA + APA',
+        6: 'scalar X2C + MAPA',
+        7: 'scalar X2C ZORA + MAPA',
+        11: 'spin-orbit Pauli',
+        13: 'spin-orbit ZORA',  # spin-orbit ZORA + MAPA
+        14: 'spin-orbit ZORA + full pot.',
+        15: 'spin-orbit ZORA + APA',
+        16: 'spin-orbit X2C + MAPA',
+        17: 'spin-orbit X2C ZORA + MAPA',
+    }
     # determine if calculation used relativistic corrections
     # if it did, variable 'escale' will be present in 'SFOs'
     # if it didnt, only variable 'energy' will be present
     ret.relativistic = ("SFOs", "escale") in reader_adf
+    ret.relativistic_type = relativistic_type_map[reader_adf.read("General", "ioprel")]
+
+    # determine if MOs are unrestricted or not
+    # general, nspin is 1 for restricted and 2 for unrestricted calculations
+    ret.unrestricted_mos = reader_adf.read("General", "nspin") == 2
 
     # determine if SFOs are unrestricted or not
-    ret.unrestricted_sfos = ("SFOs", "energy_B") in reader_adf
+    ret.unrestricted_sfos = reader_adf.read("General", "nspinf") == 2
 
     # get the symmetry group
     ret.symmetry.group = reader_adf.read("Geometry", "grouplabel").strip()
@@ -51,13 +72,22 @@ def get_calc_settings(info: Result) -> Result:
     # get the symmetry labels
     ret.symmetry.labels = reader_adf.read("Symmetry", "symlab").strip().split()
 
-    # determine if MOs are unrestricted or not
-    ret.unrestricted_mos = (ret.symmetry.labels[0], "eps_B") in reader_adf
-
     # determine if the calculation used regions or not
     frag_order = reader_adf.read("Geometry", "fragment and atomtype index")
     frag_order = frag_order[: len(frag_order) // 2]
     ret.used_regions = max(frag_order) != len(frag_order)
+
+    ret.charge = reader_adf.read("Molecule", "Charge")
+
+    ret.spin_polarization = 0
+    if ret.unrestricted_mos:
+        nalpha = 0
+        nbeta = 0
+        for label in ret.symmetry.labels:
+            nalpha += reader_adf.read(label, "froc_A")
+            nbeta += reader_adf.read(label, "froc_B")
+        ret.spin_polarization = nalpha - nbeta
+    ret.multiplicity = 2 * ret.spin_polarization + 1
 
     return ret
 
