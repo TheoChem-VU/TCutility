@@ -95,11 +95,7 @@ class AMSJob(Job):
             return
 
         if not self._molecule:
-            if os.path.exists(self._molecule_path):
-                self.settings.input.ams.system.GeometryFile = self._molecule_path
-            else:
-                log.error(f'Molecule path {self._molecule_path} does not exist.')
-                return
+            self.settings.input.ams.system.GeometryFile = self._molecule_path
 
         # we will use plams to write the input and runscript
         sett = self.settings.as_plams_settings()
