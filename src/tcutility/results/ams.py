@@ -267,6 +267,7 @@ def get_molecules(calc_dir: str) -> Result:
             - **atom_numbers (list[int])** – list of atomic numbers for each atom in the molecule.
             - **atom_symbols (list[str])** – list of elements for each atom in the molecule.
             - **atom_masses (list[float])** – list of atomic masses for each atom in the molecule.
+            - **charge (int)** - the charge of the system being considered.
             - **input (plams.Molecule)** – molecule that was given in the input for the calculation.
             - **output (plams.Molecule)** – final molecule that was given as the output for the calculation. If the calculation was a singlepoint calculation output and input molecules will be the same.
     """
@@ -283,6 +284,8 @@ def get_molecules(calc_dir: str) -> Result:
     ret.atom_numbers = atnums
     ret.atom_symbols = str(reader_ams.read("InputMolecule", "AtomSymbols")).split()
     ret.atom_masses = reader_ams.read("InputMolecule", "AtomMasses")
+    ret.charge = reader_ams.read("InputMolecule", "Charge")
+
 
     # read input molecule
     ret.input = plams.Molecule()
