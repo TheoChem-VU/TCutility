@@ -17,6 +17,7 @@ class AMSJob(Job):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.single_point()
+        self.geometry_convergence(gradients=1e-5, energy=1e-5)
 
     def __str__(self):
         return f'{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}'

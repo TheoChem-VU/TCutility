@@ -14,7 +14,6 @@ class ADFJob(AMSJob):
         self.basis_set('TZ2P')
         self.quality('Good')
         self.SCF_convergence(scf=1e-8)
-        self.geometry_convergence(gradients=1e-5, energy=1e-5)
         self.single_point()
         self.solvent('vacuum')
 
