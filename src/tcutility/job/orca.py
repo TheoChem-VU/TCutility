@@ -34,10 +34,12 @@ class ORCAJob(Job):
 
     def transition_state(self):
         self.__remove_task()
+        self.vibrations()
         self.settings.main.add('optts')
 
     def optimization(self):
         self.__remove_task()
+        self.vibrations()
         self.settings.main.add('opt')
 
     def vibrations(self, enable=True, numerical=False):
