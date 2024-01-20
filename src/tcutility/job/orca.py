@@ -110,7 +110,7 @@ class ORCAJob(Job):
 
         else:
             ret += f'* xyz {self._charge} {self._multiplicity}\n'
-            for atom in self.molecule:
+            for atom in self._molecule:
                 ret += f'    {atom.symbol:2} {atom.x: >13f} {atom.y: >13f} {atom.z: >13f}\n'
             ret += '*\n'
 
