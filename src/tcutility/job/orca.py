@@ -117,7 +117,7 @@ class OrcaJob(Job):
 
     def setup_job(self):
         try:
-            self.orca_path = sp.check_output(['which', 'orca']).decode()
+            self.orca_path = sp.check_output(['which', 'orca']).decode().strip()
         except sp.CalledProcessError:
             log.error('Could not find the orca path. Please set it manually.')
             return
