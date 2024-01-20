@@ -9,7 +9,7 @@ from typing import Union
 
 j = os.path.join
 
-class OrcaJob(Job):
+class ORCAJob(Job):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.settings.main = {'LARGEPRINT'}
@@ -17,6 +17,7 @@ class OrcaJob(Job):
         self._multiplicity = 1
         self.memory = None
         self.processes = None
+        self.orca_path = None
 
         self.single_point()
 
@@ -117,10 +118,13 @@ class OrcaJob(Job):
 
     def setup_job(self):
         try:
-            self.orca_path = sp.check_output(['which', 'orca']).decode().strip()
+            if self.orca_path is None:
+                self.orca_path = sp.check_output(['which', 'orca']).decode().strip()
         except sp.CalledProcessError:
             log.error('Could not find the orca path. Please set it manually.')
             return
+
+        self.add_preamble(f'')
 
         if not self._molecule and not self._molecule_path:
             log.error(f'You did not supply a molecule for this job. Call the {self.__class__}.molecule method to add one.')
@@ -139,6 +143,6 @@ class OrcaJob(Job):
         return True
 
 if __name__ == '__main__':
-    job = OrcaJob()
-    job.molecule('test.xyz')
+    job = ORCAJob()
+    job.molecule('water.xyz')
     job.setup_job()
