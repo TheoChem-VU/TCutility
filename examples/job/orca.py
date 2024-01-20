@@ -5,4 +5,5 @@ with ORCAJob() as job:
     job.sbatch(p='tc', n=32, mem=20000)
     job.name = 'ORCA_opt'
     job.rundir = 'calculations/water'
+    job.add_preamble('export LD_LIBRARY_PATH=“/scistor/tc/dra480/bin/ompi411/lib/:$LD_LIBRARY_PATH”')
     job.optimization()
