@@ -20,7 +20,7 @@ class OrcaJob(Job):
 
     def get_orca_path(self):
         try:
-            self.orca_path = sp.check_output(['which', 'orca'], shell=True).decode()
+            self.orca_path = sp.check_output(['which', 'orca']).decode()
         except sp.CalledProcessError:
             self.orca_path = None
             log.error('Could not find the orca path. Please set it manually.')
