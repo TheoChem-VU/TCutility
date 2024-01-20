@@ -18,12 +18,7 @@ class OrcaJob(Job):
         self.memory = None
         self.processes = None
 
-    def get_orca_path(self):
-        try:
-            self.orca_path = sp.check_output(['which', 'orca']).decode()
-        except sp.CalledProcessError:
-            self.orca_path = None
-            log.error('Could not find the orca path. Please set it manually.')
+        self.single_point()
 
     def __casefold_main(self):
         self.settings.main = {key.casefold() for key in self.settings.main}
@@ -79,9 +74,9 @@ class OrcaJob(Job):
 
     def get_input(self):
         # set the correct memory usage and processes
-        natoms = len(self.molecule)
         mem, ntasks = self.get_memory_usage()
         if ntasks and mem:
+            natoms = len(self.molecule)
             ntasks = min(ntasks, (natoms - 1) * 3)
             self.settings.PAL.nprocs = ntasks
             self.settings.maxcore = int(mem / ntasks * 0.75)
@@ -109,16 +104,28 @@ class OrcaJob(Job):
 
         ret += '\n'
 
-        ret += f'* xyz {self._charge} {self._multiplicity}\n'
-        for atom in self.molecule:
-            ret += f'    {atom.symbol:2} {atom.x: >13f} {atom.y: >13f} {atom.z: >13f}\n'
-        ret += '*\n'
+        if self._molecule_path:
+            ret += f'* xyz {self._charge} {self._multiplicity} {os.path.abspath(self._molecule_path)}\n'
+
+        else:
+            ret += f'* xyz {self._charge} {self._multiplicity}\n'
+            for atom in self.molecule:
+                ret += f'    {atom.symbol:2} {atom.x: >13f} {atom.y: >13f} {atom.z: >13f}\n'
+            ret += '*\n'
 
         return ret
 
-
     def setup_job(self):
-        self.get_orca_path()
+        try:
+            self.orca_path = sp.check_output(['which', 'orca']).decode()
+        except sp.CalledProcessError:
+            log.error('Could not find the orca path. Please set it manually.')
+            return
+
+        if not self._molecule and not self._molecule_path:
+            log.error(f'You did not supply a molecule for this job. Call the {self.__class__}.molecule method to add one.')
+            return
+
         os.makedirs(self.workdir, exist_ok=True)
         with open(self.inputfile_path, 'w+') as inp:
             inp.write(self.get_input())
@@ -126,10 +133,12 @@ class OrcaJob(Job):
         with open(self.runfile_path, 'w+') as runf:
             runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
             runf.write('\n'.join(self._preambles) + '\n\n')
-            runf.write(f'{self.crest_path} coords.xyz -xnam "{self.xtb_path}" --noreftopo -rthr 1 -c {self._charge} -u {self._spinpol} -tnmd {self._temp} -mdlen {self._mdlen}\n')
+            runf.write(f'{self.orca_path} {self.inputfile_path}\n')
             runf.write('\n'.join(self._postambles))
 
+        return True
 
 if __name__ == '__main__':
     job = OrcaJob()
+    job.molecule('test.xyz')
     job.setup_job()
