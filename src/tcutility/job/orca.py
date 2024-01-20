@@ -46,11 +46,12 @@ class ORCAJob(Job):
         self.__casefold_main()
         self.settings.main.discard('numfreq')
         self.settings.main.discard('freq')
-        if enable:
-            if numerical:
-                self.settings.main.append('numfreq')
-            else:
-                self.settings.main.append('freq')
+        if not enable:
+            return
+        if numerical:
+            self.settings.main.add('numfreq')
+        else:
+            self.settings.main.add('freq')
 
     def charge(self, val):
         self._charge = val
