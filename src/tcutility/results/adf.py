@@ -84,8 +84,8 @@ def get_calc_settings(info: Result) -> Result:
         nalpha = 0
         nbeta = 0
         for label in ret.symmetry.labels:
-            nalpha += reader_adf.read(label, "froc_A")
-            nbeta += reader_adf.read(label, "froc_B")
+            nalpha += sum(ensure_list(reader_adf.read(label, "froc_A")))
+            nbeta += sum(ensure_list(reader_adf.read(label, "froc_B")))
         ret.spin_polarization = nalpha - nbeta
     ret.multiplicity = 2 * ret.spin_polarization + 1
 
