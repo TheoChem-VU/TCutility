@@ -1,5 +1,6 @@
 import subprocess as sp
 from tcutility import results, log
+import time
 
 
 def has_slurm() -> bool:
@@ -72,6 +73,18 @@ def workdir_info(workdir: str) -> results.Result:
         ret[key] = vals[workdir_index]
 
     return ret
+
+
+def wait_for_job(slurmid: int, check_every: int = 5) -> None:
+    '''
+    Wait for a slurm job to finish. We check every `check_every` seconds if the slurm job id is still present in squeue.
+
+    Args:
+        slurmid: the ID of the slurm job we are waiting for.
+        check_every: the amount of seconds to wait before checking squeue again. Don't put this too high, or you will anger the cluster people.
+    '''
+    while slurmid in squeue().id:
+        time.sleep(check_every)
 
 
 if __name__ == '__main__':
