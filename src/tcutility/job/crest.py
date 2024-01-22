@@ -32,10 +32,23 @@ class CRESTJob(Job):
 
         self._molecule.write(j(self.workdir, 'coords.xyz'))
 
+        options = [
+            'coords.xyz',
+            f'-xnam "{self.xtb_path}"',
+            '--noreftopo',
+            '-rthr 1'
+            f'-c {self._charge}',
+            f'-u {self._spinpol}',
+            f'-tnmd {self._temp}',
+            f'-mdlen {self._mdlen}',
+        ]
+
+        options = ' '.join(options)
+
         with open(self.runfile_path, 'w+') as runf:
             runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
             runf.write('\n'.join(self._preambles) + '\n\n')
-            runf.write(f'{self.crest_path} coords.xyz -xnam "{self.xtb_path}" --noreftopo -rthr 1 -c {self._charge} -u {self._spinpol} -tnmd {self._temp} -mdlen {self._mdlen}\n')
+            runf.write(f'{self.crest_path} {options}\n')
             runf.write('\n'.join(self._postambles))
 
         return True
@@ -109,7 +122,6 @@ class CRESTJob(Job):
             yield j(self.workdir, 'rotamers', f'{str(i).zfill(5)}.xyz')
 
 
-
 class QCGJob(CRESTJob):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -146,16 +158,31 @@ class QCGJob(CRESTJob):
         self._molecule.write(j(self.workdir, 'coords.xyz'))
         self._solvent.write(j(self.workdir, 'solvent.xyz'))
 
-        ensemble_mode_option = '--' + {
-            'NCI-MTD': 'ncimtd',
-            'MD': 'md',
-            'MTD': 'mtd',
+        ensemble_mode_option = {
+            'NCI-MTD': '--ncimtd',
+            'MD': '--md',
+            'MTD': '--mtd',
         }.get(self._ensemble_generation_mode, self._ensemble_generation_mode)
 
+        options = [
+            'coords.xyz',
+            f'-xnam "{self.xtb_path}"',
+            '-qcg solvent.xyz',
+            '--ensemble',
+            f'--nsolv {self._nsolv}',
+            f'--chrg {self._charge}',
+            f'--uhf {self._spinpol}',
+            f'--tnmd {self._temp}',
+            f'--mdlen {50 * float(self._mdlen[1:])}',
+            ensemble_mode_option
+        ]
+
+        options = ' '.join(options)
+
         with open(self.runfile_path, 'w+') as runf:
-            runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
+            runf.write('#!/bin/sh\n\n')
             runf.write('\n'.join(self._preambles) + '\n\n')
-            runf.write(f'{self.crest_path} coords.xyz -xnam "{self.xtb_path}" -qcg solvent.xyz --ensemble --nsolv {self._nsolv} --chrg {self._charge} --uhf {self._spinpol} --tnmd {self._temp} --mdlen {50 * float(self._mdlen[1:])} {ensemble_mode_option}\n')
+            runf.write(f'{self.crest_path} {options}\n')
             runf.write('\n'.join(self._postambles))
 
         return True
@@ -176,7 +203,6 @@ if __name__ == '__main__':
         job.solvent('butanol')
         print(job._solvent)
         job.sbatch(p='tc', n=32)
-
 
     # for i in range(40):
     #     with CRESTJob(test_mode=False, overwrite=True) as job:
