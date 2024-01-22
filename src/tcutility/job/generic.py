@@ -11,7 +11,7 @@ j = os.path.join
 class Job:
     '''This is the base Job class used to build more advanced classes such as ADFJob and ORCAJob.
     The base class contains an empty DotDict object that holds the settings. It also provides __enter__ and __exit__ methods to make use of context manager syntax.'''
-    def __init__(self, test_mode=False, overwrite=False, hold=False):
+    def __init__(self, test_mode=False, overwrite=False, wait_for_finish=False):
         self.settings = results.Result()
         self._sbatch = results.Result()
         self._molecule = None
@@ -21,7 +21,7 @@ class Job:
         self.rundir = 'tmp'
         self.test_mode = test_mode
         self.overwrite = overwrite
-        self.hold = hold
+        self.wait_for_finish = wait_for_finish
         self._preambles = []
         self._postambles = []
 
@@ -104,7 +104,7 @@ class Job:
                 # set the slurm job id for this calculation, we use this in order to set dependencies between jobs.
                 self.slurm_job_id = slurm.workdir_info(self.workdir).id
                 # if we requested the job to hold we will wait for the slurm job to finish
-                if self.hold:
+                if self.wait_for_finish:
                     slurm.wait_for_job(self.slurm_job_id)
             else:
                 # if we are not using slurm, we can execute the file. For this we need special permissions, so we have to set that first.
