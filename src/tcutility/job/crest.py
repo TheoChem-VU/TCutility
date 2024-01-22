@@ -101,7 +101,7 @@ class CRESTJob(Job):
     def rotamer_directory(self):
         return j(self.workdir, 'rotamers')
 
-    def get_conformer_xyz(self, number: int = 10):
+    def get_conformer_xyz(self, number: int = None):
         '''
         Return paths to conformer xyz files for this job.
 
@@ -109,12 +109,12 @@ class CRESTJob(Job):
             number: the number of files to return, defaults to 10. If the directory already exists, for example if the job was already run, we will return up to `number` files.
         '''
         if os.path.exists(self.conformer_directory):
-            return [j(self.conformer_directory, file) for i, file in enumerate(os.listdir(self.conformer_directory)) if i < number]
+            return [j(self.conformer_directory, file) for i, file in enumerate(os.listdir(self.conformer_directory)) if number or i < number]
 
-        for i in range(number):
+        for i in range(number or 10):
             yield j(self.conformer_directory, f'{str(i).zfill(5)}.xyz')
 
-    def get_rotamer_xyz(self, number: int = 10):
+    def get_rotamer_xyz(self, number: int = None):
         '''
         Return paths to rotamer xyz files for this job.
 
@@ -122,9 +122,9 @@ class CRESTJob(Job):
             number: the number of files to return, defaults to 10. If the directory already exists, for example if the job was already run, we will return up to `number` files.
         '''
         if os.path.exists(self.rotamer_directory):
-            return [j(self.rotamer_directory, file) for i, file in enumerate(os.listdir(self.rotamer_directory)) if i < number]
+            return [j(self.rotamer_directory, file) for i, file in enumerate(os.listdir(self.rotamer_directory)) if number or i < number]
 
-        for i in range(number):
+        for i in range(number or 10):
             yield j(self.rotamer_directory, f'{str(i).zfill(5)}.xyz')
 
 
