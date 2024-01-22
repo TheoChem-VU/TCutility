@@ -7,6 +7,7 @@ import os
 
 j = os.path.join
 
+
 class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -275,7 +276,7 @@ class ADFFragmentJob(ADFJob):
         # set the _molecule to None, otherwise it will overwrite the atoms block
         self._molecule = None
         # run this job
-        log.flow(log.Emojis.good + f' Submitting parent job', ['split'])
+        log.flow(log.Emojis.good + ' Submitting parent job', ['split'])
         super().run()
         log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
         log.flow()
@@ -286,7 +287,7 @@ class ADFFragmentJob(ADFJob):
         self.settings.input.adf.AllPoints = 'Yes'
         self.settings.input.adf.FullFock = 'Yes'
         self.name = self.name + '_SCF1'
-        log.flow(log.Emojis.good + f' Submitting extra job with 1 SCF cycle', ['split'])
+        log.flow(log.Emojis.good + ' Submitting extra job with 1 SCF cycle', ['split'])
 
         super().run()
         log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])

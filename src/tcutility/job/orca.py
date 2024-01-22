@@ -1,13 +1,11 @@
-from scm import plams
-from tcutility import log, results, formula, slurm
-from tcutility.data import functionals
+from tcutility import log, results
 from tcutility.job.generic import Job
 import subprocess as sp
 import os
-from typing import Union
 
 
 j = os.path.join
+
 
 class ORCAJob(Job):
     def __init__(self, *args, **kwargs):
@@ -127,8 +125,6 @@ class ORCAJob(Job):
             log.error('Could not find the orca path. Please set it manually.')
             return
 
-        self.add_preamble(f'')
-
         if not self._molecule and not self._molecule_path:
             log.error(f'You did not supply a molecule for this job. Call the {self.__class__}.molecule method to add one.')
             return
@@ -144,6 +140,7 @@ class ORCAJob(Job):
             runf.write('\n'.join(self._postambles))
 
         return True
+
 
 if __name__ == '__main__':
     job = ORCAJob()

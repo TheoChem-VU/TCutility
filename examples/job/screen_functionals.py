@@ -1,6 +1,9 @@
 from tcutility.job import ADFJob
 from tcutility.data import functionals
+from tcutility import results, log
+from yutility import pathfunc
 
+# run the calculations:
 available_functionals = functionals.get_available_functionals()
 for functional_name, functional_info in available_functionals.items():
     with ADFJob(test_mode=True) as job:
@@ -20,12 +23,7 @@ for functional_name, functional_info in available_functionals.items():
         job.functional(functional_name)
         job.basis_set('TZ2P')
 
-
-
-from tcutility import results, log
-from yutility import pathfunc
-
-
+# analyse the results
 rows = []
 for rundir, path_data in pathfunc.match('DFT_screening', '{category}/{functional_name}').items():
     res = results.read(rundir)

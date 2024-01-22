@@ -1,13 +1,11 @@
 from scm import plams
-from tcutility import log, results, formula, slurm
-from tcutility.data import functionals, molecules
+from tcutility.data import molecules
 from tcutility.job.generic import Job
-import subprocess as sp
 import os
-from typing import Union
 
 
 j = os.path.join
+
 
 class CRESTJob(Job):
     def __init__(self, *args, **kwargs):

@@ -1,13 +1,11 @@
 from scm import plams
-from tcutility import log, results, formula, slurm
-from tcutility.data import functionals
+from tcutility import log
 from tcutility.job.generic import Job
-import subprocess as sp
 import os
-from typing import Union
 
 
 j = os.path.join
+
 
 class AMSJob(Job):
     '''

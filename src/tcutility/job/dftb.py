@@ -1,13 +1,9 @@
-from scm import plams
-from tcutility import log, results, formula, slurm
-from tcutility.data import functionals
 from tcutility.job.ams import AMSJob
-import subprocess as sp
 import os
-from typing import Union
 
 
 j = os.path.join
+
 
 class DFTBJob(AMSJob):
     def __init__(self, *args, **kwargs):
@@ -62,6 +58,7 @@ class DFTBJob(AMSJob):
 
         self.settings.input.DFTB.Solvation.Solvent = name
         self.settings.input.DFTB.Solvation.SurfaceGrid = grid_size
+
 
 if __name__ == '__main__':
     with DFTBJob(test_mode=False, overwrite=True) as job:
