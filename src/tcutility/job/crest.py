@@ -157,7 +157,7 @@ class QCGJob(CRESTJob):
         with open(self.runfile_path, 'w+') as runf:
             runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
             runf.write('\n'.join(self._preambles) + '\n\n')
-            runf.write(f'{self.crest_path} coords.xyz -xnam "{self.xtb_path}" -qcg solvent.xyz --nsolv {self._nsolv} --chrg {self._charge} --uhf {self._spinpol} --tnmd {self._temp} --mdlen {50 * float(self._mdlen[1:])} {ensemble_mode_option}\n')
+            runf.write(f'{self.crest_path} coords.xyz -xnam "{self.xtb_path}" -qcg solvent.xyz --ensemble --nsolv {self._nsolv} --chrg {self._charge} --uhf {self._spinpol} --tnmd {self._temp} --mdlen {50 * float(self._mdlen[1:])} {ensemble_mode_option}\n')
             runf.write('\n'.join(self._postambles))
 
         return True
