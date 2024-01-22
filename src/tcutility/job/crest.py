@@ -90,18 +90,89 @@ class CRESTJob(Job):
     def rotamer_directory(self):
         return j(self.workdir, 'rotamers')
 
+    def get_conformer_xyz(self, number: int = 10):
+        '''
+        Return paths to conformer xyz files for this job.
+
+        Args:
+            number: the number of files to return, defaults to 10
+        '''
+        for i in range(number):
+            yield j(self.workdir, 'conformers', f'{str(i).zfill(5)}.xyz')
+
+    def get_rotamer_xyz(self, number: int = 10):
+        '''
+        Return paths to rotamer xyz files for this job.
+
+        Args:
+            number: the number of files to return, defaults to 10
+        '''
+        for i in range(number):
+            yield j(self.workdir, 'rotamers', f'{str(i).zfill(5)}.xyz')
+
+
+
+class QCGJob(CRESTJob):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.crest_path = 'crest'
+        self._nsolv = 10
+        self._fix_solute = False
+        self._ensemble_generation_mode = 'NCI-MTD'
+        self._solvent = None
+
+    def solvent(self, mol):
+        if isinstance(mol, plams.Molecule):
+            self._solvent = mol
+
+        elif isinstance(mol, str) and os.path.exists(mol):
+            self._solvent = plams.Molecule(mol)
+
+        elif isinstance(mol, str):
+            self._solvent_path = os.path.abspath(mol)
+
+        elif isinstance(mol, list) and isinstance(mol[0], plams.Atom):
+            self._solvent = plams.Molecule()
+            [self._solvent.add_atom(atom) for atom in mol]
+
+        elif isinstance(mol, plams.Atom):
+            self._solvent = plams.Molecule()
+            self._solvent.add_atom(mol)
+
+    def setup_job(self):
+        os.makedirs(self.workdir, exist_ok=True)
+
+        self._molecule.write(j(self.workdir, 'coords.xyz'))
+        self._solvent.write(j(self.workdir, 'solvent.xyz'))
+
+        with open(self.runfile_path, 'w+') as runf:
+            runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
+            runf.write('\n'.join(self._preambles) + '\n\n')
+            runf.write(f'{self.crest_path} coords.xyz -xnam "{self.xtb_path}" -qcg solvent.xyz --nsolv {self._nsolv} --chrg {self._charge} --uhf {self._spinpol} --tnmd {self._temp} --mdlen {50 * float(self._mdlen[1:])}\n')
+            runf.write('\n'.join(self._postambles))
+
+        return True
 
 
 if __name__ == '__main__':
-    with CRESTJob(test_mode=False, overwrite=True) as job:
-        job.rundir = 'tmp/SN2'
-        job.name = 'CREST'
-        job.molecule('../../../test/fixtures/xyz/transitionstate_radical_addition.xyz')
-        job.sbatch(p='tc', ntasks_per_node=32)
+    # with CRESTJob() as job:
+    #     job.rundir = 'tmp/SN2'
+    #     job.name = 'CREST'
+    #     job.molecule('../../../test/fixtures/xyz/transitionstate_radical_addition.xyz')
+    #     job.sbatch(p='tc', ntasks_per_node=32)
 
-    for i in range(4):
-        with CRESTJob(test_mode=False, overwrite=True) as job:
-            job.rundir = 'tmp/SN2'
-            job.name = 'CREST'
-            job.molecule('../../../test/fixtures/xyz/transitionstate_radical_addition.xyz')
-            job.sbatch(p='tc', ntasks_per_node=32)
+    with QCGJob() as job:
+        job.rundir = 'calculations/Ammonia'
+        job.name = 'QCG'
+        job.crest_path = 'crestlatest'
+        job.molecule('ammonia.xyz')
+        job.solvent('water.xyz')
+        job.sbatch(p='tc', n=32)
+
+
+    # for i in range(40):
+    #     with CRESTJob(test_mode=False, overwrite=True) as job:
+    #         job.rundir = 'tmp/SN2'
+    #         job.name = 'CREST'
+    #         job.molecule('../../../test/fixtures/xyz/transitionstate_radical_addition.xyz')
+    #         job.sbatch(p='tc', ntasks_per_node=32)
