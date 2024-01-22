@@ -139,16 +139,25 @@ class QCGJob(CRESTJob):
             self._solvent = plams.Molecule()
             self._solvent.add_atom(mol)
 
+    def ensemble_mode(self, mode):
+        self._ensemble_generation_mode = mode
+
     def setup_job(self):
         os.makedirs(self.workdir, exist_ok=True)
 
         self._molecule.write(j(self.workdir, 'coords.xyz'))
         self._solvent.write(j(self.workdir, 'solvent.xyz'))
 
+        ensemble_mode_option = '--' + {
+            'NCI-MTD': 'ncimtd',
+            'MD': 'md',
+            'MTD': 'mtd',
+        }.get(self._ensemble_generation_mode, self._ensemble_generation_mode)
+
         with open(self.runfile_path, 'w+') as runf:
             runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
             runf.write('\n'.join(self._preambles) + '\n\n')
-            runf.write(f'{self.crest_path} coords.xyz -xnam "{self.xtb_path}" -qcg solvent.xyz --nsolv {self._nsolv} --chrg {self._charge} --uhf {self._spinpol} --tnmd {self._temp} --mdlen {50 * float(self._mdlen[1:])}\n')
+            runf.write(f'{self.crest_path} coords.xyz -xnam "{self.xtb_path}" -qcg solvent.xyz --nsolv {self._nsolv} --chrg {self._charge} --uhf {self._spinpol} --tnmd {self._temp} --mdlen {50 * float(self._mdlen[1:])} {ensemble_mode_option}\n')
             runf.write('\n'.join(self._postambles))
 
         return True
