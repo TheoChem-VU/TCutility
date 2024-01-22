@@ -11,6 +11,7 @@ import inspect
 ###########################################################
 # MODULE LEVEL VARIABLES USED TO CHANGE LOGGING BEHAVIOUR #
 logfile = sys.stdout  # stream or file to send prints to. Default sys.stdout is the standard Python print output
+errfile = sys.stderr  # stream or file to send prints to. Default sys.stderr is the standard Python print output
 tab_level = 0  # number of tabs to add before a logged message. This is useful to build a sense of structure in a long output
 max_width = 0  # maximum width of printed messages. Default 0 means unbounded
 print_date = True  # print time stamp before a logged message
@@ -55,17 +56,20 @@ class NoPrint:
     This file is deleted after exiting the context-manager.
     """
 
-    def __init__(self, stdout=None):
+    def __init__(self, stdout=None, stderr=None):
         self.stdout = stdout or logfile
+        self.stderr = stderr or errfile
         self.overflow = open(str(os.getpid()) + "_NOPRINT.tmp", "w+")
 
     def __enter__(self):
-        global logfile
+        global logfile, errfile
         logfile = self.overflow
+        errfile = self.overflow
 
     def __exit__(self, *args, **kwargs):
-        global logfile
+        global logfile, errfile
         logfile = self.stdout
+        errfile = self.stderr
         self.overflow.close()
         os.remove(str(os.getpid()) + "_NOPRINT.tmp")
 
