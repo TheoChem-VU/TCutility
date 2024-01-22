@@ -109,7 +109,7 @@ class CRESTJob(Job):
             number: the number of files to return, defaults to 10
         '''
         for i in range(number):
-            yield j(self.workdir, 'conformers', f'{str(i).zfill(5)}.xyz')
+            yield j(self.conformer_directory, f'{str(i).zfill(5)}.xyz')
 
     def get_rotamer_xyz(self, number: int = 10):
         '''
@@ -119,7 +119,7 @@ class CRESTJob(Job):
             number: the number of files to return, defaults to 10
         '''
         for i in range(number):
-            yield j(self.workdir, 'rotamers', f'{str(i).zfill(5)}.xyz')
+            yield j(self.rotamer_directory, f'{str(i).zfill(5)}.xyz')
 
 
 class QCGJob(CRESTJob):
