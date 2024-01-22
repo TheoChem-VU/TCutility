@@ -1,6 +1,6 @@
 from scm import plams
 from tcutility import log, results, formula, slurm
-from tcutility.data import functionals
+from tcutility.data import functionals, molecules
 from tcutility.job.generic import Job
 import subprocess as sp
 import os
@@ -129,7 +129,7 @@ class QCGJob(CRESTJob):
             self._solvent = plams.Molecule(mol)
 
         elif isinstance(mol, str):
-            self._solvent_path = os.path.abspath(mol)
+            self._solvent = molecules.get_mol(mol)
 
         elif isinstance(mol, list) and isinstance(mol[0], plams.Atom):
             self._solvent = plams.Molecule()
@@ -173,9 +173,10 @@ if __name__ == '__main__':
     with QCGJob() as job:
         job.rundir = 'calculations/Ammonia'
         job.name = 'QCG'
-        job.crest_path = 'crestlatest'
+        job.crest_path = 'crest'
         job.molecule('ammonia.xyz')
-        job.solvent('water.xyz')
+        job.solvent('butanol')
+        print(job._solvent)
         job.sbatch(p='tc', n=32)
 
 
