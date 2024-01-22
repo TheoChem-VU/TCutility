@@ -106,8 +106,11 @@ class CRESTJob(Job):
         Return paths to conformer xyz files for this job.
 
         Args:
-            number: the number of files to return, defaults to 10
+            number: the number of files to return, defaults to 10. If the directory already exists, for example if the job was already run, we will return up to `number` files.
         '''
+        if os.path.exists(self.conformer_directory):
+            return [j(self.conformer_directory, file) for i, file in enumerate(os.listdir(self.conformer_directory)) if i < number]
+
         for i in range(number):
             yield j(self.conformer_directory, f'{str(i).zfill(5)}.xyz')
 
@@ -116,8 +119,11 @@ class CRESTJob(Job):
         Return paths to rotamer xyz files for this job.
 
         Args:
-            number: the number of files to return, defaults to 10
+            number: the number of files to return, defaults to 10. If the directory already exists, for example if the job was already run, we will return up to `number` files.
         '''
+        if os.path.exists(self.rotamer_directory):
+            return [j(self.rotamer_directory, file) for i, file in enumerate(os.listdir(self.rotamer_directory)) if i < number]
+
         for i in range(number):
             yield j(self.rotamer_directory, f'{str(i).zfill(5)}.xyz')
 
