@@ -21,14 +21,15 @@ for i, xyzfile in enumerate(crest_job.get_conformer_xyz(number=10)):
 		dftb_job.rundir = f'calculations/{mol_name}/DFTB'
 		dftb_job.name = f'conformer_{i}'
 		dftb_job.dependency(crest_job)
-		dftb_job.delete_on_failure = True
 
-	# with ADFJob() as adf_job:
-	# 	adf_job.molecule(dftb_job.output_mol_path)
-	# 	adf_job.sbatch(p='tc', n=32)
-	# 	adf_job.optimization()
-	# 	adf_job.functional('BLYP-D3(BJ)')
-	# 	adf_job.basis_set('TZ2P')
-	# 	adf_job.rundir = f'calculations/{mol_name}/ADF'
-	# 	adf_job.name = f'conformer_{i}'
-	# 	adf_job.dependency(dftb_job)
+	with ADFJob() as adf_job:
+		adf_job.molecule(dftb_job.output_mol_path)
+		adf_job.sbatch(p='tc', n=32)
+		adf_job.optimization()
+		adf_job.functional('BLYP-D3(BJ)')
+		adf_job.basis_set('TZ2P')
+		adf_job.rundir = f'calculations/{mol_name}/ADF'
+		adf_job.name = f'conformer_{i}'
+		adf_job.dependency(dftb_job)
+
+
