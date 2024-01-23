@@ -109,8 +109,6 @@ class CRESTJob(Job):
             number: the number of files to return, defaults to 10. If the directory already exists, for example if the job was already run, we will return up to `number` files.
         '''
         if os.path.exists(self.conformer_directory):
-            print('hello')
-            print([j(self.conformer_directory, file) for i, file in enumerate(os.listdir(self.conformer_directory))])
             return [j(self.conformer_directory, file) for i, file in enumerate(sorted(os.listdir(self.conformer_directory)))]
 
         for i in range(number or 10):
@@ -161,6 +159,14 @@ class QCGJob(CRESTJob):
         self._ensemble_generation_mode = mode
 
     def setup_job(self):
+        self.add_postamble('mkdir ensemble')
+        self.add_postamble(f'split -d -l {len(self._molecule.atoms) + 2} -a 5 ensemble/final_ensemble.xyz ensemble/')
+
+        self.add_postamble('for file in ensemble/*')
+        self.add_postamble('do')
+        self.add_postamble('    mv "$file" "$file.xyz"')
+        self.add_postamble('done')
+
         os.makedirs(self.workdir, exist_ok=True)
 
         self._molecule.write(j(self.workdir, 'coords.xyz'))
@@ -195,7 +201,27 @@ class QCGJob(CRESTJob):
 
         return True
 
+    @property
+    def ensemble_directory(self):
+        return j(self.workdir, 'ensemble')
 
+    def get_ensemble_xyz(self, number: int = None):
+        '''
+        Return paths to conformer xyz files for this job.
+
+        Args:
+            number: the number of files to return, defaults to 10. If the directory already exists, for example if the job was already run, we will return up to `number` files.
+        '''
+        if os.path.exists(self.ensemble_directory):
+            return [j(self.ensemble_directory, file) for i, file in enumerate(sorted(os.listdir(self.ensemble_directory)))]
+
+        for i in range(number or 10):
+            yield j(self.ensemble_directory, f'{str(i).zfill(5)}.xyz')
+
+    @property
+    def best_conformer_path(self):
+        return j(self.workdir, 'crest_best.xyz')
+        
 if __name__ == '__main__':
     # with CRESTJob() as job:
     #     job.rundir = 'tmp/SN2'
