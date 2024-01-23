@@ -1,6 +1,5 @@
 from tcutility.job import ADFFragmentJob
 from tcutility import molecule
-import os
 
 # this example will demonstrate how you may separate two fragments from each other
 
@@ -82,7 +81,7 @@ with ADFFragmentJob(test_mode=True) as job3:
 	job3.molecule(mol)
 	for fragment_name, indices in fragment_indices.items():
 		job3.add_fragment(indices, fragment_name)
-		
+
 	# set the job settings
 	job3.functional('BLYP')
 	job3.basis_set('TZ2P')
