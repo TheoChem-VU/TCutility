@@ -238,8 +238,8 @@ class QCGJob(CRESTJob):
             yield j(self.ensemble_directory, f'{str(i).zfill(5)}.xyz')
 
     @property
-    def best_conformer_path(self):
-        return j(self.workdir, 'crest_best.xyz')
+    def best_ensemble_path(self):
+        return j(self.workdir, 'ensemble', 'crest_best.xyz')
 
 if __name__ == '__main__':
     # with CRESTJob() as job:
