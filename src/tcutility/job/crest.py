@@ -178,10 +178,10 @@ class QCGJob(CRESTJob):
         self._nofix = enable
 
     def setup_job(self):
-        self.add_postamble('mkdir ensemble')
-        self.add_postamble(f'split -d -l {len(self._molecule.atoms) + len(self._solvent.atoms) * self._nsolv + 2} -a 5 ensemble/final_ensemble.xyz ensemble/')
+        self.add_postamble('mkdir ensemble/ensemble')
+        self.add_postamble(f'split -d -l {len(self._molecule.atoms) + len(self._solvent.atoms) * self._nsolv + 2} -a 5 ensemble/final_ensemble.xyz ensemble/ensemble')
 
-        self.add_postamble('for file in ensemble/*')
+        self.add_postamble('for file in ensemble/ensemble/*')
         self.add_postamble('do')
         self.add_postamble('    mv "$file" "$file.xyz"')
         self.add_postamble('done')
@@ -231,7 +231,7 @@ class QCGJob(CRESTJob):
 
     @property
     def ensemble_directory(self):
-        return j(self.workdir, 'ensemble')
+        return j(self.workdir, 'ensemble', 'ensemble')
 
     def get_ensemble_xyz(self, number: int = None):
         '''
@@ -248,7 +248,8 @@ class QCGJob(CRESTJob):
 
     @property
     def best_ensemble_path(self):
-        return j(self.workdir, 'ensemble', 'crest_best.xyz')
+        return j(self.workdir, 'ensemble', 'ensemble', 'crest_best.xyz')
+
 
 if __name__ == '__main__':
     # with CRESTJob() as job:
