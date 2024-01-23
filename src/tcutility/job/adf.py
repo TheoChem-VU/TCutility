@@ -185,15 +185,31 @@ class ADFFragmentJob(ADFJob):
         self.name = 'complex'
 
     def add_fragment(self, mol, name=None):
+        # in case of giving fragments as indices we dont want to add the fragment to the molecule later
+        add_frag_to_mol = True  
+        # we can be given a list of atoms
         if isinstance(mol, list) and isinstance(mol[0], plams.Atom):
             mol_ = plams.Molecule()
             [mol_.add_atom(atom) for atom in mol]
             mol = mol_
 
+        # or a list of integers
+        if isinstance(mol, list) and isinstance(mol[0], int):
+            if not self._molecule:
+                log.error(f'Trying to add fragment based on atom indices, but main job does not have a molecule yet. Call the {self.__class__.__name__}.molecule method to add one.')
+                return
+            mol_ = plams.Molecule()
+            [mol_.add_atom(self._molecule[i]) for i in mol]
+            mol = mol_.copy()
+            add_frag_to_mol = False
+
         name = name or f'fragment{len(self.childjobs) + 1}'
         self.childjobs[name] = ADFJob(test_mode=self.test_mode)
         self.childjobs[name].molecule(mol)
         setattr(self, name, self.childjobs[name])
+
+        if not add_frag_to_mol:
+            return
 
         if self._molecule is None:
             self._molecule = self.childjobs[name]._molecule.copy()
