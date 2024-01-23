@@ -23,4 +23,4 @@ def get_molecules(tags=None):
 
 if __name__ == '__main__':
     for mol in get_molecules():
-        print(mol)
+        print(mol, mol.flags)
