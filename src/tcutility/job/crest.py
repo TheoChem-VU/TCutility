@@ -149,7 +149,12 @@ class QCGJob(CRESTJob):
             self._solvent = plams.Molecule(mol)
 
         elif isinstance(mol, str):
+            # here we can get the molecule name using tcutility.data.molecules
             self._solvent = molecules.get(mol)
+            # we can check if the alpb solvent name is defined in the xyz file
+            alpb = self._solvent.flags.get('alpb', None)
+            if alpb:
+                self.alpb(alpb)
 
         elif isinstance(mol, list) and isinstance(mol[0], plams.Atom):
             self._solvent = plams.Molecule()
@@ -158,6 +163,9 @@ class QCGJob(CRESTJob):
         elif isinstance(mol, plams.Atom):
             self._solvent = plams.Molecule()
             self._solvent.add_atom(mol)
+
+    def nsolv(self, nsolv):
+        self._nsolv = nsolv
 
     def alpb(self, solvent):
         self._alpb = solvent
@@ -248,11 +256,11 @@ if __name__ == '__main__':
     #     job.molecule('../../../test/fixtures/xyz/transitionstate_radical_addition.xyz')
     #     job.sbatch(p='tc', ntasks_per_node=32)
 
-    with QCGJob() as job:
+    with QCGJob(test_mode=True) as job:
         job.rundir = 'calculations/Ammonia'
         job.name = 'QCG'
         job.molecule('ammonia.xyz')
-        job.solvent('butanol')
+        job.solvent('water', 10)
         print(job._solvent)
         job.sbatch(p='tc', n=32)
 

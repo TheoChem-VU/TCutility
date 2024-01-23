@@ -1,8 +1,8 @@
 from tcutility.job import QCGJob
 
-with QCGJob() as job:
+with QCGJob(test_mode=True) as job:
     job.molecule('asc.xyz')
-    job.solvent('dmso.xyz')
+    job.solvent('acetone', 5)
     job.rundir = 'calculations/ASC'
     job.name = 'QCG'
     job.md_length(5)
