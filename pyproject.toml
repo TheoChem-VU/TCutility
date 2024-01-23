@@ -18,7 +18,6 @@ dependencies = [
   "scipy>=1.8",
   "dictfunc",
   "pytest>=7.4.4",
-  "sphinx-tabs",
 ]
 # Current maintainers
 maintainers = [{ name = "TheoCheM group" }]
