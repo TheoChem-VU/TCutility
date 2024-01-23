@@ -31,7 +31,7 @@ jobs:
           pip install -e .
 
       - name: Install sphinx
-        run: pip install sphinx
+        run: pip install sphinx, sphinx-tabs
 
       - name: Install sphinx theme
         run: pip install pydata-sphinx-theme
