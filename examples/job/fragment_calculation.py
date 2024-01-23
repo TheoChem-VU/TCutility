@@ -79,9 +79,10 @@ parent job and then define the fragments based on atom indices.
 fragment_indices = {flag.removeprefix('frag_'): x for flag, x in mol.flags.items() if flag.startswith('frag_')}
 
 with ADFFragmentJob(test_mode=True) as job3:
-	# job3.molecule(mol)
+	job3.molecule(mol)
 	for fragment_name, indices in fragment_indices.items():
 		job3.add_fragment(indices, fragment_name)
+		
 	# set the job settings
 	job3.functional('BLYP')
 	job3.basis_set('TZ2P')
