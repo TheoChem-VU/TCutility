@@ -157,6 +157,9 @@ class QCGJob(CRESTJob):
             self._solvent = plams.Molecule()
             self._solvent.add_atom(mol)
 
+    def alpb(self, solvent):
+        self._alpb = solvent
+
     def ensemble_mode(self, mode):
         self._ensemble_generation_mode = mode
 
@@ -192,6 +195,9 @@ class QCGJob(CRESTJob):
             f'--mdlen {50 * float(self._mdlen[1:])}',
             ensemble_mode_option
         ]
+
+        if self._alpb:
+            options.append(f'--alpb {self._alpb}')
 
         options = ' '.join(options)
 
