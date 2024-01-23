@@ -38,3 +38,23 @@ def test_LOT4() -> None:
 def test_sections() -> None:
     res = results.read(j(os.path.split(__file__)[0], "fixtures", "DFT_EDA"))
     assert all(section in res for section in ["adf", "engine", "ams_version", "is_multijob", "molecule", "status", "timing"])
+
+
+def test_failed_reading() -> None:
+    res = results.read('not/a/real/calculation')
+    assert res.engine == 'unknown'
+
+
+def test_failed_reading2() -> None:
+    res = results.read('not/a/real/calculation')
+    assert res.status.code == 'U'
+
+
+def test_failed_reading3() -> None:
+    res = results.read('not/a/real/calculation')
+    assert res.status.fatal is True
+
+
+if __name__ == '__main__':
+    import pytest
+    pytest.main()
