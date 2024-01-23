@@ -177,6 +177,9 @@ class QCGJob(CRESTJob):
         self.add_postamble('    mv "$file" "$file.xyz"')
         self.add_postamble('done')
 
+        if not self._solvent:
+            log.error(f'Did not provide a solvent molecule for this job. Call the {self.__class__.__name__}.solvent method to add one.')
+
         os.makedirs(self.workdir, exist_ok=True)
 
         self._molecule.write(j(self.workdir, 'coords.xyz'))
