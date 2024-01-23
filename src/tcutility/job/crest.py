@@ -137,7 +137,9 @@ class QCGJob(CRESTJob):
         self._ensemble_generation_mode = 'NCI-MTD'
         self._solvent = None
 
-    def solvent(self, mol):
+    def solvent(self, mol, nsolv=None):
+        if self._nsolv:
+            self._nsolv = nsolv
         if isinstance(mol, plams.Molecule):
             self._solvent = mol
 
@@ -145,7 +147,7 @@ class QCGJob(CRESTJob):
             self._solvent = plams.Molecule(mol)
 
         elif isinstance(mol, str):
-            self._solvent = molecules.get_mol(mol)
+            self._solvent = molecules.get(mol)
 
         elif isinstance(mol, list) and isinstance(mol[0], plams.Atom):
             self._solvent = plams.Molecule()
@@ -221,7 +223,7 @@ class QCGJob(CRESTJob):
     @property
     def best_conformer_path(self):
         return j(self.workdir, 'crest_best.xyz')
-        
+
 if __name__ == '__main__':
     # with CRESTJob() as job:
     #     job.rundir = 'tmp/SN2'
@@ -232,7 +234,6 @@ if __name__ == '__main__':
     with QCGJob() as job:
         job.rundir = 'calculations/Ammonia'
         job.name = 'QCG'
-        job.crest_path = 'crest'
         job.molecule('ammonia.xyz')
         job.solvent('butanol')
         print(job._solvent)
