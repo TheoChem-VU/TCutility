@@ -174,7 +174,7 @@ class QCGJob(CRESTJob):
         self._ensemble_generation_mode = mode
 
     def nofix(self, enable=True):
-        self._nofix = nofix
+        self._nofix = enable
 
     def setup_job(self):
         self.add_postamble('mkdir ensemble')
