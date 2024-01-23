@@ -179,7 +179,7 @@ class QCGJob(CRESTJob):
 
     def setup_job(self):
         self.add_postamble('mkdir ensemble')
-        self.add_postamble(f'split -d -l {len(self._molecule.atoms) + 2} -a 5 ensemble/final_ensemble.xyz ensemble/')
+        self.add_postamble(f'split -d -l {len(self._molecule.atoms) + len(self._solvent.atoms) * self._nsolv + 2} -a 5 ensemble/final_ensemble.xyz ensemble/')
 
         self.add_postamble('for file in ensemble/*')
         self.add_postamble('do')
