@@ -217,7 +217,7 @@ class QCGJob(CRESTJob):
             options.append(f'--alpb {self._alpb}')
 
         if self._nofix:
-            options.append(f'--nofix')
+            options.append('--nofix')
 
         options = ' '.join(options)
 
