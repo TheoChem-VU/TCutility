@@ -136,10 +136,12 @@ class QCGJob(CRESTJob):
         self._fix_solute = False
         self._ensemble_generation_mode = 'NCI-MTD'
         self._solvent = None
+        self._nofix = True
 
     def solvent(self, mol, nsolv=None):
         if self._nsolv:
             self._nsolv = nsolv
+
         if isinstance(mol, plams.Molecule):
             self._solvent = mol
 
@@ -162,6 +164,9 @@ class QCGJob(CRESTJob):
 
     def ensemble_mode(self, mode):
         self._ensemble_generation_mode = mode
+
+    def nofix(self, enable=True):
+        self._nofix = nofix
 
     def setup_job(self):
         self.add_postamble('mkdir ensemble')
@@ -186,18 +191,21 @@ class QCGJob(CRESTJob):
         options = [
             'coords.xyz',
             f'-xnam "{self.xtb_path}"',
-            '-qcg solvent.xyz',
+            '--qcg solvent.xyz',
             '--ensemble',
             f'--nsolv {self._nsolv}',
             f'--chrg {self._charge}',
             f'--uhf {self._spinpol}',
             f'--tnmd {self._temp}',
             f'--mdlen {50 * float(self._mdlen[1:])}',
-            ensemble_mode_option
+            ensemble_mode_option,
         ]
 
         if self._alpb:
             options.append(f'--alpb {self._alpb}')
+
+        if self._nofix:
+            options.append(f'--nofix')
 
         options = ' '.join(options)
 
