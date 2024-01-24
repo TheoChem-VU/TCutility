@@ -72,6 +72,7 @@ html_favicon = "https://avatars.githubusercontent.com/u/119413491"
 html_theme = "pydata_sphinx_theme"  # pip install pydata-sphinx-theme
 html_static_path = ["_static"]
 add_module_names = False
+autodoc_member_order = 'bysource'
 
 # custom variables
 rst_epilog = f"""
