@@ -9,8 +9,12 @@ j = os.path.join
 
 
 class Job:
-    '''This is the base Job class used to build more advanced classes such as ADFJob and ORCAJob.
-    The base class contains an empty DotDict object that holds the settings. It also provides __enter__ and __exit__ methods to make use of context manager syntax.'''
+    '''This is the base Job class used to build more advanced classes such as :class:`AMSJob <tcutility.job.ams.AMSJob>` and :class:`ORCAJob <tcutility.job.orca.ORCAJob>`.
+    The base class contains an empty :class:`Result <tcutility.results.result.Result>` object that holds the settings. 
+    It also provides :meth:`__enter__` and :meth:`__exit__` methods to make use of context manager syntax.
+    
+    All class methods are in principle safe to overwrite, but the :meth:`setup_job` method **must** be overwritten.
+    '''
     def __init__(self, test_mode=False, overwrite=False, wait_for_finish=False):
         self.settings = results.Result()
         self._sbatch = results.Result()
@@ -35,6 +39,11 @@ class Job:
         '''
         Check whether the job can be skipped. We check this by loading the calculation and checking if the job status was fatal.
         Fatal in this case means that the job failed, canceled or could not be found. In those cases we want to run the job.
+
+        .. note::
+            This method works for the :class:`ADFJob <tcutility.job.adf.ADFJob>`, :class:`ADFFragmentJob <tcutility.job.adf.ADFFragmentJob>`, :class:`DFTBJob <tcutility.job.dftb.DFTBJob>` and :class:`ORCAJob <tcutility.job.orca.ORCAJob>` objects, but not
+            yet for :class:`CRESTJob <tcutility.job.crest.CRESTJob>` and :class:`QCGJob <tcutility.job.crest.QCGJob>`. For the latter objects the job will always be rerun. 
+            This will be fixed in a later version of TCutility.
         '''
         res = results.read(self.workdir)
         return not res.status.fatal

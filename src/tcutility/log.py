@@ -23,7 +23,7 @@ class Emojis:
     Class containing some useful emojis and other characters.
     Supports dot-notation and indexation to get a character.
 
-    E.g. Emojis.wait == Emojis['wait']
+    E.g. ``Emojis.wait == Emojis['wait']``
     """
 
     wait = "🕒"
@@ -82,12 +82,13 @@ def time_stamp():
     return f"[{now.year}/{str(now.month).zfill(2)}/{str(now.day).zfill(2)} {str(now.hour).zfill(2)}:{str(now.minute).zfill(2)}:{str(now.second).zfill(2)}] "
 
 
-def log(message: str = "", level: int = 20, end: str = "\n"):
+def log(message: Any = "", level: int = 20, end: str = "\n"):
     r"""
-    Print a message to stream or file logfile.
-    This function adds the current timestamp and supports multi-line printing (split on the "\n" escape character).
-    level is the verbosity level with which the message is sent.
-    Generally we follow:
+    Print a nicely formatteed message.
+    This function adds the current timestamp and supports multi-line printing (split on the ``\n`` escape character).
+    For verbosity levels we use the following convention:
+
+    .. code-block::
 
         NOTSET   = 0
         DEBUG    = 10
@@ -96,7 +97,11 @@ def log(message: str = "", level: int = 20, end: str = "\n"):
         ERROR    = 40
         CRITICAL = 50
 
-    We compare the level against the module-wide log_level variable (by default log_level = 20). If the level is below log_level we do not print it.
+    
+    Args:
+        message: the message to send. Before printing we will use the ``message.__str__`` method to get the string representation. If the message is a ``dict`` we use the ``json`` module to format the message nicely.
+        level: the level to print the message at. We compare the level against the module-wide ``log_level`` variable (by default ``log_level = 20``). If the level is below ``log_level`` we do not print it.
+        end: the end of the string. This is usually the new-line character ``\n``.
     """
     if level < log_level:
         return
@@ -182,10 +187,10 @@ def table(rows: List[List[Any]], header: Union[List[str], None] = None, sep: str
 
 def loadbar(sequence: Iterable, comment: str = "", Nsegments: int = 50, Nsteps: int = 10, level: int = 20) -> None:
     """
-    Return values from an iterable `sequence` and also print a progress bar for the iteration over this sequence.
+    Return values from an iterable ``sequence`` and also print a progress bar for the iteration over this sequence.
 
     Args:
-        sequence: any iterable sequence. Should define the __len__ method.
+        sequence: any iterable sequence. Should define the ``__len__`` method.
         comment: a string to be printed at the end of the loading bar to give information about the loading bar.
         Nsegments: length of the loading bar in characters.
         Nsteps: number of times to print the loading bar during iteration. If the output is a tty-type stream Nsteps will be set to the length of sequence.

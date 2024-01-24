@@ -14,7 +14,7 @@ class ADFJob(AMSJob):
         self._functional = None
         self.basis_set('TZ2P')
         self.quality('Good')
-        self.SCF_convergence(scf=1e-8)
+        self.SCF_convergence(1e-8)
         self.single_point()
         self.solvent('vacuum')
 
@@ -49,9 +49,10 @@ class ADFJob(AMSJob):
         '''
         Set the multiplicity of the system. If the value is not one the calculation will also be unrestricted.
         We use the following values:
-            1: singlet
-            2: doublet
-            3: triplet
+            #. singlet
+            #. doublet
+            #. triplet
+
             ...
         The multiplicity is equal to 2*S+1 for spin-polarization of S.
         '''
@@ -67,23 +68,21 @@ class ADFJob(AMSJob):
 
     def quality(self, val: str = 'Good'):
         '''
-        Set the numerical quality of the calculation. Defaults to Good.
+        Set the numerical quality of the calculation.
 
         Args:
-            val: the numerical quality value to set to. This is the same as the ones used in the ADF GUI.
+            val: the numerical quality value to set to. This is the same as the ones used in the ADF GUI. Defaults to Good.
         '''
         self.settings.input.adf.NumericalQuality = val
 
-    def SCF_convergence(self, scf: float = 1e-8):
+    def SCF_convergence(self, thresh: float = 1e-8):
         '''
-        Set the convergence criteria for the job. Currently supports criteria for the scf procedure as well as gradients and energy during optimization.
+        Set the SCF convergence criteria for the job.
 
         Args:
-            scf: the convergence criteria for the SCF procedure. Defaults to 1e-8.
-            gradients: the convergence criteria for the gradients during geometry optimizations. Defaults to 1e-5.
-            energy: the convergence criteria for the energy during geometry optimizations. Default to 1e-5.
+            thresh: the convergence criteria for the SCF procedure. Defaults to 1e-8.
         '''
-        self.settings.input.adf.SCF.converge = scf
+        self.settings.input.adf.SCF.converge = thresh
 
     def functional(self, funtional_name: str, dispersion: str = None):
         '''
@@ -118,10 +117,10 @@ class ADFJob(AMSJob):
 
     def relativity(self, level: str = 'Scalar'):
         '''
-        Set the treatment of relativistic effects for this calculation. By default it is set to Scalar.
+        Set the treatment of relativistic effects for this calculation.
 
         Args:
-            level: the level to set. Can be the same as the values in the ADF GUI and documentation.
+            level: the level to set. Can be the same as the values in the ADF GUI and documentation. By default it is set to Scalar.
         '''
         self.settings.input.adf.relativity.level = level
 

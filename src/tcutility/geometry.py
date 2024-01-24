@@ -88,95 +88,39 @@ def vector_align_rotmat(a: np.ndarray, b: np.ndarray) -> np.ndarray:
 
 
 class Transform:
+    '''
+    Transformation matrix that handles rotation, translation and scaling of sets of 3D coordinates.
+
+    Build and return a transformation matrix.
+    This 4x4 matrix encodes rotations, translations and scaling.
+    
+    :math:`\\textbf{M} = \\begin{bmatrix} \\textbf{R}\\text{diag}(S) & \\textbf{T} \\\\ \\textbf{0}_3 & 1 \\end{bmatrix}`
+
+    where :math:`\\textbf{R} \\in \\mathbb{R}^{3 \\times 3}`, :math:`\\textbf{T} \\in \\mathbb{R}^{3 \\times 1}` and :math:`\\textbf{0}_3 = [0, 0, 0] \\in \\mathbb{R}^{1 \\times 3}`.
+
+    When applied to a positional vector :math:`[x, y, z, 1]` it will apply these
+    transformations simultaneously.
+    '''
     def __init__(self, R: np.ndarray = None, T: np.ndarray = None, S: np.ndarray = None):
-        self.M = self.build_matrix(R, T, S)
+        self.M = self.__build_matrix(R, T, S)
 
     def __str__(self):
         return str(self.M)
-
-    def translate(self, T: np.ndarray = None, x: float = None, y: float = None, z: float = None):
-        """
-        Add a translation component to the transformation matrix.
-        Arguments can be given as a container of x, y, z values. They can also be given separately.
-        You can also specify x, y and z components separately
-
-        Example usage:
-            Transform.translate([2, 3, 0])
-            Transform.translate(x=2, y=3)
-        """
-
-        if T is None:
-            T = [x or 0, y or 0, z or 0]
-
-        self.M = self.M @ self.build_matrix(T=T)
-
-    def rotate(self, R: np.ndarray = None, x: float = None, y: float = None, z: float = None):
-        r"""
-        Add a rotational component to transformation matrix.
-        Arguments can be given as a rotation matrix R \in R^3x3 or by specifying the angle to rotate along the x, y or z axes
-
-        Example usage:
-            Transform.rotate(get_rotmat(x=1, y=-1))
-            Transform.rotate(x=1, y=-1)
-        """
-        if R is None:
-            R = get_rotmat(x=x, y=y, z=z)
-
-        self.M = self.M @ self.build_matrix(R=R)
-
-    def scale(self, S: np.ndarray = None, x: float = None, y: float = None, z: float = None):
-        """
-        Add a scaling component to the transformation matrix.
-        Arguments can be given as a container of x, y, z values.
-        You can also specify x, y and z components separately
-
-        Example usage:
-            Transform.scale([0, 0, 3])
-            Transform.scale(z=3)
-        """
-
-        if S is None:
-            S = [x or 1, y or 1, z or 1]
-        elif isinstance(S, (float, int)):
-            S = [S, S, S]
-
-        self.M = self.M @ self.build_matrix(S=S)
-
-    def build_matrix(self, R: np.ndarray = None, T: np.ndarray = None, S: np.ndarray = None) -> np.ndarray:
-        r"""
-        Build and return a transformation matrix.
-        This 4x4 matrix encodes rotations, translations and scaling.
-
-            M = | R@diag(S)   T |
-                | 0_3         1 |
-
-        where R \in R^3x3, T \in R^3x1, 0_3 = [0, 0, 0] \in R^1x3 and 1 \in R
-
-        When applied to a positional vector [x, y, z, 1] it will apply these
-        transformations simultaneously.
-
-        Note: This matrix is an element of the special SE(3) Lie group.
-        """
-
-        # set the default matrix and vectors
-        R = R if R is not None else get_rotmat()
-        T = T if T is not None else np.array([0, 0, 0])
-        S = S if S is not None else np.array([1, 1, 1])
-
-        return np.array([[R[0, 0] * S[0], R[0, 1], R[0, 2], T[0]], [R[1, 0], R[1, 1] * S[1], R[1, 2], T[1]], [R[2, 0], R[2, 1], R[2, 2] * S[2], T[2]], [0, 0, 0, 1]])
 
     def __call__(self, *args, **kwargs):
         return self.apply(*args, **kwargs)
 
     def apply(self, v: np.ndarray) -> np.ndarray:
-        r"""
-        Applies the transformation matrix to vector(s) v \in R^Nx3
-        v should be a series of column vectors.
+        """
+        Applies the transformation matrix to vector(s) :math:`v \\in R^{N \\times 3}`.
 
         Application is a three-step process.
-         1) Append row vector of ones to the bottom of v
-         2) Apply the transformation matrix M \dot v
+         1) Append row vector of ones to the bottom of :math:`v`
+         2) Apply the transformation matrix: :math:`\\textbf{M}v`
          3) Remove the bottom row vector of ones and return the result
+
+        Returns:
+            A new array :math:`v' = \\textbf{M}v` that has been transformed using this transformation matrix.
         """
         v = np.atleast_2d(v)
         v = np.asarray(v).T
@@ -200,26 +144,83 @@ class Transform:
         new.M = self.M @ other.M
         return new
 
-    def get_rotmat(self):
-        return self.M[:3, :3]
+    def translate(self, T: np.ndarray = None, x: float = None, y: float = None, z: float = None):
+        """
+        Add a translation component to the transformation matrix.
+        Arguments can be given as a container of x, y, z values. They can also be given separately.
+        You can also specify x, y and z components separately
+
+        Example usage:
+            Transform.translate([2, 3, 0])
+            Transform.translate(x=2, y=3)
+        """
+
+        if T is None:
+            T = [x or 0, y or 0, z or 0]
+
+        self.M = self.M @ self.__build_matrix(T=T)
+
+    def rotate(self, R: np.ndarray = None, x: float = None, y: float = None, z: float = None):
+        r"""
+        Add a rotational component to transformation matrix.
+        Arguments can be given as a rotation matrix R \in R^3x3 or by specifying the angle to rotate along the x, y or z axes
+
+        Example usage:
+            Transform.rotate(get_rotmat(x=1, y=-1))
+            Transform.rotate(x=1, y=-1)
+        """
+        if R is None:
+            R = get_rotmat(x=x, y=y, z=z)
+
+        self.M = self.M @ self.__build_matrix(R=R)
+
+    def scale(self, S: np.ndarray = None, x: float = None, y: float = None, z: float = None):
+        """
+        Add a scaling component to the transformation matrix.
+        Arguments can be given as a container of x, y, z values.
+        You can also specify x, y and z components separately
+
+        Example usage:
+            Transform.scale([0, 0, 3])
+            Transform.scale(z=3)
+        """
+
+        if S is None:
+            S = [x or 1, y or 1, z or 1]
+        elif isinstance(S, (float, int)):
+            S = [S, S, S]
+
+        self.M = self.M @ self.__build_matrix(S=S)
+
+    def __build_matrix(self, R: np.ndarray = None, T: np.ndarray = None, S: np.ndarray = None) -> np.ndarray:
+        '''
+        Build the transformation matrix for this object.
+        '''
+        # set the default matrix and vectors
+        R = R if R is not None else get_rotmat()
+        T = T if T is not None else np.array([0, 0, 0])
+        S = S if S is not None else np.array([1, 1, 1])
+
+        return np.array([[R[0, 0] * S[0], R[0, 1], R[0, 2], T[0]], [R[1, 0], R[1, 1] * S[1], R[1, 2], T[1]], [R[2, 0], R[2, 1], R[2, 2] * S[2], T[2]], [0, 0, 0, 1]])
+
 
 
 class KabschTransform(Transform):
+    """
+    Use Kabsch-Umeyama algorithm to calculate the optimal rotation matrix and translation
+    to superimpose X onto Y.
+
+    It is numerically stable and works when the covariance matrix is singular.
+    Both sets of points must be the same size for this algorithm to work.
+    The coordinates are first centered onto their centroids before determining the
+    optimal rotation matrix.
+
+    References:
+        https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem
+        https://en.wikipedia.org/wiki/Kabsch_algorithm
+    """
+
     def __init__(self, X: np.ndarray, Y: np.ndarray):
-        """
-        Use Kabsch-Umeyama algorithm to calculate the optimal rotation matrix and translation
-        to superimpose X onto Y.
-
-        It is numerically stable and works when the covariance matrix is singular.
-        Both sets of points must be the same size for this algorithm to work.
-        The coordinates are first centered onto their centroids before determining the
-        optimal rotation matrix.
-
-        References
-            https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem
-            https://en.wikipedia.org/wiki/Kabsch_algorithm
-        """
-
         # make sure arrays are 2d and the same size
         X, Y = np.atleast_2d(X), np.atleast_2d(Y)
         assert X.shape == Y.shape, f"Matrices X with shape {X.shape} and Y with shape {Y.shape} are not the same size"
@@ -250,7 +251,7 @@ class KabschTransform(Transform):
         # the normal order is to first translate X by -centroid_x
         # then rotate with R
         # finally translate by +centroid_y
-        self.M = self.build_matrix()
+        self.M = self.__build_matrix()
         self.translate(centroid_y)
         self.rotate(R)
         self.translate(-centroid_x)
@@ -264,7 +265,11 @@ def RMSD(X: np.ndarray, Y: np.ndarray, axis: Union[int, None] = None, use_kabsch
 
     RMSD is given as
 
-        $$ \frac{1}{N}\sqrt{\sum_i^N (X_i - Y_i)^2} $$
+    :math:`\text{RMSD}(X, Y) = \frac{1}{N}\sqrt{\sum_i^N (X_i - Y_i)^2}`
+
+    when using the Kabsch algorithm to align the two sets of coordinates we get
+
+    :math:`\text{RMSD}(X, Y) = \frac{1}{N}\sqrt{\sum_i^N (T_{Kabsch}(X_i) - Y_i)^2}`
 
     Args:
         X, Y: Arrays to compare. They should have the same shape.

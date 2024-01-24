@@ -8,7 +8,7 @@ def has_slurm() -> bool:
     Function to check if the current platform uses slurm. 
 
     Returns:
-        has_slurm: whether slurm is available on this platform.
+        Whether slurm is available on this platform.
     '''
     try:
         sp.check_output(['which', 'sbatch']).decode()
@@ -75,7 +75,7 @@ def workdir_info(workdir: str) -> results.Result:
     return ret
 
 
-def wait_for_job(slurmid: int, check_every: int = 5) -> None:
+def wait_for_job(slurmid: int, check_every: int = 5):
     '''
     Wait for a slurm job to finish. We check every `check_every` seconds if the slurm job id is still present in squeue.
 
