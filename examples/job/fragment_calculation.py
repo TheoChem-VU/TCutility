@@ -75,6 +75,7 @@ with ADFFragmentJob(test_mode=True) as job2:
 This method is similar to method 2, but we can now supply a molecule to the 
 parent job and then define the fragments based on atom indices.
 '''
+molecule.guess_fragments(mol)
 fragment_indices = {flag.removeprefix('frag_'): x for flag, x in mol.flags.items() if flag.startswith('frag_')}
 
 with ADFFragmentJob(test_mode=True) as job3:

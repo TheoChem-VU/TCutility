@@ -1,5 +1,6 @@
 from scm import plams
 from tcutility.results import result
+from typing import Union
 
 
 def parse_str(s: str):
@@ -70,22 +71,23 @@ def load(path) -> plams.Molecule:
     Load a molecule from a given xyz file path.
     The xyz file is structured as follows:
 
-        ```
-        [int] number of atoms
+    .. code-block::
+
+        [int]
         Comment line
-        Xx X1 Y1 Z1 atom_tag1 atom_tag2 atom_key1=...
-        Xx X2 Y2 Z2 atom_tag1 atom_tag2 atom_key1=...
-        Xx X3 Y3 Z3
+        [str] [float] [float] [float] atom_tag1 atom_tag2 atom_key1=...
+        [str] [float] [float] [float] atom_tag1 atom_tag2 atom_key1=...
+        [str] [float] [float] [float]
 
         mol_tag1
         mol_tag2
         mol_key1=...
         mol_key2 = ...
-        ```
 
-    The xyz file is parsed and returned as a plams.Molecule object.
-    Flags and tags are given as mol.flags and mol.flags.tags respectively
-    Similarly for the atoms, the flags and tags are given as mol.atoms[i].flags and mol.atoms[i].flags.tags
+
+    The xyz file is parsed and returned as a :class:`plams.Molecule <plams.mol.molecule.Molecule>` object.
+    Flags and tags are given as ``mol.flags`` and ``mol.flags.tags`` respectively.
+    Similarly for the atoms, the flags and tags are given as ``mol.atoms[i].flags`` and ``mol.atoms[i].flags.tags``
     """
 
     def parse_flags(args):
@@ -125,8 +127,91 @@ def load(path) -> plams.Molecule:
     return mol
 
 
+def guess_fragments(mol: plams.Molecule) -> dict[str, plams.Molecule]:
+    '''
+    Guess fragments based on data from the xyz file. Two methods are supported, see the tabs below.
+    
+    
+    .. tabs::
+        
+        .. group-tab:: First method
+
+            .. code-block::
+
+                8
+
+                N       0.00000000       0.00000000      -0.81474153 
+                B      -0.00000000      -0.00000000       0.83567034 
+                H       0.47608351      -0.82460084      -1.14410295 
+                H       0.47608351       0.82460084      -1.14410295 
+                H      -0.95216703       0.00000000      -1.14410295 
+                H      -0.58149793       1.00718395       1.13712667 
+                H      -0.58149793      -1.00718395       1.13712667 
+                H       1.16299585      -0.00000000       1.13712667 
+
+                frag_Donor = 1, 3-5
+                frag_Acceptor = 2, 6-8
+            
+            In this case, fragment atom indices must be provided below the coordinates. 
+            The fragment name must be prefixed with ``frag_``. Indices can be given as integers or as ranges using ``-``.
+        
+        .. group-tab:: Second method
+
+            .. code-block::
+
+                8
+
+                N       0.00000000       0.00000000      -0.81474153 frag=Donor
+                B      -0.00000000      -0.00000000       0.83567034 frag=Acceptor
+                H       0.47608351      -0.82460084      -1.14410295 frag=Donor
+                H       0.47608351       0.82460084      -1.14410295 frag=Donor
+                H      -0.95216703       0.00000000      -1.14410295 frag=Donor
+                H      -0.58149793       1.00718395       1.13712667 frag=Acceptor
+                H      -0.58149793      -1.00718395       1.13712667 frag=Acceptor
+                H       1.16299585      -0.00000000       1.13712667 frag=Acceptor
+            
+            In this case, fragment atoms are marked with the `frag` flag which gives the name of the fragment the atom belongs to.
+
+    Args:
+        mol: the molecule that is to be split into fragments. It should have defined either method shown above. If it does not define these methods this function returns ``None``.
+
+    Returns:
+        A dictionary containing fragment names as keys and :class:`plams.Molecule <scm.plams.mol.molecule.Molecule>` objects as values. Atoms that were not included by either method will be placed in the molecule object with key ``None``.
+
+    '''
+
+    # first method, check if the fragments are defined as molecule flags
+    fragment_flags = [flag for flag in mol.flags if flag.startswith('frag_')]
+    if len(fragment_flags) > 0:
+        fragment_mols = {frag.removeprefix('frag_'): plams.Molecule() for frag in fragment_flags}
+        for frag in fragment_flags:
+            indices = []
+            index_line = mol.flags[frag]
+            for indx in index_line:
+                if isinstance(indx, int):
+                    indices.append(indx)
+                elif isinstance(indx, str) and '-' in indx:
+                    indices.extend(range(int(indx.split('-')[0]), int(indx.split('-')[1]) + 1))
+                else:
+                    raise ValueError(f'Fragment index {indx} could not be parsed.')
+
+            [fragment_mols[frag.removeprefix('frag_')].add_atom(mol[i]) for i in indices]
+        return fragment_mols
+
+    # second method, check if the atoms have a frag= flag defined
+    fragment_names = set(atom.flags.get('frag') for atom in mol)
+    if len(fragment_names) > 0:
+        fragment_mols = {name: plams.Molecule() for name in fragment_names}
+        for atom in mol:
+            # get the fragment the atom belongs to and add it to the list
+            fragment_mols[atom.flags.get('frag')].add_atom(atom)
+
+        return fragment_mols
+
+
+
 if __name__ == "__main__":
-    mol = load(r"D:\Users\Yuman\Desktop\PhD\ychem\calculations2\5ef3a511141a993d83552515df6bf882a7560dd806f88df4e2c2887b4d2a9595\transitionstate\input_mol.xyz")
-    print(mol)
-    print(mol.flags)
-    print(mol[1].flags)
+    # mol = load(r"D:\Users\Yuman\Desktop\PhD\ychem\calculations2\5ef3a511141a993d83552515df6bf882a7560dd806f88df4e2c2887b4d2a9595\transitionstate\input_mol.xyz")
+    mol = load('../../examples/job/NH3BH3.xyz')
+    frags = guess_fragments(mol)
+    print(frags)
