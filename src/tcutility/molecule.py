@@ -1,6 +1,5 @@
 from scm import plams
 from tcutility.results import result
-from typing import Union
 
 
 def parse_str(s: str):
