@@ -1,6 +1,6 @@
 from scm import plams
 from tcutility.results import result
-
+from typing import Dict
 
 def parse_str(s: str):
     # checks if string should be an int, float, bool or string
@@ -126,7 +126,7 @@ def load(path) -> plams.Molecule:
     return mol
 
 
-def guess_fragments(mol: plams.Molecule) -> dict[str, plams.Molecule]:
+def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
     '''
     Guess fragments based on data from the xyz file. Two methods are supported, see the tabs below.
     
