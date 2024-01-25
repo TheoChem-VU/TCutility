@@ -102,7 +102,7 @@ class Transform:
     transformations simultaneously.
     '''
     def __init__(self, R: np.ndarray = None, T: np.ndarray = None, S: np.ndarray = None):
-        self.M = self.__build_matrix(R, T, S)
+        self.M = self._build_matrix(R, T, S)
 
     def __str__(self):
         return str(self.M)
@@ -158,7 +158,7 @@ class Transform:
         if T is None:
             T = [x or 0, y or 0, z or 0]
 
-        self.M = self.M @ self.__build_matrix(T=T)
+        self.M = self.M @ self._build_matrix(T=T)
 
     def rotate(self, R: np.ndarray = None, x: float = None, y: float = None, z: float = None):
         r"""
@@ -172,7 +172,7 @@ class Transform:
         if R is None:
             R = get_rotmat(x=x, y=y, z=z)
 
-        self.M = self.M @ self.__build_matrix(R=R)
+        self.M = self.M @ self._build_matrix(R=R)
 
     def scale(self, S: np.ndarray = None, x: float = None, y: float = None, z: float = None):
         """
@@ -190,9 +190,9 @@ class Transform:
         elif isinstance(S, (float, int)):
             S = [S, S, S]
 
-        self.M = self.M @ self.__build_matrix(S=S)
+        self.M = self.M @ self._build_matrix(S=S)
 
-    def __build_matrix(self, R: np.ndarray = None, T: np.ndarray = None, S: np.ndarray = None) -> np.ndarray:
+    def _build_matrix(self, R: np.ndarray = None, T: np.ndarray = None, S: np.ndarray = None) -> np.ndarray:
         '''
         Build the transformation matrix for this object.
         '''
@@ -207,19 +207,48 @@ class Transform:
 
 class KabschTransform(Transform):
     """
-    Use Kabsch-Umeyama algorithm to calculate the optimal rotation matrix and translation
-    to superimpose X onto Y.
+    Use Kabsch-Umeyama algorithm to calculate the optimal transformation matrix :math:`T_{Kabsch}` that minimizes the RMSD between two sets of coordinates ``X`` and ``Y``, such that 
+    
+    :math:`\\text{arg}\\min_{T_{Kabsch}} \\text{RMSD}(T_{Kabsch}(X), Y)`
+
 
     It is numerically stable and works when the covariance matrix is singular.
     Both sets of points must be the same size for this algorithm to work.
     The coordinates are first centered onto their centroids before determining the
     optimal rotation matrix.
 
+    Args:
+        X: array containing the first set of coordinates. The Kabsch transformation matrix will be made such that applying it to ``X`` will yield ``Y``.
+        Y: array containing the second set of coordinates. These coordinates is the target to transform to.
+
+    Example:
+
+        .. code-block:: python
+
+            from tcutility import geometry
+            import numpy as np
+    
+            # create two arrays that are the same
+            X, Y = np.arange(5 * 3).reshape(5, 3), np.arange(5 * 3).reshape(5, 3)  
+
+            # create a transformation matrix to change X
+            Tx = geometry.Transform()
+            Tx.rotate(x=1, y=1, z=1)
+            Tx.translate(x=1, y=1, z=1)
+
+            X = Tx(X)
+            
+            # get the Kabsch transformation matrix
+            Tkabsch = geometry.KabschTransform(X, Y)
+    
+            # check if applying the transformation matrix to X yields Y
+            assert np.isclose(Tkabsch(X), Y).all()
+
+
     References:
         https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem
         https://en.wikipedia.org/wiki/Kabsch_algorithm
     """
-
     def __init__(self, X: np.ndarray, Y: np.ndarray):
         # make sure arrays are 2d and the same size
         X, Y = np.atleast_2d(X), np.atleast_2d(Y)
@@ -251,7 +280,7 @@ class KabschTransform(Transform):
         # the normal order is to first translate X by -centroid_x
         # then rotate with R
         # finally translate by +centroid_y
-        self.M = self.__build_matrix()
+        self.M = self._build_matrix()
         self.translate(centroid_y)
         self.rotate(R)
         self.translate(-centroid_x)
