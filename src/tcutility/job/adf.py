@@ -24,11 +24,12 @@ class ADFJob(AMSJob):
     def basis_set(self, typ: str = 'TZ2P', core: str = 'None'):
         '''
         Set the basis-set type and frozen core approximation for this calculation.
-        Note: If the selected functional is the r2SCAN-3c functional, then the basis-set will be set to mTZ2P.
 
         Args:
             typ: the type of basis-set to use. Default is TZ2P.
             core: the size of the frozen core approximation. Default is None.
+
+        .. note:: If the selected functional is the r2SCAN-3c functional, then the basis-set will be set to mTZ2P.
         '''
         if self._functional == 'r2SCAN-3c' and typ != 'mTZ2P':
             log.warn(f'Basis set {typ} is not allowed with r2SCAN-3c, switching to mTZ2P.')
@@ -49,11 +50,12 @@ class ADFJob(AMSJob):
         '''
         Set the multiplicity of the system. If the value is not one the calculation will also be unrestricted.
         We use the following values:
-            #. singlet
-            #. doublet
-            #. triplet
-
-            ...
+        
+        1) singlet
+        2) doublet
+        3) triplet
+        4) ...
+    
         The multiplicity is equal to 2*S+1 for spin-polarization of S.
         '''
         self.settings.input.adf.SpinPolarization = (val - 1)//2
@@ -87,11 +89,12 @@ class ADFJob(AMSJob):
     def functional(self, funtional_name: str, dispersion: str = None):
         '''
         Set the functional to be used by the calculation. This also sets the dispersion if it is specified in the functional name.
-        Note: setting the functional to r2SCAN-3c will automatically set the basis-set to mTZ2P.
 
         Args:
-            funtional_name: the name of the functional. The value can be the same as the ones used in the ADF GUI. For a full list of functionals please see `tcutility.data.functionals`.
+            funtional_name: the name of the functional. The value can be the same as the ones used in the ADF GUI. For a full list of functionals please see :func:`functionals.get_available_functionals`.
             dispersion: dispersion setting to use with the functional. This is used when you want to use a functional from LibXC.
+
+        .. note:: Setting the functional to r2SCAN-3c will automatically set the basis-set to mTZ2P.
         '''
         # before adding the new functional we should clear any previous functional settings
         self.settings.input.adf.pop('XC', None)

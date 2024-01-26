@@ -5,8 +5,17 @@ from tcutility import results, log
 j = os.path.join
 
 
-def get(functional_name):
-    return functionals[functional_name]
+def get(functional_name: str):
+    '''
+    Return information about a given functional.
+
+    Args:
+        functional_name: the name of the functional. It should exist in the get_available_functionals keys.
+
+    Return:
+        A :class:`results.Result` object containing information about the functional if it exists. Else it will return ``None``.
+    '''
+    return functionals.get(functional_name)
 
 
 def get_available_functionals():
