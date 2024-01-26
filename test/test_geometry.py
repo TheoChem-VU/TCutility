@@ -70,6 +70,35 @@ def test_vector_align_rotmat3():
     assert (geometry.apply_rotmat(a, R).round(5) == b.round(5)).all()
 
 
+def test_transform():
+    # create two arrays that are the same
+    X, Y = np.arange(5 * 3).reshape(5, 3), np.arange(5 * 3).reshape(5, 3)  
+
+    # create a transformation matrix to change X
+    Tx = geometry.Transform()
+    Tx.rotate(x=1, y=1, z=1)
+    Tx.translate(x=1, y=1, z=1)
+
+    X = Tx(X)
+    
+    # get the Kabsch transformation matrix
+    Tkabsch = geometry.KabschTransform(X, Y)
+
+    # check if applying the transformation matrix to X yields Y
+    assert np.isclose(Tkabsch(X), Y).all()
+
+
+def test_transform2():
+    # create two arrays that are the same
+    X, Y = np.arange(5 * 3).reshape(5, 3), np.arange(5 * 3).reshape(5, 3)  
+
+    # get the Kabsch transformation matrix
+    Tkabsch = geometry.KabschTransform(X, Y)
+
+    # check if applying the transformation matrix to X yields Y
+    assert np.isclose(Tkabsch(X), Y).all()
+
+
 if __name__ == "__main__":
     import pytest
 
