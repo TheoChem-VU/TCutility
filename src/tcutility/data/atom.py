@@ -32,9 +32,12 @@ def parse_element(val):
         Atom number corresponding to val.
 
     Examples:
-        parse_element('Hydrogen') == 1
-        parse_element('C') == 6
-        parse_element(23) == 23
+
+        .. code-block:: python
+
+            parse_element('Hydrogen') == 1
+            parse_element('C') == 6
+            parse_element(23) == 23
     """
     # we will assume an integer value is an atom number already
     if isinstance(val, int):
@@ -50,11 +53,24 @@ def parse_element(val):
 
 
 def radius(element):
+    '''
+    Args:
+        element: the symbol, name or atom number of the element. See :func:`parse_element`.
+    Return: 
+        The empirical covalent radius of an element in angstroms, up to element 96.
+    '''
     num = parse_element(element)
     return _radii.get(num)
 
 
 def color(element):
+    '''
+    Args:
+        element: the symbol, name or atom number of the element. See :func:`parse_element`.
+
+    Return:
+        The standard CPK colors of the elements, up to element 109.
+    '''
     num = parse_element(element)
     return _colors[num]
 
