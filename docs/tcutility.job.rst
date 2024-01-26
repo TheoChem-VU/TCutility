@@ -1,5 +1,8 @@
-TCutility.job module
-====================
+tcutility.job package
+=====================
+
+Overview
+--------
 
 This module offers you the tools to efficiently and easily build computational workflows with various engines. 
 The module defines usefull classes that do all the heavy lifting (input and runscript preparation) in the background.
@@ -9,15 +12,14 @@ We currently support the following engines:
 
 * `ADF <https://www.scm.com/product/adf/>`_
 * `DFTB <https://www.scm.com/product/dftb/>`_
-.. * `BAND <https://www.scm.com/product/band_periodicdft/>`_
 * `ORCA <https://www.faccts.de/orca/>`_
 * `CREST <https://github.com/crest-lab/crest>`_
 * `Quantum Cluster Growth (QCG)  <https://crest-lab.github.io/crest-docs/page/overview/workflows.html#quantum-cluster-growth-qcg>`_
 
-See the API documentation for an overview of the Job classes offered by TCutility.job module.
+See the `API Documentation <./api/tcutility.job.html>`_ for an overview of the Job classes offered by tcutility.job module.
 
 Requirements
-============
+------------
 
 To run calculations related to the Amsterdam Modelling Suite (AMS) you will require a license.
 
@@ -25,9 +27,9 @@ For ORCA calculations you will need to add the ORCA executable to your PATH.
 
 
 Example
-=======
+-------
 
-For example, running a fragment calculation using ADF requires setting up three different ADF jobs. Using the TCutility.job module allows you to set up these kinds of jobs in as little as 8 lines of code.
+For example, running a fragment calculation using ADF requires setting up three different ADF jobs. Using the tcutility.job module allows you to set up these kinds of jobs in as little as 8 lines of code.
 
 .. tabs::
 
@@ -65,4 +67,3 @@ For example, running a fragment calculation using ADF requires setting up three 
 
 			frag_Donor = 1, 3, 4, 5
 			frag_Acceptor = 2, 6, 7, 8
-
