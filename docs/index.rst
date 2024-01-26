@@ -10,14 +10,26 @@ TCutility |ProjectVersion| documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
    tcutility.results
+   tcutility.job
    tcutility.constants
 
 
+TCutility |ProjectVersion| API documentation
+============================================
+
+.. toctree::
+   :maxdepth: 1
+
+   api/tcutility
+   api/tcutility.results
+   api/tcutility.job
+   api/tcutility.data
+
+
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
