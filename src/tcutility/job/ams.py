@@ -94,7 +94,7 @@ class AMSJob(Job):
         '''
         self.settings.input.ams.System.Charge = val
 
-    def setup_job(self):
+    def _setup_job(self):
         '''
         Set up the calculation. This will create the working directory and write the runscript and input file for ADF to use.
         '''

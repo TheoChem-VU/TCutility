@@ -13,7 +13,7 @@ class Job:
     The base class contains an empty :class:`Result <tcutility.results.result.Result>` object that holds the settings. 
     It also provides :meth:`__enter__` and :meth:`__exit__` methods to make use of context manager syntax.
     
-    All class methods are in principle safe to overwrite, but the :meth:`setup_job` method **must** be overwritten.
+    All class methods are in principle safe to overwrite, but the :meth:`_setup_job` method **must** be overwritten.
     '''
     def __init__(self, test_mode=False, overwrite=False, wait_for_finish=False):
         self.settings = results.Result()
@@ -56,7 +56,8 @@ class Job:
         '''
         Change slurm settings, for example, to change the partition or change the number of cores to use.
         The arguments are the same as you would use for sbatch. E.g. to change the partition to 'tc' call:
-        job.sbatch(p='tc') or job.sbatch(partition='tc').
+
+        ``job.sbatch(p='tc')`` or ``job.sbatch(partition='tc')``
         '''
         for key, value in kwargs.items():
             if key == 'dependency' and 'dependency' in self._sbatch:
@@ -67,9 +68,10 @@ class Job:
         '''
         Create an sbatch command that can be used to run the job.
         Extra options that are added:
-            -D {self.workdir}               to make sure the job starts in the correct directory
-            -J {self.rundir}/{self.name}    to give a nicer job-name when calling squeue
-            -o {self.name}.out              to redirect the output from the default slurm-{id}.out
+        
+        * ``-D {self.workdir}``               to make sure the job starts in the correct directory
+        * ``-J {self.rundir}/{self.name}``    to give a nicer job-name when calling squeue
+        * ``-o {self.name}.out``              to redirect the output from the default slurm-{id}.out
         '''
         self._sbatch.prune()
         c = 'sbatch '
@@ -81,7 +83,7 @@ class Job:
                 c += f'-{key} {val} '
         return c + f'-D {self.workdir} -J {self.rundir}/{self.name} -o {self.name}.out {os.path.split(self.runfile_path)[1]}'
 
-    def setup_job(self):
+    def _setup_job(self):
         '''
         Set up the current job. This method should create the working directory, runscript and input file.
         Method must return True if it was successful.
@@ -97,7 +99,7 @@ class Job:
             return
 
         # setup the job and check if it was successfull
-        setup_success = self.setup_job()
+        setup_success = self._setup_job()
 
         if self.test_mode or not setup_success:
             return

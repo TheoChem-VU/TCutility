@@ -117,7 +117,7 @@ class ORCAJob(Job):
 
         return ret
 
-    def setup_job(self):
+    def _setup_job(self):
         try:
             if self.orca_path is None:
                 self.orca_path = sp.check_output(['which', 'orca']).decode().strip()
@@ -145,4 +145,4 @@ class ORCAJob(Job):
 if __name__ == '__main__':
     job = ORCAJob()
     job.molecule('water.xyz')
-    job.setup_job()
+    job._setup_job()

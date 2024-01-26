@@ -18,7 +18,7 @@ class CRESTJob(Job):
         self._temp = 400
         self._mdlen = 'x1'
 
-    def setup_job(self):
+    def _setup_job(self):
         self.add_postamble('mkdir rotamers')
         self.add_postamble('mkdir conformers')
         self.add_postamble(f'split -d -l {len(self._molecule.atoms) + 2} -a 5 crest_conformers.xyz conformers/')
@@ -64,10 +64,12 @@ class CRESTJob(Job):
         '''
         Set the multiplicity of the system. If the value is not one the calculation will also be unrestricted.
         We use the following values:
-            1: singlet
-            2: doublet
-            3: triplet
-            ...
+        
+        1) singlet
+        2) doublet
+        3) triplet
+        4) ...
+
         The multiplicity is equal to 2*S+1 for spin-polarization of S.
         '''
         self._spinpol = (val - 1)//2
@@ -177,7 +179,7 @@ class QCGJob(CRESTJob):
     def nofix(self, enable=True):
         self._nofix = enable
 
-    def setup_job(self):
+    def _setup_job(self):
         self.add_postamble('mkdir ensemble/ensemble')
         self.add_postamble(f'split -d -l {len(self._molecule.atoms) + len(self._solvent.atoms) * self._nsolv + 2} -a 5 ensemble/final_ensemble.xyz ensemble/ensemble')
 
