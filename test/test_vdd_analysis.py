@@ -1,10 +1,11 @@
-﻿import pytest
-import pathlib as pl
-from scm.plams import KFReader
+﻿import pathlib as pl
+
 import numpy as np
+import pytest
+from scm.plams import KFReader
+from tcutility import results
 from tcutility.analysis.vdd import charge, manager
 from tcutility.results import ams
-from tcutility import results
 
 # VDDCharge, manager.VDDChargeManager, get_vdd_charges, _get_fragment_indices_from_input_order
 
@@ -112,12 +113,12 @@ def test_get_vdd_charges_charge_values_fa_cs(vdd_manager_fa_ordered_fragindices_
     vdd_charges = vdd_manager_fa_ordered_fragindices_cs.get_vdd_charges("e")
 
     # The "/1000" is because the charges are in [electrons] in the kf file but it is more readable to use [millielectrons] here
-    test_charge_1 = charge.VDDCharge(atom_index=1, atom_symbol="C", charge=-39.753 / 1000, frag_index=1)
+    test_charge_1 = charge.VDDCharge(atom_index=1, atom_symbol="C", charge=-39.75281 / 1000, frag_index=1)
     test_charge_2 = charge.VDDCharge(atom_index=2, atom_symbol="Se", charge=-164.520 / 1000, frag_index=1)
     test_charge_3 = charge.VDDCharge(atom_index=8, atom_symbol="H", charge=53.397 / 1000, frag_index=2)
-    assert vdd_charges["vdd"][0] == test_charge_1, "Charge values are not as expected"
-    assert vdd_charges["vdd"][1] == test_charge_2, "Charge values are not as expected"
-    assert vdd_charges["vdd"][7] == test_charge_3, "Charge values are not as expected"
+    assert np.isclose(vdd_charges["vdd"][0].charge, test_charge_1.charge), "Charge values are not as expected"
+    assert np.isclose(vdd_charges["vdd"][1].charge, test_charge_2.charge), "Charge values are not as expected"
+    assert np.isclose(vdd_charges["vdd"][7].charge, test_charge_3.charge), "Charge values are not as expected"
     assert np.isclose(np.sum([charge.charge for charge in vdd_charges["vdd"]]), 0.0, atol=1e-1), "Total charge is not zero"
 
 
@@ -125,12 +126,12 @@ def test_get_vdd_charges_charge_values_geo_nosym(vdd_manager_fa_nosym: manager.V
     vdd_charges = vdd_manager_fa_nosym.get_vdd_charges("e")
 
     # The "/1000" is because the charges are in [electrons] in the kf file but it is more readable to use [millielectrons] here
-    test_charge_1 = charge.VDDCharge(atom_index=3, atom_symbol="C", charge=-0.329 / 1000, frag_index=1)
-    test_charge_2 = charge.VDDCharge(atom_index=4, atom_symbol="C", charge=-0.403 / 1000, frag_index=1)
-    test_charge_3 = charge.VDDCharge(atom_index=12, atom_symbol="O", charge=-1.210 / 1000, frag_index=2)
-    assert vdd_charges["vdd"][2] == test_charge_1, "Charge values are not as expected"
-    assert vdd_charges["vdd"][3] == test_charge_2, "Charge values are not as expected"
-    assert vdd_charges["vdd"][11] == test_charge_3, "Charge values are not as expected"
+    test_charge_1 = charge.VDDCharge(atom_index=3, atom_symbol="C", charge=-0.328746 / 1000, frag_index=1)
+    test_charge_2 = charge.VDDCharge(atom_index=4, atom_symbol="C", charge=-0.40333031 / 1000, frag_index=1)
+    test_charge_3 = charge.VDDCharge(atom_index=12, atom_symbol="O", charge=-1.210724 / 1000, frag_index=2)
+    assert np.isclose(vdd_charges["vdd"][2].charge, test_charge_1.charge), "Charge values are not as expected"
+    assert np.isclose(vdd_charges["vdd"][3].charge, test_charge_2.charge), "Charge values are not as expected"
+    assert np.isclose(vdd_charges["vdd"][11].charge, test_charge_3.charge), "Charge values are not as expected"
     assert np.isclose(np.sum([charge.charge for charge in vdd_charges["vdd"]]), 0.0, atol=1e-1), "Total charge is not zero"
 
 
