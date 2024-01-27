@@ -122,8 +122,10 @@ class Job:
             # store the slurm job ID
             self.slurm_job_id = sbatch_result.id
             # and write the command to a file so we can rerun it later
-            with open(j(self.workdir, 'submit'), 'w+') as cmd_file:
+            with open(j(self.workdir, 'submit.sh'), 'w+') as cmd_file:
                 cmd_file.write(sbatch_result.command)
+            # make the submit command executable
+            os.chmod(j(self.workdir, 'submit.sh'), stat.S_IRWXU)
 
             # if we requested the job to hold we will wait for the slurm job to finish
             if self.wait_for_finish:
