@@ -1,11 +1,13 @@
-from typing import List
-import numpy as np
 import os
-from datetime import datetime
 import re
+from datetime import datetime
+from typing import List
+
+import numpy as np
 from scm import plams
-from tcutility.results import cache, Result
+
 from tcutility import constants, ensure_list
+from tcutility.results import Result, cache
 from tcutility.typing import arrays
 
 j = os.path.join
@@ -338,6 +340,12 @@ def get_molecules(calc_dir: str) -> Result:
         ret.frag_indices = _get_fragment_indices_from_input_order(reader_adf)
     except KeyError:
         ret.frag_indices = np.ones(natoms)
+
+    # add the charges to the molecule
+    try:
+        ret.mol_charge = reader_ams.read("Molecule", "Charge")
+    except KeyError:
+        ret.mol_charge = 0.0
 
     return ret
 
