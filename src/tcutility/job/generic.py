@@ -113,9 +113,11 @@ class Job:
                 with open(j(self.workdir, 'submit'), 'w+') as cmd_file:
                     cmd_file.write(cmd)
                 sbatch_out = sp.check_output(cmd.split(), stderr=sp.STDOUT).decode()
-                print(sbatch_out)
-                # set the slurm job id for this calculation, we use this in order to set dependencies between jobs.
-                self.slurm_job_id = slurm.workdir_info(self.workdir).id
+                for line in sbatch_out.splitlines():
+                    print(line)
+                    if line.startswith('Submitted batch job'):
+                        # set the slurm job id for this calculation, we use this in order to set dependencies between jobs.
+                        self.slurm_job_id = line.strip().split()[-1]
                 # if we requested the job to hold we will wait for the slurm job to finish
                 if self.wait_for_finish:
                     slurm.wait_for_job(self.slurm_job_id)
