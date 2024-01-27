@@ -73,7 +73,11 @@ class Job:
         * ``-J {self.rundir}/{self.name}``    to give a nicer job-name when calling squeue
         * ``-o {self.name}.out``              to redirect the output from the default slurm-{id}.out
         '''
+        self._sbatch.setdefault('D', self.workdir)
+        self._sbatch.setdefault('J', f'{self.rundir}/{self.name}')
+        self._sbatch.setdefault('o', f'{self.name}.out')
         self._sbatch.prune()
+
         c = 'sbatch '
         for key, val in self._sbatch.items():
             key = key.replace('_', '-')
@@ -81,7 +85,8 @@ class Job:
                 c += f'--{key}={val} '
             else:
                 c += f'-{key} {val} '
-        return c + f'-D {self.workdir} -J {self.rundir}/{self.name} -o {self.name}.out {os.path.split(self.runfile_path)[1]}'
+
+        return c + os.path.split(self.runfile_path)[1]
 
     def _setup_job(self):
         '''
@@ -104,27 +109,29 @@ class Job:
         if self.test_mode or not setup_success:
             return
 
-        # we call the run command here and redirect all output to devnull so that the job runs silently without printing a bunch of stuff
-        # errors should still be printed.
-        with open(os.devnull, 'wb') as devnull:
-            if slurm.has_slurm():
-                cmd = self.get_sbatch_command()
-                # we will write the sbatch command to a file so that we can resubmit the job later on
-                with open(j(self.workdir, 'submit'), 'w+') as cmd_file:
-                    cmd_file.write(cmd)
-                sbatch_out = sp.check_output(cmd.split(), stderr=sp.STDOUT).decode()
-                for line in sbatch_out.splitlines():
-                    print(line)
-                    if line.startswith('Submitted batch job'):
-                        # set the slurm job id for this calculation, we use this in order to set dependencies between jobs.
-                        self.slurm_job_id = line.strip().split()[-1]
-                # if we requested the job to hold we will wait for the slurm job to finish
-                if self.wait_for_finish:
-                    slurm.wait_for_job(self.slurm_job_id)
-            else:
-                # if we are not using slurm, we can execute the file. For this we need special permissions, so we have to set that first.
-                os.chmod(self.runfile_path, stat.S_IRWXU)
-                sp.run(self.runfile_path, cwd=os.path.split(self.runfile_path)[0])
+        if slurm.has_slurm():
+            # set some default sbatch settings
+            self._sbatch.setdefault('D', self.workdir)
+            self._sbatch.setdefault('J', f'{self.rundir}/{self.name}')
+            self._sbatch.setdefault('o', f'{self.name}.out')
+            self._sbatch.prune()
+
+            # submit the job with sbatch
+            sbatch_result = slurm.sbatch(os.path.split(self.runfile_path)[1], **self._sbatch)
+
+            # store the slurm job ID
+            self.slurm_job_id = sbatch_result.id
+            # and write the command to a file so we can rerun it later
+            with open(j(self.workdir, 'submit'), 'w+') as cmd_file:
+                cmd_file.write(sbatch_result.command)
+
+            # if we requested the job to hold we will wait for the slurm job to finish
+            if self.wait_for_finish:
+                slurm.wait_for_job(self.slurm_job_id)
+        else:
+            # if we are not using slurm, we can execute the file. For this we need special permissions, so we have to set that first.
+            os.chmod(self.runfile_path, stat.S_IRWXU)
+            sp.run(self.runfile_path, cwd=os.path.split(self.runfile_path)[0])
 
     def add_preamble(self, line):
         '''
