@@ -112,7 +112,8 @@ class Job:
                 # we will write the sbatch command to a file so that we can resubmit the job later on
                 with open(j(self.workdir, 'submit'), 'w+') as cmd_file:
                     cmd_file.write(cmd)
-                sp.run(cmd.split(), stdout=devnull, stderr=sp.STDOUT)
+                sbatch_out = sp.check_output(cmd.split(), stderr=sp.STDOUT).decode()
+                print(sbatch_out)
                 # set the slurm job id for this calculation, we use this in order to set dependencies between jobs.
                 self.slurm_job_id = slurm.workdir_info(self.workdir).id
                 # if we requested the job to hold we will wait for the slurm job to finish
