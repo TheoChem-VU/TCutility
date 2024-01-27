@@ -2,7 +2,6 @@ import subprocess as sp
 from tcutility import results, log, cache
 import time
 import os
-from yutility import timer
 
 
 @cache.cache
@@ -61,6 +60,42 @@ def squeue() -> results.Result:
     # then add the data to the return object's lists
     for line in output:
         [ret[col].append(val) for col, val in zip(columns, line.split())]
+
+    return ret
+
+
+def sbatch(runfile: str, **options: dict) -> results.Result:
+    '''
+    Submit a job to slurm using sbatch.
+
+    Args:
+        runfile: the path to the filename to be submitted.
+        options: options to be used for sbatch.
+
+    Returns:
+        A :class:`results.Result` containing the slurm job ID as the ``id`` key and the full command used for submitting the job as the ``command`` key.
+    '''
+    cmd = 'sbatch '
+    for key, val in options.items():
+        key = key.replace('_', '-')
+        if len(key) > 1:
+            cmd += f'--{key}={val} '
+        else:
+            cmd += f'-{key} {val} '
+
+    cmd = cmd + runfile
+
+    ret = results.Result()
+    ret.command = cmd
+
+    # run the job
+    sbatch_out = sp.check_output(cmd.split(), stderr=sp.STDOUT).decode()
+    # get the slurm job id from the output
+    for line in sbatch_out.splitlines():
+        if line.startswith('Submitted batch job'):
+            # set the slurm job id for this calculation, we use this in order to set dependencies between jobs.
+            ret.id = line.strip().split()[-1]
+            break
 
     return ret
 
