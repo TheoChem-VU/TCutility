@@ -1,8 +1,11 @@
 import subprocess as sp
-from tcutility import results, log
+from tcutility import results, log, cache
 import time
+import os
+from yutility import timer
 
 
+@cache.cache
 def has_slurm() -> bool:
     '''
     Function to check if the current platform uses slurm. 
@@ -11,12 +14,17 @@ def has_slurm() -> bool:
         Whether slurm is available on this platform.
     '''
     try:
-        sp.check_output(['which', 'sbatch']).decode()
+        # we do not want this function to print anything when it does not find sbatch
+        with open(os.devnull, 'wb') as devnull:
+            sp.check_output(['which', 'sbatch'], stderr=devnull).decode()
+        # if it runs without error, we have access to slurm
         return True
+    # if an error is raised we do not have slurm
     except sp.CalledProcessError:
         return False
 
 
+@cache.timed_cache(3)
 def squeue() -> results.Result:
     '''
     Get information about jobs managed by slurm using squeue.
@@ -28,6 +36,10 @@ def squeue() -> results.Result:
             - **id (list[str])** – slurm job id's.
             - **status (list[str])** – slurm job status name. See squeue documentation.
             - **statuscode (list[str])** – slurm job status codes. See squeue documentation
+
+    .. note::
+
+        By default this function uses a timed cache (see :func:`cache.timed_cache`) with a 3 second delay to lessen the load on HPC systems.
     '''
     ret = results.Result()
 
@@ -75,7 +87,7 @@ def workdir_info(workdir: str) -> results.Result:
     return ret
 
 
-def wait_for_job(slurmid: int, check_every: int = 5):
+def wait_for_job(slurmid: int, check_every: int = 3):
     '''
     Wait for a slurm job to finish. We check every `check_every` seconds if the slurm job id is still present in squeue.
 
