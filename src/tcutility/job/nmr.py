@@ -1,11 +1,18 @@
 from tcutility.job.generic import Job
 from tcutility.job.adf import ADFJob
+from tcutility.data import functionals
 import os
 
 j = os.path.join
 
 
 class NMRJob(Job):
+    '''
+    A job that handles calculation of Nuclear Magnetic Resonance (NMR) chemical shifts.
+    The job will first run an :class:`tcutility.job.adf.ADFJob` calculation at the SAOP/TZ2P level of theory to prepare for the NMR program of AMS.
+    The NMR shifts will be calculated for all atoms and any additional coordinate (NICS). 
+    New NICS points can be given using the :meth:`NMRJob.add_nics_point` method.
+    '''
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.pre_nmr_job = ADFJob(*args, **kwargs)
@@ -63,8 +70,14 @@ class NMRJob(Job):
 
         return True
 
-    def add_nics_point(self, p):
-        self.nics_points.append(p)
+    def add_nics_point(self, coordinate: tuple[float, float, float]):
+        '''
+        Add a NICS point to be calculated.
+
+        Args:
+            coordinate: the (x, y, z) coordinates of a NICS point to calculate the chemical shift for. Has to be given as cartesian coordinates and using unit angstrom.
+        '''
+        self.nics_points.append(coordinate)
 
 
 if __name__ == '__main__':

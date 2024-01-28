@@ -113,7 +113,7 @@ We currently support the following engines and job classes:
 
   * :class:`ADFJob <tcutility.job.adf.ADFJob>`, regular ADF calculations
   * :class:`ADFFragmentJob <tcutility.job.adf.ADFFragmentJob>`, fragment based calculations
-  * :class:`NMRJob <tcutility.job.adf.NMRJob>`, Nuclear Magnetic Resonance (NMR) calculations using ADF
+  * :class:`NMRJob <tcutility.job.nmr.NMRJob>`, Nuclear Magnetic Resonance (NMR) calculations using ADF
 
 
 * `Density Functional with Tight Binding (DFTB) <https://www.scm.com/product/dftb/>`_
