@@ -1,22 +1,139 @@
-tcutility.job package
-=====================
+Setup workflows with tcutility.job
+===================================
 
 Overview
 --------
 
 This module offers you the tools to efficiently and easily build computational workflows with various engines. 
-The module defines usefull classes that do all the heavy lifting (input and runscript preparation) in the background.
+The module defines usefull classes that do all the heavy lifting (input and runscript preparation) in the background, while ensuring correctness of the generated inputs
+
+Job classes
+***********
+
+Jobs are run using subclasses of the :class:`Job <tcutility.job.generic.Job>` class. The base :class:`Job <tcutility.job.generic.Job>` class handles setting up directories and running the calculations. 
+
+The :class:`Job <tcutility.job.generic.Job>` subclasses are also context-managers, which results in cleaner and more error-proof code:
+
+.. code-block:: python
+   :linenos:
+
+   from tcutility.job import ADFJob
+
+   # job classes are also context-managers
+   # when exiting the context-manager the job will automatically be run
+   # this ensures you won't forget to start the job
+   with ADFJob() as job:
+       job.molecule('example.xyz')
+
+   # you can also not use the context-manager
+   # in that case, don't forget to run the job
+   job = ADFJob()
+   job.molecule('example.xyz')
+   job.run()
+
+You can control where a calculation is run by changing the ``job.name`` and ``job.rundir`` properties.
+
+.. code-block:: python
+   :linenos:
+
+   from tcutility.job import ADFJob
+
+   with ADFJob() as job:
+       job.molecule('example.xyz')
+       job.rundir = './calc_dir/molecule_1'
+       job.name = 'ADF_calculation'
+
+   print(job.workdir)
+
+This script will run a single point calculation using ADF in the working directory ``./calc_dir/molecule_1/ADF_calculation``. You can access the full path to the working directory using the ``job.workdir`` property.
 
 
-We currently support the following engines:
+Slurm support
+*************
 
-* `ADF <https://www.scm.com/product/adf/>`_
-* `DFTB <https://www.scm.com/product/dftb/>`_
+One usefull feature is that the :class:`Job <tcutility.job.generic.Job>` class detects if slurm is able to be used on the platform the script is running on. If slurm is available, jobs will be submitted using ``sbatch`` instead of ran locally. It is possible to set any ``sbatch`` option you would like.
+
+.. code-block:: python
+   :linenos:
+
+   from tcutility.job import ADFJob
+
+   with ADFJob() as job:
+       job.molecule('example.xyz')
+       # we can set any sbatch settings using the job.sbatch() method
+       # in this case, we set the partition to 'tc' and the number of cores to 32
+       job.sbatch(p='tc', n=32)
+
+Job dependencies
+****************
+
+It is possible to setup dependencies between jobs. This allows you to use the results of one calculation as input for a different calculation.
+
+.. code-block:: python
+    :linenos:
+
+    from tcutility.job import ADFJob, CRESTJob
+
+    # submit and run a CREST calculation
+    with CRESTJob() as crest_job:
+        crest_job.molecule('input.xyz')
+        crest_job.sbatch(p='tc', n=32)
+
+        crest_job.rundir = './calculations/molecule_1'
+        crest_job.name = 'CREST'
+
+    # get the 10 lowest conformers using the crest_job.get_conformer_xyz() method
+    for i, conformer_xyz in enumerate(crest_job.get_conformer_xyz(10)):
+        # set up the ADF calculation
+        with ADFJob() as opt_job:
+            # make the ADFJob depend on the CRESTJob
+            # slurm will wait for the CRESTJob to finish before starting the ADFJob
+            opt_job.dependency(crest_job)
+            # you can set a file to an xyz-file 
+            # that does not exist yet as the molecule
+            opt_job.molecule(conformer_xyz)
+            opt_job.sbatch(p='tc', n=16)
+
+            opt_job.functional('OLYP-D3(BJ)')
+            opt_job.basis_set('TZ2P')
+            opt_job.quality('Good')
+            opt_job.optimization()
+
+            opt_job.rundir = './calculations/molecule_1'
+            opt_job.name = f'conformer_{i}'
+
+This script will first setup and submit a :class:`CRESTJob <tcutility.job.crest.CRESTJob>` calculation to generate conformers for the structure in ``input.xyz``. It will then submit geometry optimizations for the 10 lowest conformers using :class:`ADFJob <tcutility.job.adf.ADFJob>` at the ``OLYP-D3(BJ)/TZ2P`` level of theory. Slurm will first wait for the :class:`CRESTJob <tcutility.job.crest.CRESTJob>` calculation to finish before starting the :class:`ADFJob <tcutility.job.adf.ADFJob>` calculations.
+
+Supported engines
+*****************
+
+We currently support the following engines and job classes:
+
+* `Amsterdam Density Functional (ADF) <https://www.scm.com/product/adf/>`_
+
+  * :class:`ADFJob <tcutility.job.adf.ADFJob>`, regular ADF calculations
+  * :class:`ADFFragmentJob <tcutility.job.adf.ADFFragmentJob>`, fragment based calculations
+  * :class:`NMRJob <tcutility.job.adf.NMRJob>`, Nuclear Magnetic Resonance (NMR) calculations using ADF
+
+
+* `Density Functional with Tight Binding (DFTB) <https://www.scm.com/product/dftb/>`_
+
+  * :class:`DFTBJob <tcutility.job.dftb.DFTBJob>`, regular DFTB calculations
+
 * `ORCA <https://www.faccts.de/orca/>`_
-* `CREST <https://github.com/crest-lab/crest>`_
-* `Quantum Cluster Growth (QCG)  <https://crest-lab.github.io/crest-docs/page/overview/workflows.html#quantum-cluster-growth-qcg>`_
+
+  * :class:`ORCAJob <tcutility.job.orca.ORCAJob>`, regular ORCA calculations
+
+* `Conformer rotamer ensemble sampling tool (CREST) <https://github.com/crest-lab/crest>`_ including `Quantum Cluster Growth (QCG)  <https://crest-lab.github.io/crest-docs/page/overview/workflows.html#quantum-cluster-growth-qcg>`_
+
+  * :class:`CRESTJob <tcutility.job.crest.CRESTJob>`, CREST conformational search
+  * :class:`QCGJob <tcutility.job.crest.QCGJob>`, QCG explicit solvation search
 
 See the `API Documentation <./api/tcutility.job.html>`_ for an overview of the Job classes offered by tcutility.job module.
+
+.. note::
+	
+	If you want support for new engines/classes, please open an issue on our GitHub page, or let one of the developers know!
 
 Requirements
 ------------
@@ -28,7 +145,7 @@ For ORCA calculations you will need to add the ORCA executable to your PATH.
 
 Examples
 --------
-
+A few typical use-cases are given below. Click `here <./examples.html>`_ for a full overview of all examples.
 
 Geometry optimization using ADF
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
