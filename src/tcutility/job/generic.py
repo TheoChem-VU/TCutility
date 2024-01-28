@@ -4,6 +4,7 @@ import os
 import stat
 from typing import Union
 from scm import plams
+import shutil
 
 j = os.path.join
 
@@ -95,7 +96,11 @@ class Job:
         '''
         Run this job. We detect if we are using slurm. If we are we submit this job using sbatch. Otherwise, we will run the job locally.
         '''
-        if self.can_skip() and not self.overwrite:
+        if self.overwrite:
+            shutil.rmtree(self.workdir)
+            os.makedirs(self.workdir, exist_ok=True)
+
+        if self.can_skip():
             log.info(f'Skipping calculation {j(self.rundir, self.name)}, it is already finished or currently pending or running.')
             return
 
