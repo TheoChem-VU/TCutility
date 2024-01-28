@@ -1,0 +1,4063 @@
+{
+    "category": "LDA",
+    "name": "VWN",
+    "path_safe_name": "VWN",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "VWN",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LDA": "VWN"
+        }
+    }
+}
+
+{
+    "category": "LDA",
+    "name": "PW92",
+    "path_safe_name": "PW92",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PW92",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LDA": "PW92"
+        }
+    }
+}
+
+{
+    "category": "LDA",
+    "name": "Xonly",
+    "path_safe_name": "Xonly",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "Xonly",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LDA": "Xonly"
+        }
+    }
+}
+
+{
+    "category": "LDA",
+    "name": "Xalpha",
+    "path_safe_name": "Xalpha",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "Xalpha",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LDA": "Xalpha"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "BP86",
+    "path_safe_name": "BP86",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BP86",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "BP86"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "BP86-D",
+    "path_safe_name": "BP86-D",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BP86",
+    "dispersion": "D",
+    "dispersion_name": "DEFAULT",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "DEFAULT",
+            "GGA": "BP86"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "BP86-D3",
+    "path_safe_name": "BP86-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BP86",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "GGA": "BP86"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "BP86-D3(BJ)",
+    "path_safe_name": "BP86-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BP86",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "GGA": "BP86"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "BP86-D4",
+    "path_safe_name": "BP86-D4",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BP86",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "GGA": "BP86"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "BP86-dDsC",
+    "path_safe_name": "BP86-dDsC",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BP86",
+    "dispersion": "dDsC",
+    "dispersion_name": "dDsC",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "dDsC",
+            "GGA": "BP86"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "PW91",
+    "path_safe_name": "PW91",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PW91",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "PW91"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "PW91-dUFF",
+    "path_safe_name": "PW91-dUFF",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PW91",
+    "dispersion": "dUFF",
+    "dispersion_name": "UFF",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "UFF",
+            "GGA": "PW91"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "mPW",
+    "path_safe_name": "mPW",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "mPW",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "mPW"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "PBE",
+    "path_safe_name": "PBE",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "PBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "PBE-D",
+    "path_safe_name": "PBE-D",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE",
+    "dispersion": "D",
+    "dispersion_name": "DEFAULT",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "DEFAULT",
+            "GGA": "PBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "PBE-D3",
+    "path_safe_name": "PBE-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "GGA": "PBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "PBE-D3(BJ)",
+    "path_safe_name": "PBE-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "GGA": "PBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "PBE-D4",
+    "path_safe_name": "PBE-D4",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "GGA": "PBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "PBE-dDsC",
+    "path_safe_name": "PBE-dDsC",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE",
+    "dispersion": "dDsC",
+    "dispersion_name": "dDsC",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "dDsC",
+            "GGA": "PBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "PBE-MBD@rsSC",
+    "path_safe_name": "PBE-MBD@rsSC",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE",
+    "dispersion": "MBD@rsSC",
+    "dispersion_name": "MBD",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "MBD",
+            "GGA": "PBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "PBE-dUFF",
+    "path_safe_name": "PBE-dUFF",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE",
+    "dispersion": "dUFF",
+    "dispersion_name": "UFF",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "UFF",
+            "GGA": "PBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "RPBE",
+    "path_safe_name": "RPBE",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "RPBE",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "RPBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "RPBE-D3",
+    "path_safe_name": "RPBE-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "RPBE",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "GGA": "RPBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "RPBE-D3(BJ)",
+    "path_safe_name": "RPBE-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "RPBE",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "GGA": "RPBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "RPBE-D4",
+    "path_safe_name": "RPBE-D4",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "RPBE",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "GGA": "RPBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "revPBE",
+    "path_safe_name": "revPBE",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "revPBE",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "revPBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "revPBE-D3",
+    "path_safe_name": "revPBE-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "revPBE",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "GGA": "revPBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "revPBE-D3(BJ)",
+    "path_safe_name": "revPBE-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "revPBE",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "GGA": "revPBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "revPBE-D4",
+    "path_safe_name": "revPBE-D4",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "revPBE",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "GGA": "revPBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "revPBE-dDsC",
+    "path_safe_name": "revPBE-dDsC",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "revPBE",
+    "dispersion": "dDsC",
+    "dispersion_name": "dDsC",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "dDsC",
+            "GGA": "revPBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "mPBE",
+    "path_safe_name": "mPBE",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "mPBE",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "mPBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "PBEsol",
+    "path_safe_name": "PBEsol",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBEsol",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "PBEsol"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "PBEsol-D",
+    "path_safe_name": "PBEsol-D",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBEsol",
+    "dispersion": "D",
+    "dispersion_name": "DEFAULT",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "DEFAULT",
+            "GGA": "PBEsol"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "PBEsol-D3",
+    "path_safe_name": "PBEsol-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBEsol",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "GGA": "PBEsol"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "PBEsol-D3(BJ)",
+    "path_safe_name": "PBEsol-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBEsol",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "GGA": "PBEsol"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "HTBS",
+    "path_safe_name": "HTBS",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "HTBS",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "HTBS"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "BLYP",
+    "path_safe_name": "BLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "BLYP"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "BLYP-D",
+    "path_safe_name": "BLYP-D",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BLYP",
+    "dispersion": "D",
+    "dispersion_name": "DEFAULT",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "DEFAULT",
+            "GGA": "BLYP"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "BLYP-D3",
+    "path_safe_name": "BLYP-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BLYP",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "GGA": "BLYP"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "BLYP-D3(BJ)",
+    "path_safe_name": "BLYP-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BLYP",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "GGA": "BLYP"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "BLYP-D4",
+    "path_safe_name": "BLYP-D4",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BLYP",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "GGA": "BLYP"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "BLYP-dDsC",
+    "path_safe_name": "BLYP-dDsC",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BLYP",
+    "dispersion": "dDsC",
+    "dispersion_name": "dDsC",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "dDsC",
+            "GGA": "BLYP"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "OLYP",
+    "path_safe_name": "OLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "OLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "OLYP"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "OLYP-D3",
+    "path_safe_name": "OLYP-D3",
+    "disp_params": "GRIMME3 PAR1=1.0000 PAR2=0.806 PAR3=1.764",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "OLYP",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 PAR1=1.0000 PAR2=0.806 PAR3=1.764",
+            "GGA": "OLYP"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "OLYP-D3(BJ)",
+    "path_safe_name": "OLYP-D3BJ",
+    "disp_params": "GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.5299 PAR3=2.6205 PAR4=2.8065",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "OLYP",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.5299 PAR3=2.6205 PAR4=2.8065",
+            "GGA": "OLYP"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "OLYP-D4",
+    "path_safe_name": "OLYP-D4",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "OLYP",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "GGA": "OLYP"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "OPBE",
+    "path_safe_name": "OPBE",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "OPBE",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "OPBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "OPBE-D3",
+    "path_safe_name": "OPBE-D3",
+    "disp_params": "GRIMME3 PAR1=1.0000 PAR2=0.837 PAR3=2.055",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "OPBE",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 PAR1=1.0000 PAR2=0.837 PAR3=2.055",
+            "GGA": "OPBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "OPBE-D3(BJ)",
+    "path_safe_name": "OPBE-D3BJ",
+    "disp_params": "GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.5512 PAR3=3.3816 PAR4=2.9444",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "OPBE",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.5512 PAR3=3.3816 PAR4=2.9444",
+            "GGA": "OPBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "OPBE-D4",
+    "path_safe_name": "OPBE-D4",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "OPBE",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "GGA": "OPBE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "BEE",
+    "path_safe_name": "BEE",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BEE",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "BEE"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "XLYP",
+    "path_safe_name": "XLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "XLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "XLYP"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "GGA:SSB-D",
+    "path_safe_name": "GGA:SSB-D",
+    "use_libxc": false,
+    "includes_disp": true,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "GGA:SSB-D",
+    "dispersion": "D",
+    "dispersion_name": "DEFAULT",
+    "adf_settings": {
+        "XC": {
+            "GGA": "SSB-D"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "S12g",
+    "path_safe_name": "S12g",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "S12g",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "S12g"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "S12g-D3",
+    "path_safe_name": "S12g-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "S12g",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "GGA": "S12g"
+        }
+    }
+}
+
+{
+    "category": "Model",
+    "name": "LB94",
+    "path_safe_name": "LB94",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "LB94",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Model": "LB94"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "KT1",
+    "path_safe_name": "KT1",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "KT1",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "KT1"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "KT2",
+    "path_safe_name": "KT2",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "KT2",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "KT2"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "B97-D",
+    "path_safe_name": "B97-D",
+    "use_libxc": false,
+    "includes_disp": true,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B97-D",
+    "dispersion": "D",
+    "dispersion_name": "DEFAULT",
+    "adf_settings": {
+        "XC": {
+            "GGA": "B97-D"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "B97-D-D3",
+    "path_safe_name": "B97-D-D3",
+    "disp_params": "GRIMME3 PAR1=1.0000 PAR2=0.892 PAR3=0.909",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B97-D",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 PAR1=1.0000 PAR2=0.892 PAR3=0.909",
+            "GGA": "B97-D"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "M06L",
+    "path_safe_name": "M06L",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "M06L",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaGGA": "M06L"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "M06L-D3",
+    "path_safe_name": "M06L-D3",
+    "disp_params": "GRIMME3 PAR1=1.0000 PAR2=1.581 PAR3=0.000",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "M06L",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 PAR1=1.0000 PAR2=1.581 PAR3=0.000",
+            "MetaGGA": "M06L"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "M06L-D4",
+    "path_safe_name": "M06L-D4",
+    "disp_params": "GRIMME4 s6=1.0000 s8=0.59493760 a1=0.71422359 a2=6.35314182",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "M06L",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4 s6=1.0000 s8=0.59493760 a1=0.71422359 a2=6.35314182",
+            "MetaGGA": "M06L"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "MN15-L",
+    "path_safe_name": "MN15-L",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "MN15-L",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "MN15-L"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "TPSS",
+    "path_safe_name": "TPSS",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "TPSS",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaGGA": "TPSS"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "TPSS-D3(BJ)",
+    "path_safe_name": "TPSS-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "TPSS",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "MetaGGA": "TPSS"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "TPSS-D4",
+    "path_safe_name": "TPSS-D4",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "TPSS",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "MetaGGA": "TPSS"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "revTPSS",
+    "path_safe_name": "revTPSS",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "revTPSS",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaGGA": "revTPSS"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "MetaGGA:SSB-D",
+    "path_safe_name": "MetaGGA:SSB-D",
+    "use_libxc": false,
+    "includes_disp": true,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "MetaGGA:SSB-D",
+    "dispersion": "D",
+    "dispersion_name": "DEFAULT",
+    "adf_settings": {
+        "XC": {
+            "MetaGGA": "SSB-D"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "MVS",
+    "path_safe_name": "MVS",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "MVS",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaGGA": "MVS"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "MS0",
+    "path_safe_name": "MS0",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "MS0",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaGGA": "MS0"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "MS1",
+    "path_safe_name": "MS1",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "MS1",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaGGA": "MS1"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "MS2",
+    "path_safe_name": "MS2",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "MS2",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaGGA": "MS2"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "SCAN",
+    "path_safe_name": "SCAN",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "SCAN",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaGGA": "SCAN"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "SCAN-D3(BJ)",
+    "path_safe_name": "SCAN-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "SCAN",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "MetaGGA": "SCAN"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "TASKxc",
+    "path_safe_name": "TASKxc",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "TASKxc",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaGGA": "TASKxc"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "TASKCC",
+    "path_safe_name": "TASKCC",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "TASKCC",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaGGA": "TASKCC"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "revSCAN",
+    "path_safe_name": "revSCAN",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "revSCAN",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "revSCAN"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "rSCAN",
+    "path_safe_name": "rSCAN",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rSCAN",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "rSCAN"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "r2SCAN",
+    "path_safe_name": "r2SCAN",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "r2SCAN",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "r2SCAN"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "r2SCAN-D4",
+    "path_safe_name": "r2SCAN-D4",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "r2SCAN",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "LibXC": "r2SCAN"
+        }
+    }
+}
+
+{
+    "category": "MetaGGA",
+    "name": "r2SCAN-3c",
+    "path_safe_name": "r2SCAN-3c",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "r2SCAN-3c",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaGGA": "r2SCAN-3c"
+        }
+    }
+}
+
+{
+    "category": "HartreeFock",
+    "name": "HartreeFock",
+    "path_safe_name": "HartreeFock",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "HartreeFock",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "HartreeFock": ""
+        }
+    }
+}
+
+{
+    "category": "HartreeFock",
+    "name": "HartreeFock-D4",
+    "path_safe_name": "HartreeFock-D4",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "HartreeFock",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "HartreeFock": ""
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "B3LYP",
+    "path_safe_name": "B3LYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B3LYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "B3LYP"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "B3LYP-D",
+    "path_safe_name": "B3LYP-D",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B3LYP",
+    "dispersion": "D",
+    "dispersion_name": "DEFAULT",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "DEFAULT",
+            "Hybrid": "B3LYP"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "B3LYP-D3",
+    "path_safe_name": "B3LYP-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B3LYP",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "Hybrid": "B3LYP"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "B3LYP-D3(BJ)",
+    "path_safe_name": "B3LYP-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B3LYP",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "Hybrid": "B3LYP"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "B3LYP-D4",
+    "path_safe_name": "B3LYP-D4",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B3LYP",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "Hybrid": "B3LYP"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "B3LYP*",
+    "path_safe_name": "B3LYPs",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B3LYP*",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "B3LYP*"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "B1LYP",
+    "path_safe_name": "B1LYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B1LYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "B1LYP"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "KMLYP",
+    "path_safe_name": "KMLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "KMLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "KMLYP"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "O3LYP",
+    "path_safe_name": "O3LYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "O3LYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "O3LYP"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "X3LYP",
+    "path_safe_name": "X3LYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "X3LYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "X3LYP"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "BHandH",
+    "path_safe_name": "BHandH",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BHandH",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "BHandH"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "BHandHLYP",
+    "path_safe_name": "BHandHLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BHandHLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "BHandHLYP"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "B1PW91",
+    "path_safe_name": "B1PW91",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B1PW91",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "B1PW91"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "mPW1PW",
+    "path_safe_name": "mPW1PW",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "mPW1PW",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "mPW1PW"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "mPW1K",
+    "path_safe_name": "mPW1K",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "mPW1K",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "mPW1K"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "PBE0",
+    "path_safe_name": "PBE0",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE0",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "PBE0"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "PBE0-D4",
+    "path_safe_name": "PBE0-D4",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE0",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "Hybrid": "PBE0"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "OPBE0",
+    "path_safe_name": "OPBE0",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "OPBE0",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "OPBE0"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "S12H",
+    "path_safe_name": "S12H",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "S12H",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "S12H"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "BMK",
+    "path_safe_name": "BMK",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BMK",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "HYB_MGGA_X_BMK GGA_C_BMK"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "BMK-D3",
+    "path_safe_name": "BMK-D3",
+    "disp_params": "GRIMME3 PAR1=1.0000 PAR2=1.931 PAR3=2.168",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BMK",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 PAR1=1.0000 PAR2=1.931 PAR3=2.168",
+            "LibXC": "HYB_MGGA_X_BMK GGA_C_BMK"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "BMK-D3(BJ)",
+    "path_safe_name": "BMK-D3BJ",
+    "disp_params": "GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.1940 PAR3=2.0860 PAR4=5.9197",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "BMK",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.1940 PAR3=2.0860 PAR4=5.9197",
+            "LibXC": "HYB_MGGA_X_BMK GGA_C_BMK"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "B1B95",
+    "path_safe_name": "B1B95",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B1B95",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "B1B95"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "B1B95-D3",
+    "path_safe_name": "B1B95-D3",
+    "disp_params": "GRIMME3 PAR1=1.0000 PAR2=1.613 PAR3=1.868",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B1B95",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 PAR1=1.0000 PAR2=1.613 PAR3=1.868",
+            "LibXC": "B1B95"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "B97",
+    "path_safe_name": "B97",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B97",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "B97"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "B97-1",
+    "path_safe_name": "B97-1",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B97-1",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "B97-1"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "B97-2",
+    "path_safe_name": "B97-2",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B97-2",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "B97-2"
+        }
+    }
+}
+
+{
+    "category": "Hybrid",
+    "name": "B97-3",
+    "path_safe_name": "B97-3",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B97-3",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "B97-3"
+        }
+    }
+}
+
+{
+    "category": "MetaHybrid",
+    "name": "M06",
+    "path_safe_name": "M06",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "M06",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaHybrid": "M06"
+        }
+    }
+}
+
+{
+    "category": "MetaHybrid",
+    "name": "M06-D3",
+    "path_safe_name": "M06-D3",
+    "disp_params": "GRIMME3 PAR1=1.0000 PAR2=1.325 PAR3=0.000",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "M06",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 PAR1=1.0000 PAR2=1.325 PAR3=0.000",
+            "MetaHybrid": "M06"
+        }
+    }
+}
+
+{
+    "category": "MetaHybrid",
+    "name": "M06-D4",
+    "path_safe_name": "M06-D4",
+    "disp_params": "GRIMME4 s6=1.0000 s8=0.16366729 a1=0.53456413 a2=6.06192174",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "M06",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4 s6=1.0000 s8=0.16366729 a1=0.53456413 a2=6.06192174",
+            "MetaHybrid": "M06"
+        }
+    }
+}
+
+{
+    "category": "MetaHybrid",
+    "name": "M06-2X",
+    "path_safe_name": "M06-2X",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "M06-2X",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaHybrid": "M06-2X"
+        }
+    }
+}
+
+{
+    "category": "MetaHybrid",
+    "name": "M06-2X-D3",
+    "path_safe_name": "M06-2X-D3",
+    "disp_params": "GRIMME3 PAR1=1.0000 PAR2=1.619 PAR3=0.000",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "M06-2X",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 PAR1=1.0000 PAR2=1.619 PAR3=0.000",
+            "MetaHybrid": "M06-2X"
+        }
+    }
+}
+
+{
+    "category": "MetaHybrid",
+    "name": "M06-HF",
+    "path_safe_name": "M06-HF",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "M06-HF",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaHybrid": "M06-HF"
+        }
+    }
+}
+
+{
+    "category": "MetaHybrid",
+    "name": "M06-HF-D3",
+    "path_safe_name": "M06-HF-D3",
+    "disp_params": "GRIMME3 PAR1=1.0000 PAR2=1.446 PAR3=0.000",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "M06-HF",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 PAR1=1.0000 PAR2=1.446 PAR3=0.000",
+            "MetaHybrid": "M06-HF"
+        }
+    }
+}
+
+{
+    "category": "MetaHybrid",
+    "name": "TPSSH",
+    "path_safe_name": "TPSSH",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "TPSSH",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MetaHybrid": "TPSSH"
+        }
+    }
+}
+
+{
+    "category": "MetaHybrid",
+    "name": "TPSSH-D4",
+    "path_safe_name": "TPSSH-D4",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "TPSSH",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "MetaHybrid": "TPSSH"
+        }
+    }
+}
+
+{
+    "category": "MetaHybrid",
+    "name": "revSCAN0",
+    "path_safe_name": "revSCAN0",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "revSCAN0",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "revSCAN0"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DOD-BLYP",
+    "path_safe_name": "rev-DOD-BLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DOD-BLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "rev-DOD-BLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DOD-BLYP-D4",
+    "path_safe_name": "rev-DOD-BLYP-D4",
+    "use_libxc": false,
+    "includes_disp": true,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DOD-BLYP-D4",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "rev-DOD-BLYP-D4"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DOD-PBE",
+    "path_safe_name": "rev-DOD-PBE",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DOD-PBE",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "rev-DOD-PBE"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DOD-PBE-D4",
+    "path_safe_name": "rev-DOD-PBE-D4",
+    "use_libxc": false,
+    "includes_disp": true,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DOD-PBE-D4",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "rev-DOD-PBE-D4"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DOD-PBEP86",
+    "path_safe_name": "rev-DOD-PBEP86",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DOD-PBEP86",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "rev-DOD-PBEP86"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DOD-PBEP86-D4",
+    "path_safe_name": "rev-DOD-PBEP86-D4",
+    "use_libxc": false,
+    "includes_disp": true,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DOD-PBEP86-D4",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "rev-DOD-PBEP86-D4"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "SOS1-PBE-QIDH",
+    "path_safe_name": "SOS1-PBE-QIDH",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "SOS1-PBE-QIDH",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "SOS1-PBE-QIDH"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "DOD-SCAN",
+    "path_safe_name": "DOD-SCAN",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "DOD-SCAN",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "DOD-SCAN"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DOD-SCAN-D4",
+    "path_safe_name": "rev-DOD-SCAN-D4",
+    "use_libxc": false,
+    "includes_disp": true,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DOD-SCAN-D4",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "rev-DOD-SCAN-D4"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "B2PLYP",
+    "path_safe_name": "B2PLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B2PLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "B2PLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "B2PIPLYP",
+    "path_safe_name": "B2PIPLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B2PIPLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "B2PIPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "ROB2PLYP",
+    "path_safe_name": "ROB2PLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "ROB2PLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "ROB2PLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "B2TPLYP",
+    "path_safe_name": "B2TPLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B2TPLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "B2TPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "B2GPPLYP",
+    "path_safe_name": "B2GPPLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B2GPPLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "B2GPPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "B2KPLYP",
+    "path_safe_name": "B2KPLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B2KPLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "B2KPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "B2NCPLYP",
+    "path_safe_name": "B2NCPLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B2NCPLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "B2NCPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "mPW2PLYP",
+    "path_safe_name": "mPW2PLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "mPW2PLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "mPW2PLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "mPW2KPLYP",
+    "path_safe_name": "mPW2KPLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "mPW2KPLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "mPW2KPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "mPW2NCPLYP",
+    "path_safe_name": "mPW2NCPLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "mPW2NCPLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "mPW2NCPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "DH-BLYP",
+    "path_safe_name": "DH-BLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "DH-BLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "DH-BLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "PBE0-DH",
+    "path_safe_name": "PBE0-DH",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE0-DH",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "PBE0-DH"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "PBE-QIDH",
+    "path_safe_name": "PBE-QIDH",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE-QIDH",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "PBE-QIDH"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "LS1-DH",
+    "path_safe_name": "LS1-DH",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "LS1-DH",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "LS1-DH"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "PBE0-2",
+    "path_safe_name": "PBE0-2",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE0-2",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "PBE0-2"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "LS1-TPSS",
+    "path_safe_name": "LS1-TPSS",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "LS1-TPSS",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "LS1-TPSS"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "DS1-TPSS",
+    "path_safe_name": "DS1-TPSS",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "DS1-TPSS",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "DS1-TPSS"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "B2PLYP-D3",
+    "path_safe_name": "B2PLYP-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B2PLYP",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "DoubleHybrid": "B2PLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "B2GPPLYP-D3",
+    "path_safe_name": "B2GPPLYP-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B2GPPLYP",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "DoubleHybrid": "B2GPPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "B2NCPLYP-D3",
+    "path_safe_name": "B2NCPLYP-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B2NCPLYP",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "DoubleHybrid": "B2NCPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "mPW2NCPLYP-D3",
+    "path_safe_name": "mPW2NCPLYP-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "mPW2NCPLYP",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "DoubleHybrid": "mPW2NCPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "PBE0-DH-D3",
+    "path_safe_name": "PBE0-DH-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE0-DH",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "DoubleHybrid": "PBE0-DH"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "PBE-QIDH-D3",
+    "path_safe_name": "PBE-QIDH-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE-QIDH",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "DoubleHybrid": "PBE-QIDH"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "LS1-DH-D3",
+    "path_safe_name": "LS1-DH-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "LS1-DH",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "DoubleHybrid": "LS1-DH"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "PBE0-2-D3",
+    "path_safe_name": "PBE0-2-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE0-2",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "DoubleHybrid": "PBE0-2"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "LS1-TPSS-D3",
+    "path_safe_name": "LS1-TPSS-D3",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "LS1-TPSS",
+    "dispersion": "D3",
+    "dispersion_name": "GRIMME3",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3",
+            "DoubleHybrid": "LS1-TPSS"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "B2PLYP-D3(BJ)",
+    "path_safe_name": "B2PLYP-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B2PLYP",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "DoubleHybrid": "B2PLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "B2GPPLYP-D3(BJ)",
+    "path_safe_name": "B2GPPLYP-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B2GPPLYP",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "DoubleHybrid": "B2GPPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "B2NCPLYP-D3(BJ)",
+    "path_safe_name": "B2NCPLYP-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B2NCPLYP",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "DoubleHybrid": "B2NCPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "mPW2NCPLYP-D3(BJ)",
+    "path_safe_name": "mPW2NCPLYP-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "mPW2NCPLYP",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "DoubleHybrid": "mPW2NCPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "PBE0-DH-D3(BJ)",
+    "path_safe_name": "PBE0-DH-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE0-DH",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "DoubleHybrid": "PBE0-DH"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "PBE-QIDH-D3(BJ)",
+    "path_safe_name": "PBE-QIDH-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE-QIDH",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "DoubleHybrid": "PBE-QIDH"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "LS1-DH-D3(BJ)",
+    "path_safe_name": "LS1-DH-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "LS1-DH",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "DoubleHybrid": "LS1-DH"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "PBE0-2-D3(BJ)",
+    "path_safe_name": "PBE0-2-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "PBE0-2",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "DoubleHybrid": "PBE0-2"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "LS1-TPSS-D3(BJ)",
+    "path_safe_name": "LS1-TPSS-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "LS1-TPSS",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "DoubleHybrid": "LS1-TPSS"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "B2PLYP-D4",
+    "path_safe_name": "B2PLYP-D4",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B2PLYP",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "DoubleHybrid": "B2PLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "B2GPPLYP-D4",
+    "path_safe_name": "B2GPPLYP-D4",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B2GPPLYP",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "DoubleHybrid": "B2GPPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "DSD-BLYP",
+    "path_safe_name": "DSD-BLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "DSD-BLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "DSD-BLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DSD-BLYP",
+    "path_safe_name": "rev-DSD-BLYP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DSD-BLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "rev-DSD-BLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DSD-BLYP-D4",
+    "path_safe_name": "rev-DSD-BLYP-D4",
+    "use_libxc": false,
+    "includes_disp": true,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DSD-BLYP-D4",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "rev-DSD-BLYP-D4"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "DSD-PBEP86",
+    "path_safe_name": "DSD-PBEP86",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "DSD-PBEP86",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "DSD-PBEP86"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DSD-PBEP86",
+    "path_safe_name": "rev-DSD-PBEP86",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DSD-PBEP86",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "rev-DSD-PBEP86"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DSD-PBEP86-D4",
+    "path_safe_name": "rev-DSD-PBEP86-D4",
+    "use_libxc": false,
+    "includes_disp": true,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DSD-PBEP86-D4",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "rev-DSD-PBEP86-D4"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "DSD-PBE",
+    "path_safe_name": "DSD-PBE",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "DSD-PBE",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "DSD-PBE"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DSD-PBE",
+    "path_safe_name": "rev-DSD-PBE",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DSD-PBE",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "rev-DSD-PBE"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DSD-PBE-D4",
+    "path_safe_name": "rev-DSD-PBE-D4",
+    "use_libxc": false,
+    "includes_disp": true,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DSD-PBE-D4",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "rev-DSD-PBE-D4"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DSD-SCAN-D4",
+    "path_safe_name": "rev-DSD-SCAN-D4",
+    "use_libxc": false,
+    "includes_disp": true,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DSD-SCAN-D4",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "rev-DSD-SCAN-D4"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "SD-SCAN69",
+    "path_safe_name": "SD-SCAN69",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "SD-SCAN69",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "DoubleHybrid": "SD-SCAN69"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "LCY-BLYP",
+    "path_safe_name": "LCY-BLYP",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "LCY-BLYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "BLYP",
+            "RANGESEP": "",
+            "xcfun": ""
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "LCY-BP86",
+    "path_safe_name": "LCY-BP86",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "LCY-BP86",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "BP86",
+            "RANGESEP": "",
+            "xcfun": ""
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "LCY-PBE",
+    "path_safe_name": "LCY-PBE",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "LCY-PBE",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "GGA": "PBE",
+            "RANGESEP": "",
+            "xcfun": ""
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "CAM-B3LYP",
+    "path_safe_name": "CAM-B3LYP",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "CAM-B3LYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "CAM-B3LYP"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "CAM-B3LYP-D4",
+    "path_safe_name": "CAM-B3LYP-D4",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "CAM-B3LYP",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4",
+            "LibXC": "CAM-B3LYP"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "CAMY-B3LYP",
+    "path_safe_name": "CAMY-B3LYP",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "CAMY-B3LYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Hybrid": "CAMY-B3LYP",
+            "RANGESEP": "",
+            "xcfun": ""
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "HJS-PBE",
+    "path_safe_name": "HJS-PBE",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "HJS-PBE",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "HJS-PBE"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "HJS-PBESOL",
+    "path_safe_name": "HJS-PBESOL",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "HJS-PBESOL",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "HJS-PBESOL"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "HJS-B97X",
+    "path_safe_name": "HJS-B97X",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "HJS-B97X",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "HJS-B97X"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "HSE03",
+    "path_safe_name": "HSE03",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "HSE03",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "HSE03"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "HSE06",
+    "path_safe_name": "HSE06",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "HSE06",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "HSE06"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "LRC_WPBE",
+    "path_safe_name": "LRC_WPBE",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "LRC_WPBE",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "LRC_WPBE"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "LRC_WPBEH",
+    "path_safe_name": "LRC_WPBEH",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "LRC_WPBEH",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "LRC_WPBEH"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "M06-SX",
+    "path_safe_name": "M06-SX",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "M06-SX",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "M06-SX"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "M11",
+    "path_safe_name": "M11",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "M11",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "M11"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "MN12-SX",
+    "path_safe_name": "MN12-SX",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "MN12-SX",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "MN12-SX"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "N12-SX",
+    "path_safe_name": "N12-SX",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "N12-SX",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "N12-SX"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "TUNED-CAM-B3LYP",
+    "path_safe_name": "TUNED-CAM-B3LYP",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "TUNED-CAM-B3LYP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "TUNED-CAM-B3LYP"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "WB97",
+    "path_safe_name": "WB97",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "WB97",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "WB97"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "WB97X",
+    "path_safe_name": "WB97X",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "WB97X",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "WB97X"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "WB97-D4",
+    "path_safe_name": "WB97-D4",
+    "disp_params": "GRIMME4 s6=1.0000 s8=6.55792598 a1=0.76666802 a2=8.36027334",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "WB97",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4 s6=1.0000 s8=6.55792598 a1=0.76666802 a2=8.36027334",
+            "LibXC": "WB97"
+        }
+    }
+}
+
+{
+    "category": "RangeSeparated",
+    "name": "WB97X-D4",
+    "path_safe_name": "WB97X-D4",
+    "disp_params": "GRIMME4 s6=1.0000 s8=-0.07519516 a1=0.45094893 a2=6.78425255",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "WB97X",
+    "dispersion": "D4",
+    "dispersion_name": "GRIMME4",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME4 s6=1.0000 s8=-0.07519516 a1=0.45094893 a2=6.78425255",
+            "LibXC": "WB97X"
+        }
+    }
+}
+
+{
+    "category": "MP2",
+    "name": "MP2",
+    "path_safe_name": "MP2",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "MP2",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MP2": ""
+        }
+    }
+}
+
+{
+    "category": "MP2",
+    "name": "SOS-MP2",
+    "path_safe_name": "SOS-MP2",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "SOS-MP2",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MP2": "",
+            "EmpiricalScaling": "SOS"
+        }
+    }
+}
+
+{
+    "category": "MP2",
+    "name": "SCS-MP2",
+    "path_safe_name": "SCS-MP2",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "SCS-MP2",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "MP2": "",
+            "EmpiricalScaling": "SCS"
+        }
+    }
+}
+
+{
+    "category": "Model",
+    "name": "SAOP",
+    "path_safe_name": "SAOP",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "SAOP",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "Model": "SAOP"
+        }
+    }
+}
+
