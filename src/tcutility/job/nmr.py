@@ -1,6 +1,5 @@
 from tcutility.job.generic import Job
 from tcutility.job.adf import ADFJob
-from tcutility.data import functionals
 import os
 
 j = os.path.join
