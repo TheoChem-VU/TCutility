@@ -1,6 +1,7 @@
-from tcutility.results import cache, Result
-from tcutility import constants, ensure_list
 from typing import List
+
+from tcutility import constants, ensure_list
+from tcutility.results import Result, cache
 
 
 def get_calc_settings(info: Result) -> Result:
@@ -79,6 +80,7 @@ def get_properties(info: Result) -> Result:
             - **energy.dispersion (float)** – total dispersion energy (|kcal/mol|).
             - **energy.gibbs (float)** – Gibb's free energy (|kcal/mol|). Only populated if vibrational modes were calculated.
             - **energy.enthalpy (float)** – enthalpy (|kcal/mol|). Only populated if vibrational modes were calculated.
+            - **energy.nuclear_internal (float)** – nuclear internal energy (|kcal/mol|). Only populated if vibrational modes were calculated.
             - **vibrations.number_of_modes (int)** – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.
             - **vibrations.number_of_imaginary_modes (int)** – number of imaginary vibrational modes for this molecule.
             - **vibrations.frequencies (float)** – vibrational frequencies associated with the vibrational modes, sorted from low to high (|cm-1|).
@@ -124,6 +126,7 @@ def get_properties(info: Result) -> Result:
     if ("Thermodynamics", "Gibbs free Energy") in reader_adf:
         ret.energy.gibbs = reader_adf.read("Thermodynamics", "Gibbs free Energy") * constants.HA2KCALMOL
         ret.energy.enthalpy = reader_adf.read("Thermodynamics", "Enthalpy") * constants.HA2KCALMOL
+        ret.energy.nuclear_internal = reader_adf.read("Thermodynamics", "Internal Energy total") * constants.HA2KCALMOL
 
     # vibrational information
     if ("Vibrations", "nNormalModes") in reader_adf:
