@@ -6,18 +6,34 @@
 TCutility |ProjectVersion| documentation
 ========================================
 
-**TCutility** is a Python library containing many helper functions and classes for use in programs written in the TheoCheM group.
+**TCutility** is a Python library containing many helper functions and classes for use in programs written in the `TheoCheM group <https://www.theochem.nl/>`_.
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Analyse calculations with tcutility.results
+
+   tcutility.results
+
+The main results reading package. Use this to analyse and retrieve results from your calculations. We currently support ADF, DFTB and ORCA calculations.
 
 .. toctree::
    :maxdepth: 2
 
-   tcutility.results
    tcutility.job
+
+The job running package is used to easily set up workflows for your projects.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Extra utility packages
+
    tcutility.constants
+   tcutility.data
 
 
 TCutility |ProjectVersion| API documentation
-============================================
+--------------------------------------------
 
 .. toctree::
    :maxdepth: 1
