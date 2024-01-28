@@ -26,44 +26,48 @@ To run calculations related to the Amsterdam Modelling Suite (AMS) you will requ
 For ORCA calculations you will need to add the ORCA executable to your PATH.
 
 
-Example
--------
+Examples
+--------
 
-For example, running a fragment calculation using ADF requires setting up three different ADF jobs. Using the tcutility.job module allows you to set up these kinds of jobs in as little as 8 lines of code.
+
+Geometry optimization using ADF
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is quite easy to set up calculations using the :mod:`tcutility.job` package. 
+For example, if we want to run a simple geometry optimization using ADF we can use the :class:`ADFJob <tcutility.job.adf.ADFJob>` class.
+
+In this case we are optimizing the water dimer at the BP86-D3(BJ)/TZ2P level.
+To handle the ADF settings you can refer to the GUI. For example, to use a specific functional simply enter the name of the functional as it appears in the ADF GUI. The same applies to pretty much all settings. The :class:`ADFJob <tcutility.job.adf.ADFJob>` class will handle everything in the background for you.
+
+The job will be run in the ``./calculations/GO_water_dimer`` directory. The :mod:`tcutility.job` package will handle running of the calculation as well. It will detect if your platform supports slurm. If it does, it will use ``sbatch`` to run your calculations. Otherwise, it will simply run the calculation locally.
 
 .. tabs::
 
-	.. group-tab:: run.py
+	.. group-tab:: Runscript (:download:`󠀠download <../examples/job/GO_water_dimer.py>`)
 
-		.. code-block:: python
+		.. literalinclude:: ../examples/job/GO_water_dimer.py
+		   :language: python
+		   :linenos:
 
-			from tcutility.job import ADFFragmentJob
-			from tcutility import molecule
+	.. group-tab:: XYZ-file (:download:`󠀠download <../examples/job/water_dimer.xyz>`)
 
-			mol = molecule.load('NH3BH3.xyz')
+		.. literalinclude:: ../examples/job/water_dimer.xyz
 
-			fragment_indices = {flag.removeprefix('frag_'): x for flag, x in mol.flags.items() if flag.startswith('frag_')}
+Fragment calculation using ADF
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-			with ADFFragmentJob() as job:
-				job.molecule(mol)
-				for fragment_name, indices in fragment_indices.items():
-					job.add_fragment(indices, fragment_name)
+Another common usage of ADF is running a fragment calculation. This calculation requires setting up three different ADF jobs. Using the :mod:`tcutility.job` package allows you to set up these kinds of jobs in as little as 8 lines of code.
 
+In this case we make use of a special xyz file format (see :func:`tcutility.molecule.guess_fragments`) which specifies the fragments. This saves us some work in setting up the calculations.
 
-	.. group-tab:: NH3BH3.xyz
+.. tabs::
 
-		.. code-block::
+	.. group-tab:: Runscript (:download:`󠀠download <../examples/job/frag_NH3BH3.py>`)
 
-			8
+		.. literalinclude:: ../examples/job/frag_NH3BH3.py
+		   :language: python
+		   :linenos:
 
-			N       0.00000000       0.00000000      -0.81474153
-			B      -0.00000000      -0.00000000       0.83567034
-			H       0.47608351      -0.82460084      -1.14410295
-			H       0.47608351       0.82460084      -1.14410295
-			H      -0.95216703       0.00000000      -1.14410295
-			H      -0.58149793       1.00718395       1.13712667
-			H      -0.58149793      -1.00718395       1.13712667
-			H       1.16299585      -0.00000000       1.13712667
+	.. group-tab:: XYZ-file (:download:`󠀠download <../examples/job/NH3BH3.xyz>`)
 
-			frag_Donor = 1, 3, 4, 5
-			frag_Acceptor = 2, 6, 7, 8
+		.. literalinclude:: ../examples/job/NH3BH3.xyz
