@@ -14,8 +14,13 @@ class Job:
     It also provides :meth:`__enter__` and :meth:`__exit__` methods to make use of context manager syntax.
     
     All class methods are in principle safe to overwrite, but the :meth:`_setup_job` method **must** be overwritten.
+
+    Args:
+        test_mode: whether to enable the testing mode. If enabled, the job will be setup like normally, but the running step is skipped. This is useful if you want to know what the job settings look like before running the real calculations.
+        overwrite: whether to overwrite a previously run job in the same working directory.
+        wait_for_finish: whether to wait for this job to finish running before continuing your runscript.
     '''
-    def __init__(self, test_mode=False, overwrite=False, wait_for_finish=False):
+    def __init__(self, test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = False):
         self.settings = results.Result()
         self._sbatch = results.Result()
         self._molecule = None
