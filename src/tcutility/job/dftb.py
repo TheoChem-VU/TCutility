@@ -6,6 +6,10 @@ j = os.path.join
 
 
 class DFTBJob(AMSJob):
+    '''
+    Setup and run a density functional with tight-binding (DFTB) calculation as implemented in the Amsterdam modelling suite (AMS).
+    This class supports all methods of the parent :class:`AMSJob <tcutility.job.ams.AMSJob>`.
+    '''
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._model = None
@@ -19,16 +23,16 @@ class DFTBJob(AMSJob):
         Set the k-space integration quality for this job.
 
         Args:
-            quality: the type of basis-set to use. Default is TZ2P.
+            quality: the type of basis-set to use. Default is ``Good``.
         '''
         self.settings.input.DFTB.kspace.quality = quality
 
     def model(self, name: str = 'GFN1-xTB', dispersion: str = None, parameter_dir: str = None):
         '''
-        Set the model Hamiltonian for the job to use. By default it is set to GFN1-xTB.
+        Set the model Hamiltonian for the job to use.
 
         Args:
-            name: name of the model Hamiltonian. This is the same name as the one in the DFTB gui.
+            name: name of the model Hamiltonian. This is the same name as the one in the DFTB gui. Default is ``GFN1-xTB``.
         '''
         self.settings.input.DFTB.Model = name
 
@@ -46,11 +50,11 @@ class DFTBJob(AMSJob):
 
     def solvent(self, name: str = None, grid_size=974):
         '''
-        Model solvation using GBSA.
+        Model solvation using the GBSA model.
 
         Args:
-            name: the name of the solvent you want to use. Please see the DFTB manual for a list of available solvents.
-            grid_size: the size of the grid used to construct the solvent accessible surface.
+            name: the name of the solvent you want to use. Must be ``None``, ``Acetone``, ``Acetonitrile``, ``CHCl3``, ``CS2``, ``DMSO``, ``Ether``, ``H2O``, ``Methanol``, ``THF`` or ``Toluene``.
+            grid_size: the size of the grid used to construct the solvent accessible surface. Must be ``230``, ``974``, ``2030`` or ``5810``.
         '''
         if name == 'vacuum':
             self.settings.input.DFTB.pop('solvation', None)

@@ -60,38 +60,29 @@ class Job:
     def sbatch(self, **kwargs):
         '''
         Change slurm settings, for example, to change the partition or change the number of cores to use.
-        The arguments are the same as you would use for sbatch. E.g. to change the partition to 'tc' call:
+        The arguments are the same as you would use for sbatch (`see sbatch manual <https://slurm.schedmd.com/sbatch.html>`_). E.g. to change the partition to 'tc' call:
 
         ``job.sbatch(p='tc')`` or ``job.sbatch(partition='tc')``
+
+        .. warning::
+
+            Note that some sbatch options, such as ``--job-name`` contain a dash, which cannot be used in Python arguments.
+            To use these options you should use an underscore, like ``job.sbatch(job_name='water_dimer_GO')``.
+
+        .. note::
+
+            When running the job using sbatch we add a few extra default options:
+
+            * ``-D/--chdir {self.workdir}``                to make sure the job starts in the correct directory
+            * ``-J/--job-name {self.rundir}/{self.name}``  to give a nicer job-name when calling squeue
+            * ``-o/--output {self.name}.out``              to redirect the output from the default slurm-{id}.out
+
+            You can still overwrite them if you wish.
         '''
         for key, value in kwargs.items():
             if key == 'dependency' and 'dependency' in self._sbatch:
                 value = self._sbatch['dependency'] + ',' + value
             self._sbatch[key] = value
-
-    def get_sbatch_command(self):
-        '''
-        Create an sbatch command that can be used to run the job.
-        Extra options that are added:
-        
-        * ``-D {self.workdir}``               to make sure the job starts in the correct directory
-        * ``-J {self.rundir}/{self.name}``    to give a nicer job-name when calling squeue
-        * ``-o {self.name}.out``              to redirect the output from the default slurm-{id}.out
-        '''
-        self._sbatch.setdefault('D', self.workdir)
-        self._sbatch.setdefault('J', f'{self.rundir}/{self.name}')
-        self._sbatch.setdefault('o', f'{self.name}.out')
-        self._sbatch.prune()
-
-        c = 'sbatch '
-        for key, val in self._sbatch.items():
-            key = key.replace('_', '-')
-            if len(key) > 1:
-                c += f'--{key}={val} '
-            else:
-                c += f'-{key} {val} '
-
-        return c + os.path.split(self.runfile_path)[1]
 
     def _setup_job(self):
         '''
@@ -116,9 +107,12 @@ class Job:
 
         if slurm.has_slurm():
             # set some default sbatch settings
-            self._sbatch.setdefault('D', self.workdir)
-            self._sbatch.setdefault('J', f'{self.rundir}/{self.name}')
-            self._sbatch.setdefault('o', f'{self.name}.out')
+            if any(option not in self._sbatch for option in ['D', 'chdir']):
+                self._sbatch.setdefault('D', self.workdir)
+            if any(option not in self._sbatch for option in ['J', 'job_name']):
+                self._sbatch.setdefault('J', f'{self.rundir}/{self.name}')
+            if any(option not in self._sbatch for option in ['o', 'output']):
+                self._sbatch.setdefault('o', f'{self.name}.out')
             self._sbatch.prune()
 
             # submit the job with sbatch
@@ -140,7 +134,7 @@ class Job:
             os.chmod(self.runfile_path, stat.S_IRWXU)
             sp.run(self.runfile_path, cwd=os.path.split(self.runfile_path)[0])
 
-    def add_preamble(self, line):
+    def add_preamble(self, line: str):
         '''
         Add a preamble for the runscript. This should come after the shebang, but before the calculation is ran by the program (ADF or ORCA).
         This can used, for example, to load some modules. E.g. to load a specific version of AMS we can call:
@@ -148,7 +142,7 @@ class Job:
         '''
         self._preambles.append(line)
 
-    def add_postamble(self, line):
+    def add_postamble(self, line: str):
         '''
         Add a postamble for the runscript. This should come after the calculation is ran by the program (ADF or ORCA).
         This can be used, for example, to remove or copy some files. E.g. to remove all t12.* files we can call:
@@ -166,14 +160,23 @@ class Job:
 
     @property
     def workdir(self):
+        '''
+        The working directory of this job. All important files are written here, for example the input file and runscript.
+        '''
         return j(os.path.abspath(self.rundir), self.name)
 
     @property
     def runfile_path(self):
+        '''
+        The file path to the runscript of this job.
+        '''
         return j(self.workdir, f'{self.name}.run')
 
     @property
     def inputfile_path(self):
+        '''
+        The file path to the input file of this job.
+        '''
         return j(self.workdir, f'{self.name}.in')
 
     @property
