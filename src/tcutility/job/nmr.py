@@ -22,6 +22,13 @@ class NMRJob(Job):
         self.pre_nmr_job.name = self.name + '_pre'
         self.pre_nmr_job.molecule(self._molecule or self._molecule_path)
         self.pre_nmr_job.sbatch(**self._sbatch)
+
+        # we have to add the NICS points in the pre_nmr_job
+        multipole_coords = []
+        for point in self.nics_points:
+            multipole_coords.append(f'        {point[0]} {point[1]} {point[2]} 0.0')
+        self.pre_nmr_job.settings.input.ams.System.ElectrostaticEmbedding.MultipolePotential.Coordinates = '\n' + '\n'.join(multipole_coords) + '\n      End'
+
         # we copy the pre_nmr_job output files to the main job directory
         self.pre_nmr_job.add_postamble(f'cp {j(self.pre_nmr_job.workdir, "adf.rkf")} {j(self.workdir, "TAPE21")}')
         self.pre_nmr_job.add_postamble(f'cp {j(self.pre_nmr_job.workdir, "TAPE10")} {j(self.workdir, "TAPE10")}')
@@ -63,3 +70,9 @@ class NMRJob(Job):
 if __name__ == '__main__':
     with NMRJob(test_mode=True) as job:
         job.molecule(r"D:\Users\Yuman\Desktop\PhD\TCutility\examples\job\water_dimer.xyz")
+        job.add_nics_point([0, 1, 2])
+        job.add_nics_point([0, 1, 2])
+        job.add_nics_point([0, 1, 2])
+        job.add_nics_point([0, 1, 2])
+        job.add_nics_point([0, 1, 2])
+        job.add_nics_point([0, 1, 2])
