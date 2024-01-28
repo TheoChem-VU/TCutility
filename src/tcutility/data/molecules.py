@@ -14,8 +14,9 @@ def get(name):
 
 def get_molecules(tags=None):
     for f in os.listdir(root_dir):
-        if f == '.DS_Store':
+        if not f.endswith('.xyz'):
             continue
+            
         mol = get(f)
         if tags is None or any(tag in mol.flags.tags for tag in tags):
             yield mol
