@@ -20,6 +20,7 @@ def main(inp, output_dir=None, keep_calcs=False, level=None):
     input_dir = os.path.split(inp_files[0])[0]
     if output_dir is None:
         output_dir = input_dir + '_optimized'
+    output_dir = os.path.abspath(output_dir)
     os.makedirs(output_dir, exist_ok=True)
 
     level = level or 'GFN1-xTB'
@@ -35,14 +36,14 @@ def main(inp, output_dir=None, keep_calcs=False, level=None):
         mol_name = os.path.split(file)[1].removesuffix('.xyz')
 
         if level in ['GFN1-xTB', 'DFTB']:
-            with DFTBJob(test_mode=True, overwrite=True) as job:
+            with DFTBJob(test_mode=False, overwrite=True) as job:
                 job.molecule(file)
                 job.optimization()
                 job.vibrations(False)
                 job.rundir = '.tmp'
                 job.name = mol_name
                 job.charge(mol.flags.charge or 0)
-
+            
                 job.add_postamble(f'cp {job.output_mol_path} {j(output_dir, mol_name + ".xyz")}')
                 if not keep_calcs:
                     job.add_postamble(f'rm -r {job.workdir}')
@@ -50,13 +51,13 @@ def main(inp, output_dir=None, keep_calcs=False, level=None):
         else:
             level_parts = level.split('/')
             if len(level_parts) == 1:
-                functional = level_parts
+                functional = level_parts[0]
                 basis_set = 'TZ2P'
 
             if len(level_parts) == 2:
                 functional, basis_set = level_parts
 
-            with ADFJob(test_mode=True, overwrite=True) as job:
+            with ADFJob(test_mode=False, overwrite=True) as job:
                 job.molecule(file)
                 job.optimization()
                 job.vibrations(False)
@@ -66,7 +67,8 @@ def main(inp, output_dir=None, keep_calcs=False, level=None):
                 job.spin_polarization(mol.flags.spinpol or 0)
                 job.functional(functional)
                 job.basis_set(basis_set)
-
+                
+                job.sbatch(p='tc', n=32)
                 job.add_postamble(f'cp {job.output_mol_path} {j(output_dir, mol_name + ".xyz")}')
                 if not keep_calcs:
                     job.add_postamble(f'rm -r {job.workdir}')
