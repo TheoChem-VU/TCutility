@@ -18,6 +18,11 @@ def get(functional_name: str):
     return functionals.get(functional_name)
 
 
+def functional_name_from_path_safe_name(path_safe_name: str):
+    for functional, functional_info in functionals.items():
+        if path_safe_name == functional_info.path_safe_name:
+            return functional
+
 def get_available_functionals():
     '''
     Function that returns a dictionary of all available XC-functionals.
