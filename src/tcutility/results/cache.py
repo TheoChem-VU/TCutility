@@ -48,7 +48,10 @@ def get(path: str) -> plams.KFReader:
 
     Returns:
         An rkf file reader that can be used for reading data from a calculation.
-    """
+    '''
+    if not path:
+        return None
+
     # if the path is already in the cache, simply return it
     if path in _cache:
         return _cache[path]
