@@ -2,8 +2,9 @@
 Tiny module that handles caching rkf files.
 rkf files take a long time to open (especially {engine}.rkf), so it is better to open them once and cache them for later use
 """
+from typing import Any, Union
+
 from scm import plams
-from typing import Union, Any
 
 # the actual cache is stored in this dict
 _cache = {}
@@ -48,7 +49,7 @@ def get(path: str) -> plams.KFReader:
 
     Returns:
         An rkf file reader that can be used for reading data from a calculation.
-    '''
+    """
     if not path:
         return None
 
