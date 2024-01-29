@@ -5,7 +5,7 @@ This information is used in further analysis programs.
 
 Typical usage example:
 
-.. literalinclude:: ../docs/shared/usage_results.rst
+.. literalinclude:: ../tcutility.results.rst
 """
 
 from typing import Union

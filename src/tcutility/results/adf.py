@@ -1,7 +1,15 @@
-from typing import List
+from typing import Dict, List
+
+import numpy as np
+from scm.plams import KFReader
 
 from tcutility import constants, ensure_list
 from tcutility.results import Result, cache
+from tcutility.typing import arrays
+
+# ------------------------------------------------------------- #
+# ------------------- Calculation Settings -------------------- #
+# ------------------------------------------------------------- #
 
 
 def get_calc_settings(info: Result) -> Result:
@@ -63,6 +71,57 @@ def get_calc_settings(info: Result) -> Result:
     return ret
 
 
+# ------------------------------------------------------------- #
+# ------------------------ Properties ------------------------- #
+# ------------------------------------------------------------- #
+
+
+# ----------------------- VDD charges ------------------------- #
+
+
+def _read_vdd_charges(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
+    """Returns the VDD charges from the KFReader object."""
+    vdd_scf: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_SCF Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
+    vdd_ini: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_initial Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
+
+    # VDD charges are scf - initial charges. Note, these are in units of electrons while most often these are denoted in mili-electrons
+    return np.array([float((scf - ini)) for scf, ini in zip(vdd_scf, vdd_ini)])
+
+
+def _get_vdd_charges_per_irrep(results_type: KFReader) -> Dict[str, arrays.Array1D[np.float64]]:
+    """Extracts the Voronoi Deformation Density charges from the fragment calculation sorted per irrep."""
+    symlabels = str(results_type.read("Symmetry", "symlab")).split()  # split on whitespace
+
+    # If there is only one irrep, there is no irrep decomposition
+    if len(symlabels) == 1:
+        return {}
+
+    vdd_irrep = np.array(results_type.read("Properties", "Voronoi chrg per irrep"))
+    n_atoms = int(results_type.read("Molecule", "nAtoms"))  # type: ignore since no static typing. Returns an int
+
+    # NOTE: apparently, the irrep charges are minus the total VDD charges. That's why the minus sign in the second line below
+    vdd_irrep = vdd_irrep[-len(symlabels) * n_atoms :]  # vdd_irrep = vdd_irrep.reshape((n_headers, len(symlabels), n_atoms)) # NOQA E203
+    vdd_per_irrep = {irrep: -vdd_irrep[i * n_atoms : (i + 1) * n_atoms] for i, irrep in enumerate(symlabels)}  # NOQA E203
+    return vdd_per_irrep
+
+
+# ----------------------- Vibrations ------------------------- #
+
+
+def _read_vibrations(reader: cache.TrackKFReader) -> Result:
+    ret = Result()
+    ret.number_of_modes = reader.read("Vibrations", "nNormalModes")
+    ret.frequencies = ensure_list(reader.read("Vibrations", "Frequencies[cm-1]"))
+    if ("Vibrations", "Intensities[km/mol]") in reader:
+        ret.intensities = ensure_list(reader.read("Vibrations", "Intensities[km/mol]"))
+    ret.number_of_imag_modes = len([freq for freq in ret.frequencies if freq < 0])
+    ret.character = "minimum" if ret.number_of_imag_modes == 0 else "transitionstate"
+    ret.modes = []
+    for i in range(ret.number_of_modes):
+        ret.modes.append(reader.read("Vibrations", f"NoWeightNormalMode({i+1})"))
+    return ret
+
+
 def get_properties(info: Result) -> Result:
     """Function to get properties from an ADF calculation.
 
@@ -86,21 +145,9 @@ def get_properties(info: Result) -> Result:
             - **vibrations.frequencies (float)** – vibrational frequencies associated with the vibrational modes, sorted from low to high (|cm-1|).
             - **vibrations.intensities (float)** – vibrational intensities associated with the vibrational modes (|km/mol|).
             - **vibrations.modes (list[float])** – list of vibrational modes sorted from low frequency to high frequency.
-            - **vdd.charges (list[float])** - list of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges.
+            - **vdd.charges (nparray[float] (1D))** - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges.
+            - **vdd.charges.{symmetry label} (nparray[float] (1D))** - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons] per irrep.
     """
-
-    def read_vibrations(reader: cache.TrackKFReader) -> Result:
-        ret = Result()
-        ret.number_of_modes = reader.read("Vibrations", "nNormalModes")
-        ret.frequencies = ensure_list(reader.read("Vibrations", "Frequencies[cm-1]"))
-        if ("Vibrations", "Intensities[km/mol]") in reader:
-            ret.intensities = ensure_list(reader.read("Vibrations", "Intensities[km/mol]"))
-        ret.number_of_imag_modes = len([freq for freq in ret.frequencies if freq < 0])
-        ret.character = "minimum" if ret.number_of_imag_modes == 0 else "transitionstate"
-        ret.modes = []
-        for i in range(ret.number_of_modes):
-            ret.modes.append(reader.read("Vibrations", f"NoWeightNormalMode({i+1})"))
-        return ret
 
     assert info.engine == "adf", f"This function reads ADF data, not {info.engine} data"
 
@@ -108,7 +155,7 @@ def get_properties(info: Result) -> Result:
 
     if info.adf.task.lower() == "vibrationalanalysis":
         reader_ams = cache.get(info.files["ams.rkf"])
-        ret.vibrations = read_vibrations(reader_ams)
+        ret.vibrations = _read_vibrations(reader_ams)
         return ret
 
     reader_adf = cache.get(info.files["adf.rkf"])
@@ -130,18 +177,14 @@ def get_properties(info: Result) -> Result:
 
     # vibrational information
     if ("Vibrations", "nNormalModes") in reader_adf:
-        ret.vibrations = read_vibrations(reader_adf)
+        ret.vibrations = _read_vibrations(reader_adf)
 
     # read the Voronoi Deformation Charges Deformation (VDD) before and after SCF convergence (being "inital" and "SCF")
-    if "Properties" in reader_adf:
-        vdd_scf: List[float] = ensure_list(reader_adf.read("Properties", "AtomCharge_SCF Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
-        vdd_ini: List[float] = ensure_list(reader_adf.read("Properties", "AtomCharge_initial Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
-
-        # VDD charges are scf - initial charges. Note, these are in units of electrons while most often these are denoted in mili-electrons
-        ret.vdd.charges = [float((scf - ini)) for scf, ini in zip(vdd_scf, vdd_ini)]
-
-    # Possible enhancement: get the VDD charges per irrep, denoted by the "Voronoi chrg per irrep" in the "Properties" section in the adf.rkf.
-    # The ordering is not very straightfoward so this is a suggestion for the future with keys: ret.vdd.[IRREP]
+    try:
+        ret.vdd.charges = _read_vdd_charges(reader_adf)
+        ret.vdd.update(_get_vdd_charges_per_irrep(reader_adf))
+    except KeyError:
+        pass
 
     return ret
 

@@ -1,5 +1,10 @@
 [build-system]
-requires = ["setuptools>=68.2.2", "wheel", "gitpython", "setuptools-git-versioning"]
+requires = [
+  "setuptools>=68.2.2",
+  "wheel",
+  "gitpython",
+  "setuptools-git-versioning",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -18,6 +23,8 @@ dependencies = [
   "scipy>=1.8",
   "dictfunc",
   "pytest>=7.4.4",
+  "openpyxl>=3.1.2",
+  "pandas>=1.3.0",
 ]
 # Current maintainers
 maintainers = [{ name = "TheoCheM group" }]

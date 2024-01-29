@@ -1,8 +1,10 @@
-import git
 import pathlib as pl
 import sys
 
+import git
+
 sys.path.insert(0, str(pl.Path(__file__).parent.parent / "src" / "tcutility"))
+
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -50,10 +52,10 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 
 autodoc_default_options = {
-    "autosummary": False,
+    "autosummary": True,
 }
 
-modindex_common_prefix = ["tcutility."]
+modindex_common_prefix = ["tcutility"]
 
 html_theme_options = {
     # "show_nav_level": 2,
@@ -73,6 +75,10 @@ add_module_names = False
 
 # custom variables
 rst_epilog = f"""
+.. |read| replace:: :func:`tcutility.results.read`
+.. |VDDmanager| replace:: :class:`tcutility.analysis.vdd.manager.VDDChargeManager`
+.. |VDDcharge| replace:: :class:`tcutility.analysis.vdd.charge.VDDCharge`
+.. |change_unit| replace:: :func:`tcutility.analysis.vdd.manager.VDDChargeManager.change_unit`
 .. |ProjectVersion| replace:: {release}
 .. |cm-1| replace:: :math:`\\text{{cm}}^{-1}`
 .. |kcal/mol| replace:: :math:`\\text{{kcal mol}}^{-1}`
