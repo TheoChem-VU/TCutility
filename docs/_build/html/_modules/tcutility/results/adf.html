@@ -255,9 +255,10 @@
                 <article class="bd-article">
                   
   <h1>Source code for tcutility.results.adf</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">tcutility.results</span> <span class="kn">import</span> <span class="n">cache</span><span class="p">,</span> <span class="n">Result</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
 <span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">ensure_list</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">tcutility.results</span> <span class="kn">import</span> <span class="n">Result</span><span class="p">,</span> <span class="n">cache</span>
 
 
 <div class="viewcode-block" id="get_calc_settings">
@@ -341,6 +342,7 @@
 <span class="sd">            - **energy.dispersion (float)** – total dispersion energy (|kcal/mol|).</span>
 <span class="sd">            - **energy.gibbs (float)** – Gibb&#39;s free energy (|kcal/mol|). Only populated if vibrational modes were calculated.</span>
 <span class="sd">            - **energy.enthalpy (float)** – enthalpy (|kcal/mol|). Only populated if vibrational modes were calculated.</span>
+<span class="sd">            - **energy.nuclear_internal (float)** – nuclear internal energy (|kcal/mol|). Only populated if vibrational modes were calculated.</span>
 <span class="sd">            - **vibrations.number_of_modes (int)** – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.</span>
 <span class="sd">            - **vibrations.number_of_imaginary_modes (int)** – number of imaginary vibrational modes for this molecule.</span>
 <span class="sd">            - **vibrations.frequencies (float)** – vibrational frequencies associated with the vibrational modes, sorted from low to high (|cm-1|).</span>
@@ -386,6 +388,7 @@
     <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;Thermodynamics&quot;</span><span class="p">,</span> <span class="s2">&quot;Gibbs free Energy&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">reader_adf</span><span class="p">:</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">gibbs</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Thermodynamics&quot;</span><span class="p">,</span> <span class="s2">&quot;Gibbs free Energy&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">enthalpy</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Thermodynamics&quot;</span><span class="p">,</span> <span class="s2">&quot;Enthalpy&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">nuclear_internal</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Thermodynamics&quot;</span><span class="p">,</span> <span class="s2">&quot;Internal Energy total&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
 
     <span class="c1"># vibrational information</span>
     <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;Vibrations&quot;</span><span class="p">,</span> <span class="s2">&quot;nNormalModes&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">reader_adf</span><span class="p">:</span>
