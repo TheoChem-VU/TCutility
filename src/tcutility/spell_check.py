@@ -154,7 +154,7 @@ def make_suggestion(a: str, others: list[str], **kwargs):
         closest_string = closest[0]
 
     # write a warning message
-    log.warn(f'Could not find "{a}". Did you mean {closest_string}?')
+    log.warn(f'Could not find "{a}". Did you mean {closest_string}?', caller_level=3)
 
 
 
