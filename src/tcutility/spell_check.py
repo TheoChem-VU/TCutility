@@ -50,7 +50,7 @@ def wagner_fischer(a: str, b: str, substitution_cost: float = 1, case_missmatch_
             An alternative (and slower) algorithm to obtain the Levenshtein distance.
     '''
     # initialize an empty matrix
-    d = np.zeros((len(a)+1, len(b)+1)).astype(int)
+    d = np.zeros((len(a)+1, len(b)+1)).astype(float)
 
     # the top row and left column are always the same
     for i in range(len(a)):
@@ -100,19 +100,24 @@ def get_closest(a: str, others: list[str], compare_func=wagner_fischer, ignore_c
         .. code-block:: python
 
             closest = get_closest('kitten', ['mitten', 'bitten', 'sitting'])
-            
+
             print(closest)
             >>> ['mitten', 'bitten']
     '''
     if ignore_case:
         a = a.lower()
-    a = a.replace(ignore_chars, '')
+
+    for char in ignore_chars:
+        a = a.replace(char, '')
 
     dists = []
     for other in others:
         if ignore_case:
             other = other.lower()
-        other = other.replace(ignore_chars, '')
+
+        for char in ignore_chars:
+            other = other.replace(char, '')
+
         dists.append(compare_func(a, other))
 
     if maximum_distance is None:
