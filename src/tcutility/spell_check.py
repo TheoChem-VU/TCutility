@@ -1,4 +1,5 @@
 import numpy as np
+from tcutility import log
 
 
 def naive_recursive(a: str, b: str) -> float:
@@ -35,6 +36,7 @@ def wagner_fischer(a: str, b: str, substitution_cost: float = 1, case_missmatch_
     '''
     Return the Levenshtein distance using the Wagner-Fischer algorithm.
     You can also change the penalty for various errors for this algorithm.
+    By default, all types of errors incur a penalty of 1.
 
     Args:
         a, b: strings to compare.
@@ -44,6 +46,12 @@ def wagner_fischer(a: str, b: str, substitution_cost: float = 1, case_missmatch_
     
     Returns:
         The Levenshtein distance between the strings ``a`` and ``b``.
+
+    Example:
+        .. code-block:: python
+
+            >>> wagner_fischer('kitten', 'sitting')
+            3
 
     .. seealso::
         :func:`naive_recursive`
@@ -99,10 +107,9 @@ def get_closest(a: str, others: list[str], compare_func=wagner_fischer, ignore_c
     Example:
         .. code-block:: python
 
-            closest = get_closest('kitten', ['mitten', 'bitten', 'sitting'])
-
-            print(closest)
-            >>> ['mitten', 'bitten']
+            >>> closest = get_closest('kitten', ['mitten', 'bitten', 'sitting'])
+            >>> print(closest)
+            ['mitten', 'bitten']
     '''
     if ignore_case:
         a = a.lower()
@@ -126,14 +133,20 @@ def get_closest(a: str, others: list[str], compare_func=wagner_fischer, ignore_c
     return lowest_strs
 
 
-def make_suggestion(a: str, others: list[str], compare_func=wagner_fischer, ignore_case: bool = False, ignore_chars: str = '', maximum_distance: int = None):
+def make_suggestion(a: str, others: list[str], **kwargs):
     '''
-    Print a string that gives suggestions of which strings are closest to a given string.
-    
+    Print a warning that gives suggestions for strings that are close to a given string.
+
+    Example:
+        .. code-block:: python
+
+            >>> make_suggestion('kitten', ['mitten', 'bitten', 'sitting'])
+            [2024/01/30 15:26:35] [WARNING](main): Could not find "kitten". Did you mean mitten or bitten?
+
     .. seealso::
         :func:`get_closest` for a description of the function arguments.
     '''
-    closest = get_closest(a, others, compare_func=compare_func, ignore_case=ignore_case, ignore_chars=ignore_chars, maximum_distance=maximum_distance)
+    closest = get_closest(a, others, **kwargs)
 
     if len(closest) > 1:
         closest_string = " or ".join([", ".join(closest[:-1]), closest[-1]])
@@ -141,7 +154,7 @@ def make_suggestion(a: str, others: list[str], compare_func=wagner_fischer, igno
         closest_string = closest[0]
 
     # write a warning message
-    log.warn(f'Could not find "{a}". Did you mean {closest_string}?', caller_level=3)
+    log.warn(f'Could not find "{a}". Did you mean {closest_string}?')
 
 
 
@@ -180,3 +193,5 @@ if __name__ == '__main__':
             naive_recursive('sitting', 'kitten')
 
     timer.print_timings2()
+
+    make_suggestion('kitten', ['mitten', 'bitten', 'sitting'])
