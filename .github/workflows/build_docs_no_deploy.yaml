@@ -31,7 +31,7 @@ jobs:
           pip install -e .
 
       - name: Install sphinx
-        run: pip install sphinx
+        run: pip install sphinx sphinx-tabs sphinx-copybutton
 
       - name: Install sphinx theme
         run: pip install pydata-sphinx-theme
@@ -39,8 +39,8 @@ jobs:
       - name: Install other dependencies
         run: pip install plams
 
-      # - name: Run sphinx-apidoc
-      #   run: cd docs; sphinx-apidoc -f -o . .. ../setup.py
+      - name: Run sphinx-apidoc
+        run: cd docs; sphinx-apidoc -f -o . .. ../setup.py
 
       - name: Build the docs
         run: cd docs; make html

@@ -174,16 +174,13 @@ def get_level_of_theory(info: Result) -> Result:
     sett = info.input
     ret = Result()
     main = [x.lower() for x in sett.main]
+    ret.method = 'HF'
     for method in ["MP2", "CCSD", "CCSD(T)", "CCSDT"]:
         if method.lower() in main:
             ret.method = method
             break
 
-    for method in ["MP2", "CCSD", "CCSD(T)", "CCSDT"]:
-        if method.lower() in main:
-            ret.method = method
-            break
-
+    ret.basis.type = 'def2-SVP'
     for bs in ["cc-pVDZ", "cc-pVTZ", "cc-pVQZ", "cc-pV5Z", "aug-cc-pVDZ", "aug-cc-pVTZ", "aug-cc-pVQZ", "aug-cc-pV5Z"]:
         if bs.lower() in main:
             ret.basis.type = bs

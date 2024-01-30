@@ -1,21 +1,29 @@
 import subprocess as sp
-from tcutility import results, log
+from tcutility import results, log, cache
+import time
+import os
 
 
+@cache.cache
 def has_slurm() -> bool:
     '''
     Function to check if the current platform uses slurm. 
 
     Returns:
-        has_slurm: whether slurm is available on this platform.
+        Whether slurm is available on this platform.
     '''
     try:
-        sp.check_output(['which', 'sbatch']).decode()
+        # we do not want this function to print anything when it does not find sbatch
+        with open(os.devnull, 'wb') as devnull:
+            sp.check_output(['which', 'sbatch'], stderr=devnull).decode()
+        # if it runs without error, we have access to slurm
         return True
+    # if an error is raised we do not have slurm
     except sp.CalledProcessError:
         return False
 
 
+@cache.timed_cache(3)
 def squeue() -> results.Result:
     '''
     Get information about jobs managed by slurm using squeue.
@@ -27,6 +35,10 @@ def squeue() -> results.Result:
             - **id (list[str])** – slurm job id's.
             - **status (list[str])** – slurm job status name. See squeue documentation.
             - **statuscode (list[str])** – slurm job status codes. See squeue documentation
+
+    .. note::
+
+        By default this function uses a timed cache (see :func:`cache.timed_cache`) with a 3 second delay to lessen the load on HPC systems.
     '''
     ret = results.Result()
 
@@ -52,6 +64,42 @@ def squeue() -> results.Result:
     return ret
 
 
+def sbatch(runfile: str, **options: dict) -> results.Result:
+    '''
+    Submit a job to slurm using sbatch.
+
+    Args:
+        runfile: the path to the filename to be submitted.
+        options: options to be used for sbatch.
+
+    Returns:
+        A :class:`results.Result` containing the slurm job ID as the ``id`` key and the full command used for submitting the job as the ``command`` key.
+    '''
+    cmd = 'sbatch '
+    for key, val in options.items():
+        key = key.replace('_', '-')
+        if len(key) > 1:
+            cmd += f'--{key}={val} '
+        else:
+            cmd += f'-{key} {val} '
+
+    cmd = cmd + runfile
+
+    ret = results.Result()
+    ret.command = cmd
+
+    # run the job
+    sbatch_out = sp.check_output(cmd.split(), stderr=sp.STDOUT).decode()
+    # get the slurm job id from the output
+    for line in sbatch_out.splitlines():
+        if line.startswith('Submitted batch job'):
+            # set the slurm job id for this calculation, we use this in order to set dependencies between jobs.
+            ret.id = line.strip().split()[-1]
+            break
+
+    return ret
+
+
 def workdir_info(workdir: str) -> results.Result:
     '''
     Function that gets squeue information given a working directory. This will return None if the directory is not being actively referenced by slurm.
@@ -72,6 +120,18 @@ def workdir_info(workdir: str) -> results.Result:
         ret[key] = vals[workdir_index]
 
     return ret
+
+
+def wait_for_job(slurmid: int, check_every: int = 3):
+    '''
+    Wait for a slurm job to finish. We check every `check_every` seconds if the slurm job id is still present in squeue.
+
+    Args:
+        slurmid: the ID of the slurm job we are waiting for.
+        check_every: the amount of seconds to wait before checking squeue again. Don't put this too high, or you will anger the cluster people.
+    '''
+    while slurmid in squeue().id:
+        time.sleep(check_every)
 
 
 if __name__ == '__main__':

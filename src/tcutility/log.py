@@ -11,6 +11,7 @@ import inspect
 ###########################################################
 # MODULE LEVEL VARIABLES USED TO CHANGE LOGGING BEHAVIOUR #
 logfile = sys.stdout  # stream or file to send prints to. Default sys.stdout is the standard Python print output
+errfile = sys.stderr  # stream or file to send prints to. Default sys.stderr is the standard Python print output
 tab_level = 0  # number of tabs to add before a logged message. This is useful to build a sense of structure in a long output
 max_width = 0  # maximum width of printed messages. Default 0 means unbounded
 print_date = True  # print time stamp before a logged message
@@ -22,7 +23,7 @@ class Emojis:
     Class containing some useful emojis and other characters.
     Supports dot-notation and indexation to get a character.
 
-    E.g. Emojis.wait == Emojis['wait']
+    E.g. ``Emojis.wait == Emojis['wait']``
     """
 
     wait = "🕒"
@@ -55,17 +56,20 @@ class NoPrint:
     This file is deleted after exiting the context-manager.
     """
 
-    def __init__(self, stdout=None):
+    def __init__(self, stdout=None, stderr=None):
         self.stdout = stdout or logfile
+        self.stderr = stderr or errfile
         self.overflow = open(str(os.getpid()) + "_NOPRINT.tmp", "w+")
 
     def __enter__(self):
-        global logfile
+        global logfile, errfile
         logfile = self.overflow
+        errfile = self.overflow
 
     def __exit__(self, *args, **kwargs):
-        global logfile
+        global logfile, errfile
         logfile = self.stdout
+        errfile = self.stderr
         self.overflow.close()
         os.remove(str(os.getpid()) + "_NOPRINT.tmp")
 
@@ -78,12 +82,13 @@ def time_stamp():
     return f"[{now.year}/{str(now.month).zfill(2)}/{str(now.day).zfill(2)} {str(now.hour).zfill(2)}:{str(now.minute).zfill(2)}:{str(now.second).zfill(2)}] "
 
 
-def log(message: str = "", level: int = 20, end: str = "\n"):
+def log(message: Any = "", level: int = 20, end: str = "\n"):
     r"""
-    Print a message to stream or file logfile.
-    This function adds the current timestamp and supports multi-line printing (split on the "\n" escape character).
-    level is the verbosity level with which the message is sent.
-    Generally we follow:
+    Print a nicely formatteed message.
+    This function adds the current timestamp and supports multi-line printing (split on the ``\n`` escape character).
+    For verbosity levels we use the following convention:
+
+    .. code-block::
 
         NOTSET   = 0
         DEBUG    = 10
@@ -92,7 +97,11 @@ def log(message: str = "", level: int = 20, end: str = "\n"):
         ERROR    = 40
         CRITICAL = 50
 
-    We compare the level against the module-wide log_level variable (by default log_level = 20). If the level is below log_level we do not print it.
+    
+    Args:
+        message: the message to send. Before printing we will use the ``message.__str__`` method to get the string representation. If the message is a ``dict`` we use the ``json`` module to format the message nicely.
+        level: the level to print the message at. We compare the level against the module-wide ``log_level`` variable (by default ``log_level = 20``). If the level is below ``log_level`` we do not print it.
+        end: the end of the string. This is usually the new-line character ``\n``.
     """
     if level < log_level:
         return
@@ -178,10 +187,10 @@ def table(rows: List[List[Any]], header: Union[List[str], None] = None, sep: str
 
 def loadbar(sequence: Iterable, comment: str = "", Nsegments: int = 50, Nsteps: int = 10, level: int = 20) -> None:
     """
-    Return values from an iterable `sequence` and also print a progress bar for the iteration over this sequence.
+    Return values from an iterable ``sequence`` and also print a progress bar for the iteration over this sequence.
 
     Args:
-        sequence: any iterable sequence. Should define the __len__ method.
+        sequence: any iterable sequence. Should define the ``__len__`` method.
         comment: a string to be printed at the end of the loading bar to give information about the loading bar.
         Nsegments: length of the loading bar in characters.
         Nsteps: number of times to print the loading bar during iteration. If the output is a tty-type stream Nsteps will be set to the length of sequence.

@@ -1,0 +1,227 @@
+LDA
+- VWN
+- PW92
+- Xonly
+- Xalpha
+
+GGA
+- BP86
+- BP86-D
+- BP86-D3
+- BP86-D3(BJ)
+- BP86-D4
+- BP86-dDsC
+- PW91
+- PW91-dUFF
+- mPW
+- PBE
+- PBE-D
+- PBE-D3
+- PBE-D3(BJ)
+- PBE-D4
+- PBE-dDsC
+- PBE-MBD@rsSC
+- PBE-dUFF
+- RPBE
+- RPBE-D3
+- RPBE-D3(BJ)
+- RPBE-D4
+- revPBE
+- revPBE-D3
+- revPBE-D3(BJ)
+- revPBE-D4
+- revPBE-dDsC
+- mPBE
+- PBEsol
+- PBEsol-D
+- PBEsol-D3
+- PBEsol-D3(BJ)
+- HTBS
+- BLYP
+- BLYP-D
+- BLYP-D3
+- BLYP-D3(BJ)
+- BLYP-D4
+- BLYP-dDsC
+- OLYP
+- OLYP-D3, 'GRIMME3 PAR1=1.0000 PAR2=0.806 PAR3=1.764'
+- OLYP-D3(BJ), 'GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.5299 PAR3=2.6205 PAR4=2.8065'
+- OLYP-D4
+- OPBE
+- OPBE-D3, 'GRIMME3 PAR1=1.0000 PAR2=0.837 PAR3=2.055'
+- OPBE-D3(BJ), 'GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.5512 PAR3=3.3816 PAR4=2.9444'
+- OPBE-D4
+- BEE
+- XLYP
+- GGA:SSB-D  !includesdisp
+- S12g
+- S12g-D3
+- LB94
+- KT1
+- KT2
+- B97-D !includesdisp
+- B97-D-D3, 'GRIMME3 PAR1=1.0000 PAR2=0.892 PAR3=0.909'
+
+MetaGGA
+- M06L
+- M06L-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.581 PAR3=0.000'
+- M06L-D4, 'GRIMME4 s6=1.0000 s8=0.59493760 a1=0.71422359 a2=6.35314182'
+- MN15-L !libxc
+- TPSS
+- TPSS-D3(BJ)
+- TPSS-D4
+- revTPSS
+- MetaGGA:SSB-D  !includesdisp
+- MVS
+- MS0
+- MS1
+- MS2
+- SCAN
+- SCAN-D3(BJ)
+- TASKxc
+- TASKCC
+- revSCAN !libxc
+- rSCAN !libxc
+- r2SCAN !libxc
+- r2SCAN-D4 !libxc
+- r2SCAN-3c 
+
+HartreeFock
+- HartreeFock
+- HartreeFock-D4
+
+Hybrid
+- B3LYP
+- B3LYP-D
+- B3LYP-D3
+- B3LYP-D3(BJ)
+- B3LYP-D4
+- B3LYP*
+- B1LYP
+- KMLYP
+- O3LYP
+- X3LYP
+- BHandH
+- BHandHLYP
+- B1PW91
+- mPW1PW
+- mPW1K
+- PBE0
+- PBE0-D4
+- OPBE0
+- S12H
+- BMK !libxc
+- BMK-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.931 PAR3=2.168' !libxc
+- BMK-D3(BJ), 'GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.1940 PAR3=2.0860 PAR4=5.9197' !libxc
+- B1B95 !libxc
+- B1B95-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.613 PAR3=1.868' !libxc
+- B97 !libxc
+- B97-1 !libxc
+- B97-2 !libxc
+- B97-3 !libxc
+
+MetaHybrid
+- M06
+- M06-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.325 PAR3=0.000'
+- M06-D4, 'GRIMME4 s6=1.0000 s8=0.16366729 a1=0.53456413 a2=6.06192174'
+- M06-2X
+- M06-2X-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.619 PAR3=0.000'
+- M06-HF
+- M06-HF-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.446 PAR3=0.000'
+- TPSSH
+- TPSSH-D4
+- revSCAN0 !libxc
+
+DoubleHybrid
+- rev-DOD-BLYP
+- rev-DOD-BLYP-D4  !includesdisp
+- rev-DOD-PBE
+- rev-DOD-PBE-D4  !includesdisp
+- rev-DOD-PBEP86
+- rev-DOD-PBEP86-D4  !includesdisp
+- SOS1-PBE-QIDH
+- DOD-SCAN
+- rev-DOD-SCAN-D4  !includesdisp
+- B2PLYP
+- B2PIPLYP
+- ROB2PLYP
+- B2TPLYP
+- B2GPPLYP
+- B2KPLYP
+- B2NCPLYP
+- mPW2PLYP
+- mPW2KPLYP
+- mPW2NCPLYP
+- DH-BLYP
+- PBE0-DH
+- PBE-QIDH
+- LS1-DH
+- PBE0-2
+- LS1-TPSS
+- DS1-TPSS
+- B2PLYP-D3
+- B2GPPLYP-D3
+- B2NCPLYP-D3
+- mPW2NCPLYP-D3
+- PBE0-DH-D3
+- PBE-QIDH-D3
+- LS1-DH-D3
+- PBE0-2-D3
+- LS1-TPSS-D3
+- B2PLYP-D3(BJ)
+- B2GPPLYP-D3(BJ)
+- B2NCPLYP-D3(BJ)
+- mPW2NCPLYP-D3(BJ)
+- PBE0-DH-D3(BJ)
+- PBE-QIDH-D3(BJ)
+- LS1-DH-D3(BJ)
+- PBE0-2-D3(BJ)
+- LS1-TPSS-D3(BJ)
+- B2PLYP-D4
+- B2GPPLYP-D4
+- DSD-BLYP
+- rev-DSD-BLYP
+- rev-DSD-BLYP-D4  !includesdisp
+- DSD-PBEP86
+- rev-DSD-PBEP86
+- rev-DSD-PBEP86-D4  !includesdisp
+- DSD-PBE
+- rev-DSD-PBE
+- rev-DSD-PBE-D4  !includesdisp
+- rev-DSD-SCAN-D4  !includesdisp
+- SD-SCAN69
+
+RangeSeparated
+- LCY-BLYP
+- LCY-BP86
+- LCY-PBE
+- CAM-B3LYP !libxc
+- CAM-B3LYP-D4 !libxc
+- CAMY-B3LYP !libxc
+- HJS-PBE !libxc
+- HJS-PBESOL !libxc
+- HJS-B97X !libxc
+- HSE03 !libxc
+- HSE06 !libxc
+- LRC_WPBE !libxc
+- LRC_WPBEH !libxc
+- LCY-BLYP !libxc
+- LCY-PBE !libxc
+- M06-SX !libxc
+- M11 !libxc
+- MN12-SX !libxc
+- N12-SX !libxc
+- TUNED-CAM-B3LYP !libxc
+- WB97 !libxc
+- WB97X !libxc
+- WB97-D4, GRIMME4 s6=1.0000 s8=6.55792598 a1=0.76666802 a2=8.36027334 !libxc
+- WB97X-D4, GRIMME4 s6=1.0000 s8=-0.07519516 a1=0.45094893 a2=6.78425255 !libxc
+
+MP2
+- MP2
+- SOS-MP2
+- SCS-MP2
+
+Model
+- SAOP
+- LB94
