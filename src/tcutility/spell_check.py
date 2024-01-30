@@ -1,5 +1,6 @@
 import numpy as np
 from tcutility import log
+from typing import List
 
 
 def naive_recursive(a: str, b: str) -> float:
@@ -86,7 +87,7 @@ def wagner_fischer(a: str, b: str, substitution_cost: float = 1, case_missmatch_
     return d[-1, -1]
 
 
-def get_closest(a: str, others: list[str], compare_func=wagner_fischer, ignore_case: bool = False, ignore_chars: str = '', maximum_distance: int = None) -> list[str]:
+def get_closest(a: str, others: list[str], compare_func=wagner_fischer, ignore_case: bool = False, ignore_chars: str = '', maximum_distance: int = None) -> List[str]:
     '''
     Return strings that are similar to an input string using the Levenshtein distance.
 
