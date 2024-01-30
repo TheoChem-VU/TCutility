@@ -29,6 +29,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
@@ -38,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=964918ec"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/tcutility.analysis.vdd';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
@@ -212,7 +216,7 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html">tcutility.analysis.vibration package</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.atom_data_info.html">tcutility.atom_data_info package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.results.html">tcutility.results package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.typing.html">tcutility.typing package</a></li>
 </ul>
@@ -303,11 +307,6 @@
 <span class="sig-name descname"><span class="pre">atom_symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#tcutility.analysis.vdd.charge.VDDCharge.atom_symbol" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.charge.VDDCharge.change_unit">
-<span class="sig-name descname"><span class="pre">change_unit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/charge.html#VDDCharge.change_unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.charge.VDDCharge.change_unit" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tcutility.analysis.vdd.charge.VDDCharge.charge">
 <span class="sig-name descname"><span class="pre">charge</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#tcutility.analysis.vdd.charge.VDDCharge.charge" title="Link to this definition">#</a></dt>
@@ -318,75 +317,45 @@
 <span class="sig-name descname"><span class="pre">frag_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#tcutility.analysis.vdd.charge.VDDCharge.frag_index" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.charge.VDDCharge.change_unit">
+<span class="sig-name descname"><span class="pre">change_unit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/charge.html#VDDCharge.change_unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.charge.VDDCharge.change_unit" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
 <section id="module-tcutility.analysis.vdd.manager">
 <span id="tcutility-analysis-vdd-manager-module"></span><h2>tcutility.analysis.vdd.manager module<a class="headerlink" href="#module-tcutility.analysis.vdd.manager" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.change_unit_decorator">
+<span class="sig-name descname"><span class="pre">change_unit_decorator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#change_unit_decorator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.change_unit_decorator" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.create_vdd_charge_manager">
+<span class="sig-name descname"><span class="pre">create_vdd_charge_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.analysis.vdd.manager.VDDChargeManager" title="tcutility.analysis.vdd.manager.VDDChargeManager"><span class="pre">VDDChargeManager</span></a></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#create_vdd_charge_manager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.create_vdd_charge_manager" title="Link to this definition">#</a></dt>
+<dd><p>Create a VDDChargeManager from a Result object.</p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VDDChargeManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vdd_charges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tcutility.analysis.vdd.charge.VDDCharge" title="tcutility.analysis.vdd.charge.VDDCharge"><span class="pre">VDDCharge</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_fragment_calculation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_charge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class to manage the VDD charges. It can be used to print the VDD charges in a nice table and write them to a text file or excel file.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.calc_dir">
-<span class="sig-name descname"><span class="pre">calc_dir</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></em><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.calc_dir" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.change_unit">
-<span class="sig-name descname"><span class="pre">change_unit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.change_unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.change_unit" title="Link to this definition">#</a></dt>
-<dd><p>Change the unit of the VDD charges. Available units are “me” (mili-electrons) and “e” (electrons).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.charge_is_conserved">
-<span class="sig-name descname"><span class="pre">charge_is_conserved</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.charge_is_conserved"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.charge_is_conserved" title="Link to this definition">#</a></dt>
-<dd><p>Check if the total charge of the molecule is conserved. The total charge is the sum of the VDD charges.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges">
-<span class="sig-name descname"><span class="pre">get_summed_vdd_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irreps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_summed_vdd_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges" title="Link to this definition">#</a></dt>
-<dd><p>Get the summed VDD charges per fragment for the specified unit ([me] or [e]).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_dataframe">
-<span class="sig-name descname"><span class="pre">get_summed_vdd_charges_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_summed_vdd_charges_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_dataframe" title="Link to this definition">#</a></dt>
-<dd><p>Get the summed VDD charges as a pandas DataFrame in a specified unit ([me] or [e]).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_table">
-<span class="sig-name descname"><span class="pre">get_summed_vdd_charges_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_summed_vdd_charges_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_table" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges">
-<span class="sig-name descname"><span class="pre">get_vdd_charges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tcutility.analysis.vdd.charge.VDDCharge" title="tcutility.analysis.vdd.charge.VDDCharge"><span class="pre">VDDCharge</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_vdd_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges" title="Link to this definition">#</a></dt>
-<dd><p>Get the VDD charges in the specified unit ([me] or [e]).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_dataframe">
-<span class="sig-name descname"><span class="pre">get_vdd_charges_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_vdd_charges_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_dataframe" title="Link to this definition">#</a></dt>
-<dd><p>Get the VDD charges as a pandas DataFrame in a specified unit ([me] or [e]).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_table">
-<span class="sig-name descname"><span class="pre">get_vdd_charges_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_vdd_charges_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_table" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.irreps">
-<span class="sig-name descname"><span class="pre">irreps</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.irreps" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.vdd_charges">
+<span class="sig-name descname"><span class="pre">vdd_charges</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tcutility.analysis.vdd.charge.VDDCharge" title="tcutility.analysis.vdd.charge.VDDCharge"><span class="pre">VDDCharge</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.vdd_charges" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.is_fragment_calculation">
 <span class="sig-name descname"><span class="pre">is_fragment_calculation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.is_fragment_calculation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.calc_dir">
+<span class="sig-name descname"><span class="pre">calc_dir</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></em><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.calc_dir" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -399,21 +368,67 @@
 <span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.name" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.plot_vdd_charges_per_atom">
-<span class="sig-name descname"><span class="pre">plot_vdd_charges_per_atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'me'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.plot_vdd_charges_per_atom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.plot_vdd_charges_per_atom" title="Link to this definition">#</a></dt>
-<dd><p>Plot the VDD charges as a bar graph for each irrep.</p>
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.unit">
 <span class="sig-name descname"><span class="pre">unit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.unit" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.vdd_charges">
-<span class="sig-name descname"><span class="pre">vdd_charges</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tcutility.analysis.vdd.charge.VDDCharge" title="tcutility.analysis.vdd.charge.VDDCharge"><span class="pre">VDDCharge</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.vdd_charges" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.irreps">
+<span class="sig-name descname"><span class="pre">irreps</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.irreps" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.charge_is_conserved">
+<span class="sig-name descname"><span class="pre">charge_is_conserved</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.charge_is_conserved"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.charge_is_conserved" title="Link to this definition">#</a></dt>
+<dd><p>Check if the total charge of the molecule is conserved. The total charge is the sum of the VDD charges.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.change_unit">
+<span class="sig-name descname"><span class="pre">change_unit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.change_unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.change_unit" title="Link to this definition">#</a></dt>
+<dd><p>Change the unit of the VDD charges. Available units are “me” (mili-electrons) and “e” (electrons).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges">
+<span class="sig-name descname"><span class="pre">get_vdd_charges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tcutility.analysis.vdd.charge.VDDCharge" title="tcutility.analysis.vdd.charge.VDDCharge"><span class="pre">VDDCharge</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_vdd_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges" title="Link to this definition">#</a></dt>
+<dd><p>Get the VDD charges in the specified unit ([me] or [e]).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges">
+<span class="sig-name descname"><span class="pre">get_summed_vdd_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irreps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_summed_vdd_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges" title="Link to this definition">#</a></dt>
+<dd><p>Get the summed VDD charges per fragment for the specified unit ([me] or [e]).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_dataframe">
+<span class="sig-name descname"><span class="pre">get_vdd_charges_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_vdd_charges_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_dataframe" title="Link to this definition">#</a></dt>
+<dd><p>Get the VDD charges as a pandas DataFrame in a specified unit ([me] or [e]).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_dataframe">
+<span class="sig-name descname"><span class="pre">get_summed_vdd_charges_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_summed_vdd_charges_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_dataframe" title="Link to this definition">#</a></dt>
+<dd><p>Get the summed VDD charges as a pandas DataFrame in a specified unit ([me] or [e]).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_table">
+<span class="sig-name descname"><span class="pre">get_vdd_charges_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_vdd_charges_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_table" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_table">
+<span class="sig-name descname"><span class="pre">get_summed_vdd_charges_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_summed_vdd_charges_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_table" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.write_to_txt">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_to_txt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">managers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.analysis.vdd.manager.VDDChargeManager" title="tcutility.analysis.vdd.manager.VDDChargeManager"><span class="pre">VDDChargeManager</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tcutility.analysis.vdd.manager.VDDChargeManager" title="tcutility.analysis.vdd.manager.VDDChargeManager"><span class="pre">VDDChargeManager</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'me'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.write_to_txt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.write_to_txt" title="Link to this definition">#</a></dt>
+<dd><p>Write the VDD charges to a text file. It is a static method because multiple managers can be written to the same file.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.write_to_excel">
@@ -422,22 +437,11 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.write_to_txt">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_to_txt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">managers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.analysis.vdd.manager.VDDChargeManager" title="tcutility.analysis.vdd.manager.VDDChargeManager"><span class="pre">VDDChargeManager</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#tcutility.analysis.vdd.manager.VDDChargeManager" title="tcutility.analysis.vdd.manager.VDDChargeManager"><span class="pre">VDDChargeManager</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'me'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.write_to_txt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.write_to_txt" title="Link to this definition">#</a></dt>
-<dd><p>Write the VDD charges to a text file. It is a static method because multiple managers can be written to the same file.</p>
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.plot_vdd_charges_per_atom">
+<span class="sig-name descname"><span class="pre">plot_vdd_charges_per_atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'me'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.plot_vdd_charges_per_atom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.plot_vdd_charges_per_atom" title="Link to this definition">#</a></dt>
+<dd><p>Plot the VDD charges as a bar graph for each irrep.</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.change_unit_decorator">
-<span class="sig-name descname"><span class="pre">change_unit_decorator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#change_unit_decorator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.change_unit_decorator" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.create_vdd_charge_manager">
-<span class="sig-name descname"><span class="pre">create_vdd_charge_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.analysis.vdd.manager.VDDChargeManager" title="tcutility.analysis.vdd.manager.VDDChargeManager"><span class="pre">VDDChargeManager</span></a></span></span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#create_vdd_charge_manager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.create_vdd_charge_manager" title="Link to this definition">#</a></dt>
-<dd><p>Create a VDDChargeManager from a Result object.</p>
 </dd></dl>
 
 </section>
@@ -497,37 +501,37 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.charge.VDDCharge"><code class="docutils literal notranslate"><span class="pre">VDDCharge</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.charge.VDDCharge.atom_index"><code class="docutils literal notranslate"><span class="pre">VDDCharge.atom_index</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.charge.VDDCharge.atom_symbol"><code class="docutils literal notranslate"><span class="pre">VDDCharge.atom_symbol</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.charge.VDDCharge.change_unit"><code class="docutils literal notranslate"><span class="pre">VDDCharge.change_unit()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.charge.VDDCharge.charge"><code class="docutils literal notranslate"><span class="pre">VDDCharge.charge</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.charge.VDDCharge.frag_index"><code class="docutils literal notranslate"><span class="pre">VDDCharge.frag_index</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.charge.VDDCharge.change_unit"><code class="docutils literal notranslate"><span class="pre">VDDCharge.change_unit()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.analysis.vdd.manager">tcutility.analysis.vdd.manager module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.calc_dir"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.calc_dir</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.change_unit"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.change_unit()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.charge_is_conserved"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.charge_is_conserved()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_summed_vdd_charges()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_dataframe"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_summed_vdd_charges_dataframe()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_table"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_summed_vdd_charges_table()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_vdd_charges()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_dataframe"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_vdd_charges_dataframe()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_table"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_vdd_charges_table()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.irreps"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.irreps</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.is_fragment_calculation"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.is_fragment_calculation</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.mol_charge"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.mol_charge</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.name"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.name</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.plot_vdd_charges_per_atom"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.plot_vdd_charges_per_atom()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.unit"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.unit</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.vdd_charges"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.vdd_charges</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.write_to_excel"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.write_to_excel()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.write_to_txt"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.write_to_txt()</span></code></a></li>
-</ul>
-</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.change_unit_decorator"><code class="docutils literal notranslate"><span class="pre">change_unit_decorator()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.create_vdd_charge_manager"><code class="docutils literal notranslate"><span class="pre">create_vdd_charge_manager()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.vdd_charges"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.vdd_charges</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.is_fragment_calculation"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.is_fragment_calculation</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.calc_dir"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.calc_dir</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.mol_charge"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.mol_charge</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.name"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.unit"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.unit</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.irreps"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.irreps</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.charge_is_conserved"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.charge_is_conserved()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.change_unit"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.change_unit()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_vdd_charges()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_summed_vdd_charges()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_dataframe"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_vdd_charges_dataframe()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_dataframe"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_summed_vdd_charges_dataframe()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_table"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_vdd_charges_table()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_table"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_summed_vdd_charges_table()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.write_to_txt"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.write_to_txt()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.write_to_excel"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.write_to_excel()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.plot_vdd_charges_per_atom"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.plot_vdd_charges_per_atom()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.analysis.vdd">Module contents</a></li>

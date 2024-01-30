@@ -28,6 +28,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
@@ -37,6 +39,9 @@
     <script src="../../_static/documentation_options.js?v=964918ec"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/tabs.js?v=3030b3cb"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tcutility/slurm';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -251,21 +256,28 @@
                   
   <h1>Source code for tcutility.slurm</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">results</span><span class="p">,</span> <span class="n">log</span>
+<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">results</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">cache</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
 
 
 <div class="viewcode-block" id="has_slurm">
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.slurm.has_slurm">[docs]</a>
+<span class="nd">@cache</span><span class="o">.</span><span class="n">cache</span>
 <span class="k">def</span> <span class="nf">has_slurm</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Function to check if the current platform uses slurm. </span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        has_slurm: whether slurm is available on this platform.</span>
+<span class="sd">        Whether slurm is available on this platform.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">sp</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s1">&#39;which&#39;</span><span class="p">,</span> <span class="s1">&#39;sbatch&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="c1"># we do not want this function to print anything when it does not find sbatch</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">devnull</span><span class="p">:</span>
+            <span class="n">sp</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s1">&#39;which&#39;</span><span class="p">,</span> <span class="s1">&#39;sbatch&#39;</span><span class="p">],</span> <span class="n">stderr</span><span class="o">=</span><span class="n">devnull</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="c1"># if it runs without error, we have access to slurm</span>
         <span class="k">return</span> <span class="kc">True</span>
+    <span class="c1"># if an error is raised we do not have slurm</span>
     <span class="k">except</span> <span class="n">sp</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
@@ -273,6 +285,7 @@
 
 <div class="viewcode-block" id="squeue">
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.slurm.squeue">[docs]</a>
+<span class="nd">@cache</span><span class="o">.</span><span class="n">timed_cache</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">squeue</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Get information about jobs managed by slurm using squeue.</span>
@@ -284,6 +297,10 @@
 <span class="sd">            - **id (list[str])** – slurm job id&#39;s.</span>
 <span class="sd">            - **status (list[str])** – slurm job status name. See squeue documentation.</span>
 <span class="sd">            - **statuscode (list[str])** – slurm job status codes. See squeue documentation</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        By default this function uses a timed cache (see :func:`cache.timed_cache`) with a 3 second delay to lessen the load on HPC systems.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">()</span>
 
@@ -305,6 +322,45 @@
     <span class="c1"># then add the data to the return object&#39;s lists</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
         <span class="p">[</span><span class="n">ret</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())]</span>
+
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+
+
+<div class="viewcode-block" id="sbatch">
+<a class="viewcode-back" href="../../api/tcutility.html#tcutility.slurm.sbatch">[docs]</a>
+<span class="k">def</span> <span class="nf">sbatch</span><span class="p">(</span><span class="n">runfile</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Submit a job to slurm using sbatch.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        runfile: the path to the filename to be submitted.</span>
+<span class="sd">        options: options to be used for sbatch.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A :class:`results.Result` containing the slurm job ID as the ``id`` key and the full command used for submitting the job as the ``command`` key.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;sbatch &#39;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">options</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">cmd</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;--</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1"> &#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cmd</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;-</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1"> &#39;</span>
+
+    <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span> <span class="o">+</span> <span class="n">runfile</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">()</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">cmd</span>
+
+    <span class="c1"># run the job</span>
+    <span class="n">sbatch_out</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">cmd</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">stderr</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+    <span class="c1"># get the slurm job id from the output</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">sbatch_out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Submitted batch job&#39;</span><span class="p">):</span>
+            <span class="c1"># set the slurm job id for this calculation, we use this in order to set dependencies between jobs.</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">break</span>
 
     <span class="k">return</span> <span class="n">ret</span></div>
 
@@ -332,6 +388,21 @@
         <span class="n">ret</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="n">workdir_index</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">ret</span></div>
+
+
+
+<div class="viewcode-block" id="wait_for_job">
+<a class="viewcode-back" href="../../api/tcutility.html#tcutility.slurm.wait_for_job">[docs]</a>
+<span class="k">def</span> <span class="nf">wait_for_job</span><span class="p">(</span><span class="n">slurmid</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">check_every</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Wait for a slurm job to finish. We check every `check_every` seconds if the slurm job id is still present in squeue.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        slurmid: the ID of the slurm job we are waiting for.</span>
+<span class="sd">        check_every: the amount of seconds to wait before checking squeue again. Don&#39;t put this too high, or you will anger the cluster people.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">while</span> <span class="n">slurmid</span> <span class="ow">in</span> <span class="n">squeue</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">check_every</span><span class="p">)</span></div>
 
 
 

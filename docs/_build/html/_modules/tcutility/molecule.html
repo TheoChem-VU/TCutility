@@ -28,6 +28,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
@@ -37,6 +39,9 @@
     <script src="../../_static/documentation_options.js?v=964918ec"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/tabs.js?v=3030b3cb"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tcutility/molecule';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -252,7 +257,7 @@
   <h1>Source code for tcutility.molecule</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">scm</span> <span class="kn">import</span> <span class="n">plams</span>
 <span class="kn">from</span> <span class="nn">tcutility.results</span> <span class="kn">import</span> <span class="n">result</span>
-
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
 
 <div class="viewcode-block" id="parse_str">
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.molecule.parse_str">[docs]</a>
@@ -330,22 +335,23 @@
 <span class="sd">    Load a molecule from a given xyz file path.</span>
 <span class="sd">    The xyz file is structured as follows:</span>
 
-<span class="sd">        ```</span>
-<span class="sd">        [int] number of atoms</span>
+<span class="sd">    .. code-block::</span>
+
+<span class="sd">        [int]</span>
 <span class="sd">        Comment line</span>
-<span class="sd">        Xx X1 Y1 Z1 atom_tag1 atom_tag2 atom_key1=...</span>
-<span class="sd">        Xx X2 Y2 Z2 atom_tag1 atom_tag2 atom_key1=...</span>
-<span class="sd">        Xx X3 Y3 Z3</span>
+<span class="sd">        [str] [float] [float] [float] atom_tag1 atom_tag2 atom_key1=...</span>
+<span class="sd">        [str] [float] [float] [float] atom_tag1 atom_tag2 atom_key1=...</span>
+<span class="sd">        [str] [float] [float] [float]</span>
 
 <span class="sd">        mol_tag1</span>
 <span class="sd">        mol_tag2</span>
 <span class="sd">        mol_key1=...</span>
 <span class="sd">        mol_key2 = ...</span>
-<span class="sd">        ```</span>
 
-<span class="sd">    The xyz file is parsed and returned as a plams.Molecule object.</span>
-<span class="sd">    Flags and tags are given as mol.flags and mol.flags.tags respectively</span>
-<span class="sd">    Similarly for the atoms, the flags and tags are given as mol.atoms[i].flags and mol.atoms[i].flags.tags</span>
+
+<span class="sd">    The xyz file is parsed and returned as a :class:`plams.Molecule &lt;plams.mol.molecule.Molecule&gt;` object.</span>
+<span class="sd">    Flags and tags are given as ``mol.flags`` and ``mol.flags.tags`` respectively.</span>
+<span class="sd">    Similarly for the atoms, the flags and tags are given as ``mol.atoms[i].flags`` and ``mol.atoms[i].flags.tags``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">parse_flags</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
@@ -386,11 +392,97 @@
 
 
 
+<div class="viewcode-block" id="guess_fragments">
+<a class="viewcode-back" href="../../api/tcutility.html#tcutility.molecule.guess_fragments">[docs]</a>
+<span class="k">def</span> <span class="nf">guess_fragments</span><span class="p">(</span><span class="n">mol</span><span class="p">:</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Guess fragments based on data from the xyz file. Two methods are supported, see the tabs below.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    .. tabs::</span>
+<span class="sd">        </span>
+<span class="sd">        .. group-tab:: First method</span>
+
+<span class="sd">            .. code-block::</span>
+
+<span class="sd">                8</span>
+
+<span class="sd">                N       0.00000000       0.00000000      -0.81474153 </span>
+<span class="sd">                B      -0.00000000      -0.00000000       0.83567034 </span>
+<span class="sd">                H       0.47608351      -0.82460084      -1.14410295 </span>
+<span class="sd">                H       0.47608351       0.82460084      -1.14410295 </span>
+<span class="sd">                H      -0.95216703       0.00000000      -1.14410295 </span>
+<span class="sd">                H      -0.58149793       1.00718395       1.13712667 </span>
+<span class="sd">                H      -0.58149793      -1.00718395       1.13712667 </span>
+<span class="sd">                H       1.16299585      -0.00000000       1.13712667 </span>
+
+<span class="sd">                frag_Donor = 1, 3-5</span>
+<span class="sd">                frag_Acceptor = 2, 6-8</span>
+<span class="sd">            </span>
+<span class="sd">            In this case, fragment atom indices must be provided below the coordinates. </span>
+<span class="sd">            The fragment name must be prefixed with ``frag_``. Indices can be given as integers or as ranges using ``-``.</span>
+<span class="sd">        </span>
+<span class="sd">        .. group-tab:: Second method</span>
+
+<span class="sd">            .. code-block::</span>
+
+<span class="sd">                8</span>
+
+<span class="sd">                N       0.00000000       0.00000000      -0.81474153 frag=Donor</span>
+<span class="sd">                B      -0.00000000      -0.00000000       0.83567034 frag=Acceptor</span>
+<span class="sd">                H       0.47608351      -0.82460084      -1.14410295 frag=Donor</span>
+<span class="sd">                H       0.47608351       0.82460084      -1.14410295 frag=Donor</span>
+<span class="sd">                H      -0.95216703       0.00000000      -1.14410295 frag=Donor</span>
+<span class="sd">                H      -0.58149793       1.00718395       1.13712667 frag=Acceptor</span>
+<span class="sd">                H      -0.58149793      -1.00718395       1.13712667 frag=Acceptor</span>
+<span class="sd">                H       1.16299585      -0.00000000       1.13712667 frag=Acceptor</span>
+<span class="sd">            </span>
+<span class="sd">            In this case, fragment atoms are marked with the `frag` flag which gives the name of the fragment the atom belongs to.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mol: the molecule that is to be split into fragments. It should have defined either method shown above. If it does not define these methods this function returns ``None``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dictionary containing fragment names as keys and :class:`plams.Molecule &lt;scm.plams.mol.molecule.Molecule&gt;` objects as values. Atoms that were not included by either method will be placed in the molecule object with key ``None``.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># first method, check if the fragments are defined as molecule flags</span>
+    <span class="n">fragment_flags</span> <span class="o">=</span> <span class="p">[</span><span class="n">flag</span> <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span> <span class="k">if</span> <span class="n">flag</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;frag_&#39;</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragment_flags</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">fragment_mols</span> <span class="o">=</span> <span class="p">{</span><span class="n">frag</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s1">&#39;frag_&#39;</span><span class="p">):</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span> <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">fragment_flags</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">fragment_flags</span><span class="p">:</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">index_line</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="n">frag</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">indx</span> <span class="ow">in</span> <span class="n">index_line</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indx</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                    <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indx</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indx</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">indx</span><span class="p">:</span>
+                    <span class="n">indices</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">indx</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">indx</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Fragment index </span><span class="si">{</span><span class="n">indx</span><span class="si">}</span><span class="s1"> could not be parsed.&#39;</span><span class="p">)</span>
+
+            <span class="p">[</span><span class="n">fragment_mols</span><span class="p">[</span><span class="n">frag</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s1">&#39;frag_&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">mol</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">fragment_mols</span>
+
+    <span class="c1"># second method, check if the atoms have a frag= flag defined</span>
+    <span class="n">fragment_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;frag&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragment_names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">fragment_mols</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">fragment_names</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="p">:</span>
+            <span class="c1"># get the fragment the atom belongs to and add it to the list</span>
+            <span class="n">fragment_mols</span><span class="p">[</span><span class="n">atom</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;frag&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fragment_mols</span></div>
+
+
+
+
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">mol</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;D:\Users\Yuman\Desktop\PhD\ychem\calculations2\5ef3a511141a993d83552515df6bf882a7560dd806f88df4e2c2887b4d2a9595\transitionstate\input_mol.xyz&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">mol</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">flags</span><span class="p">)</span>
+    <span class="c1"># mol = load(r&quot;D:\Users\Yuman\Desktop\PhD\ychem\calculations2\5ef3a511141a993d83552515df6bf882a7560dd806f88df4e2c2887b4d2a9595\transitionstate\input_mol.xyz&quot;)</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="s1">&#39;../../examples/job/NH3BH3.xyz&#39;</span><span class="p">)</span>
+    <span class="n">frags</span> <span class="o">=</span> <span class="n">guess_fragments</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">frags</span><span class="p">)</span>
 </pre></div>
 
                 </article>

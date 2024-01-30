@@ -29,6 +29,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
@@ -38,13 +40,15 @@
     <script src="../_static/documentation_options.js?v=964918ec"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/tcutility.results';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="tcutility.typing package" href="tcutility.typing.html" />
-    <link rel="prev" title="tcutility.atom_data_info package" href="tcutility.atom_data_info.html" />
+    <link rel="prev" title="tcutility.job package" href="tcutility.job.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -212,7 +216,7 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html">tcutility.analysis.vibration package</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.atom_data_info.html">tcutility.atom_data_info package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">tcutility.results package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.typing.html">tcutility.typing package</a></li>
 </ul>
@@ -298,39 +302,15 @@
 <div><ul class="simple">
 <li><p><strong>task (str)</strong> – the task that was set for the calculation.</p></li>
 <li><p><strong>relativistic (bool)</strong> – whether or not relativistic effects were enabled.</p></li>
+<li><p><strong>relativistic_type (str)</strong> – the name of the relativistic approximation used.</p></li>
 <li><p><strong>unrestricted_sfos (bool)</strong> – whether or not SFOs are treated in an unrestricted manner.</p></li>
 <li><p><strong>unrestricted_mos (bool)</strong> – whether or not MOs are treated in an unrestricted manner.</p></li>
 <li><p><strong>symmetry.group (str)</strong> – the symmetry group selected for the molecule.</p></li>
 <li><p><strong>symmetry.labels (list[str])</strong> – the symmetry labels associated with the symmetry group.</p></li>
 <li><p><strong>used_regions (bool)</strong> – whether regions were used in the calculation.</p></li>
-</ul>
-</div></blockquote>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tcutility.results.adf.get_level_of_theory">
-<span class="sig-name descname"><span class="pre">get_level_of_theory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/adf.html#get_level_of_theory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.adf.get_level_of_theory" title="Link to this definition">#</a></dt>
-<dd><p>Function to get the level-of-theory from an input-file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>inp_path</strong> – Path to the input file. Can be a .run or .in file create for AMS</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Dictionary containing information about the level-of-theory:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>summary (str)</strong> - a summary string that gives the level-of-theory in a human-readable format.</p></li>
-<li><p><strong>xc.functional (str)</strong> - XC-functional used in the calculation.</p></li>
-<li><p><strong>xc.category (str)</strong> - category the XC-functional belongs to. E.g. GGA, MetaHybrid, etc …</p></li>
-<li><p><strong>xc.dispersion (str)</strong> - the dispersion correction method used during the calculation.</p></li>
-<li><p><strong>xc.summary (str)</strong> - a summary string that gives the XC-functional information in a human-readable format.</p></li>
-<li><p><strong>xc.empiricalScaling (str)</strong> - which empirical scaling parameter was used. Useful for MP2 calculations.</p></li>
-<li><p><strong>basis.type (str)</strong> - the size/type of the basis-set.</p></li>
-<li><p><strong>basis.core (str)</strong> - the size of the frozen-core approximation.</p></li>
-<li><p><strong>quality (str)</strong> - the numerical quality setting.</p></li>
+<li><p><strong>charge (int)</strong> - the charge of the system.</p></li>
+<li><p><strong>spin_polarization (int)</strong> - the spin-polarization of the system.</p></li>
+<li><p><strong>multiplicity (int)</strong> - the multiplicity of the system. This is equal to 2|S|+1 for spin-polarization S.</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -373,9 +353,75 @@
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.adf.get_level_of_theory">
+<span class="sig-name descname"><span class="pre">get_level_of_theory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/adf.html#get_level_of_theory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.adf.get_level_of_theory" title="Link to this definition">#</a></dt>
+<dd><p>Function to get the level-of-theory from an input-file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inp_path</strong> – Path to the input file. Can be a .run or .in file create for AMS</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Dictionary containing information about the level-of-theory:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>summary (str)</strong> - a summary string that gives the level-of-theory in a human-readable format.</p></li>
+<li><p><strong>xc.functional (str)</strong> - XC-functional used in the calculation.</p></li>
+<li><p><strong>xc.category (str)</strong> - category the XC-functional belongs to. E.g. GGA, MetaHybrid, etc …</p></li>
+<li><p><strong>xc.dispersion (str)</strong> - the dispersion correction method used during the calculation.</p></li>
+<li><p><strong>xc.summary (str)</strong> - a summary string that gives the XC-functional information in a human-readable format.</p></li>
+<li><p><strong>xc.empiricalScaling (str)</strong> - which empirical scaling parameter was used. Useful for MP2 calculations.</p></li>
+<li><p><strong>basis.type (str)</strong> - the size/type of the basis-set.</p></li>
+<li><p><strong>basis.core (str)</strong> - the size of the frozen-core approximation.</p></li>
+<li><p><strong>quality (str)</strong> - the numerical quality setting.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="module-tcutility.results.ams">
 <span id="tcutility-results-ams-module"></span><h2>tcutility.results.ams module<a class="headerlink" href="#module-tcutility.results.ams" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.ams.get_calc_files">
+<span class="sig-name descname"><span class="pre">get_calc_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_calc_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_calc_files" title="Link to this definition">#</a></dt>
+<dd><p>Function that returns files relevant to AMS calculations stored in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing filenames and paths</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.ams.get_ams_version">
+<span class="sig-name descname"><span class="pre">get_ams_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_ams_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_ams_version" title="Link to this definition">#</a></dt>
+<dd><p>Function to get the AMS version used in the calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Dictionary containing results about the AMS version:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>full (str)</strong> – the full version string as written by SCM.</p></li>
+<li><p><strong>major (str)</strong> – major AMS version, should correspond to the year of release.</p></li>
+<li><p><strong>minor (str)</strong> – minor AMS version.</p></li>
+<li><p><strong>micro (str)</strong> – micro AMS version, should correspond to the internal revision number.</p></li>
+<li><p><strong>date (datetime.datetime)</strong> – date the AMS version was released.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.ams.get_ams_info">
 <span class="sig-name descname"><span class="pre">get_ams_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_ams_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_ams_info" title="Link to this definition">#</a></dt>
@@ -403,44 +449,23 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="tcutility.results.ams.get_ams_input">
-<span class="sig-name descname"><span class="pre">get_ams_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_ams_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_ams_input" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tcutility.results.ams.get_ams_version">
-<span class="sig-name descname"><span class="pre">get_ams_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_ams_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_ams_version" title="Link to this definition">#</a></dt>
-<dd><p>Function to get the AMS version used in the calculation.</p>
+<dt class="sig sig-object py" id="tcutility.results.ams.get_timing">
+<span class="sig-name descname"><span class="pre">get_timing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_timing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_timing" title="Link to this definition">#</a></dt>
+<dd><p>Function to get the timings from the calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Dictionary containing results about the AMS version:</p>
+<dd class="field-even"><p><p>Dictionary containing results about the timings:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>full (str)</strong> – the full version string as written by SCM.</p></li>
-<li><p><strong>major (str)</strong> – major AMS version, should correspond to the year of release.</p></li>
-<li><p><strong>minor (str)</strong> – minor AMS version.</p></li>
-<li><p><strong>micro (str)</strong> – micro AMS version, should correspond to the internal revision number.</p></li>
-<li><p><strong>date (datetime.datetime)</strong> – date the AMS version was released.</p></li>
+<li><p><strong>cpu (float)</strong> – time spent performing calculations on the cpu.</p></li>
+<li><p><strong>sys (float)</strong> – time spent by the system (file IO, process creation/destruction, etc …).</p></li>
+<li><p><strong>total (float)</strong> – total time spent by AMS on the calculation, can be larger than the sum of cpu and sys.</p></li>
 </ul>
 </div></blockquote>
 </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tcutility.results.ams.get_calc_files">
-<span class="sig-name descname"><span class="pre">get_calc_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_calc_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_calc_files" title="Link to this definition">#</a></dt>
-<dd><p>Function that returns files relevant to AMS calculations stored in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary containing filenames and paths</p>
 </dd>
 </dl>
 </dd></dl>
@@ -462,6 +487,33 @@ In case of non-succes it will also give possible reasons for the errors/warnings
 <li><p><strong>reasons (list[str])</strong> – list of reasons to explain the status, they can be errors, warnings, etc.</p></li>
 <li><p><strong>name (str)</strong> – calculation status written as a string, one of (“SUCCESS”, “RUNNING”, “UNKNOWN”, “SUCCESS(W)”, “FAILED”)</p></li>
 <li><p><strong>code (str)</strong> – calculation status written as a single character, one of (“S”, “R”, “U”, “W” “F”)</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.ams.get_molecules">
+<span class="sig-name descname"><span class="pre">get_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_molecules" title="Link to this definition">#</a></dt>
+<dd><p>Function to get molecules from the calculation, including input, output and history molecules.
+It will also add bonds to the molecule if they are given in the rkf file, else it will guess them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Dictionary containing information about the molecular systems:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>number_of_atoms (int)</strong> – number of atoms in the molecule.</p></li>
+<li><p><strong>atom_numbers (list[int])</strong> – list of atomic numbers for each atom in the molecule.</p></li>
+<li><p><strong>atom_symbols (list[str])</strong> – list of elements for each atom in the molecule.</p></li>
+<li><p><strong>atom_masses (list[float])</strong> – list of atomic masses for each atom in the molecule.</p></li>
+<li><p><strong>input (plams.Molecule)</strong> – molecule that was given in the input for the calculation.</p></li>
+<li><p><strong>output (plams.Molecule)</strong> – final molecule that was given as the output for the calculation. If the calculation was a singlepoint calculation output and input molecules will be the same.</p></li>
+<li><p><strong>frag_indices (numpy array[int] (1D))</strong> – list of fragment indices for each atom in the molecule. The indices are given in the order of the atoms in the molecule.</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -514,53 +566,9 @@ These blocks are special in that they can contain multiple of the same entry</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="tcutility.results.ams.get_molecules">
-<span class="sig-name descname"><span class="pre">get_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_molecules" title="Link to this definition">#</a></dt>
-<dd><p>Function to get molecules from the calculation, including input, output and history molecules.
-It will also add bonds to the molecule if they are given in the rkf file, else it will guess them.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Dictionary containing information about the molecular systems:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>number_of_atoms (int)</strong> – number of atoms in the molecule.</p></li>
-<li><p><strong>atom_numbers (list[int])</strong> – list of atomic numbers for each atom in the molecule.</p></li>
-<li><p><strong>atom_symbols (list[str])</strong> – list of elements for each atom in the molecule.</p></li>
-<li><p><strong>atom_masses (list[float])</strong> – list of atomic masses for each atom in the molecule.</p></li>
-<li><p><strong>input (plams.Molecule)</strong> – molecule that was given in the input for the calculation.</p></li>
-<li><p><strong>output (plams.Molecule)</strong> – final molecule that was given as the output for the calculation. If the calculation was a singlepoint calculation output and input molecules will be the same.</p></li>
-<li><p><strong>frag_indices (numpy array[int] (1D))</strong> – list of fragment indices for each atom in the molecule. The indices are given in the order of the atoms in the molecule.</p></li>
-</ul>
-</div></blockquote>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tcutility.results.ams.get_timing">
-<span class="sig-name descname"><span class="pre">get_timing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_timing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_timing" title="Link to this definition">#</a></dt>
-<dd><p>Function to get the timings from the calculation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Dictionary containing results about the timings:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>cpu (float)</strong> – time spent performing calculations on the cpu.</p></li>
-<li><p><strong>sys (float)</strong> – time spent by the system (file IO, process creation/destruction, etc …).</p></li>
-<li><p><strong>total (float)</strong> – total time spent by AMS on the calculation, can be larger than the sum of cpu and sys.</p></li>
-</ul>
-</div></blockquote>
-</p>
-</dd>
-</dl>
-</dd></dl>
+<dt class="sig sig-object py" id="tcutility.results.ams.get_ams_input">
+<span class="sig-name descname"><span class="pre">get_ams_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_ams_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_ams_input" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-tcutility.results.cache">
@@ -593,6 +601,17 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.cache.store">
+<span class="sig-name descname"><span class="pre">store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">KFReader</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/tcutility/results/cache.html#store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.cache.store" title="Link to this definition">#</a></dt>
+<dd><p>Store an rkf reader in the cache. It can later be indexed by its path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reader</strong> – An rkf file reader object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.cache.get">
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">KFReader</span></span></span><a class="reference internal" href="../_modules/tcutility/results/cache.html#get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.cache.get" title="Link to this definition">#</a></dt>
 <dd><p>Retrieve an rkf reader from storage using its path. If the file was not opened yet, open it first and then store and return the new object.</p>
@@ -602,17 +621,6 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>An rkf file reader that can be used for reading data from a calculation.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tcutility.results.cache.store">
-<span class="sig-name descname"><span class="pre">store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">KFReader</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/tcutility/results/cache.html#store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.cache.store" title="Link to this definition">#</a></dt>
-<dd><p>Store an rkf reader in the cache. It can later be indexed by its path.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>reader</strong> – An rkf file reader object.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -675,73 +683,21 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="tcutility.results.orca.get_calc_settings">
-<span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_calc_settings" title="Link to this definition">#</a></dt>
-<dd><p>Function to read calculation settings for an ORCA calculation.</p>
+<dt class="sig sig-object py" id="tcutility.results.orca.get_version">
+<span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_version" title="Link to this definition">#</a></dt>
+<dd><p>Function to get the ORCA version used in the calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>info</strong> – Result object containing ORCA calculation settings.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing properties from the ORCA calculation:</p>
+<dd class="field-even"><p><p>Result object containing results about the ORCA version:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>task (str)</strong> – the task that was set for the calculation.</p></li>
-<li><p><strong>unrestricted (bool)</strong> – whether or not the wavefunction is treated in an unrestricted manner.</p></li>
-<li><p><strong>used_qros (bool)</strong> - whether the reference wavefunction is transformed to a QRO wavefunction.</p></li>
-<li><p><strong>frequencies (bool)</strong> - whether vibrational frequencies were calculated.</p></li>
-<li><p><strong>charge (int)</strong> - the charge of the molecular system.</p></li>
-<li><p><strong>spin_polarization (int)</strong> - the spin-polarization of the molecular system.</p></li>
-<li><p><strong>multiplicity (int)</strong> - the multiplicity of the molecular system.</p></li>
-</ul>
-</div></blockquote>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tcutility.results.orca.get_calculation_status">
-<span class="sig-name descname"><span class="pre">get_calculation_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_calculation_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_calculation_status" title="Link to this definition">#</a></dt>
-<dd><p>Function that returns the status of the ORCA calculation described in reader. In case of non-succes it will also give possible reasons for the errors/warnings.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> – Result object containing ORCA calculation information.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing information about the calculation status:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>fatal (bool)</strong> – True if calculation cannot be analysed correctly, False otherwise</p></li>
-<li><p><strong>reasons (list[str])</strong> – list of reasons to explain the status, they can be errors, warnings, etc.</p></li>
-<li><p><strong>name (str)</strong> – calculation status written as a string, one of (“SUCCESS”, “RUNNING”, “UNKNOWN”, “SUCCESS(W)”, “FAILED”)</p></li>
-<li><p><strong>code (str)</strong> – calculation status written as a single character, one of (“S”, “R”, “U”, “W” “F”)</p></li>
-</ul>
-</div></blockquote>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tcutility.results.orca.get_info">
-<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_info" title="Link to this definition">#</a></dt>
-<dd><p>Function to read useful info about the calculation in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>. Returned information will depend on the type of file that is provided.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing results about the calculation and AMS:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>version (Result)</strong> – information about the AMS version used, see <a class="reference internal" href="#tcutility.results.orca.get_version" title="tcutility.results.orca.get_version"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_version()</span></code></a>.</p></li>
-<li><p><strong>files (Result)</strong> - paths to files that are important for this calculation.</p></li>
-<li><p><strong>input (Result)</strong> - information about the input of this calculation, see <a class="reference internal" href="#tcutility.results.orca.get_input" title="tcutility.results.orca.get_input"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_input()</span></code></a>.</p></li>
-<li><p><strong>level (Result)</strong> - information about the level of theory used for this calculation, see <a class="reference internal" href="#tcutility.results.orca.get_level_of_theory" title="tcutility.results.orca.get_level_of_theory"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_level_of_theory()</span></code></a>.</p></li>
-<li><p><strong>engine (str)</strong> – the engine that was used to perform the calculation, for example ‘adf’, ‘dftb’, …</p></li>
-<li><p><strong>status (Result)</strong> – information about calculation status, see <a class="reference internal" href="#tcutility.results.orca.get_calculation_status" title="tcutility.results.orca.get_calculation_status"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_calculation_status()</span></code></a>.</p></li>
-<li><p><strong>molecule (Result)</strong> – information about the input and output molecules and the molecular system in general, see <a class="reference internal" href="#tcutility.results.orca.get_molecules" title="tcutility.results.orca.get_molecules"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_molecules()</span></code></a>.</p></li>
+<li><p><strong>full (str)</strong> – the full version string as written by ORCA.</p></li>
+<li><p><strong>major (str)</strong> – major ORCA version.</p></li>
+<li><p><strong>minor (str)</strong> – minor ORCA version.</p></li>
+<li><p><strong>micro (str)</strong> – micro ORCA version.</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -795,6 +751,55 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.orca.get_calc_settings">
+<span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_calc_settings" title="Link to this definition">#</a></dt>
+<dd><p>Function to read calculation settings for an ORCA calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>info</strong> – Result object containing ORCA calculation settings.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Result object containing properties from the ORCA calculation:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>task (str)</strong> – the task that was set for the calculation.</p></li>
+<li><p><strong>unrestricted (bool)</strong> – whether or not the wavefunction is treated in an unrestricted manner.</p></li>
+<li><p><strong>used_qros (bool)</strong> - whether the reference wavefunction is transformed to a QRO wavefunction.</p></li>
+<li><p><strong>frequencies (bool)</strong> - whether vibrational frequencies were calculated.</p></li>
+<li><p><strong>charge (int)</strong> - the charge of the molecular system.</p></li>
+<li><p><strong>spin_polarization (int)</strong> - the spin-polarization of the molecular system.</p></li>
+<li><p><strong>multiplicity (int)</strong> - the multiplicity of the molecular system.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.orca.get_calculation_status">
+<span class="sig-name descname"><span class="pre">get_calculation_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_calculation_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_calculation_status" title="Link to this definition">#</a></dt>
+<dd><p>Function that returns the status of the ORCA calculation described in reader. In case of non-succes it will also give possible reasons for the errors/warnings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>info</strong> – Result object containing ORCA calculation information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Result object containing information about the calculation status:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>fatal (bool)</strong> – True if calculation cannot be analysed correctly, False otherwise</p></li>
+<li><p><strong>reasons (list[str])</strong> – list of reasons to explain the status, they can be errors, warnings, etc.</p></li>
+<li><p><strong>name (str)</strong> – calculation status written as a string, one of (“SUCCESS”, “RUNNING”, “UNKNOWN”, “SUCCESS(W)”, “FAILED”)</p></li>
+<li><p><strong>code (str)</strong> – calculation status written as a single character, one of (“S”, “R”, “U”, “W” “F”)</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.orca.get_molecules">
 <span class="sig-name descname"><span class="pre">get_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_molecules" title="Link to this definition">#</a></dt>
 <dd><p>Function that returns information about the molecules for this calculation.</p>
@@ -809,6 +814,57 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <li><p><strong>input (plams.Molecule)</strong> - the input molecule for this calculation.</p></li>
 <li><p><strong>output (plams.Molecule)</strong> - the output molecule for this calculation, for example the optimized structure after a geometry optimization.</p></li>
 <li><p><strong>number_of_atoms (int)</strong> - the number of atoms in the molecular system.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.orca.get_info">
+<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_info" title="Link to this definition">#</a></dt>
+<dd><p>Function to read useful info about the calculation in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>. Returned information will depend on the type of file that is provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Result object containing results about the calculation and AMS:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>version (Result)</strong> – information about the AMS version used, see <a class="reference internal" href="#tcutility.results.orca.get_version" title="tcutility.results.orca.get_version"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_version()</span></code></a>.</p></li>
+<li><p><strong>files (Result)</strong> - paths to files that are important for this calculation.</p></li>
+<li><p><strong>input (Result)</strong> - information about the input of this calculation, see <a class="reference internal" href="#tcutility.results.orca.get_input" title="tcutility.results.orca.get_input"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_input()</span></code></a>.</p></li>
+<li><p><strong>level (Result)</strong> - information about the level of theory used for this calculation, see <a class="reference internal" href="#tcutility.results.orca.get_level_of_theory" title="tcutility.results.orca.get_level_of_theory"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_level_of_theory()</span></code></a>.</p></li>
+<li><p><strong>engine (str)</strong> – the engine that was used to perform the calculation, for example ‘adf’, ‘dftb’, …</p></li>
+<li><p><strong>status (Result)</strong> – information about calculation status, see <a class="reference internal" href="#tcutility.results.orca.get_calculation_status" title="tcutility.results.orca.get_calculation_status"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_calculation_status()</span></code></a>.</p></li>
+<li><p><strong>molecule (Result)</strong> – information about the input and output molecules and the molecular system in general, see <a class="reference internal" href="#tcutility.results.orca.get_molecules" title="tcutility.results.orca.get_molecules"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_molecules()</span></code></a>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.orca.get_vibrations">
+<span class="sig-name descname"><span class="pre">get_vibrations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_vibrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_vibrations" title="Link to this definition">#</a></dt>
+<dd><p>Function to read vibrational data of an ORCA calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lines</strong> – Lines in the output file of the ORCA calculation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Result object containing vibrational properties from the ORCA calculation:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>number_of_modes (int)</strong> – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.</p></li>
+<li><p><strong>number_of_imaginary_modes (int)</strong> – number of imaginary vibrational modes for this molecule.</p></li>
+<li><p><strong>frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-1\)</span>).</p></li>
+<li><p><strong>intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
+<li><p><strong>modes (list[float])</strong> – list of vibrational modes sorted from low frequency to high frequency.</p></li>
+<li><p><strong>character (str)</strong> – the PES character of the molecular system. Either “minimum”, “transitionstate” or “saddlepoint(n_imag)”, for 0, 1, n_imag number of imaginary frequencies.</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -851,54 +907,6 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="tcutility.results.orca.get_version">
-<span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_version" title="Link to this definition">#</a></dt>
-<dd><p>Function to get the ORCA version used in the calculation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> – Result object containing ORCA calculation settings.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing results about the ORCA version:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>full (str)</strong> – the full version string as written by ORCA.</p></li>
-<li><p><strong>major (str)</strong> – major ORCA version.</p></li>
-<li><p><strong>minor (str)</strong> – minor ORCA version.</p></li>
-<li><p><strong>micro (str)</strong> – micro ORCA version.</p></li>
-</ul>
-</div></blockquote>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tcutility.results.orca.get_vibrations">
-<span class="sig-name descname"><span class="pre">get_vibrations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_vibrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_vibrations" title="Link to this definition">#</a></dt>
-<dd><p>Function to read vibrational data of an ORCA calculation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>lines</strong> – Lines in the output file of the ORCA calculation.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing vibrational properties from the ORCA calculation:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>number_of_modes (int)</strong> – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.</p></li>
-<li><p><strong>number_of_imaginary_modes (int)</strong> – number of imaginary vibrational modes for this molecule.</p></li>
-<li><p><strong>frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-1\)</span>).</p></li>
-<li><p><strong>intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
-<li><p><strong>modes (list[float])</strong> – list of vibrational modes sorted from low frequency to high frequency.</p></li>
-<li><p><strong>character (str)</strong> – the PES character of the molecular system. Either “minimum”, “transitionstate” or “saddlepoint(n_imag)”, for 0, 1, n_imag number of imaginary frequencies.</p></li>
-</ul>
-</div></blockquote>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 <section id="module-tcutility.results.result">
 <span id="tcutility-results-result-module"></span><h2>tcutility.results.result module<a class="headerlink" href="#module-tcutility.results.result" title="Link to this heading">#</a></h2>
@@ -909,25 +917,6 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary.
 The class works case-insensitively, but will retain the case of the key when it was first set.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.results.result.Result.as_plams_settings">
-<span class="sig-name descname"><span class="pre">as_plams_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result.as_plams_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result.as_plams_settings" title="Link to this definition">#</a></dt>
-<dd><p>Returns this Result object as a plams.Settings object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.results.result.Result.get_multi_key">
-<span class="sig-name descname"><span class="pre">get_multi_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result.get_multi_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result.get_multi_key" title="Link to this definition">#</a></dt>
-<dd><p>Method that returns the value of a “multikey”. The multikey is multiple keys joined by dots.
-E.g. res.properties.energy.bond can be gotten by calling res.get_multi_key(“properties.energy.bond”)</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.results.result.Result.get_parent_tree">
-<span class="sig-name descname"><span class="pre">get_parent_tree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result.get_parent_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result.get_parent_tree" title="Link to this definition">#</a></dt>
-<dd><p>Method to get the path from this object to the parent object. The result is presented in a formatted string</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.results.result.Result.items">
 <span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result.items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result.items" title="Link to this definition">#</a></dt>
@@ -941,9 +930,28 @@ with dunders, as they should not be exposed to the user.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tcutility.results.result.Result.get_parent_tree">
+<span class="sig-name descname"><span class="pre">get_parent_tree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result.get_parent_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result.get_parent_tree" title="Link to this definition">#</a></dt>
+<dd><p>Method to get the path from this object to the parent object. The result is presented in a formatted string</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tcutility.results.result.Result.prune">
 <span class="sig-name descname"><span class="pre">prune</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result.prune"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result.prune" title="Link to this definition">#</a></dt>
 <dd><p>Remove empty paths of this object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.results.result.Result.get_multi_key">
+<span class="sig-name descname"><span class="pre">get_multi_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result.get_multi_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result.get_multi_key" title="Link to this definition">#</a></dt>
+<dd><p>Method that returns the value of a “multikey”. The multikey is multiple keys joined by dots.
+E.g. res.properties.energy.bond can be gotten by calling res.get_multi_key(“properties.energy.bond”)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.results.result.Result.as_plams_settings">
+<span class="sig-name descname"><span class="pre">as_plams_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result.as_plams_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result.as_plams_settings" title="Link to this definition">#</a></dt>
+<dd><p>Returns this Result object as a plams.Settings object.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1019,12 +1027,12 @@ Information will be given as :class:`tcutility.results.result.Result` objects an
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="tcutility.atom_data_info.html"
+       href="tcutility.job.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">tcutility.atom_data_info package</p>
+        <p class="prev-next-title">tcutility.job package</p>
       </div>
     </a>
     <a class="right-next"
@@ -1057,20 +1065,20 @@ Information will be given as :class:`tcutility.results.result.Result` objects an
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.results.adf">tcutility.results.adf module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.adf.get_calc_settings"><code class="docutils literal notranslate"><span class="pre">get_calc_settings()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.adf.get_level_of_theory"><code class="docutils literal notranslate"><span class="pre">get_level_of_theory()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.adf.get_properties"><code class="docutils literal notranslate"><span class="pre">get_properties()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.adf.get_level_of_theory"><code class="docutils literal notranslate"><span class="pre">get_level_of_theory()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.results.ams">tcutility.results.ams module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.ams.get_ams_info"><code class="docutils literal notranslate"><span class="pre">get_ams_info()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.ams.get_ams_input"><code class="docutils literal notranslate"><span class="pre">get_ams_input()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.ams.get_ams_version"><code class="docutils literal notranslate"><span class="pre">get_ams_version()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.ams.get_calc_files"><code class="docutils literal notranslate"><span class="pre">get_calc_files()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.ams.get_ams_version"><code class="docutils literal notranslate"><span class="pre">get_ams_version()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.ams.get_ams_info"><code class="docutils literal notranslate"><span class="pre">get_ams_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.ams.get_timing"><code class="docutils literal notranslate"><span class="pre">get_timing()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.ams.get_calculation_status"><code class="docutils literal notranslate"><span class="pre">get_calculation_status()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.ams.get_molecules"><code class="docutils literal notranslate"><span class="pre">get_molecules()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.ams.get_history"><code class="docutils literal notranslate"><span class="pre">get_history()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.ams.get_input_blocks"><code class="docutils literal notranslate"><span class="pre">get_input_blocks()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.ams.get_molecules"><code class="docutils literal notranslate"><span class="pre">get_molecules()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.ams.get_timing"><code class="docutils literal notranslate"><span class="pre">get_timing()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.ams.get_ams_input"><code class="docutils literal notranslate"><span class="pre">get_ams_input()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.results.cache">tcutility.results.cache module</a><ul class="nav section-nav flex-column">
@@ -1078,8 +1086,8 @@ Information will be given as :class:`tcutility.results.result.Result` objects an
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.cache.TrackKFReader.read"><code class="docutils literal notranslate"><span class="pre">TrackKFReader.read()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.cache.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.cache.store"><code class="docutils literal notranslate"><span class="pre">store()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.cache.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.cache.unload"><code class="docutils literal notranslate"><span class="pre">unload()</span></code></a></li>
 </ul>
 </li>
@@ -1090,25 +1098,25 @@ Information will be given as :class:`tcutility.results.result.Result` objects an
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.results.orca">tcutility.results.orca module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_calc_files"><code class="docutils literal notranslate"><span class="pre">get_calc_files()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_calc_settings"><code class="docutils literal notranslate"><span class="pre">get_calc_settings()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_calculation_status"><code class="docutils literal notranslate"><span class="pre">get_calculation_status()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_info"><code class="docutils literal notranslate"><span class="pre">get_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_version"><code class="docutils literal notranslate"><span class="pre">get_version()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_input"><code class="docutils literal notranslate"><span class="pre">get_input()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_level_of_theory"><code class="docutils literal notranslate"><span class="pre">get_level_of_theory()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_calc_settings"><code class="docutils literal notranslate"><span class="pre">get_calc_settings()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_calculation_status"><code class="docutils literal notranslate"><span class="pre">get_calculation_status()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_molecules"><code class="docutils literal notranslate"><span class="pre">get_molecules()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_properties"><code class="docutils literal notranslate"><span class="pre">get_properties()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_version"><code class="docutils literal notranslate"><span class="pre">get_version()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_info"><code class="docutils literal notranslate"><span class="pre">get_info()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_vibrations"><code class="docutils literal notranslate"><span class="pre">get_vibrations()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.orca.get_properties"><code class="docutils literal notranslate"><span class="pre">get_properties()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.results.result">tcutility.results.result module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result"><code class="docutils literal notranslate"><span class="pre">Result</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result.as_plams_settings"><code class="docutils literal notranslate"><span class="pre">Result.as_plams_settings()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result.get_multi_key"><code class="docutils literal notranslate"><span class="pre">Result.get_multi_key()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result.get_parent_tree"><code class="docutils literal notranslate"><span class="pre">Result.get_parent_tree()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result.items"><code class="docutils literal notranslate"><span class="pre">Result.items()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result.keys"><code class="docutils literal notranslate"><span class="pre">Result.keys()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result.get_parent_tree"><code class="docutils literal notranslate"><span class="pre">Result.get_parent_tree()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result.prune"><code class="docutils literal notranslate"><span class="pre">Result.prune()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result.get_multi_key"><code class="docutils literal notranslate"><span class="pre">Result.get_multi_key()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result.as_plams_settings"><code class="docutils literal notranslate"><span class="pre">Result.as_plams_settings()</span></code></a></li>
 </ul>
 </li>
 </ul>

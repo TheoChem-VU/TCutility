@@ -28,6 +28,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
@@ -37,6 +39,9 @@
     <script src="../../_static/documentation_options.js?v=964918ec"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/tabs.js?v=3030b3cb"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tcutility/log';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -263,6 +268,7 @@
 <span class="c1">###########################################################</span>
 <span class="c1"># MODULE LEVEL VARIABLES USED TO CHANGE LOGGING BEHAVIOUR #</span>
 <span class="n">logfile</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>  <span class="c1"># stream or file to send prints to. Default sys.stdout is the standard Python print output</span>
+<span class="n">errfile</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>  <span class="c1"># stream or file to send prints to. Default sys.stderr is the standard Python print output</span>
 <span class="n">tab_level</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># number of tabs to add before a logged message. This is useful to build a sense of structure in a long output</span>
 <span class="n">max_width</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># maximum width of printed messages. Default 0 means unbounded</span>
 <span class="n">print_date</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># print time stamp before a logged message</span>
@@ -276,7 +282,7 @@
 <span class="sd">    Class containing some useful emojis and other characters.</span>
 <span class="sd">    Supports dot-notation and indexation to get a character.</span>
 
-<span class="sd">    E.g. Emojis.wait == Emojis[&#39;wait&#39;]</span>
+<span class="sd">    E.g. ``Emojis.wait == Emojis[&#39;wait&#39;]``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">wait</span> <span class="o">=</span> <span class="s2">&quot;🕒&quot;</span>
@@ -312,17 +318,20 @@
 <span class="sd">    This file is deleted after exiting the context-manager.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">stdout</span> <span class="ow">or</span> <span class="n">logfile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">stderr</span> <span class="ow">or</span> <span class="n">errfile</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">overflow</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;_NOPRINT.tmp&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">global</span> <span class="n">logfile</span>
+        <span class="k">global</span> <span class="n">logfile</span><span class="p">,</span> <span class="n">errfile</span>
         <span class="n">logfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">overflow</span>
+        <span class="n">errfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">overflow</span>
 
     <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">global</span> <span class="n">logfile</span>
+        <span class="k">global</span> <span class="n">logfile</span><span class="p">,</span> <span class="n">errfile</span>
         <span class="n">logfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span>
+        <span class="n">errfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stderr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">overflow</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;_NOPRINT.tmp&quot;</span><span class="p">)</span></div>
 
@@ -341,12 +350,13 @@
 
 <div class="viewcode-block" id="log">
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.log.log">[docs]</a>
-<span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Print a message to stream or file logfile.</span>
-<span class="sd">    This function adds the current timestamp and supports multi-line printing (split on the &quot;\n&quot; escape character).</span>
-<span class="sd">    level is the verbosity level with which the message is sent.</span>
-<span class="sd">    Generally we follow:</span>
+<span class="sd">    Print a nicely formatteed message.</span>
+<span class="sd">    This function adds the current timestamp and supports multi-line printing (split on the ``\n`` escape character).</span>
+<span class="sd">    For verbosity levels we use the following convention:</span>
+
+<span class="sd">    .. code-block::</span>
 
 <span class="sd">        NOTSET   = 0</span>
 <span class="sd">        DEBUG    = 10</span>
@@ -355,7 +365,11 @@
 <span class="sd">        ERROR    = 40</span>
 <span class="sd">        CRITICAL = 50</span>
 
-<span class="sd">    We compare the level against the module-wide log_level variable (by default log_level = 20). If the level is below log_level we do not print it.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        message: the message to send. Before printing we will use the ``message.__str__`` method to get the string representation. If the message is a ``dict`` we use the ``json`` module to format the message nicely.</span>
+<span class="sd">        level: the level to print the message at. We compare the level against the module-wide ``log_level`` variable (by default ``log_level = 20``). If the level is below ``log_level`` we do not print it.</span>
+<span class="sd">        end: the end of the string. This is usually the new-line character ``\n``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="n">log_level</span><span class="p">:</span>
         <span class="k">return</span>
@@ -450,10 +464,10 @@
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.log.loadbar">[docs]</a>
 <span class="k">def</span> <span class="nf">loadbar</span><span class="p">(</span><span class="n">sequence</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">comment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">Nsegments</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">Nsteps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return values from an iterable `sequence` and also print a progress bar for the iteration over this sequence.</span>
+<span class="sd">    Return values from an iterable ``sequence`` and also print a progress bar for the iteration over this sequence.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        sequence: any iterable sequence. Should define the __len__ method.</span>
+<span class="sd">        sequence: any iterable sequence. Should define the ``__len__`` method.</span>
 <span class="sd">        comment: a string to be printed at the end of the loading bar to give information about the loading bar.</span>
 <span class="sd">        Nsegments: length of the loading bar in characters.</span>
 <span class="sd">        Nsteps: number of times to print the loading bar during iteration. If the output is a tty-type stream Nsteps will be set to the length of sequence.</span>
