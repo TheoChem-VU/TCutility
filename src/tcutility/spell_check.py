@@ -87,7 +87,7 @@ def wagner_fischer(a: str, b: str, substitution_cost: float = 1, case_missmatch_
     return d[-1, -1]
 
 
-def get_closest(a: str, others: list[str], compare_func=wagner_fischer, ignore_case: bool = False, ignore_chars: str = '', maximum_distance: int = None) -> List[str]:
+def get_closest(a: str, others: List[str], compare_func=wagner_fischer, ignore_case: bool = False, ignore_chars: str = '', maximum_distance: int = None) -> List[str]:
     '''
     Return strings that are similar to an input string using the Levenshtein distance.
 
@@ -134,7 +134,7 @@ def get_closest(a: str, others: list[str], compare_func=wagner_fischer, ignore_c
     return lowest_strs
 
 
-def make_suggestion(a: str, others: list[str], **kwargs):
+def make_suggestion(a: str, others: List[str], **kwargs):
     '''
     Print a warning that gives suggestions for strings that are close to a given string.
 
