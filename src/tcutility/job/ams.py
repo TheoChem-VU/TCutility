@@ -71,6 +71,7 @@ class AMSJob(Job):
         '''
         self._task = 'GO'
         self.settings.input.ams.task = 'GeometryOptimization'
+        self.settings.input.ams.GeometryOptimization.InitialHessian.Type = 'CalculateWithFasterEngine'
         self.vibrations(True)
 
     def vibrations(self, enable: bool = True, PESPointCharacter: bool = True, NegativeFrequenciesTolerance: float = -5, ReScanFreqRange: tuple[float ,float] = [-10000000.0, 10.0]):
