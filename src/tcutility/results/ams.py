@@ -25,6 +25,9 @@ def get_calc_files(calc_dir: str) -> dict:
     # collect all files in the current directory and subdirectories
     files = []
     for root, _, files_ in os.walk(calc_dir):
+        if os.path.split(root)[1].startswith('.'):
+            continue
+
         # some results are stored in dirs called {name}.results, if the calculations uses fragments there will be additional dirs called
         # {name}.{fragname}.results, which do not contain new information as the required info is copied over to {name}.results. Therefore
         # we should skip the fragment directories
