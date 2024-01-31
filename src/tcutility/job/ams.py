@@ -74,6 +74,16 @@ class AMSJob(Job):
         self.settings.input.ams.GeometryOptimization.InitialHessian.Type = 'CalculateWithFasterEngine'
         self.vibrations(True)
 
+    def IRC(self, direction='both', hess_file=None, step_size=0.2, min_path_length=0.1):
+        self._task = 'IRC'
+        self.settings.input.ams.task = 'IRC'
+        self.settings.input.ams.IRC.Direction = direction
+        if hess_file:
+            self.settings.input.ams.IRC.InitialHessian.File = hess_file
+            self.settings.input.ams.IRC.InitialHessian.Type = 'FromFile'
+        self.settings.input.ams.IRC.Step = step_size
+        self.settings.input.ams.IRC.MinPathLength = min_path_length
+
     def vibrations(self, enable: bool = True, PESPointCharacter: bool = True, NegativeFrequenciesTolerance: float = -5, ReScanFreqRange: tuple[float ,float] = [-10000000.0, 10.0]):
         '''
         Set the calculation of vibrational modes. 
