@@ -91,7 +91,8 @@ class ADFJob(AMSJob):
         Set the functional to be used by the calculation. This also sets the dispersion if it is specified in the functional name.
 
         Args:
-            funtional_name: the name of the functional. The value can be the same as the ones used in the ADF GUI. For a full list of functionals please see :func:`functionals.get_available_functionals`.
+            funtional_name: the name of the functional. The value can be the same as the ones used in the ADF GUI. 
+                For a full list of functionals please see :func:`get_available_functionals <tcutility.data.functionals.get_available_functionals>`.
             dispersion: dispersion setting to use with the functional. This is used when you want to use a functional from LibXC.
 
         .. note:: Setting the functional to r2SCAN-3c will automatically set the basis-set to mTZ2P.

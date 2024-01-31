@@ -1,3 +1,7 @@
+'''
+Module used for obtaining information about exchange-correlation functionals.
+For example, it can be useful to obtain 
+'''
 import os
 from tcutility import results, log
 
@@ -5,27 +9,60 @@ from tcutility import results, log
 j = os.path.join
 
 
-def get(functional_name: str):
+def get(functional_name: str) -> results.Result:
     '''
     Return information about a given functional.
 
     Args:
-        functional_name: the name of the functional. It should exist in the get_available_functionals keys.
+        functional_name: the name of the functional. It should exist in the :func:`get_available_functionals` keys.
 
     Return:
-        A :class:`results.Result` object containing information about the functional if it exists. Else it will return ``None``.
+        A :class:`Result <tcutility.results.result.Result>` object containing information about the functional if it exists. Else it will return ``None``.
+    
+    .. seealso::
+        :func:`get_available_functionals` for an overview of the information returned.
     '''
     return functionals.get(functional_name)
 
 
-def functional_name_from_path_safe_name(path_safe_name: str):
+def functional_name_from_path_safe_name(path_safe_name: str) -> results.Result:
+    '''
+    Return information about a given functional given its path-safe name.
+    This can be useful when you want to know the functional from a path name.
+
+    Return:
+        A :class:`Result <tcutility.results.result.Result>` object containing information about the functional if it exists. Else it will return ``None``.
+    
+    .. seealso::
+        :func:`get_available_functionals` for an overview of the information returned.
+    '''
     for functional, functional_info in functionals.items():
         if path_safe_name == functional_info.path_safe_name:
             return functional
 
+
 def get_available_functionals():
     '''
     Function that returns a dictionary of all available XC-functionals.
+
+    Returns:
+        : A :class:`Result <tcutility.results.result.Result>` object containing information about all available XC-functionals.
+            The functional names are stored as the keys and the functional information is stored as the values.
+            The values contain the following information:
+
+                - ``name`` **(str)** - the name of the functional.
+                - ``path_safe_name`` **(str)** - the name of the functional made suitable for file paths. 
+                    This name is the same as the normal name, but without parentheses. Asterisks are replaced with lower-case ``s``.
+                - ``name_no_disp`` **(str)** - the name of functional without the dispersion correction.
+                - ``category`` **(str)** - the category the functional belongs to.
+                - ``dispersion`` **(str)** - the dispersion correction part of the functional name.
+                - ``dispersion_name`` **(str)** - the name of the dispersion correction as it would be written in ADF.
+                - ``includes_disp`` **(bool)** - whether the functional already includes a dispersion correction.
+                - ``use_libxc`` **(bool)** - whether the functional is from the LibXC library.
+                - ``available_in_adf`` **(bool)** - whether the functional is available in ADF.
+                - ``available_in_band`` **(bool)** - whether the functional is available in BAND.
+                - ``available_in_orca`` **(bool)** - whether the functional is available in ORCA.
+                - ``adf_settings`` **(:class:`Result <tcutility.results.result.Result>`)** - the settings that are used to select the functional in the ADF input.
     '''
     def set_dispersion(func):
         disp_map = {
@@ -115,6 +152,7 @@ def get_available_functionals():
         lines = file.readlines()
 
     for line in lines:
+        # there can be empty lines
         if not line.strip():
             continue
 
@@ -127,7 +165,6 @@ def get_available_functionals():
         # store data about the func in a dict
         func = results.Result()
         func.category = curr_category
-
         # separate the functional name from the line
         functional_name = line[2:].split('!')[0].split(',')[0].strip()
         func.name = functional_name
