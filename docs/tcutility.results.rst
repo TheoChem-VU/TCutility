@@ -1,4 +1,4 @@
-Reading a calculation
+tcutility.results
 =======================
 
 The tcutility.results package enables you to easily retrieve information and results from a calculation done using AMS.
