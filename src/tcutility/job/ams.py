@@ -74,7 +74,17 @@ class AMSJob(Job):
         self.settings.input.ams.GeometryOptimization.InitialHessian.Type = 'CalculateWithFasterEngine'
         self.vibrations(True)
 
-    def IRC(self, direction='both', hess_file=None, step_size=0.2, min_path_length=0.1):
+    def IRC(self, direction: str = 'both', hess_file: str = None, step_size: float = 0.2, min_path_length: float = 0.1):
+        '''
+        Set the task of the job to intrinsic reaction coordinate (IRC).
+
+        Args:
+            direction: the direction to take the first step into. By default it will be set to ``both``.
+            hess_file: the path to a ``.rkf`` file to read the Hessian from. This is the ``adf.rkf`` file for ADF calculations. 
+                If set to ``None`` the Hessian will be calculated prior to starting the IRC calculation.
+            step_size: the size of the step taken between each constrained optimization. By default it will be set to ``0.2`` :math:`a_0\\sqrt{Da}`.
+            min_path_length: the length of the IRC path before switching to minimization. By default it will be set to ``0.1`` |angstrom|.
+        '''
         self._task = 'IRC'
         self.settings.input.ams.task = 'IRC'
         self.settings.input.ams.IRC.Direction = direction
