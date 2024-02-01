@@ -79,6 +79,14 @@ tcutility.slurm module
    :undoc-members:
    :show-inheritance:
 
+tcutility.spell\_check module
+-----------------------------
+
+.. automodule:: tcutility.spell_check
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
