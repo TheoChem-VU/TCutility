@@ -87,7 +87,7 @@ def wagner_fischer(a: str, b: str, substitution_cost: float = 1, case_missmatch_
     return d[-1, -1]
 
 
-def get_closest(a: str, others: List[str], compare_func=wagner_fischer, ignore_case: bool = False, ignore_chars: str = '', maximum_distance: int = None) -> List[str]:
+def get_closest(a: str, others: List[str], compare_func=wagner_fischer, ignore_case: bool = False, ignore_chars: str = '', maximum_distance: int = None, **kwargs) -> List[str]:
     '''
     Return strings that are similar to an input string using the Levenshtein distance.
 
@@ -126,11 +126,11 @@ def get_closest(a: str, others: List[str], compare_func=wagner_fischer, ignore_c
         for char in ignore_chars:
             other = other.replace(char, '')
 
-        dists.append(compare_func(a, other))
+        dists.append(compare_func(a, other, **kwargs))
 
     if maximum_distance is None:
         maximum_distance = -1
-    lowest_strs = [other for dist, other in zip(dists, others) if dist <= max(maximum_distance, min(dists))]
+    lowest_strs = [other for dist, other in zip(dists, others) if 0 < dist <= max(maximum_distance, min(dists))]
     return lowest_strs
 
 
@@ -156,3 +156,18 @@ def make_suggestion(a: str, others: List[str], **kwargs):
 
     # write a warning message
     log.warn(f'Could not find "{a}". Did you mean {closest_string}?', caller_level=3)
+
+
+def check(a: str, others: List[str], caller_level=2, **kwargs):
+    closest = get_closest(a, others, **kwargs)
+    if len(closest) == 0:
+        return
+
+    if len(closest) > 1:
+        closest_string = " or ".join([", ".join(closest[:-1]), closest[-1]])
+    else:
+        closest_string = closest[0]
+
+    # write a warning message
+    msg = f"({log.caller_name(caller_level)}): " + f'Could not find "{a}". Did you mean {closest_string}?'
+    raise ValueError(msg)

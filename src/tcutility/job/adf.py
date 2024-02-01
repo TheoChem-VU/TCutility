@@ -1,6 +1,6 @@
 from scm import plams
-from tcutility import log, results, formula
-from tcutility.data import functionals
+from tcutility import log, results, formula, spell_check
+from tcutility.data import functionals, cosmo
 from tcutility.job.ams import AMSJob
 import os
 
@@ -75,6 +75,7 @@ class ADFJob(AMSJob):
         Args:
             val: the numerical quality value to set to. This is the same as the ones used in the ADF GUI. Defaults to Good.
         '''
+        spell_check.check(val, ['Basic', 'Normal', 'Good', 'VeryGood', 'Excellent'], ignore_case=True)
         self.settings.input.adf.NumericalQuality = val
 
     def SCF_convergence(self, thresh: float = 1e-8):
@@ -125,6 +126,7 @@ class ADFJob(AMSJob):
         Args:
             level: the level to set. Can be the same as the values in the ADF GUI and documentation. By default it is set to Scalar.
         '''
+        spell_check.check(level, ['Scalar', 'None', 'Spin-Orbit'], ignore_case=True)
         self.settings.input.adf.relativity.level = level
 
     def solvent(self, name: str = None, eps: float = None, rad: float = None, use_klamt: bool = False):
@@ -138,6 +140,7 @@ class ADFJob(AMSJob):
             use_klamt: whether to use the klamt atomic radii. This is usually used when you have charged species (?).
         '''
         if name:
+            spell_check.check(name, cosmo.available_solvents, ignore_case=True, insertion_cost=0.3)
             self._solvent = name
         else:
             self._solvent = f'COSMO(eps={eps} rad={rad})'
@@ -318,5 +321,7 @@ if __name__ == '__main__':
         job.rundir = 'tmp/SN2/EDA'
         job.molecule('../../../test/fixtures/xyz/pyr.xyz')
         job.sbatch(p='tc', ntasks_per_node=15)
-        job.functional('OLYP')
+        job.solvent('')
+        job.quality('veryGood')
+        job.functional('LYP-D3BJ')
         job.basis_set('DZP')
