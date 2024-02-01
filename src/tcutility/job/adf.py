@@ -1,6 +1,5 @@
 from scm import plams
-from tcutility import log, results, formula, spell_check
-from tcutility.data import functionals, cosmo
+from tcutility import log, results, formula, spell_check, data
 from tcutility.job.ams import AMSJob
 import os
 
@@ -12,11 +11,11 @@ class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._functional = None
+        self.solvent('vacuum')
         self.basis_set('TZ2P')
         self.quality('Good')
         self.SCF_convergence(1e-8)
         self.single_point()
-        self.solvent('vacuum')
 
     def __str__(self):
         return f'{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}'
@@ -31,6 +30,8 @@ class ADFJob(AMSJob):
 
         .. note:: If the selected functional is the r2SCAN-3c functional, then the basis-set will be set to mTZ2P.
         '''
+        spell_check.check(typ, data.basis_sets.available_basis_sets['ADF'], ignore_case=True)
+        spell_check.check(core, ['None', 'Small', 'Large'], ignore_case=True)
         if self._functional == 'r2SCAN-3c' and typ != 'mTZ2P':
             log.warn(f'Basis set {typ} is not allowed with r2SCAN-3c, switching to mTZ2P.')
             typ = 'mTZ2P'
@@ -92,7 +93,7 @@ class ADFJob(AMSJob):
         Set the functional to be used by the calculation. This also sets the dispersion if it is specified in the functional name.
 
         Args:
-            funtional_name: the name of the functional. The value can be the same as the ones used in the ADF GUI. For a full list of functionals please see :func:`functionals.get_available_functionals`.
+            funtional_name: the name of the functional. The value can be the same as the ones used in the ADF GUI. For a full list of functionals please see :func:`tcutility.data.functionals.get_available_functionals`.
             dispersion: dispersion setting to use with the functional. This is used when you want to use a functional from LibXC.
 
         .. note:: Setting the functional to r2SCAN-3c will automatically set the basis-set to mTZ2P.
@@ -112,7 +113,7 @@ class ADFJob(AMSJob):
             log.error('There are two functionals called SSB-D, please use "GGA:SSB-D" or "MetaGGA:SSB-D".')
             return
 
-        if not functionals.get(functional):
+        if not data.functionals.get(functional):
             log.warn(f'XC-functional {functional} not found. Please ask a TheoCheM developer to add it. Adding functional as LibXC.')
             self.settings.input.adf.XC.LibXC = functional
         else:
@@ -140,7 +141,7 @@ class ADFJob(AMSJob):
             use_klamt: whether to use the klamt atomic radii. This is usually used when you have charged species (?).
         '''
         if name:
-            spell_check.check(name, cosmo.available_solvents, ignore_case=True, insertion_cost=0.3)
+            spell_check.check(name, data.cosmo.available_solvents, ignore_case=True, insertion_cost=0.3)
             self._solvent = name
         else:
             self._solvent = f'COSMO(eps={eps} rad={rad})'
@@ -322,6 +323,6 @@ if __name__ == '__main__':
         job.molecule('../../../test/fixtures/xyz/pyr.xyz')
         job.sbatch(p='tc', ntasks_per_node=15)
         job.solvent('')
+        job.basis_set('tz2p')
         job.quality('veryGood')
         job.functional('LYP-D3BJ')
-        job.basis_set('DZP')
