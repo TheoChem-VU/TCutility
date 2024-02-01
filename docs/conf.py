@@ -86,4 +86,14 @@ rst_epilog = f"""
 .. |cm-1| replace:: :math:`\\text{{cm}}^{-1}`
 .. |kcal/mol| replace:: :math:`\\text{{kcal mol}}^{-1}`
 .. |km/mol| replace:: :math:`\\text{{km mol}}^{-1}`
+.. |angstrom| replace:: :math:`\\AA`
+.. |Result| replace:: :class:`Result <tcutility.results.result.Result>`
+.. |Job| replace:: :class:`Job <tcutility.job.generic.Job>`
+.. |ADFJob| replace:: :class:`ADFJob <tcutility.job.adf.ADFJob>`
+.. |ADFFragmentJob| replace:: :class:`ADFFragmentJob <tcutility.job.adf.ADFFragmentJob>`
+.. |DFTBJob| replace:: :class:`DFTBJob <tcutility.job.dftb.DFTBJob>`
+.. |NMRJob| replace:: :class:`NMRJob <tcutility.job.nmr.NMRJob>`
+.. |ORCAJob| replace:: :class:`ORCAJob <tcutility.job.orca.ORCAJob>`
+.. |CRESTJob| replace:: :class:`CRESTJob <tcutility.job.crest.CRESTJob>`
+.. |QCGJob| replace:: :class:`QCGJob <tcutility.job.crest.QCGJob>`
 """
