@@ -88,7 +88,10 @@ class AMSJob(Job):
         self.settings.input.ams.IRC.MaxPoints = max_points
 
         if not keep_rkfs:
-            self.add_postamble(f'rm -rf {self.workdir}/IRC_*_converged.rkf')
+            self.add_postamble(f'rm -rf {self.workdir}/IRC*converged*.rkf')
+            self.add_postamble(f'rm -rf {self.workdir}/t21*')
+            self.add_postamble(f'rm -rf {self.workdir}/t21*')
+            self.add_postamble(f'rm -rf {self.workdir}/CreateAtoms.out')
             self.add_postamble(f'rm -rf {self.workdir}/TS.rkf')
 
         self.add_postscript(tcutility.job.postscripts.write_amv)
