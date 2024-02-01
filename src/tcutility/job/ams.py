@@ -83,20 +83,20 @@ class AMSJob(Job):
         self.settings.input.ams.IRC.Step = step_size
         self.settings.input.ams.IRC.MinPathLength = min_path_length
 
-    def vibrations(self, enable: bool = True, PESPointCharacter: bool = True, NegativeFrequenciesTolerance: float = -5, ReScanFreqRange: tuple[float ,float] = [-10000000.0, 10.0]):
+    def vibrations(self, enable: bool = True, NegativeFrequenciesTolerance: float = -5):
         '''
         Set the calculation of vibrational modes. 
 
         Args:
             enable: whether to calculate the vibrational modes.
-            PESPointCharacter: whether to report the PES character in the output.
-            NegativeFrequenciesTolerance: the tolerance for negative modes. Modes above this value will not be counted as imaginary. Use this option when you experience a lot of numerical noise.
-            ReScanFreqRange: the rescan range. Any mode that has a frequency in this range will be refined.
+            NegativeFrequenciesTolerance: the tolerance for negative modes. 
+                Modes with frequencies above this value will not be counted as imaginary. 
+                Use this option when you experience a lot of numerical noise.
         '''
         self.settings.input.ams.Properties.NormalModes = 'Yes' if enable else 'No'
-        self.settings.input.ams.Properties.PESPointCharacter = 'Yes' if enable else 'No'
+        self.settings.input.ams.Properties.PESPointCharacter = 'Yes'
         self.settings.input.ams.PESPointCharacter.NegativeFrequenciesTolerance = NegativeFrequenciesTolerance
-        self.settings.input.ams.NormalModes.ReScanFreqRange = ' '.join([str(x) for x in ReScanFreqRange])
+        self.settings.input.ams.NormalModes.ReScanFreqRange = '-10000000.0 10.0'
 
     def geometry_convergence(self, quality: str = None, gradients: float = 1e-5, energy: float = 1e-5, step: float = 1e-2):
         '''
