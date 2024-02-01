@@ -89,7 +89,7 @@ class AMSJob(Job):
 
         if not keep_rkfs:
             self.add_postamble(f'rm -rf {self.workdir}/IRC*converged*.rkf')
-            self.add_postamble(f'rm -rf {self.workdir}/t21*')
+            self.add_postamble(f'rm -rf {self.workdir}/t12*')
             self.add_postamble(f'rm -rf {self.workdir}/t21*')
             self.add_postamble(f'rm -rf {self.workdir}/CreateAtoms.out')
             self.add_postamble(f'rm -rf {self.workdir}/TS.rkf')
