@@ -1,4 +1,5 @@
 from scm import plams
+import tcutility
 from tcutility import log
 from tcutility.job.generic import Job
 import os
@@ -85,10 +86,12 @@ class AMSJob(Job):
         self.settings.input.ams.IRC.Step = step_size
         self.settings.input.ams.IRC.MinPathLength = min_path_length
         self.settings.input.ams.IRC.MaxPoints = max_points
-        
+
         if not keep_rkfs:
             self.add_postamble(f'rm -rf {self.workdir}/IRC_*_converged.rkf')
             self.add_postamble(f'rm -rf {self.workdir}/TS.rkf')
+
+        self.add_postscript(tcutility.job.postscripts.write_amv)
 
     def vibrations(self, enable: bool = True, NegativeFrequenciesTolerance: float = -5):
         '''
