@@ -10,9 +10,9 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 Job classes
 ***********
 
-Jobs are run using subclasses of the :class:`Job <tcutility.job.generic.Job>` class. The base :class:`Job <tcutility.job.generic.Job>` class handles setting up directories and running the calculations. 
+Jobs are run using subclasses of the |Job| class. The base |Job| class handles setting up directories and running the calculations. 
 
-The :class:`Job <tcutility.job.generic.Job>` subclasses are also context-managers, which results in cleaner and more error-proof code:
+The |Job| subclasses are also context-managers, which results in cleaner and more error-proof code:
 
 .. code-block:: python
    :linenos:
@@ -51,7 +51,7 @@ This script will run a single point calculation using ADF in the working directo
 Slurm support
 *************
 
-One usefull feature is that the :class:`Job <tcutility.job.generic.Job>` class detects if slurm is able to be used on the platform the script is running on. If slurm is available, jobs will be submitted using ``sbatch`` instead of ran locally. It is possible to set any ``sbatch`` option you would like.
+One usefull feature is that the |Job| class detects if slurm is able to be used on the platform the script is running on. If slurm is available, jobs will be submitted using ``sbatch`` instead of ran locally. It is possible to set any ``sbatch`` option you would like.
 
 .. code-block:: python
    :linenos:
@@ -102,7 +102,7 @@ It is possible to setup dependencies between jobs. This allows you to use the re
             opt_job.rundir = './calculations/molecule_1'
             opt_job.name = f'conformer_{i}'
 
-This script will first setup and submit a :class:`CRESTJob <tcutility.job.crest.CRESTJob>` calculation to generate conformers for the structure in ``input.xyz``. It will then submit geometry optimizations for the 10 lowest conformers using :class:`ADFJob <tcutility.job.adf.ADFJob>` at the ``OLYP-D3(BJ)/TZ2P`` level of theory. Slurm will first wait for the :class:`CRESTJob <tcutility.job.crest.CRESTJob>` calculation to finish before starting the :class:`ADFJob <tcutility.job.adf.ADFJob>` calculations.
+This script will first setup and submit a |CRESTJob| calculation to generate conformers for the structure in ``input.xyz``. It will then submit geometry optimizations for the 10 lowest conformers using |ADFJob| at the ``OLYP-D3(BJ)/TZ2P`` level of theory. Slurm will first wait for the |CRESTJob| calculation to finish before starting the |ADFJob| calculations.
 
 Supported engines
 *****************
@@ -111,23 +111,23 @@ We currently support the following engines and job classes:
 
 * `Amsterdam Density Functional (ADF) <https://www.scm.com/product/adf/>`_
 
-  * :class:`ADFJob <tcutility.job.adf.ADFJob>`, regular ADF calculations
-  * :class:`ADFFragmentJob <tcutility.job.adf.ADFFragmentJob>`, fragment based calculations
-  * :class:`NMRJob <tcutility.job.nmr.NMRJob>`, Nuclear Magnetic Resonance (NMR) calculations using ADF
+  * |ADFJob|, regular ADF calculations
+  * |ADFFragmentJob|, fragment based calculations
+  * |NMRJob|, Nuclear Magnetic Resonance (NMR) calculations using ADF
 
 
 * `Density Functional with Tight Binding (DFTB) <https://www.scm.com/product/dftb/>`_
 
-  * :class:`DFTBJob <tcutility.job.dftb.DFTBJob>`, regular DFTB calculations
+  * |DFTBJob|, regular DFTB calculations
 
 * `ORCA <https://www.faccts.de/orca/>`_
 
-  * :class:`ORCAJob <tcutility.job.orca.ORCAJob>`, regular ORCA calculations
+  * |ORCAJob|, regular ORCA calculations
 
 * `Conformer rotamer ensemble sampling tool (CREST) <https://github.com/crest-lab/crest>`_ including `Quantum Cluster Growth (QCG)  <https://crest-lab.github.io/crest-docs/page/overview/workflows.html#quantum-cluster-growth-qcg>`_
 
-  * :class:`CRESTJob <tcutility.job.crest.CRESTJob>`, CREST conformational search
-  * :class:`QCGJob <tcutility.job.crest.QCGJob>`, QCG explicit solvation search
+  * |CRESTJob|, CREST conformational search
+  * |QCGJob|, QCG explicit solvation search
 
 See the `API Documentation <./api/tcutility.job.html>`_ for an overview of the Job classes offered by tcutility.job module.
 
@@ -148,15 +148,15 @@ Examples
 A few typical use-cases are given below. Click `here <./examples.html>`_ for a full overview of all examples.
 
 Geometry optimization using ADF
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*******************************
 
 It is quite easy to set up calculations using the :mod:`tcutility.job` package. 
-For example, if we want to run a simple geometry optimization using ADF we can use the :class:`ADFJob <tcutility.job.adf.ADFJob>` class.
+For example, if we want to run a simple geometry optimization using ADF we can use the |ADFJob| class.
 
-In this case we are optimizing the water dimer at the BP86-D3(BJ)/TZ2P level.
-To handle the ADF settings you can refer to the GUI. For example, to use a specific functional simply enter the name of the functional as it appears in the ADF GUI. The same applies to pretty much all settings. The :class:`ADFJob <tcutility.job.adf.ADFJob>` class will handle everything in the background for you.
+In this case we are optimizing the water dimer at the ``BP86-D3(BJ)/TZ2P`` level.
+To handle the ADF settings you can refer to the GUI. For example, to use a specific functional simply enter the name of the functional as it appears in the ADF GUI. The same applies to pretty much all settings. The |ADFJob| class will handle everything in the background for you.
 
-The job will be run in the ``./calculations/GO_water_dimer`` directory. The :mod:`tcutility.job` package will handle running of the calculation as well. It will detect if your platform supports slurm. If it does, it will use ``sbatch`` to run your calculations. Otherwise, it will simply run the calculation locally.
+The job will be run in the ``./calculations/GO_water_dimer`` directory. The :mod:`tcutility.job` package will handle running of the calculation as well. It will detect if your platform supports slurm and if it does, will use ``sbatch`` to run your calculations. Otherwise, it will simply run the calculation locally.
 
 .. tabs::
 
@@ -171,9 +171,9 @@ The job will be run in the ``./calculations/GO_water_dimer`` directory. The :mod
 		.. literalinclude:: ../examples/job/water_dimer.xyz
 
 Fragment calculation using ADF
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+******************************
 
-Another common usage of ADF is running a fragment calculation. This calculation requires setting up three different ADF jobs. Using the :mod:`tcutility.job` package allows you to set up these kinds of jobs in as little as 8 lines of code.
+Another common usage of ADF is running a fragment calculation. This calculation requires setting up three different ADF jobs. Using the :mod:`tcutility.job` package allows you to set up and run these kinds of calculations in as little as 8 lines of code.
 
 In this case we make use of a special xyz file format (see :func:`tcutility.molecule.guess_fragments`) which specifies the fragments. This saves us some work in setting up the calculations.
 
