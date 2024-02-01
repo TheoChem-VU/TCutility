@@ -63,7 +63,7 @@ class AMSJob(Job):
         self.settings.input.ams.GeometryOptimization.InitialHessian.Type = 'CalculateWithFasterEngine'
         self.vibrations(True)
 
-    def IRC(self, direction: str = 'both', hess_file: str = None, step_size: float = 0.2, min_path_length: float = 0.1):
+    def IRC(self, direction: str = 'both', hess_file: str = None, step_size: float = 0.2, min_path_length: float = 0.1, max_points: int = 300, keep_rkfs: bool = False):
         '''
         Set the task of the job to intrinsic reaction coordinate (IRC).
 
@@ -73,6 +73,8 @@ class AMSJob(Job):
                 If set to ``None`` the Hessian will be calculated prior to starting the IRC calculation.
             step_size: the size of the step taken between each constrained optimization. By default it will be set to ``0.2`` :math:`a_0\\sqrt{Da}`.
             min_path_length: the length of the IRC path before switching to minimization. By default it will be set to ``0.1`` |angstrom|.
+            max_points: the maximum number of IRC points in a direction. Be default it is set to ``300``.
+            keep_rkfs: whether to keep the ``.rkf`` files created for each IRC step. By default they will be deleted.
         '''
         self._task = 'IRC'
         self.settings.input.ams.task = 'IRC'
@@ -82,6 +84,11 @@ class AMSJob(Job):
             self.settings.input.ams.IRC.InitialHessian.Type = 'FromFile'
         self.settings.input.ams.IRC.Step = step_size
         self.settings.input.ams.IRC.MinPathLength = min_path_length
+        self.settings.input.ams.IRC.MaxPoints = max_points
+        
+        if not keep_rkfs:
+            self.add_postamble(f'rm -rf {self.workdir}/IRC_*_converged.rkf')
+            self.add_postamble(f'rm -rf {self.workdir}/TS.rkf')
 
     def vibrations(self, enable: bool = True, NegativeFrequenciesTolerance: float = -5):
         '''
