@@ -64,7 +64,7 @@ class AMSJob(Job):
         self.settings.input.ams.GeometryOptimization.InitialHessian.Type = 'CalculateWithFasterEngine'
         self.vibrations(True)
 
-    def IRC(self, direction: str = 'both', hess_file: str = None, step_size: float = 0.2, min_path_length: float = 0.1, max_points: int = 300, keep_rkfs: bool = False):
+    def IRC(self, direction: str = 'both', hess_file: str = None, step_size: float = 0.2, min_path_length: float = 0.1, max_points: int = 300):
         '''
         Set the task of the job to intrinsic reaction coordinate (IRC).
 
@@ -75,7 +75,6 @@ class AMSJob(Job):
             step_size: the size of the step taken between each constrained optimization. By default it will be set to ``0.2`` :math:`a_0\\sqrt{Da}`.
             min_path_length: the length of the IRC path before switching to minimization. By default it will be set to ``0.1`` |angstrom|.
             max_points: the maximum number of IRC points in a direction. Be default it is set to ``300``.
-            keep_rkfs: whether to keep the ``.rkf`` files created for each IRC step. By default they will be deleted.
         '''
         self._task = 'IRC'
         self.settings.input.ams.task = 'IRC'
@@ -87,14 +86,8 @@ class AMSJob(Job):
         self.settings.input.ams.IRC.MinPathLength = min_path_length
         self.settings.input.ams.IRC.MaxPoints = max_points
 
-        if not keep_rkfs:
-            self.add_postamble(f'rm -rf {self.workdir}/IRC*converged*.rkf')
-            self.add_postamble(f'rm -rf {self.workdir}/t12*')
-            self.add_postamble(f'rm -rf {self.workdir}/t21*')
-            self.add_postamble(f'rm -rf {self.workdir}/CreateAtoms.out')
-            self.add_postamble(f'rm -rf {self.workdir}/TS.rkf')
-
-        self.add_postscript(tcutility.job.postscripts.write_amv)
+        self.add_postscript(tcutility.job.postscripts.clean_workdir)
+        self.add_postscript(tcutility.job.postscripts.write_converged_geoms)
 
     def vibrations(self, enable: bool = True, NegativeFrequenciesTolerance: float = -5):
         '''
