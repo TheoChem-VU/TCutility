@@ -306,39 +306,39 @@ def boxed(message: str, title: Union[str, None] = None, message_align: str = "le
     log(s, level=level)
 
 
-def debug(message: str, level: int = 10):
+def debug(message: str, level: int = 10, caller_level: int = 2):
     """
     Print a debug message.
     """
-    log(f"[DEBUG]({caller_name(2)}): " + message, level=level)
+    log(f"[DEBUG]({caller_name(caller_level)}): " + message, level=level)
 
 
-def info(message: str, level: int = 20):
+def info(message: str, level: int = 20, caller_level: int = 2):
     """
     Print an informative message.
     """
-    log(f"[INFO]({caller_name(2)}): " + message, level=level)
+    log(f"[INFO]({caller_name(caller_level)}): " + message, level=level)
 
 
-def warn(message: str, level: int = 30):
+def warn(message: str, level: int = 30, caller_level: int = 2):
     """
     Print a warning message.
     """
-    log(f"[WARNING]({caller_name(2)}): " + message, level=level)
+    log(f"[WARNING]({caller_name(caller_level)}): " + message, level=level)
 
 
-def error(message: str, level: int = 40):
+def error(message: str, level: int = 40, caller_level: int = 2):
     """
     Print an error message.
     """
-    log(f"[ERROR]({caller_name(2)}): " + message, level=level)
+    log(f"[ERROR]({caller_name(caller_level)}): " + message, level=level)
 
 
-def critical(message: str, level: int = 50):
+def critical(message: str, level: int = 50, caller_level: int = 2):
     """
     Print a critical message.
     """
-    log(f"[CRITICAL]({caller_name(2)}): " + message, level=level)
+    log(f"[CRITICAL]({caller_name(caller_level)}): " + message, level=level)
 
 
 def caller_name(level: int = 1) -> str:
