@@ -104,6 +104,7 @@ def get_closest(a: str, others: List[str], compare_func=wagner_fischer, ignore_c
     Returns:
         A collection of strings that have a Levenshtein distance to ``a`` below ``maximum_distance`` 
         or have the lowest distance to ``a`` if all strings have a distance greater than ``maximum_distance``.
+        If the lowest distance is ``0``, return an empty list instead.
 
     Example:
         .. code-block:: python
