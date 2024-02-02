@@ -20,15 +20,15 @@ TCutility |ProjectVersion| documentation
    :maxdepth: 2
    :caption: Utility modules
 
-   tcutility.constants
-   tcutility.data
-   tcutility.log
-   tcutility.slurm
-   tcutility.molecule
-   tcutility.formula
-   tcutility.cache
-   tcutility.geometry
-   tcutility.report
+   api/tcutility.constants
+   api/tcutility.data
+   api/tcutility.log
+   api/tcutility.slurm
+   api/tcutility.molecule
+   api/tcutility.formula
+   api/tcutility.cache
+   api/tcutility.geometry
+   api/tcutility.report
 
 .. toctree::
    :maxdepth: 2
