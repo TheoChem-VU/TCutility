@@ -104,6 +104,43 @@ It is possible to setup dependencies between jobs. This allows you to use the re
 
 This script will first setup and submit a |CRESTJob| calculation to generate conformers for the structure in ``input.xyz``. It will then submit geometry optimizations for the 10 lowest conformers using |ADFJob| at the ``OLYP-D3(BJ)/TZ2P`` level of theory. Slurm will first wait for the |CRESTJob| calculation to finish before starting the |ADFJob| calculations.
 
+
+Rerun prevention
+****************
+
+Before submitting a calculation :mod:`tcutility.job` will check if the calculation has already been run or is currently being managed by slurm. This way you can be sure that you are not wasting time rerunning your calculation when you run a script you have run before. 
+
+For example, we can write a script that performs optimizations using |ADFJob| on structures stored in a directory:
+
+.. code-block:: python
+    :linenos:
+
+
+    from tcutility.job import ADFJob
+    import os
+
+
+    input_xyz_directory = 'molecules'
+
+    # get the xyz files we want to optimize
+    xyz_files = [os.path.join(input_xyz_directory, file) for file in os.listdir(input_xyz_directory) if file.endswith('.xyz')]
+
+    for xyz_file in xyz_files:
+        with ADFJob() as job:
+            job.molecule(xyz_file)
+            job.sbatch(p='tc', n=16)
+
+            job.functional('OLYP-D3(BJ)')
+            job.basis_set('TZ2P')
+            job.quality('Good')
+            job.optimization()
+
+            job.rundir = './calculations'
+            job.name = os.path.split(file)[1].removesuffix('.xyz')
+
+Everytime this script is run it will loop through the molecules stored in the ``molecules`` directory. If you add new molecules to this directory and then rerun it, the script will detect which molecules were previously optimized and skip those. This way you can easily reuse the script multiple times without manually checking/implementing rerun prevention.
+
+
 Supported engines
 *****************
 
@@ -145,7 +182,7 @@ For ORCA calculations you will need to add the ORCA executable to your PATH.
 
 Examples
 --------
-A few typical use-cases are given below. Click `here <./examples.html>`_ for a full overview of all examples.
+A few typical use-cases are given below. Click `here <./examples.html>`_ for a full overview of all examples. Of course, the scripts shown above are also valid example uses of :mod:`tcutility.job`!
 
 Geometry optimization using ADF
 *******************************
