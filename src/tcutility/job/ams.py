@@ -52,7 +52,7 @@ class AMSJob(Job):
         self._task = 'TS'
         self.settings.input.ams.task = 'TransitionStateSearch'
 
-        self.settings.input.ams.TransitionStateSearch.ReactionCoordinate.ModeToFollow = ModeToFollow
+        self.settings.input.ams.TransitionStateSearch.ModeToFollow = ModeToFollow
 
         if distances is not None:
             self.settings.input.ams.TransitionStateSearch.ReactionCoordinate.Distance = [" ".join([str(x) for x in dist]) for dist in distances]
