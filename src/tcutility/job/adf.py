@@ -132,7 +132,7 @@ class ADFJob(AMSJob):
             log.warn(f'XC-functional {functional} not found. Please ask a TheoCheM developer to add it. Adding functional as LibXC.')
             self.settings.input.adf.XC.LibXC = functional
         else:
-            func = functionals.get(functional)
+            func = data.functionals.get(functional)
             self.settings.input.adf.update(func.adf_settings)
 
     def relativity(self, level: str = 'Scalar'):
