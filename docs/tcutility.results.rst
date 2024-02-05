@@ -1,7 +1,10 @@
 tcutility.results
-=======================
+=================
 
-The tcutility.results package enables you to easily retrieve information and results from a calculation done using AMS.
+Overview
+--------
+
+The ``tcutility.results`` package allows you to easily retrieve information and results from a calculation performed using AMS, ORCA or CREST.
 This includes results and settings from AMS as well as the calculation engine used (e.g. ADF, BAND, DFTB, ...).
 Recommended usage is to use the |read| function to read the information.
 One can also access specific information by calling one the functions in the submodules below.
