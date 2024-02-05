@@ -57,7 +57,7 @@ class AMSJob(Job):
 
     def optimization(self):
         '''
-        Set the task of the job to transition state search. By default also calculates the normal modes after convergence.
+        Set the task of the job to geometry optimization. By default also calculates the normal modes after convergence.
         '''
         self._task = 'GO'
         self.settings.input.ams.task = 'GeometryOptimization'
