@@ -14,4 +14,4 @@ def ensure_2d(x, transposed=False):
     return x
 
 
-from tcutility import constants, formula, geometry, log, molecule, results, slurm  # noqa: F401, E402
+from tcutility import constants, formula, geometry, log, molecule, results, slurm, data  # noqa: F401, E402
