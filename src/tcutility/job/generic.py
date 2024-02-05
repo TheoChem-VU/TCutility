@@ -157,7 +157,7 @@ class Job:
 
     def add_postscript(self, script):
         self.add_postamble(f'cd {self.workdir}')
-        self.add_postamble(f'python3 {script.__file__}')
+        self.add_postamble(f'python {script.__file__}')
 
     def dependency(self, otherjob: 'Job'):
         '''
