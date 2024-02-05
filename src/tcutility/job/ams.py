@@ -122,6 +122,7 @@ class AMSJob(Job):
                 raise
             self.settings.input.ams.GeometryOptimization.Convergence.Quality = quality
         else:
+            self.settings.input.ams.GeometryOptimization.Convergence.Quality = 'Custom'
             self.settings.input.ams.GeometryOptimization.Convergence.Gradients = gradients
             self.settings.input.ams.GeometryOptimization.Convergence.Energy = energy
             self.settings.input.ams.GeometryOptimization.Convergence.Step = step
