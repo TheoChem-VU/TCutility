@@ -1,2 +1,2 @@
 include src/tcutility/results/input_blocks
-include src/tcutility/atom_data/*
+include src/tcutility/data/*
