@@ -62,7 +62,7 @@ class AMSJob(Job):
             self.settings.input.ams.TransitionStateSearch.ReactionCoordinate.Dihedral = [" ".join([str(x) for x in dihedral]) for dihedral in dihedrals]
 
         # for TS searches we quickly calculate the hessian with DFTB
-        self.settings.input.ams.GeometryOptimization.InitialHessian.Type = 'CalculateWithFasterEngine'
+        self.settings.input.ams.GeometryOptimization.InitialHessian.Type = 'CalculateWithFastEngine'
         self.vibrations(True)  # also calculate vibrations by default
 
     def optimization(self):
@@ -71,7 +71,7 @@ class AMSJob(Job):
         '''
         self._task = 'GO'
         self.settings.input.ams.task = 'GeometryOptimization'
-        self.settings.input.ams.GeometryOptimization.InitialHessian.Type = 'CalculateWithFasterEngine'
+        self.settings.input.ams.GeometryOptimization.InitialHessian.Type = 'CalculateWithFastEngine'
         self.vibrations(True)
 
     def vibrations(self, enable: bool = True, PESPointCharacter: bool = True, NegativeFrequenciesTolerance: float = -5, ReScanFreqRange: tuple[float ,float] = [-10000000.0, 10.0]):
