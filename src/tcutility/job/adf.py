@@ -14,7 +14,7 @@ class ADFJob(AMSJob):
         self.solvent('vacuum')
         self.basis_set('TZ2P')
         self.quality('Good')
-        self.SCF_convergence(1e-8)
+        self.SCF(thresh=1e-8)
         self.single_point()
 
     def __str__(self):
@@ -94,8 +94,23 @@ class ADFJob(AMSJob):
 
         Args:
             thresh: the convergence criteria for the SCF procedure. Defaults to 1e-8.
+
+        .. deprecated:: 0.9.2
+            Please use :meth:`ADFJob.SCF` instead of this method.
         '''
-        self.settings.input.adf.SCF.converge = thresh
+        log.warn('This method has been deprecated, please use ADFJob.SCF instead.')
+        self.SCF(thresh=thresh)
+
+    def SCF(self, iterations: int = 300, thresh: float = 1e-8):
+        '''
+        Set the SCF settings for this calculations.
+
+        Args:
+            iterations: number of iterations to perform for this calculation. Defaults to 300.
+            thresh: the convergence criteria for the SCF procedure. Defaults to 1e-8.
+        '''
+        self.settings.input.adf.SCF.Iterations = iterations
+        self.settings.input.adf.SCF.Converge = thresh
 
     def functional(self, funtional_name: str, dispersion: str = None):
         '''
@@ -348,5 +363,6 @@ if __name__ == '__main__':
         job.sbatch(p='tc', ntasks_per_node=15)
         job.solvent('')
         job.basis_set('tz2p')
+        job.SCF_convergence(1e-10)
         job.quality('veryGood')
         job.functional('LYP-D3BJ')
