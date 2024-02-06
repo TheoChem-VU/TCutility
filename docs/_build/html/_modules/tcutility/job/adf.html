@@ -273,8 +273,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">solvent</span><span class="p">(</span><span class="s1">&#39;vacuum&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span><span class="p">(</span><span class="s1">&#39;TZ2P&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">quality</span><span class="p">(</span><span class="s1">&#39;Good&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">SCF_convergence</span><span class="p">(</span><span class="mf">1e-8</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SCF</span><span class="p">(</span><span class="n">thresh</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">single_point</span><span class="p">()</span>
+
+        <span class="c1"># by default print the fock matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">print</span> <span class="o">=</span> <span class="s1">&#39;FMatSFO&#39;</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_task</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_functional</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_basis_set</span><span class="si">}</span><span class="s1">), running in </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">),</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -370,8 +373,26 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            thresh: the convergence criteria for the SCF procedure. Defaults to 1e-8.</span>
+
+<span class="sd">        .. deprecated:: 0.9.2</span>
+<span class="sd">            Please use :meth:`ADFJob.SCF` instead of this method.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SCF</span><span class="o">.</span><span class="n">converge</span> <span class="o">=</span> <span class="n">thresh</span></div>
+        <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;This method has been deprecated, please use ADFJob.SCF instead.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SCF</span><span class="p">(</span><span class="n">thresh</span><span class="o">=</span><span class="n">thresh</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ADFJob.SCF">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.SCF">[docs]</a>
+    <span class="k">def</span> <span class="nf">SCF</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the SCF settings for this calculations.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            iterations: number of iterations to perform for this calculation. Defaults to 300.</span>
+<span class="sd">            thresh: the convergence criteria for the SCF procedure. Defaults to 1e-8.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SCF</span><span class="o">.</span><span class="n">Iterations</span> <span class="o">=</span> <span class="n">iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SCF</span><span class="o">.</span><span class="n">Converge</span> <span class="o">=</span> <span class="n">thresh</span></div>
 
 
 <div class="viewcode-block" id="ADFJob.functional">
@@ -644,6 +665,7 @@
         <span class="n">job</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="s1">&#39;tc&#39;</span><span class="p">,</span> <span class="n">ntasks_per_node</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
         <span class="n">job</span><span class="o">.</span><span class="n">solvent</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="n">job</span><span class="o">.</span><span class="n">basis_set</span><span class="p">(</span><span class="s1">&#39;tz2p&#39;</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">SCF_convergence</span><span class="p">(</span><span class="mf">1e-10</span><span class="p">)</span>
         <span class="n">job</span><span class="o">.</span><span class="n">quality</span><span class="p">(</span><span class="s1">&#39;veryGood&#39;</span><span class="p">)</span>
         <span class="n">job</span><span class="o">.</span><span class="n">functional</span><span class="p">(</span><span class="s1">&#39;LYP-D3BJ&#39;</span><span class="p">)</span>
 </pre></div>
