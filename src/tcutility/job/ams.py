@@ -1,4 +1,5 @@
 from scm import plams
+import tcutility
 from tcutility import log
 from tcutility.job.generic import Job
 import os
@@ -15,7 +16,7 @@ class AMSJob(Job):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.single_point()
-        self.geometry_convergence(gradients=1e-5, energy=1e-5)
+        self.geometry_convergence('Good')
 
     def __str__(self):
         return f'{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}'
@@ -26,17 +27,6 @@ class AMSJob(Job):
         '''
         self._task = 'SP'
         self.settings.input.ams.task = 'SinglePoint'
-
-    def geometry_convergence(self, gradients: float = 1e-5, energy: float = 1e-5):
-        '''
-        Set the convergence criteria for the geometry optimization.
-
-        Args:
-            gradients: the convergence criteria for the gradients during geometry optimizations. Defaults to 1e-5.
-            energy: the convergence criteria for the energy during geometry optimizations. Default to 1e-5.
-        '''
-        self.settings.input.ams.GeometryOptimization.Convergence.Gradients = gradients
-        self.settings.input.ams.GeometryOptimization.Convergence.Energy = energy
 
     def transition_state(self, distances: list = None, angles: list = None, dihedrals: list = None, ModeToFollow: int = 1):
         '''
@@ -67,27 +57,75 @@ class AMSJob(Job):
 
     def optimization(self):
         '''
-        Set the task of the job to transition state search. By default also calculates the normal modes after convergence.
+        Set the task of the job to geometry optimization. By default also calculates the normal modes after convergence.
         '''
         self._task = 'GO'
         self.settings.input.ams.task = 'GeometryOptimization'
         self.settings.input.ams.GeometryOptimization.InitialHessian.Type = 'CalculateWithFastEngine'
         self.vibrations(True)
 
-    def vibrations(self, enable: bool = True, PESPointCharacter: bool = True, NegativeFrequenciesTolerance: float = -5, ReScanFreqRange: tuple[float ,float] = [-10000000.0, 10.0]):
+    def IRC(self, direction: str = 'both', hess_file: str = None, step_size: float = 0.2, min_path_length: float = 0.1, max_points: int = 300):
+        '''
+        Set the task of the job to intrinsic reaction coordinate (IRC).
+
+        Args:
+            direction: the direction to take the first step into. By default it will be set to ``both``.
+            hess_file: the path to a ``.rkf`` file to read the Hessian from. This is the ``adf.rkf`` file for ADF calculations. 
+                If set to ``None`` the Hessian will be calculated prior to starting the IRC calculation.
+            step_size: the size of the step taken between each constrained optimization. By default it will be set to ``0.2`` :math:`a_0\\sqrt{Da}`.
+            min_path_length: the length of the IRC path before switching to minimization. By default it will be set to ``0.1`` |angstrom|.
+            max_points: the maximum number of IRC points in a direction. Be default it is set to ``300``.
+        '''
+        self._task = 'IRC'
+        self.settings.input.ams.task = 'IRC'
+        self.settings.input.ams.IRC.Direction = direction
+        if hess_file:
+            self.settings.input.ams.IRC.InitialHessian.File = hess_file
+            self.settings.input.ams.IRC.InitialHessian.Type = 'FromFile'
+        self.settings.input.ams.IRC.Step = step_size
+        self.settings.input.ams.IRC.MinPathLength = min_path_length
+        self.settings.input.ams.IRC.MaxPoints = max_points
+
+        self.add_postscript(tcutility.job.postscripts.clean_workdir)
+        self.add_postscript(tcutility.job.postscripts.write_converged_geoms)
+
+    def vibrations(self, enable: bool = True, NegativeFrequenciesTolerance: float = -5):
         '''
         Set the calculation of vibrational modes. 
 
         Args:
             enable: whether to calculate the vibrational modes.
-            PESPointCharacter: whether to report the PES character in the output.
-            NegativeFrequenciesTolerance: the tolerance for negative modes. Modes above this value will not be counted as imaginary. Use this option when you experience a lot of numerical noise.
-            ReScanFreqRange: the rescan range. Any mode that has a frequency in this range will be refined.
+            NegativeFrequenciesTolerance: the tolerance for negative modes. 
+                Modes with frequencies above this value will not be counted as imaginary. 
+                Use this option when you experience a lot of numerical noise.
         '''
         self.settings.input.ams.Properties.NormalModes = 'Yes' if enable else 'No'
-        self.settings.input.ams.Properties.PESPointCharacter = 'Yes' if enable else 'No'
+        self.settings.input.ams.Properties.PESPointCharacter = 'Yes'
         self.settings.input.ams.PESPointCharacter.NegativeFrequenciesTolerance = NegativeFrequenciesTolerance
-        self.settings.input.ams.NormalModes.ReScanFreqRange = ' '.join([str(x) for x in ReScanFreqRange])
+        self.settings.input.ams.NormalModes.ReScanFreqRange = '-10000000.0 10.0'
+
+    def geometry_convergence(self, quality: str = None, gradients: float = 1e-5, energy: float = 1e-5, step: float = 1e-2):
+        '''
+        Set the convergence criteria for the geometry optimization.
+
+        Args:
+            quality: convergence criteria preset. Must be one of [``VeryBasic``, ``Basic``, ``Normal``, ``Good``, ``VeryGood``]. 
+                Default ``None`` will not use a threshold. If it is given, it will overwrite the other arguments. 
+            gradients: the convergence criteria for the gradients during geometry optimizations. Defaults to 1e-5.
+            energy: the convergence criteria for the energy during geometry optimizations. Defaults to 1e-5.
+            step: the convergence criteria for the step-size during geometry optimizations. Defaults to 1e-2.
+        '''
+        if quality:
+            allowed_qualities = ['verybasic', 'basic', 'normal', 'good', 'verygood']
+            if quality.lower() not in [q.lower() for q in allowed_qualities]:
+                log.error(f'Argument "quality" must be one of {allowed_qualities}, not {quality}')
+                raise
+            self.settings.input.ams.GeometryOptimization.Convergence.Quality = quality
+        else:
+            self.settings.input.ams.GeometryOptimization.Convergence.Quality = 'Custom'
+            self.settings.input.ams.GeometryOptimization.Convergence.Gradients = gradients
+            self.settings.input.ams.GeometryOptimization.Convergence.Energy = energy
+            self.settings.input.ams.GeometryOptimization.Convergence.Step = step
 
     def charge(self, val: int):
         '''
