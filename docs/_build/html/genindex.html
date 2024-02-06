@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; TCutility v0.8.5 documentation</title>
+    <title>Index &#8212; TCutility v0.9.0 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="_static/documentation_options.js?v=ebd327a5"></script>
+    <script src="_static/documentation_options.js?v=c20ff342"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -262,6 +262,8 @@
 </li>
       <li><a href="api/tcutility.job.html#tcutility.job.generic.Job.add_postamble">add_postamble() (Job method)</a>
 </li>
+      <li><a href="api/tcutility.job.html#tcutility.job.generic.Job.add_postscript">add_postscript() (Job method)</a>
+</li>
       <li><a href="api/tcutility.job.html#tcutility.job.generic.Job.add_preamble">add_preamble() (Job method)</a>
 </li>
       <li><a href="api/tcutility.html#tcutility.report.SI.add_xyz">add_xyz() (SI method)</a>
@@ -332,8 +334,6 @@
 </li>
       <li><a href="api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.charge.VDDCharge.charge">charge (VDDCharge attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/tcutility.job.html#tcutility.job.ams.AMSJob.charge">charge() (AMSJob method)</a>
 
       <ul>
@@ -342,7 +342,13 @@
         <li><a href="api/tcutility.job.html#tcutility.job.orca.ORCAJob.charge">(ORCAJob method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.charge_is_conserved">charge_is_conserved() (VDDChargeManager method)</a>
+</li>
+      <li><a href="api/tcutility.html#tcutility.spell_check.check">check() (in module tcutility.spell_check)</a>
+</li>
+      <li><a href="api/tcutility.data.html#tcutility.data.atom.color">color() (in module tcutility.data.atom)</a>
 </li>
       <li><a href="api/tcutility.html#tcutility.geometry.Transform.combine_transforms">combine_transforms() (Transform method)</a>
 </li>
@@ -402,13 +408,15 @@
 </li>
       <li><a href="api/tcutility.html#tcutility.log.Emojis.finish">finish (Emojis attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/tcutility.html#tcutility.log.flow">flow() (in module tcutility.log)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.charge.VDDCharge.frag_index">frag_index (VDDCharge attribute)</a>
 </li>
       <li><a href="api/tcutility.job.html#tcutility.job.adf.ADFJob.functional">functional() (ADFJob method)</a>
+</li>
+      <li><a href="api/tcutility.data.html#tcutility.data.functionals.functional_name_from_path_safe_name">functional_name_from_path_safe_name() (in module tcutility.data.functionals)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -418,13 +426,21 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/tcutility.job.html#tcutility.job.ams.AMSJob.geometry_convergence">geometry_convergence() (AMSJob method)</a>
 </li>
-      <li><a href="api/tcutility.results.html#tcutility.results.cache.get">get() (in module tcutility.results.cache)</a>
+      <li><a href="api/tcutility.data.html#tcutility.data.functionals.get">get() (in module tcutility.data.functionals)</a>
+
+      <ul>
+        <li><a href="api/tcutility.data.html#tcutility.data.molecules.get">(in module tcutility.data.molecules)</a>
 </li>
+        <li><a href="api/tcutility.results.html#tcutility.results.cache.get">(in module tcutility.results.cache)</a>
+</li>
+      </ul></li>
       <li><a href="api/tcutility.results.html#tcutility.results.ams.get_ams_info">get_ams_info() (in module tcutility.results.ams)</a>
 </li>
       <li><a href="api/tcutility.results.html#tcutility.results.ams.get_ams_input">get_ams_input() (in module tcutility.results.ams)</a>
 </li>
       <li><a href="api/tcutility.results.html#tcutility.results.ams.get_ams_version">get_ams_version() (in module tcutility.results.ams)</a>
+</li>
+      <li><a href="api/tcutility.data.html#tcutility.data.functionals.get_available_functionals">get_available_functionals() (in module tcutility.data.functionals)</a>
 </li>
       <li><a href="api/tcutility.results.html#tcutility.results.ams.get_calc_files">get_calc_files() (in module tcutility.results.ams)</a>
 
@@ -468,19 +484,21 @@
       </ul></li>
       <li><a href="api/tcutility.results.html#tcutility.results.ams.get_input_blocks">get_input_blocks() (in module tcutility.results.ams)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/tcutility.results.html#tcutility.results.adf.get_level_of_theory">get_level_of_theory() (in module tcutility.results.adf)</a>
 
       <ul>
         <li><a href="api/tcutility.results.html#tcutility.results.orca.get_level_of_theory">(in module tcutility.results.orca)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/tcutility.job.html#tcutility.job.orca.ORCAJob.get_memory_usage">get_memory_usage() (ORCAJob method)</a>
 </li>
-      <li><a href="api/tcutility.results.html#tcutility.results.ams.get_molecules">get_molecules() (in module tcutility.results.ams)</a>
+      <li><a href="api/tcutility.data.html#tcutility.data.molecules.get_molecules">get_molecules() (in module tcutility.data.molecules)</a>
 
       <ul>
+        <li><a href="api/tcutility.results.html#tcutility.results.ams.get_molecules">(in module tcutility.results.ams)</a>
+</li>
         <li><a href="api/tcutility.results.html#tcutility.results.orca.get_molecules">(in module tcutility.results.orca)</a>
 </li>
       </ul></li>
@@ -544,6 +562,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/tcutility.job.html#tcutility.job.ams.AMSJob.IRC">IRC() (AMSJob method)</a>
+</li>
       <li><a href="api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.irreps">irreps (VDDChargeManager attribute)</a>
 </li>
       <li><a href="api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.is_fragment_calculation">is_fragment_calculation (VDDChargeManager attribute)</a>
@@ -626,6 +646,20 @@
 </li>
         <li><a href="api/tcutility.html#module-tcutility.constants">tcutility.constants</a>
 </li>
+        <li><a href="api/tcutility.data.html#module-tcutility.data">tcutility.data</a>
+</li>
+        <li><a href="api/tcutility.data.html#module-tcutility.data.atom">tcutility.data.atom</a>
+</li>
+        <li><a href="api/tcutility.data.atom_data_info.html#module-tcutility.data.atom_data_info">tcutility.data.atom_data_info</a>
+</li>
+        <li><a href="api/tcutility.data.html#module-tcutility.data.basis_sets">tcutility.data.basis_sets</a>
+</li>
+        <li><a href="api/tcutility.data.html#module-tcutility.data.cosmo">tcutility.data.cosmo</a>
+</li>
+        <li><a href="api/tcutility.data.html#module-tcutility.data.functionals">tcutility.data.functionals</a>
+</li>
+        <li><a href="api/tcutility.data.html#module-tcutility.data.molecules">tcutility.data.molecules</a>
+</li>
         <li><a href="api/tcutility.html#module-tcutility.formula">tcutility.formula</a>
 </li>
         <li><a href="api/tcutility.html#module-tcutility.geometry">tcutility.geometry</a>
@@ -645,6 +679,14 @@
         <li><a href="api/tcutility.job.html#module-tcutility.job.nmr">tcutility.job.nmr</a>
 </li>
         <li><a href="api/tcutility.job.html#module-tcutility.job.orca">tcutility.job.orca</a>
+</li>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts">tcutility.job.postscripts</a>
+</li>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts.clean_workdir">tcutility.job.postscripts.clean_workdir</a>
+</li>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts.split_crest_xyz">tcutility.job.postscripts.split_crest_xyz</a>
+</li>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts.write_converged_geoms">tcutility.job.postscripts.write_converged_geoms</a>
 </li>
         <li><a href="api/tcutility.html#module-tcutility.log">tcutility.log</a>
 </li>
@@ -741,12 +783,14 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/tcutility.html#tcutility.formula.parse_molecule">parse_molecule() (in module tcutility.formula)</a>
+      <li><a href="api/tcutility.data.html#tcutility.data.atom.parse_element">parse_element() (in module tcutility.data.atom)</a>
 </li>
-      <li><a href="api/tcutility.html#tcutility.molecule.parse_str">parse_str() (in module tcutility.molecule)</a>
+      <li><a href="api/tcutility.html#tcutility.formula.parse_molecule">parse_molecule() (in module tcutility.formula)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/tcutility.html#tcutility.molecule.parse_str">parse_str() (in module tcutility.molecule)</a>
+</li>
       <li><a href="api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.plot_vdd_charges_per_atom">plot_vdd_charges_per_atom() (VDDChargeManager method)</a>
 </li>
       <li><a href="api/tcutility.results.html#tcutility.results.result.Result.prune">prune() (Result method)</a>
@@ -771,6 +815,8 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/tcutility.data.html#tcutility.data.atom.radius">radius() (in module tcutility.data.atom)</a>
+</li>
       <li><a href="api/tcutility.html#tcutility.geometry.random_points_in_anular_sphere">random_points_in_anular_sphere() (in module tcutility.geometry)</a>
 </li>
       <li><a href="api/tcutility.html#tcutility.geometry.random_points_on_sphere">random_points_on_sphere() (in module tcutility.geometry)</a>
@@ -787,10 +833,10 @@
 </li>
       <li><a href="api/tcutility.job.html#tcutility.job.adf.ADFJob.relativity">relativity() (ADFJob method)</a>
 </li>
-      <li><a href="api/tcutility.results.html#tcutility.results.result.Result">Result (class in tcutility.results.result)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/tcutility.results.html#tcutility.results.result.Result">Result (class in tcutility.results.result)</a>
+</li>
       <li><a href="api/tcutility.html#tcutility.log.Emojis.rlarrow">rlarrow (Emojis attribute)</a>
 </li>
       <li><a href="api/tcutility.html#tcutility.geometry.RMSD">RMSD() (in module tcutility.geometry)</a>
@@ -937,6 +983,55 @@
 </li>
       </ul></li>
       <li>
+    tcutility.data
+
+      <ul>
+        <li><a href="api/tcutility.data.html#module-tcutility.data">module</a>
+</li>
+      </ul></li>
+      <li>
+    tcutility.data.atom
+
+      <ul>
+        <li><a href="api/tcutility.data.html#module-tcutility.data.atom">module</a>
+</li>
+      </ul></li>
+      <li>
+    tcutility.data.atom_data_info
+
+      <ul>
+        <li><a href="api/tcutility.data.atom_data_info.html#module-tcutility.data.atom_data_info">module</a>
+</li>
+      </ul></li>
+      <li>
+    tcutility.data.basis_sets
+
+      <ul>
+        <li><a href="api/tcutility.data.html#module-tcutility.data.basis_sets">module</a>
+</li>
+      </ul></li>
+      <li>
+    tcutility.data.cosmo
+
+      <ul>
+        <li><a href="api/tcutility.data.html#module-tcutility.data.cosmo">module</a>
+</li>
+      </ul></li>
+      <li>
+    tcutility.data.functionals
+
+      <ul>
+        <li><a href="api/tcutility.data.html#module-tcutility.data.functionals">module</a>
+</li>
+      </ul></li>
+      <li>
+    tcutility.data.molecules
+
+      <ul>
+        <li><a href="api/tcutility.data.html#module-tcutility.data.molecules">module</a>
+</li>
+      </ul></li>
+      <li>
     tcutility.formula
 
       <ul>
@@ -992,6 +1087,8 @@
         <li><a href="api/tcutility.job.html#module-tcutility.job.generic">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     tcutility.job.nmr
 
@@ -999,13 +1096,39 @@
         <li><a href="api/tcutility.job.html#module-tcutility.job.nmr">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     tcutility.job.orca
 
       <ul>
         <li><a href="api/tcutility.job.html#module-tcutility.job.orca">module</a>
+</li>
+      </ul></li>
+      <li>
+    tcutility.job.postscripts
+
+      <ul>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts">module</a>
+</li>
+      </ul></li>
+      <li>
+    tcutility.job.postscripts.clean_workdir
+
+      <ul>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts.clean_workdir">module</a>
+</li>
+      </ul></li>
+      <li>
+    tcutility.job.postscripts.split_crest_xyz
+
+      <ul>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts.split_crest_xyz">module</a>
+</li>
+      </ul></li>
+      <li>
+    tcutility.job.postscripts.write_converged_geoms
+
+      <ul>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts.write_converged_geoms">module</a>
 </li>
       </ul></li>
       <li>

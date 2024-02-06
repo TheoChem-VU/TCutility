@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.spell_check &#8212; TCutility v0.8.5 documentation</title>
+    <title>tcutility.spell_check &#8212; TCutility v0.9.0 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../_static/documentation_options.js?v=ebd327a5"></script>
+    <script src="../../_static/documentation_options.js?v=c20ff342"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -352,7 +352,7 @@
 
 <div class="viewcode-block" id="get_closest">
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.spell_check.get_closest">[docs]</a>
-<span class="k">def</span> <span class="nf">get_closest</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">others</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">compare_func</span><span class="o">=</span><span class="n">wagner_fischer</span><span class="p">,</span> <span class="n">ignore_case</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ignore_chars</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">maximum_distance</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">get_closest</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">others</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">compare_func</span><span class="o">=</span><span class="n">wagner_fischer</span><span class="p">,</span> <span class="n">ignore_case</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ignore_chars</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">maximum_distance</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Return strings that are similar to an input string using the Levenshtein distance.</span>
 
@@ -369,6 +369,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        A collection of strings that have a Levenshtein distance to ``a`` below ``maximum_distance`` </span>
 <span class="sd">        or have the lowest distance to ``a`` if all strings have a distance greater than ``maximum_distance``.</span>
+<span class="sd">        If the lowest distance is ``0``, return an empty list instead.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        .. code-block:: python</span>
@@ -391,11 +392,11 @@
         <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">ignore_chars</span><span class="p">:</span>
             <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 
-        <span class="n">dists</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">compare_func</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">other</span><span class="p">))</span>
+        <span class="n">dists</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">compare_func</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">maximum_distance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">maximum_distance</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="n">lowest_strs</span> <span class="o">=</span> <span class="p">[</span><span class="n">other</span> <span class="k">for</span> <span class="n">dist</span><span class="p">,</span> <span class="n">other</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dists</span><span class="p">,</span> <span class="n">others</span><span class="p">)</span> <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">(</span><span class="n">maximum_distance</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">dists</span><span class="p">))]</span>
+    <span class="n">lowest_strs</span> <span class="o">=</span> <span class="p">[</span><span class="n">other</span> <span class="k">for</span> <span class="n">dist</span><span class="p">,</span> <span class="n">other</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dists</span><span class="p">,</span> <span class="n">others</span><span class="p">)</span> <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">dist</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">(</span><span class="n">maximum_distance</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">dists</span><span class="p">))]</span>
     <span class="k">return</span> <span class="n">lowest_strs</span></div>
 
 
@@ -424,6 +425,24 @@
 
     <span class="c1"># write a warning message</span>
     <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find &quot;</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s1">&quot;. Did you mean </span><span class="si">{</span><span class="n">closest_string</span><span class="si">}</span><span class="s1">?&#39;</span><span class="p">,</span> <span class="n">caller_level</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="check">
+<a class="viewcode-back" href="../../api/tcutility.html#tcutility.spell_check.check">[docs]</a>
+<span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">others</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">caller_level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">closest</span> <span class="o">=</span> <span class="n">get_closest</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">others</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">closest</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">closest_string</span> <span class="o">=</span> <span class="s2">&quot; or &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">closest</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">closest</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">closest_string</span> <span class="o">=</span> <span class="n">closest</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># write a warning message</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">log</span><span class="o">.</span><span class="n">caller_name</span><span class="p">(</span><span class="n">caller_level</span><span class="p">)</span><span class="si">}</span><span class="s2">): &quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;Could not find &quot;</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s1">&quot;. Did you mean </span><span class="si">{</span><span class="n">closest_string</span><span class="si">}</span><span class="s1">?&#39;</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 </pre></div>
 

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.job.adf &#8212; TCutility v0.8.5 documentation</title>
+    <title>tcutility.job.adf &#8212; TCutility v0.9.0 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../_static/documentation_options.js?v=ebd327a5"></script>
+    <script src="../../../_static/documentation_options.js?v=c20ff342"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -256,8 +256,7 @@
                   
   <h1>Source code for tcutility.job.adf</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">scm</span> <span class="kn">import</span> <span class="n">plams</span>
-<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">formula</span>
-<span class="kn">from</span> <span class="nn">tcutility.data</span> <span class="kn">import</span> <span class="n">functionals</span>
+<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">spell_check</span><span class="p">,</span> <span class="n">data</span>
 <span class="kn">from</span> <span class="nn">tcutility.job.ams</span> <span class="kn">import</span> <span class="n">AMSJob</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -271,11 +270,11 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_functional</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solvent</span><span class="p">(</span><span class="s1">&#39;vacuum&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span><span class="p">(</span><span class="s1">&#39;TZ2P&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">quality</span><span class="p">(</span><span class="s1">&#39;Good&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">SCF_convergence</span><span class="p">(</span><span class="mf">1e-8</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">single_point</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">solvent</span><span class="p">(</span><span class="s1">&#39;vacuum&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_task</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_functional</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_basis_set</span><span class="si">}</span><span class="s1">), running in </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">),</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -290,8 +289,16 @@
 <span class="sd">            typ: the type of basis-set to use. Default is TZ2P.</span>
 <span class="sd">            core: the size of the frozen core approximation. Default is None.</span>
 
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: if the basis-set name or core is incorrect.</span>
+
 <span class="sd">        .. note:: If the selected functional is the r2SCAN-3c functional, then the basis-set will be set to mTZ2P.</span>
+
+<span class="sd">        .. seealso:: </span>
+<span class="sd">            :mod:`tcutility.data.basis_sets` for an overview of the available basis-sets in ADF.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">basis_sets</span><span class="o">.</span><span class="n">available_basis_sets</span><span class="p">[</span><span class="s1">&#39;ADF&#39;</span><span class="p">],</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;Small&#39;</span><span class="p">,</span> <span class="s1">&#39;Large&#39;</span><span class="p">],</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_functional</span> <span class="o">==</span> <span class="s1">&#39;r2SCAN-3c&#39;</span> <span class="ow">and</span> <span class="n">typ</span> <span class="o">!=</span> <span class="s1">&#39;mTZ2P&#39;</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Basis set </span><span class="si">{</span><span class="n">typ</span><span class="si">}</span><span class="s1"> is not allowed with r2SCAN-3c, switching to mTZ2P.&#39;</span><span class="p">)</span>
             <span class="n">typ</span> <span class="o">=</span> <span class="s1">&#39;mTZ2P&#39;</span>
@@ -323,7 +330,7 @@
 <span class="sd">        3) triplet</span>
 <span class="sd">        4) ...</span>
 <span class="sd">    </span>
-<span class="sd">        The multiplicity is equal to 2*S+1 for spin-polarization of S.</span>
+<span class="sd">        The multiplicity is equal to 2*S+1 for spin-polarization S.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span> <span class="o">=</span> <span class="p">(</span><span class="n">val</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
         <span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
@@ -347,7 +354,11 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            val: the numerical quality value to set to. This is the same as the ones used in the ADF GUI. Defaults to Good.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: if the quality value is incorrect.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Basic&#39;</span><span class="p">,</span> <span class="s1">&#39;Normal&#39;</span><span class="p">,</span> <span class="s1">&#39;Good&#39;</span><span class="p">,</span> <span class="s1">&#39;VeryGood&#39;</span><span class="p">,</span> <span class="s1">&#39;Excellent&#39;</span><span class="p">],</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">NumericalQuality</span> <span class="o">=</span> <span class="n">val</span></div>
 
 
@@ -370,10 +381,16 @@
 <span class="sd">        Set the functional to be used by the calculation. This also sets the dispersion if it is specified in the functional name.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            funtional_name: the name of the functional. The value can be the same as the ones used in the ADF GUI. For a full list of functionals please see :func:`functionals.get_available_functionals`.</span>
+<span class="sd">            funtional_name: the name of the functional. The value can be the same as the ones used in the ADF GUI.</span>
 <span class="sd">            dispersion: dispersion setting to use with the functional. This is used when you want to use a functional from LibXC.</span>
 
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: if the functional name is not recognized.</span>
+
 <span class="sd">        .. note:: Setting the functional to r2SCAN-3c will automatically set the basis-set to mTZ2P.</span>
+
+<span class="sd">        .. seealso::</span>
+<span class="sd">            :mod:`tcutility.data.functionals` for an overview of the available functionals in ADF.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># before adding the new functional we should clear any previous functional settings</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;XC&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -390,11 +407,11 @@
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;There are two functionals called SSB-D, please use &quot;GGA:SSB-D&quot; or &quot;MetaGGA:SSB-D&quot;.&#39;</span><span class="p">)</span>
             <span class="k">return</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">functionals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">functional</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="o">.</span><span class="n">functionals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">functional</span><span class="p">):</span>
             <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;XC-functional </span><span class="si">{</span><span class="n">functional</span><span class="si">}</span><span class="s1"> not found. Please ask a TheoCheM developer to add it. Adding functional as LibXC.&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">XC</span><span class="o">.</span><span class="n">LibXC</span> <span class="o">=</span> <span class="n">functional</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">func</span> <span class="o">=</span> <span class="n">functionals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">functional</span><span class="p">)</span>
+            <span class="n">func</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">functionals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">functional</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">adf_settings</span><span class="p">)</span></div>
 
 
@@ -406,7 +423,11 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            level: the level to set. Can be the same as the values in the ADF GUI and documentation. By default it is set to Scalar.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: if the relativistic correction level is not correct.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Scalar&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;Spin-Orbit&#39;</span><span class="p">],</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">relativity</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">level</span></div>
 
 
@@ -421,8 +442,15 @@
 <span class="sd">            eps: the dielectric constant of your solvent. You can use this in place of the solvent name if you need more control over COSMO.</span>
 <span class="sd">            rad: the radius of the solvent molecules. You can use this in place of the solvent name if you need more control over COSMO.</span>
 <span class="sd">            use_klamt: whether to use the klamt atomic radii. This is usually used when you have charged species (?).</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: if the solvent name is given, but incorrect.</span>
+
+<span class="sd">        .. seealso::</span>
+<span class="sd">            :mod:`tcutility.data.cosmo` for an overview of the available solvent names and formulas.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">cosmo</span><span class="o">.</span><span class="n">available_solvents</span><span class="p">,</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">insertion_cost</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_solvent</span> <span class="o">=</span> <span class="n">name</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_solvent</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;COSMO(eps=</span><span class="si">{</span><span class="n">eps</span><span class="si">}</span><span class="s1"> rad=</span><span class="si">{</span><span class="n">rad</span><span class="si">}</span><span class="s1">)&#39;</span>
@@ -614,8 +642,10 @@
         <span class="n">job</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="s1">&#39;tmp/SN2/EDA&#39;</span>
         <span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;../../../test/fixtures/xyz/pyr.xyz&#39;</span><span class="p">)</span>
         <span class="n">job</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="s1">&#39;tc&#39;</span><span class="p">,</span> <span class="n">ntasks_per_node</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">functional</span><span class="p">(</span><span class="s1">&#39;OLYP&#39;</span><span class="p">)</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">basis_set</span><span class="p">(</span><span class="s1">&#39;DZP&#39;</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">solvent</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">basis_set</span><span class="p">(</span><span class="s1">&#39;tz2p&#39;</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">quality</span><span class="p">(</span><span class="s1">&#39;veryGood&#39;</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">functional</span><span class="p">(</span><span class="s1">&#39;LYP-D3BJ&#39;</span><span class="p">)</span>
 </pre></div>
 
                 </article>

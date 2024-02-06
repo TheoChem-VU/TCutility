@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.results package &#8212; TCutility v0.8.5 documentation</title>
+    <title>tcutility.results package &#8212; TCutility v0.9.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=ebd327a5"></script>
+    <script src="../_static/documentation_options.js?v=c20ff342"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -48,7 +48,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="tcutility.typing package" href="tcutility.typing.html" />
-    <link rel="prev" title="tcutility.job package" href="tcutility.job.html" />
+    <link rel="prev" title="tcutility.job.postscripts package" href="tcutility.job.postscripts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -216,7 +216,14 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html">tcutility.analysis.vibration package</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.data.html">tcutility.data package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.atom_data_info.html">tcutility.data.atom_data_info package</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.postscripts.html">tcutility.job.postscripts package</a></li>
+</ul>
+</li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">tcutility.results package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.typing.html">tcutility.typing package</a></li>
 </ul>
@@ -533,13 +540,17 @@ It will also add bonds to the molecule if they are given in the rkf file, else i
 <dd class="field-even"><p><p>Dictionary containing information about the calculation status:</p>
 <blockquote>
 <div><ul>
-<li><p><strong>number_of_entries (int)</strong> – number of steps in the history.</p></li>
-<li><p><strong>{variable} (list[Any])</strong> – variable read from the history section. The number of variables and type of variables depend on the nature of the calculation.</p>
-<p>Common variables:</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">number_of_entries</span></code> <strong>(int)</strong> – number of steps in the history.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{variable}</span></code> <strong>(list[Any])</strong> – variable read from the history section. The number of variables and type of variables depend on the nature of the calculation.</p>
+<dl>
+<dt>Common variables:</dt><dd><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Molecule</span></code> <strong>(list[plams.Molecule])</strong> – list of molecules from the history, for example from a geometry optimization or PES scan.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">energy</span></code> <strong>(list[float])</strong> – list of energies associated with each geometry step.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">gradient</span></code> <strong>(list[list[float]])</strong> – array of gradients for each geometry step and each atom.</div>
+</div>
+</dd>
+</dl>
 </li>
-<li><p><strong>coords (list[plams.Molecule])</strong> – list of molecules from the history, for example from a geometry optimization or PES scan.</p></li>
-<li><p><strong>energy (list[float])</strong> – list of energies associated with each geometry step.</p></li>
-<li><p><strong>gradient (list[list[float]])</strong> – array of gradients for each geometry step and each atom.</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -1027,12 +1038,12 @@ Information will be given as :class:`tcutility.results.result.Result` objects an
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="tcutility.job.html"
+       href="tcutility.job.postscripts.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">tcutility.job package</p>
+        <p class="prev-next-title">tcutility.job.postscripts package</p>
       </div>
     </a>
     <a class="right-next"

@@ -1,0 +1,589 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>tcutility.data package &#8212; TCutility v0.9.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=c20ff342"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/tcutility.data';</script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="tcutility.data.atom_data_info package" href="tcutility.data.atom_data_info.html" />
+    <link rel="prev" title="tcutility.analysis.vibration package" href="tcutility.analysis.vibration.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item"><!-- _templates/logo.html -->
+<style>
+    .myDiv {
+      color: #323232;
+      font-size: 30px;
+      font-weight: 400;
+      line-height: : 33px;
+      text-decoration: none;
+    }
+</style>
+<div class="myDiv">
+    <a href="./index.html">
+        <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
+        TCutility
+    </a>
+</div></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item"><!-- _templates/star.html -->
+<a href=https://github.com/TheoChem-VU><i class="fa-brands fa-github"></i> TheoCheM</a></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><!-- _templates/star.html -->
+<a href=https://github.com/TheoChem-VU><i class="fa-brands fa-github"></i> TheoCheM</a></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="tcutility.html">tcutility package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.analysis.html">tcutility.analysis package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vdd.html">tcutility.analysis.vdd package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html">tcutility.analysis.vibration package</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">tcutility.data package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.atom_data_info.html">tcutility.data.atom_data_info package</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.postscripts.html">tcutility.job.postscripts package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.results.html">tcutility.results package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.typing.html">tcutility.typing package</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="modules.html" class="nav-link">tcutility</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="tcutility.html" class="nav-link">tcutility package</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">tcutility.da...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="tcutility-data-package">
+<h1>tcutility.data package<a class="headerlink" href="#tcutility-data-package" title="Link to this heading">#</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tcutility.data.atom_data_info.html">tcutility.data.atom_data_info package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.data.atom_data_info.html#module-tcutility.data.atom_data_info">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-tcutility.data.atom">
+<span id="tcutility-data-atom-module"></span><h2>tcutility.data.atom module<a class="headerlink" href="#module-tcutility.data.atom" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.data.atom.parse_element">
+<span class="sig-name descname"><span class="pre">parse_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/atom.html#parse_element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.atom.parse_element" title="Link to this definition">#</a></dt>
+<dd><p>Parse a str or int to an atom number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>val</strong> – Element name, symbol or atom number.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Atom number corresponding to val.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parse_element</span><span class="p">(</span><span class="s1">&#39;Hydrogen&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="n">parse_element</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span>
+<span class="n">parse_element</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span> <span class="o">==</span> <span class="mi">23</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.data.atom.radius">
+<span class="sig-name descname"><span class="pre">radius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/atom.html#radius"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.atom.radius" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>element</strong> – the symbol, name or atom number of the element. See <a class="reference internal" href="#tcutility.data.atom.parse_element" title="tcutility.data.atom.parse_element"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_element()</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The empirical covalent radius of an element in angstroms, up to element 96.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.data.atom.color">
+<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/atom.html#color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.atom.color" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>element</strong> – the symbol, name or atom number of the element. See <a class="reference internal" href="#tcutility.data.atom.parse_element" title="tcutility.data.atom.parse_element"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_element()</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The standard CPK colors of the elements, up to element 109.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-tcutility.data.basis_sets">
+<span id="tcutility-data-basis-sets-module"></span><h2>tcutility.data.basis_sets module<a class="headerlink" href="#module-tcutility.data.basis_sets" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-tcutility.data.cosmo">
+<span id="tcutility-data-cosmo-module"></span><h2>tcutility.data.cosmo module<a class="headerlink" href="#module-tcutility.data.cosmo" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-tcutility.data.functionals">
+<span id="tcutility-data-functionals-module"></span><h2>tcutility.data.functionals module<a class="headerlink" href="#module-tcutility.data.functionals" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.data.functionals.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">functional_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/data/functionals.html#get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.functionals.get" title="Link to this definition">#</a></dt>
+<dd><p>Return information about a given functional.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>functional_name</strong> – the name of the functional. It should exist in the <a class="reference internal" href="#tcutility.data.functionals.get_available_functionals" title="tcutility.data.functionals.get_available_functionals"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_available_functionals()</span></code></a> keys.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a href="#id1"><span class="problematic" id="id2">|Result|</span></a> object containing information about the functional if it exists. Else it will return <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#tcutility.data.functionals.get_available_functionals" title="tcutility.data.functionals.get_available_functionals"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_available_functionals()</span></code></a> for an overview of the information returned.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.data.functionals.functional_name_from_path_safe_name">
+<span class="sig-name descname"><span class="pre">functional_name_from_path_safe_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_safe_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/data/functionals.html#functional_name_from_path_safe_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.functionals.functional_name_from_path_safe_name" title="Link to this definition">#</a></dt>
+<dd><p>Return information about a given functional given its path-safe name.
+This can be useful when you want to know the functional from a path name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A <a href="#id3"><span class="problematic" id="id4">|Result|</span></a> object containing information about the functional if it exists. Else it will return <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#tcutility.data.functionals.get_available_functionals" title="tcutility.data.functionals.get_available_functionals"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_available_functionals()</span></code></a> for an overview of the information returned.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.data.functionals.get_available_functionals">
+<span class="sig-name descname"><span class="pre">get_available_functionals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/functionals.html#get_available_functionals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.functionals.get_available_functionals" title="Link to this definition">#</a></dt>
+<dd><p>Function that returns a dictionary of all available XC-functionals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl>
+<dt>A <a href="#id5"><span class="problematic" id="id6">|Result|</span></a> object containing information about all available XC-functionals.</dt><dd><p>The functional names are stored as the keys and the functional information is stored as the values.
+The values contain the following information:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> <strong>(str)</strong> - the name of the functional.</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">path_safe_name</span></code> <strong>(str)</strong> - the name of the functional made suitable for file paths.</dt><dd><p>This name is the same as the normal name, but without parentheses. Asterisks are replaced with lower-case <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name_no_disp</span></code> <strong>(str)</strong> - the name of functional without the dispersion correction.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">category</span></code> <strong>(str)</strong> - the category the functional belongs to.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dispersion</span></code> <strong>(str)</strong> - the dispersion correction part of the functional name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dispersion_name</span></code> <strong>(str)</strong> - the name of the dispersion correction as it would be written in ADF.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">includes_disp</span></code> <strong>(bool)</strong> - whether the functional already includes a dispersion correction.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">use_libxc</span></code> <strong>(bool)</strong> - whether the functional is from the LibXC library.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">available_in_adf</span></code> <strong>(bool)</strong> - whether the functional is available in ADF.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">available_in_band</span></code> <strong>(bool)</strong> - whether the functional is available in BAND.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">available_in_orca</span></code> <strong>(bool)</strong> - whether the functional is available in ORCA.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">adf_settings</span></code> <strong>(|Result|)</strong> - the settings that are used to select the functional in the ADF input.</p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-tcutility.data.molecules">
+<span id="tcutility-data-molecules-module"></span><h2>tcutility.data.molecules module<a class="headerlink" href="#module-tcutility.data.molecules" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.data.molecules.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/molecules.html#get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.molecules.get" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.data.molecules.get_molecules">
+<span class="sig-name descname"><span class="pre">get_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/molecules.html#get_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.molecules.get_molecules" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-tcutility.data">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tcutility.data" title="Link to this heading">#</a></h2>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="tcutility.analysis.vibration.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">tcutility.analysis.vibration package</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="tcutility.data.atom_data_info.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">tcutility.data.atom_data_info package</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subpackages">Subpackages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.data.atom">tcutility.data.atom module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.atom.parse_element"><code class="docutils literal notranslate"><span class="pre">parse_element()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.atom.radius"><code class="docutils literal notranslate"><span class="pre">radius()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.atom.color"><code class="docutils literal notranslate"><span class="pre">color()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.data.basis_sets">tcutility.data.basis_sets module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.data.cosmo">tcutility.data.cosmo module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.data.functionals">tcutility.data.functionals module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.functionals.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.functionals.functional_name_from_path_safe_name"><code class="docutils literal notranslate"><span class="pre">functional_name_from_path_safe_name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.functionals.get_available_functionals"><code class="docutils literal notranslate"><span class="pre">get_available_functionals()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.data.molecules">tcutility.data.molecules module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.molecules.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.molecules.get_molecules"><code class="docutils literal notranslate"><span class="pre">get_molecules()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.data">Module contents</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/api/tcutility.data.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, TheoCheM VU Amsterdam.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

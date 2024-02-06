@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    tcutility.analysis
+   tcutility.data
    tcutility.job
    tcutility.results
    tcutility.typing

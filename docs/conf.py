@@ -86,4 +86,5 @@ rst_epilog = f"""
 .. |cm-1| replace:: :math:`\\text{{cm}}^{-1}`
 .. |kcal/mol| replace:: :math:`\\text{{kcal mol}}^{-1}`
 .. |km/mol| replace:: :math:`\\text{{km mol}}^{-1}`
+.. |angstrom| replace:: Å
 """

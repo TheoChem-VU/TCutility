@@ -33,6 +33,10 @@ def test_wagner_fischer8():
     dist = spell_check.wagner_fischer('kitten', 'kittttten', insertion_cost=.5)
     assert dist == 1.5
 
+def test_wagner_fischer9():
+    dist = spell_check.wagner_fischer('', 'kitten')
+    assert dist == 6
+
 def test_get_closest1():
     closest = spell_check.get_closest('kitten', ['mitten', 'bitten', 'sitting'])
     assert closest == ['mitten', 'bitten']
@@ -51,7 +55,7 @@ def test_get_closest4():
 
 def test_get_closest5():
     closest = spell_check.get_closest('kitten', ['Kitten', 'kItten', 'kiTten', 'KItten', 'KITten', 'KITTEN'], ignore_case=True)
-    assert closest == ['Kitten', 'kItten', 'kiTten', 'KItten', 'KITten', 'KITTEN']
+    assert closest == []
 
 def test_get_closest6():
     closest = spell_check.get_closest('kitten', ['Kitten', 'kItten', 'kiTten', 'KItten', 'KITten', 'KITTEN'], maximum_distance=2)

@@ -1,6 +1,5 @@
 from scm import plams
-from tcutility import log, results, formula
-from tcutility.data import functionals
+from tcutility import log, results, formula, spell_check, data
 from tcutility.job.ams import AMSJob
 import os
 
@@ -12,11 +11,11 @@ class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._functional = None
+        self.solvent('vacuum')
         self.basis_set('TZ2P')
         self.quality('Good')
         self.SCF_convergence(1e-8)
         self.single_point()
-        self.solvent('vacuum')
 
     def __str__(self):
         return f'{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}'
@@ -29,8 +28,16 @@ class ADFJob(AMSJob):
             typ: the type of basis-set to use. Default is TZ2P.
             core: the size of the frozen core approximation. Default is None.
 
+        Raises:
+            ValueError: if the basis-set name or core is incorrect.
+
         .. note:: If the selected functional is the r2SCAN-3c functional, then the basis-set will be set to mTZ2P.
+
+        .. seealso:: 
+            :mod:`tcutility.data.basis_sets` for an overview of the available basis-sets in ADF.
         '''
+        spell_check.check(typ, data.basis_sets.available_basis_sets['ADF'], ignore_case=True)
+        spell_check.check(core, ['None', 'Small', 'Large'], ignore_case=True)
         if self._functional == 'r2SCAN-3c' and typ != 'mTZ2P':
             log.warn(f'Basis set {typ} is not allowed with r2SCAN-3c, switching to mTZ2P.')
             typ = 'mTZ2P'
@@ -56,7 +63,7 @@ class ADFJob(AMSJob):
         3) triplet
         4) ...
     
-        The multiplicity is equal to 2*S+1 for spin-polarization of S.
+        The multiplicity is equal to 2*S+1 for spin-polarization S.
         '''
         self.settings.input.adf.SpinPolarization = (val - 1)//2
         if val != 1:
@@ -74,7 +81,11 @@ class ADFJob(AMSJob):
 
         Args:
             val: the numerical quality value to set to. This is the same as the ones used in the ADF GUI. Defaults to Good.
+
+        Raises:
+            ValueError: if the quality value is incorrect.
         '''
+        spell_check.check(val, ['Basic', 'Normal', 'Good', 'VeryGood', 'Excellent'], ignore_case=True)
         self.settings.input.adf.NumericalQuality = val
 
     def SCF_convergence(self, thresh: float = 1e-8):
@@ -91,10 +102,16 @@ class ADFJob(AMSJob):
         Set the functional to be used by the calculation. This also sets the dispersion if it is specified in the functional name.
 
         Args:
-            funtional_name: the name of the functional. The value can be the same as the ones used in the ADF GUI. For a full list of functionals please see :func:`functionals.get_available_functionals`.
+            funtional_name: the name of the functional. The value can be the same as the ones used in the ADF GUI.
             dispersion: dispersion setting to use with the functional. This is used when you want to use a functional from LibXC.
 
+        Raises:
+            ValueError: if the functional name is not recognized.
+
         .. note:: Setting the functional to r2SCAN-3c will automatically set the basis-set to mTZ2P.
+
+        .. seealso::
+            :mod:`tcutility.data.functionals` for an overview of the available functionals in ADF.
         '''
         # before adding the new functional we should clear any previous functional settings
         self.settings.input.adf.pop('XC', None)
@@ -111,11 +128,11 @@ class ADFJob(AMSJob):
             log.error('There are two functionals called SSB-D, please use "GGA:SSB-D" or "MetaGGA:SSB-D".')
             return
 
-        if not functionals.get(functional):
+        if not data.functionals.get(functional):
             log.warn(f'XC-functional {functional} not found. Please ask a TheoCheM developer to add it. Adding functional as LibXC.')
             self.settings.input.adf.XC.LibXC = functional
         else:
-            func = functionals.get(functional)
+            func = data.functionals.get(functional)
             self.settings.input.adf.update(func.adf_settings)
 
     def relativity(self, level: str = 'Scalar'):
@@ -124,7 +141,11 @@ class ADFJob(AMSJob):
 
         Args:
             level: the level to set. Can be the same as the values in the ADF GUI and documentation. By default it is set to Scalar.
+
+        Raises:
+            ValueError: if the relativistic correction level is not correct.
         '''
+        spell_check.check(level, ['Scalar', 'None', 'Spin-Orbit'], ignore_case=True)
         self.settings.input.adf.relativity.level = level
 
     def solvent(self, name: str = None, eps: float = None, rad: float = None, use_klamt: bool = False):
@@ -136,8 +157,15 @@ class ADFJob(AMSJob):
             eps: the dielectric constant of your solvent. You can use this in place of the solvent name if you need more control over COSMO.
             rad: the radius of the solvent molecules. You can use this in place of the solvent name if you need more control over COSMO.
             use_klamt: whether to use the klamt atomic radii. This is usually used when you have charged species (?).
+
+        Raises:
+            ValueError: if the solvent name is given, but incorrect.
+
+        .. seealso::
+            :mod:`tcutility.data.cosmo` for an overview of the available solvent names and formulas.
         '''
         if name:
+            spell_check.check(name, data.cosmo.available_solvents, ignore_case=True, insertion_cost=0.3)
             self._solvent = name
         else:
             self._solvent = f'COSMO(eps={eps} rad={rad})'
@@ -318,5 +346,7 @@ if __name__ == '__main__':
         job.rundir = 'tmp/SN2/EDA'
         job.molecule('../../../test/fixtures/xyz/pyr.xyz')
         job.sbatch(p='tc', ntasks_per_node=15)
-        job.functional('OLYP')
-        job.basis_set('DZP')
+        job.solvent('')
+        job.basis_set('tz2p')
+        job.quality('veryGood')
+        job.functional('LYP-D3BJ')

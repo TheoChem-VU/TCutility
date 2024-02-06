@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.job package &#8212; TCutility v0.8.5 documentation</title>
+    <title>tcutility.job package &#8212; TCutility v0.9.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=ebd327a5"></script>
+    <script src="../_static/documentation_options.js?v=c20ff342"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -47,8 +47,8 @@
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="tcutility.results package" href="tcutility.results.html" />
-    <link rel="prev" title="tcutility.analysis.vibration package" href="tcutility.analysis.vibration.html" />
+    <link rel="next" title="tcutility.job.postscripts package" href="tcutility.job.postscripts.html" />
+    <link rel="prev" title="tcutility.data.atom_data_info package" href="tcutility.data.atom_data_info.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -216,7 +216,14 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html">tcutility.analysis.vibration package</a></li>
 </ul>
 </li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">tcutility.job package</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.data.html">tcutility.data package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.atom_data_info.html">tcutility.data.atom_data_info package</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">tcutility.job package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.postscripts.html">tcutility.job.postscripts package</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.results.html">tcutility.results package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.typing.html">tcutility.typing package</a></li>
 </ul>
@@ -283,6 +290,21 @@
                   
   <section id="tcutility-job-package">
 <h1>tcutility.job package<a class="headerlink" href="#tcutility-job-package" title="Link to this heading">#</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tcutility.job.postscripts.html">tcutility.job.postscripts package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.job.postscripts.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.job.postscripts.html#module-tcutility.job.postscripts.clean_workdir">tcutility.job.postscripts.clean_workdir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.job.postscripts.html#module-tcutility.job.postscripts.split_crest_xyz">tcutility.job.postscripts.split_crest_xyz module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.job.postscripts.html#module-tcutility.job.postscripts.write_converged_geoms">tcutility.job.postscripts.write_converged_geoms module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.job.postscripts.html#module-tcutility.job.postscripts">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
 </section>
@@ -303,10 +325,17 @@
 <li><p><strong>core</strong> – the size of the frozen core approximation. Default is None.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if the basis-set name or core is incorrect.</p>
+</dd>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If the selected functional is the r2SCAN-3c functional, then the basis-set will be set to mTZ2P.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="tcutility.data.html#module-tcutility.data.basis_sets" title="tcutility.data.basis_sets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tcutility.data.basis_sets</span></code></a> for an overview of the available basis-sets in ADF.</p>
 </div>
 </dd></dl>
 
@@ -327,7 +356,7 @@ We use the following values:</p>
 <li><p>triplet</p></li>
 <li><p>…</p></li>
 </ol>
-<p>The multiplicity is equal to 2*S+1 for spin-polarization of S.</p>
+<p>The multiplicity is equal to 2*S+1 for spin-polarization S.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -343,6 +372,9 @@ We use the following values:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>val</strong> – the numerical quality value to set to. This is the same as the ones used in the ADF GUI. Defaults to Good.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if the quality value is incorrect.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -365,14 +397,21 @@ We use the following values:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>funtional_name</strong> – the name of the functional. The value can be the same as the ones used in the ADF GUI. For a full list of functionals please see <code class="xref py py-func docutils literal notranslate"><span class="pre">functionals.get_available_functionals()</span></code>.</p></li>
+<li><p><strong>funtional_name</strong> – the name of the functional. The value can be the same as the ones used in the ADF GUI.</p></li>
 <li><p><strong>dispersion</strong> – dispersion setting to use with the functional. This is used when you want to use a functional from LibXC.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if the functional name is not recognized.</p>
 </dd>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Setting the functional to r2SCAN-3c will automatically set the basis-set to mTZ2P.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="tcutility.data.html#module-tcutility.data.functionals" title="tcutility.data.functionals"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tcutility.data.functionals</span></code></a> for an overview of the available functionals in ADF.</p>
 </div>
 </dd></dl>
 
@@ -383,6 +422,9 @@ We use the following values:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>level</strong> – the level to set. Can be the same as the values in the ADF GUI and documentation. By default it is set to Scalar.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if the relativistic correction level is not correct.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -400,7 +442,14 @@ We use the following values:</p>
 <li><p><strong>use_klamt</strong> – whether to use the klamt atomic radii. This is usually used when you have charged species (?).</p></li>
 </ul>
 </dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if the solvent name is given, but incorrect.</p>
+</dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="tcutility.data.html#module-tcutility.data.cosmo" title="tcutility.data.cosmo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tcutility.data.cosmo</span></code></a> for an overview of the available solvent names and formulas.</p>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -438,20 +487,6 @@ It holds all methods related to changing the settings at the AMS level. It also 
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tcutility.job.ams.AMSJob.geometry_convergence">
-<span class="sig-name descname"><span class="pre">geometry_convergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gradients</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob.geometry_convergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob.geometry_convergence" title="Link to this definition">#</a></dt>
-<dd><p>Set the convergence criteria for the geometry optimization.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>gradients</strong> – the convergence criteria for the gradients during geometry optimizations. Defaults to 1e-5.</p></li>
-<li><p><strong>energy</strong> – the convergence criteria for the energy during geometry optimizations. Default to 1e-5.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.ams.AMSJob.transition_state">
 <span class="sig-name descname"><span class="pre">transition_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distances</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dihedrals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ModeToFollow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob.transition_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob.transition_state" title="Link to this definition">#</a></dt>
 <dd><p>Set the task of the job to transition state search. Optionally you can give some TS coordinates to accelerate convergence.
@@ -471,20 +506,55 @@ By default also calculates the normal modes after convergence.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.ams.AMSJob.optimization">
 <span class="sig-name descname"><span class="pre">optimization</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob.optimization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob.optimization" title="Link to this definition">#</a></dt>
-<dd><p>Set the task of the job to transition state search. By default also calculates the normal modes after convergence.</p>
+<dd><p>Set the task of the job to geometry optimization. By default also calculates the normal modes after convergence.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.ams.AMSJob.IRC">
+<span class="sig-name descname"><span class="pre">IRC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hess_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_path_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob.IRC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob.IRC" title="Link to this definition">#</a></dt>
+<dd><p>Set the task of the job to intrinsic reaction coordinate (IRC).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>direction</strong> – the direction to take the first step into. By default it will be set to <code class="docutils literal notranslate"><span class="pre">both</span></code>.</p></li>
+<li><p><strong>hess_file</strong> – the path to a <code class="docutils literal notranslate"><span class="pre">.rkf</span></code> file to read the Hessian from. This is the <code class="docutils literal notranslate"><span class="pre">adf.rkf</span></code> file for ADF calculations.
+If set to <code class="docutils literal notranslate"><span class="pre">None</span></code> the Hessian will be calculated prior to starting the IRC calculation.</p></li>
+<li><p><strong>step_size</strong> – the size of the step taken between each constrained optimization. By default it will be set to <code class="docutils literal notranslate"><span class="pre">0.2</span></code> <span class="math notranslate nohighlight">\(a_0\sqrt{Da}\)</span>.</p></li>
+<li><p><strong>min_path_length</strong> – the length of the IRC path before switching to minimization. By default it will be set to <code class="docutils literal notranslate"><span class="pre">0.1</span></code> Å.</p></li>
+<li><p><strong>max_points</strong> – the maximum number of IRC points in a direction. Be default it is set to <code class="docutils literal notranslate"><span class="pre">300</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.ams.AMSJob.vibrations">
-<span class="sig-name descname"><span class="pre">vibrations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PESPointCharacter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NegativeFrequenciesTolerance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ReScanFreqRange</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[-10000000.0,</span> <span class="pre">10.0]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob.vibrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob.vibrations" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">vibrations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NegativeFrequenciesTolerance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob.vibrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob.vibrations" title="Link to this definition">#</a></dt>
 <dd><p>Set the calculation of vibrational modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>enable</strong> – whether to calculate the vibrational modes.</p></li>
-<li><p><strong>PESPointCharacter</strong> – whether to report the PES character in the output.</p></li>
-<li><p><strong>NegativeFrequenciesTolerance</strong> – the tolerance for negative modes. Modes above this value will not be counted as imaginary. Use this option when you experience a lot of numerical noise.</p></li>
-<li><p><strong>ReScanFreqRange</strong> – the rescan range. Any mode that has a frequency in this range will be refined.</p></li>
+<li><p><strong>NegativeFrequenciesTolerance</strong> – the tolerance for negative modes.
+Modes with frequencies above this value will not be counted as imaginary.
+Use this option when you experience a lot of numerical noise.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.ams.AMSJob.geometry_convergence">
+<span class="sig-name descname"><span class="pre">geometry_convergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quality</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gradients</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob.geometry_convergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob.geometry_convergence" title="Link to this definition">#</a></dt>
+<dd><p>Set the convergence criteria for the geometry optimization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>quality</strong> – convergence criteria preset. Must be one of [<code class="docutils literal notranslate"><span class="pre">VeryBasic</span></code>, <code class="docutils literal notranslate"><span class="pre">Basic</span></code>, <code class="docutils literal notranslate"><span class="pre">Normal</span></code>, <code class="docutils literal notranslate"><span class="pre">Good</span></code>, <code class="docutils literal notranslate"><span class="pre">VeryGood</span></code>].
+Default <code class="docutils literal notranslate"><span class="pre">None</span></code> will not use a threshold. If it is given, it will overwrite the other arguments.</p></li>
+<li><p><strong>gradients</strong> – the convergence criteria for the gradients during geometry optimizations. Defaults to 1e-5.</p></li>
+<li><p><strong>energy</strong> – the convergence criteria for the energy during geometry optimizations. Defaults to 1e-5.</p></li>
+<li><p><strong>step</strong> – the convergence criteria for the step-size during geometry optimizations. Defaults to 1e-2.</p></li>
 </ul>
 </dd>
 </dl>
@@ -767,6 +837,11 @@ job.add_postamble(‘rm t12.*’)</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.generic.Job.add_postscript">
+<span class="sig-name descname"><span class="pre">add_postscript</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">script</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/generic.html#Job.add_postscript"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.generic.Job.add_postscript" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.generic.Job.dependency">
 <span class="sig-name descname"><span class="pre">dependency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">otherjob</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><span class="pre">Job</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/generic.html#Job.dependency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.generic.Job.dependency" title="Link to this definition">#</a></dt>
 <dd><p>Set a dependency between this job and another job. This means that this job will run after the other job is finished running succesfully.</p>
@@ -905,20 +980,20 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="tcutility.analysis.vibration.html"
+       href="tcutility.data.atom_data_info.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">tcutility.analysis.vibration package</p>
+        <p class="prev-next-title">tcutility.data.atom_data_info package</p>
       </div>
     </a>
     <a class="right-next"
-       href="tcutility.results.html"
+       href="tcutility.job.postscripts.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">tcutility.results package</p>
+        <p class="prev-next-title">tcutility.job.postscripts package</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -940,6 +1015,7 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subpackages">Subpackages</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.job.adf">tcutility.job.adf module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob"><code class="docutils literal notranslate"><span class="pre">ADFJob</span></code></a><ul class="nav section-nav flex-column">
@@ -964,10 +1040,11 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.job.ams">tcutility.job.ams module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob"><code class="docutils literal notranslate"><span class="pre">AMSJob</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.single_point"><code class="docutils literal notranslate"><span class="pre">AMSJob.single_point()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.geometry_convergence"><code class="docutils literal notranslate"><span class="pre">AMSJob.geometry_convergence()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.transition_state"><code class="docutils literal notranslate"><span class="pre">AMSJob.transition_state()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.optimization"><code class="docutils literal notranslate"><span class="pre">AMSJob.optimization()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.IRC"><code class="docutils literal notranslate"><span class="pre">AMSJob.IRC()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.vibrations"><code class="docutils literal notranslate"><span class="pre">AMSJob.vibrations()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.geometry_convergence"><code class="docutils literal notranslate"><span class="pre">AMSJob.geometry_convergence()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.charge"><code class="docutils literal notranslate"><span class="pre">AMSJob.charge()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">AMSJob.output_mol_path</span></code></a></li>
 </ul>
@@ -1017,6 +1094,7 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.run"><code class="docutils literal notranslate"><span class="pre">Job.run()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.add_preamble"><code class="docutils literal notranslate"><span class="pre">Job.add_preamble()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.add_postamble"><code class="docutils literal notranslate"><span class="pre">Job.add_postamble()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.add_postscript"><code class="docutils literal notranslate"><span class="pre">Job.add_postscript()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.dependency"><code class="docutils literal notranslate"><span class="pre">Job.dependency()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.workdir"><code class="docutils literal notranslate"><span class="pre">Job.workdir</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.runfile_path"><code class="docutils literal notranslate"><span class="pre">Job.runfile_path</span></code></a></li>
