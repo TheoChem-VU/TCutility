@@ -49,6 +49,7 @@ def get_calc_settings(info: Result) -> Result:
     reader_adf = cache.get(info.files["adf.rkf"])
 
     relativistic_type_map = {
+        0: 'None',
         1: 'scalar Pauli',
         3: 'scalar ZORA',  # scalar ZORA + MAPA
         4: 'scalar ZORA + full pot.',

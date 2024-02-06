@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; TCutility v0.8.0 documentation</title>
+    <title>Index &#8212; TCutility v0.8.5 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="_static/documentation_options.js?v=b3dab91b"></script>
+    <script src="_static/documentation_options.js?v=ebd327a5"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -262,6 +262,8 @@
 </li>
       <li><a href="api/tcutility.job.html#tcutility.job.generic.Job.add_postamble">add_postamble() (Job method)</a>
 </li>
+      <li><a href="api/tcutility.job.html#tcutility.job.generic.Job.add_postscript">add_postscript() (Job method)</a>
+</li>
       <li><a href="api/tcutility.job.html#tcutility.job.generic.Job.add_preamble">add_preamble() (Job method)</a>
 </li>
       <li><a href="api/tcutility.html#tcutility.report.SI.add_xyz">add_xyz() (SI method)</a>
@@ -446,6 +448,8 @@
         <li><a href="api/tcutility.results.html#tcutility.results.orca.get_calculation_status">(in module tcutility.results.orca)</a>
 </li>
       </ul></li>
+      <li><a href="api/tcutility.html#tcutility.spell_check.get_closest">get_closest() (in module tcutility.spell_check)</a>
+</li>
       <li><a href="api/tcutility.job.html#tcutility.job.crest.CRESTJob.get_conformer_xyz">get_conformer_xyz() (CRESTJob method)</a>
 </li>
       <li><a href="api/tcutility.job.html#tcutility.job.crest.QCGJob.get_ensemble_xyz">get_ensemble_xyz() (QCGJob method)</a>
@@ -542,6 +546,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/tcutility.job.html#tcutility.job.ams.AMSJob.IRC">IRC() (AMSJob method)</a>
+</li>
       <li><a href="api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.irreps">irreps (VDDChargeManager attribute)</a>
 </li>
       <li><a href="api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.is_fragment_calculation">is_fragment_calculation (VDDChargeManager attribute)</a>
@@ -594,6 +600,8 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/tcutility.html#tcutility.spell_check.make_suggestion">make_suggestion() (in module tcutility.spell_check)</a>
+</li>
       <li><a href="api/tcutility.job.html#tcutility.job.crest.CRESTJob.md_length">md_length() (CRESTJob method)</a>
 </li>
       <li><a href="api/tcutility.job.html#tcutility.job.crest.CRESTJob.md_temperature">md_temperature() (CRESTJob method)</a>
@@ -642,6 +650,14 @@
 </li>
         <li><a href="api/tcutility.job.html#module-tcutility.job.orca">tcutility.job.orca</a>
 </li>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts">tcutility.job.postscripts</a>
+</li>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts.clean_workdir">tcutility.job.postscripts.clean_workdir</a>
+</li>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts.split_crest_xyz">tcutility.job.postscripts.split_crest_xyz</a>
+</li>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts.write_converged_geoms">tcutility.job.postscripts.write_converged_geoms</a>
+</li>
         <li><a href="api/tcutility.html#module-tcutility.log">tcutility.log</a>
 </li>
         <li><a href="api/tcutility.html#module-tcutility.molecule">tcutility.molecule</a>
@@ -663,6 +679,8 @@
         <li><a href="api/tcutility.results.html#module-tcutility.results.result">tcutility.results.result</a>
 </li>
         <li><a href="api/tcutility.html#module-tcutility.slurm">tcutility.slurm</a>
+</li>
+        <li><a href="api/tcutility.html#module-tcutility.spell_check">tcutility.spell_check</a>
 </li>
         <li><a href="api/tcutility.typing.html#module-tcutility.typing">tcutility.typing</a>
 </li>
@@ -693,6 +711,8 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/tcutility.html#tcutility.spell_check.naive_recursive">naive_recursive() (in module tcutility.spell_check)</a>
+</li>
       <li><a href="api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.name">name (VDDChargeManager attribute)</a>
 </li>
       <li><a href="api/tcutility.job.html#tcutility.job.nmr.NMRJob">NMRJob (class in tcutility.job.nmr)</a>
@@ -991,13 +1011,41 @@
         <li><a href="api/tcutility.job.html#module-tcutility.job.nmr">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     tcutility.job.orca
 
       <ul>
         <li><a href="api/tcutility.job.html#module-tcutility.job.orca">module</a>
+</li>
+      </ul></li>
+      <li>
+    tcutility.job.postscripts
+
+      <ul>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    tcutility.job.postscripts.clean_workdir
+
+      <ul>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts.clean_workdir">module</a>
+</li>
+      </ul></li>
+      <li>
+    tcutility.job.postscripts.split_crest_xyz
+
+      <ul>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts.split_crest_xyz">module</a>
+</li>
+      </ul></li>
+      <li>
+    tcutility.job.postscripts.write_converged_geoms
+
+      <ul>
+        <li><a href="api/tcutility.job.postscripts.html#module-tcutility.job.postscripts.write_converged_geoms">module</a>
 </li>
       </ul></li>
       <li>
@@ -1078,6 +1126,13 @@
 </li>
       </ul></li>
       <li>
+    tcutility.spell_check
+
+      <ul>
+        <li><a href="api/tcutility.html#module-tcutility.spell_check">module</a>
+</li>
+      </ul></li>
+      <li>
     tcutility.typing
 
       <ul>
@@ -1151,16 +1206,18 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/tcutility.html#tcutility.spell_check.wagner_fischer">wagner_fischer() (in module tcutility.spell_check)</a>
+</li>
       <li><a href="api/tcutility.html#tcutility.log.Emojis.wait">wait (Emojis attribute)</a>
 </li>
       <li><a href="api/tcutility.html#tcutility.slurm.wait_for_job">wait_for_job() (in module tcutility.slurm)</a>
 </li>
       <li><a href="api/tcutility.html#tcutility.log.warn">warn() (in module tcutility.log)</a>
 </li>
-      <li><a href="api/tcutility.html#tcutility.log.Emojis.warning">warning (Emojis attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/tcutility.html#tcutility.log.Emojis.warning">warning (Emojis attribute)</a>
+</li>
       <li><a href="api/tcutility.job.html#tcutility.job.generic.Job.workdir">workdir (Job property)</a>
 </li>
       <li><a href="api/tcutility.html#tcutility.slurm.workdir_info">workdir_info() (in module tcutility.slurm)</a>

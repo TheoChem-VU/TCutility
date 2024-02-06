@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.analysis package &#8212; TCutility v0.8.5 documentation</title>
+    <title>tcutility.job.postscripts package &#8212; TCutility v0.8.5 documentation</title>
   
   
   
@@ -43,12 +43,12 @@
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api/tcutility.analysis';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/tcutility.job.postscripts';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="tcutility.analysis.vdd package" href="tcutility.analysis.vdd.html" />
-    <link rel="prev" title="tcutility package" href="tcutility.html" />
+    <link rel="next" title="tcutility.results package" href="tcutility.results.html" />
+    <link rel="prev" title="tcutility.job package" href="tcutility.job.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -211,13 +211,13 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="tcutility.html">tcutility package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">tcutility.analysis package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.analysis.html">tcutility.analysis package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vdd.html">tcutility.analysis.vdd package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html">tcutility.analysis.vibration package</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="tcutility.job.postscripts.html">tcutility.job.postscripts package</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">tcutility.job.postscripts package</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.results.html">tcutility.results package</a></li>
@@ -253,6 +253,8 @@
 
 
 
+
+
 <nav aria-label="Breadcrumb">
   <ul class="bd-breadcrumbs">
     
@@ -265,9 +267,12 @@
     <li class="breadcrumb-item"><a href="modules.html" class="nav-link">tcutility</a></li>
     
     
-    <li class="breadcrumb-item"><a href="tcutility.html" class="nav-link">tcutility package</a></li>
+    <li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
     
-    <li class="breadcrumb-item active" aria-current="page">tcutility.an...</li>
+    
+    <li class="breadcrumb-item"><a href="tcutility.job.html" class="nav-link">tcutility.job package</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">tcutility.jo...</li>
   </ul>
 </nav>
 </div>
@@ -284,70 +289,22 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="tcutility-analysis-package">
-<h1>tcutility.analysis package<a class="headerlink" href="#tcutility-analysis-package" title="Link to this heading">#</a></h1>
-<section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">#</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="tcutility.analysis.vdd.html">tcutility.analysis.vdd package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.analysis.vdd.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.analysis.vdd.html#module-tcutility.analysis.vdd.charge">tcutility.analysis.vdd.charge module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.charge.VDDCharge"><code class="docutils literal notranslate"><span class="pre">VDDCharge</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.charge.VDDCharge.atom_index"><code class="docutils literal notranslate"><span class="pre">VDDCharge.atom_index</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.charge.VDDCharge.atom_symbol"><code class="docutils literal notranslate"><span class="pre">VDDCharge.atom_symbol</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.charge.VDDCharge.charge"><code class="docutils literal notranslate"><span class="pre">VDDCharge.charge</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.charge.VDDCharge.frag_index"><code class="docutils literal notranslate"><span class="pre">VDDCharge.frag_index</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.charge.VDDCharge.change_unit"><code class="docutils literal notranslate"><span class="pre">VDDCharge.change_unit()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.analysis.vdd.html#module-tcutility.analysis.vdd.manager">tcutility.analysis.vdd.manager module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.change_unit_decorator"><code class="docutils literal notranslate"><span class="pre">change_unit_decorator()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.create_vdd_charge_manager"><code class="docutils literal notranslate"><span class="pre">create_vdd_charge_manager()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.vdd_charges"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.vdd_charges</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.is_fragment_calculation"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.is_fragment_calculation</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.calc_dir"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.calc_dir</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.mol_charge"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.mol_charge</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.name"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.name</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.unit"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.unit</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.irreps"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.irreps</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.charge_is_conserved"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.charge_is_conserved()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.change_unit"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.change_unit()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_vdd_charges()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_summed_vdd_charges()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_dataframe"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_vdd_charges_dataframe()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_dataframe"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_summed_vdd_charges_dataframe()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_table"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_vdd_charges_table()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_table"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_summed_vdd_charges_table()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.write_to_txt"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.write_to_txt()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.write_to_excel"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.write_to_excel()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.plot_vdd_charges_per_atom"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.plot_vdd_charges_per_atom()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.analysis.vdd.html#module-tcutility.analysis.vdd">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="tcutility.analysis.vibration.html">tcutility.analysis.vibration package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.analysis.vibration.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.analysis.vibration.html#module-tcutility.analysis.vibration.ts_vibration">tcutility.analysis.vibration.ts_vibration module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html#tcutility.analysis.vibration.ts_vibration.avg_relative_bond_length_delta"><code class="docutils literal notranslate"><span class="pre">avg_relative_bond_length_delta()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html#tcutility.analysis.vibration.ts_vibration.determine_ts_reactioncoordinate"><code class="docutils literal notranslate"><span class="pre">determine_ts_reactioncoordinate()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html#tcutility.analysis.vibration.ts_vibration.validate_transitionstate"><code class="docutils literal notranslate"><span class="pre">validate_transitionstate()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.analysis.vibration.html#module-tcutility.analysis.vibration">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
+  <section id="tcutility-job-postscripts-package">
+<h1>tcutility.job.postscripts package<a class="headerlink" href="#tcutility-job-postscripts-package" title="Link to this heading">#</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
 </section>
-<section id="module-tcutility.analysis">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tcutility.analysis" title="Link to this heading">#</a></h2>
+<section id="module-tcutility.job.postscripts.clean_workdir">
+<span id="tcutility-job-postscripts-clean-workdir-module"></span><h2>tcutility.job.postscripts.clean_workdir module<a class="headerlink" href="#module-tcutility.job.postscripts.clean_workdir" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-tcutility.job.postscripts.split_crest_xyz">
+<span id="tcutility-job-postscripts-split-crest-xyz-module"></span><h2>tcutility.job.postscripts.split_crest_xyz module<a class="headerlink" href="#module-tcutility.job.postscripts.split_crest_xyz" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-tcutility.job.postscripts.write_converged_geoms">
+<span id="tcutility-job-postscripts-write-converged-geoms-module"></span><h2>tcutility.job.postscripts.write_converged_geoms module<a class="headerlink" href="#module-tcutility.job.postscripts.write_converged_geoms" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-tcutility.job.postscripts">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tcutility.job.postscripts" title="Link to this heading">#</a></h2>
 </section>
 </section>
 
@@ -362,20 +319,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="tcutility.html"
+       href="tcutility.job.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">tcutility package</p>
+        <p class="prev-next-title">tcutility.job package</p>
       </div>
     </a>
     <a class="right-next"
-       href="tcutility.analysis.vdd.html"
+       href="tcutility.results.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">tcutility.analysis.vdd package</p>
+        <p class="prev-next-title">tcutility.results package</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -397,15 +354,18 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subpackages">Subpackages</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.analysis">Module contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.job.postscripts.clean_workdir">tcutility.job.postscripts.clean_workdir module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.job.postscripts.split_crest_xyz">tcutility.job.postscripts.split_crest_xyz module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.job.postscripts.write_converged_geoms">tcutility.job.postscripts.write_converged_geoms module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.job.postscripts">Module contents</a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/api/tcutility.analysis.rst.txt">
+    <a href="../_sources/api/tcutility.job.postscripts.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

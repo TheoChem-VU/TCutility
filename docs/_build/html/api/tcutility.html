@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility package &#8212; TCutility v0.8.0 documentation</title>
+    <title>tcutility package &#8212; TCutility v0.8.5 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=b3dab91b"></script>
+    <script src="../_static/documentation_options.js?v=ebd327a5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -217,7 +217,10 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html">tcutility.analysis.vibration package</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.postscripts.html">tcutility.job.postscripts package</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.results.html">tcutility.results package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.typing.html">tcutility.typing package</a></li>
 </ul>
@@ -306,6 +309,17 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.job.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.postscripts.html">tcutility.job.postscripts package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.postscripts.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.postscripts.html#module-tcutility.job.postscripts.clean_workdir">tcutility.job.postscripts.clean_workdir module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.postscripts.html#module-tcutility.job.postscripts.split_crest_xyz">tcutility.job.postscripts.split_crest_xyz module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.postscripts.html#module-tcutility.job.postscripts.write_converged_geoms">tcutility.job.postscripts.write_converged_geoms module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.postscripts.html#module-tcutility.job.postscripts">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.job.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.job.html#module-tcutility.job.adf">tcutility.job.adf module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob"><code class="docutils literal notranslate"><span class="pre">ADFJob</span></code></a><ul>
@@ -330,10 +344,11 @@
 <li class="toctree-l2"><a class="reference internal" href="tcutility.job.html#module-tcutility.job.ams">tcutility.job.ams module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob"><code class="docutils literal notranslate"><span class="pre">AMSJob</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.single_point"><code class="docutils literal notranslate"><span class="pre">AMSJob.single_point()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.geometry_convergence"><code class="docutils literal notranslate"><span class="pre">AMSJob.geometry_convergence()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.transition_state"><code class="docutils literal notranslate"><span class="pre">AMSJob.transition_state()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.optimization"><code class="docutils literal notranslate"><span class="pre">AMSJob.optimization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.IRC"><code class="docutils literal notranslate"><span class="pre">AMSJob.IRC()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.vibrations"><code class="docutils literal notranslate"><span class="pre">AMSJob.vibrations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.geometry_convergence"><code class="docutils literal notranslate"><span class="pre">AMSJob.geometry_convergence()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.charge"><code class="docutils literal notranslate"><span class="pre">AMSJob.charge()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">AMSJob.output_mol_path</span></code></a></li>
 </ul>
@@ -383,6 +398,7 @@
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.generic.Job.run"><code class="docutils literal notranslate"><span class="pre">Job.run()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.generic.Job.add_preamble"><code class="docutils literal notranslate"><span class="pre">Job.add_preamble()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.generic.Job.add_postamble"><code class="docutils literal notranslate"><span class="pre">Job.add_postamble()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.generic.Job.add_postscript"><code class="docutils literal notranslate"><span class="pre">Job.add_postscript()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.generic.Job.dependency"><code class="docutils literal notranslate"><span class="pre">Job.dependency()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.generic.Job.workdir"><code class="docutils literal notranslate"><span class="pre">Job.workdir</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.generic.Job.runfile_path"><code class="docutils literal notranslate"><span class="pre">Job.runfile_path</span></code></a></li>
@@ -1068,31 +1084,31 @@ The flow elements are determined based on the given tags.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.debug">
-<span class="sig-name descname"><span class="pre">debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#debug"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.debug" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#debug"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.debug" title="Link to this definition">#</a></dt>
 <dd><p>Print a debug message.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.info">
-<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.info" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.info" title="Link to this definition">#</a></dt>
 <dd><p>Print an informative message.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.warn">
-<span class="sig-name descname"><span class="pre">warn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#warn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.warn" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">warn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#warn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.warn" title="Link to this definition">#</a></dt>
 <dd><p>Print a warning message.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.error">
-<span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.error" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.error" title="Link to this definition">#</a></dt>
 <dd><p>Print an error message.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.critical">
-<span class="sig-name descname"><span class="pre">critical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#critical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.critical" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">critical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#critical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.critical" title="Link to this definition">#</a></dt>
 <dd><p>Print a critical message.</p>
 </dd></dl>
 
@@ -1329,6 +1345,113 @@ It will add the electronic bond energy, Gibb’s free energy, enthalpy and imagi
 </dd></dl>
 
 </section>
+<section id="module-tcutility.spell_check">
+<span id="tcutility-spell-check-module"></span><h2>tcutility.spell_check module<a class="headerlink" href="#module-tcutility.spell_check" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.spell_check.naive_recursive">
+<span class="sig-name descname"><span class="pre">naive_recursive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/tcutility/spell_check.html#naive_recursive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.naive_recursive" title="Link to this definition">#</a></dt>
+<dd><p>The naïve recursive algorithm to obtain the Levenshtein distance between two strings.
+We do not recommend using this algorithm as it is quite slow and faster alternatives exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – strings to compare.</p></li>
+<li><p><strong>b</strong> – strings to compare.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Levenshtein distance between the strings <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#tcutility.spell_check.wagner_fischer" title="tcutility.spell_check.wagner_fischer"><code class="xref py py-func docutils literal notranslate"><span class="pre">wagner_fischer()</span></code></a></dt><dd><p>A more efficient algorithm to obtain the Levenshtein distance (up to 25x faster).</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.spell_check.wagner_fischer">
+<span class="sig-name descname"><span class="pre">wagner_fischer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">substitution_cost</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_missmatch_cost</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insertion_cost</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/tcutility/spell_check.html#wagner_fischer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.wagner_fischer" title="Link to this definition">#</a></dt>
+<dd><p>Return the Levenshtein distance using the Wagner-Fischer algorithm.
+You can also change the penalty for various errors for this algorithm.
+By default, all types of errors incur a penalty of 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – strings to compare.</p></li>
+<li><p><strong>b</strong> – strings to compare.</p></li>
+<li><p><strong>substitution_cost</strong> – the penalty for the erroneous substitution of a character.</p></li>
+<li><p><strong>case_missmatch_cost</strong> – the penalty for miss-matching the case of a character.</p></li>
+<li><p><strong>insertion_cost</strong> – the cost for the erroneous insertion or deletion of a character.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Levenshtein distance between the strings <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wagner_fischer</span><span class="p">(</span><span class="s1">&#39;kitten&#39;</span><span class="p">,</span> <span class="s1">&#39;sitting&#39;</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#tcutility.spell_check.naive_recursive" title="tcutility.spell_check.naive_recursive"><code class="xref py py-func docutils literal notranslate"><span class="pre">naive_recursive()</span></code></a></dt><dd><p>An alternative (and slower) algorithm to obtain the Levenshtein distance.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.spell_check.get_closest">
+<span class="sig-name descname"><span class="pre">get_closest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">a:</span> <span class="pre">str,</span> <span class="pre">others:</span> <span class="pre">~typing.List[str],</span> <span class="pre">compare_func=&lt;function</span> <span class="pre">wagner_fischer&gt;,</span> <span class="pre">ignore_case:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">ignore_chars:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">maximum_distance:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/spell_check.html#get_closest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.get_closest" title="Link to this definition">#</a></dt>
+<dd><p>Return strings that are similar to an input string using the Levenshtein distance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – the string to compare the rest to.</p></li>
+<li><p><strong>others</strong> – a collection of strings to compare to a. The returned strings will be taken from this collection.</p></li>
+<li><p><strong>compare_func</strong> – the function to use to compare the strings. Defaults to the efficient <a class="reference internal" href="#tcutility.spell_check.wagner_fischer" title="tcutility.spell_check.wagner_fischer"><code class="xref py py-func docutils literal notranslate"><span class="pre">wagner_fischer()</span></code></a> algorithm.</p></li>
+<li><p><strong>ignore_case</strong> – whether the case of the strings is taken into account. If enabled, all strings are turned to lower-case before comparison.</p></li>
+<li><p><strong>ignore_chars</strong> – a strings specifying characters that should be ignored.</p></li>
+<li><p><strong>maximum_distance</strong> – the maximum Levenshtein distance to allow.
+If it is lower than the lowest distance for the collection of strings, we return the strings with the lowest distance.
+If set to <code class="docutils literal notranslate"><span class="pre">None</span></code> we return the lowest distance strings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A collection of strings that have a Levenshtein distance to <code class="docutils literal notranslate"><span class="pre">a</span></code> below <code class="docutils literal notranslate"><span class="pre">maximum_distance</span></code>
+or have the lowest distance to <code class="docutils literal notranslate"><span class="pre">a</span></code> if all strings have a distance greater than <code class="docutils literal notranslate"><span class="pre">maximum_distance</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">closest</span> <span class="o">=</span> <span class="n">get_closest</span><span class="p">(</span><span class="s1">&#39;kitten&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;mitten&#39;</span><span class="p">,</span> <span class="s1">&#39;bitten&#39;</span><span class="p">,</span> <span class="s1">&#39;sitting&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">closest</span><span class="p">)</span>
+<span class="go">[&#39;mitten&#39;, &#39;bitten&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.spell_check.make_suggestion">
+<span class="sig-name descname"><span class="pre">make_suggestion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">others</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/spell_check.html#make_suggestion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.make_suggestion" title="Link to this definition">#</a></dt>
+<dd><p>Print a warning that gives suggestions for strings that are close to a given string.</p>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">make_suggestion</span><span class="p">(</span><span class="s1">&#39;kitten&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;mitten&#39;</span><span class="p">,</span> <span class="s1">&#39;bitten&#39;</span><span class="p">,</span> <span class="s1">&#39;sitting&#39;</span><span class="p">])</span>
+<span class="go">[2024/01/30 15:26:35] [WARNING](main): Could not find &quot;kitten&quot;. Did you mean mitten or bitten?</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#tcutility.spell_check.get_closest" title="tcutility.spell_check.get_closest"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_closest()</span></code></a> for a description of the function arguments.</p>
+</div>
+</dd></dl>
+
+</section>
 <section id="module-tcutility">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tcutility" title="Link to this heading">#</a></h2>
 <dl class="py function">
@@ -1484,6 +1607,13 @@ It will add the electronic bond energy, Gibb’s free energy, enthalpy and imagi
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.slurm.sbatch"><code class="docutils literal notranslate"><span class="pre">sbatch()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.slurm.workdir_info"><code class="docutils literal notranslate"><span class="pre">workdir_info()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.slurm.wait_for_job"><code class="docutils literal notranslate"><span class="pre">wait_for_job()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.spell_check">tcutility.spell_check module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.spell_check.naive_recursive"><code class="docutils literal notranslate"><span class="pre">naive_recursive()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.spell_check.wagner_fischer"><code class="docutils literal notranslate"><span class="pre">wagner_fischer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.spell_check.get_closest"><code class="docutils literal notranslate"><span class="pre">get_closest()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.spell_check.make_suggestion"><code class="docutils literal notranslate"><span class="pre">make_suggestion()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility">Module contents</a><ul class="nav section-nav flex-column">
