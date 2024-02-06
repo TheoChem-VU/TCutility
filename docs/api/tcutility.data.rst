@@ -1,14 +1,6 @@
 tcutility.data package
 ======================
 
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   tcutility.data.atom_data_info
-
 Submodules
 ----------
 
