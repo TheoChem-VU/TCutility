@@ -429,6 +429,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_postambles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="Job.add_postscript">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.add_postscript">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_postscript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_postamble</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cd </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_postamble</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;python </span><span class="si">{</span><span class="n">script</span><span class="o">.</span><span class="vm">__file__</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="Job.dependency">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.dependency">[docs]</a>
     <span class="k">def</span> <span class="nf">dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">otherjob</span><span class="p">:</span> <span class="s1">&#39;Job&#39;</span><span class="p">):</span>

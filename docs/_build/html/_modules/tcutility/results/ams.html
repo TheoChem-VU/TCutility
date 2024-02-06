@@ -289,6 +289,9 @@
     <span class="c1"># collect all files in the current directory and subdirectories</span>
     <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files_</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">root</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+            <span class="k">continue</span>
+
         <span class="c1"># some results are stored in dirs called {name}.results, if the calculations uses fragments there will be additional dirs called</span>
         <span class="c1"># {name}.{fragname}.results, which do not contain new information as the required info is copied over to {name}.results. Therefore</span>
         <span class="c1"># we should skip the fragment directories</span>
@@ -642,13 +645,13 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        :Dictionary containing information about the calculation status:</span>
 
-<span class="sd">            - **number_of_entries (int)** – number of steps in the history.</span>
-<span class="sd">            - **{variable} (list[Any])** – variable read from the history section. The number of variables and type of variables depend on the nature of the calculation.</span>
+<span class="sd">            - ``number_of_entries`` **(int)** – number of steps in the history.</span>
+<span class="sd">            - ``{variable}`` **(list[Any])** – variable read from the history section. The number of variables and type of variables depend on the nature of the calculation.</span>
 
 <span class="sd">              Common variables:</span>
-<span class="sd">            - **coords (list[plams.Molecule])** – list of molecules from the history, for example from a geometry optimization or PES scan.</span>
-<span class="sd">            - **energy (list[float])** – list of energies associated with each geometry step.</span>
-<span class="sd">            - **gradient (list[list[float]])** – array of gradients for each geometry step and each atom.</span>
+<span class="sd">                | ``Molecule`` **(list[plams.Molecule])** – list of molecules from the history, for example from a geometry optimization or PES scan.</span>
+<span class="sd">                | ``energy`` **(list[float])** – list of energies associated with each geometry step.</span>
+<span class="sd">                | ``gradient`` **(list[list[float]])** – array of gradients for each geometry step and each atom.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># read history mols</span>
     <span class="n">files</span> <span class="o">=</span> <span class="n">get_calc_files</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
@@ -677,6 +680,9 @@
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span>
 
+        <span class="k">if</span> <span class="s1">&#39;Coords&#39;</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Molecule&#39;</span><span class="p">)</span>
+
         <span class="c1"># create variable in result for each variable found</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
             <span class="n">ret</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -684,17 +690,17 @@
         <span class="c1"># collect the elements for each history variable</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">number_of_entries</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
-                <span class="n">val</span> <span class="o">=</span> <span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;History&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
-                <span class="c1"># coords are special, because we will convert them to plams.Molecule objects first</span>
-                <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;Coords&quot;</span><span class="p">:</span>
+                <span class="c1"># Molecule are special, because we will convert them to plams.Molecule objects first</span>
+                <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;Molecule&quot;</span><span class="p">:</span>
                     <span class="n">mol</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
-                    <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">natoms</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.529177</span>
+                    <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;History&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Coords(</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">natoms</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.529177</span>
                     <span class="k">for</span> <span class="n">atnum</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">atnums</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
                         <span class="n">mol</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="n">atnum</span><span class="o">=</span><span class="n">atnum</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coord</span><span class="p">))</span>
                     <span class="n">mol</span><span class="o">.</span><span class="n">guess_bonds</span><span class="p">()</span>
-                    <span class="n">ret</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+                    <span class="n">ret</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
                 <span class="c1"># other variables are just added as-is</span>
                 <span class="k">else</span><span class="p">:</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;History&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
                     <span class="n">ret</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ret</span></div>
