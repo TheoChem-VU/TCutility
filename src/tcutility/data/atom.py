@@ -2,7 +2,7 @@ import pathlib as pl
 
 
 # read data
-data_dir = pl.Path(__file__).parents[0] / "atom_data_info"
+data_dir = pl.Path(__file__).parents[0] / "_atom_data_info"
 
 with open(data_dir / "name.txt") as data:
     lines = data.readlines()
