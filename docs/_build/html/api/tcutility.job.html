@@ -48,7 +48,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="tcutility.job.postscripts package" href="tcutility.job.postscripts.html" />
-    <link rel="prev" title="tcutility.analysis.vibration package" href="tcutility.analysis.vibration.html" />
+    <link rel="prev" title="tcutility.data.atom_data_info package" href="tcutility.data.atom_data_info.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -216,7 +216,11 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html">tcutility.analysis.vibration package</a></li>
 </ul>
 </li>
-<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">tcutility.job package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.data.html">tcutility.data package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.atom_data_info.html">tcutility.data.atom_data_info package</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">tcutility.job package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.job.postscripts.html">tcutility.job.postscripts package</a></li>
 </ul>
 </li>
@@ -321,10 +325,17 @@
 <li><p><strong>core</strong> – the size of the frozen core approximation. Default is None.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if the basis-set name or core is incorrect.</p>
+</dd>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If the selected functional is the r2SCAN-3c functional, then the basis-set will be set to mTZ2P.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="tcutility.data.html#module-tcutility.data.basis_sets" title="tcutility.data.basis_sets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tcutility.data.basis_sets</span></code></a> for an overview of the available basis-sets in ADF.</p>
 </div>
 </dd></dl>
 
@@ -345,7 +356,7 @@ We use the following values:</p>
 <li><p>triplet</p></li>
 <li><p>…</p></li>
 </ol>
-<p>The multiplicity is equal to 2*S+1 for spin-polarization of S.</p>
+<p>The multiplicity is equal to 2*S+1 for spin-polarization S.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -361,6 +372,9 @@ We use the following values:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>val</strong> – the numerical quality value to set to. This is the same as the ones used in the ADF GUI. Defaults to Good.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if the quality value is incorrect.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -383,14 +397,21 @@ We use the following values:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>funtional_name</strong> – the name of the functional. The value can be the same as the ones used in the ADF GUI. For a full list of functionals please see <code class="xref py py-func docutils literal notranslate"><span class="pre">functionals.get_available_functionals()</span></code>.</p></li>
+<li><p><strong>funtional_name</strong> – the name of the functional. The value can be the same as the ones used in the ADF GUI.</p></li>
 <li><p><strong>dispersion</strong> – dispersion setting to use with the functional. This is used when you want to use a functional from LibXC.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if the functional name is not recognized.</p>
 </dd>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Setting the functional to r2SCAN-3c will automatically set the basis-set to mTZ2P.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="tcutility.data.html#module-tcutility.data.functionals" title="tcutility.data.functionals"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tcutility.data.functionals</span></code></a> for an overview of the available functionals in ADF.</p>
 </div>
 </dd></dl>
 
@@ -401,6 +422,9 @@ We use the following values:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>level</strong> – the level to set. Can be the same as the values in the ADF GUI and documentation. By default it is set to Scalar.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if the relativistic correction level is not correct.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -418,7 +442,14 @@ We use the following values:</p>
 <li><p><strong>use_klamt</strong> – whether to use the klamt atomic radii. This is usually used when you have charged species (?).</p></li>
 </ul>
 </dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if the solvent name is given, but incorrect.</p>
+</dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="tcutility.data.html#module-tcutility.data.cosmo" title="tcutility.data.cosmo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tcutility.data.cosmo</span></code></a> for an overview of the available solvent names and formulas.</p>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -949,12 +980,12 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="tcutility.analysis.vibration.html"
+       href="tcutility.data.atom_data_info.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">tcutility.analysis.vibration package</p>
+        <p class="prev-next-title">tcutility.data.atom_data_info package</p>
       </div>
     </a>
     <a class="right-next"

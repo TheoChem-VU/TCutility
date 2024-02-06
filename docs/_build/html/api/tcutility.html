@@ -217,7 +217,11 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html">tcutility.analysis.vibration package</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.data.html">tcutility.data package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.atom_data_info.html">tcutility.data.atom_data_info package</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.job.postscripts.html">tcutility.job.postscripts package</a></li>
 </ul>
 </li>
@@ -306,6 +310,37 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.analysis.html#module-tcutility.analysis">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tcutility.data.html">tcutility.data package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.atom_data_info.html">tcutility.data.atom_data_info package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.data.atom_data_info.html#module-tcutility.data.atom_data_info">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.atom">tcutility.data.atom module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.parse_element"><code class="docutils literal notranslate"><span class="pre">parse_element()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.radius"><code class="docutils literal notranslate"><span class="pre">radius()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.color"><code class="docutils literal notranslate"><span class="pre">color()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.basis_sets">tcutility.data.basis_sets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.cosmo">tcutility.data.cosmo module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.functionals">tcutility.data.functionals module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.functionals.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.functionals.functional_name_from_path_safe_name"><code class="docutils literal notranslate"><span class="pre">functional_name_from_path_safe_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.functionals.get_available_functionals"><code class="docutils literal notranslate"><span class="pre">get_available_functionals()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.molecules">tcutility.data.molecules module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.molecules.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.molecules.get_molecules"><code class="docutils literal notranslate"><span class="pre">get_molecules()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#module-tcutility.data">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a><ul>
@@ -1408,7 +1443,7 @@ By default, all types of errors incur a penalty of 1.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.spell_check.get_closest">
-<span class="sig-name descname"><span class="pre">get_closest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">a:</span> <span class="pre">str,</span> <span class="pre">others:</span> <span class="pre">~typing.List[str],</span> <span class="pre">compare_func=&lt;function</span> <span class="pre">wagner_fischer&gt;,</span> <span class="pre">ignore_case:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">ignore_chars:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">maximum_distance:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/spell_check.html#get_closest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.get_closest" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_closest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">a:</span> <span class="pre">str,</span> <span class="pre">others:</span> <span class="pre">~typing.List[str],</span> <span class="pre">compare_func=&lt;function</span> <span class="pre">wagner_fischer&gt;,</span> <span class="pre">ignore_case:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">ignore_chars:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">maximum_distance:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">**kwargs</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/spell_check.html#get_closest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.get_closest" title="Link to this definition">#</a></dt>
 <dd><p>Return strings that are similar to an input string using the Levenshtein distance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1425,7 +1460,8 @@ If set to <code class="docutils literal notranslate"><span class="pre">None</spa
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A collection of strings that have a Levenshtein distance to <code class="docutils literal notranslate"><span class="pre">a</span></code> below <code class="docutils literal notranslate"><span class="pre">maximum_distance</span></code>
-or have the lowest distance to <code class="docutils literal notranslate"><span class="pre">a</span></code> if all strings have a distance greater than <code class="docutils literal notranslate"><span class="pre">maximum_distance</span></code>.</p>
+or have the lowest distance to <code class="docutils literal notranslate"><span class="pre">a</span></code> if all strings have a distance greater than <code class="docutils literal notranslate"><span class="pre">maximum_distance</span></code>.
+If the lowest distance is <code class="docutils literal notranslate"><span class="pre">0</span></code>, return an empty list instead.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -1450,6 +1486,11 @@ or have the lowest distance to <code class="docutils literal notranslate"><span 
 <p><a class="reference internal" href="#tcutility.spell_check.get_closest" title="tcutility.spell_check.get_closest"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_closest()</span></code></a> for a description of the function arguments.</p>
 </div>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.spell_check.check">
+<span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">others</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/spell_check.html#check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.check" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-tcutility">
@@ -1614,6 +1655,7 @@ or have the lowest distance to <code class="docutils literal notranslate"><span 
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.spell_check.wagner_fischer"><code class="docutils literal notranslate"><span class="pre">wagner_fischer()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.spell_check.get_closest"><code class="docutils literal notranslate"><span class="pre">get_closest()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.spell_check.make_suggestion"><code class="docutils literal notranslate"><span class="pre">make_suggestion()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.spell_check.check"><code class="docutils literal notranslate"><span class="pre">check()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility">Module contents</a><ul class="nav section-nav flex-column">
