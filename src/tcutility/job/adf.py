@@ -17,6 +17,9 @@ class ADFJob(AMSJob):
         self.SCF(thresh=1e-8)
         self.single_point()
 
+        # by default print the fock matrix
+        self.settings.input.adf.print = 'FMatSFO'
+
     def __str__(self):
         return f'{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}'
 
