@@ -14,7 +14,7 @@ class ADFJob(AMSJob):
         self.solvent('vacuum')
         self.basis_set('TZ2P')
         self.quality('Good')
-        self.SCF_convergence(1e-8)
+        self.SCF(thresh=1e-8)
         self.single_point()
 
     def __str__(self):
@@ -363,5 +363,6 @@ if __name__ == '__main__':
         job.sbatch(p='tc', ntasks_per_node=15)
         job.solvent('')
         job.basis_set('tz2p')
+        job.SCF_convergence(1e-10)
         job.quality('veryGood')
         job.functional('LYP-D3BJ')
