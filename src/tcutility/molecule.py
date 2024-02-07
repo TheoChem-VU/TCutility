@@ -194,6 +194,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
     if len(fragment_flags) > 0:
         fragment_mols = {frag.removeprefix('frag_'): plams.Molecule() for frag in fragment_flags}
         for frag in fragment_flags:
+            frag_name = frag.removeprefix('frag_')
             indices = []
             index_line = ensure_list(mol.flags[frag])
             for indx in index_line:
@@ -204,12 +205,12 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
                 else:
                     raise ValueError(f'Fragment index {indx} could not be parsed.')
 
-            [fragment_mols[frag.removeprefix('frag_')].add_atom(mol[i]) for i in indices]
-            fragment_mols[frag.removeprefix('frag_')].flags = {'tags': set()}
-            if f'charge_{frag}' in mol.flags:
-                fragment_mols[frag.removeprefix('frag_')].flags['charge'] = mol.flags[f'charge_{frag}']
-            if f'spinpol_{frag}' in mol.flags:
-                fragment_mols[frag.removeprefix('frag_')].flags['spinpol'] = mol.flags[f'spinpol_{frag}']
+            [fragment_mols[frag_name].add_atom(mol[i]) for i in indices]
+            fragment_mols[frag_name].flags = {'tags': set()}
+            if f'charge_{frag_name}' in mol.flags:
+                fragment_mols[frag_name].flags['charge'] = mol.flags[f'charge_{frag_name}']
+            if f'spinpol_{frag_name}' in mol.flags:
+                fragment_mols[frag_name].flags['spinpol'] = mol.flags[f'spinpol_{frag_name}']
 
         return fragment_mols
 

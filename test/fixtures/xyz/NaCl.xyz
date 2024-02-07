@@ -1,7 +1,10 @@
 2
 
-Na 0 0 2 frag=Na
-Cl 0 0 0 frag=Cl
+Na 0 0 2
+Cl 0 0 0
 
+
+frag_Na = 1
+frag_Cl = 2
 charge_Na = 1
 charge_Cl = -1
