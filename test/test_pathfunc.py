@@ -18,10 +18,6 @@ def test_split_all4():
 	assert pathfunc.split_all(os.path.join('a', 'b', 'c')) == ['a', 'b', 'c']
 
 
-def test_split_all4():
-	import os
-	assert pathfunc.split_all(os.path.join('a', 'b', 'c')) == ['a', 'b', 'c']
-
 
 if __name__ == '__main__':
 	import pytest 
