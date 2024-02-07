@@ -232,7 +232,16 @@ class ADFFragmentJob(ADFJob):
         super().__init__(*args, **kwargs)
         self.name = 'EDA'
 
-    def add_fragment(self, mol, name=None):
+    def add_fragment(self, mol: plams.Molecule, name: str = None, charge: int = 0, spin_polarization:int = 0):
+        '''
+        Add a fragment to this job. Optionally give the name, charge and spin-polarization of the fragment as well.
+
+        Args:
+            mol: the molecule corresponding to the fragment.
+            name: the name of the fragment. By default it will be set to ``fragment{N+1}`` if ``N`` is the number of fragments already present.
+            charge: the charge of the fragment to be added.
+            spin_polarization: the spin-polarization of the fragment to be added.
+        '''
         # in case of giving fragments as indices we dont want to add the fragment to the molecule later
         add_frag_to_mol = True  
         # we can be given a list of atoms
@@ -254,6 +263,8 @@ class ADFFragmentJob(ADFJob):
         name = name or f'fragment{len(self.childjobs) + 1}'
         self.childjobs[name] = ADFJob(test_mode=self.test_mode)
         self.childjobs[name].molecule(mol)
+        self.childjobs[name].charge(charge)
+        self.childjobs[name].spin_polarization(spin_polarization)
         setattr(self, name, self.childjobs[name])
 
         if not add_frag_to_mol:
@@ -268,21 +279,38 @@ class ADFFragmentJob(ADFJob):
                 self._molecule.add_atom(atom)
 
     def guess_fragments(self):
+        '''
+        Guess what the fragments are based on data stored in the molecule provided for this job. 
+        This will automatically set the correct fragment molecules, names, charges and spin-polarizations.
+
+        .. seealso::
+            | :func:`tcutility.molecule.guess_fragments` for an explanation of the xyz-file format required to guess the fragments.
+            | :meth:`ADFFragmentJob.add_fragment` to manually add a fragment.
+
+        .. note::
+            This function will be automatically called if there were no fragments given to this calculation.
+        '''
         frags = molecule.guess_fragments(self._molecule)
         if frags is None:
             log.error('Could not load fragment data for the molecule.')
             return False
 
         for fragment_name, fragment in frags.items():
-            self.add_fragment(fragment, fragment_name)
-            self.childjobs[fragment_name].charge(fragment.flags.get('charge', 0))
-            self.childjobs[fragment_name].spin_polarization(fragment.flags.get('spinpol', 0))
+            charge = fragment.flags.get('charge', 0)
+            spin_polarization = fragment.flags.get('spinpol', 0)
+            self.add_fragment(fragment, fragment_name, charge=charge, spin_polarization=spin_polarization)
 
         return True
 
     def run(self):
+        '''
+        Run the ``ADFFragmentJob``. This involves setting up the calculations for each fragment as well as the parent job. 
+        It will also submit a calculation with the SCF iterations set to 0 in order to facilitate investigation of the field effects using PyOrb.
+        '''
+        # check if the user defined fragments for this job
         if len(self.childjobs) == 0:
             log.warn('Fragments were not specified yet, trying to read them from the xyz file ...')
+            # if they did not define the fragments, try to guess them using the xyz-file
             if not self.guess_fragments():
                 log.error('Please specify the fragments using ADFFragmentJob.add_fragment or specify them in the xyz file.')
                 raise 
