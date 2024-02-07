@@ -330,6 +330,10 @@ class ADFFragmentJob(ADFJob):
         # this job and all its children should have the same value for unrestricted
         [child.unrestricted(unrestricted) for child in self.childjobs.values()]
 
+        # propagate the post- and preambles to the childjobs
+        [self.childjobs[name].add_preamble(preamble) for preamble in self._preambles]
+        [self.childjobs[name].add_postamble(postamble) for postamble in self._postambles]
+        
         # we now update the child settings with the parent settings
         # this is because we have to propagate settings such as functionals, basis sets etc.
         sett = self.settings.as_plams_settings()  # first create a plams settings object
