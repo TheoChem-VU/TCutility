@@ -1,6 +1,5 @@
 import os
 import re
-from typing import Union
 from tcutility import results
 
 j = os.path.join
@@ -26,6 +25,7 @@ def split_all(path: str) -> list[str]:
     while True:
         a, b = os.path.split(path)
         if not a or not b:
+            parts.append(path)
             return parts[::-1]
         parts.append(b)
         path = a
