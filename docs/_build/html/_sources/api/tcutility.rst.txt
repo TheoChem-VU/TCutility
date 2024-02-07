@@ -64,6 +64,14 @@ tcutility.molecule module
    :undoc-members:
    :show-inheritance:
 
+tcutility.pathfunc module
+-------------------------
+
+.. automodule:: tcutility.pathfunc
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tcutility.report module
 -----------------------
 

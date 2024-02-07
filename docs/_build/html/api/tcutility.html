@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility package &#8212; TCutility v0.10.0 documentation</title>
+    <title>tcutility package &#8212; TCutility v0.10.1 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=294cacf5"></script>
+    <script src="../_static/documentation_options.js?v=8d3428ec"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -1271,6 +1271,143 @@ Atoms that were not included by either method will be placed in the molecule obj
 </dd></dl>
 
 </section>
+<section id="module-tcutility.pathfunc">
+<span id="tcutility-pathfunc-module"></span><h2>tcutility.pathfunc module<a class="headerlink" href="#module-tcutility.pathfunc" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.pathfunc.split_all">
+<span class="sig-name descname"><span class="pre">split_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#split_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.split_all" title="Link to this definition">#</a></dt>
+<dd><p>Split a path into all of its parts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> – the path to be split, it will be separated using <code class="xref py py-func docutils literal notranslate"><span class="pre">os.path.split()</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of parts of the original path.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">split_all</span><span class="p">(</span><span class="s1">&#39;a/b/c/d&#39;</span><span class="p">)</span>
+<span class="go">[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.pathfunc.get_subdirectories">
+<span class="sig-name descname"><span class="pre">get_subdirectories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_intermediates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#get_subdirectories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.get_subdirectories" title="Link to this definition">#</a></dt>
+<dd><p>Get all sub-directories of a root directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root</strong> – the root directory.</p></li>
+<li><p><strong>include_intermediates</strong> – whether to include intermediate sub-directories instead of only the lowest levels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of sub-directories with <code class="docutils literal notranslate"><span class="pre">root</span></code> included in the paths.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>Given a file-structure as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span>
+<span class="o">|-</span> <span class="n">subdir_a</span>
+<span class="o">|</span>  <span class="o">|-</span> <span class="n">subsubdir_b</span>
+<span class="o">|</span>  <span class="o">|-</span> <span class="n">subsubdir_c</span>
+<span class="o">|-</span> <span class="n">subdir_b</span>
+<span class="o">|-</span> <span class="n">subdir_c</span>
+</pre></div>
+</div>
+<p>Then we get the following outputs.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-SW5jbHVkaW5nIGludGVybWVkaWF0ZXM=" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-SW5jbHVkaW5nIGludGVybWVkaWF0ZXM=" name="SW5jbHVkaW5nIGludGVybWVkaWF0ZXM=" role="tab" tabindex="0">Including intermediates</button><button aria-controls="panel-1-RXhjbHVkaW5nIGludGVybWVkaWF0ZXM=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-RXhjbHVkaW5nIGludGVybWVkaWF0ZXM=" name="RXhjbHVkaW5nIGludGVybWVkaWF0ZXM=" role="tab" tabindex="-1">Excluding intermediates</button></div><div aria-labelledby="tab-1-SW5jbHVkaW5nIGludGVybWVkaWF0ZXM=" class="sphinx-tabs-panel group-tab" id="panel-1-SW5jbHVkaW5nIGludGVybWVkaWF0ZXM=" name="SW5jbHVkaW5nIGludGVybWVkaWF0ZXM=" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_subdirectories</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="n">include_intermediates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">[&#39;root&#39;,</span>
+<span class="go"> &#39;root/subdir_a&#39;,</span>
+<span class="go"> &#39;root/subdir_a/subsubdir_b&#39;,</span>
+<span class="go"> &#39;root/subdir_a/subsubdir_c&#39;,</span>
+<span class="go"> &#39;root/subdir_b&#39;,</span>
+<span class="go"> &#39;root/subdir_c&#39;]</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-RXhjbHVkaW5nIGludGVybWVkaWF0ZXM=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-RXhjbHVkaW5nIGludGVybWVkaWF0ZXM=" name="RXhjbHVkaW5nIGludGVybWVkaWF0ZXM=" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_subdirectories</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="n">include_intermediates</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">[&#39;root/subdir_a/subsubdir_b&#39;,</span>
+<span class="go"> &#39;root/subdir_a/subsubdir_c&#39;,</span>
+<span class="go"> &#39;root/subdir_b&#39;,</span>
+<span class="go"> &#39;root/subdir_c&#39;]</span>
+</pre></div>
+</div>
+</div></div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.pathfunc.match">
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.match" title="Link to this definition">#</a></dt>
+<dd><p>Find and return information about subdirectories of a root that match a given pattern.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root</strong> – the root of the subdirectories to look in.</p></li>
+<li><p><strong>pattern</strong> – a string specifying the pattern the subdirectories should correspond to.
+It should look similar to a format string, without the <code class="docutils literal notranslate"><span class="pre">f</span></code> in front of the string.
+Inside curly braces you can put a variable name, which you can later extract from the results.
+Anything inside curly braces will be matched to word characters (<code class="docutils literal notranslate"><span class="pre">[a-zA-Z0-9_-]</span></code>) including dashes and underscores.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><div class="line-block">
+<div class="line">A <a href="#id1"><span class="problematic" id="id2">|Result|</span></a> object containing the matched directories as keys and information (also <a href="#id3"><span class="problematic" id="id4">|Result|</span></a> object) about those matches as the values.</div>
+</div>
+<p>Each information dictionary contains the variables given in the pattern.
+| E.g. using a pattern such as <code class="docutils literal notranslate"><span class="pre">{a}/{b}/{c}</span></code> will populate the <code class="docutils literal notranslate"><span class="pre">info.a</span></code>, <code class="docutils literal notranslate"><span class="pre">info.b</span></code> and <code class="docutils literal notranslate"><span class="pre">info.c</span></code> keys of the info <a href="#id5"><span class="problematic" id="id6">|Result|</span></a> object.</p>
+</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>Given a file-structure as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span>
+<span class="o">|-</span> <span class="n">NH3</span><span class="o">-</span><span class="n">BH3</span>
+<span class="o">|</span>   <span class="o">|-</span> <span class="n">BLYP_QZ4P</span>
+<span class="o">|</span>   <span class="o">|</span>  <span class="o">|-</span> <span class="n">extra_dir</span>
+<span class="o">|</span>   <span class="o">|</span>  <span class="o">|-</span> <span class="n">blablabla</span>
+<span class="o">|</span>   <span class="o">|</span>
+<span class="o">|</span>   <span class="o">|-</span> <span class="n">BLYP_TZ2P</span>
+<span class="o">|</span>   <span class="o">|</span>  <span class="o">|-</span> <span class="n">another_dir</span>
+<span class="o">|</span>   <span class="o">|</span>
+<span class="o">|</span>   <span class="o">|-</span> <span class="n">M06</span><span class="o">-</span><span class="mi">2</span><span class="n">X_TZ2P</span>
+<span class="o">|</span>
+<span class="o">|-</span> <span class="n">SN2</span>
+<span class="o">|</span>   <span class="o">|-</span> <span class="n">BLYP_TZ2P</span>
+<span class="o">|</span>   <span class="o">|-</span> <span class="n">M06</span><span class="o">-</span><span class="mi">2</span><span class="n">X_TZ2P</span>
+<span class="o">|</span>   <span class="o">|</span>  <span class="o">|-</span> <span class="n">M06</span><span class="o">-</span><span class="mi">2</span><span class="n">X_TZ2P</span>
+</pre></div>
+</div>
+<p>We can run the following scripts to match the subdirectories.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">log</span>
+<span class="c1"># get the matches, we want to extract the system name (NH3-BH3 or SN2)</span>
+<span class="c1"># and the functional and basis-set</span>
+<span class="c1"># we don&#39;t want the subdirectories</span>
+<span class="n">matches</span> <span class="o">=</span> <span class="n">match</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{system}</span><span class="s1">/</span><span class="si">{functional}</span><span class="s1">_</span><span class="si">{basis_set}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># print the matches as a table</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">matches</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">d</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">system</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">functional</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">basis_set</span><span class="p">])</span>
+
+<span class="n">log</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Directory&#39;</span><span class="p">,</span> <span class="s1">&#39;System&#39;</span><span class="p">,</span> <span class="s1">&#39;Functional&#39;</span><span class="p">,</span> <span class="s1">&#39;Basis-Set&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>which prints</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[2024/01/17 14:39:08] Directory                  System    Functional   Basis-Set
+[2024/01/17 14:39:08] ───────────────────────────────────────────────────────────
+[2024/01/17 14:39:08] root/SN2/M06-2X_TZ2P       SN2       M06-2X       TZ2P
+[2024/01/17 14:39:08] root/NH3-BH3/BLYP_TZ2P     NH3-BH3   BLYP         TZ2P
+[2024/01/17 14:39:08] root/NH3-BH3/M06-2X_TZ2P   NH3-BH3   M06-2X       TZ2P
+[2024/01/17 14:39:08] root/SN2/BLYP_TZ2P         SN2       BLYP         TZ2P
+[2024/01/17 14:39:08] root/NH3-BH3/BLYP_QZ4P     NH3-BH3   BLYP         QZ4P
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
 <section id="module-tcutility.report">
 <span id="tcutility-report-module"></span><h2>tcutility.report module<a class="headerlink" href="#module-tcutility.report" title="Link to this heading">#</a></h2>
 <dl class="py class">
@@ -1633,6 +1770,12 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.molecule.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.molecule.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.molecule.guess_fragments"><code class="docutils literal notranslate"><span class="pre">guess_fragments()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.pathfunc">tcutility.pathfunc module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.pathfunc.split_all"><code class="docutils literal notranslate"><span class="pre">split_all()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.pathfunc.get_subdirectories"><code class="docutils literal notranslate"><span class="pre">get_subdirectories()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.pathfunc.match"><code class="docutils literal notranslate"><span class="pre">match()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.report">tcutility.report module</a><ul class="nav section-nav flex-column">
