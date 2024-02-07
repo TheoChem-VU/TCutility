@@ -40,7 +40,7 @@ class ORCAJob(Job):
         self._method = method
 
     def QRO(self, enable=True):
-        self.settings.MDCI.UseQRO = enable
+        self.settings.MDCI.UseQROs = enable
 
     def basis_set(self, value):
         self.settings.main.append(value)
