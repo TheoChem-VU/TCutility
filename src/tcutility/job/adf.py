@@ -1,5 +1,5 @@
 from scm import plams
-from tcutility import log, results, formula, spell_check, data
+from tcutility import log, results, formula, spell_check, data, molecule
 from tcutility.job.ams import AMSJob
 import os
 
@@ -18,7 +18,7 @@ class ADFJob(AMSJob):
         self.single_point()
 
         # by default print the fock matrix
-        self.settings.input.adf.print = 'FMatSFO'
+        self.settings.input.adf.print = 'SFOSiteEnergies'
 
     def __str__(self):
         return f'{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}'
@@ -230,7 +230,7 @@ class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
         self.childjobs = {}
         super().__init__(*args, **kwargs)
-        self.name = 'complex'
+        self.name = 'EDA'
 
     def add_fragment(self, mol, name=None):
         # in case of giving fragments as indices we dont want to add the fragment to the molecule later
@@ -262,9 +262,31 @@ class ADFFragmentJob(ADFJob):
         if self._molecule is None:
             self._molecule = self.childjobs[name]._molecule.copy()
         else:
-            self._molecule = self._molecule + self.childjobs[name]._molecule.copy()
+            for atom in self.childjobs[name]._molecule.copy():
+                if any((atom.symbol, atom.coords) == (myatom.symbol, myatom.coords) for myatom in self._molecule):
+                    continue
+                self._molecule.add_atom(atom)
+
+    def guess_fragments(self):
+        frags = molecule.guess_fragments(self._molecule)
+        if frags is None:
+            log.error('Could not load fragment data for the molecule.')
+            return False
+
+        for fragment_name, fragment in frags.items():
+            self.add_fragment(fragment, fragment_name)
+            self.childjobs[fragment_name].charge(fragment.flags.get('charge', 0))
+            self.childjobs[fragment_name].spin_polarization(fragment.flags.get('spinpol', 0))
+
+        return True
 
     def run(self):
+        if len(self.childjobs) == 0:
+            log.warn('Fragments were not specified yet, trying to read them from the xyz file ...')
+            if not self.guess_fragments():
+                log.error('Please specify the fragments using ADFFragmentJob.add_fragment or specify them in the xyz file.')
+                raise 
+
         mol_str = " + ".join([formula.molecule(child._molecule) for child in self.childjobs.values()])
         log.flow(f'ADFFragmentJob [{mol_str}]', ['start'])
         # obtain some system wide properties of the molecules
@@ -304,7 +326,7 @@ class ADFFragmentJob(ADFJob):
             log.flow(f'Spin-Polarization: {child.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
             # the child name will be prepended with SP showing that it is the singlepoint calculation
             child.name = f'frag_{childname}'
-            child.rundir = self.rundir
+            child.rundir = j(self.rundir, self.name)
 
             # add the path to the child adf.rkf file as a dependency to the parent job
             self.settings.input.adf.fragments[childname] = j(child.workdir, 'adf.rkf')
@@ -320,7 +342,7 @@ class ADFFragmentJob(ADFJob):
             child.run()
             self.dependency(child)
 
-            log.flow(f'SlurmID:  {child.slurm_job_id}', ['straight', 'skip', 'end'])
+            log.flow(f'SlurmID:  {child.slurm_job_id}', ['straight', 'skip', 'straight'])
             log.flow(f'Work dir: {child.workdir}', ['straight', 'skip', 'end'])
             log.flow()
 
@@ -340,17 +362,19 @@ class ADFFragmentJob(ADFJob):
         # set the _molecule to None, otherwise it will overwrite the atoms block
         self._molecule = None
         # run this job
+        self.rundir = j(self.rundir, self.name)
+        self.name = 'complex'
         log.flow(log.Emojis.good + ' Submitting parent job', ['split'])
         super().run()
         log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
         log.flow()
 
         # also do the calculation with SCF cycles set to 1
-        self.settings.input.adf.SCF.Iterations = 1
+        self.settings.input.adf.SCF.Iterations = 0
         self.settings.input.adf.print = 'FMatSFO'  # by default print the fock matrix for each SCF cycle
         self.settings.input.adf.AllPoints = 'Yes'
         self.settings.input.adf.FullFock = 'Yes'
-        self.name = self.name + '_SCF1'
+        self.name = 'complex_SCF0'
         log.flow(log.Emojis.good + ' Submitting extra job with 1 SCF cycle', ['split'])
 
         super().run()
