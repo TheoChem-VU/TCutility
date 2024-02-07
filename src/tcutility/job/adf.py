@@ -398,12 +398,11 @@ class ADFFragmentJob(ADFJob):
         log.flow()
 
         # also do the calculation with SCF cycles set to 1
-        self.settings.input.adf.SCF.Iterations = 0
-        self.settings.input.adf.print = 'FMatSFO'  # by default print the fock matrix for each SCF cycle
-        self.settings.input.adf.AllPoints = 'Yes'
-        self.settings.input.adf.FullFock = 'Yes'
+        self.SCF(iterations=0)
+        # we must repopulate the sbatch settings for the new run
+        [self._sbatch.pop(key, None) for key in ['D', 'chdir', 'J', 'job_name', 'o', 'output']]
         self.name = 'complex_SCF0'
-        log.flow(log.Emojis.good + ' Submitting extra job with 1 SCF cycle', ['split'])
+        log.flow(log.Emojis.good + ' Submitting extra job with 0 SCF iterations', ['split'])
 
         super().run()
         log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
