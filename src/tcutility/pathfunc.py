@@ -64,14 +64,22 @@ def get_subdirectories(root: str, include_intermediates: bool = False) -> List[s
                 .. code-block:: python
 
                     >>> get_subdirectories('root', include_intermediates=True)
-                    ['root', 'root/subdir_a', 'root/subdir_a/subsubdir_b', 'root/subdir_a/subsubdir_c', 'root/subdir_b', 'root/subdir_c']
+                    ['root', 
+                     'root/subdir_a', 
+                     'root/subdir_a/subsubdir_b',
+                     'root/subdir_a/subsubdir_c', 
+                     'root/subdir_b', 
+                     'root/subdir_c']
 
             .. group-tab:: Excluding intermediates
 
                 .. code-block:: python
 
                     >>> get_subdirectories('root', include_intermediates=False)
-                    ['root/subdir_a/subsubdir_b', 'root/subdir_a/subsubdir_c', 'root/subdir_b', 'root/subdir_c']
+                    ['root/subdir_a/subsubdir_b', 
+                     'root/subdir_a/subsubdir_c', 
+                     'root/subdir_b', 
+                     'root/subdir_c']
     '''
     dirs = [root]
     subdirs = set()
@@ -157,9 +165,7 @@ def match(root: str, pattern: str) -> Dict[str, dict]:
             [2024/01/17 14:39:08] root/NH3-BH3/M06-2X_TZ2P   NH3-BH3   M06-2X       TZ2P     
             [2024/01/17 14:39:08] root/SN2/BLYP_TZ2P         SN2       BLYP         TZ2P     
             [2024/01/17 14:39:08] root/NH3-BH3/BLYP_QZ4P     NH3-BH3   BLYP         QZ4P     
-
     '''
-
     # get the number and names of substitutions in the given pattern
     substitutions = re.findall(r'{(\w+[+*?]?)}', pattern)
     # the pattern should resolve to words and may contain - and _
