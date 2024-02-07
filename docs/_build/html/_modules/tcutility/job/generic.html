@@ -255,7 +255,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for tcutility.job.generic</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">slurm</span>
+<span></span><span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">slurm</span><span class="p">,</span> <span class="n">molecule</span>
 <span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">stat</span>
@@ -489,7 +489,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="n">mol</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">mol</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_molecule_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>

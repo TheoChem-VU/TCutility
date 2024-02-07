@@ -256,7 +256,7 @@
                   
   <h1>Source code for tcutility.job.adf</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">scm</span> <span class="kn">import</span> <span class="n">plams</span>
-<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">spell_check</span><span class="p">,</span> <span class="n">data</span>
+<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">spell_check</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">molecule</span>
 <span class="kn">from</span> <span class="nn">tcutility.job.ams</span> <span class="kn">import</span> <span class="n">AMSJob</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -277,7 +277,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">single_point</span><span class="p">()</span>
 
         <span class="c1"># by default print the fock matrix</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">print</span> <span class="o">=</span> <span class="s1">&#39;FMatSFO&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">print</span> <span class="o">=</span> <span class="s1">&#39;SFOSiteEnergies&#39;</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_task</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_functional</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_basis_set</span><span class="si">}</span><span class="s1">), running in </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">),</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -522,11 +522,20 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;complex&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;EDA&#39;</span>
 
 <div class="viewcode-block" id="ADFFragmentJob.add_fragment">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob.add_fragment">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">:</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">charge</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">spin_polarization</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Add a fragment to this job. Optionally give the name, charge and spin-polarization of the fragment as well.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mol: the molecule corresponding to the fragment.</span>
+<span class="sd">            name: the name of the fragment. By default it will be set to ``fragment{N+1}`` if ``N`` is the number of fragments already present.</span>
+<span class="sd">            charge: the charge of the fragment to be added.</span>
+<span class="sd">            spin_polarization: the spin-polarization of the fragment to be added.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># in case of giving fragments as indices we dont want to add the fragment to the molecule later</span>
         <span class="n">add_frag_to_mol</span> <span class="o">=</span> <span class="kc">True</span>  
         <span class="c1"># we can be given a list of atoms</span>
@@ -548,6 +557,8 @@
         <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="sa">f</span><span class="s1">&#39;fragment</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ADFJob</span><span class="p">(</span><span class="n">test_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_mode</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">charge</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">spin_polarization</span><span class="p">(</span><span class="n">spin_polarization</span><span class="p">)</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">add_frag_to_mol</span><span class="p">:</span>
@@ -556,12 +567,54 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">any</span><span class="p">((</span><span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">myatom</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">myatom</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span> <span class="k">for</span> <span class="n">myatom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="p">):</span>
+                    <span class="k">continue</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ADFFragmentJob.guess_fragments">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob.guess_fragments">[docs]</a>
+    <span class="k">def</span> <span class="nf">guess_fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Guess what the fragments are based on data stored in the molecule provided for this job. </span>
+<span class="sd">        This will automatically set the correct fragment molecules, names, charges and spin-polarizations.</span>
+
+<span class="sd">        .. seealso::</span>
+<span class="sd">            | :func:`tcutility.molecule.guess_fragments` for an explanation of the xyz-file format required to guess the fragments.</span>
+<span class="sd">            | :meth:`ADFFragmentJob.add_fragment` to manually add a fragment.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This function will be automatically called if there were no fragments given to this calculation.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">frags</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">guess_fragments</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">frags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not load fragment data for the molecule.&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">fragment_name</span><span class="p">,</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="n">frags</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">charge</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;charge&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">spin_polarization</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;spinpol&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_fragment</span><span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="n">fragment_name</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="n">charge</span><span class="p">,</span> <span class="n">spin_polarization</span><span class="o">=</span><span class="n">spin_polarization</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="ADFFragmentJob.run">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob.run">[docs]</a>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Run the ``ADFFragmentJob``. This involves setting up the calculations for each fragment as well as the parent job. </span>
+<span class="sd">        It will also submit a calculation with the SCF iterations set to 0 in order to facilitate investigation of the field effects using PyOrb.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># check if the user defined fragments for this job</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Fragments were not specified yet, trying to read them from the xyz file ...&#39;</span><span class="p">)</span>
+            <span class="c1"># if they did not define the fragments, try to guess them using the xyz-file</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">guess_fragments</span><span class="p">():</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Please specify the fragments using ADFFragmentJob.add_fragment or specify them in the xyz file.&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> 
+
         <span class="n">mol_str</span> <span class="o">=</span> <span class="s2">&quot; + &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">formula</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">_molecule</span><span class="p">)</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
         <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ADFFragmentJob [</span><span class="si">{</span><span class="n">mol_str</span><span class="si">}</span><span class="s1">]&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">])</span>
         <span class="c1"># obtain some system wide properties of the molecules</span>
@@ -601,7 +654,7 @@
             <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Spin-Polarization: </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="mi">0</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
             <span class="c1"># the child name will be prepended with SP showing that it is the singlepoint calculation</span>
             <span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;frag_</span><span class="si">{</span><span class="n">childname</span><span class="si">}</span><span class="s1">&#39;</span>
-            <span class="n">child</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rundir</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
             <span class="c1"># add the path to the child adf.rkf file as a dependency to the parent job</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="n">childname</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s1">&#39;adf.rkf&#39;</span><span class="p">)</span>
@@ -617,7 +670,7 @@
             <span class="n">child</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dependency</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 
-            <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SlurmID:  </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">])</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SlurmID:  </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
             <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Work dir: </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">])</span>
             <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
 
@@ -637,17 +690,19 @@
         <span class="c1"># set the _molecule to None, otherwise it will overwrite the atoms block</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># run this job</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;complex&#39;</span>
         <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="s1">&#39; Submitting parent job&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">])</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
         <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SlurmID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">])</span>
         <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
 
         <span class="c1"># also do the calculation with SCF cycles set to 1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SCF</span><span class="o">.</span><span class="n">Iterations</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SCF</span><span class="o">.</span><span class="n">Iterations</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">print</span> <span class="o">=</span> <span class="s1">&#39;FMatSFO&#39;</span>  <span class="c1"># by default print the fock matrix for each SCF cycle</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">AllPoints</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">FullFock</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_SCF1&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;complex_SCF0&#39;</span>
         <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="s1">&#39; Submitting extra job with 1 SCF cycle&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">])</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>

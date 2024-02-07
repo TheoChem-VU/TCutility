@@ -362,6 +362,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob.add_fragment"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.add_fragment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob.guess_fragments"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.guess_fragments()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob.run"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.run()</span></code></a></li>
 </ul>
 </li>
@@ -1217,7 +1218,9 @@ Similarly for the atoms, the flags and tags are given as <code class="docutils l
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.molecule.guess_fragments">
 <span class="sig-name descname"><span class="pre">guess_fragments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Molecule</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Molecule</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/molecule.html#guess_fragments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.guess_fragments" title="Link to this definition">#</a></dt>
-<dd><p>Guess fragments based on data from the xyz file. Two methods are supported, see the tabs below.</p>
+<dd><p>Guess fragments based on data from the xyz file. Two methods are currently supported, see the tabs below.
+We also support reading of charges and spin-polarizations for the fragments.
+They should be given as <code class="docutils literal notranslate"><span class="pre">charge_{fragment_name}</span></code> and <code class="docutils literal notranslate"><span class="pre">spinpol_{fragment_name}</span></code> respectively.</p>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-Rmlyc3QgbWV0aG9k" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-Rmlyc3QgbWV0aG9k" name="Rmlyc3QgbWV0aG9k" role="tab" tabindex="0">First method</button><button aria-controls="panel-0-U2Vjb25kIG1ldGhvZA==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-U2Vjb25kIG1ldGhvZA==" name="U2Vjb25kIG1ldGhvZA==" role="tab" tabindex="-1">Second method</button></div><div aria-labelledby="tab-0-Rmlyc3QgbWV0aG9k" class="sphinx-tabs-panel group-tab" id="panel-0-Rmlyc3QgbWV0aG9k" name="Rmlyc3QgbWV0aG9k" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">8</span>
 
@@ -1232,6 +1235,8 @@ Similarly for the atoms, the flags and tags are given as <code class="docutils l
 
 <span class="n">frag_Donor</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="o">-</span><span class="mi">5</span>
 <span class="n">frag_Acceptor</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="o">-</span><span class="mi">8</span>
+<span class="n">charge_Donor</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">spinpol_Acceptor</span> <span class="o">=</span> <span class="mi">2</span>
 </pre></div>
 </div>
 <p>In this case, fragment atom indices must be provided below the coordinates.
@@ -1246,16 +1251,21 @@ The fragment name must be prefixed with <code class="docutils literal notranslat
 <span class="n">H</span>      <span class="o">-</span><span class="mf">0.58149793</span>       <span class="mf">1.00718395</span>       <span class="mf">1.13712667</span> <span class="n">frag</span><span class="o">=</span><span class="n">Acceptor</span>
 <span class="n">H</span>      <span class="o">-</span><span class="mf">0.58149793</span>      <span class="o">-</span><span class="mf">1.00718395</span>       <span class="mf">1.13712667</span> <span class="n">frag</span><span class="o">=</span><span class="n">Acceptor</span>
 <span class="n">H</span>       <span class="mf">1.16299585</span>      <span class="o">-</span><span class="mf">0.00000000</span>       <span class="mf">1.13712667</span> <span class="n">frag</span><span class="o">=</span><span class="n">Acceptor</span>
+
+<span class="n">charge_Donor</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">spinpol_Acceptor</span> <span class="o">=</span> <span class="mi">2</span>
 </pre></div>
 </div>
 <p>In this case, fragment atoms are marked with the <cite>frag</cite> flag which gives the name of the fragment the atom belongs to.</p>
 </div></div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mol</strong> – the molecule that is to be split into fragments. It should have defined either method shown above. If it does not define these methods this function returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<dd class="field-odd"><p><strong>mol</strong> – the molecule that is to be split into fragments. It should have defined either method shown above.
+If it does not define these methods this function returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A dictionary containing fragment names as keys and <code class="xref py py-class docutils literal notranslate"><span class="pre">plams.Molecule</span></code> objects as values. Atoms that were not included by either method will be placed in the molecule object with key <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<dd class="field-even"><p>A dictionary containing fragment names as keys and <code class="xref py py-class docutils literal notranslate"><span class="pre">plams.Molecule</span></code> objects as values.
+Atoms that were not included by either method will be placed in the molecule object with key <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>

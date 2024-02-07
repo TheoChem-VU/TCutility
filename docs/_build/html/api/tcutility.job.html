@@ -474,13 +474,43 @@ We use the following values:</p>
 <dd><p>Bases: <a class="reference internal" href="#tcutility.job.adf.ADFJob" title="tcutility.job.adf.ADFJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADFJob</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.adf.ADFFragmentJob.add_fragment">
-<span class="sig-name descname"><span class="pre">add_fragment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFFragmentJob.add_fragment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFFragmentJob.add_fragment" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">add_fragment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin_polarization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFFragmentJob.add_fragment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFFragmentJob.add_fragment" title="Link to this definition">#</a></dt>
+<dd><p>Add a fragment to this job. Optionally give the name, charge and spin-polarization of the fragment as well.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> – the molecule corresponding to the fragment.</p></li>
+<li><p><strong>name</strong> – the name of the fragment. By default it will be set to <code class="docutils literal notranslate"><span class="pre">fragment{N+1}</span></code> if <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number of fragments already present.</p></li>
+<li><p><strong>charge</strong> – the charge of the fragment to be added.</p></li>
+<li><p><strong>spin_polarization</strong> – the spin-polarization of the fragment to be added.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.adf.ADFFragmentJob.guess_fragments">
+<span class="sig-name descname"><span class="pre">guess_fragments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFFragmentJob.guess_fragments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFFragmentJob.guess_fragments" title="Link to this definition">#</a></dt>
+<dd><p>Guess what the fragments are based on data stored in the molecule provided for this job.
+This will automatically set the correct fragment molecules, names, charges and spin-polarizations.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="tcutility.html#tcutility.molecule.guess_fragments" title="tcutility.molecule.guess_fragments"><code class="xref py py-func docutils literal notranslate"><span class="pre">tcutility.molecule.guess_fragments()</span></code></a> for an explanation of the xyz-file format required to guess the fragments.</div>
+<div class="line"><a class="reference internal" href="#tcutility.job.adf.ADFFragmentJob.add_fragment" title="tcutility.job.adf.ADFFragmentJob.add_fragment"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ADFFragmentJob.add_fragment()</span></code></a> to manually add a fragment.</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function will be automatically called if there were no fragments given to this calculation.</p>
+</div>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.adf.ADFFragmentJob.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFFragmentJob.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFFragmentJob.run" title="Link to this definition">#</a></dt>
-<dd><p>Run this job. We detect if we are using slurm. If we are we submit this job using sbatch. Otherwise, we will run the job locally.</p>
+<dd><p>Run the <code class="docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code>. This involves setting up the calculations for each fragment as well as the parent job.
+It will also submit a calculation with the SCF iterations set to 0 in order to facilitate investigation of the field effects using PyOrb.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1047,6 +1077,7 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.add_fragment"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.add_fragment()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.guess_fragments"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.guess_fragments()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.run"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.run()</span></code></a></li>
 </ul>
 </li>
