@@ -186,7 +186,3 @@ def match(root: str, pattern: str) -> Dict[str, dict]:
         ret[p] = results.Result(directory=p, **{substitutions[i]: match.group(i+1) for i in range(len(substitutions))})
 
     return ret
-
-if __name__ == '__main__':
-    matches = match('/Users/yumanhordijk/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/RadicalAdditionBenchmark2/data/DFT', '{system}/{category}/{functional}')
-    print(matches)
