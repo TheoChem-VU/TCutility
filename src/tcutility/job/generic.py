@@ -1,4 +1,4 @@
-from tcutility import log, results, slurm
+from tcutility import log, results, slurm, molecule
 import subprocess as sp
 import os
 import stat
@@ -207,7 +207,7 @@ class Job:
             self._molecule = mol
 
         elif isinstance(mol, str) and os.path.exists(mol):
-            self._molecule = plams.Molecule(mol)
+            self._molecule = molecule.load(mol)
 
         elif isinstance(mol, str):
             self._molecule_path = os.path.abspath(mol)
