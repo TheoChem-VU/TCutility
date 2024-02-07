@@ -74,7 +74,7 @@ class ORCAJob(Job):
         self._charge = val
 
     def spin_polarization(self, val):
-        self._multiplicity = 2 * val + 1
+        self._multiplicity = val + 1
 
     def multiplicity(self, val):
         self._multiplicity = val
