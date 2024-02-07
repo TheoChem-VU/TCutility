@@ -62,6 +62,27 @@ def test_mol_copy() -> None:
     mol.copy()
 
 
+def test_guess_fragments() -> None:
+    xyzfile = j(os.path.split(__file__)[0], "fixtures", "xyz", "NaCl.xyz")
+    mol = molecule.load(xyzfile)
+    frags = molecule.guess_fragments(mol)
+    assert frags['Na'][1].symbol == 'Na'
+
+
+def test_guess_fragments2() -> None:
+    xyzfile = j(os.path.split(__file__)[0], "fixtures", "xyz", "NaCl.xyz")
+    mol = molecule.load(xyzfile)
+    frags = molecule.guess_fragments(mol)
+    assert frags['Na'].flags['charge'] == 1
+
+
+def test_guess_fragments3() -> None:
+    xyzfile = j(os.path.split(__file__)[0], "fixtures", "xyz", "NaCl_homolytic.xyz")
+    mol = molecule.load(xyzfile)
+    frags = molecule.guess_fragments(mol)
+    assert frags['Cl'].flags['spinpol'] == 1
+
+
 if __name__ == "__main__":
     import pytest
 

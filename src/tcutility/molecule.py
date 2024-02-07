@@ -1,5 +1,6 @@
 from scm import plams
 from tcutility.results import result
+from tcutility import ensure_list
 from typing import Dict
 
 def parse_str(s: str):
@@ -128,7 +129,9 @@ def load(path) -> plams.Molecule:
 
 def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
     '''
-    Guess fragments based on data from the xyz file. Two methods are supported, see the tabs below.
+    Guess fragments based on data from the xyz file. Two methods are currently supported, see the tabs below. 
+    We also support reading of charges and spin-polarizations for the fragments. 
+    They should be given as ``charge_{fragment_name}`` and ``spinpol_{fragment_name}`` respectively.
     
     
     .. tabs::
@@ -150,6 +153,8 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
 
                 frag_Donor = 1, 3-5
                 frag_Acceptor = 2, 6-8
+                charge_Donor = -1
+                spinpol_Acceptor = 2
             
             In this case, fragment atom indices must be provided below the coordinates. 
             The fragment name must be prefixed with ``frag_``. Indices can be given as integers or as ranges using ``-``.
@@ -168,14 +173,19 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
                 H      -0.58149793       1.00718395       1.13712667 frag=Acceptor
                 H      -0.58149793      -1.00718395       1.13712667 frag=Acceptor
                 H       1.16299585      -0.00000000       1.13712667 frag=Acceptor
+
+                charge_Donor = -1
+                spinpol_Acceptor = 2
             
             In this case, fragment atoms are marked with the `frag` flag which gives the name of the fragment the atom belongs to.
 
     Args:
-        mol: the molecule that is to be split into fragments. It should have defined either method shown above. If it does not define these methods this function returns ``None``.
+        mol: the molecule that is to be split into fragments. It should have defined either method shown above. 
+             If it does not define these methods this function returns ``None``.
 
     Returns:
-        A dictionary containing fragment names as keys and :class:`plams.Molecule <scm.plams.mol.molecule.Molecule>` objects as values. Atoms that were not included by either method will be placed in the molecule object with key ``None``.
+        A dictionary containing fragment names as keys and :class:`plams.Molecule <scm.plams.mol.molecule.Molecule>` objects as values. 
+        Atoms that were not included by either method will be placed in the molecule object with key ``None``.
 
     '''
 
@@ -185,7 +195,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         fragment_mols = {frag.removeprefix('frag_'): plams.Molecule() for frag in fragment_flags}
         for frag in fragment_flags:
             indices = []
-            index_line = mol.flags[frag]
+            index_line = ensure_list(mol.flags[frag])
             for indx in index_line:
                 if isinstance(indx, int):
                     indices.append(indx)
@@ -195,6 +205,12 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
                     raise ValueError(f'Fragment index {indx} could not be parsed.')
 
             [fragment_mols[frag.removeprefix('frag_')].add_atom(mol[i]) for i in indices]
+            fragment_mols[frag.removeprefix('frag_')].flags = {'tags': set()}
+            if f'charge_{frag}' in mol.flags:
+                fragment_mols[frag.removeprefix('frag_')].flags['charge'] = mol.flags[f'charge_{frag}']
+            if f'spinpol_{frag}' in mol.flags:
+                fragment_mols[frag.removeprefix('frag_')].flags['spinpol'] = mol.flags[f'spinpol_{frag}']
+
         return fragment_mols
 
     # second method, check if the atoms have a frag= flag defined
@@ -204,6 +220,13 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         for atom in mol:
             # get the fragment the atom belongs to and add it to the list
             fragment_mols[atom.flags.get('frag')].add_atom(atom)
+
+        for frag in fragment_names:
+            fragment_mols[frag].flags = {'tags': set()}
+            if f'charge_{frag}' in mol.flags:
+                fragment_mols[frag].flags['charge'] = mol.flags[f'charge_{frag}']
+            if f'spinpol_{frag}' in mol.flags:
+                fragment_mols[frag].flags['spinpol'] = mol.flags[f'spinpol_{frag}']
 
         return fragment_mols
 
