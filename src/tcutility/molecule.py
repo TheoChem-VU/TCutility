@@ -195,7 +195,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         fragment_mols = {frag.removeprefix('frag_'): plams.Molecule() for frag in fragment_flags}
         for frag in fragment_flags:
             indices = []
-            index_line = esure_list(mol.flags[frag])
+            index_line = ensure_list(mol.flags[frag])
             for indx in index_line:
                 if isinstance(indx, int):
                     indices.append(indx)
