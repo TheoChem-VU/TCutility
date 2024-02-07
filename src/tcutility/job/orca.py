@@ -1,7 +1,8 @@
-from tcutility import log, results
+from tcutility import log, results, ensure_list, spell_check
 from tcutility.job.generic import Job
 import subprocess as sp
 import os
+from typing import List, Union
 
 
 j = os.path.join
@@ -13,6 +14,8 @@ class ORCAJob(Job):
         self.settings.main = {'LARGEPRINT'}
         self._charge = 0
         self._multiplicity = 1
+        self._ghosts = []
+        self._method = None
         self.memory = None
         self.processes = None
         self.orca_path = None
@@ -25,6 +28,22 @@ class ORCAJob(Job):
     def __remove_task(self):
         self.__casefold_main()
         [self.settings.main.discard(task) for task in ['sp', 'opt', 'tsopt', 'neb-ts']]
+
+    def method(self, method):
+        spell_check.check(method, ['MP2', 'CCSD', 'CCSD(T)', 'CCSDT'])
+        self.settings.main.append(method)
+        self._method = method
+
+    def reference(self, ref):
+        spell_check.check(ref, ['UHF', 'UKS', 'RHF', 'RKS', 'ROHF', 'ROKS'])
+        self.settings.main.append(method)
+        self._method = method
+
+    def QRO(self, enable=True):
+        self.settings.MDCI.UseQRO = enable
+
+    def basis_set(self, value):
+        self.settings.main.append(value)
 
     def single_point(self):
         self.__remove_task()
@@ -59,6 +78,9 @@ class ORCAJob(Job):
 
     def multiplicity(self, val):
         self._multiplicity = val
+
+    def ghost_atoms(self, indices: Union[int, List[int]]):
+        self._ghosts.extend(ensure_list(indices))
 
     def get_memory_usage(self):
         mem = self.memory or self._sbatch.mem or None
@@ -111,15 +133,18 @@ class ORCAJob(Job):
 
         else:
             ret += f'* xyz {self._charge} {self._multiplicity}\n'
-            for atom in self._molecule:
-                ret += f'    {atom.symbol:2} {atom.x: >13f} {atom.y: >13f} {atom.z: >13f}\n'
+            for i, atom in enumerate(self._molecule, start=1):
+                if i in self._ghosts:
+                    ret += f'    {atom.symbol:2}: {atom.x: >13f} {atom.y: >13f} {atom.z: >13f}\n'
+                else:
+                    ret += f'    {atom.symbol:3} {atom.x: >13f} {atom.y: >13f} {atom.z: >13f}\n'
             ret += '*\n'
 
         return ret
 
     def _setup_job(self):
         try:
-            if self.orca_path is None:
+            if self.orca_path is None and not self.test_mode:
                 self.orca_path = sp.check_output(['which', 'orca']).decode().strip()
         except sp.CalledProcessError:
             log.error('Could not find the orca path. Please set it manually.')
@@ -140,6 +165,8 @@ class ORCAJob(Job):
             runf.write('\n'.join(self._postambles))
 
         return True
+
+
 
 
 if __name__ == '__main__':
