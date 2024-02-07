@@ -1,11 +1,12 @@
 import os
 import re
 from tcutility import results
+from typing import List
 
 j = os.path.join
 
 
-def split_all(path: str) -> list[str]:
+def split_all(path: str) -> List[str]:
     '''
     Split a path into all of its parts.
 
@@ -31,7 +32,7 @@ def split_all(path: str) -> list[str]:
         path = a
 
 
-def get_subdirectories(root: str, include_intermediates: bool = False) -> list[str]:
+def get_subdirectories(root: str, include_intermediates: bool = False) -> List[str]:
     '''
     Get all sub-directories of a root directory.
 
