@@ -111,9 +111,16 @@ class ADFJob(AMSJob):
         Args:
             iterations: number of iterations to perform for this calculation. Defaults to 300.
             thresh: the convergence criteria for the SCF procedure. Defaults to 1e-8.
+
+        .. note::
+            When setting the number of iterations to 0 or 1 the ``AlwaysClaimSuccess`` key will also be set to ``Yes``.
+            This is to prevent the job from being flagged as a failure when reading it using :mod:`tcutility.results`.
         '''
         self.settings.input.adf.SCF.Iterations = iterations
         self.settings.input.adf.SCF.Converge = thresh
+
+        if iterations in [0, 1]:
+            self.settings.input.ams.EngineDebugging.AlwaysClaimSuccess = 'Yes'
 
     def functional(self, funtional_name: str, dispersion: str = None):
         '''
