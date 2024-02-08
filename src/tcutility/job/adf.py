@@ -273,7 +273,7 @@ class ADFFragmentJob(ADFJob):
         # if it is we should raise an error
         for child in self.childjobs.values():
             if any((atom.symbol, atom.coords) == (myatom.symbol, myatom.coords) for atom in child._molecule for myatom in mol):
-                log.error(f'An atom is present in multiple fragments.')
+                log.error('An atom is present in multiple fragments.')
                 return
 
         name = name or f'fragment{len(self.childjobs) + 1}'
