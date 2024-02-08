@@ -5,35 +5,23 @@ import stat
 from typing import Union
 from scm import plams
 import shutil
-import copy
 
 j = os.path.join
 
 
-class PostInitCaller(type):
-    def __call__(cls, *args, **kwargs):
-        obj = type.__call__(cls, *args, **kwargs)
-        obj.__post_init__(*args, **kwargs)
-        return obj
-
-
-class Job(metaclass=PostInitCaller):
-    '''
-    This is the base Job class used to build more advanced classes such as :class:`AMSJob <tcutility.job.ams.AMSJob>` and :class:`ORCAJob <tcutility.job.orca.ORCAJob>`.
+class Job:
+    '''This is the base Job class used to build more advanced classes such as :class:`AMSJob <tcutility.job.ams.AMSJob>` and :class:`ORCAJob <tcutility.job.orca.ORCAJob>`.
     The base class contains an empty :class:`Result <tcutility.results.result.Result>` object that holds the settings. 
     It also provides :meth:`__enter__` and :meth:`__exit__` methods to make use of context manager syntax.
     
     All class methods are in principle safe to overwrite, but the :meth:`_setup_job` method **must** be overwritten.
 
     Args:
-        base_job: a :class:`Job` object whose settings and properties are copied over to the newly created job. 
-            It defaults to the ``tcutility.job.base_job`` object.
-        test_mode: whether to enable the testing mode. If enabled, the job will be setup like normally, but the running step is skipped. 
-            This is useful if you want to know what the job settings look like before running the real calculations.
+        test_mode: whether to enable the testing mode. If enabled, the job will be setup like normally, but the running step is skipped. This is useful if you want to know what the job settings look like before running the real calculations.
         overwrite: whether to overwrite a previously run job in the same working directory.
         wait_for_finish: whether to wait for this job to finish running before continuing your runscript.
     '''
-    def __init__(self, base_job: 'Job' = None, test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = False):
+    def __init__(self, test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = False):
         self.settings = results.Result()
         self._sbatch = results.Result()
         self._molecule = None
@@ -41,48 +29,17 @@ class Job(metaclass=PostInitCaller):
         self.slurm_job_id = None
         self.name = 'calc'
         self.rundir = 'tmp'
-        self._preambles = []
-        self._postambles = []
-
         self.test_mode = test_mode
         self.overwrite = overwrite
         self.wait_for_finish = wait_for_finish
-        self.base_job = base_job
-        
-    def __post_init__(self, *args, **kwargs):
-        # if base_job is given we want to copy its properties and settings to this job
-        if self.base_job is not None:
-            self.copy_from_job(self.base_job)
-        # if not given we default to the global base-job
-        elif self.base_job is None:
-            # we must capture this in a try/except block because the global base-job cannot import itself of course
-            try:
-                from tcutility.job import base_job as global_base_job
-
-                self.copy_from_job(global_base_job)
-            except ImportError:
-                pass
-
-        [setattr(self, key, value) for key, value in kwargs.items()]
+        self._preambles = []
+        self._postambles = []
 
     def __enter__(self):
         return self
 
     def __exit__(self, *args):
         self.run()
-
-    def copy_from_job(self, other: 'Job'):
-        '''
-        Copy settings from an ``other`` job to this job.
-
-        Args:
-            other: a job containing the settings that will be copied to this job.
-
-        .. note::
-            Instead of calling this function yourself you can also use the ``base_job`` argument when constructing a :class:`Job` object.
-        '''
-        [setattr(self, key, copy.copy(val)) for key, val in other.__dict__.items()]
-        # self.__dict__.update(other.__dict__)
 
     def can_skip(self):
         '''
@@ -199,19 +156,8 @@ class Job(metaclass=PostInitCaller):
         self._postambles.append(line)
 
     def add_postscript(self, script):
-        '''
-        Add a post-script to this job. The post-script is a Python script that will be executed after the job is finished.
-
-        Args:
-            script: the script to be run after the job is finished. It can be a ``str`` or an imported Python module.
-                In the latter case it will take the ``__script__`` property of the module to get its location.
-        '''
-        # to be sure we are in the correct directory we will switch to the working directory again
         self.add_postamble(f'cd {self.workdir}')
-        if isinstance(script, str):
-            self.add_postamble(f'python {script}')
-        else:
-            self.add_postamble(f'python {script.__file__}')
+        self.add_postamble(f'python {script.__file__}')
 
     def dependency(self, otherjob: 'Job'):
         '''
@@ -222,28 +168,28 @@ class Job(metaclass=PostInitCaller):
             self.sbatch(kill_on_invalid_dep='Yes')
 
     @property
-    def workdir(self) -> str:
+    def workdir(self):
         '''
         The working directory of this job. All important files are written here, for example the input file and runscript.
         '''
         return j(os.path.abspath(self.rundir), self.name)
 
     @property
-    def runfile_path(self) -> str:
+    def runfile_path(self):
         '''
         The file path to the runscript of this job.
         '''
         return j(self.workdir, f'{self.name}.run')
 
     @property
-    def inputfile_path(self) -> str:
+    def inputfile_path(self):
         '''
         The file path to the input file of this job.
         '''
         return j(self.workdir, f'{self.name}.in')
 
     @property
-    def output_mol_path(self) -> str:
+    def output_mol_path(self):
         '''
         This method should return the name of the output molecule if it makes sense to give it back.
         E.g. for ADF it will be output.xyz in the workdir for optimization jobs.
@@ -273,10 +219,3 @@ class Job(metaclass=PostInitCaller):
         elif isinstance(mol, plams.Atom):
             self._molecule = plams.Molecule()
             self._molecule.add_atom(mol)
-
-
-if __name__ == '__main__':
-    with Job() as job2:
-        print(job2._sbatch)
-        print(job2.rundir)
-        print(job2._molecule)
