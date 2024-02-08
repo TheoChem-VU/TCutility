@@ -11,6 +11,7 @@ j = os.path.join
 class ORCAJob(Job):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.settings.main = {'LARGEPRINT'}
         self._charge = 0
         self._multiplicity = 1
         self._ghosts = []
@@ -18,62 +19,56 @@ class ORCAJob(Job):
         self.memory = None
         self.processes = None
         self.orca_path = None
-        self.main = set()
+
         self.single_point()
 
-    def add_main(self, key: str):
-        '''
-        Add a keyword to the main input of the ORCA input.
-        '''
-        self.main.add(key)
-
     def __casefold_main(self):
-        self.main = {key.casefold() for key in self.main}
+        self.settings.main = {key.casefold() for key in self.settings.main}
 
     def __remove_task(self):
         self.__casefold_main()
-        [self.main.discard(task) for task in ['sp', 'opt', 'tsopt', 'neb-ts']]
+        [self.settings.main.discard(task) for task in ['sp', 'opt', 'tsopt', 'neb-ts']]
 
     def method(self, method):
         spell_check.check(method, ['MP2', 'CCSD', 'CCSD(T)', 'CCSDT'])
-        self.main.append(method)
+        self.settings.main.append(method)
         self._method = method
 
     def reference(self, ref):
         spell_check.check(ref, ['UHF', 'UKS', 'RHF', 'RKS', 'ROHF', 'ROKS'])
-        self.main.append(ref)
-        self._reference = ref
+        self.settings.main.append(method)
+        self._method = method
 
     def QRO(self, enable=True):
         self.settings.MDCI.UseQROs = enable
 
     def basis_set(self, value):
-        self.main.append(value)
+        self.settings.main.append(value)
 
     def single_point(self):
         self.__remove_task()
-        self.main.add('sp')
+        self.settings.main.add('sp')
 
     def transition_state(self):
         self.__remove_task()
         self.vibrations()
-        self.main.add('optts')
+        self.settings.main.add('optts')
 
     def optimization(self):
         self.__remove_task()
         self.vibrations()
-        self.main.add('opt')
+        self.settings.main.add('opt')
 
     def vibrations(self, enable=True, numerical=False):
         self.__casefold_main()
-        self.main.discard('numfreq')
-        self.main.discard('freq')
+        self.settings.main.discard('numfreq')
+        self.settings.main.discard('freq')
         if not enable:
             return
         if numerical:
-            self.main.add('numfreq')
+            self.settings.main.add('numfreq')
         else:
-            self.main.add('freq')
+            self.settings.main.add('freq')
 
     def charge(self, val):
         self._charge = val
@@ -113,7 +108,7 @@ class ORCAJob(Job):
             log.warn('MaxCore and nprocs not specified. Please use SBATCH settings or set job.processes and job.memory.')
 
         ret = ''
-        for key in self.main:
+        for key in self.settings.main:
             ret += f'!{key}\n'
         ret += '\n'
 
