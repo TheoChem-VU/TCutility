@@ -160,6 +160,10 @@ class AMSJob(Job):
             runf.write(job.get_runscript())
             runf.write('\n'.join(self._postambles))
 
+        # in case we are rerunning a calculation we need to remove ams.log
+        if os.path.exists(j(self.workdir, 'ams.log')):
+            os.remove(j(self.workdir, 'ams.log'))
+
         return True
 
     @property
