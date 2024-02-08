@@ -225,6 +225,15 @@ class ADFJob(AMSJob):
             }
             self.settings.input.adf.solvation.radii = radii
 
+    def symmetry(self, group: str):
+        '''
+        Specify the symmetry group to be used by ADF.
+
+        Args:
+            group: the symmetry group to be used.
+        '''
+        self.settings.input.adf.Symmetry = group
+
 
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
