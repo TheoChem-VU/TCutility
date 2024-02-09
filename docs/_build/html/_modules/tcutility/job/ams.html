@@ -440,6 +440,10 @@
             <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">get_runscript</span><span class="p">())</span>
             <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_postambles</span><span class="p">))</span>
 
+        <span class="c1"># in case we are rerunning a calculation we need to remove ams.log</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s1">&#39;ams.log&#39;</span><span class="p">)):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s1">&#39;ams.log&#39;</span><span class="p">))</span>
+
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="nd">@property</span>
