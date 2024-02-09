@@ -269,6 +269,13 @@ class ADFFragmentJob(ADFJob):
             mol = mol_.copy()
             add_frag_to_mol = False
 
+        # check if the atoms in the new fragment are already present in the other fragments.
+        # if it is we should raise an error
+        for child in self.childjobs.values():
+            if any((atom.symbol, atom.coords) == (myatom.symbol, myatom.coords) for atom in child._molecule for myatom in mol):
+                log.error('An atom is present in multiple fragments.')
+                return
+
         name = name or f'fragment{len(self.childjobs) + 1}'
         self.childjobs[name] = ADFJob(test_mode=self.test_mode)
         self.childjobs[name].molecule(mol)
