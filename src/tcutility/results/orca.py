@@ -147,6 +147,7 @@ def get_input(info: Result) -> Result:
     if coordinates in ["xyz", "int"]:
         ret.system.molecule = plams.Molecule()
         for line in system_lines:
+            line = line.replace(':', '')
             ret.system.molecule.add_atom(plams.Atom(symbol=line.split()[0], coords=[float(x) for x in line.split()[1:4]]))
 
     info.task = "SinglePoint"
