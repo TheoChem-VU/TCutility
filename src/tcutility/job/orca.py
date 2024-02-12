@@ -25,6 +25,20 @@ class ORCAJob(Job):
     def __casefold_main(self):
         self.settings.main = {key.casefold() for key in self.settings.main}
 
+    def main(self, val: Union[str, list[str]]):
+        '''
+        Add main options for this ORCA calculation, they will be added to the input prepended with exclamation marks.
+
+        Args:
+            val: the main options to add. This can be a string or a list of strings with the main options.
+        '''
+        # we want to split a string such as 'CC-pVTZ Opt CCSD(T)' into loose parts and add them separately
+        # this should always return a list
+        if isinstance(val, str):
+            val = val.split()
+        # add each 
+        [self.settings.main.add(key) for key in val]
+
     def __remove_task(self):
         self.__casefold_main()
         [self.settings.main.discard(task) for task in ['sp', 'opt', 'tsopt', 'neb-ts']]
