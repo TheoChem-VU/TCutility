@@ -50,8 +50,8 @@ class ORCAJob(Job):
 
     def reference(self, ref):
         spell_check.check(ref, ['UHF', 'UKS', 'RHF', 'RKS', 'ROHF', 'ROKS'])
-        self.settings.main.append(method)
-        self._method = method
+        self.settings.main.append(ref)
+        self._method = ref
 
     def QRO(self, enable=True):
         self.settings.MDCI.UseQROs = enable
