@@ -116,7 +116,7 @@ class AMSJob(Job):
         if dihedrals is not None:
             self.settings.input.ams.PESScan.ScanCoordinate.Dihedral = [" ".join([str(x) for x in dihedral]) for dihedral in dihedrals]
         if sumdist is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.SumDist = [" ".join([str(x) for x in dist]) for dist in sumdists]
+            self.settings.input.ams.PESScan.ScanCoordinate.SumDist = [" ".join([str(x) for x in dist]) for dist in sumdist]
         if difdist is not None:
             self.settings.input.ams.PESScan.ScanCoordinate.DifDist = [" ".join([str(x) for x in dist]) for dist in difdist]
 
