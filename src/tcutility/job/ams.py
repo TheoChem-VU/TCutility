@@ -89,7 +89,7 @@ class AMSJob(Job):
         self.add_postscript(tcutility.job.postscripts.clean_workdir)
         self.add_postscript(tcutility.job.postscripts.write_converged_geoms)
 
-    def PESScan(self, distances: list = None, angles: list = None, dihedrals: list = None, npoints: int = 10):
+    def PESScan(self, distances: list = None, angles: list = None, dihedrals: list = None, sumdist: list = None, difdist: list = None, npoints: int = 10):
         '''
         Set the task of the job to potential energy surface scan (PESScan).
 
@@ -115,6 +115,10 @@ class AMSJob(Job):
             self.settings.input.ams.PESScan.ScanCoordinate.Angle = [" ".join([str(x) for x in ang]) for ang in angles]
         if dihedrals is not None:
             self.settings.input.ams.PESScan.ScanCoordinate.Dihedral = [" ".join([str(x) for x in dihedral]) for dihedral in dihedrals]
+        if sumdist is not None:
+            self.settings.input.ams.PESScan.ScanCoordinate.SumDist = [" ".join([str(x) for x in dist]) for dist in sumdists]
+        if difdist is not None:
+            self.settings.input.ams.PESScan.ScanCoordinate.DifDist = [" ".join([str(x) for x in dist]) for dist in difdist]
 
     def vibrations(self, enable: bool = True, NegativeFrequenciesTolerance: float = -5):
         '''
