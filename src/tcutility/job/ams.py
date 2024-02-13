@@ -16,7 +16,7 @@ class AMSJob(Job):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.single_point()
-        self.geometry_convergence('Good')
+        self.geometry_convergence()
 
     def __str__(self):
         return f'{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}'
@@ -135,28 +135,20 @@ class AMSJob(Job):
         self.settings.input.ams.PESPointCharacter.NegativeFrequenciesTolerance = NegativeFrequenciesTolerance
         self.settings.input.ams.NormalModes.ReScanFreqRange = '-10000000.0 10.0'
 
-    def geometry_convergence(self, quality: str = None, gradients: float = 1e-5, energy: float = 1e-5, step: float = 1e-2):
+    def geometry_convergence(self, gradients: float = 1e-5, energy: float = 1e-5, step: float = 1e-2, stress: float = 5e-4):
         '''
         Set the convergence criteria for the geometry optimization.
 
         Args:
-            quality: convergence criteria preset. Must be one of [``VeryBasic``, ``Basic``, ``Normal``, ``Good``, ``VeryGood``]. 
-                Default ``None`` will not use a threshold. If it is given, it will overwrite the other arguments. 
-            gradients: the convergence criteria for the gradients during geometry optimizations. Defaults to 1e-5.
-            energy: the convergence criteria for the energy during geometry optimizations. Defaults to 1e-5.
-            step: the convergence criteria for the step-size during geometry optimizations. Defaults to 1e-2.
+            gradients: the convergence criteria for the gradients during geometry optimizations. Defaults to ``1e-5``.
+            energy: the convergence criteria for the energy during geometry optimizations. Defaults to ``1e-5``.
+            step: the convergence criteria for the step-size during geometry optimizations. Defaults to ``1e-2``.
+            stress: the convergence criteria for the stress-energy per atom during geometry optimizations. Defaults to ``5e-4``
         '''
-        if quality:
-            allowed_qualities = ['verybasic', 'basic', 'normal', 'good', 'verygood']
-            if quality.lower() not in [q.lower() for q in allowed_qualities]:
-                log.error(f'Argument "quality" must be one of {allowed_qualities}, not {quality}')
-                raise
-            self.settings.input.ams.GeometryOptimization.Convergence.Quality = quality
-        else:
-            self.settings.input.ams.GeometryOptimization.Convergence.Quality = 'Custom'
-            self.settings.input.ams.GeometryOptimization.Convergence.Gradients = gradients
-            self.settings.input.ams.GeometryOptimization.Convergence.Energy = energy
-            self.settings.input.ams.GeometryOptimization.Convergence.Step = step
+        self.settings.input.ams.GeometryOptimization.Convergence.Gradients = gradients
+        self.settings.input.ams.GeometryOptimization.Convergence.Energy = energy
+        self.settings.input.ams.GeometryOptimization.Convergence.Step = step
+        self.settings.input.ams.GeometryOptimization.Convergence.StressEnergyPerAtom = stress
 
     def charge(self, val: int):
         '''
