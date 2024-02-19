@@ -22,10 +22,7 @@ class ORCAJob(Job):
 
         self.single_point()
 
-    def __casefold_main(self):
-        self.settings.main = {key.casefold() for key in self.settings.main}
-
-    def main(self, val: Union[str, list[str]]):
+    def main(self, val: Union[str, List[str]]):
         '''
         Add main options for this ORCA calculation, they will be added to the input prepended with exclamation marks.
 
@@ -49,8 +46,7 @@ class ORCAJob(Job):
                 self.settings.main.discard(lower_main[v.casefold()])
 
     def __remove_task(self):
-        self.__casefold_main()
-        [self.settings.main.discard(task) for task in ['sp', 'opt', 'tsopt', 'neb-ts']]
+        [self.remove_main(task) for task in ['sp', 'opt', 'tsopt', 'neb-ts']]
 
     def method(self, method):
         spell_check.check(method, ['MP2', 'CCSD', 'CCSD(T)', 'CCSDT'])
@@ -83,9 +79,8 @@ class ORCAJob(Job):
         self.settings.main.add('opt')
 
     def vibrations(self, enable=True, numerical=False):
-        self.__casefold_main()
-        self.settings.main.discard('numfreq')
-        self.settings.main.discard('freq')
+        self.remove_main('NumFreq')
+        self.remove_main('Freq')
         if not enable:
             return
         if numerical:
