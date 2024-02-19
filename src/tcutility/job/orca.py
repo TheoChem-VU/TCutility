@@ -66,17 +66,17 @@ class ORCAJob(Job):
 
     def single_point(self):
         self.__remove_task()
-        self.settings.main.add('sp')
+        self.settings.main.add('SP')
 
     def transition_state(self):
         self.__remove_task()
         self.vibrations()
-        self.settings.main.add('optts')
+        self.settings.main.add('OptTS')
 
     def optimization(self):
         self.__remove_task()
         self.vibrations()
-        self.settings.main.add('opt')
+        self.settings.main.add('Opt')
 
     def vibrations(self, enable=True, numerical=False):
         self.remove_main('NumFreq')
@@ -84,9 +84,9 @@ class ORCAJob(Job):
         if not enable:
             return
         if numerical:
-            self.settings.main.add('numfreq')
+            self.settings.main.add('NumFreq')
         else:
-            self.settings.main.add('freq')
+            self.settings.main.add('Freq')
 
     def charge(self, val):
         self._charge = val
