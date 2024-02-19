@@ -167,7 +167,7 @@ class ORCAJob(Job):
             if self.orca_path is None and not self.test_mode:
                 self.orca_path = sp.check_output(['which', 'orca']).decode().strip()
         except sp.CalledProcessError:
-            log.error(f'Could not find the orca path. Call set the {self.__class__.__name__}.orca_path property to add it.')
+            log.error(f'Could not find the orca path. Set the {self.__class__.__name__}.orca_path attribute to add it.')
             return
 
         if not self._molecule and not self._molecule_path:
@@ -191,5 +191,5 @@ class ORCAJob(Job):
 
 if __name__ == '__main__':
     job = ORCAJob()
-    job.molecule('water.xyz')
-    job._setup_job()
+    job.main('OPT cc-pVTZ')
+    job.remove_main('OPT OPTTS NEB')
