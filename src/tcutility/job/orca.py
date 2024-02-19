@@ -39,6 +39,15 @@ class ORCAJob(Job):
         # add each 
         [self.settings.main.add(key) for key in val]
 
+    def remove_main(self, val: Union[str, List[str]]):
+        if isinstance(val, str):
+            val = val.split()
+
+        lower_main = {key.casefold(): key for key in self.settings.main}
+        for v in val:
+            if v.casefold() in lower_main:
+                self.settings.main.discard(lower_main[v.casefold()])
+
     def __remove_task(self):
         self.__casefold_main()
         [self.settings.main.discard(task) for task in ['sp', 'opt', 'tsopt', 'neb-ts']]
