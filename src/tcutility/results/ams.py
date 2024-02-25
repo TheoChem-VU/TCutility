@@ -25,6 +25,9 @@ def get_calc_files(calc_dir: str) -> dict:
     # collect all files in the current directory and subdirectories
     files = []
     for root, _, files_ in os.walk(calc_dir):
+        if os.path.split(root)[1].startswith('.'):
+            continue
+
         # some results are stored in dirs called {name}.results, if the calculations uses fragments there will be additional dirs called
         # {name}.{fragname}.results, which do not contain new information as the required info is copied over to {name}.results. Therefore
         # we should skip the fragment directories
@@ -226,6 +229,7 @@ def get_calculation_status(calc_dir: str) -> Result:
         return ret
 
     if termination_status == "IN PROGRESS":
+        ret.fatal = False
         ret.reasons.append("Calculation in progress")
         ret.name = "RUNNING"
         ret.code = "R"
@@ -360,13 +364,13 @@ def get_history(calc_dir: str) -> Result:
     Returns:
         :Dictionary containing information about the calculation status:
 
-            - **number_of_entries (int)** – number of steps in the history.
-            - **{variable} (list[Any])** – variable read from the history section. The number of variables and type of variables depend on the nature of the calculation.
+            - ``number_of_entries`` **(int)** – number of steps in the history.
+            - ``{variable}`` **(list[Any])** – variable read from the history section. The number of variables and type of variables depend on the nature of the calculation.
 
               Common variables:
-            - **coords (list[plams.Molecule])** – list of molecules from the history, for example from a geometry optimization or PES scan.
-            - **energy (list[float])** – list of energies associated with each geometry step.
-            - **gradient (list[list[float]])** – array of gradients for each geometry step and each atom.
+                | ``Molecule`` **(list[plams.Molecule])** – list of molecules from the history, for example from a geometry optimization or PES scan.
+                | ``energy`` **(list[float])** – list of energies associated with each geometry step.
+                | ``gradient`` **(list[list[float]])** – array of gradients for each geometry step and each atom.
     """
     # read history mols
     files = get_calc_files(calc_dir)
@@ -395,6 +399,9 @@ def get_history(calc_dir: str) -> Result:
             except KeyError:
                 index = False
 
+        if 'Coords' in items:
+            items.append('Molecule')
+
         # create variable in result for each variable found
         for item in items:
             ret[item.lower()] = []
@@ -402,17 +409,17 @@ def get_history(calc_dir: str) -> Result:
         # collect the elements for each history variable
         for i in range(ret.number_of_entries):
             for item in items:
-                val = reader_ams.read("History", f"{item}({i+1})")
-                # coords are special, because we will convert them to plams.Molecule objects first
-                if item == "Coords":
+                # Molecule are special, because we will convert them to plams.Molecule objects first
+                if item == "Molecule":
                     mol = plams.Molecule()
-                    coords = np.array(val).reshape(natoms, 3) * 0.529177
+                    coords = np.array(reader_ams.read("History", f"Coords({i+1})")).reshape(natoms, 3) * 0.529177
                     for atnum, coord in zip(atnums, coords):
                         mol.add_atom(plams.Atom(atnum=atnum, coords=coord))
                     mol.guess_bonds()
-                    ret.coords.append(mol)
+                    ret.molecule.append(mol)
                 # other variables are just added as-is
                 else:
+                    val = reader_ams.read("History", f"{item}({i+1})")
                     ret[item.lower()].append(val)
 
     return ret

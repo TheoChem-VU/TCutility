@@ -1,6 +1,5 @@
 from scm import plams
-from tcutility import log, results, formula
-from tcutility.data import functionals
+from tcutility import log, results, formula, spell_check, data, molecule
 from tcutility.job.ams import AMSJob
 import os
 
@@ -12,11 +11,14 @@ class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._functional = None
+        self.solvent('vacuum')
         self.basis_set('TZ2P')
         self.quality('Good')
-        self.SCF_convergence(1e-8)
+        self.SCF(thresh=1e-8)
         self.single_point()
-        self.solvent('vacuum')
+
+        # by default print the fock matrix
+        self.settings.input.adf.print = 'SFOSiteEnergies'
 
     def __str__(self):
         return f'{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}'
@@ -29,8 +31,16 @@ class ADFJob(AMSJob):
             typ: the type of basis-set to use. Default is TZ2P.
             core: the size of the frozen core approximation. Default is None.
 
+        Raises:
+            ValueError: if the basis-set name or core is incorrect.
+
         .. note:: If the selected functional is the r2SCAN-3c functional, then the basis-set will be set to mTZ2P.
+
+        .. seealso:: 
+            :mod:`tcutility.data.basis_sets` for an overview of the available basis-sets in ADF.
         '''
+        spell_check.check(typ, data.basis_sets.available_basis_sets['ADF'], ignore_case=True)
+        spell_check.check(core, ['None', 'Small', 'Large'], ignore_case=True)
         if self._functional == 'r2SCAN-3c' and typ != 'mTZ2P':
             log.warn(f'Basis set {typ} is not allowed with r2SCAN-3c, switching to mTZ2P.')
             typ = 'mTZ2P'
@@ -56,7 +66,7 @@ class ADFJob(AMSJob):
         3) triplet
         4) ...
     
-        The multiplicity is equal to 2*S+1 for spin-polarization of S.
+        The multiplicity is equal to 2*S+1 for spin-polarization S.
         '''
         self.settings.input.adf.SpinPolarization = (val - 1)//2
         if val != 1:
@@ -74,7 +84,11 @@ class ADFJob(AMSJob):
 
         Args:
             val: the numerical quality value to set to. This is the same as the ones used in the ADF GUI. Defaults to Good.
+
+        Raises:
+            ValueError: if the quality value is incorrect.
         '''
+        spell_check.check(val, ['Basic', 'Normal', 'Good', 'VeryGood', 'Excellent'], ignore_case=True)
         self.settings.input.adf.NumericalQuality = val
 
     def SCF_convergence(self, thresh: float = 1e-8):
@@ -83,19 +97,46 @@ class ADFJob(AMSJob):
 
         Args:
             thresh: the convergence criteria for the SCF procedure. Defaults to 1e-8.
+
+        .. deprecated:: 0.9.2
+            Please use :meth:`ADFJob.SCF` instead of this method.
         '''
-        self.settings.input.adf.SCF.converge = thresh
+        log.warn('This method has been deprecated, please use ADFJob.SCF instead.')
+        self.SCF(thresh=thresh)
+
+    def SCF(self, iterations: int = 300, thresh: float = 1e-8):
+        '''
+        Set the SCF settings for this calculations.
+
+        Args:
+            iterations: number of iterations to perform for this calculation. Defaults to 300.
+            thresh: the convergence criteria for the SCF procedure. Defaults to 1e-8.
+
+        .. note::
+            When setting the number of iterations to 0 or 1 the ``AlwaysClaimSuccess`` key will also be set to ``Yes``.
+            This is to prevent the job from being flagged as a failure when reading it using :mod:`tcutility.results`.
+        '''
+        self.settings.input.adf.SCF.Iterations = iterations
+        self.settings.input.adf.SCF.Converge = thresh
+
+        if iterations in [0, 1]:
+            self.settings.input.ams.EngineDebugging.AlwaysClaimSuccess = 'Yes'
 
     def functional(self, funtional_name: str, dispersion: str = None):
         '''
         Set the functional to be used by the calculation. This also sets the dispersion if it is specified in the functional name.
 
         Args:
-            funtional_name: the name of the functional. The value can be the same as the ones used in the ADF GUI. 
-                For a full list of functionals please see :func:`get_available_functionals <tcutility.data.functionals.get_available_functionals>`.
+            funtional_name: the name of the functional. The value can be the same as the ones used in the ADF GUI.
             dispersion: dispersion setting to use with the functional. This is used when you want to use a functional from LibXC.
 
+        Raises:
+            ValueError: if the functional name is not recognized.
+
         .. note:: Setting the functional to r2SCAN-3c will automatically set the basis-set to mTZ2P.
+
+        .. seealso::
+            :mod:`tcutility.data.functionals` for an overview of the available functionals in ADF.
         '''
         # before adding the new functional we should clear any previous functional settings
         self.settings.input.adf.pop('XC', None)
@@ -112,11 +153,11 @@ class ADFJob(AMSJob):
             log.error('There are two functionals called SSB-D, please use "GGA:SSB-D" or "MetaGGA:SSB-D".')
             return
 
-        if not functionals.get(functional):
+        if not data.functionals.get(functional):
             log.warn(f'XC-functional {functional} not found. Please ask a TheoCheM developer to add it. Adding functional as LibXC.')
             self.settings.input.adf.XC.LibXC = functional
         else:
-            func = functionals.get(functional)
+            func = data.functionals.get(functional)
             self.settings.input.adf.update(func.adf_settings)
 
     def relativity(self, level: str = 'Scalar'):
@@ -125,7 +166,11 @@ class ADFJob(AMSJob):
 
         Args:
             level: the level to set. Can be the same as the values in the ADF GUI and documentation. By default it is set to Scalar.
+
+        Raises:
+            ValueError: if the relativistic correction level is not correct.
         '''
+        spell_check.check(level, ['Scalar', 'None', 'Spin-Orbit'], ignore_case=True)
         self.settings.input.adf.relativity.level = level
 
     def solvent(self, name: str = None, eps: float = None, rad: float = None, use_klamt: bool = False):
@@ -137,8 +182,15 @@ class ADFJob(AMSJob):
             eps: the dielectric constant of your solvent. You can use this in place of the solvent name if you need more control over COSMO.
             rad: the radius of the solvent molecules. You can use this in place of the solvent name if you need more control over COSMO.
             use_klamt: whether to use the klamt atomic radii. This is usually used when you have charged species (?).
+
+        Raises:
+            ValueError: if the solvent name is given, but incorrect.
+
+        .. seealso::
+            :mod:`tcutility.data.cosmo` for an overview of the available solvent names and formulas.
         '''
         if name:
+            spell_check.check(name, data.cosmo.available_solvents, ignore_case=True, insertion_cost=0.3)
             self._solvent = name
         else:
             self._solvent = f'COSMO(eps={eps} rad={rad})'
@@ -180,14 +232,32 @@ class ADFJob(AMSJob):
             }
             self.settings.input.adf.solvation.radii = radii
 
+    def symmetry(self, group: str):
+        '''
+        Specify the symmetry group to be used by ADF.
+
+        Args:
+            group: the symmetry group to be used.
+        '''
+        self.settings.input.adf.Symmetry = group
+
 
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
         self.childjobs = {}
         super().__init__(*args, **kwargs)
-        self.name = 'complex'
+        self.name = 'EDA'
 
-    def add_fragment(self, mol, name=None):
+    def add_fragment(self, mol: plams.Molecule, name: str = None, charge: int = 0, spin_polarization:int = 0):
+        '''
+        Add a fragment to this job. Optionally give the name, charge and spin-polarization of the fragment as well.
+
+        Args:
+            mol: the molecule corresponding to the fragment.
+            name: the name of the fragment. By default it will be set to ``fragment{N+1}`` if ``N`` is the number of fragments already present.
+            charge: the charge of the fragment to be added.
+            spin_polarization: the spin-polarization of the fragment to be added.
+        '''
         # in case of giving fragments as indices we dont want to add the fragment to the molecule later
         add_frag_to_mol = True  
         # we can be given a list of atoms
@@ -206,9 +276,18 @@ class ADFFragmentJob(ADFJob):
             mol = mol_.copy()
             add_frag_to_mol = False
 
+        # check if the atoms in the new fragment are already present in the other fragments.
+        # if it is we should raise an error
+        for child in self.childjobs.values():
+            if any((atom.symbol, atom.coords) == (myatom.symbol, myatom.coords) for atom in child._molecule for myatom in mol):
+                log.error('An atom is present in multiple fragments.')
+                return
+
         name = name or f'fragment{len(self.childjobs) + 1}'
         self.childjobs[name] = ADFJob(test_mode=self.test_mode)
         self.childjobs[name].molecule(mol)
+        self.childjobs[name].charge(charge)
+        self.childjobs[name].spin_polarization(spin_polarization)
         setattr(self, name, self.childjobs[name])
 
         if not add_frag_to_mol:
@@ -217,9 +296,48 @@ class ADFFragmentJob(ADFJob):
         if self._molecule is None:
             self._molecule = self.childjobs[name]._molecule.copy()
         else:
-            self._molecule = self._molecule + self.childjobs[name]._molecule.copy()
+            for atom in self.childjobs[name]._molecule.copy():
+                if any((atom.symbol, atom.coords) == (myatom.symbol, myatom.coords) for myatom in self._molecule):
+                    continue
+                self._molecule.add_atom(atom)
+
+    def guess_fragments(self):
+        '''
+        Guess what the fragments are based on data stored in the molecule provided for this job. 
+        This will automatically set the correct fragment molecules, names, charges and spin-polarizations.
+
+        .. seealso::
+            | :func:`tcutility.molecule.guess_fragments` for an explanation of the xyz-file format required to guess the fragments.
+            | :meth:`ADFFragmentJob.add_fragment` to manually add a fragment.
+
+        .. note::
+            This function will be automatically called if there were no fragments given to this calculation.
+        '''
+        frags = molecule.guess_fragments(self._molecule)
+        if frags is None:
+            log.error('Could not load fragment data for the molecule.')
+            return False
+
+        for fragment_name, fragment in frags.items():
+            charge = fragment.flags.get('charge', 0)
+            spin_polarization = fragment.flags.get('spinpol', 0)
+            self.add_fragment(fragment, fragment_name, charge=charge, spin_polarization=spin_polarization)
+
+        return True
 
     def run(self):
+        '''
+        Run the ``ADFFragmentJob``. This involves setting up the calculations for each fragment as well as the parent job. 
+        It will also submit a calculation with the SCF iterations set to 0 in order to facilitate investigation of the field effects using PyOrb.
+        '''
+        # check if the user defined fragments for this job
+        if len(self.childjobs) == 0:
+            log.warn('Fragments were not specified yet, trying to read them from the xyz file ...')
+            # if they did not define the fragments, try to guess them using the xyz-file
+            if not self.guess_fragments():
+                log.error('Please specify the fragments using ADFFragmentJob.add_fragment or specify them in the xyz file.')
+                raise 
+
         mol_str = " + ".join([formula.molecule(child._molecule) for child in self.childjobs.values()])
         log.flow(f'ADFFragmentJob [{mol_str}]', ['start'])
         # obtain some system wide properties of the molecules
@@ -234,6 +352,10 @@ class ADFFragmentJob(ADFJob):
         log.flow()
         # this job and all its children should have the same value for unrestricted
         [child.unrestricted(unrestricted) for child in self.childjobs.values()]
+
+        # propagate the post- and preambles to the childjobs
+        [child.add_preamble(preamble) for preamble in self._preambles for child in self.childjobs.values()]
+        [child.add_postamble(postamble) for postamble in self._postambles for child in self.childjobs.values()]
 
         # we now update the child settings with the parent settings
         # this is because we have to propagate settings such as functionals, basis sets etc.
@@ -259,7 +381,7 @@ class ADFFragmentJob(ADFJob):
             log.flow(f'Spin-Polarization: {child.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
             # the child name will be prepended with SP showing that it is the singlepoint calculation
             child.name = f'frag_{childname}'
-            child.rundir = self.rundir
+            child.rundir = j(self.rundir, self.name)
 
             # add the path to the child adf.rkf file as a dependency to the parent job
             self.settings.input.adf.fragments[childname] = j(child.workdir, 'adf.rkf')
@@ -275,7 +397,7 @@ class ADFFragmentJob(ADFJob):
             child.run()
             self.dependency(child)
 
-            log.flow(f'SlurmID:  {child.slurm_job_id}', ['straight', 'skip', 'end'])
+            log.flow(f'SlurmID:  {child.slurm_job_id}', ['straight', 'skip', 'straight'])
             log.flow(f'Work dir: {child.workdir}', ['straight', 'skip', 'end'])
             log.flow()
 
@@ -295,18 +417,19 @@ class ADFFragmentJob(ADFJob):
         # set the _molecule to None, otherwise it will overwrite the atoms block
         self._molecule = None
         # run this job
+        self.rundir = j(self.rundir, self.name)
+        self.name = 'complex'
         log.flow(log.Emojis.good + ' Submitting parent job', ['split'])
         super().run()
         log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
         log.flow()
 
         # also do the calculation with SCF cycles set to 1
-        self.settings.input.adf.SCF.Iterations = 1
-        self.settings.input.adf.print = 'FMatSFO'  # by default print the fock matrix for each SCF cycle
-        self.settings.input.adf.AllPoints = 'Yes'
-        self.settings.input.adf.FullFock = 'Yes'
-        self.name = self.name + '_SCF1'
-        log.flow(log.Emojis.good + ' Submitting extra job with 1 SCF cycle', ['split'])
+        self.SCF(iterations=0)
+        # we must repopulate the sbatch settings for the new run
+        [self._sbatch.pop(key, None) for key in ['D', 'chdir', 'J', 'job_name', 'o', 'output']]
+        self.name = 'complex_SCF0'
+        log.flow(log.Emojis.good + ' Submitting extra job with 0 SCF iterations', ['split'])
 
         super().run()
         log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
@@ -319,5 +442,8 @@ if __name__ == '__main__':
         job.rundir = 'tmp/SN2/EDA'
         job.molecule('../../../test/fixtures/xyz/pyr.xyz')
         job.sbatch(p='tc', ntasks_per_node=15)
-        job.functional('OLYP')
-        job.basis_set('DZP')
+        job.solvent('')
+        job.basis_set('tz2p')
+        job.SCF_convergence(1e-10)
+        job.quality('veryGood')
+        job.functional('LYP-D3BJ')

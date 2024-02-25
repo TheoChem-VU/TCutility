@@ -1,4 +1,4 @@
-from tcutility import log, results, slurm
+from tcutility import log, results, slurm, molecule
 import subprocess as sp
 import os
 import stat
@@ -155,6 +155,10 @@ class Job:
         '''
         self._postambles.append(line)
 
+    def add_postscript(self, script):
+        self.add_postamble(f'cd {self.workdir}')
+        self.add_postamble(f'python {script.__file__}')
+
     def dependency(self, otherjob: 'Job'):
         '''
         Set a dependency between this job and another job. This means that this job will run after the other job is finished running succesfully.
@@ -203,7 +207,7 @@ class Job:
             self._molecule = mol
 
         elif isinstance(mol, str) and os.path.exists(mol):
-            self._molecule = plams.Molecule(mol)
+            self._molecule = molecule.load(mol)
 
         elif isinstance(mol, str):
             self._molecule_path = os.path.abspath(mol)
