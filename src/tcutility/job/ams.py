@@ -139,9 +139,8 @@ class AMSJob(Job):
             self.settings.input.ams.system.GeometryFile = self._molecule_path
 
         # we will use plams to write the input and runscript
-        self._check_molecule()
         sett = self.settings.as_plams_settings()
-        job = plams.AMSJob(name=self.name, settings=sett)
+        job = plams.AMSJob(name=self.name, molecule=self._molecule, settings=sett)
 
         os.makedirs(self.workdir, exist_ok=True)
         with open(self.inputfile_path, 'w+') as inpf:
@@ -158,25 +157,6 @@ class AMSJob(Job):
             os.remove(j(self.workdir, 'ams.log'))
 
         return True
-
-    def _check_molecule(self):
-        '''
-        Check if the molecule contains ghosts or fragment adf.rkf files
-        '''
-        atom_lines = []
-        for i, atom in enumerate(self._molecule):
-            # we check by looking at the symbol and coordinates of the atom
-            if any((atom.symbol, atom.x, atom.y, atom.z) == (ghost_atom.symbol, ghost_atom.x, ghost_atom.y, ghost_atom.z) for ghost_atom in self._ghost_atoms):
-                # now write the symbol and coords as a string with the correct suffix
-                atom_lines.append(f'\t\tGh.{atom.symbol} {atom.x} {atom.y} {atom.z}')
-            elif 'region' in atom.flags and 'adf.f' in atom.flags:
-                # now write the symbol and coords as a string with the correct suffix
-                atom_lines.append(f'\t\t   {atom.symbol} {atom.x} {atom.y} {atom.z} region={atom.flags["region"]} adf.f={atom.flags["adf.f"]}')
-            else:
-                atom_lines.append(f'\t\t   {atom.symbol} {atom.x} {atom.y} {atom.z}')
-
-        self.settings.input.ams.system.atoms = ('\n' + '\n'.join(atom_lines) + '\n\tEnd').expandtabs(4)
-
 
     @property
     def output_mol_path(self):
