@@ -1,7 +1,6 @@
 from scm import plams
 from tcutility import log, results, formula, spell_check, data, molecule
 from tcutility.job.ams import AMSJob
-from tcutility.job.generic import MultiJob
 import os
 
 
@@ -391,6 +390,12 @@ class ADFFragmentJob(ADFJob):
             self.settings.input.adf.fragments[childname] = j(child.workdir, 'adf.rkf')
             child.settings = results.Result(child_setts[childname])
 
+            for atom in self._molecule:
+                for childatom in child._molecule:
+                    if (atom.symbol, atom.x, atom.y, atom.z) == (childatom.symbol, childatom.x, childatom.y, childatom.z):
+                        atom.flags['region'] = childname
+                        atom.flags['adf.f'] = childname
+
             if child.can_skip():
                 log.flow(log.Emojis.warning + ' Already ran, skipping', ['straight', 'end'])
                 log.flow()
@@ -403,7 +408,6 @@ class ADFFragmentJob(ADFJob):
                 log.flow(f'Work dir: {child.workdir}', ['straight', 'skip', 'end'])
                 log.flow()
 
-
             # starting child job with ghost atoms
             if self.counter_poise:
                 log.flow(f'Child job with ghost atoms ({i}/{len(self.childjobs)}) {childname} [{formula.molecule(child._molecule)}]', ['split'])
@@ -412,7 +416,7 @@ class ADFFragmentJob(ADFJob):
                 # the child name will be prepended with SP showing that it is the singlepoint calculation
                 child.name = f'frag_{childname}_wghosts'
                 child.rundir = j(self.rundir, self.name)
-                child._ghost_atoms.extend(child._molecule.atoms)
+                child._ghost_atoms.extend(child._molecule.copy().atoms)
                 child.molecule(self._molecule.copy())
 
                 if child.can_skip():
@@ -430,19 +434,19 @@ class ADFFragmentJob(ADFJob):
                 log.flow()
 
 
-        # in the parent job the atoms should have the region and adf.f defined as options
-        atom_lines = []
-        # for each atom we check which child it came from
-        for atom in self._molecule:
-            for childname, child in self.childjobs.items():
-                for childatom in child._molecule:
-                    # we check by looking at the symbol and coordinates of the atom
-                    if (atom.symbol, atom.x, atom.y, atom.z) == (childatom.symbol, childatom.x, childatom.y, childatom.z):
-                        atom.flags['region'] = childname
-                        atom.flags['adf.f'] = childname
+        # # in the parent job the atoms should have the region and adf.f defined as options
+        # # for each atom we check which child it came from
+        # for atom in self._molecule:
+        #     for childname, child in self.childjobs.items():
+        #         if childname.endswith('_wghosts'):
+        #             continue
 
-        # write the atoms block as a string with new line characters
-        self.settings.input.ams.system.atoms = ('\n' + '\n'.join(atom_lines) + '\n\tEnd').expandtabs(4)
+        #         for childatom in child._molecule:
+        #             # we check by looking at the symbol and coordinates of the atom
+        #             if (atom.symbol, atom.x, atom.y, atom.z) == (childatom.symbol, childatom.x, childatom.y, childatom.z):
+        #                 atom.flags['region'] = childname
+        #                 atom.flags['adf.f'] = childname
+
         # set the _molecule to None, otherwise it will overwrite the atoms block
         # run this job
         self.rundir = j(self.rundir, self.name)
