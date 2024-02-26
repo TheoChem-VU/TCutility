@@ -2,6 +2,7 @@ from scm import plams
 from tcutility import log, results, formula, spell_check, data, molecule
 from tcutility.job.ams import AMSJob
 import os
+import copy
 
 
 j = os.path.join
@@ -266,8 +267,7 @@ class ADFFragmentJob(ADFJob):
         # we can be given a list of atoms
         if isinstance(mol, list) and isinstance(mol[0], plams.Atom):
             mol_ = plams.Molecule()
-            [mol_.add_atom(atom) for atom in mol]
-            mol = mol_
+            [mol_.add_atom(atom.copy()) for atom in mol]
 
         # or a list of integers
         if isinstance(mol, list) and isinstance(mol[0], int):
@@ -275,8 +275,7 @@ class ADFFragmentJob(ADFJob):
                 log.error(f'Trying to add fragment based on atom indices, but main job does not have a molecule yet. Call the {self.__class__.__name__}.molecule method to add one.')
                 return
             mol_ = plams.Molecule()
-            [mol_.add_atom(self._molecule[i].copy()) for i in mol]
-            mol = mol_.copy()
+            [mol_.add_atom(self._molecule[i]) for i in mol]
 
             add_frag_to_mol = False
 
@@ -286,6 +285,13 @@ class ADFFragmentJob(ADFJob):
             if any((atom.symbol, atom.coords) == (myatom.symbol, myatom.coords) for atom in child._molecule for myatom in mol):
                 log.error('An atom is present in multiple fragments.')
                 return
+
+        mol = mol.copy()
+        for atom in mol:
+            orig_flags = atom.flags
+            atom.flags = {}
+            atom.flags.update(orig_flags)
+            # atom.flags = copy.copy(atom.flags)
 
         name = name or f'fragment{len(self.childjobs) + 1}'
         self.childjobs[name] = ADFJob(test_mode=self.test_mode)
@@ -396,6 +402,8 @@ class ADFFragmentJob(ADFJob):
                     if (atom.symbol, atom.x, atom.y, atom.z) == (childatom.symbol, childatom.x, childatom.y, childatom.z):
                         atom.flags['region'] = childname
                         atom.flags['adf.f'] = childname
+
+            [print(atom.flags) for atom in child._molecule]
 
             if child.can_skip():
                 log.flow(log.Emojis.warning + ' Already ran, skipping', ['straight', 'end'])
