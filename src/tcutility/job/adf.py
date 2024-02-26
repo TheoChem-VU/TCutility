@@ -275,8 +275,9 @@ class ADFFragmentJob(ADFJob):
                 log.error(f'Trying to add fragment based on atom indices, but main job does not have a molecule yet. Call the {self.__class__.__name__}.molecule method to add one.')
                 return
             mol_ = plams.Molecule()
-            [mol_.add_atom(self._molecule[i]) for i in mol]
+            [mol_.add_atom(self._molecule[i].copy()) for i in mol]
             mol = mol_.copy()
+
             add_frag_to_mol = False
 
         # check if the atoms in the new fragment are already present in the other fragments.
@@ -288,7 +289,7 @@ class ADFFragmentJob(ADFJob):
 
         name = name or f'fragment{len(self.childjobs) + 1}'
         self.childjobs[name] = ADFJob(test_mode=self.test_mode)
-        self.childjobs[name].molecule(mol.copy())
+        self.childjobs[name].molecule(mol)
         self.childjobs[name].charge(charge)
         self.childjobs[name].spin_polarization(spin_polarization)
         setattr(self, name, self.childjobs[name])
@@ -433,20 +434,6 @@ class ADFFragmentJob(ADFJob):
                 log.flow(f'SlurmID:  {child.slurm_job_id}', ['straight', 'skip', 'straight'])
                 log.flow(f'Work dir: {child.workdir}', ['straight', 'skip', 'end'])
                 log.flow()
-
-
-        # # in the parent job the atoms should have the region and adf.f defined as options
-        # # for each atom we check which child it came from
-        # for atom in self._molecule:
-        #     for childname, child in self.childjobs.items():
-        #         if childname.endswith('_wghosts'):
-        #             continue
-
-        #         for childatom in child._molecule:
-        #             # we check by looking at the symbol and coordinates of the atom
-        #             if (atom.symbol, atom.x, atom.y, atom.z) == (childatom.symbol, childatom.x, childatom.y, childatom.z):
-        #                 atom.flags['region'] = childname
-        #                 atom.flags['adf.f'] = childname
 
         # set the _molecule to None, otherwise it will overwrite the atoms block
         # run this job
