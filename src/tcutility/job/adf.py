@@ -403,8 +403,6 @@ class ADFFragmentJob(ADFJob):
                         atom.flags['region'] = childname
                         atom.flags['adf.f'] = childname
 
-            [print(atom.flags) for atom in child._molecule]
-
             if child.can_skip():
                 log.flow(log.Emojis.warning + ' Already ran, skipping', ['straight', 'end'])
                 log.flow()
@@ -427,6 +425,10 @@ class ADFFragmentJob(ADFJob):
                 child.rundir = j(self.rundir, self.name)
                 child._ghost_atoms.extend(child._molecule.copy().atoms)
                 child.molecule(self._molecule.copy())
+                for atom in child._molecule:
+                    atom.flags = copy.copy(atom.flags)
+                    atom.flags.pop('adf.f', None)
+                    atom.flags.pop('region', None)
                 child._sbatch = results.Result(self._sbatch.copy())
 
                 if child.can_skip():
