@@ -1,15 +1,10 @@
-from tcutility.job.adf import ADFBSSEJob
+from tcutility.job.adf import ADFFragmentJob
 
 
-with ADFBSSEJob(test_mode=True) as job:
-    job.rundir = 'calculations/CrCO6'
-    job.name = 'BSSE_DZ'
-    job.molecule('CrCO6.xyz')
+with ADFFragmentJob(counter_poise=True) as job:
+    job.sbatch(p='tc', n=32)
+    job.functional('BLYP-D3(BJ)')
     job.basis_set('DZ')
-
-
-with ADFBSSEJob(test_mode=True) as job:
-    job.rundir = 'calculations/CrCO6'
-    job.name = 'BSSE_TZP'
-    job.molecule('CrCO6.xyz')
-    job.basis_set('TZP')
+    job.molecule('HF_dimer.xyz')
+    job.rundir = 'calculations'
+    job.name = 'HF_dimer_CPC'
