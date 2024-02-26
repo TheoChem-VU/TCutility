@@ -47,7 +47,7 @@
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Reading a calculation" href="tcutility.results.html" />
+    <link rel="next" title="tcutility.results" href="tcutility.results.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -232,23 +232,58 @@
 <h1>TCutility v0.10.3 documentation<a class="headerlink" href="#tcutility-projectversion-documentation" title="Link to this heading">#</a></h1>
 <p><strong>TCutility</strong> is a Python library containing many helper functions and classes for use in programs written in the TheoCheM group.</p>
 <div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Main modules</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tcutility.results.html">Reading a calculation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="analysis/analysis.html">Overview of the analysis module</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="tcutility.results.html">tcutility.results</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.results.html#overview">Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tcutility.job.html">tcutility.job</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.job.html#overview">Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#job-classes">Job classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#slurm-support">Slurm support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#job-dependencies">Job dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#rerun-prevention">Rerun prevention</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#supported-engines">Supported engines</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.job.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.job.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#geometry-optimization-using-adf">Geometry optimization using ADF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#fragment-calculation-using-adf">Fragment calculation using ADF</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="analysis/analysis.html">tcutility.analysis</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="analysis/transition_state_analysis.html">Transition State Analysis module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="analysis/vdd_charge_analysis.html">VDD Charge Analysis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/vdd_charge_analysis.html">VDD Charge Analysis module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analysis/vdd_charge_analysis.html#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/vdd_charge_analysis.html#example">Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/vdd_charge_analysis.html#vdd-analysis-api">VDD analysis API</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extra (utility) modules are:</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Utility modules</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tcutility.constants.html">tcutility.constants package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/tcutility.data.html">tcutility.data package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/tcutility.data.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/tcutility.data.html#module-tcutility.data.atom">tcutility.data.atom module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/tcutility.data.html#module-tcutility.data.basis_sets">tcutility.data.basis_sets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/tcutility.data.html#module-tcutility.data.cosmo">tcutility.data.cosmo module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/tcutility.data.html#module-tcutility.data.functionals">tcutility.data.functionals module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/tcutility.data.html#module-tcutility.data.molecules">tcutility.data.molecules module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/tcutility.data.html#module-tcutility.data">Module contents</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Full API:</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Full API</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/modules.html">tcutility</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/tcutility.html">tcutility package</a></li>
@@ -285,7 +320,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Reading a calculation</p>
+        <p class="prev-next-title">tcutility.results</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

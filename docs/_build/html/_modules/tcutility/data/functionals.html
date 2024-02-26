@@ -255,8 +255,12 @@
                 <article class="bd-article">
                   
   <h1>Source code for tcutility.data.functionals</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">results</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">spell_check</span>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module used for obtaining information about exchange-correlation functionals.</span>
+<span class="sd">For example, it can be useful to obtain </span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">results</span><span class="p">,</span> <span class="n">log</span>
 
 
 <span class="n">j</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
@@ -272,14 +276,12 @@
 <span class="sd">        functional_name: the name of the functional. It should exist in the :func:`get_available_functionals` keys.</span>
 
 <span class="sd">    Return:</span>
-<span class="sd">        A |Result| object containing information about the functional if it exists. Else it will return ``None``.</span>
+<span class="sd">        A :class:`Result &lt;tcutility.results.result.Result&gt;` object containing information about the functional if it exists. Else it will return ``None``.</span>
 <span class="sd">    </span>
 <span class="sd">    .. seealso::</span>
 <span class="sd">        :func:`get_available_functionals` for an overview of the information returned.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-
-    <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">functional_name</span><span class="p">,</span> <span class="n">functionals</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">caller_level</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">functionals</span><span class="p">[</span><span class="n">functional_name</span><span class="p">]</span></div>
+    <span class="k">return</span> <span class="n">functionals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">functional_name</span><span class="p">)</span></div>
 
 
 
@@ -291,7 +293,7 @@
 <span class="sd">    This can be useful when you want to know the functional from a path name.</span>
 
 <span class="sd">    Return:</span>
-<span class="sd">        A |Result| object containing information about the functional if it exists. Else it will return ``None``.</span>
+<span class="sd">        A :class:`Result &lt;tcutility.results.result.Result&gt;` object containing information about the functional if it exists. Else it will return ``None``.</span>
 <span class="sd">    </span>
 <span class="sd">    .. seealso::</span>
 <span class="sd">        :func:`get_available_functionals` for an overview of the information returned.</span>
@@ -309,7 +311,7 @@
 <span class="sd">    Function that returns a dictionary of all available XC-functionals.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        : A |Result| object containing information about all available XC-functionals.</span>
+<span class="sd">        : A :class:`Result &lt;tcutility.results.result.Result&gt;` object containing information about all available XC-functionals.</span>
 <span class="sd">            The functional names are stored as the keys and the functional information is stored as the values.</span>
 <span class="sd">            The values contain the following information:</span>
 
@@ -325,7 +327,7 @@
 <span class="sd">                - ``available_in_adf`` **(bool)** - whether the functional is available in ADF.</span>
 <span class="sd">                - ``available_in_band`` **(bool)** - whether the functional is available in BAND.</span>
 <span class="sd">                - ``available_in_orca`` **(bool)** - whether the functional is available in ORCA.</span>
-<span class="sd">                - ``adf_settings`` **(|Result|)** - the settings that are used to select the functional in the ADF input.</span>
+<span class="sd">                - ``adf_settings`` **(:class:`Result &lt;tcutility.results.result.Result&gt;`)** - the settings that are used to select the functional in the ADF input.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">def</span> <span class="nf">set_dispersion</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="n">disp_map</span> <span class="o">=</span> <span class="p">{</span>
@@ -428,7 +430,6 @@
         <span class="c1"># store data about the func in a dict</span>
         <span class="n">func</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">()</span>
         <span class="n">func</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">curr_category</span>
-
         <span class="c1"># separate the functional name from the line</span>
         <span class="n">functional_name</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">func</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">functional_name</span>
@@ -456,7 +457,7 @@
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;LYP&#39;</span><span class="p">))</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;OLYP&#39;</span><span class="p">))</span>
 </pre></div>
 
                 </article>

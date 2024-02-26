@@ -9,20 +9,30 @@ TCutility |ProjectVersion| documentation
 **TCutility** is a Python library containing many helper functions and classes for use in programs written in the TheoCheM group.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
+   :caption: Main modules
 
    tcutility.results
+   tcutility.job
    analysis/analysis
 
 .. toctree::
    :maxdepth: 2
-   :caption: Extra (utility) modules are:
+   :caption: Utility modules
 
-   tcutility.constants
+   api/tcutility.constants
+   api/tcutility.data
+   api/tcutility.log
+   api/tcutility.slurm
+   api/tcutility.molecule
+   api/tcutility.formula
+   api/tcutility.cache
+   api/tcutility.geometry
+   api/tcutility.report
 
 .. toctree::
    :maxdepth: 2
-   :caption: Full API:
+   :caption: Full API
 
    api/modules
 

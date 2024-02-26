@@ -291,16 +291,16 @@
 <span class="sd">    Get information about jobs managed by slurm using squeue.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        :Result object containing information about the calculation status:</span>
+<span class="sd">        : A :class:`Result &lt;tcutility.results.result.Result&gt;` object containing information about the calculation status:</span>
 
-<span class="sd">            - **directory (list[str])** – path to slurm directories.</span>
-<span class="sd">            - **id (list[str])** – slurm job id&#39;s.</span>
-<span class="sd">            - **status (list[str])** – slurm job status name. See squeue documentation.</span>
-<span class="sd">            - **statuscode (list[str])** – slurm job status codes. See squeue documentation</span>
+<span class="sd">            - ``directory`` **(list[str])** – path to slurm directories.</span>
+<span class="sd">            - ``id`` **(list[str])** – slurm job id&#39;s.</span>
+<span class="sd">            - ``status`` **(list[str])** – slurm job status name. See squeue documentation.</span>
+<span class="sd">            - ``statuscode`` **(list[str])** – slurm job status codes. See squeue documentation</span>
 
 <span class="sd">    .. note::</span>
 
-<span class="sd">        By default this function uses a timed cache (see :func:`cache.timed_cache`) with a 3 second delay to lessen the load on HPC systems.</span>
+<span class="sd">        By default this function uses a timed cache (see :func:`timed_cache &lt;tcutility.cache.timed_cache&gt;`) with a 3 second delay to lessen the load on HPC systems.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">()</span>
 
@@ -338,7 +338,10 @@
 <span class="sd">        options: options to be used for sbatch.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A :class:`results.Result` containing the slurm job ID as the ``id`` key and the full command used for submitting the job as the ``command`` key.</span>
+<span class="sd">        : A :class:`Result &lt;tcutility.results.result.Result&gt;` object containing information about the newly submitted slurm job </span>
+
+<span class="sd">            - ``id`` **(str)** - the ID for the submitted slurm job.</span>
+<span class="sd">            - ``command`` **(str)** - the command used to submit the job.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;sbatch &#39;</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">options</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>

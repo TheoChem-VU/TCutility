@@ -47,8 +47,8 @@
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="tcutility.job package" href="tcutility.job.html" />
-    <link rel="prev" title="tcutility.analysis.vibration package" href="tcutility.analysis.vibration.html" />
+    <link rel="next" title="tcutility" href="modules.html" />
+    <link rel="prev" title="VDD Charge Analysis module" href="../analysis/vdd_charge_analysis.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -209,24 +209,7 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="tcutility.html">tcutility package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.analysis.html">tcutility.analysis package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vdd.html">tcutility.analysis.vdd package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html">tcutility.analysis.vibration package</a></li>
-</ul>
-</li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">tcutility.data package</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="tcutility.job.postscripts.html">tcutility.job.postscripts package</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.results.html">tcutility.results package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.typing.html">tcutility.typing package</a></li>
-</ul>
-</li>
-</ul>
-</div>
+  <div class="bd-toc-item navbar-nav"></div>
 </nav></div>
     </div>
   
@@ -262,12 +245,6 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
-    <li class="breadcrumb-item"><a href="modules.html" class="nav-link">tcutility</a></li>
-    
-    
-    <li class="breadcrumb-item"><a href="tcutility.html" class="nav-link">tcutility package</a></li>
-    
     <li class="breadcrumb-item active" aria-current="page">tcutility.da...</li>
   </ul>
 </nav>
@@ -347,16 +324,21 @@
 </section>
 <section id="module-tcutility.data.functionals">
 <span id="tcutility-data-functionals-module"></span><h2>tcutility.data.functionals module<a class="headerlink" href="#module-tcutility.data.functionals" title="Link to this heading">#</a></h2>
+<p>Module used for obtaining information about exchange-correlation functionals.
+For example, it can be useful to obtain</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.data.functionals.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">functional_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/data/functionals.html#get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.functionals.get" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">functional_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/functionals.html#get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.functionals.get" title="Link to this definition">#</a></dt>
 <dd><p>Return information about a given functional.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>functional_name</strong> – the name of the functional. It should exist in the <a class="reference internal" href="#tcutility.data.functionals.get_available_functionals" title="tcutility.data.functionals.get_available_functionals"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_available_functionals()</span></code></a> keys.</p>
+<dd class="field-odd"><p><strong>functional_name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the name of the functional. It should exist in the <a class="reference internal" href="#tcutility.data.functionals.get_available_functionals" title="tcutility.data.functionals.get_available_functionals"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_available_functionals()</span></code></a> keys.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A <a href="#id1"><span class="problematic" id="id2">|Result|</span></a> object containing information about the functional if it exists. Else it will return <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A <a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> object containing information about the functional if it exists. Else it will return <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -367,12 +349,15 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.data.functionals.functional_name_from_path_safe_name">
-<span class="sig-name descname"><span class="pre">functional_name_from_path_safe_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_safe_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/data/functionals.html#functional_name_from_path_safe_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.functionals.functional_name_from_path_safe_name" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">functional_name_from_path_safe_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_safe_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/functionals.html#functional_name_from_path_safe_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.functionals.functional_name_from_path_safe_name" title="Link to this definition">#</a></dt>
 <dd><p>Return information about a given functional given its path-safe name.
 This can be useful when you want to know the functional from a path name.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A <a href="#id3"><span class="problematic" id="id4">|Result|</span></a> object containing information about the functional if it exists. Else it will return <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> object containing information about the functional if it exists. Else it will return <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -388,7 +373,7 @@ This can be useful when you want to know the functional from a path name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><dl>
-<dt>A <a href="#id5"><span class="problematic" id="id6">|Result|</span></a> object containing information about all available XC-functionals.</dt><dd><p>The functional names are stored as the keys and the functional information is stored as the values.
+<dt>A <a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> object containing information about all available XC-functionals.</dt><dd><p>The functional names are stored as the keys and the functional information is stored as the values.
 The values contain the following information:</p>
 <blockquote>
 <div><ul class="simple">
@@ -407,7 +392,7 @@ The values contain the following information:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">available_in_adf</span></code> <strong>(bool)</strong> - whether the functional is available in ADF.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">available_in_band</span></code> <strong>(bool)</strong> - whether the functional is available in BAND.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">available_in_orca</span></code> <strong>(bool)</strong> - whether the functional is available in ORCA.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">adf_settings</span></code> <strong>(|Result|)</strong> - the settings that are used to select the functional in the ADF input.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">adf_settings</span></code> <strong>(:class:`Result &lt;tcutility.results.result.Result&gt;`)</strong> - the settings that are used to select the functional in the ADF input.</p></li>
 </ul>
 </div></blockquote>
 </dd>
@@ -447,20 +432,20 @@ The values contain the following information:</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="tcutility.analysis.vibration.html"
+       href="../analysis/vdd_charge_analysis.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">tcutility.analysis.vibration package</p>
+        <p class="prev-next-title">VDD Charge Analysis module</p>
       </div>
     </a>
     <a class="right-next"
-       href="tcutility.job.html"
+       href="modules.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">tcutility.job package</p>
+        <p class="prev-next-title">tcutility</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

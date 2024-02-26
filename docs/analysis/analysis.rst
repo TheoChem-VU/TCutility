@@ -1,4 +1,4 @@
-﻿Overview of the analysis module
+﻿tcutility.analysis
 ================================
 
 This chapter contains description of all analysis functionalities including examples of usage.

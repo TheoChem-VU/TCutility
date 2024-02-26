@@ -294,14 +294,17 @@
 <span id="tcutility-results-adf-module"></span><h2>tcutility.results.adf module<a class="headerlink" href="#module-tcutility.results.adf" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.adf.get_calc_settings">
-<span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/adf.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.adf.get_calc_settings" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/adf.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.adf.get_calc_settings" title="Link to this definition">#</a></dt>
 <dd><p>Function to read calculation settings for an ADF calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> – Result object containing ADF calculation settings.</p>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ADF calculation settings.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing properties from the ADF calculation:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing properties from the ADF calculation:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>task (str)</strong> – the task that was set for the calculation.</p></li>
@@ -324,14 +327,17 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.adf.get_properties">
-<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/adf.html#get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.adf.get_properties" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/adf.html#get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.adf.get_properties" title="Link to this definition">#</a></dt>
 <dd><p>Function to get properties from an ADF calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> – Result object containing ADF properties.</p>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ADF properties.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing properties from the ADF calculation:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing properties from the ADF calculation:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>energy.bond (float)</strong> – bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
@@ -359,14 +365,17 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.adf.get_level_of_theory">
-<span class="sig-name descname"><span class="pre">get_level_of_theory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/adf.html#get_level_of_theory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.adf.get_level_of_theory" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_level_of_theory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/adf.html#get_level_of_theory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.adf.get_level_of_theory" title="Link to this definition">#</a></dt>
 <dd><p>Function to get the level-of-theory from an input-file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>inp_path</strong> – Path to the input file. Can be a .run or .in file create for AMS</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Dictionary containing information about the level-of-theory:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Dictionary containing information about the level-of-theory:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>summary (str)</strong> - a summary string that gives the level-of-theory in a human-readable format.</p></li>
@@ -390,28 +399,34 @@
 <span id="tcutility-results-ams-module"></span><h2>tcutility.results.ams module<a class="headerlink" href="#module-tcutility.results.ams" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.ams.get_calc_files">
-<span class="sig-name descname"><span class="pre">get_calc_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_calc_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_calc_files" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_calc_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_calc_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_calc_files" title="Link to this definition">#</a></dt>
 <dd><p>Function that returns files relevant to AMS calculations stored in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation</p>
+<dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path pointing to the desired calculation</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary containing filenames and paths</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary containing filenames and paths</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.ams.get_ams_version">
-<span class="sig-name descname"><span class="pre">get_ams_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_ams_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_ams_version" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_ams_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_ams_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_ams_version" title="Link to this definition">#</a></dt>
 <dd><p>Function to get the AMS version used in the calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+<dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path pointing to the desired calculation.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Dictionary containing results about the AMS version:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Dictionary containing results about the AMS version:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>full (str)</strong> – the full version string as written by SCM.</p></li>
@@ -428,14 +443,17 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.ams.get_ams_info">
-<span class="sig-name descname"><span class="pre">get_ams_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_ams_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_ams_info" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_ams_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_ams_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_ams_info" title="Link to this definition">#</a></dt>
 <dd><p>Function to read useful info about the calculation in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>. Returned information will depend on the type of file that is provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+<dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path pointing to the desired calculation.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Dictionary containing results about the calculation and AMS:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Dictionary containing results about the calculation and AMS:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>ams_version (Result)</strong> – information about the AMS version used, see <a class="reference internal" href="#tcutility.results.ams.get_ams_version" title="tcutility.results.ams.get_ams_version"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_ams_version()</span></code></a>.</p></li>
@@ -454,14 +472,17 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.ams.get_timing">
-<span class="sig-name descname"><span class="pre">get_timing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_timing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_timing" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_timing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_timing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_timing" title="Link to this definition">#</a></dt>
 <dd><p>Function to get the timings from the calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+<dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path pointing to the desired calculation.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Dictionary containing results about the timings:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Dictionary containing results about the timings:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>cpu (float)</strong> – time spent performing calculations on the cpu.</p></li>
@@ -476,15 +497,18 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.ams.get_calculation_status">
-<span class="sig-name descname"><span class="pre">get_calculation_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_calculation_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_calculation_status" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_calculation_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_calculation_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_calculation_status" title="Link to this definition">#</a></dt>
 <dd><p>Function that returns the status of the calculation described in reader.
 In case of non-succes it will also give possible reasons for the errors/warnings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>reader</strong> – <code class="docutils literal notranslate"><span class="pre">plams.KFReader</span></code> or <code class="docutils literal notranslate"><span class="pre">plams.KFFile</span></code> object pointing to the desired calculation</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Dictionary containing information about the calculation status:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Dictionary containing information about the calculation status:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>fatal (bool)</strong> – True if calculation cannot be analysed correctly, False otherwise</p></li>
@@ -500,15 +524,18 @@ In case of non-succes it will also give possible reasons for the errors/warnings
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.ams.get_molecules">
-<span class="sig-name descname"><span class="pre">get_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_molecules" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_molecules" title="Link to this definition">#</a></dt>
 <dd><p>Function to get molecules from the calculation, including input, output and history molecules.
 It will also add bonds to the molecule if they are given in the rkf file, else it will guess them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+<dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path pointing to the desired calculation.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Dictionary containing information about the molecular systems:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Dictionary containing information about the molecular systems:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>number_of_atoms (int)</strong> – number of atoms in the molecule.</p></li>
@@ -527,14 +554,17 @@ It will also add bonds to the molecule if they are given in the rkf file, else i
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.ams.get_history">
-<span class="sig-name descname"><span class="pre">get_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_history" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_history" title="Link to this definition">#</a></dt>
 <dd><p>Function to get history variables. The type of variables read depends on the type of calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+<dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path pointing to the desired calculation.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Dictionary containing information about the calculation status:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Dictionary containing information about the calculation status:</p>
 <blockquote>
 <div><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">number_of_entries</span></code> <strong>(int)</strong> – number of steps in the history.</p></li>
@@ -575,8 +605,13 @@ These blocks are special in that they can contain multiple of the same entry</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.ams.get_ams_input">
-<span class="sig-name descname"><span class="pre">get_ams_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_ams_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_ams_input" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_ams_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/ams.html#get_ams_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.ams.get_ams_input" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-tcutility.results.cache">
@@ -591,17 +626,20 @@ rkf files take a long time to open (especially {engine}.rkf), so it is better to
 For example, we can then trim rkf files to reduce their filesizes.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.results.cache.TrackKFReader.read">
-<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/tcutility/results/cache.html#TrackKFReader.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.cache.TrackKFReader.read" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/cache.html#TrackKFReader.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.cache.TrackKFReader.read" title="Link to this definition">#</a></dt>
 <dd><p>Read a variable from a section of an rkf file and store the accessed section and variable in the tracker.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>section</strong> – Name of the section to read from.</p></li>
-<li><p><strong>variable</strong> – Name of the variable inside the section.</p></li>
+<li><p><strong>section</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name of the section to read from.</p></li>
+<li><p><strong>variable</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name of the variable inside the section.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Any value returned will be automatically converted into the correct type. E.g. text-based data will be converted to a string, numbers to floats or integers, etc.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any value returned will be automatically converted into the correct type. E.g. text-based data will be converted to a string, numbers to floats or integers, etc.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -610,36 +648,42 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.cache.store">
-<span class="sig-name descname"><span class="pre">store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">KFReader</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/tcutility/results/cache.html#store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.cache.store" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/cache.html#store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.cache.store" title="Link to this definition">#</a></dt>
 <dd><p>Store an rkf reader in the cache. It can later be indexed by its path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>reader</strong> – An rkf file reader object.</p>
+<dd class="field-odd"><p><strong>reader</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">KFReader</span></code></span>) – An rkf file reader object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.cache.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">KFReader</span></span></span><a class="reference internal" href="../_modules/tcutility/results/cache.html#get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.cache.get" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/cache.html#get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.cache.get" title="Link to this definition">#</a></dt>
 <dd><p>Retrieve an rkf reader from storage using its path. If the file was not opened yet, open it first and then store and return the new object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – path to the rkf file location.</p>
+<dd class="field-odd"><p><strong>path</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path to the rkf file location.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An rkf file reader that can be used for reading data from a calculation.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">KFReader</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An rkf file reader that can be used for reading data from a calculation.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.cache.unload">
-<span class="sig-name descname"><span class="pre">unload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">KFReader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/cache.html#unload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.cache.unload" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">unload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/cache.html#unload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.cache.unload" title="Link to this definition">#</a></dt>
 <dd><p>Delete an rkf reader from storage. Since rkf files can be quite large, we should not forget to unload them after we have finished reading from them, lest we run into memory issues.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>arg</strong> – Either a path pointing to the rkf file location or the reader itself.</p>
+<dd class="field-odd"><p><strong>arg</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">KFReader</span></code>]</span>) – Either a path pointing to the rkf file location or the reader itself.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -649,20 +693,28 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <span id="tcutility-results-dftb-module"></span><h2>tcutility.results.dftb module<a class="headerlink" href="#module-tcutility.results.dftb" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.dftb.get_calc_settings">
-<span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/dftb.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.dftb.get_calc_settings" title="Link to this definition">#</a></dt>
-<dd><p>Function to read useful calculation settings from kf reader</p>
+<span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/dftb.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.dftb.get_calc_settings" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+</dl>
+<p>Function to read useful calculation settings from kf reader</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.dftb.get_properties">
-<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/dftb.html#get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.dftb.get_properties" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/dftb.html#get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.dftb.get_properties" title="Link to this definition">#</a></dt>
 <dd><p>Function to get properties from an ADF calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> – Result object containing ADF properties.</p>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ADF properties.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing properties from the ADF calculation:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing properties from the ADF calculation:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>energy.bond (float)</strong> – bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
@@ -678,28 +730,34 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <span id="tcutility-results-orca-module"></span><h2>tcutility.results.orca module<a class="headerlink" href="#module-tcutility.results.orca" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.orca.get_calc_files">
-<span class="sig-name descname"><span class="pre">get_calc_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_calc_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_calc_files" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_calc_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_calc_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_calc_files" title="Link to this definition">#</a></dt>
 <dd><p>Function that returns files relevant to AMS calculations stored in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation</p>
+<dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path pointing to the desired calculation</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Result object containing filenames and paths</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Result object containing filenames and paths</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.orca.get_version">
-<span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_version" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_version" title="Link to this definition">#</a></dt>
 <dd><p>Function to get the ORCA version used in the calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> – Result object containing ORCA calculation settings.</p>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA calculation settings.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing results about the ORCA version:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing results about the ORCA version:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>full (str)</strong> – the full version string as written by ORCA.</p></li>
@@ -715,14 +773,17 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.orca.get_input">
-<span class="sig-name descname"><span class="pre">get_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_input" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_input" title="Link to this definition">#</a></dt>
 <dd><p>Function that parses the input file for this ORCA calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> – Result object containing ORCA calculation settings.</p>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA calculation settings.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing information about the calculation input:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing information about the calculation input:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>main (list[str])</strong> - the main inputs for the calculation. These are the lines that start with a “!”.</p></li>
@@ -738,14 +799,17 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.orca.get_level_of_theory">
-<span class="sig-name descname"><span class="pre">get_level_of_theory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_level_of_theory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_level_of_theory" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_level_of_theory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_level_of_theory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_level_of_theory" title="Link to this definition">#</a></dt>
 <dd><p>Function to get the level-of-theory from an input-file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> – Result object containing ORCA calculation settings.</p>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA calculation settings.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing information about the level-of-theory:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing information about the level-of-theory:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>summary (str)</strong> - a summary string that gives the level-of-theory in a human-readable format.</p></li>
@@ -760,14 +824,17 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.orca.get_calc_settings">
-<span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_calc_settings" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_calc_settings" title="Link to this definition">#</a></dt>
 <dd><p>Function to read calculation settings for an ORCA calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> – Result object containing ORCA calculation settings.</p>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA calculation settings.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing properties from the ORCA calculation:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing properties from the ORCA calculation:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>task (str)</strong> – the task that was set for the calculation.</p></li>
@@ -786,14 +853,17 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.orca.get_calculation_status">
-<span class="sig-name descname"><span class="pre">get_calculation_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_calculation_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_calculation_status" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_calculation_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_calculation_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_calculation_status" title="Link to this definition">#</a></dt>
 <dd><p>Function that returns the status of the ORCA calculation described in reader. In case of non-succes it will also give possible reasons for the errors/warnings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> – Result object containing ORCA calculation information.</p>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA calculation information.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing information about the calculation status:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing information about the calculation status:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>fatal (bool)</strong> – True if calculation cannot be analysed correctly, False otherwise</p></li>
@@ -809,14 +879,17 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.orca.get_molecules">
-<span class="sig-name descname"><span class="pre">get_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_molecules" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_molecules" title="Link to this definition">#</a></dt>
 <dd><p>Function that returns information about the molecules for this calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> – Result object containing ORCA calculation information.</p>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA calculation information.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing properties from the ORCA calculation:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing properties from the ORCA calculation:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>input (plams.Molecule)</strong> - the input molecule for this calculation.</p></li>
@@ -831,14 +904,17 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.orca.get_info">
-<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_info" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_info" title="Link to this definition">#</a></dt>
 <dd><p>Function to read useful info about the calculation in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>. Returned information will depend on the type of file that is provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the desired calculation.</p>
+<dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path pointing to the desired calculation.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing results about the calculation and AMS:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing results about the calculation and AMS:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>version (Result)</strong> – information about the AMS version used, see <a class="reference internal" href="#tcutility.results.orca.get_version" title="tcutility.results.orca.get_version"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_version()</span></code></a>.</p></li>
@@ -882,14 +958,17 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.orca.get_properties">
-<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_properties" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_properties" title="Link to this definition">#</a></dt>
 <dd><p>Function to get properties from an ORCA calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> – Result object containing ORCA properties.</p>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA properties.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Result object containing properties from the ORCA calculation:</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing properties from the ORCA calculation:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>energy.bond (float)</strong> – total bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
@@ -951,7 +1030,7 @@ with dunders, as they should not be exposed to the user.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.results.result.Result.get_multi_key">
-<span class="sig-name descname"><span class="pre">get_multi_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result.get_multi_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result.get_multi_key" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_multi_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result.get_multi_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result.get_multi_key" title="Link to this definition">#</a></dt>
 <dd><p>Method that returns the value of a “multikey”. The multikey is multiple keys joined by dots.
 E.g. res.properties.energy.bond can be gotten by calling res.get_multi_key(“properties.energy.bond”)</p>
 </dd></dl>
@@ -971,10 +1050,13 @@ E.g. res.properties.energy.bond can be gotten by calling res.get_multi_key(“pr
 This includes information about the engine used (ADF, DFTB, BAND, …), general information such as timings, files, status of the calculation, etc.
 This information is used in further analysis programs.</p>
 <p>Typical usage example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Reading a calculation
-=======================
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>tcutility.results
+=================
 
-The tcutility.results package enables you to easily retrieve information and results from a calculation done using AMS.
+Overview
+--------
+
+The ``tcutility.results`` package allows you to easily retrieve information and results from a calculation performed using AMS, ORCA or CREST.
 This includes results and settings from AMS as well as the calculation engine used (e.g. ADF, BAND, DFTB, ...).
 Recommended usage is to use the |read| function to read the information.
 One can also access specific information by calling one the functions in the submodules below.
@@ -1004,19 +1086,22 @@ Information will be given as :class:`tcutility.results.result.Result` objects an
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.get_info">
-<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results.html#get_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.get_info" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results.html#get_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.get_info" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.read">
-<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/results.html#read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.read" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results.html#read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.read" title="Link to this definition">#</a></dt>
 <dd><p>Master function for reading data from calculations. It reads general information as well as engine-specific information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>calc_dir</strong> – path pointing to the working directory for the desired calculation</p>
+<dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>]</span>) – path pointing to the working directory for the desired calculation</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>dictionary containing information about the calculation</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dictionary containing information about the calculation</p>
 </dd>
 </dl>
 </dd></dl>
