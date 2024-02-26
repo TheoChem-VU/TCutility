@@ -426,7 +426,7 @@ class ADFFragmentJob(ADFJob):
                 child._ghost_atoms.extend(child._molecule.copy().atoms)
                 child.molecule(self._molecule.copy())
                 for atom in child._molecule:
-                    origin_flags = atom.flags
+                    orig_flags = atom.flags
                     atom.flags = {}
                     atom.flags.update(orig_flags)
                     atom.flags.pop('adf.f', None)
