@@ -288,7 +288,7 @@ class ADFFragmentJob(ADFJob):
 
         name = name or f'fragment{len(self.childjobs) + 1}'
         self.childjobs[name] = ADFJob(test_mode=self.test_mode)
-        self.childjobs[name].molecule(mol)
+        self.childjobs[name].molecule(mol.copy())
         self.childjobs[name].charge(charge)
         self.childjobs[name].spin_polarization(spin_polarization)
         setattr(self, name, self.childjobs[name])
