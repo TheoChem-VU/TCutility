@@ -17,8 +17,8 @@ def test_get2():
 	assert functionals.get('rev-DSD-PBEP86').name == 'rev-DSD-PBEP86'
 	assert functionals.get('rev-DSD-PBEP86').name_no_disp == 'rev-DSD-PBEP86'
 	assert functionals.get('rev-DSD-PBEP86').category == 'DoubleHybrid'
-	assert functionals.get('rev-DSD-PBEP86').dispersion == None
-	assert functionals.get('rev-DSD-PBEP86').dispersion_name == None
+	assert functionals.get('rev-DSD-PBEP86').dispersion is None
+	assert functionals.get('rev-DSD-PBEP86').dispersion_name is None
 	assert functionals.get('rev-DSD-PBEP86').includes_disp is False
 	assert functionals.get('rev-DSD-PBEP86').use_libxc is False
 	assert functionals.get('rev-DSD-PBEP86').available_in_adf is True
