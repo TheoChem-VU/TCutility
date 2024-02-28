@@ -123,6 +123,9 @@ class AMSJob(Job):
             self.settings.input.ams.PESScan.ScanCoordinate.SumDist = [" ".join([str(x) for x in dist]) for dist in sumdists]
         if difdists is not None:
             self.settings.input.ams.PESScan.ScanCoordinate.DifDist = [" ".join([str(x) for x in dist]) for dist in difdists]
+            
+        self.add_postscript(tcutility.job.postscripts.clean_workdir)
+        self.add_postscript(tcutility.job.postscripts.write_converged_geoms)
 
     def vibrations(self, enable: bool = True, NegativeFrequenciesTolerance: float = -5):
         '''
