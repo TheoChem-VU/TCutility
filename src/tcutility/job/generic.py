@@ -34,6 +34,7 @@ class Job:
         self.wait_for_finish = wait_for_finish
         self._preambles = []
         self._postambles = []
+        self._postscripts = []
 
     def __enter__(self):
         return self
@@ -104,6 +105,10 @@ class Job:
             log.info(f'Skipping calculation {j(self.rundir, self.name)}, it is already finished or currently pending or running.')
             return
 
+        # write the post-script calls to the post-ambles:
+        for postscript in self._postscripts:
+            print(postscript)
+            self._postambles.append(f'python {postscript[0]} {" ".join(postscript[1])}')
         # setup the job and check if it was successfull
         setup_success = self._setup_job()
 
@@ -155,9 +160,19 @@ class Job:
         '''
         self._postambles.append(line)
 
-    def add_postscript(self, script):
-        self.add_postamble(f'cd {self.workdir}')
-        self.add_postamble(f'python {script.__file__}')
+    def add_postscript(self, script, *args):
+        '''
+        Add a post-script to this calculation. 
+        This should be either a Python module with a __file__ attribute or the path to a Python script.
+        The post-script will be called with Python and any given args will be added as arguments when calling the script.
+
+        Args:
+            script: a Python object with a __file__ attribute or the file-path to a script.
+            *args: positional arguments to pass to the post-script.
+        '''
+        if not isinstance(script, str):
+            script = script.__file__
+        self._postscripts.append((script, args))
 
     def dependency(self, otherjob: 'Job'):
         '''
