@@ -37,8 +37,11 @@ def functional_name_from_path_safe_name(path_safe_name: str) -> results.Result:
         :func:`get_available_functionals` for an overview of the information returned.
     '''
     for functional, functional_info in functionals.items():
-        if path_safe_name == functional_info.path_safe_name:
+        if path_safe_name.lower() == functional_info.path_safe_name.lower():
             return functional
+        elif path_safe_name.replace('-', '').lower() == functional_info.path_safe_name.replace('-', '').lower():
+            return functional
+
 
 
 def get_available_functionals():
