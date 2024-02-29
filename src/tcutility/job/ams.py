@@ -89,6 +89,44 @@ class AMSJob(Job):
         self.add_postscript(tcutility.job.postscripts.clean_workdir)
         self.add_postscript(tcutility.job.postscripts.write_converged_geoms)
 
+    def PESScan(self, distances: list = None, angles: list = None, dihedrals: list = None, sumdists: list = None, difdists: list = None, npoints: int = 10):
+        '''
+        Set the task of the job to potential energy surface scan (PESScan).
+
+        Args:
+            distances: sequence of tuples or lists containing ``[atom_index1, atom_index2, start, end]``. 
+                Atom indices start at 1. Distances are given in |angstrom|.
+            angles: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, start, end]``. 
+                Atom indices start at 1. Angles are given in degrees
+            dihedrals: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, atom_index4, start, end]``. 
+                Atom indices start at 1. Angles are given in degrees
+            sumdists: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, atom_index4, start, end]``. 
+                Atom indices start at 1. Sum of distances is given in |angstrom|.
+            difdists: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, atom_index4, start, end]``. 
+                Atom indices start at 1. Difference of distances is given in |angstrom|.
+            npoints: the number of PES points to optimize.
+
+        .. note::
+            Currently we only support generating settings for 1-dimensional PESScans. 
+            We will add support for N-dimensional PESScans later.
+        '''
+        self._task = 'PESScan'
+        self.settings.input.ams.task = 'PESScan'
+        self.settings.input.ams.PESScan.ScanCoordinate.nPoints = npoints
+        if distances is not None:
+            self.settings.input.ams.PESScan.ScanCoordinate.Distance = [" ".join([str(x) for x in dist]) for dist in distances]
+        if angles is not None:
+            self.settings.input.ams.PESScan.ScanCoordinate.Angle = [" ".join([str(x) for x in ang]) for ang in angles]
+        if dihedrals is not None:
+            self.settings.input.ams.PESScan.ScanCoordinate.Dihedral = [" ".join([str(x) for x in dihedral]) for dihedral in dihedrals]
+        if sumdists is not None:
+            self.settings.input.ams.PESScan.ScanCoordinate.SumDist = [" ".join([str(x) for x in dist]) for dist in sumdists]
+        if difdists is not None:
+            self.settings.input.ams.PESScan.ScanCoordinate.DifDist = [" ".join([str(x) for x in dist]) for dist in difdists]
+            
+        self.add_postscript(tcutility.job.postscripts.clean_workdir)
+        self.add_postscript(tcutility.job.postscripts.write_converged_geoms)
+
     def vibrations(self, enable: bool = True, NegativeFrequenciesTolerance: float = -5):
         '''
         Set the calculation of vibrational modes. 
