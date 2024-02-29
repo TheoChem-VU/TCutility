@@ -12,7 +12,7 @@ TCutility |ProjectVersion| documentation
    :maxdepth: 3
    :caption: Main modules
 
-   tcutility.results
+   results/results
    tcutility.job
    analysis/analysis
 

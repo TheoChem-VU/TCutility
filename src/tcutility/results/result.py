@@ -24,6 +24,33 @@ class Result(dict):
         original_keys = super().keys()
         return [key for key in original_keys if not (key.startswith('__') and key.endswith('__'))]
 
+    def multi_keys(self):
+        '''
+        Return multi_keys for this Result object. These are unnested keys that can be used if you want a flattened Result object.
+        '''
+        def dict_to_list(a):
+            '''
+            Return a nested dictionary as a list of keys and values.
+            '''
+            lst = []
+            if not isinstance(a, dict):
+                return [[a]]
+            for k, v in a.items():
+                if isinstance(v, dict):
+                    if v == {}:
+                        lst.append([k, {}])
+                    else:
+                        [lst.append([k, *x]) for x in dict_to_list(v)]
+                else:
+                    lst.append([k, v])
+            return lst
+
+        # cast this object to a list of keys and values
+        mks = dict_to_list(self)
+        # write the multi-keys separated with dots
+        mks = ['.'.join(mk[:-1]) for mk in mks]
+        return mks
+
     def __getitem__(self, key):
         if key.startswith('__') and key.endswith('__'):
             return None
