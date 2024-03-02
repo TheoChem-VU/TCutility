@@ -491,13 +491,13 @@ class DensfJob(Job):
             inpf.write( 'END\n')
 
             if len(self._mos) > 0:
-                inpf.write(f'Orbitals SCF\n')
+                inpf.write('Orbitals SCF\n')
                 for orb in self._mos:
                     inpf.write(f'    {orb.symmetry} {orb.index}\n')
                 inpf.write('END\n')
 
             if len(self._sfos) > 0:
-                inpf.write(f'Orbitals SFO\n')
+                inpf.write('Orbitals SFO\n')
                 for orb in self._sfos:
                     inpf.write(f'    {orb.symmetry} {orb.index}\n')
                 inpf.write('END\n')
