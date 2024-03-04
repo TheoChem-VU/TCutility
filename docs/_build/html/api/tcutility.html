@@ -589,12 +589,12 @@ This cache will expire after a chosen amount of time.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.formula.molecule">
 <span class="sig-name descname"><span class="pre">molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'unicode'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/formula.html#molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.formula.molecule" title="Link to this definition">#</a></dt>
-<dd><p>Parse and return a string containing a molecular formula that will show up properly in LaTeX or HTML.</p>
+<dd><p>Parse and return a string containing a molecular formula that will show up properly in LaTeX, HTML or unicode.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>molecule</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code>]</span>) – plams.Molecule object or a string that contains the molecular formula to be parsed. It can be either single molecule or a reaction. Molecules should be separated by ‘+’ or ‘-&gt;’.</p></li>
-<li><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the formatter to convert the string to. Should be ‘unicode’, ‘html’, ‘latex’.</p></li>
+<li><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the formatter to convert the string to. Should be ‘unicode’, ‘html’, ‘latex’, ‘pyplot’.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
