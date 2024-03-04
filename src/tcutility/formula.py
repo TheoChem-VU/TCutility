@@ -27,11 +27,11 @@ def parse_molecule(molecule: plams.Molecule) -> str:
 
 def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str:
     """
-    Parse and return a string containing a molecular formula that will show up properly in LaTeX or HTML.
+    Parse and return a string containing a molecular formula that will show up properly in LaTeX, HTML or unicode.
 
     Args:
         molecule: plams.Molecule object or a string that contains the molecular formula to be parsed. It can be either single molecule or a reaction. Molecules should be separated by '+' or '->'.
-        mode: the formatter to convert the string to. Should be 'unicode', 'html', 'latex'.
+        mode: the formatter to convert the string to. Should be 'unicode', 'html', 'latex', 'pyplot'.
 
     Returns:
         A string that is formatted to be rendered nicely in either HTML or LaTeX.
@@ -53,7 +53,7 @@ def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str
         partret = part
         # numbers should be subscript
         for num in "0123456789":
-            if mode == "latex":
+            if mode in ["latex", "pyplot"]:
                 partret = partret.replace(num, f"_{num}")
             if mode == "html":
                 partret = partret.replace(num, f"<sub>{num}</sub>")
@@ -63,7 +63,7 @@ def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str
         # signs should be superscript
         for sign in "+-":
             # negative charges should be denoted by em dash and not a normal dash
-            if mode == "latex":
+            if mode in ["latex", "pyplot"]:
                 partret = partret.replace(sign, f'^{sign.replace("-", "—")}')
             if mode == "html":
                 partret = partret.replace(sign, f'<sup>{sign.replace("-", "—")}</sup>')
@@ -71,6 +71,9 @@ def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str
                 partret = partret.replace(sign, "⁺⁻"["+-".index(sign)])
         # replace the part in the original string
         molstring = molstring.replace(part, partret)
+
+    if mode == 'pyplot':
+        return fr"${molstring}$"
 
     return molstring
 
