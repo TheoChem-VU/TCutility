@@ -1,8 +1,8 @@
 from scm import plams
 from tcutility import log, results, formula, spell_check, data, molecule
 from tcutility.job.ams import AMSJob
+from tcutility.job.generic import Job
 import os
-
 
 j = os.path.join
 
@@ -437,13 +437,106 @@ class ADFFragmentJob(ADFJob):
         log.flow(log.Emojis.finish + ' Done, bye!', ['startinv'])
 
 
+class DensfJob(Job):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.rundir = 'tmp'
+        self.name = 'densf'
+        self.gridsize()
+        self._mos = []
+        self._sfos = []
+        self.settings.ADFFile = None
+
+    def __str__(self):
+        return f'Densf({self.target}), running in {self.workdir}'
+
+    def gridsize(self, size='medium'):
+        '''
+        Set the size of the grid to be used by Densf.
+
+        Args:
+            size: either "coarse", "medium", "fine". Defaults to "medium".
+        '''
+        spell_check.check(size, ['coarse', 'medium', 'fine'], ignore_case=True)
+        self.settings.grid = size
+
+    def orbital(self, orbital: 'pyfmo.orbitals.sfo.SFO' or 'pyfmo.orbitals.mo.MO'):
+        '''
+        Add a PyOrb orbital for Densf to calculate.
+        '''
+        import pyfmo
+
+        if isinstance(orbital, pyfmo.orbitals.sfo.SFO):
+            self._sfos.append(orbital)
+        elif isinstance(orbital, pyfmo.orbitals.mo.MO):
+            self._mos.append(orbital)
+        else:
+            raise ValueError(f'Unknown object {orbital} of type{type(orbital)}. It should be a pyfmo.orbitals.sfo.SFO or pyfmo.orbitals.mos.MO object.')
+
+        # check if the ADFFile is the same for all added orbitals
+        if self.settings.ADFFile is None:
+            self.settings.ADFFile = orbital.kfpath
+
+        elif self.settings.ADFFile != orbital.kfpath:
+            raise ValueError('RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.')
+
+    def _setup_job(self):
+        os.makedirs(self.workdir, exist_ok=True)
+
+        # set up the input file. This should always contain calling of the densf program, as per the SCM documentation
+        with open(self.inputfile_path, 'w+') as inpf:
+            inpf.write( '$AMSBIN/densf << eor\n')
+            inpf.write(f'ADFFile {self.settings.ADFFile}\n')
+            inpf.write(f'GRID {self.settings.grid}\n')
+            inpf.write( 'END\n')
+
+            if len(self._mos) > 0:
+                inpf.write('Orbitals SCF\n')
+                for orb in self._mos:
+                    inpf.write(f'    {orb.symmetry} {orb.index}\n')
+                inpf.write('END\n')
+
+            if len(self._sfos) > 0:
+                inpf.write('Orbitals SFO\n')
+                for orb in self._sfos:
+                    inpf.write(f'    {orb.symmetry} {orb.index}\n')
+                inpf.write('END\n')
+            # cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size
+            inpf.write(f'CUBOUTPUT {os.path.split(self.settings.ADFFile)[0]}/{self.settings.grid}\n')
+            inpf.write('eor\n')
+
+        # the runfile should simply execute the input file.
+        with open(self.runfile_path, 'w+') as runf:
+            runf.write('#!/bin/sh\n\n')
+            runf.write('\n'.join(self._preambles) + '\n\n')
+            runf.write(f'sh {self.inputfile_path}\n')
+            runf.write('\n'.join(self._postambles))
+
+        return True
+
+    @property
+    def output_cub_paths(self):
+        '''
+        The output cube file paths that will be/were calculated by this job.
+        '''
+        paths = []
+        cuboutput = f'{os.path.split(self.settings.ADFFile)[0]}/{self.settings.grid}'
+
+        for mo in self._mos:
+            paths.append(f'{cuboutput}%SCF_{mo.symmetry}%{mo.index}.cub')
+
+        for sfo in self._sfos:
+            paths.append(f'{cuboutput}%SFO_{sfo.symmetry}%{sfo.index}.cub')
+
+        return paths
+
+    def can_skip(self):
+        return all(os.path.exists(path) for path in self.output_cub_paths)
+
+
 if __name__ == '__main__':
-    with ADFJob(test_mode=True) as job:
-        job.rundir = 'tmp/SN2/EDA'
-        job.molecule('../../../test/fixtures/xyz/pyr.xyz')
-        job.sbatch(p='tc', ntasks_per_node=15)
-        job.solvent('')
-        job.basis_set('tz2p')
-        job.SCF_convergence(1e-10)
-        job.quality('veryGood')
-        job.functional('LYP-D3BJ')
+    import pyfmo
+
+    orbs = pyfmo.orbitals.Orbitals('/Users/yumanhordijk/PhD/MM2024/calculations/IRC/pi_beta_trans_TS1/pi_beta/pi_beta_trans/complex.00039/adf.rkf')
+    with DensfJob() as job:
+        job.orbital(orbs.sfos['frag1(HOMO)'])
