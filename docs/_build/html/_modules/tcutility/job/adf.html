@@ -258,8 +258,8 @@
 <span></span><span class="kn">from</span> <span class="nn">scm</span> <span class="kn">import</span> <span class="n">plams</span>
 <span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">spell_check</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">molecule</span>
 <span class="kn">from</span> <span class="nn">tcutility.job.ams</span> <span class="kn">import</span> <span class="n">AMSJob</span>
+<span class="kn">from</span> <span class="nn">tcutility.job.generic</span> <span class="kn">import</span> <span class="n">Job</span>
 <span class="kn">import</span> <span class="nn">os</span>
-
 
 <span class="n">j</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
 
@@ -742,16 +742,121 @@
 
 
 
+<div class="viewcode-block" id="DensfJob">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob">[docs]</a>
+<span class="k">class</span> <span class="nc">DensfJob</span><span class="p">(</span><span class="n">Job</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="s1">&#39;tmp&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;densf&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gridsize</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mos</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Densf(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="si">}</span><span class="s1">), running in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s1">&#39;</span>
+
+<div class="viewcode-block" id="DensfJob.gridsize">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob.gridsize">[docs]</a>
+    <span class="k">def</span> <span class="nf">gridsize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;medium&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the size of the grid to be used by Densf.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            size: either &quot;coarse&quot;, &quot;medium&quot;, &quot;fine&quot;. Defaults to &quot;medium&quot;.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;coarse&#39;</span><span class="p">,</span> <span class="s1">&#39;medium&#39;</span><span class="p">,</span> <span class="s1">&#39;fine&#39;</span><span class="p">],</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">size</span></div>
+
+
+<div class="viewcode-block" id="DensfJob.orbital">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob.orbital">[docs]</a>
+    <span class="k">def</span> <span class="nf">orbital</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbital</span><span class="p">:</span> <span class="s1">&#39;pyfmo.orbitals.sfo.SFO&#39;</span> <span class="ow">or</span> <span class="s1">&#39;pyfmo.orbitals.mo.MO&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Add a PyOrb orbital for Densf to calculate.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="kn">import</span> <span class="nn">pyfmo</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">orbital</span><span class="p">,</span> <span class="n">pyfmo</span><span class="o">.</span><span class="n">orbitals</span><span class="o">.</span><span class="n">sfo</span><span class="o">.</span><span class="n">SFO</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">orbital</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">orbital</span><span class="p">,</span> <span class="n">pyfmo</span><span class="o">.</span><span class="n">orbitals</span><span class="o">.</span><span class="n">mo</span><span class="o">.</span><span class="n">MO</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">orbital</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown object </span><span class="si">{</span><span class="n">orbital</span><span class="si">}</span><span class="s1"> of type</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">orbital</span><span class="p">)</span><span class="si">}</span><span class="s1">. It should be a pyfmo.orbitals.sfo.SFO or pyfmo.orbitals.mos.MO object.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># check if the ADFFile is the same for all added orbitals</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span> <span class="o">=</span> <span class="n">orbital</span><span class="o">.</span><span class="n">kfpath</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span> <span class="o">!=</span> <span class="n">orbital</span><span class="o">.</span><span class="n">kfpath</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.&#39;</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_setup_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># set up the input file. This should always contain calling of the densf program, as per the SCM documentation</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputfile_path</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpf</span><span class="p">:</span>
+            <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s1">&#39;$AMSBIN/densf &lt;&lt; eor</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ADFFile </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;GRID </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="s1">&#39;END</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Orbitals SCF</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">orb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mos</span><span class="p">:</span>
+                    <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;END</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Orbitals SFO</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">orb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span><span class="p">:</span>
+                    <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;END</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="c1"># cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size</span>
+            <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;CUBOUTPUT </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;eor</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="c1"># the runfile should simply execute the input file.</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runfile_path</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">runf</span><span class="p">:</span>
+            <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/sh</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_preambles</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;sh </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">inputfile_path</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_postambles</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">output_cub_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        The output cube file paths that will be/were calculated by this job.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cuboutput</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span><span class="si">}</span><span class="s1">&#39;</span>
+
+        <span class="k">for</span> <span class="n">mo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mos</span><span class="p">:</span>
+            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SCF_</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s1">%</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s1">.cub&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">sfo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span><span class="p">:</span>
+            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SFO_</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s1">%</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s1">.cub&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">paths</span>
+
+<div class="viewcode-block" id="DensfJob.can_skip">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob.can_skip">[docs]</a>
+    <span class="k">def</span> <span class="nf">can_skip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_cub_paths</span><span class="p">)</span></div>
+</div>
+
+
+
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="k">with</span> <span class="n">ADFJob</span><span class="p">(</span><span class="n">test_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="s1">&#39;tmp/SN2/EDA&#39;</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;../../../test/fixtures/xyz/pyr.xyz&#39;</span><span class="p">)</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="s1">&#39;tc&#39;</span><span class="p">,</span> <span class="n">ntasks_per_node</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">solvent</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">basis_set</span><span class="p">(</span><span class="s1">&#39;tz2p&#39;</span><span class="p">)</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">SCF_convergence</span><span class="p">(</span><span class="mf">1e-10</span><span class="p">)</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">quality</span><span class="p">(</span><span class="s1">&#39;veryGood&#39;</span><span class="p">)</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">functional</span><span class="p">(</span><span class="s1">&#39;LYP-D3BJ&#39;</span><span class="p">)</span>
+    <span class="kn">import</span> <span class="nn">pyfmo</span>
+
+    <span class="n">orbs</span> <span class="o">=</span> <span class="n">pyfmo</span><span class="o">.</span><span class="n">orbitals</span><span class="o">.</span><span class="n">Orbitals</span><span class="p">(</span><span class="s1">&#39;/Users/yumanhordijk/PhD/MM2024/calculations/IRC/pi_beta_trans_TS1/pi_beta/pi_beta_trans/complex.00039/adf.rkf&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">DensfJob</span><span class="p">()</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">orbital</span><span class="p">(</span><span class="n">orbs</span><span class="o">.</span><span class="n">sfos</span><span class="p">[</span><span class="s1">&#39;frag1(HOMO)&#39;</span><span class="p">])</span>
 </pre></div>
 
                 </article>

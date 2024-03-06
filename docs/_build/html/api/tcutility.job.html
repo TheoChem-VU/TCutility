@@ -531,6 +531,49 @@ It will also submit a calculation with the SCF iterations set to 0 in order to f
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="tcutility.job.adf.DensfJob">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DensfJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#DensfJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.DensfJob" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.adf.DensfJob.gridsize">
+<span class="sig-name descname"><span class="pre">gridsize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#DensfJob.gridsize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.DensfJob.gridsize" title="Link to this definition">#</a></dt>
+<dd><p>Set the size of the grid to be used by Densf.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> – either “coarse”, “medium”, “fine”. Defaults to “medium”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.adf.DensfJob.orbital">
+<span class="sig-name descname"><span class="pre">orbital</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orbital</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#DensfJob.orbital"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.DensfJob.orbital" title="Link to this definition">#</a></dt>
+<dd><p>Add a PyOrb orbital for Densf to calculate.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tcutility.job.adf.DensfJob.output_cub_paths">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_cub_paths</span></span><a class="headerlink" href="#tcutility.job.adf.DensfJob.output_cub_paths" title="Link to this definition">#</a></dt>
+<dd><p>The output cube file paths that will be/were calculated by this job.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.adf.DensfJob.can_skip">
+<span class="sig-name descname"><span class="pre">can_skip</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#DensfJob.can_skip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.DensfJob.can_skip" title="Link to this definition">#</a></dt>
+<dd><p>Check whether the job can be skipped. We check this by loading the calculation and checking if the job status was fatal.
+Fatal in this case means that the job failed, canceled or could not be found. In those cases we want to run the job.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method works for the <a class="reference internal" href="#tcutility.job.adf.ADFJob" title="tcutility.job.adf.ADFJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADFJob</span></code></a>, <a class="reference internal" href="#tcutility.job.adf.ADFFragmentJob" title="tcutility.job.adf.ADFFragmentJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code></a>,
+<a class="reference internal" href="#tcutility.job.dftb.DFTBJob" title="tcutility.job.dftb.DFTBJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">DFTBJob</span></code></a> and <a class="reference internal" href="#tcutility.job.orca.ORCAJob" title="tcutility.job.orca.ORCAJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ORCAJob</span></code></a> objects, but not
+yet for <a class="reference internal" href="#tcutility.job.crest.CRESTJob" title="tcutility.job.crest.CRESTJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">CRESTJob</span></code></a> and <a class="reference internal" href="#tcutility.job.crest.QCGJob" title="tcutility.job.crest.QCGJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">QCGJob</span></code></a>. For the latter objects the job will always be rerun.
+This will be fixed in a later version of TCutility.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-tcutility.job.ams">
 <span id="tcutility-job-ams-module"></span><h2>tcutility.job.ams module<a class="headerlink" href="#module-tcutility.job.ams" title="Link to this heading">#</a></h2>
@@ -1134,6 +1177,13 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.add_fragment"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.add_fragment()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.guess_fragments"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.guess_fragments()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.run"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.run()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.DensfJob"><code class="docutils literal notranslate"><span class="pre">DensfJob</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.DensfJob.gridsize"><code class="docutils literal notranslate"><span class="pre">DensfJob.gridsize()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.DensfJob.orbital"><code class="docutils literal notranslate"><span class="pre">DensfJob.orbital()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.DensfJob.output_cub_paths"><code class="docutils literal notranslate"><span class="pre">DensfJob.output_cub_paths</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.DensfJob.can_skip"><code class="docutils literal notranslate"><span class="pre">DensfJob.can_skip()</span></code></a></li>
 </ul>
 </li>
 </ul>
