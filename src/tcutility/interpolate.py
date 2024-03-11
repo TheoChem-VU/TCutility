@@ -46,6 +46,9 @@ class Estimator:
 		'''
 		raise NotImplementedError()
 
+	@property
+	def ndim(self) -> int:
+		return self.X.shape[1]
 
 class Linear(Estimator):
 	'''
