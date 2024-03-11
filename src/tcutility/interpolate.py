@@ -3,19 +3,21 @@ import numpy as np
 
 class Estimator:
 	'''
-	Base class for interpolation/extrapolation classes.
+	Initialize the ``Estimator`` with data ``X`` and ``Y``. 
+	The estimator will use this data to make its estimates. 
+
+	Args:
+		X: the independent variable used to predict the values. The positions of points to be estimated will be based on these.
+			``X`` should be of shape ``(N, n)`` with ``N`` datapoints and ``n`` dimensions. If the shape is ``(N)`` we assume ``n = 1``.
+		Y: the dependent reference data used to calculate the new estimated values. Should be of shape ``(N)``.
 	'''
-	_allow_extrapolation = True
-
 	def __init__(self, X: np.ndarray, Y: np.ndarray):
-		'''
-		Initialize the ``Estimator`` with data ``X`` and ``Y``. 
-		The estimator will use this data to make its estimates. 
+		# make sure the input is at least 2D
+		X = np.array(X)
+		Y = np.array(Y)
+		if len(X.shape) == 1:
+			X = np.atleast_2d(X).T
 
-		Args:
-			X: the independent variable used to predict the values. The positions of points to be estimated will be based on these.
-			Y: the dependent reference data used to calculate the new estimated values.
-		'''
 		# we should sort the data by the x-values
 		sorted_idx = np.argsort(X)
 
