@@ -19,13 +19,13 @@ class Estimator:
 			X = np.atleast_2d(X).T
 
 		# we should sort the data by the x-values
-		sorted_idx = np.argsort(X)
-
-		X = np.array(X)[sorted_idx]
-		Y = np.array(Y)[sorted_idx]
+		if X.shape[1] == 1:
+			sorted_idx = np.argsort(X, axis=0).squeeze()
+			X = X[sorted_idx, :]
+			Y = Y[sorted_idx]
 
 		# remove duplicated values for X values
-		unique_idx = np.unique(X, return_index=True)[1]
+		unique_idx = np.unique(X, return_index=True, axis=0)[1]
 
 		X = X[unique_idx]
 		Y = Y[unique_idx]
