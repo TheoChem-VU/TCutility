@@ -270,6 +270,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_functional</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_core</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">solvent</span><span class="p">(</span><span class="s1">&#39;vacuum&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">basis_set</span><span class="p">(</span><span class="s1">&#39;TZ2P&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">quality</span><span class="p">(</span><span class="s1">&#39;Good&#39;</span><span class="p">)</span>
@@ -306,6 +307,7 @@
             <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Basis set </span><span class="si">{</span><span class="n">typ</span><span class="si">}</span><span class="s1"> is not allowed with r2SCAN-3c, switching to mTZ2P.&#39;</span><span class="p">)</span>
             <span class="n">typ</span> <span class="o">=</span> <span class="s1">&#39;mTZ2P&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_basis_set</span> <span class="o">=</span> <span class="n">typ</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_core</span> <span class="o">=</span> <span class="n">core</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">basis</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">typ</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">basis</span><span class="o">.</span><span class="n">core</span> <span class="o">=</span> <span class="n">core</span></div>
 
@@ -625,6 +627,46 @@
 
         <span class="k">return</span> <span class="kc">True</span></div>
 
+        
+<div class="viewcode-block" id="ADFFragmentJob.remove_virtuals">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob.remove_virtuals">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_virtuals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subspecies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nremove</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Remove virtual orbitals from the fragments.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            frag: the fragment to remove virtuals from. If set to ``None`` we remove all virtual orbitals of all fragments.</span>
+<span class="sd">            subspecies: the symmetry subspecies to remove virtuals from. If set to ``None`` we assume we have ``A`` subspecies.</span>
+<span class="sd">            nremove: the number of virtuals to remove. If set to ``None`` we will guess the number of virtuals based on the basis-set chosen.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">frag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">RemoveAllFragVirtuals</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span>
+            <span class="k">return</span>
+
+        <span class="c1"># if nremove is not given we will get it from the atoms in the fragment</span>
+        <span class="k">if</span> <span class="n">nremove</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># guess the virtual numbers only works for non-frozen-core calculations</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_core</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;none&#39;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot guess number of virtual orbitals for calculations with frozen cores.&#39;</span><span class="p">)</span>
+            <span class="c1"># the basis-set has to be present in the prepared data</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_basis_set</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">bs</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">bs</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">basis_sets</span><span class="o">.</span><span class="n">_number_of_orbitals</span><span class="o">.</span><span class="n">keys</span><span class="p">()]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cannot guess number of virtual orbitals for calculations with the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_basis_set</span><span class="si">}</span><span class="s1"> basis-set.&#39;</span><span class="p">)</span>
+
+            <span class="c1"># sum up the number of virtuals per atom in the fragment</span>
+            <span class="n">nremove</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="p">[</span><span class="n">frag</span><span class="p">]</span><span class="o">.</span><span class="n">_molecule</span><span class="p">:</span>
+                <span class="n">nremove</span> <span class="o">+=</span> <span class="n">data</span><span class="o">.</span><span class="n">basis_sets</span><span class="o">.</span><span class="n">number_of_virtuals</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_basis_set</span><span class="p">)</span>
+            <span class="c1"># positive charge adds a virtual and negative removes a virtual</span>
+            <span class="n">nremove</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="p">[</span><span class="n">frag</span><span class="p">]</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">charge</span> <span class="ow">or</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;RemoveFragOrbitals&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">RemoveFragOrbitals</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    </span><span class="si">{</span><span class="n">frag</span><span class="si">}</span>
+<span class="s2">      </span><span class="si">{</span><span class="n">subspecies</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;A&#39;</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">nremove</span><span class="si">}</span>
+<span class="s2">    SubEnd</span>
+<span class="s2">  End</span>
+<span class="s2">        &quot;&quot;&quot;</span></div>
+
 
 <div class="viewcode-block" id="ADFFragmentJob.run">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob.run">[docs]</a>
@@ -667,6 +709,8 @@
         <span class="n">child_setts</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">child</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">as_plams_settings</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="c1"># update the children using the parent settings</span>
         <span class="p">[</span><span class="n">child_sett</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sett</span><span class="p">)</span> <span class="k">for</span> <span class="n">child_sett</span> <span class="ow">in</span> <span class="n">child_setts</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="p">[</span><span class="n">child_sett</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;RemoveFragOrbitals&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">child_sett</span> <span class="ow">in</span> <span class="n">child_setts</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="p">[</span><span class="n">child_sett</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;RemoveAllFragVirtuals&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">child_sett</span> <span class="ow">in</span> <span class="n">child_setts</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
         <span class="c1"># same for sbatch settings</span>
         <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="p">)</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">childjobs</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
 
@@ -772,7 +816,7 @@
 
 <div class="viewcode-block" id="DensfJob.orbital">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob.orbital">[docs]</a>
-    <span class="k">def</span> <span class="nf">orbital</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbital</span><span class="p">:</span> <span class="s1">&#39;pyfmo.orbitals.sfo.SFO&#39;</span> <span class="ow">or</span> <span class="s1">&#39;pyfmo.orbitals.mo.MO&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">orbital</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbital</span><span class="p">:</span> <span class="s1">&#39;pyfmo.orbitals.sfo.SFO&#39;</span> <span class="ow">or</span> <span class="s1">&#39;pyfmo.orbitals.mo.MO&#39;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Add a PyOrb orbital for Densf to calculate.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -852,11 +896,15 @@
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">pyfmo</span>
+    <span class="c1"># import pyfmo</span>
 
-    <span class="n">orbs</span> <span class="o">=</span> <span class="n">pyfmo</span><span class="o">.</span><span class="n">orbitals</span><span class="o">.</span><span class="n">Orbitals</span><span class="p">(</span><span class="s1">&#39;/Users/yumanhordijk/PhD/MM2024/calculations/IRC/pi_beta_trans_TS1/pi_beta/pi_beta_trans/complex.00039/adf.rkf&#39;</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">DensfJob</span><span class="p">()</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">orbital</span><span class="p">(</span><span class="n">orbs</span><span class="o">.</span><span class="n">sfos</span><span class="p">[</span><span class="s1">&#39;frag1(HOMO)&#39;</span><span class="p">])</span>
+    <span class="c1"># orbs = pyfmo.orbitals.Orbitals(&#39;/Users/yumanhordijk/PhD/MM2024/calculations/IRC/pi_beta_trans_TS1/pi_beta/pi_beta_trans/complex.00039/adf.rkf&#39;)</span>
+    <span class="c1"># with DensfJob() as job:</span>
+    <span class="c1">#     job.orbital(orbs.sfos[&#39;frag1(HOMO)&#39;])</span>
+
+
+    <span class="k">with</span> <span class="n">ADFFragmentJob</span><span class="p">()</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
+        <span class="o">...</span>
 </pre></div>
 
                 </article>

@@ -523,6 +523,21 @@ This will automatically set the correct fragment molecules, names, charges and s
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.adf.ADFFragmentJob.remove_virtuals">
+<span class="sig-name descname"><span class="pre">remove_virtuals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subspecies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nremove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFFragmentJob.remove_virtuals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFFragmentJob.remove_virtuals" title="Link to this definition">#</a></dt>
+<dd><p>Remove virtual orbitals from the fragments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frag</strong> – the fragment to remove virtuals from. If set to <code class="docutils literal notranslate"><span class="pre">None</span></code> we remove all virtual orbitals of all fragments.</p></li>
+<li><p><strong>subspecies</strong> – the symmetry subspecies to remove virtuals from. If set to <code class="docutils literal notranslate"><span class="pre">None</span></code> we assume we have <code class="docutils literal notranslate"><span class="pre">A</span></code> subspecies.</p></li>
+<li><p><strong>nremove</strong> – the number of virtuals to remove. If set to <code class="docutils literal notranslate"><span class="pre">None</span></code> we will guess the number of virtuals based on the basis-set chosen.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.adf.ADFFragmentJob.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFFragmentJob.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFFragmentJob.run" title="Link to this definition">#</a></dt>
 <dd><p>Run the <code class="docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code>. This involves setting up the calculations for each fragment as well as the parent job.
@@ -1176,6 +1191,7 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.add_fragment"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.add_fragment()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.guess_fragments"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.guess_fragments()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.remove_virtuals"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.remove_virtuals()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.run"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.run()</span></code></a></li>
 </ul>
 </li>
