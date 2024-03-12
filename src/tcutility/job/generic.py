@@ -142,7 +142,8 @@ class Job:
         else:
             # if we are not using slurm, we can execute the file. For this we need special permissions, so we have to set that first.
             os.chmod(self.runfile_path, stat.S_IRWXU)
-            sp.run(self.runfile_path, cwd=os.path.split(self.runfile_path)[0])
+            with open(f'{self.name}.out', 'w+') as out:
+                sp.run(self.runfile_path, cwd=os.path.split(self.runfile_path)[0], stdout=out)
 
     def add_preamble(self, line: str):
         '''
