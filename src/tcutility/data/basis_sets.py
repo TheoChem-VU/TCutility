@@ -55,7 +55,7 @@ def number_of_orbitals(element, basis_set):
 	.. warning::
 		This function currently only works for the following basis-sets: 
 		[``SZ``, ``DZ``, ``DZP``, ``TZP``, ``TZ2P``, ``TZ2P-J``, ``mTZ2P``, ``QZ4P``, ``QZ4P-J``, ``jcpl``].
-		It also only works for no-frozen-core calculations.
+		It also only works for no-frozen-core calculations with ``NOSYM`` symmetry.
 	'''
 	symbol = data.atom.symbol(element)
 	return _number_of_orbitals[basis_set][symbol]
@@ -73,7 +73,7 @@ def number_of_virtuals(element, basis_set):
 	.. warning::
 		This function currently only works for the following basis-sets: 
 		[``SZ``, ``DZ``, ``DZP``, ``TZP``, ``TZ2P``, ``TZ2P-J``, ``mTZ2P``, ``QZ4P``, ``QZ4P-J``, ``jcpl``].
-		It also only works for no-frozen-core calculations.
+		It also only works for no-frozen-core calculations with ``NOSYM`` symmetry.
 	'''
 	num = data.atom.atom_number(element)
 	symbol = data.atom.symbol(element)
