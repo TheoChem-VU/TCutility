@@ -324,6 +324,25 @@ class ADFFragmentJob(ADFJob):
             self.add_fragment(fragment, fragment_name, charge=charge, spin_polarization=spin_polarization)
 
         return True
+        
+    def remove_virtuals(self, frag=None, subspecies=None, nremove=None):
+        '''
+        Remove virtual orbitals from the fragments.
+
+        Args:
+            frag: the fragment to remove virtuals from. If set to ``None`` we remove all virtual orbitals of all fragments.
+            subspecies: the symmetry subspecies to remove virtuals from. If set to ``None`` we assume we have ``A`` subspecies.
+            nremove: the number of virtuals to remove. If set to ``None`` we will guess the number of virtuals based on the basis-set chosen.
+        '''
+        if frag is None:
+            self.settings.input.adf.RemoveAllFragVirtuals = 'Yes'
+            return
+
+        self.settings.input.adf.setdefault('RemoveFragOrbitals', '')
+        self.settings.input.adf.RemoveFragOrbitals += f"""    {frag}
+    {subspecies or 'A'} {nremove}
+  SubEnd
+        """
 
     def run(self):
         '''
