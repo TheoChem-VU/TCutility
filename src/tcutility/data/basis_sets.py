@@ -1,7 +1,6 @@
 import json
 import pathlib as pl
 from tcutility import data
-from math import ceil
 
 
 available_basis_sets = { 

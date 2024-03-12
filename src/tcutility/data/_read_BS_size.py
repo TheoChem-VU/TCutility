@@ -1,6 +1,4 @@
-import os
-from tcutility import pathfunc, results, data
-from pprint import pprint
+from tcutility import pathfunc, results
 import json
 
 
