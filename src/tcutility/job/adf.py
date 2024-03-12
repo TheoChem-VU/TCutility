@@ -346,7 +346,7 @@ class ADFFragmentJob(ADFJob):
             if self._core.lower() != 'none':
                 raise ValueError('Cannot guess number of virtual orbitals for calculations with frozen cores.')
             # the basis-set has to be present in the prepared data
-            if self._basis_set.lower() not in data.basis_sets._number_of_orbitals.keys():
+            if self._basis_set.lower() not in [bs.lower() for bs in data.basis_sets._number_of_orbitals.keys()]:
                 raise ValueError(f'Cannot guess number of virtual orbitals for calculations with the {self._basis_set} basis-set.')
 
             # sum up the number of virtuals per atom in the fragment
