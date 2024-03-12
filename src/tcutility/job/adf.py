@@ -423,7 +423,9 @@ class ADFFragmentJob(ADFJob):
                 # the child name will be prepended with SP showing that it is the singlepoint calculation
                 child.name = f'frag_{childname}_wghosts'
                 child.rundir = j(self.rundir, self.name)
-                child._ghost_atoms.extend(child._molecule.copy().atoms)
+                ghosts = [atom for atom in self._molecule.atoms if not any((atom.symbol, atom.coords) == (atom2.symbol, atom2.coords) for atom2 in child._molecule.atoms)]
+                # print(ghosts)
+                child._ghost_atoms.extend(ghosts)
                 child.molecule(self._molecule.copy())
                 for atom in child._molecule:
                     orig_flags = atom.flags
