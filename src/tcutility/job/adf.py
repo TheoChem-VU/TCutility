@@ -11,6 +11,7 @@ class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._functional = None
+        self._core = None
         self.solvent('vacuum')
         self.basis_set('TZ2P')
         self.quality('Good')
@@ -45,6 +46,7 @@ class ADFJob(AMSJob):
             log.warn(f'Basis set {typ} is not allowed with r2SCAN-3c, switching to mTZ2P.')
             typ = 'mTZ2P'
         self._basis_set = typ
+        self._core = core
         self.settings.input.adf.basis.type = typ
         self.settings.input.adf.basis.core = core
 
@@ -324,6 +326,43 @@ class ADFFragmentJob(ADFJob):
             self.add_fragment(fragment, fragment_name, charge=charge, spin_polarization=spin_polarization)
 
         return True
+        
+    def remove_virtuals(self, frag=None, subspecies=None, nremove=None):
+        '''
+        Remove virtual orbitals from the fragments.
+
+        Args:
+            frag: the fragment to remove virtuals from. If set to ``None`` we remove all virtual orbitals of all fragments.
+            subspecies: the symmetry subspecies to remove virtuals from. If set to ``None`` we assume we have ``A`` subspecies.
+            nremove: the number of virtuals to remove. If set to ``None`` we will guess the number of virtuals based on the basis-set chosen.
+        '''
+        if frag is None:
+            self.settings.input.adf.RemoveAllFragVirtuals = 'Yes'
+            return
+
+        # if nremove is not given we will get it from the atoms in the fragment
+        if nremove is None:
+            # guess the virtual numbers only works for non-frozen-core calculations
+            if self._core.lower() != 'none':
+                raise ValueError('Cannot guess number of virtual orbitals for calculations with frozen cores.')
+            # the basis-set has to be present in the prepared data
+            if self._basis_set.lower() not in [bs.lower() for bs in data.basis_sets._number_of_orbitals.keys()]:
+                raise ValueError(f'Cannot guess number of virtual orbitals for calculations with the {self._basis_set} basis-set.')
+
+            # sum up the number of virtuals per atom in the fragment
+            nremove = 0
+            for atom in self.childjobs[frag]._molecule:
+                nremove += data.basis_sets.number_of_virtuals(atom.symbol, self._basis_set)
+            # positive charge adds a virtual and negative removes a virtual
+            nremove += self.childjobs[frag].settings.input.ams.System.charge or 0
+
+        self.settings.input.adf.setdefault('RemoveFragOrbitals', '')
+        self.settings.input.adf.RemoveFragOrbitals += f"""
+    {frag}
+      {subspecies or 'A'} {nremove}
+    SubEnd
+  End
+        """
 
     def run(self):
         '''
@@ -364,6 +403,8 @@ class ADFFragmentJob(ADFJob):
         child_setts = {name: child.settings.as_plams_settings() for name, child in self.childjobs.items()}
         # update the children using the parent settings
         [child_sett.update(sett) for child_sett in child_setts.values()]
+        [child_sett.input.adf.pop('RemoveFragOrbitals', None) for child_sett in child_setts.values()]
+        [child_sett.input.adf.pop('RemoveAllFragVirtuals', None) for child_sett in child_setts.values()]
         # same for sbatch settings
         [child.sbatch(**self._sbatch) for child in self.childjobs.values()]
 
@@ -460,7 +501,7 @@ class DensfJob(Job):
         spell_check.check(size, ['coarse', 'medium', 'fine'], ignore_case=True)
         self.settings.grid = size
 
-    def orbital(self, orbital: 'pyfmo.orbitals.sfo.SFO' or 'pyfmo.orbitals.mo.MO'):
+    def orbital(self, orbital: 'pyfmo.orbitals.sfo.SFO' or 'pyfmo.orbitals.mo.MO'):  # noqa: F821
         '''
         Add a PyOrb orbital for Densf to calculate.
         '''
@@ -535,8 +576,12 @@ class DensfJob(Job):
 
 
 if __name__ == '__main__':
-    import pyfmo
+    # import pyfmo
 
-    orbs = pyfmo.orbitals.Orbitals('/Users/yumanhordijk/PhD/MM2024/calculations/IRC/pi_beta_trans_TS1/pi_beta/pi_beta_trans/complex.00039/adf.rkf')
-    with DensfJob() as job:
-        job.orbital(orbs.sfos['frag1(HOMO)'])
+    # orbs = pyfmo.orbitals.Orbitals('/Users/yumanhordijk/PhD/MM2024/calculations/IRC/pi_beta_trans_TS1/pi_beta/pi_beta_trans/complex.00039/adf.rkf')
+    # with DensfJob() as job:
+    #     job.orbital(orbs.sfos['frag1(HOMO)'])
+
+
+    with ADFFragmentJob() as job:
+        ...
