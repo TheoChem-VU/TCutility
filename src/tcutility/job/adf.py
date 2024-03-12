@@ -391,6 +391,8 @@ class ADFFragmentJob(ADFJob):
         child_setts = {name: child.settings.as_plams_settings() for name, child in self.childjobs.items()}
         # update the children using the parent settings
         [child_sett.update(sett) for child_sett in child_setts.values()]
+        [child_sett.input.adf.pop('RemoveFragOrbitals', None) for child_sett in child_setts.values()]
+        [child_sett.input.adf.pop('RemoveAllFragVirtuals', None) for child_sett in child_setts.values()]
         # same for sbatch settings
         [child.sbatch(**self._sbatch) for child in self.childjobs.values()]
 
@@ -562,8 +564,12 @@ class DensfJob(Job):
 
 
 if __name__ == '__main__':
-    import pyfmo
+    # import pyfmo
 
-    orbs = pyfmo.orbitals.Orbitals('/Users/yumanhordijk/PhD/MM2024/calculations/IRC/pi_beta_trans_TS1/pi_beta/pi_beta_trans/complex.00039/adf.rkf')
-    with DensfJob() as job:
-        job.orbital(orbs.sfos['frag1(HOMO)'])
+    # orbs = pyfmo.orbitals.Orbitals('/Users/yumanhordijk/PhD/MM2024/calculations/IRC/pi_beta_trans_TS1/pi_beta/pi_beta_trans/complex.00039/adf.rkf')
+    # with DensfJob() as job:
+    #     job.orbital(orbs.sfos['frag1(HOMO)'])
+
+
+    with ADFFragmentJob() as job:
+        ...
