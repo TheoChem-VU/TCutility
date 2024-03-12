@@ -342,6 +342,14 @@ class ADFFragmentJob(ADFJob):
 
         # if nremove is not given we will get it from the atoms in the fragment
         if nremove is None:
+            # guess the virtual numbers only works for non-frozen-core calculations
+            if self._core.lower() != 'none':
+                raise ValueError('Cannot guess number of virtual orbitals for calculations with frozen cores.')
+            # the basis-set has to be present in the prepared data
+            if self._basis_set.lower() not in data.basis_sets._number_of_orbitals.keys():
+                raise ValueError(f'Cannot guess number of virtual orbitals for calculations with the {self._basis_set} basis-set.')
+
+            # sum up the number of virtuals per atom in the fragment
             nremove = 0
             for atom in self.childjobs[frag]._molecule:
                 nremove += data.basis_sets.number_of_virtuals(atom.symbol, self._basis_set)
