@@ -338,10 +338,18 @@ class ADFFragmentJob(ADFJob):
             self.settings.input.adf.RemoveAllFragVirtuals = 'Yes'
             return
 
+        # if nremove is not given we will get it from the atoms in the fragment
+        if nremove is None:
+            nremove = 0
+            for atom in self.childjobs[frag]._molecule:
+                nremove += data.basis_sets.number_of_virtuals(atom.symbol, self._basis_set)
+
         self.settings.input.adf.setdefault('RemoveFragOrbitals', '')
-        self.settings.input.adf.RemoveFragOrbitals += f"""    {frag}
-    {subspecies or 'A'} {nremove}
-  SubEnd
+        self.settings.input.adf.RemoveFragOrbitals += f"""
+    {frag}
+      {subspecies or 'A'} {nremove}
+    SubEnd
+  End
         """
 
     def run(self):
