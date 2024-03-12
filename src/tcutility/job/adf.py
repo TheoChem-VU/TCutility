@@ -11,6 +11,7 @@ class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._functional = None
+        self._core = None
         self.solvent('vacuum')
         self.basis_set('TZ2P')
         self.quality('Good')
@@ -45,6 +46,7 @@ class ADFJob(AMSJob):
             log.warn(f'Basis set {typ} is not allowed with r2SCAN-3c, switching to mTZ2P.')
             typ = 'mTZ2P'
         self._basis_set = typ
+        self._core = core
         self.settings.input.adf.basis.type = typ
         self.settings.input.adf.basis.core = core
 
