@@ -83,5 +83,4 @@ def number_of_virtuals(element, basis_set):
 
 if __name__ == '__main__':
 	print(number_of_orbitals('Pd', 'DZ'))
-	print(number_of_occupied('Pd', 'DZ'))
 	print(number_of_virtuals('Pd', 'DZ'))
