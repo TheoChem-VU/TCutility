@@ -489,7 +489,7 @@ class DensfJob(Job):
         spell_check.check(size, ['coarse', 'medium', 'fine'], ignore_case=True)
         self.settings.grid = size
 
-    def orbital(self, orbital: 'pyfmo.orbitals.sfo.SFO' or 'pyfmo.orbitals.mo.MO'):
+    def orbital(self, orbital: 'pyfmo.orbitals.sfo.SFO' or 'pyfmo.orbitals.mo.MO'):  # noqa: F821
         '''
         Add a PyOrb orbital for Densf to calculate.
         '''
