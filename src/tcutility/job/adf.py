@@ -353,6 +353,8 @@ class ADFFragmentJob(ADFJob):
             nremove = 0
             for atom in self.childjobs[frag]._molecule:
                 nremove += data.basis_sets.number_of_virtuals(atom.symbol, self._basis_set)
+            # positive charge adds a virtual and negative removes a virtual
+            nremove += self.childjobs[frag].settings.input.ams.System.charge or 0
 
         self.settings.input.adf.setdefault('RemoveFragOrbitals', '')
         self.settings.input.adf.RemoveFragOrbitals += f"""
