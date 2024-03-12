@@ -77,7 +77,7 @@ def number_of_virtuals(element, basis_set):
 	'''
 	num = data.atom.atom_number(element)
 	symbol = data.atom.symbol(element)
-	return _number_of_orbitals[basis_set][symbol] - num//2
+	return _number_of_orbitals[basis_set][symbol] - num/2
 
 
 if __name__ == '__main__':
