@@ -335,6 +335,25 @@ class ADFFragmentJob(ADFJob):
 
         return True
 
+    def remove_virtuals(self, frag=None, subspecies=None, nremove=None):
+        '''
+        Remove virtual orbitals from the fragments.
+
+        Args:
+            frag: the fragment to remove virtuals from. If set to ``None`` we remove all virtual orbitals of all fragments.
+            subspecies: the symmetry subspecies to remove virtuals from. If set to ``None`` we assume we have ``A`` subspecies.
+            nremove: the number of virtuals to remove. If set to ``None`` we will guess the number of virtuals based on the basis-set chosen.
+        '''
+        if frag is None:
+            self.settings.input.adf.RemoveAllFragVirtuals = 'Yes'
+            return
+
+        self.settings.input.adf.setdefault('RemoveFragOrbitals', '')
+        self.settings.input.adf.RemoveFragOrbitals += f"""    {frag}
+    {subspecies or 'A'} {nremove}
+  SubEnd
+        """
+
     def run(self):
         '''
         Run the ``ADFFragmentJob``. This involves setting up the calculations for each fragment as well as the parent job. 
@@ -472,83 +491,6 @@ class ADFFragmentJob(ADFJob):
 
         log.flow(log.Emojis.finish + ' Done, bye!', ['startinv'])
 
-
-# class ADFBSSEJob(MultiJob, ADFJob):
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self._fragment_molecules = {}
-
-#     def pre_run(self):
-#         # check if the user defined fragments for this job
-#         if len(self.childjobs) == 0:
-#             log.warn('Fragments were not specified yet, trying to read them from the xyz file ...')
-#             # if they did not define the fragments, try to guess them using the xyz-file
-#             if not self.guess_fragments():
-#                 log.error('Please specify the fragments using ADFFragmentJob.add_fragment or specify them in the xyz file.')
-#                 raise
-
-#         # first generate new child jobs for each fragment
-#         self.childjobs['complex'] = ADFJob()
-#         self.childjobs['complex_SCF0'] = ADFJob()
-#         for fragment_name, fragment_molecule in self._fragment_molecules.items():
-#             self.childjobs[f'{fragment_name}_SP'] = ADFJob()
-#             self.childjobs[f'{fragment_name}_SP_wghosts'] = ADFJob()
-
-#         self._copy_to_childjobs()
-
-#         # get some global settings for the complexes
-#         total_charge = sum(fragment_molecule.flags.get('charge', 0) for fragment_molecule in self._fragment_molecules.values())
-#         total_spinpol = sum(fragment_molecule.flags.get('spinpol', 0) for fragment_molecule in self._fragment_molecules.values())
-#         unrestricted = any(fragment_molecule.flags.get('spinpol', 0) != 0 for fragment_molecule in self._fragment_molecules.values())
-
-#         self.childjobs['complex'].molecule(self._molecule)
-#         self.childjobs['complex_SCF0'].molecule(self._molecule)
-
-#         self.childjobs['complex'].charge(total_charge)
-#         self.childjobs['complex_SCF0'].charge(total_charge)
-
-#         self.childjobs['complex'].spin_polarization(total_spinpol)
-#         self.childjobs['complex_SCF0'].spin_polarization(total_spinpol)
-
-#         self.childjobs['complex'].unrestricted(unrestricted)
-#         self.childjobs['complex_SCF0'].unrestricted(unrestricted)
-
-#         self.childjobs['complex'].settings.adf.UnrestrictedFragments = 'Yes'
-#         self.childjobs['complex_SCF0'].settings.adf.UnrestrictedFragments = 'Yes'
-
-#         for fragment_name, fragment_molecule in self._fragment_molecules.items():
-#             self.childjobs[f'{fragment_name}_SP'].molecule(fragment_molecule)
-#             self.childjobs[f'{fragment_name}_SP_wghosts'].molecule(self._molecule)
-#             [self.childjobs[f'{fragment_name}_SP_wghosts']._ghost_atoms.append(atom) for atom in self._molecule if atom not in fragment_molecule]
-
-#     def add_fragment(self, mol: plams.Molecule, name: str = None, charge: int = 0, spin_polarization:int = 0):
-#         mol.flags['charge'] = charge
-#         mol.flags['spinpol'] = spin_polarization
-#         self._fragment_molecules[name] = mol
-
-#     def guess_fragments(self):
-#         '''
-#         Guess what the fragments are based on data stored in the molecule provided for this job. 
-#         This will automatically set the correct fragment molecules, names, charges and spin-polarizations.
-
-#         .. seealso::
-#             | :func:`tcutility.molecule.guess_fragments` for an explanation of the xyz-file format required to guess the fragments.
-#             | :meth:`ADFFragmentJob.add_fragment` to manually add a fragment.
-
-#         .. note::
-#             This function will be automatically called if there were no fragments given to this calculation.
-#         '''
-#         frags = molecule.guess_fragments(self._molecule)
-#         if frags is None:
-#             log.error('Could not load fragment data for the molecule.')
-#             return False
-
-#         for fragment_name, fragment in frags.items():
-#             charge = fragment.flags.get('charge', 0)
-#             spin_polarization = fragment.flags.get('spinpol', 0)
-#             self.add_fragment(fragment, fragment_name, charge=charge, spin_polarization=spin_polarization)
-
-#         return True
 
 
 if __name__ == '__main__':
