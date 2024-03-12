@@ -75,5 +75,19 @@ def color(element):
     return _colors[num]
 
 
+def atom_number(element):
+    return parse_element(element)
+
+
+def symbol(element):
+    num = parse_element(element)
+    return _symbol_order[num - 1]
+
+
+def element(element):
+    num = parse_element(element)
+    return _element_order[num - 1]
+
+
 if __name__ == "__main__":
-    print(color("carbon"))
+    print(symbol(2))
