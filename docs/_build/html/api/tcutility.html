@@ -1413,7 +1413,7 @@ Atoms that were not included by either method will be placed in the molecule obj
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.pathfunc.match">
-<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.match" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.match" title="Link to this definition">#</a></dt>
 <dd><p>Find and return information about subdirectories of a root that match a given pattern.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1423,6 +1423,7 @@ Atoms that were not included by either method will be placed in the molecule obj
 It should look similar to a format string, without the <code class="docutils literal notranslate"><span class="pre">f</span></code> in front of the string.
 Inside curly braces you can put a variable name, which you can later extract from the results.
 Anything inside curly braces will be matched to word characters (<code class="docutils literal notranslate"><span class="pre">[a-zA-Z0-9_-]</span></code>) including dashes and underscores.</p></li>
+<li><p><strong>match_files</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – whether to not only match subdirectories but also files inside subdirectories. Defaults to True.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
