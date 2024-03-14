@@ -34,7 +34,8 @@ def _create_job(args: argparse.Namespace) -> tcjob.generic.Job:
     # copy the optimized mol to the output file
     job.add_postamble(f'cp {job.output_mol_path} {args.output}')
     # remove the temporary rundir
-    job.add_postamble(f'rm -r {job.workdir}')
+    if not args.keep:
+        job.add_postamble(f'rm -r {job.workdir}')
     return job
 
 
@@ -57,6 +58,10 @@ def create_subparser(parent_parser: argparse.ArgumentParser):
                            type=str,
                            help="The file to write the optimized result to. By default will be written to '{xyzfile}_optimized.xyz'.",
                            default=None)
+    subparser.add_argument("-k", "--keep",
+                           help="Keep the calculation directory after finishing the calculation.",
+                           default=False,
+                           action="store_true")
     subparser.add_argument("xyzfile",
                            type=str,
                            help="The molecule to optimize, in extended xyz-format. See https://theochem-vu.github.io/TCutility/api/tcutility.html#module-tcutility.molecule for more information.")
