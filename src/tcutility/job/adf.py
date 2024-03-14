@@ -245,7 +245,16 @@ class ADFJob(AMSJob):
 
 
 class ADFFragmentJob(ADFJob):
-    def __init__(self, counter_poise=False, run_scf0=True, *args, **kwargs):
+    ''' 
+    Run an ADF calculation with fragments.
+
+    Args:
+        run_scf0: whether to run an extra complex calculation with 0 SCF cycles. 
+            This is useful for some orbital analyses.
+        counter_poise: whether to do extra calculations with ghost-atoms. 
+            The results of these extra calculations can be used to calculate the counter-poise correction.
+    '''
+    def __init__(self, counter_poise: bool = False, run_scf0: bool = True, *args, **kwargs):
         self.childjobs = {}
         super().__init__(*args, **kwargs)
         self.counter_poise = counter_poise
