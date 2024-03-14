@@ -151,27 +151,24 @@ def write_mol_to_amv_file(mols: list[Molecule] | Molecule, energies: list[float]
     return None
 
 
-def main():
-    # Create the parser
-    parser = argparse.ArgumentParser(
-        description="""
+def create_subparser(parent_parser: argparse.ArgumentParser):
+    subparser = parent_parser.add_parser('concat-irc', 
+                                         description="""
         Scripts that takes in two directories containing an IRC file ("ams.rkf") and concatenates them through the RMSD values. Produces a .xyz and .amv file in the specified output directory.
         The output directory is specified with the -o flag. If not specified, the output will be written to the current working directory.
         In addition, the -r flag can be used to reverse the trajectory.
 
-        ..Note: ALWAYS visualize the .amv file in AMSView to verify the trajectory.
-    """
-    )
-
+        Note: ALWAYS visualize the .amv file in AMSView to verify the trajectory.
+    """)
+    
     # Add the arguments
-    parser.add_argument("-f", "--forward", type=str, help="Job directory containing the ams.rkf with the forward irc calculation")
-    parser.add_argument("-b", "--backward", type=str, help="Job directory containing the ams.rkf with the backward irc calculation")
-    parser.add_argument("-r", "--reverse", action="store_true", help="Reverses the trajectory")
-    parser.add_argument("-o", "--output", type=str, default="./", help="Directory in which the outputfile will be saved")
+    subparser.add_argument("-f", "--forward", type=str, help="Job directory containing the ams.rkf with the forward irc calculation")
+    subparser.add_argument("-b", "--backward", type=str, help="Job directory containing the ams.rkf with the backward irc calculation")
+    subparser.add_argument("-r", "--reverse", action="store_true", help="Reverses the trajectory")
+    subparser.add_argument("-o", "--output", type=str, default="./", help="Directory in which the outputfile will be saved")
 
-    # Parse the arguments
-    args = parser.parse_args()
 
+def main(args):
     outputdir = pl.Path(args.output).resolve()
     job_dirs = [pl.Path(args.forward).resolve(), pl.Path(args.backward).resolve()]
     molecules, energies = concatenate_irc_trajectories(job_dirs, args.reverse)
