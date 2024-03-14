@@ -2,7 +2,6 @@ from scm import plams
 from tcutility import log, results, formula, spell_check, data, molecule
 from tcutility.job.ams import AMSJob
 import os
-import copy
 
 
 j = os.path.join
