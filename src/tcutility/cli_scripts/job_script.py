@@ -43,11 +43,11 @@ def main(args: argparse.Namespace):
     # get the correct job class object and set the level-of-theory
     level = args.level or mol.flags.level_of_theory or 'GFN1-xTB'
     if level.lower() == 'gfn1-xtb':
-        job = tcjob.DFTBJob()  # by default DFTBJob uses GFN1-xTB
+        job = tcjob.DFTBJob(delete_on_finish=not args.keep)  # by default DFTBJob uses GFN1-xTB
     else:
         # if we are not using GFN1-xTB we will use ADF
         parts = level.split('/')
-        job = tcjob.ADFJob()
+        job = tcjob.ADFJob(delete_on_finish=not args.keep)
         job.functional(parts[0])
         if len(parts) > 1:
             job.basis_set(parts[1])
@@ -63,8 +63,5 @@ def main(args: argparse.Namespace):
 
     # copy the optimized mol to the output file
     job.add_postamble(f'cp {job.output_mol_path} {args.output}')
-    # remove the temporary rundir
-    if not args.keep:
-        job.add_postamble(f'rm -r {job.workdir}')
 
     job.run()

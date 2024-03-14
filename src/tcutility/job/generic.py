@@ -21,7 +21,7 @@ class Job:
         overwrite: whether to overwrite a previously run job in the same working directory.
         wait_for_finish: whether to wait for this job to finish running before continuing your runscript.
     '''
-    def __init__(self, test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = False):
+    def __init__(self, test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = False, delete_on_finish: bool = False):
         self.settings = results.Result()
         self._sbatch = results.Result()
         self._molecule = None
@@ -32,6 +32,7 @@ class Job:
         self.test_mode = test_mode
         self.overwrite = overwrite
         self.wait_for_finish = wait_for_finish
+        self.delete_on_finish = delete_on_finish
         self._preambles = []
         self._postambles = []
         self._postscripts = []
@@ -106,6 +107,9 @@ class Job:
             return
 
         # write the post-script calls to the post-ambles:
+        if self.delete_on_finish:
+            self.add_postamble(f'rm -r {self.workdir}')
+
         for postscript in self._postscripts:
             print(postscript)
             self._postambles.append(f'python {postscript[0]} {" ".join(postscript[1])}')
