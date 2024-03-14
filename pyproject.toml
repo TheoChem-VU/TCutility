@@ -59,3 +59,6 @@ exclude = [
   "docs*",
 ] # exclude packages matching these glob patterns (empty by default)
 namespaces = false # to disable scanning PEP 420 namespaces (true by default)
+
+[project.scripts]
+concat_irc = "tcutility.scripts.concatenate_irc:main"
