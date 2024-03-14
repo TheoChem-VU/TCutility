@@ -9,18 +9,19 @@ def _create_job(args: argparse.Namespace) -> tcjob.generic.Job:
     '''
     Parse a level-of-theory string and return a Job object.
     '''
+    mol = tcutility.molecule.load(args.xyzfile)
+
     # get the correct job class object and set the level-of-theory
-    if args.level.lower() == 'gfn1-xtb':
+    level = args.level or mol.flags.level_of_theory or 'GFN1-xTB'
+    if level.lower() == 'gfn1-xtb':
         job = tcjob.DFTBJob()  # by default DFTBJob uses GFN1-xTB
     else:
         # if we are not using GFN1-xTB we will use ADF
-        parts = args.level.split('/')
+        parts = level.split('/')
         job = tcjob.ADFJob()
         job.functional(parts[0])
         if len(parts) > 1:
             job.basis_set(parts[1])
-
-    mol = tcutility.molecule.load(args.xyzfile)
 
     job.molecule(mol)
     job.optimization()
@@ -45,7 +46,7 @@ def create_subparser(parent_parser: argparse.ArgumentParser):
     subparser.add_argument("-l", "--level", 
                            type=str, 
                            help="Set the level of theory for the optimization. For example, \"GFN1-xTB\" or \"BLYP-D3(BJ)/TZ2P\" Can be set in the xyz-file with the 'level_of_theory' flag.", 
-                           default="GFN1-xTB")
+                           default=None)
     subparser.add_argument("-c", "--charge",
                            type=int,
                            help="The charge of the system. Can be set in the xyz-file with the 'charge' flag.",
