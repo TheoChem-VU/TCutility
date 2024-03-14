@@ -1,43 +1,8 @@
-﻿""" Module containing functions for quickly submitting (simple) jobs via the command line """
+﻿""" Module containing functions for quickly submitting geometry optimization jobs via the command line """
 import argparse
 from tcutility import job as tcjob
 import tcutility
 import os
-
-
-def _create_job(args: argparse.Namespace) -> tcjob.generic.Job:
-    '''
-    Parse a level-of-theory string and return a Job object.
-    '''
-    mol = tcutility.molecule.load(args.xyzfile)
-
-    # get the correct job class object and set the level-of-theory
-    level = args.level or mol.flags.level_of_theory or 'GFN1-xTB'
-    if level.lower() == 'gfn1-xtb':
-        job = tcjob.DFTBJob()  # by default DFTBJob uses GFN1-xTB
-    else:
-        # if we are not using GFN1-xTB we will use ADF
-        parts = level.split('/')
-        job = tcjob.ADFJob()
-        job.functional(parts[0])
-        if len(parts) > 1:
-            job.basis_set(parts[1])
-
-    job.molecule(mol)
-    job.optimization()
-    job.charge(args.charge or mol.flags.charge or 0)
-    if isinstance(job, tcjob.ADFJob):
-        job.spin_polarization(args.spinpol or mol.flags.spinpol or 0)
-
-    job.rundir = os.path.split(args.xyzfile)[0]
-    job.name = f'.tmp.{os.getpid()}'
-
-    # copy the optimized mol to the output file
-    job.add_postamble(f'cp {job.output_mol_path} {args.output}')
-    # remove the temporary rundir
-    if not args.keep:
-        job.add_postamble(f'rm -r {job.workdir}')
-    return job
 
 
 def create_subparser(parent_parser: argparse.ArgumentParser):
@@ -68,10 +33,38 @@ def create_subparser(parent_parser: argparse.ArgumentParser):
                            help="The molecule to optimize, in extended xyz-format. See https://theochem-vu.github.io/TCutility/api/tcutility.html#module-tcutility.molecule for more information.")
 
 
-def main(args):
+def main(args: argparse.Namespace):
     # set a default output
     if args.output is None:
         args.output = args.xyzfile.removesuffix('.xyz') + '_optimized.xyz'
 
-    job = _create_job(args)
+    mol = tcutility.molecule.load(args.xyzfile)
+
+    # get the correct job class object and set the level-of-theory
+    level = args.level or mol.flags.level_of_theory or 'GFN1-xTB'
+    if level.lower() == 'gfn1-xtb':
+        job = tcjob.DFTBJob()  # by default DFTBJob uses GFN1-xTB
+    else:
+        # if we are not using GFN1-xTB we will use ADF
+        parts = level.split('/')
+        job = tcjob.ADFJob()
+        job.functional(parts[0])
+        if len(parts) > 1:
+            job.basis_set(parts[1])
+
+    job.molecule(mol)
+    job.optimization()
+    job.charge(args.charge or mol.flags.charge or 0)
+    if isinstance(job, tcjob.ADFJob):
+        job.spin_polarization(args.spinpol or mol.flags.spinpol or 0)
+
+    job.rundir = os.path.split(args.xyzfile)[0]
+    job.name = f'.tmp.{os.getpid()}'
+
+    # copy the optimized mol to the output file
+    job.add_postamble(f'cp {job.output_mol_path} {args.output}')
+    # remove the temporary rundir
+    if not args.keep:
+        job.add_postamble(f'rm -r {job.workdir}')
+
     job.run()
