@@ -80,6 +80,18 @@ class ADFJob(AMSJob):
         '''
         self.settings.input.adf.Unrestricted = 'Yes' if val else 'No'
 
+    def occupations(self, strategy: str):
+        '''
+        Set the orbital filling strategy for ADF.
+
+        Args:
+            strategy: the name of the filling strategy. This can contain multiple of the options allowed.
+
+        .. seealso::
+            The SCM documentation can be found at https://www.scm.com/doc/ADF/Input/Electronic_Configuration.html#aufbau-smearing-freezing
+        '''
+        self.settings.input.adf.Occupations = strategy
+
     def quality(self, val: str = 'Good'):
         '''
         Set the numerical quality of the calculation.
