@@ -4,7 +4,8 @@ def main():
 
 	parser = argparse.ArgumentParser(prog='tc')
 	# add the subparsers. dest ensures we can retrieve the subparser name later on
-	subparsers = parser.add_subparsers(dest='subparser_name')
+	subparsers = parser.add_subparsers(dest='subparser_name',
+									   title='TCutility command-line scripts')
 
 	# to add a script:
 	# 1. Add a create_subparser function and main function to your script.

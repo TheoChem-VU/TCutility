@@ -6,8 +6,8 @@ import os
 
 
 def create_subparser(parent_parser: argparse.ArgumentParser):
-    subparser = parent_parser.add_parser('optimize', 
-                                         description="Set up and run a geometry optimization on a given structure.")
+    desc = "Set up and run a geometry optimization on a given structure."
+    subparser = parent_parser.add_parser('optimize', help=desc, description=desc)
     subparser.add_argument("-l", "--level", 
                            type=str, 
                            help="Set the level of theory for the optimization. For example, \"GFN1-xTB\" or \"BLYP-D3(BJ)/TZ2P\" Can be set in the xyz-file with the 'level_of_theory' flag.", 

@@ -153,6 +153,7 @@ def write_mol_to_amv_file(mols: list[Molecule] | Molecule, energies: list[float]
 
 def create_subparser(parent_parser: argparse.ArgumentParser):
     subparser = parent_parser.add_parser('concat-irc', 
+                                         help="Combine separated IRC paths.",
                                          description="""
         Scripts that takes in two directories containing an IRC file ("ams.rkf") and concatenates them through the RMSD values. Produces a .xyz and .amv file in the specified output directory.
         The output directory is specified with the -o flag. If not specified, the output will be written to the current working directory.
@@ -160,7 +161,7 @@ def create_subparser(parent_parser: argparse.ArgumentParser):
 
         Note: ALWAYS visualize the .amv file in AMSView to verify the trajectory.
     """)
-    
+
     # Add the arguments
     subparser.add_argument("-f", "--forward", type=str, help="Job directory containing the ams.rkf with the forward irc calculation")
     subparser.add_argument("-b", "--backward", type=str, help="Job directory containing the ams.rkf with the backward irc calculation")
