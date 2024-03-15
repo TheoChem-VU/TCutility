@@ -351,6 +351,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">Unrestricted</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span> <span class="k">if</span> <span class="n">val</span> <span class="k">else</span> <span class="s1">&#39;No&#39;</span></div>
 
 
+<div class="viewcode-block" id="ADFJob.occupations">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.occupations">[docs]</a>
+    <span class="k">def</span> <span class="nf">occupations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the orbital filling strategy for ADF.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            strategy: the name of the filling strategy. This can contain multiple of the options allowed.</span>
+
+<span class="sd">        .. seealso::</span>
+<span class="sd">            The SCM documentation can be found at https://www.scm.com/doc/ADF/Input/Electronic_Configuration.html#aufbau-smearing-freezing</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">Occupations</span> <span class="o">=</span> <span class="n">strategy</span></div>
+
+
 <div class="viewcode-block" id="ADFJob.quality">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.quality">[docs]</a>
     <span class="k">def</span> <span class="nf">quality</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Good&#39;</span><span class="p">):</span>
