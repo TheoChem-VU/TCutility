@@ -1,5 +1,5 @@
 from tcutility.job import ADFJob
-from tcutility import data, results, pathfunc, log
+from tcutility import data, pathfunc, log
 import pyfmo
 from scm import plams
 
