@@ -166,8 +166,6 @@ def match(root: str, pattern: str) -> Dict[str, dict]:
             [2024/01/17 14:39:08] root/NH3-BH3/M06-2X_TZ2P   NH3-BH3   M06-2X       TZ2P
             [2024/01/17 14:39:08] root/SN2/BLYP_TZ2P         SN2       BLYP         TZ2P
             [2024/01/17 14:39:08] root/NH3-BH3/BLYP_QZ4P     NH3-BH3   BLYP         QZ4P
-
-
     """
     # get the number and names of substitutions in the given pattern
     substitutions = re.findall(r"{(\w+[+*?]?)}", pattern)
