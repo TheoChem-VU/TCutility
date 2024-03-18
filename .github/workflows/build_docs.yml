@@ -49,7 +49,7 @@ jobs:
           pip install -e .
 
       - name: Install sphinx
-        run: pip install sphinx sphinx-tabs sphinx-copybutton sphinx-autodoc-typehints
+        run: pip install sphinx sphinx-tabs sphinx-copybutton sphinx-autodoc-typehints sphinx-argparse
 
       - name: Install sphinx theme
         run: pip install pydata-sphinx-theme
