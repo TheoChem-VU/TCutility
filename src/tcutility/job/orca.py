@@ -181,7 +181,7 @@ class ORCAJob(Job):
         with open(self.runfile_path, 'w+') as runf:
             runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
             runf.write('\n'.join(self._preambles) + '\n\n')
-            runf.write(f'{self.orca_path} {self.inputfile_path}\n')
+            runf.write(f'{self.orca_path} $TMPDIR/{self.name}.in\n')
             runf.write('\n'.join(self._postambles))
 
         return True
