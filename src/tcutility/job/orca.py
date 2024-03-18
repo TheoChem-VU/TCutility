@@ -1,4 +1,4 @@
-from tcutility import log, results, ensure_list, spell_check
+from tcutility import log, results, ensure_list, spell_check, slurm
 from tcutility.job.generic import Job
 import subprocess as sp
 import os
@@ -183,7 +183,7 @@ class ORCAJob(Job):
             runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
             runf.write('\n'.join(self._preambles) + '\n\n')
             
-            if self.use_tmpdir:
+            if self.use_tmpdir and slurm.has_slurm():
                 runf.write('export TMPDIR="$TMPDIR/$SLURM_JOB_ID"\n')
                 runf.write('mkdir -p $TMPDIR\n')
                 runf.write('cd $TMPDIR\n')
