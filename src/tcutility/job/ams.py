@@ -3,7 +3,8 @@ import tcutility
 from tcutility import log
 from tcutility.job.generic import Job
 import os
-
+import numpy as np
+from typing import List
 
 j = os.path.join
 
@@ -162,6 +163,21 @@ class AMSJob(Job):
         Set the charge of the system.
         '''
         self.settings.input.ams.System.Charge = val
+
+    def electric_field(self, direction: List[float], magnitude: float = None):
+        '''
+        Set an electric field for this system.
+
+        Args:
+            direction: the vector with the direction and strength of the electric field.
+            magnitude: if given, the direction will be normalized and magnitude will be used as the field strength.
+        '''
+        # if magnitude is given we normalize the direction vector and give it the correct length
+        if magnitude is not None:
+            direction = np.array(direction)/np.linalg.norm(direction) * magnitude
+
+        ex, ey, ez = tuple(direction)
+        self.settings.input.ams.System.ElectrostaticEmbedding.ElectricField = f'{ex} {ey} {ez}'
 
     def _setup_job(self):
         '''
