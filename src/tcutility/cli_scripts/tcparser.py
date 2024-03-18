@@ -24,10 +24,14 @@ def create_parser():
 
     return parser
 
-
 def main():
     parser = create_parser()
     args = parser.parse_args()
+    
+    # if the program was called without a subprogram we simply print the help message
+    if args.subprogram is None:
+        parser.print_help()
+        return
 
     # call the main function of the subprogram that was called
     sub_programs[args.subprogram].main(args)
