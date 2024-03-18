@@ -9,7 +9,7 @@ j = os.path.join
 
 
 class ORCAJob(Job):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, use_tmpdir=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.settings.main = set()
         self._charge = 0
@@ -19,6 +19,7 @@ class ORCAJob(Job):
         self.memory = None
         self.processes = None
         self.orca_path = None
+        self.use_tmpdir = use_tmpdir
 
         self.single_point()
 
@@ -181,7 +182,20 @@ class ORCAJob(Job):
         with open(self.runfile_path, 'w+') as runf:
             runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
             runf.write('\n'.join(self._preambles) + '\n\n')
-            runf.write(f'{self.orca_path} $TMPDIR/{self.name}.in\n')
+            
+            if self.use_tmpdir:
+                runf.write('export TMPDIR="$TMPDIR/$SLURM_JOB_ID"\n')
+                runf.write('mkdir -p $TMPDIR\n')
+                runf.write('cd $TMPDIR\n')
+                runf.write(f'cp {self.inputfile_path} $TMPDIR\n')
+
+                runf.write(f'{self.orca_path} $TMPDIR/{self.name}.in\n')
+
+                runf.write('cp $TMPDIR/* $SLURM_SUBMIT_DIR\n')
+                runf.write('rm -rf $TMPDIR\n')
+            else:
+                runf.write(f'{self.orca_path} {self.inputfile_path}.in\n')
+
             runf.write('\n'.join(self._postambles))
 
         return True
