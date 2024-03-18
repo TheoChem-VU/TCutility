@@ -1,10 +1,10 @@
-def main():
+def create_parser():
     import argparse
     from tcutility.cli_scripts import job_script, concatenate_irc
 
     parser = argparse.ArgumentParser(prog='tc')
     # add the subparsers. dest ensures we can retrieve the subparser name later on
-    subparsers = parser.add_subparsers(dest='subparser_name',
+    subparsers = parser.add_subparsers(dest='subprogram',
                                        title='TCutility command-line scripts')
 
     # to add a script:
@@ -20,10 +20,15 @@ def main():
     for sub_program in sub_programs.values():
         sub_program.create_subparser(subparsers)
 
+    return parser
+
+
+def main():
+    parser = create_parser()
     args = parser.parse_args()
 
     # call the main function of the subprogram that was called
-    sub_programs[args.subparser_name].main(args)
+    sub_programs[args.subprogram].main(args)
 
 
 if __name__ == '__main__':
