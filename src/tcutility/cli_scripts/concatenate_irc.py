@@ -1,4 +1,4 @@
-﻿import argparse
+import argparse
 import pathlib as pl
 
 import numpy as np

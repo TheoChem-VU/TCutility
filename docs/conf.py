@@ -49,6 +49,7 @@ extensions = [
     "sphinx_copybutton",
     # 'sphinx.ext.autosummary',
     "sphinx_autodoc_typehints",
+    "sphinxarg.ext",
 ]
 napoleon_use_param = True
 templates_path = ["_templates"]

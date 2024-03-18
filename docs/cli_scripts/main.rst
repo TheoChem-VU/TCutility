@@ -8,16 +8,8 @@ Overview
 
 CLI scripts are invoked using the parent ``tc`` command followed by the sub-program (see below). If you have suggestions for useful scripts please contact the developers or `open an issue <https://github.com/TheoChem-VU/TCutility/issues/new>`_ on our GitHub page.
 
-``tc concat-irc``
-****************
-
-Concatenate 
-
 .. argparse::
-    :filename: ../../src/tcutility/cli_scripts/concatenate_irc.py
-    
+    :filename: ../src/tcutility/cli_scripts/tcparser.py
+    :func: create_parser
+    :prog: tc
 
-``tc optimize``
-***************
-
-...
