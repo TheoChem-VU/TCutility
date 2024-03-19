@@ -1,8 +1,6 @@
 """ Module containing functions for reading and printing calculation results to the CL """
 import argparse
 from tcutility import results
-import tcutility
-import os
 from pprint import pprint
 
 
