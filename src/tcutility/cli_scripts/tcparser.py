@@ -1,10 +1,11 @@
-from tcutility.cli_scripts import job_script, concatenate_irc
+from tcutility.cli_scripts import read, job_script, concatenate_irc
 
 # to add a script:
 # 1. Add a create_subparser function and main function to your script.
 # 2. Import the script.
 # 3. Add it to the dictionary below {program_name: script-module}.
 sub_programs = {
+    "read": read,
     "optimize": job_script,
     "concat-irc": concatenate_irc,
 }
