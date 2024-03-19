@@ -21,7 +21,7 @@ class Job:
         overwrite: whether to overwrite a previously run job in the same working directory.
         wait_for_finish: whether to wait for this job to finish running before continuing your runscript.
     '''
-    def __init__(self, test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = False, delete_on_finish: bool = False):
+    def __init__(self, test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = False, delete_on_finish: bool = False, delete_on_fail: bool = False):
         self.settings = results.Result()
         self._sbatch = results.Result()
         self._molecule = None
@@ -33,6 +33,7 @@ class Job:
         self.overwrite = overwrite
         self.wait_for_finish = wait_for_finish
         self.delete_on_finish = delete_on_finish
+        self.delete_on_fail = delete_on_fail
         self._preambles = []
         self._postambles = []
         self._postscripts = []
@@ -110,9 +111,13 @@ class Job:
         if self.delete_on_finish:
             self.add_postamble(f'rm -r {self.workdir}')
 
+        if self.delete_on_fail:
+            self.add_postamble('# this will delete the calculation if it failed')
+            self.add_postamble(f'if [[ `tc read -s {self.workdir}` = FAILED || `tc read -s {self.workdir}` = UNKNOWN ]]; then rm -r {self.workdir}; fi;')
+
         for postscript in self._postscripts:
-            print(postscript)
-            self._postambles.append(f'python {postscript[0]} {" ".join(postscript[1])}')
+            self.add_postamble(f'python {postscript[0]} {" ".join(postscript[1])}')
+
         # setup the job and check if it was successfull
         setup_success = self._setup_job()
 
