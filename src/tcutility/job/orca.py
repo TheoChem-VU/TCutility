@@ -191,7 +191,7 @@ class ORCAJob(Job):
 
                 runf.write(f'{self.orca_path} $TMPDIR/{self.name}.in\n')
 
-                runf.write('cp $TMPDIR/* $SLURM_SUBMIT_DIR\n')
+                runf.write(f'cp $TMPDIR/* {self.workdir}\n')
                 runf.write('rm -rf $TMPDIR\n')
             else:
                 runf.write(f'{self.orca_path} {self.inputfile_path}.in\n')
