@@ -100,8 +100,15 @@ def read(calc_dir: Union[str, pl.Path]) -> Result:
         ret.dftb = dftb.get_calc_settings(ret)
         ret.properties = dftb.get_properties(ret)
     elif ret.engine == "orca":
-        ret.orca = orca.get_calc_settings(ret)
-        ret.properties = orca.get_properties(ret)
+        try:
+            ret.orca = orca.get_calc_settings(ret)
+        except:
+            ret.orca = None
+
+        try:
+            ret.properties = orca.get_properties(ret)
+        except:
+            ret.properties = None
 
     # unload cached KFReaders associated with this calc_dir
     to_delete = [key for key in cache._cache if key.startswith(os.path.abspath(calc_dir))]
