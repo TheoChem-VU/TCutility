@@ -1,0 +1,1 @@
+sbatch -p tc -n 32 -D /scistor/tc/tcstud8/MolecularModelling2024/workspace/calculations/IRC/pi_alpha_TS2/backward -J ../calculations/IRC/pi_alpha_TS2/backward -o backward.out backward.run
