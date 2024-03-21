@@ -104,12 +104,14 @@ def read(calc_dir: Union[str, pl.Path]) -> Result:
             ret.orca = orca.get_calc_settings(ret)
         except:
             ret.orca = None
+            print('Error reading:', calc_dir)
             raise
 
         try:
             ret.properties = orca.get_properties(ret)
         except:
             ret.properties = None
+            print('Error reading:', calc_dir)
             raise
 
     # unload cached KFReaders associated with this calc_dir
