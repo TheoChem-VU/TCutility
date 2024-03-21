@@ -63,7 +63,11 @@ class Job:
         Change slurm settings, for example, to change the partition or change the number of cores to use.
         The arguments are the same as you would use for sbatch (`see sbatch manual <https://slurm.schedmd.com/sbatch.html>`_). E.g. to change the partition to 'tc' call:
 
-        ``job.sbatch(p='tc')`` or ``job.sbatch(partition='tc')``
+        ``job.sbatch(p='tc')`` or ``job.sbatch(partition='tc')``.
+
+        Flags can be set as arguments with a boolean to enable or disable them:
+
+        ``job.sbatch(exclusive=True)`` will set the ``--exclusive`` flag.
 
         .. warning::
 
