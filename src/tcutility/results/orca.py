@@ -1,5 +1,5 @@
 from tcutility.results import Result
-from tcutility import constants
+from tcutility import constants, slurm
 import os
 from scm import plams
 import numpy as np
@@ -252,6 +252,25 @@ def get_calculation_status(info: Result) -> Result:
         ret.reasons.append("Calculation status unknown")
         ret.name = "UNKNOWN"
         ret.code = "U"
+
+        # check if the job is being managed by slurm
+        if not slurm.has_slurm():
+            return ret
+
+        # get the statuscode from the workdir
+        state = slurm.workdir_info(os.path.abspath(calc_dir)).statuscode
+        state_name = {
+            'CG': 'COMPLETING',
+            'CF': 'CONFIGURING',
+            'PD': 'PENDING',
+            'R': 'RUNNING'
+        }.get(state, 'UNKNOWN')
+
+        res.fatal = False
+        res.name = state_name
+        res.code = state
+        res.reasons = []
+
         return ret
 
     with open(info.files.out) as out:
@@ -529,5 +548,10 @@ def get_properties(info: Result) -> Result:
 
 
 if __name__ == "__main__":
-    ret = get_info("/Users/yumanhordijk/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/RadicalAdditionBenchmark/data/abinitio/P_C2H2_NH2/OPT_pVTZ")
-    print(ret.molecule)
+    # ret = get_info("/Users/yumanhordijk/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/RadicalAdditionBenchmark/data/abinitio/P_C2H2_NH2/OPT_pVTZ")
+    # print(ret.molecule)
+
+    ret = get_info('/Users/yumanhordijk/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/RadicalAdditionBenchmark2/data/SP_CCSDpT_augCCpVQZ')
+    print(ret.input)
+    prop = get_properties(ret)
+    # print(ret)
