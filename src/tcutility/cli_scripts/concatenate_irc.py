@@ -2,132 +2,130 @@ import argparse
 import pathlib as pl
 
 import numpy as np
-
-# import matplotlib.pyplot as plt
-from scm.plams import AMSJob, AMSResults, Molecule, config, finish, init
-
-
-def _create_ams_results(file: pl.Path | str) -> AMSResults:
-    """Create an AMSResults object from job directory (containing a rkf file)."""
-    job: AMSJob = AMSJob.load_external(str(file))
-    res: AMSResults = job.results
-    res.collect()
-    return res
+from scm.plams import Molecule
+from tcutility.log import log
+from tcutility.results import read
+from tcutility.results.result import Result
 
 
-def _get_converged_steps(res: AMSResults) -> list[int]:
-    """Return a list of steps where the geometry optimization converged."""
-    variables = res.get_history_property("Converged")
-    return [i for i, x in enumerate(variables) if x]  # type: ignore
+def _get_converged_energies(res: Result) -> list[float]:
+    """Returns a list of energies of the converged geometries."""
+    return [energy for converged, energy in zip(res.history.converged, res.history.energy) if converged]  # type: ignore
 
 
-def _get_converged_molecules(res: AMSResults) -> list[Molecule]:
-    """Return a list of molecules where the geometry optimization converged."""
-    return [res.get_history_molecule(step + 1) for step in _get_converged_steps(res)]  # type: ignore
+def _get_converged_molecules(res: Result) -> list[Molecule]:
+    """Returns a list of molecules of the converged geometries."""
+    return [mol for converged, mol in zip(res.history.converged, res.history.molecule) if converged]  # type: ignore
 
 
-def _get_converged_energies(res: AMSResults) -> list[float]:
-    """Return a list of energies where the geometry optimization converged."""
-    return [res.get_history_property("Energy")[i] for i in _get_converged_steps(res)]  # type: ignore
-
-
-def _concatenate_molecules_by_rmsd(mols1: list[Molecule], mols2: list[Molecule], energies1: list[float], energies2: list[float]) -> tuple[list[Molecule], list[float]]:
+def _concatenate_irc_trajectories_by_rmsd(irc_trajectories: list[list[Molecule]], energies: list[list[float]]) -> tuple[list[Molecule], list[float]]:
     """
-    Concatenate two lists of molecules through comparing the RMSD values of the end and beginnings of the trajectory.
+    Concatenates lists of molecules by comparing the RMSD values of the end and beginnings of the trajectory.
     The entries that are closest to each other are used to concatenate the trajectories.
-    Compares the first molecule in mols1 with the first and last molecule in mols2.
-    Compares the last molecule in mols1 with the first and last molecule in mols2.
 
-    Uses the Molecule.rmsd() static method.
-    """
-
-    # Calculate RMSD values and store them in a matrix
-    rmsd_matrix = np.array([[Molecule.rmsd(mols1[i], mols2[j]) for j in [0, -1]] for i in [0, -1]])
-
-    # Flatten the matrix and find the index of the minimum value
-    lowest_index = np.argmin(rmsd_matrix.flatten())
-
-    if lowest_index == 0:
-        _ = mols2.pop(0)
-        _ = energies2.pop(0)
-        return mols1[::-1] + mols2, energies1[::-1] + energies2
-    # elif lowest_index == 1:
-    #     _ = mols2.pop(-1)
-    #     _ = energies2.pop(-1)
-    #     return mols1 + mols2[::-1], energies1 + energies2[::-1]
-    # elif lowest_index == 2:
-    #     _ = mols2.pop(0)
-    #     _ = energies2.pop(0)
-    #     return mols2 + mols1[::-1], energies2 + energies1[::-1]
-    # elif lowest_index == 3:
-    #     _ = mols2.pop(-1)
-    #     _ = energies2.pop(-1)
-    #     return mols2[::-1] + mols1[::-1], energies2[::-1] + energies1[::-1]
-    else:  # This should never happen
-        raise ValueError("The RMSD values are not as expected.")
-
-
-def concatenate_irc_trajectories(job_dirs: list[str] | list[pl.Path], reverse: bool = False) -> tuple[list[Molecule], list[float]]:
-    """
-    Main function: concatenate trajectories from irc calculations, often being forward and backward, through the RMSD values.
-
-    Arguments:
-        job_dirs (list[str] | list[pl.Path]): List of directories containing the ams.rkf files.
-        reverse (bool): Reverse the trajectory. Default is False.
+    Parameters:
+        irc_trajectories: A list of lists of Molecule objects representing the trajectories.
+        energies: A list of lists of float values representing the energies.
 
     Returns:
-        tuple[list[Molecule], list[float]]: A tuple containing a list of Molecule objects and a list of energies.
+        A tuple containing a list of Molecule objects and a list of energies.
+
+    Raises:
+        ValueError: If the RMSD values are not as expected.
+    """
+    concatenated_mols: list[Molecule] = irc_trajectories[0][::-1]
+    concatenated_energies: list[float] = energies[0][::-1]
+
+    for traj_index in range(len(irc_trajectories) - 1):
+        # Calculate RMSD values of two connected trajectories to compare the connection points / molecules
+        rmsd_matrix = np.array([[Molecule.rmsd(irc_trajectories[traj_index][i], irc_trajectories[traj_index + 1][j]) for j in [0, -1]] for i in [0, -1]])
+
+        # Flatten the matrix and find the index of the minimum value
+        lowest_index = np.argmin(rmsd_matrix.flatten())
+
+        log(f"Lowest RMSD values: {rmsd_matrix.flatten()}", 10)
+
+        # Starting points are connected
+        if lowest_index == 0:
+            concatenated_mols += irc_trajectories[traj_index + 1][1:]
+            concatenated_energies += energies[traj_index + 1][1:]
+        # Ending points are connected
+        elif lowest_index == 1:
+            concatenated_mols += irc_trajectories[traj_index + 1][::-1]
+            concatenated_energies += energies[traj_index + 1][::-1]
+        # Something went wrong
+        else:
+            raise ValueError(f"The RMSD values are not as expected: {rmsd_matrix.flatten()} with {lowest_index=}.")
+
+    return concatenated_mols, concatenated_energies
+
+
+def concatenate_irc_trajectories(job_dirs: list[str] | list[pl.Path], user_log_level: int, reverse: bool = False) -> tuple[list[Molecule], list[float]]:
+    """
+    Concatenates trajectories from irc calculations, often being forward and backward, through the RMSD values.
+
+    Parameters:
+        job_dirs: A list of directories containing the ams.rkf files.
+        user_log_level: The log level set by the user.
+        reverse: A boolean indicating whether to reverse the trajectory. Default is False.
+
+    Returns:
+        A tuple containing a list of Molecule objects and a list of energies.
 
     Raises:
         Exception: If an exception is raised in the try block, it is caught and printed.
-
     """
     job_dirs = [pl.Path(file) for file in job_dirs]
     traj_geometries: list[list[Molecule]] = [[] for _ in job_dirs]
     traj_energies: list[list[float]] = [[] for _ in job_dirs]
-    current_working_directory = pl.Path.cwd()
-
-    init(path=current_working_directory)
-    config.erase_workdir = True
-    config.log.stdout = 1
 
     # This try / except / finally statement is to always remove the plams directory since we do not use it.
     # Could be considered as an alternative to a contextmanager.
     try:
         for i, job_dir in enumerate(job_dirs):
-            print(f"Processing {job_dir}")
-            res = _create_ams_results(job_dir)
+            log(f"Processing {job_dir}", user_log_level)
+            res = read(job_dir)
             traj_geometries[i] = _get_converged_molecules(res)
             traj_energies[i] = _get_converged_energies(res)
+            log(f"IRC trajectory {i+1} has {len(traj_geometries[i])} geometries.", user_log_level)
     except Exception as e:
-        print("Got exception in concatenate_irc_trajectories:", e)
-    finally:
-        finish()
+        log(f"Got exception in concatenate_irc_trajectories: {e}", 50)
 
-    print("Concatenating trajectories...")
-    concatenated_mols, concatenated_energies = _concatenate_molecules_by_rmsd(traj_geometries[0], traj_geometries[1], traj_energies[0], traj_energies[1])
+    log("Concatenating trajectories...", user_log_level)
+    concatenated_mols, concatenated_energies = _concatenate_irc_trajectories_by_rmsd(traj_geometries, traj_energies)
 
     if reverse:
-        print("Reversing the trajectory...")
+        log("Reversing the trajectory...", user_log_level)
         concatenated_mols = concatenated_mols[::-1]
         concatenated_energies = concatenated_energies[::-1]
     return concatenated_mols, concatenated_energies
 
 
 def _xyz_format(mol: Molecule) -> str:
-    """Return a string representation of a molecule in the xyz format."""
+    """Returns a string representation of a molecule in the xyz format, e.g.:
+
+    Geometry 1, Energy: -0.5 Ha
+    C      0.00000000      0.00000000      0.00000000
+    ...
+    """
     return "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
 
 
 def _amv_format(mol: Molecule, step: int, energy: float | None = None) -> str:
-    """Return a string representation of a molecule in the amv format."""
+    """Returns a string representation of a molecule in the amv format, e.g.:
+
+    Geometry 1, Energy: -0.5 Ha
+    C      0.00000000      0.00000000      0.00000000
+    ...
+
+    If no energy is provided, the energy is not included in the string representation"""
     if energy is None:
         return f"Geometry {step}\n" + "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
     return f"Geometry {step}, Energy: {energy} Ha\n" + "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
 
 
 def write_mol_to_xyz_file(mols: list[Molecule] | Molecule, filename: str | pl.Path) -> None:
-    """Write a list of molecules to a file in a given format."""
+    """Writes a list of molecules to a file in xyz format."""
     mols = mols if isinstance(mols, list) else [mols]
     out_file = pl.Path(f"{filename}.xyz")
 
@@ -139,7 +137,7 @@ def write_mol_to_xyz_file(mols: list[Molecule] | Molecule, filename: str | pl.Pa
 
 
 def write_mol_to_amv_file(mols: list[Molecule] | Molecule, energies: list[float] | None, filename: str | pl.Path) -> None:
-    """Write a list of molecules to a file in a given format."""
+    """Writes a list of molecules to a file in amv format."""
     mols = mols if isinstance(mols, list) else [mols]
     out_file = pl.Path(f"{filename}.amv")
     energies = energies if energies is not None else [0.0 for _ in mols]
@@ -152,34 +150,57 @@ def write_mol_to_amv_file(mols: list[Molecule] | Molecule, energies: list[float]
 
 
 def create_subparser(parent_parser: argparse.ArgumentParser):
-    subparser = parent_parser.add_parser('concat-irc', 
-                                         help="Combine separated IRC paths.",
-                                         description="""
+    subparser = parent_parser.add_parser(  # type: ignore # add_parser is a valid method
+        "concat-irc",
+        help="Combine separated IRC paths.",
+        description="""
         Scripts that takes in two directories containing an IRC file ("ams.rkf") and concatenates them through the RMSD values. Produces a .xyz and .amv file in the specified output directory.
         The output directory is specified with the -o flag. If not specified, the output will be written to the current working directory.
         In addition, the -r flag can be used to reverse the trajectory.
 
         Note: ALWAYS visualize the .amv file in AMSView to verify the trajectory.
-    """)
+    """,
+    )
 
     # Add the arguments
-    subparser.add_argument("-f", "--forward", type=str, help="Job directory containing the ams.rkf with the forward irc calculation")
-    subparser.add_argument("-b", "--backward", type=str, help="Job directory containing the ams.rkf with the backward irc calculation")
+    subparser.add_argument("-j", "--jobs", nargs="*", type=str, help="Job directories containing the ams.rkf of the irc calculation(s)")
     subparser.add_argument("-r", "--reverse", action="store_true", help="Reverses the trajectory")
     subparser.add_argument("-o", "--output", type=str, default="./", help="Directory in which the outputfile will be saved")
+    subparser.add_argument("-l", "--log_level", type=int, default=20, help="Set the log level. Default is 3 (info).")
 
 
 def main(args):
     outputdir = pl.Path(args.output).resolve()
-    job_dirs = [pl.Path(args.forward).resolve(), pl.Path(args.backward).resolve()]
-    molecules, energies = concatenate_irc_trajectories(job_dirs, args.reverse)
+    job_dirs = [pl.Path(directory).resolve() for directory in args.jobs]
+    molecules, energies = concatenate_irc_trajectories(job_dirs, args.log_level, args.reverse)
 
     outputdir.mkdir(parents=True, exist_ok=True)
-    write_mol_to_amv_file(molecules, energies, outputdir / "concatenated_mols")
-    write_mol_to_xyz_file(molecules, outputdir / "concatenated_mols")
+    write_mol_to_amv_file(molecules, energies, outputdir / "read_concatenated_mols")
+    write_mol_to_xyz_file(molecules, outputdir / "read_concatenated_mols")
 
-    print(f"Output written to {outputdir / 'concatenated_mols'}")
+    log(f"Output written to {outputdir / 'concatenated_mols'}")
+
+
+class Args:
+    def __init__(self, jobs, reverse, output, log_level=20):
+        self.jobs: list[str] = jobs
+        self.reverse = reverse
+        self.output = output
+        self.log_level = log_level
 
 
 if __name__ == "__main__":
-    main()
+    irc_trajectoris = pl.Path("/Users/siebeld/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/PhD/Scripting/local_packages/TCutility/test/fixtures/irc_trajectories")
+    desktop = pl.Path("/Users/siebeld/Desktop")
+
+    args = Args(
+        jobs=[
+            str(irc_trajectoris / "forward"),
+            str(irc_trajectoris / "backward"),
+            str(irc_trajectoris / "backward_2"),
+            str(irc_trajectoris / "forward_2"),
+        ],
+        reverse=True,
+        output=desktop,
+    )
+    main(args)
