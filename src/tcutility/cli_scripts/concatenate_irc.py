@@ -1,12 +1,17 @@
 import argparse
 import pathlib as pl
-from typing import List
+from typing import List, Tuple, Union
 
 import numpy as np
 from scm.plams import Molecule
 from tcutility.log import log
 from tcutility.results import read
 from tcutility.results.result import Result
+
+
+def _create_result_objects(job_dirs: Union[List[str], List[pl.Path]]) -> List[Result]:
+    """Creates a list of Result objects from a list of directories."""
+    return [read(pl.Path(file)) for file in job_dirs]
 
 
 def _get_converged_energies(res: Result) -> List[float]:
@@ -19,7 +24,7 @@ def _get_converged_molecules(res: Result) -> List[Molecule]:
     return [mol for converged, mol in zip(res.history.converged, res.history.molecule) if converged]  # type: ignore
 
 
-def _concatenate_irc_trajectories_by_rmsd(irc_trajectories: List[List[Molecule]], energies: List[List[float]]) -> tuple[List[Molecule], List[float]]:
+def _concatenate_irc_trajectories_by_rmsd(irc_trajectories: List[List[Molecule]], energies: List[List[float]]) -> Tuple[List[Molecule], List[float]]:
     """
     Concatenates lists of molecules by comparing the RMSD values of the end and beginnings of the trajectory.
     The entries that are closest to each other are used to concatenate the trajectories.
@@ -61,7 +66,7 @@ def _concatenate_irc_trajectories_by_rmsd(irc_trajectories: List[List[Molecule]]
     return concatenated_mols, concatenated_energies
 
 
-def concatenate_irc_trajectories(job_dirs: List[str] | List[pl.Path], user_log_level: int, reverse: bool = False) -> tuple[List[Molecule], list[float]]:
+def concatenate_irc_trajectories(result_objects: List[Result], user_log_level: int, reverse: bool = False) -> Tuple[List[Molecule], List[float]]:
     """
     Concatenates trajectories from irc calculations, often being forward and backward, through the RMSD values.
 
@@ -76,15 +81,13 @@ def concatenate_irc_trajectories(job_dirs: List[str] | List[pl.Path], user_log_l
     Raises:
         Exception: If an exception is raised in the try block, it is caught and printed.
     """
-    job_dirs = [pl.Path(file) for file in job_dirs]
-    traj_geometries: List[List[Molecule]] = [[] for _ in job_dirs]
-    traj_energies: List[List[float]] = [[] for _ in job_dirs]
+    traj_geometries: List[List[Molecule]] = [[] for _ in result_objects]
+    traj_energies: List[List[float]] = [[] for _ in result_objects]
 
-    for i, job_dir in enumerate(job_dirs):
-        log(f"Processing {job_dir}", user_log_level)
-        res = read(job_dir)
-        traj_geometries[i] = _get_converged_molecules(res)
-        traj_energies[i] = _get_converged_energies(res)
+    for i, res_obj in enumerate(result_objects):
+        log(f"Processing {res_obj.files.root}", user_log_level)  # type: ignore # root is a valid attribute
+        traj_geometries[i] = _get_converged_molecules(res_obj)
+        traj_energies[i] = _get_converged_energies(res_obj)
         log(f"IRC trajectory {i+1} has {len(traj_geometries[i])} geometries.", user_log_level)
 
     log("Concatenating trajectories...", user_log_level)
@@ -107,7 +110,7 @@ def _xyz_format(mol: Molecule) -> str:
     return "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
 
 
-def _amv_format(mol: Molecule, step: int, energy: float | None = None) -> str:
+def _amv_format(mol: Molecule, step: int, energy: Union[float, None] = None) -> str:
     """Returns a string representation of a molecule in the amv format, e.g.:
 
     Geometry 1, Energy: -0.5 Ha
@@ -120,7 +123,7 @@ def _amv_format(mol: Molecule, step: int, energy: float | None = None) -> str:
     return f"Geometry {step}, Energy: {energy} Ha\n" + "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
 
 
-def write_mol_to_xyz_file(mols: List[Molecule] | Molecule, filename: str | pl.Path) -> None:
+def write_mol_to_xyz_file(mols: Union[List[Molecule], Molecule], filename: Union[str, pl.Path]) -> None:
     """Writes a list of molecules to a file in xyz format."""
     mols = mols if isinstance(mols, list) else [mols]
     out_file = pl.Path(f"{filename}.xyz")
@@ -132,7 +135,7 @@ def write_mol_to_xyz_file(mols: List[Molecule] | Molecule, filename: str | pl.Pa
     return None
 
 
-def write_mol_to_amv_file(mols: List[Molecule] | Molecule, energies: List[float] | None, filename: str | pl.Path) -> None:
+def write_mol_to_amv_file(mols: Union[List[Molecule], Molecule], energies: Union[List[float], None], filename: Union[str, pl.Path]) -> None:
     """Writes a list of molecules to a file in amv format."""
     mols = mols if isinstance(mols, list) else [mols]
     out_file = pl.Path(f"{filename}.amv")
@@ -168,7 +171,8 @@ def create_subparser(parent_parser: argparse.ArgumentParser):
 def main(args):
     outputdir = pl.Path(args.output).resolve()
     job_dirs = [pl.Path(directory).resolve() for directory in args.jobs]
-    molecules, energies = concatenate_irc_trajectories(job_dirs, args.log_level, args.reverse)
+    res_objects = _create_result_objects(job_dirs)
+    molecules, energies = concatenate_irc_trajectories(res_objects, args.log_level, args.reverse)
 
     outputdir.mkdir(parents=True, exist_ok=True)
     write_mol_to_amv_file(molecules, energies, outputdir / "read_concatenated_mols")
