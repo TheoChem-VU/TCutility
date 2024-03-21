@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.results &#8212; TCutility v0.10.5 documentation</title>
+    <title>Command-line interface (CLI) scripts &#8212; TCutility v0.10.5 documentation</title>
   
   
   
@@ -43,12 +43,12 @@
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'results/results';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cli_scripts/main';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="tcutility.job" href="../tcutility.job.html" />
-    <link rel="prev" title="TCutility v0.10.5 documentation" href="../index.html" />
+    <link rel="next" title="tcutility.data package" href="../api/tcutility.data.html" />
+    <link rel="prev" title="VDD Charge Analysis module" href="../analysis/vdd_charge_analysis.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -245,7 +245,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">tcutility.results</li>
+    <li class="breadcrumb-item active" aria-current="page">Command-line...</li>
   </ul>
 </nav>
 </div>
@@ -262,123 +262,129 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="tcutility-results">
-<h1>tcutility.results<a class="headerlink" href="#tcutility-results" title="Link to this heading">#</a></h1>
+  <section id="command-line-interface-cli-scripts">
+<h1>Command-line interface (CLI) scripts<a class="headerlink" href="#command-line-interface-cli-scripts" title="Link to this heading">#</a></h1>
+<p>TCutility comes with some helpful CLI scripts for you to use. Please find an overview and examples here. You can also access information by using the <code class="docutils literal notranslate"><span class="pre">tc</span> <span class="pre">-h</span></code> command. This will show you an overview of the available CLI scripts. More detailed descriptions can be accessed using the <code class="docutils literal notranslate"><span class="pre">tc</span> <span class="pre">{program</span> <span class="pre">name}</span> <span class="pre">-h</span></code> commands.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">tcutility.results</span></code> package allows you to easily retrieve information and results from a calculation performed using AMS, ORCA or CREST.
-This includes results and settings from AMS as well as the calculation engine used (e.g. ADF, BAND, DFTB, …).
-Recommended usage is to use the <a class="reference internal" href="../api/tcutility.results.html#tcutility.results.read" title="tcutility.results.read"><code class="xref py py-func docutils literal notranslate"><span class="pre">read</span></code></a> function to read the information.
-One can also access specific information by calling one the functions in the submodules below.
-Information will be given as <a class="reference internal" href="../api/tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> objects and can be used just like a <a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#dict">dict</a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">TCutility.results</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">calc_dir</span> <span class="o">=</span> <span class="s1">&#39;../../test/fixtures/ethanol&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">TCutility</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">engine</span>
-<span class="go">adf</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">ams_version</span><span class="o">.</span><span class="n">full</span>
-<span class="go">2022.103 r104886 (2022-06-17)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">symmetry</span>
-<span class="go">{&#39;group&#39;: &#39;C(S)&#39;, &#39;labels&#39;: [&#39;AA&#39;, &#39;AAA&#39;]}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span>
-<span class="go">{&#39;AA&#39;: -2738.644830445246,</span>
-<span class="go">&#39;AAA&#39;: -1056.9706925183411,</span>
-<span class="go">&#39;total&#39;: -3795.615522963587}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">vibrations</span><span class="o">.</span><span class="n">number_of_imag_modes</span>
-<span class="go">0</span>
+<p>CLI scripts are invoked using the parent <code class="docutils literal notranslate"><span class="pre">tc</span></code> command followed by the sub-program (see below). If you have suggestions for useful scripts please contact the developers or <a class="reference external" href="https://github.com/TheoChem-VU/TCutility/issues/new">open an issue</a> on our GitHub page.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">tc</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">{</span><span class="n">read</span><span class="p">,</span><span class="n">optimize</span><span class="p">,</span><span class="n">concat</span><span class="o">-</span><span class="n">irc</span><span class="p">}</span> <span class="o">...</span>
 </pre></div>
 </div>
+<section id="tcutility-command-line-scripts">
+<h3>TCutility command-line scripts<a class="headerlink" href="#tcutility-command-line-scripts" title="Link to this heading">#</a></h3>
+<dl class="option-list">
+<dt><kbd>subprogram</kbd></dt>
+<dd><p>Possible choices: read, optimize, concat-irc</p>
+</dd>
+</dl>
 </section>
-<section id="available-keys-present-in-the-result-object">
-<h2>Available keys present in the <a class="reference internal" href="../api/tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> object<a class="headerlink" href="#available-keys-present-in-the-result-object" title="Link to this heading">#</a></h2>
-<p>After reading a calculation, different keys may be present in the <a class="reference internal" href="../api/tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> object depending on the engine used. Think of reading an adf calculation, or an orca calculation.
-Below you can find a list of keys that are present in the <a class="reference internal" href="../api/tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> object for each type of calculation.</p>
-<section id="adf-calculation">
-<h3>ADF calculation<a class="headerlink" href="#adf-calculation" title="Link to this heading">#</a></h3>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>files.root
-files.err
-files.log
-files.ams.rkf
-files.adf.rkf
-engine
-input.Task
-input.properties.NormalModes
-input.system.atoms
-input.system.bondorders
-input.adf.basis.Type
-input.adf.basis.Core
-input.adf.xc.GGA
-input.adf.NumericalQuality
-job_id
-ams_version.full
-ams_version.major
-ams_version.minor
-ams_version.micro
-ams_version.date
-timing.cpu
-timing.sys
-timing.total
-status.fatal
-status.name
-status.code
-status.reasons
-is_multijob
-molecule.number_of_atoms
-molecule.atom_numbers
-molecule.atom_symbols
-molecule.atom_masses
-molecule.input
-molecule.output
-molecule.frag_indices
-molecule.mol_charge
-history.number_of_entries
-history.coords
-history.energy
-history.gradients
-history.maxgrad
-history.rmsgrad
-history.maxstep
-history.rmsstep
-history.molecule
-adf.task
-adf.relativistic
-adf.relativistic_type
-adf.unrestricted_mos
-adf.unrestricted_sfos
-adf.symmetry.group
-adf.symmetry.labels
-adf.used_regions
-adf.charge
-adf.spin_polarization
-adf.multiplicity
-properties.energy.bond
-properties.energy.elstat
-properties.energy.orbint.total
-properties.energy.orbint.AA
-properties.energy.orbint.AAA
-properties.energy.pauli.total
-properties.energy.dispersion
-properties.energy.gibbs
-properties.energy.enthalpy
-properties.energy.nuclear_internal
-properties.vibrations.number_of_modes
-properties.vibrations.frequencies
-properties.vibrations.intensities
-properties.vibrations.number_of_imag_modes
-properties.vibrations.character
-properties.vibrations.modes
-properties.vdd.charges
-level.xc.functional
-level.xc.category
-level.xc.dispersion
-level.xc.empirical_scaling
-level.xc.summary
-level.basis.type
-level.basis.core
-level.quality
-level.summary
+<section id="Sub-commands">
+<h3>Sub-commands<a class="headerlink" href="#Sub-commands" title="Link to this heading">#</a></h3>
+<section id="read">
+<h4>read<a class="headerlink" href="#read" title="Link to this heading">#</a></h4>
+<p>Read results from a calculation.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tc</span> <span class="n">read</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span><span class="p">]</span> <span class="n">workdir</span> <span class="p">[</span><span class="n">keys</span> <span class="o">...</span><span class="p">]</span>
 </pre></div>
 </div>
+<section id="positional-arguments">
+<h5>Positional Arguments<a class="headerlink" href="#positional-arguments" title="Link to this heading">#</a></h5>
+<dl class="option-list">
+<dt><kbd>workdir</kbd></dt>
+<dd><p>The calculation directory to read the results from.</p>
+</dd>
+<dt><kbd>keys</kbd></dt>
+<dd><p>The keys to read from the results.</p>
+</dd>
+</dl>
+</section>
+<section id="named-arguments">
+<h5>Named Arguments<a class="headerlink" href="#named-arguments" title="Link to this heading">#</a></h5>
+<dl class="option-list">
+<dt><kbd>-s, --status</kbd></dt>
+<dd><p>Shortcut to only print the status of the calculation.</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-p, --properties</kbd></dt>
+<dd><p>Shortcut to only print calculated properties for the calculation.</p>
+<p>Default: False</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="optimize">
+<h4>optimize<a class="headerlink" href="#optimize" title="Link to this heading">#</a></h4>
+<p>Set up and run a geometry optimization on a given structure.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tc</span> <span class="n">optimize</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">l</span> <span class="n">LEVEL</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="n">CHARGE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SPINPOL</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">k</span><span class="p">]</span> <span class="n">xyzfile</span>
+</pre></div>
+</div>
+<section id="positional-arguments_repeat1">
+<h5>Positional Arguments<a class="headerlink" href="#positional-arguments_repeat1" title="Link to this heading">#</a></h5>
+<dl class="option-list">
+<dt><kbd>xyzfile</kbd></dt>
+<dd><p>The molecule to optimize, in extended xyz-format. See <a class="reference external" href="https://theochem-vu.github.io/TCutility/api/tcutility.html#module-tcutility.molecule">https://theochem-vu.github.io/TCutility/api/tcutility.html#module-tcutility.molecule</a> for more information.</p>
+</dd>
+</dl>
+</section>
+<section id="named-arguments_repeat1">
+<h5>Named Arguments<a class="headerlink" href="#named-arguments_repeat1" title="Link to this heading">#</a></h5>
+<dl class="option-list">
+<dt><kbd>-l, --level</kbd></dt>
+<dd><p>Set the level of theory for the optimization. For example, “GFN1-xTB” or “BLYP-D3(BJ)/TZ2P” Can be set in the xyz-file with the ‘level_of_theory’ flag.</p>
+</dd>
+<dt><kbd>-c, --charge</kbd></dt>
+<dd><p>The charge of the system. Can be set in the xyz-file with the ‘charge’ flag.</p>
+</dd>
+<dt><kbd>-s, --spinpol</kbd></dt>
+<dd><p>The spin-polarization of the system. Can be set in the xyz-file with the ‘spinpol’ flag.</p>
+</dd>
+<dt><kbd>-o, --output</kbd></dt>
+<dd><p>The file to write the optimized result to. By default will be written to ‘{xyzfile}_optimized.xyz’.</p>
+</dd>
+<dt><kbd>-k, --keep</kbd></dt>
+<dd><p>Keep the calculation directory after finishing the calculation.</p>
+<p>Default: False</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="concat-irc">
+<h4>concat-irc<a class="headerlink" href="#concat-irc" title="Link to this heading">#</a></h4>
+<blockquote>
+<div><p>Scripts that takes in two or more directories containing an IRC file (“ams.rkf”) and concatenates them through the RMSD values. Produces a .xyz and .amv file in the specified output directory.
+The output directory is specified with the -o flag. If not specified, the output will be written to the current working directory.
+In addition, the -r flag can be used to reverse the trajectory.</p>
+<p>Note: ALWAYS visualize the .amv file in AMSView to verify the trajectory.</p>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tc</span> <span class="n">concat</span><span class="o">-</span><span class="n">irc</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">l</span> <span class="n">LOG_LEVEL</span><span class="p">]</span> <span class="p">[</span><span class="n">jobs</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+<section id="positional-arguments_repeat2">
+<h5>Positional Arguments<a class="headerlink" href="#positional-arguments_repeat2" title="Link to this heading">#</a></h5>
+<dl class="option-list">
+<dt><kbd>jobs</kbd></dt>
+<dd><p>Job directories containing the ams.rkf of the irc calculation(s)</p>
+</dd>
+</dl>
+</section>
+<section id="named-arguments_repeat2">
+<h5>Named Arguments<a class="headerlink" href="#named-arguments_repeat2" title="Link to this heading">#</a></h5>
+<dl class="option-list">
+<dt><kbd>-r, --reverse</kbd></dt>
+<dd><p>Reverses the trajectory</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-o, --output</kbd></dt>
+<dd><p>Directory in which the outputfile will be saved</p>
+<p>Default: “./”</p>
+</dd>
+<dt><kbd>-l, --log_level</kbd></dt>
+<dd><p>Set the log level. The lower the value, the more is printed. Default is 20 (info).</p>
+<p>Default: 20</p>
+</dd>
+</dl>
+</section>
+</section>
 </section>
 </section>
 </section>
@@ -394,20 +400,20 @@ level.summary
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../index.html"
+       href="../analysis/vdd_charge_analysis.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">TCutility v0.10.5 documentation</p>
+        <p class="prev-next-title">VDD Charge Analysis module</p>
       </div>
     </a>
     <a class="right-next"
-       href="../tcutility.job.html"
+       href="../api/tcutility.data.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">tcutility.job</p>
+        <p class="prev-next-title">tcutility.data package</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -429,9 +435,26 @@ level.summary
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-keys-present-in-the-result-object">Available keys present in the <code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code> object</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adf-calculation">ADF calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility-command-line-scripts">TCutility command-line scripts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Sub-commands">Sub-commands</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#read">read</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#positional-arguments">Positional Arguments</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#named-arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#optimize">optimize</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#positional-arguments_repeat1">Positional Arguments</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#named-arguments_repeat1">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#concat-irc">concat-irc</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#positional-arguments_repeat2">Positional Arguments</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#named-arguments_repeat2">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -440,7 +463,7 @@ level.summary
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/results/results.rst.txt">
+    <a href="../_sources/cli_scripts/main.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
