@@ -162,7 +162,7 @@ def create_subparser(parent_parser: argparse.ArgumentParser):
     )
 
     # Add the arguments
-    subparser.add_argument("-j", "--jobs", nargs="*", type=str, help="Job directories containing the ams.rkf of the irc calculation(s)")
+    subparser.add_argument("jobs", nargs="*", type=str, help="Job directories containing the ams.rkf of the irc calculation(s)")
     subparser.add_argument("-r", "--reverse", action="store_true", help="Reverses the trajectory")
     subparser.add_argument("-o", "--output", type=str, default="./", help="Directory in which the outputfile will be saved")
     subparser.add_argument("-l", "--log_level", type=int, default=20, help="Set the log level. The lower the value, the more is printed. Default is 20 (info).")
@@ -171,6 +171,10 @@ def create_subparser(parent_parser: argparse.ArgumentParser):
 def main(args):
     outputdir = pl.Path(args.output).resolve()
     job_dirs = [pl.Path(directory).resolve() for directory in args.jobs]
+
+    if len(job_dirs) > 2:
+        raise ValueError("Only two IRC paths can be concatenated at a time as is currently implemented.")
+
     res_objects = _create_result_objects(job_dirs)
     molecules, energies = concatenate_irc_trajectories(res_objects, args.log_level, args.reverse)
 
