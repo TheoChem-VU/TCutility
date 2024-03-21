@@ -248,31 +248,14 @@ def get_calculation_status(info: Result) -> Result:
     ret.code = None
     ret.reasons = []
 
+    # if we do not have an output file the calculation failed
     if "out" not in info.files.out:
         ret.reasons.append("Calculation status unknown")
         ret.name = "UNKNOWN"
         ret.code = "U"
-
-        # check if the job is being managed by slurm
-        if not slurm.has_slurm():
-            return ret
-
-        # get the statuscode from the workdir
-        state = slurm.workdir_info(os.path.abspath(calc_dir)).statuscode
-        state_name = {
-            'CG': 'COMPLETING',
-            'CF': 'CONFIGURING',
-            'PD': 'PENDING',
-            'R': 'RUNNING'
-        }.get(state, 'UNKNOWN')
-
-        res.fatal = False
-        res.name = state_name
-        res.code = state
-        res.reasons = []
-
         return ret
 
+    # try to read if the calculation succeeded
     with open(info.files.out) as out:
         lines = out.readlines()
         if any(["ORCA TERMINATED NORMALLY" in line for line in lines]):
@@ -281,8 +264,28 @@ def get_calculation_status(info: Result) -> Result:
             ret.code = "S"
             return ret
 
+    # if it didnt we default to failed
     ret.name = "FAILED"
     ret.code = "F"
+
+    # otherwise we check if the job is being managed by slurm
+    if not slurm.workdir_info(os.path.abspath(info.files.root)):
+        return ret
+
+    # get the statuscode from the workdir
+    state = slurm.workdir_info(os.path.abspath(info.files.root)).statuscode
+    state_name = {
+        'CG': 'COMPLETING',
+        'CF': 'CONFIGURING',
+        'PD': 'PENDING',
+        'R': 'RUNNING'
+    }.get(state, 'UNKNOWN')
+
+    res.fatal = False
+    res.name = state_name
+    res.code = state
+    res.reasons = []
+
     return ret
 
 
