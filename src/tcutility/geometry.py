@@ -401,7 +401,7 @@ def random_points_on_sphere(shape: Tuple[int], radius: float = 1) -> np.ndarray:
         Array of coordinates on a sphere.
     """
     x = np.random.randn(*shape)
-    x = x / np.linalg.norm(x, axis=1) * radius
+    x = x / np.linalg.norm(x, axis=1, keepdims=True) * radius
     return x
 
 
