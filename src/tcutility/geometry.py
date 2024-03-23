@@ -391,7 +391,7 @@ def RMSD(X: np.ndarray, Y: np.ndarray, axis: Union[int, None] = None, use_kabsch
 
 def random_points_on_sphere(shape: Tuple[int], radius: float = 1) -> np.ndarray:
     """
-    Generate a random points on a sphere with a specified radius.
+    Generate random points on a sphere with a specified radius.
 
     Args:
         shape: The shape of the resulting points, generally shape[0] coordinates with shape[1] dimensions
@@ -407,7 +407,8 @@ def random_points_on_sphere(shape: Tuple[int], radius: float = 1) -> np.ndarray:
 
 def random_points_in_anular_sphere(shape: Tuple[int], min_radius: float = 0, max_radius: float = 1):
     """
-    Generate a random points in a sphere with specified radii.
+    Generate random points in an sphere or anular sphere with specified radii. 
+    An anular sphere is a hollow sphere of a certain thickness.
 
     Args:
         shape: The shape of the resulting points, generally shape[0] coordinates with shape[1] dimensions
