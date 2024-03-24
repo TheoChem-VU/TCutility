@@ -20,6 +20,7 @@ class Job:
         test_mode: whether to enable the testing mode. If enabled, the job will be setup like normally, but the running step is skipped. This is useful if you want to know what the job settings look like before running the real calculations.
         overwrite: whether to overwrite a previously run job in the same working directory.
         wait_for_finish: whether to wait for this job to finish running before continuing your runscript.
+        delete_on_finish: whether to remove the workdir for this job after it is finished running.
     '''
     def __init__(self, test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = False, delete_on_finish: bool = False):
         self.settings = results.Result()
