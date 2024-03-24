@@ -9,7 +9,7 @@ j = os.path.join
 
 class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        self.settings = results.Result()
         self._functional = None
         self._core = None
         self.solvent('vacuum')
@@ -20,6 +20,7 @@ class ADFJob(AMSJob):
 
         # by default print the fock matrix
         self.settings.input.adf.print = 'SFOSiteEnergies'
+        super().__init__(*args, **kwargs)
 
     def __str__(self):
         return f'{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}'

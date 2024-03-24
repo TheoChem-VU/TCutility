@@ -1,6 +1,6 @@
 from scm import plams
 import tcutility
-from tcutility import log
+from tcutility import log, results
 from tcutility.job.generic import Job
 import os
 import numpy as np
@@ -14,11 +14,6 @@ class AMSJob(Job):
     This is the AMS base job which will serve as the parent class for ADFJob, DFTBJob and the future BANDJob.
     It holds all methods related to changing the settings at the AMS level. It also handles preparing the jobs, e.g. writing runfiles and inputs.
     '''
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.single_point()
-        self.geometry_convergence()
-
     def __str__(self):
         return f'{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}'
 
