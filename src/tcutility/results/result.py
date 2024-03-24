@@ -159,6 +159,16 @@ class Result(dict):
         clean_dict = dictfunc.list_to_dict(dictfunc.dict_to_list(self))
         return plams.Settings(clean_dict)
 
+    def copy(self):
+        import copy
+
+        # cast this object to a list of keys and values
+        lsts = dictfunc.dict_to_list(self)
+        # copy everthing in the lists
+        lsts = [[copy.copy(x) for x in lst] for lst in lsts]
+        # and return a new result object
+        return Result(dictfunc.list_to_dict(lsts))
+
 
 if __name__ == '__main__':
     ret = Result()
