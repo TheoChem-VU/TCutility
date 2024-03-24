@@ -43,8 +43,7 @@ class Job:
     def __exit__(self, exc_type, exc_value, exc_tb):
         if exc_type:
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            log.error(f'Job set-up failed with exception:')
-            log.error(f'    {exc_type.__name__}({exc_value}) in File "{fname}", line {exc_tb.tb_lineno}.')
+            log.error(f'Job set-up failed with exception: {exc_type.__name__}({exc_value}) in File "{fname}", line {exc_tb.tb_lineno}.')
             return True
         self.run()
 
