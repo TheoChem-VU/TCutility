@@ -243,3 +243,18 @@ class Job:
         elif isinstance(mol, plams.Atom):
             self._molecule = plams.Molecule()
             self._molecule.add_atom(mol)
+
+    def copy(self):
+        '''
+        Make and return a copy of this object. 
+        '''
+        import copy
+
+        cp = Job()
+        # cast this object to a list of keys and values
+        lsts = dictfunc.dict_to_list(self.__dict__)
+        # copy everthing in the lists
+        lsts = [[copy.copy(x) for x in lst] for lst in lsts]
+        # and return a new result object
+        cp.__dict__.update(results.Result(dictfunc.list_to_dict(lsts)))
+        return cp
