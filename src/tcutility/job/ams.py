@@ -1,6 +1,6 @@
 from scm import plams
 import tcutility
-from tcutility import log, results
+from tcutility import log
 from tcutility.job.generic import Job
 import os
 import numpy as np
