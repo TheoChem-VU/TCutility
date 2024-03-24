@@ -1,7 +1,5 @@
-from scm import plams
-from tcutility.data import molecules
 from tcutility.job.generic import Job
-from tcutility import log, spell_check
+from tcutility import spell_check
 import os
 from typing import Union
 
@@ -43,7 +41,7 @@ class XTBJob(Job):
         Set the method used by XTB. This includes GFN0-xTB, GFN1-xTB, GFN2-xTB and GFNFF.
 
         Args:
-            method: the method to use. Can be specified by its full name, e.g. GFN2-xTB, or shortened, e.g. GFN2 or simply 2.
+            method: the method to use. Can be specified by its full name, e.g. 'GFN2-xTB', is the same as 'GFN2' or simply 2.
         '''
         if isinstance(method, int):
             if not 0 >= method >= 2:
@@ -154,3 +152,4 @@ class XTBJob(Job):
     @property
     def output_mol_path(self):
         return f'{self.workdir}/xtbopt.xyz'
+
