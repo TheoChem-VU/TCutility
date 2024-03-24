@@ -2,9 +2,10 @@ from tcutility import log, results, slurm, molecule
 import subprocess as sp
 import os
 import stat
-from typing import Union
+from typing import Union, List
 from scm import plams
 import shutil
+import dictfunc 
 
 j = os.path.join
 
@@ -22,8 +23,7 @@ class Job:
         wait_for_finish: whether to wait for this job to finish running before continuing your runscript.
         delete_on_finish: whether to remove the workdir for this job after it is finished running.
     '''
-    def __init__(self, test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = False, delete_on_finish: bool = False):
-        self.settings = results.Result()
+    def __init__(self, *base_jobs: List['Job'], test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = False, delete_on_finish: bool = False):
         self._sbatch = results.Result()
         self._molecule = None
         self._molecule_path = None
@@ -37,6 +37,10 @@ class Job:
         self._preambles = []
         self._postambles = []
         self._postscripts = []
+
+        # update this job with base_jobs
+        for base_job in base_jobs:
+            self.__dict__.update(base_job.copy().__dict__)
 
     def __enter__(self):
         return self
