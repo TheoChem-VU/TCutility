@@ -116,7 +116,6 @@ class Job:
             self.add_postamble(f'rm -r {self.workdir}')
 
         for postscript in self._postscripts:
-            print(postscript)
             self._postambles.append(f'python {postscript[0]} {" ".join(postscript[1])}')
         # setup the job and check if it was successfull
         setup_success = self._setup_job()
