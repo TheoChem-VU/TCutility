@@ -160,16 +160,14 @@ class ADFJob(AMSJob):
         self._functional = functional
 
         if functional == 'r2SCAN-3c' and self._basis_set != 'mTZ2P':
-            log.warn(f'Switching basis set from {self._basis_set} to mTZ2P for r2SCAN-3c.')
+            log.info(f'Switching basis set from {self._basis_set} to mTZ2P for r2SCAN-3c.')
             self.basis_set('mTZ2P')
 
         if functional == 'SSB-D':
-            log.error('There are two functionals called SSB-D, please use "GGA:SSB-D" or "MetaGGA:SSB-D".')
-            return
+            raise ValueError('There are two functionals called SSB-D, please use "GGA:SSB-D" or "MetaGGA:SSB-D".')
 
         if not data.functionals.get(functional):
-            log.warn(f'XC-functional {functional} not found. Please ask a TheoCheM developer to add it. Adding functional as LibXC.')
-            self.settings.input.adf.XC.LibXC = functional
+            raise ValueError(f'XC-functional {functional} not found.')
         else:
             func = data.functionals.get(functional)
             self.settings.input.adf.update(func.adf_settings)
