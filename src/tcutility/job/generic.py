@@ -23,24 +23,30 @@ class Job:
         wait_for_finish: whether to wait for this job to finish running before continuing your runscript.
         delete_on_finish: whether to remove the workdir for this job after it is finished running.
     '''
-    def __init__(self, *base_jobs: List['Job'], test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = False, delete_on_finish: bool = False):
+    def __init__(self, *base_jobs: List['Job'], test_mode: bool = None, overwrite: bool = None, wait_for_finish: bool = None, delete_on_finish: bool = None):
         self._sbatch = results.Result()
         self._molecule = None
         self._molecule_path = None
         self.slurm_job_id = None
         self.name = 'calc'
         self.rundir = 'tmp'
-        self.test_mode = test_mode
-        self.overwrite = overwrite
-        self.wait_for_finish = wait_for_finish
-        self.delete_on_finish = delete_on_finish
         self._preambles = []
         self._postambles = []
         self._postscripts = []
 
+        self.test_mode = test_mode
+        self.overwrite = overwrite
+        self.wait_for_finish = wait_for_finish
+        self.delete_on_finish = delete_on_finish
+
         # update this job with base_jobs
         for base_job in base_jobs:
             self.__dict__.update(base_job.copy().__dict__)
+
+        self.test_mode = self.test_mode if test_mode is None else test_mode
+        self.overwrite = self.overwrite if overwrite is None else overwrite
+        self.wait_for_finish = self.wait_for_finish if wait_for_finish is None else wait_for_finish
+        self.delete_on_finish = self.delete_on_finish if delete_on_finish is None else delete_on_finish
 
     def __enter__(self):
         return self
