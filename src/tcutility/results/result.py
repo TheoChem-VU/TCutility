@@ -5,16 +5,17 @@ import dictfunc
 class Result(dict):
     '''Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary. 
     The class works case-insensitively, but will retain the case of the key when it was first set.'''
-    def __init__(self, val=None):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
         # if we are casting an object to a Result object
-        # we will copy all data to this one and all dictionaries will be turned into Result objects
-        if val and isinstance(val, dict):
-            # turn every value into a Result object if possible
-            for key, value in val.items():
-                if isinstance(value, dict):
-                    self[key] = Result(value)
-                else:
-                    self[key] = value
+        # we will copy all data to this one and all dictionaries will be turned into Result object
+        # turn every value into a Result object if possible
+        for key, value in self.items():
+            if isinstance(value, dict):
+                self[key] = Result(value)
+            else:
+                self[key] = value
 
     def __call__(self):
         '''Calling of a dictionary subclass should not be possible, instead we raise an error with information about the key and method that were attempted to be called.'''
