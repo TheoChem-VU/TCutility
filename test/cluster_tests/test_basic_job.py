@@ -1,73 +1,69 @@
 from tcutility.job import ADFJob
-from tcutility import results, geometry, molecule
+from tcutility import results, geometry, molecule, slurm
 import pytest
 import numpy as np
 
 
 @pytest.fixture(scope='session')
-def SP_job():
-    with ADFJob(wait_for_finish=True, overwrite=False) as job:
-        job.molecule('../fixtures/xyz/ethanol.xyz')
-        job.rundir = 'calculations'
-        job.name = 'ethanol_SP'
-        job.sbatch(p='tc', n=16)
+def run_jobs():
+    jobs = results.Result()
 
-    return job
+    with ADFJob(overwrite=True) as jobs.SP_job:
+        jobs.SP_job.molecule('../fixtures/xyz/ethanol.xyz')
+        jobs.SP_job.rundir = 'calculations'
+        jobs.SP_job.name = 'ethanol_SP'
+        jobs.SP_job.sbatch(p='tc', n=16)
 
-
-@pytest.fixture(scope='session')
-def SP_job_res(SP_job):
-    return results.read(SP_job.workdir)
-
-
-@pytest.fixture(scope='session')
-def GO_job():
-    with ADFJob(wait_for_finish=True, overwrite=False) as job:
+    with ADFJob(overwrite=True) as jobs.GO_job:
         mol = molecule.load('../fixtures/xyz/ethanol.xyz')
         np.random.seed(1)
-        arr = mol.as_array() + (np.random.rand(*mol.as_array().shape) - .5) * .3
+        arr = mol.as_array() + (np.random.rand(*mol.as_array().shape) - .5) * .2
         mol.from_array(arr)
 
-        job.molecule(mol)
+        jobs.GO_job.molecule(mol)
 
-        job.rundir = 'calculations'
-        job.name = 'ethanol_GO'
-        job.sbatch(p='tc', n=16)
+        jobs.GO_job.rundir = 'calculations'
+        jobs.GO_job.name = 'ethanol_GO'
+        jobs.GO_job.sbatch(p='tc', n=16)
 
-        job.optimization()
+        jobs.GO_job.optimization()
 
-    return job
-
-
-@pytest.fixture(scope='session')
-def GO_job_res(GO_job):
-    return results.read(GO_job.workdir)
-
-
-@pytest.fixture(scope='session')
-def TS_job():
-    with ADFJob(wait_for_finish=True, overwrite=False) as job:
+    with ADFJob(overwrite=True) as jobs.TS_job:
         mol = molecule.load('../fixtures/xyz/TS.xyz')
-        job.molecule(mol)
+        jobs.TS_job.molecule(mol)
 
-        job.rundir = 'calculations'
-        job.name = 'SN2_TS'
-        job.sbatch(p='tc', n=32)
+        jobs.TS_job.rundir = 'calculations'
+        jobs.TS_job.name = 'SN2_TS'
+        jobs.TS_job.sbatch(p='tc', n=32)
 
-        job.transition_state(distances=[mol.flags.TSRC1, mol.flags.TSRC2])
-        job.functional('OLYP')
-        job.charge(-1)
+        jobs.TS_job.transition_state(distances=[mol.flags.TSRC1, mol.flags.TSRC2])
+        jobs.TS_job.functional('OLYP')
+        jobs.TS_job.charge(-1)
 
-    return job
+    # wait for all jobs to finish running
+    for job in jobs.values():
+        slurm.wait_for_job(job.slurm_job_id)
+
+    return jobs
 
 
 @pytest.fixture(scope='session')
-def TS_job_res(TS_job):
-    return results.read(TS_job.workdir)
+def SP_job_res(run_jobs):
+    return results.read(run_jobs.SP_job.workdir)
 
 
-def test_SP_job_slurmid(SP_job):
-    assert SP_job.slurm_job_id is not None
+@pytest.fixture(scope='session')
+def GO_job_res(run_jobs):
+    return results.read(run_jobs.GO_job.workdir)
+
+
+@pytest.fixture(scope='session')
+def TS_job_res(run_jobs):
+    return results.read(run_jobs.TS_job.workdir)
+
+
+def test_SP_job_slurmid(run_jobs):
+    assert run_jobs.SP_job.slurm_job_id is not None
 
 
 def test_SP_job_status(SP_job_res):
@@ -113,4 +109,11 @@ def test_TS_job_imfreq(TS_job_res):
 
 
 if __name__ == '__main__':
-    pytest.main()
+    # pytest.main()
+
+    ret = results.Result()
+
+    with ADFJob(test_mode=True) as ret.sp_job:
+        ...
+
+    print(ret)
