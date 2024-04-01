@@ -13,6 +13,7 @@ def run_jobs():
         jobs.SP_job.rundir = 'calculations'
         jobs.SP_job.name = 'ethanol_SP'
         jobs.SP_job.sbatch(p='tc', n=16)
+        jobs.SP_job.add_preamble('module load ams/2023.101')
 
     with ADFJob(overwrite=True) as jobs.GO_job:
         mol = molecule.load('../fixtures/xyz/ethanol.xyz')
@@ -25,6 +26,7 @@ def run_jobs():
         jobs.GO_job.rundir = 'calculations'
         jobs.GO_job.name = 'ethanol_GO'
         jobs.GO_job.sbatch(p='tc', n=32)
+        jobs.SP_job.add_preamble('module load ams/2023.101')
 
         jobs.GO_job.optimization()
 
@@ -35,6 +37,7 @@ def run_jobs():
         jobs.TS_job.rundir = 'calculations'
         jobs.TS_job.name = 'SN2_TS'
         jobs.TS_job.sbatch(p='tc', n=32)
+        jobs.SP_job.add_preamble('module load ams/2023.101')
 
         jobs.TS_job.transition_state(distances=[mol.flags.TSRC1, mol.flags.TSRC2])
         jobs.TS_job.functional('OLYP')
