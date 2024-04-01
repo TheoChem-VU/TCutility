@@ -379,6 +379,8 @@ def RMSD(X: np.ndarray, Y: np.ndarray, axis: Union[int, None] = None, use_kabsch
     .. seealso::
         :class:`KabschTransform`
     """
+    X, Y = np.array(X), np.array(Y)
+
     assert X.shape == Y.shape
 
     # apply Kabsch transform
