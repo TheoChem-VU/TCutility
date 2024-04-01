@@ -49,6 +49,10 @@ def TS_job_res():
 	return results.read(job.workdir)
 
 
+def test_SP_job_slurmid(SP_job_res):
+	print(SP_job_res.slurm_job_id)
+	assert SP_job_res.slurm_job_id != None
+
 def test_SP_job_status(SP_job_res):
 	assert SP_job_res.status.name == 'SUCCESS'
 
