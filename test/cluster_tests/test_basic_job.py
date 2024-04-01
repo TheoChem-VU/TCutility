@@ -24,7 +24,7 @@ def run_jobs():
 
         jobs.GO_job.rundir = 'calculations'
         jobs.GO_job.name = 'ethanol_GO'
-        jobs.GO_job.sbatch(p='tc', n=16)
+        jobs.GO_job.sbatch(p='tc', n=32)
 
         jobs.GO_job.optimization()
 
