@@ -107,13 +107,3 @@ def test_TS_job_rmsd(TS_job_res):
 def test_TS_job_imfreq(TS_job_res):
     assert TS_job_res.properties.vibrations.number_of_imag_modes == 1
 
-
-if __name__ == '__main__':
-    # pytest.main()
-
-    ret = results.Result()
-
-    with ADFJob(test_mode=True) as ret.sp_job:
-        ...
-
-    print(ret)
