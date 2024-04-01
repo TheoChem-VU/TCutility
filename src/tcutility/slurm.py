@@ -23,7 +23,7 @@ def has_slurm() -> bool:
         return False
 
 
-@cache.timed_cache(3)
+# @cache.timed_cache(3)
 def squeue() -> results.Result:
     '''
     Get information about jobs managed by slurm using squeue.
