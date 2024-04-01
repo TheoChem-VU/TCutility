@@ -5,14 +5,18 @@ import numpy as np
 
 
 @pytest.fixture(scope='session')
-def SP_job_res():
+def SP_job():
 	with ADFJob(wait_for_finish=True, overwrite=False) as job:
 		job.molecule('../fixtures/xyz/ethanol.xyz')
 		job.rundir = 'calculations'
 		job.name = 'ethanol_SP'
 		job.sbatch(p='tc', n=16)
 
-	return results.read(job.workdir)
+	return job
+
+@pytest.fixture(scope='session')
+def SP_job_res(SP_job):
+	return results.read(SP_job.workdir)
 
 # @pytest.fixture(scope='session')
 # def GO_job_res():
@@ -49,9 +53,9 @@ def SP_job_res():
 # 	return results.read(job.workdir)
 
 
-def test_SP_job_slurmid(SP_job_res):
-	print(SP_job_res.slurm_job_id)
-	assert SP_job_res.slurm_job_id == None
+def test_SP_job_slurmid(SP_job):
+	print(SP_job.slurm_job_id)
+	assert SP_job.slurm_job_id == None
 
 # def test_SP_job_status(SP_job_res):
 # 	assert SP_job_res.status.name == 'SUCCESS'
