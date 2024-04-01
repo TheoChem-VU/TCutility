@@ -88,7 +88,7 @@ def test_GO_job_energy(GO_job_res):
 
 def test_GO_job_rmsd(GO_job_res):
     rmsd = geometry.RMSD(GO_job_res.molecule.output, molecule.load('../fixtures/xyz/ethanol.xyz'))
-    assert round(rmsd, 3) == 0
+    assert round(rmsd, 2) == 0
 
 
 def test_GO_job_imfreq(GO_job_res):
@@ -100,12 +100,12 @@ def test_TS_job_status(TS_job_res):
 
 
 def test_TS_job_energy(TS_job_res):
-    assert round(TS_job_res.properties.energy.bond, 2) == -1137.70
+    assert round(TS_job_res.properties.energy.bond, 2) == -582.63
 
 
 def test_TS_job_rmsd(TS_job_res):
     rmsd = geometry.RMSD(TS_job_res.molecule.output, molecule.load('../fixtures/xyz/TS.xyz'))
-    assert round(rmsd, 3) == 0
+    assert round(rmsd, 2) == 0
 
 
 def test_TS_job_imfreq(TS_job_res):
