@@ -125,7 +125,7 @@ def workdir_info(workdir: str) -> results.Result:
     return ret
 
 
-def wait_for_job(slurmid: int, check_every: int = 3):
+def wait_for_job(slurmid: str, check_every: int = 3):
     '''
     Wait for a slurm job to finish. We check every `check_every` seconds if the slurm job id is still present in squeue.
 
@@ -133,6 +133,7 @@ def wait_for_job(slurmid: int, check_every: int = 3):
         slurmid: the ID of the slurm job we are waiting for.
         check_every: the amount of seconds to wait before checking squeue again. Don't put this too high, or you will anger the cluster people.
     '''
+    print(squeue().id, slurmid)
     while slurmid in squeue().id:
         time.sleep(check_every)
 
