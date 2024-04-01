@@ -10,6 +10,7 @@ def SP_job_res():
 		job.molecule('../fixtures/xyz/ethanol.xyz')
 		job.rundir = 'calculations'
 		job.name = 'ethanol_SP'
+		job.sbatch(p='tc', n=16)
 
 	return results.read(job.workdir)
 
@@ -25,6 +26,7 @@ def GO_job_res():
 
 		job.rundir = 'calculations'
 		job.name = 'ethanol_GO'
+		job.sbatch(p='tc', n=16)
 
 		job.optimization()
 
@@ -38,6 +40,7 @@ def TS_job_res():
 
 		job.rundir = 'calculations'
 		job.name = 'radical_addition_TS'
+		job.sbatch(p='tc', n=16)
 
 		job.transition_state(distances=[mol.flags.TSRC + [1]])
 		job.functional('BLYP-D3(BJ)')
