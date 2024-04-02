@@ -192,6 +192,10 @@ class AMSJob(Job):
         if not self._molecule:
             self.settings.input.ams.system.GeometryFile = self._molecule_path
 
+        # sometimes we have to check if a job is able to run or requires some special consideration
+        # those types of checks should be defined in _check_job
+        self._check_job()
+
         # we will use plams to write the input and runscript
         sett = self.settings.as_plams_settings()
         job = plams.AMSJob(name=self.name, molecule=self._molecule, settings=sett)
@@ -211,6 +215,9 @@ class AMSJob(Job):
             os.remove(j(self.workdir, 'ams.log'))
 
         return True
+
+    def _check_job(self):
+        ...
 
     @property
     def output_mol_path(self):
