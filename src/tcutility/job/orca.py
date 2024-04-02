@@ -119,10 +119,8 @@ class ORCAJob(Job):
         # set the correct memory usage and processes
         mem, ntasks = self.get_memory_usage()
         if ntasks and mem:
-            natoms = len(self._molecule)
+            natoms = len(self._molecule) - len(self._ghosts)
             ntasks = min(ntasks, (natoms - 1) * 3)
-            if len(self._ghosts) > 0:
-                ntasks -= 6
             self.settings.PAL.nprocs = ntasks
             self.settings.maxcore = int(mem / ntasks * 0.75)
         else:
