@@ -179,6 +179,9 @@ def get_properties(info: Result) -> Result:
             - **vibrations.character (str)** – Character of the molecule based on the number of imaginary vibrational modes. Can be "minimum" or "transition state".
             - **vdd.charges (nparray[float] (1D))** - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges.
             - **vdd.charges.{symmetry label} (nparray[float] (1D))** - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons] per irrep.
+            - **s2** - expectation value of the :math:`S^2` operator.
+            - **s2_expected** - ideal expectation value of the :math:`S^2` operator. For restricted calculations this should always equal ``s2``.
+            - **spin_contamination** - the amount of spin-contamination observed in this calculation. It is equal to (s2 - s2_expected) / (s2_expected). Ideally this value should be below 0.1.
     """
 
     assert info.engine == "adf", f"This function reads ADF data, not {info.engine} data"
@@ -217,6 +220,23 @@ def get_properties(info: Result) -> Result:
         ret.vdd.update(_get_vdd_charges_per_irrep(reader_adf))
     except KeyError:
         pass
+
+    # read spin-squared operator info
+    # the total spin
+    S = info.adf.spin_polarization * 1 / 2
+    ret.s2_expected = S * (S + 1)
+    # this is the real expectation value
+    if ('Properties', 'S2calc') in reader_adf:
+        ret.s2 = reader_adf.read('Properties', 'S2calc')
+    else:
+        ret.s2 = 0
+
+    # calculate the contamination
+    # if S is 0 then we will get a divide by zero error, but spin-contamination should be 0
+    if S != 0:
+        ret.spin_contamination = (ret.s2 - ret.s2_expected) / (ret.s2_expected)
+    else:
+        ret.spin_contamination = 0
 
     return ret
 
