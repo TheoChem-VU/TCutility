@@ -29,16 +29,16 @@ def squeue() -> results.Result:
     Get information about jobs managed by slurm using squeue.
 
     Returns:
-        :Result object containing information about the calculation status:
+        : A :class:`Result <tcutility.results.result.Result>` object containing information about the calculation status:
 
-            - **directory (list[str])** – path to slurm directories.
-            - **id (list[str])** – slurm job id's.
-            - **status (list[str])** – slurm job status name. See squeue documentation.
-            - **statuscode (list[str])** – slurm job status codes. See squeue documentation
+            - ``directory`` **(list[str])** – path to slurm directories.
+            - ``id`` **(list[str])** – slurm job id's.
+            - ``status`` **(list[str])** – slurm job status name. See squeue documentation.
+            - ``statuscode`` **(list[str])** – slurm job status codes. See squeue documentation
 
     .. note::
 
-        By default this function uses a timed cache (see :func:`cache.timed_cache`) with a 3 second delay to lessen the load on HPC systems.
+        By default this function uses a timed cache (see :func:`timed_cache <tcutility.cache.timed_cache>`) with a 3 second delay to lessen the load on HPC systems.
     '''
     ret = results.Result()
 
@@ -73,7 +73,10 @@ def sbatch(runfile: str, **options: dict) -> results.Result:
         options: options to be used for sbatch.
 
     Returns:
-        A :class:`results.Result` containing the slurm job ID as the ``id`` key and the full command used for submitting the job as the ``command`` key.
+        : A :class:`Result <tcutility.results.result.Result>` object containing information about the newly submitted slurm job 
+
+            - ``id`` **(str)** - the ID for the submitted slurm job.
+            - ``command`` **(str)** - the command used to submit the job.
     '''
     cmd = 'sbatch '
     for key, val in options.items():

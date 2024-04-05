@@ -3,20 +3,19 @@ This module provides basic and general information about calculations done using
 This includes information about the engine used (ADF, DFTB, BAND, ...), general information such as timings, files, status of the calculation, etc.
 This information is used in further analysis programs.
 
-Typical usage example:
-
-.. literalinclude:: ../tcutility.results.rst
 """
 
 from typing import Union
+
 from . import result
 
 Result = result.Result
 
-from . import adf, dftb, ams, orca, cache  # noqa: E402
-from .. import slurm  # noqa: E402
 import os  # noqa: E402
 import pathlib as pl  # noqa: E402
+
+from .. import slurm  # noqa: E402
+from . import adf, ams, cache, dftb, orca  # noqa: E402
 
 
 def get_info(calc_dir: str):
@@ -35,34 +34,29 @@ def get_info(calc_dir: str):
     # if we cannot correctly read the info, we return some generic result object
     # before that, we check the job status by checking slurm
     if slurm.workdir_info(os.path.abspath(calc_dir)):
-        res.engine = 'unknown'
+        res.engine = "unknown"
 
         state = slurm.workdir_info(os.path.abspath(calc_dir)).statuscode
-        state_name = {
-            'CG': 'COMPLETING',
-            'CF': 'CONFIGURING',
-            'PD': 'PENDING',
-            'R': 'RUNNING'
-        }.get(state, 'UNKNOWN')
+        state_name = {"CG": "COMPLETING", "CF": "CONFIGURING", "PD": "PENDING", "R": "RUNNING"}.get(state, "UNKNOWN")
 
         res.status.fatal = False
         res.status.name = state_name
         res.status.code = state
         res.status.reasons = []
     else:
-        res.engine = 'unknown'
+        res.engine = "unknown"
         res.status.fatal = True
-        res.status.name = 'UNKNOWN'
-        res.status.code = 'U'
+        res.status.name = "UNKNOWN"
+        res.status.code = "U"
         res.status.reasons = []
 
         # give a little more specific information about the error
         if not os.path.exists(calc_dir):
-            res.status.reasons.append(f'Could not find folder {calc_dir}')
+            res.status.reasons.append(f"Could not find folder {calc_dir}")
         elif not os.path.isdir(calc_dir):
-            res.status.reasons.append(f'Path {calc_dir} is not a directory')
+            res.status.reasons.append(f"Path {calc_dir} is not a directory")
         else:
-            res.status.reasons.append(f'Could not read calculation in {calc_dir}')
+            res.status.reasons.append(f"Could not read calculation in {calc_dir}")
 
     return res
 

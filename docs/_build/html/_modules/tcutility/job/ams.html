@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.job.ams &#8212; TCutility v0.10.2 documentation</title>
+    <title>tcutility.job.ams &#8212; TCutility v0.11.1 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../_static/documentation_options.js?v=bacca286"></script>
+    <script src="../../../_static/documentation_options.js?v=fce162b5"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,7 +118,7 @@
     }
 </style>
 <div class="myDiv">
-    <a href="./index.html">
+    <a href="/index.html">
         <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
         TCutility
     </a>
@@ -260,7 +260,8 @@
 <span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">log</span>
 <span class="kn">from</span> <span class="nn">tcutility.job.generic</span> <span class="kn">import</span> <span class="n">Job</span>
 <span class="kn">import</span> <span class="nn">os</span>
-
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
 <span class="n">j</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
 
@@ -275,7 +276,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">single_point</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">geometry_convergence</span><span class="p">(</span><span class="s1">&#39;Good&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry_convergence</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_task</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_functional</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_basis_set</span><span class="si">}</span><span class="s1">), running in </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">),</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -360,6 +361,47 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">add_postscript</span><span class="p">(</span><span class="n">tcutility</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">postscripts</span><span class="o">.</span><span class="n">write_converged_geoms</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="AMSJob.PESScan">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.ams.AMSJob.PESScan">[docs]</a>
+    <span class="k">def</span> <span class="nf">PESScan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distances</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">angles</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dihedrals</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sumdists</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">difdists</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">npoints</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the task of the job to potential energy surface scan (PESScan).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            distances: sequence of tuples or lists containing ``[atom_index1, atom_index2, start, end]``. </span>
+<span class="sd">                Atom indices start at 1. Distances are given in |angstrom|.</span>
+<span class="sd">            angles: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, start, end]``. </span>
+<span class="sd">                Atom indices start at 1. Angles are given in degrees</span>
+<span class="sd">            dihedrals: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, atom_index4, start, end]``. </span>
+<span class="sd">                Atom indices start at 1. Angles are given in degrees</span>
+<span class="sd">            sumdists: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, atom_index4, start, end]``. </span>
+<span class="sd">                Atom indices start at 1. Sum of distances is given in |angstrom|.</span>
+<span class="sd">            difdists: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, atom_index4, start, end]``. </span>
+<span class="sd">                Atom indices start at 1. Difference of distances is given in |angstrom|.</span>
+<span class="sd">            npoints: the number of PES points to optimize.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            Currently we only support generating settings for 1-dimensional PESScans. </span>
+<span class="sd">            We will add support for N-dimensional PESScans later.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_task</span> <span class="o">=</span> <span class="s1">&#39;PESScan&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">task</span> <span class="o">=</span> <span class="s1">&#39;PESScan&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">PESScan</span><span class="o">.</span><span class="n">ScanCoordinate</span><span class="o">.</span><span class="n">nPoints</span> <span class="o">=</span> <span class="n">npoints</span>
+        <span class="k">if</span> <span class="n">distances</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">PESScan</span><span class="o">.</span><span class="n">ScanCoordinate</span><span class="o">.</span><span class="n">Distance</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dist</span><span class="p">])</span> <span class="k">for</span> <span class="n">dist</span> <span class="ow">in</span> <span class="n">distances</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">angles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">PESScan</span><span class="o">.</span><span class="n">ScanCoordinate</span><span class="o">.</span><span class="n">Angle</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ang</span><span class="p">])</span> <span class="k">for</span> <span class="n">ang</span> <span class="ow">in</span> <span class="n">angles</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">dihedrals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">PESScan</span><span class="o">.</span><span class="n">ScanCoordinate</span><span class="o">.</span><span class="n">Dihedral</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dihedral</span><span class="p">])</span> <span class="k">for</span> <span class="n">dihedral</span> <span class="ow">in</span> <span class="n">dihedrals</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">sumdists</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">PESScan</span><span class="o">.</span><span class="n">ScanCoordinate</span><span class="o">.</span><span class="n">SumDist</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dist</span><span class="p">])</span> <span class="k">for</span> <span class="n">dist</span> <span class="ow">in</span> <span class="n">sumdists</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">difdists</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">PESScan</span><span class="o">.</span><span class="n">ScanCoordinate</span><span class="o">.</span><span class="n">DifDist</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dist</span><span class="p">])</span> <span class="k">for</span> <span class="n">dist</span> <span class="ow">in</span> <span class="n">difdists</span><span class="p">]</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_postscript</span><span class="p">(</span><span class="n">tcutility</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">postscripts</span><span class="o">.</span><span class="n">clean_workdir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_postscript</span><span class="p">(</span><span class="n">tcutility</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">postscripts</span><span class="o">.</span><span class="n">write_converged_geoms</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="AMSJob.vibrations">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.ams.AMSJob.vibrations">[docs]</a>
     <span class="k">def</span> <span class="nf">vibrations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">NegativeFrequenciesTolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">):</span>
@@ -380,28 +422,20 @@
 
 <div class="viewcode-block" id="AMSJob.geometry_convergence">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.ams.AMSJob.geometry_convergence">[docs]</a>
-    <span class="k">def</span> <span class="nf">geometry_convergence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quality</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">gradients</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-2</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">geometry_convergence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gradients</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="n">energy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">stress</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">5e-4</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Set the convergence criteria for the geometry optimization.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            quality: convergence criteria preset. Must be one of [``VeryBasic``, ``Basic``, ``Normal``, ``Good``, ``VeryGood``]. </span>
-<span class="sd">                Default ``None`` will not use a threshold. If it is given, it will overwrite the other arguments. </span>
-<span class="sd">            gradients: the convergence criteria for the gradients during geometry optimizations. Defaults to 1e-5.</span>
-<span class="sd">            energy: the convergence criteria for the energy during geometry optimizations. Defaults to 1e-5.</span>
-<span class="sd">            step: the convergence criteria for the step-size during geometry optimizations. Defaults to 1e-2.</span>
+<span class="sd">            gradients: the convergence criteria for the gradients during geometry optimizations. Defaults to ``1e-5``.</span>
+<span class="sd">            energy: the convergence criteria for the energy during geometry optimizations. Defaults to ``1e-5``.</span>
+<span class="sd">            step: the convergence criteria for the step-size during geometry optimizations. Defaults to ``1e-2``.</span>
+<span class="sd">            stress: the convergence criteria for the stress-energy per atom during geometry optimizations. Defaults to ``5e-4``</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">quality</span><span class="p">:</span>
-            <span class="n">allowed_qualities</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;verybasic&#39;</span><span class="p">,</span> <span class="s1">&#39;basic&#39;</span><span class="p">,</span> <span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="s1">&#39;good&#39;</span><span class="p">,</span> <span class="s1">&#39;verygood&#39;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">quality</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">q</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">allowed_qualities</span><span class="p">]:</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Argument &quot;quality&quot; must be one of </span><span class="si">{</span><span class="n">allowed_qualities</span><span class="si">}</span><span class="s1">, not </span><span class="si">{</span><span class="n">quality</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="k">raise</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">GeometryOptimization</span><span class="o">.</span><span class="n">Convergence</span><span class="o">.</span><span class="n">Quality</span> <span class="o">=</span> <span class="n">quality</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">GeometryOptimization</span><span class="o">.</span><span class="n">Convergence</span><span class="o">.</span><span class="n">Quality</span> <span class="o">=</span> <span class="s1">&#39;Custom&#39;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">GeometryOptimization</span><span class="o">.</span><span class="n">Convergence</span><span class="o">.</span><span class="n">Gradients</span> <span class="o">=</span> <span class="n">gradients</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">GeometryOptimization</span><span class="o">.</span><span class="n">Convergence</span><span class="o">.</span><span class="n">Energy</span> <span class="o">=</span> <span class="n">energy</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">GeometryOptimization</span><span class="o">.</span><span class="n">Convergence</span><span class="o">.</span><span class="n">Step</span> <span class="o">=</span> <span class="n">step</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">GeometryOptimization</span><span class="o">.</span><span class="n">Convergence</span><span class="o">.</span><span class="n">Gradients</span> <span class="o">=</span> <span class="n">gradients</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">GeometryOptimization</span><span class="o">.</span><span class="n">Convergence</span><span class="o">.</span><span class="n">Energy</span> <span class="o">=</span> <span class="n">energy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">GeometryOptimization</span><span class="o">.</span><span class="n">Convergence</span><span class="o">.</span><span class="n">Step</span> <span class="o">=</span> <span class="n">step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">GeometryOptimization</span><span class="o">.</span><span class="n">Convergence</span><span class="o">.</span><span class="n">StressEnergyPerAtom</span> <span class="o">=</span> <span class="n">stress</span></div>
 
 
 <div class="viewcode-block" id="AMSJob.charge">
@@ -411,6 +445,24 @@
 <span class="sd">        Set the charge of the system.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Charge</span> <span class="o">=</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="AMSJob.electric_field">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.ams.AMSJob.electric_field">[docs]</a>
+    <span class="k">def</span> <span class="nf">electric_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">magnitude</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set an electric field for this system.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            direction: the vector with the direction and strength of the electric field.</span>
+<span class="sd">            magnitude: if given, the direction will be normalized and magnitude will be used as the field strength.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># if magnitude is given we normalize the direction vector and give it the correct length</span>
+        <span class="k">if</span> <span class="n">magnitude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span> <span class="o">*</span> <span class="n">magnitude</span>
+
+        <span class="n">ex</span><span class="p">,</span> <span class="n">ey</span><span class="p">,</span> <span class="n">ez</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">ElectrostaticEmbedding</span><span class="o">.</span><span class="n">ElectricField</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">ey</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">ez</span><span class="si">}</span><span class="s1">&#39;</span></div>
 
 
     <span class="k">def</span> <span class="nf">_setup_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -439,6 +491,10 @@
             <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_preambles</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">get_runscript</span><span class="p">())</span>
             <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_postambles</span><span class="p">))</span>
+
+        <span class="c1"># in case we are rerunning a calculation we need to remove ams.log</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s1">&#39;ams.log&#39;</span><span class="p">)):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s1">&#39;ams.log&#39;</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="kc">True</span>
 

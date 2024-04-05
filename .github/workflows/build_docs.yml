@@ -49,7 +49,7 @@ jobs:
           pip install -e .
 
       - name: Install sphinx
-        run: pip install sphinx sphinx-tabs sphinx-copybutton
+        run: pip install sphinx sphinx-tabs sphinx-copybutton sphinx-autodoc-typehints sphinx-argparse
 
       - name: Install sphinx theme
         run: pip install pydata-sphinx-theme
@@ -57,8 +57,16 @@ jobs:
       - name: Install other dependencies
         run: pip install plams
 
+
       - name: Run sphinx-apidoc
         run: cd docs; sphinx-apidoc -f -o ./api ../src/tcutility
+
+      - name: Run python scripts that create files used for the build docs
+        # script are in root/docs/utility_doc_scripts
+        run: |
+          for script in docs/utility_doc_scripts/*.py; do
+            python $script
+          done
 
       - name: Build the docs
         run: cd docs; make html

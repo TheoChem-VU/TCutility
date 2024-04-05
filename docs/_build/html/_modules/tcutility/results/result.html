@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.results.result &#8212; TCutility v0.10.2 documentation</title>
+    <title>tcutility.results.result &#8212; TCutility v0.11.1 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../_static/documentation_options.js?v=bacca286"></script>
+    <script src="../../../_static/documentation_options.js?v=fce162b5"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,7 +118,7 @@
     }
 </style>
 <div class="myDiv">
-    <a href="./index.html">
+    <a href="/index.html">
         <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
         TCutility
     </a>
@@ -292,6 +292,36 @@
     <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">original_keys</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">original_keys</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">))]</span></div>
+
+
+<div class="viewcode-block" id="Result.multi_keys">
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.multi_keys">[docs]</a>
+    <span class="k">def</span> <span class="nf">multi_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return multi_keys for this Result object. These are unnested keys that can be used if you want a flattened Result object.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">def</span> <span class="nf">dict_to_list</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Return a nested dictionary as a list of keys and values.</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="n">lst</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">[[</span><span class="n">a</span><span class="p">]]</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="p">{}:</span>
+                        <span class="n">lst</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">k</span><span class="p">,</span> <span class="p">{}])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="p">[</span><span class="n">lst</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">k</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dict_to_list</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">lst</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">lst</span>
+
+        <span class="c1"># cast this object to a list of keys and values</span>
+        <span class="n">mks</span> <span class="o">=</span> <span class="n">dict_to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># write the multi-keys separated with dots</span>
+        <span class="n">mks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mk</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">mk</span> <span class="ow">in</span> <span class="n">mks</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">mks</span></div>
 
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>

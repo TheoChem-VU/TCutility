@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.results &#8212; TCutility v0.10.2 documentation</title>
+    <title>tcutility.results &#8212; TCutility v0.11.1 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../_static/documentation_options.js?v=bacca286"></script>
+    <script src="../../_static/documentation_options.js?v=fce162b5"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,7 +118,7 @@
     }
 </style>
 <div class="myDiv">
-    <a href="./index.html">
+    <a href="/index.html">
         <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
         TCutility
     </a>
@@ -260,20 +260,19 @@
 <span class="sd">This includes information about the engine used (ADF, DFTB, BAND, ...), general information such as timings, files, status of the calculation, etc.</span>
 <span class="sd">This information is used in further analysis programs.</span>
 
-<span class="sd">Typical usage example:</span>
-
-<span class="sd">.. literalinclude:: ../tcutility.results.rst</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">result</span>
 
 <span class="n">Result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">Result</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">adf</span><span class="p">,</span> <span class="n">dftb</span><span class="p">,</span> <span class="n">ams</span><span class="p">,</span> <span class="n">orca</span><span class="p">,</span> <span class="n">cache</span>  <span class="c1"># noqa: E402</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">slurm</span>  <span class="c1"># noqa: E402</span>
 <span class="kn">import</span> <span class="nn">os</span>  <span class="c1"># noqa: E402</span>
 <span class="kn">import</span> <span class="nn">pathlib</span> <span class="k">as</span> <span class="nn">pl</span>  <span class="c1"># noqa: E402</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">slurm</span>  <span class="c1"># noqa: E402</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">adf</span><span class="p">,</span> <span class="n">ams</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">dftb</span><span class="p">,</span> <span class="n">orca</span>  <span class="c1"># noqa: E402</span>
 
 
 <div class="viewcode-block" id="get_info">
@@ -294,34 +293,29 @@
     <span class="c1"># if we cannot correctly read the info, we return some generic result object</span>
     <span class="c1"># before that, we check the job status by checking slurm</span>
     <span class="k">if</span> <span class="n">slurm</span><span class="o">.</span><span class="n">workdir_info</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)):</span>
-        <span class="n">res</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;unknown&#39;</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
 
         <span class="n">state</span> <span class="o">=</span> <span class="n">slurm</span><span class="o">.</span><span class="n">workdir_info</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">))</span><span class="o">.</span><span class="n">statuscode</span>
-        <span class="n">state_name</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;CG&#39;</span><span class="p">:</span> <span class="s1">&#39;COMPLETING&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;CF&#39;</span><span class="p">:</span> <span class="s1">&#39;CONFIGURING&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;PD&#39;</span><span class="p">:</span> <span class="s1">&#39;PENDING&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="s1">&#39;RUNNING&#39;</span>
-        <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="s1">&#39;UNKNOWN&#39;</span><span class="p">)</span>
+        <span class="n">state_name</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;CG&quot;</span><span class="p">:</span> <span class="s2">&quot;COMPLETING&quot;</span><span class="p">,</span> <span class="s2">&quot;CF&quot;</span><span class="p">:</span> <span class="s2">&quot;CONFIGURING&quot;</span><span class="p">,</span> <span class="s2">&quot;PD&quot;</span><span class="p">:</span> <span class="s2">&quot;PENDING&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="s2">&quot;RUNNING&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="s2">&quot;UNKNOWN&quot;</span><span class="p">)</span>
 
         <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">fatal</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">state_name</span>
         <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">state</span>
         <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">reasons</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">res</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;unknown&#39;</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
         <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">fatal</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;UNKNOWN&#39;</span>
-        <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="s1">&#39;U&#39;</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;UNKNOWN&quot;</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;U&quot;</span>
         <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">reasons</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># give a little more specific information about the error</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">):</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find folder </span><span class="si">{</span><span class="n">calc_dir</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find folder </span><span class="si">{</span><span class="n">calc_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">):</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Path </span><span class="si">{</span><span class="n">calc_dir</span><span class="si">}</span><span class="s1"> is not a directory&#39;</span><span class="p">)</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Path </span><span class="si">{</span><span class="n">calc_dir</span><span class="si">}</span><span class="s2"> is not a directory&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not read calculation in </span><span class="si">{</span><span class="n">calc_dir</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not read calculation in </span><span class="si">{</span><span class="n">calc_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">res</span></div>
 

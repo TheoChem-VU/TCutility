@@ -1,0 +1,58 @@
+GeometryOptimization
+  Convergence
+    Energy 1e-05
+    Gradients 1e-05
+    Step 0.01
+    StressEnergyPerAtom 0.0005
+  End
+End
+
+IRC
+  Direction backward
+  InitialHessian
+    File /scistor/tc/tcstud8/MolecularModelling2024/workspace/calculations/ethylene/TS/pi_alpha_1b/adf.rkf
+    Type FromFile
+  End
+  MaxPoints 300
+  MinPathLength 5.0
+  Step 0.2
+End
+
+system
+  Atoms
+              C      -3.1184692300       1.5303853900      -0.3638955500 
+              C      -2.2409476200       0.6327832000      -0.0102867200 
+              C      -0.9298699700       0.0929550300       0.1257460400 
+              C       0.0595303300       1.2310123400      -0.2026569700 
+              O       0.6188420000       1.3734469200      -1.2669961700 
+              H      -4.1914568000       1.3923244400      -0.1919977200 
+              H      -2.8385795200       2.4687652000      -0.8665252900 
+              H      -0.7537202200      -0.7399581600      -0.5755863700 
+              H       0.1467301600       1.9638721400       0.6368410500 
+              C      -1.3933131300      -1.5723527400       1.8514211200 
+              C      -0.6597846600      -0.3474048600       1.6146012400 
+              H      -2.2490380000      -1.8249978800       1.2303544700 
+              H      -1.0502456500      -2.3090423800       2.5755500100 
+              H      -0.9656865000       0.5429375100       2.1986022500 
+              H       0.4231847900      -0.4683101600       1.8136706000 
+  End
+End
+
+task IRC
+
+Engine adf
+  NumericalQuality Excellent
+  SCF
+    Converge 1e-08
+    Iterations 300
+  End
+  XC
+    GGA BP86
+  End
+  basis
+    core None
+    type TZ2P
+  End
+  print SFOSiteEnergies
+EndEngine
+

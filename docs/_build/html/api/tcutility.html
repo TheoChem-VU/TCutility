@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility package &#8212; TCutility v0.10.2 documentation</title>
+    <title>tcutility package &#8212; TCutility v0.11.1 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=bacca286"></script>
+    <script src="../_static/documentation_options.js?v=fce162b5"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -122,7 +122,7 @@
     }
 </style>
 <div class="myDiv">
-    <a href="./index.html">
+    <a href="/index.html">
         <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
         TCutility
     </a>
@@ -315,9 +315,16 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.parse_element"><code class="docutils literal notranslate"><span class="pre">parse_element()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.radius"><code class="docutils literal notranslate"><span class="pre">radius()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.color"><code class="docutils literal notranslate"><span class="pre">color()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.atom_number"><code class="docutils literal notranslate"><span class="pre">atom_number()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.symbol"><code class="docutils literal notranslate"><span class="pre">symbol()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.element"><code class="docutils literal notranslate"><span class="pre">element()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.basis_sets">tcutility.data.basis_sets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.basis_sets">tcutility.data.basis_sets module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.basis_sets.number_of_orbitals"><code class="docutils literal notranslate"><span class="pre">number_of_orbitals()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.basis_sets.number_of_virtuals"><code class="docutils literal notranslate"><span class="pre">number_of_virtuals()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.cosmo">tcutility.data.cosmo module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.functionals">tcutility.data.functionals module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.functionals.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
@@ -352,18 +359,28 @@
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.spin_polarization"><code class="docutils literal notranslate"><span class="pre">ADFJob.spin_polarization()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.multiplicity"><code class="docutils literal notranslate"><span class="pre">ADFJob.multiplicity()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.unrestricted"><code class="docutils literal notranslate"><span class="pre">ADFJob.unrestricted()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.occupations"><code class="docutils literal notranslate"><span class="pre">ADFJob.occupations()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.quality"><code class="docutils literal notranslate"><span class="pre">ADFJob.quality()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.SCF_convergence"><code class="docutils literal notranslate"><span class="pre">ADFJob.SCF_convergence()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.SCF"><code class="docutils literal notranslate"><span class="pre">ADFJob.SCF()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.functional"><code class="docutils literal notranslate"><span class="pre">ADFJob.functional()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.relativity"><code class="docutils literal notranslate"><span class="pre">ADFJob.relativity()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.solvent"><code class="docutils literal notranslate"><span class="pre">ADFJob.solvent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.symmetry"><code class="docutils literal notranslate"><span class="pre">ADFJob.symmetry()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob.add_fragment"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.add_fragment()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob.guess_fragments"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.guess_fragments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob.remove_virtuals"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.remove_virtuals()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob.run"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.run()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.DensfJob"><code class="docutils literal notranslate"><span class="pre">DensfJob</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.DensfJob.gridsize"><code class="docutils literal notranslate"><span class="pre">DensfJob.gridsize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.DensfJob.orbital"><code class="docutils literal notranslate"><span class="pre">DensfJob.orbital()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.DensfJob.output_cub_paths"><code class="docutils literal notranslate"><span class="pre">DensfJob.output_cub_paths</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.DensfJob.can_skip"><code class="docutils literal notranslate"><span class="pre">DensfJob.can_skip()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -374,9 +391,11 @@
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.transition_state"><code class="docutils literal notranslate"><span class="pre">AMSJob.transition_state()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.optimization"><code class="docutils literal notranslate"><span class="pre">AMSJob.optimization()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.IRC"><code class="docutils literal notranslate"><span class="pre">AMSJob.IRC()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.PESScan"><code class="docutils literal notranslate"><span class="pre">AMSJob.PESScan()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.vibrations"><code class="docutils literal notranslate"><span class="pre">AMSJob.vibrations()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.geometry_convergence"><code class="docutils literal notranslate"><span class="pre">AMSJob.geometry_convergence()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.charge"><code class="docutils literal notranslate"><span class="pre">AMSJob.charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.electric_field"><code class="docutils literal notranslate"><span class="pre">AMSJob.electric_field()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">AMSJob.output_mol_path</span></code></a></li>
 </ul>
 </li>
@@ -513,6 +532,7 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result"><code class="docutils literal notranslate"><span class="pre">Result</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.items"><code class="docutils literal notranslate"><span class="pre">Result.items()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.keys"><code class="docutils literal notranslate"><span class="pre">Result.keys()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.multi_keys"><code class="docutils literal notranslate"><span class="pre">Result.multi_keys()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.get_parent_tree"><code class="docutils literal notranslate"><span class="pre">Result.get_parent_tree()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.prune"><code class="docutils literal notranslate"><span class="pre">Result.prune()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.get_multi_key"><code class="docutils literal notranslate"><span class="pre">Result.get_multi_key()</span></code></a></li>
@@ -544,12 +564,12 @@
 <span id="tcutility-cache-module"></span><h2>tcutility.cache module<a class="headerlink" href="#module-tcutility.cache" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.cache.timed_cache">
-<span class="sig-name descname"><span class="pre">timed_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/cache.html#timed_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.cache.timed_cache" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">timed_cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delay</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/cache.html#timed_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.cache.timed_cache" title="Link to this definition">#</a></dt>
 <dd><p>Decorator that creates a timed cache for the function or method.
 This cache will expire after a chosen amount of time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>delay</strong> – the expiry time for the function cache.</p>
+<dd class="field-odd"><p><strong>delay</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – the expiry time for the function cache.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -568,31 +588,37 @@ This cache will expire after a chosen amount of time.</p>
 <span id="tcutility-formula-module"></span><h2>tcutility.formula module<a class="headerlink" href="#module-tcutility.formula" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.formula.parse_molecule">
-<span class="sig-name descname"><span class="pre">parse_molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Molecule</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/tcutility/formula.html#parse_molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.formula.parse_molecule" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">parse_molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/formula.html#parse_molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.formula.parse_molecule" title="Link to this definition">#</a></dt>
 <dd><p>Analyse a molecule and return the molstring describing its parts. Each part will then be separated by a + sign in the new string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>molecule</strong> – plams.Molecule object to be parsed.</p>
+<dd class="field-odd"><p><strong>molecule</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code></span>) – plams.Molecule object to be parsed.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A string that contains each part of the molecule separated by a + sign, for use in TCutility.formula.molecule function for further formatting.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A string that contains each part of the molecule separated by a + sign, for use in TCutility.formula.molecule function for further formatting.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.formula.molecule">
-<span class="sig-name descname"><span class="pre">molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'unicode'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/tcutility/formula.html#molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.formula.molecule" title="Link to this definition">#</a></dt>
-<dd><p>Parse and return a string containing a molecular formula that will show up properly in LaTeX or HTML.</p>
+<span class="sig-name descname"><span class="pre">molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'unicode'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/formula.html#molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.formula.molecule" title="Link to this definition">#</a></dt>
+<dd><p>Parse and return a string containing a molecular formula that will show up properly in LaTeX, HTML or unicode.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>molecule</strong> – plams.Molecule object or a string that contains the molecular formula to be parsed. It can be either single molecule or a reaction. Molecules should be separated by ‘+’ or ‘-&gt;’.</p></li>
-<li><p><strong>mode</strong> – the formatter to convert the string to. Should be ‘unicode’, ‘html’, ‘latex’.</p></li>
+<li><p><strong>molecule</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code>]</span>) – plams.Molecule object or a string that contains the molecular formula to be parsed. It can be either single molecule or a reaction. Molecules should be separated by ‘+’ or ‘-&gt;’.</p></li>
+<li><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the formatter to convert the string to. Should be ‘unicode’, ‘html’, ‘latex’, ‘pyplot’.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A string that is formatted to be rendered nicely in either HTML or LaTeX.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A string that is formatted to be rendered nicely in either HTML or LaTeX.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -612,7 +638,7 @@ This 4x4 matrix encodes rotations, translations and scaling.</p>
 <p>When applied to a coordinates <span class="math notranslate nohighlight">\([\textbf{x}, \textbf{y}, \textbf{z}, \textbf{1}]^T \in \mathbb{R}^{n \times 4}\)</span> it will apply these transformations simultaneously.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.geometry.Transform.apply">
-<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/tcutility/geometry.html#Transform.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.Transform.apply" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#Transform.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.Transform.apply" title="Link to this definition">#</a></dt>
 <dd><p>Applies the transformation matrix to vector(s) <span class="math notranslate nohighlight">\(v \in \mathbb{R}^{N \times 3}\)</span>.</p>
 <p>Application is a three-step process:</p>
 <ol class="arabic simple">
@@ -621,8 +647,11 @@ This 4x4 matrix encodes rotations, translations and scaling.</p>
 <li><p>Remove the bottom row vector of ones and return the result</p></li>
 </ol>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A new array <span class="math notranslate nohighlight">\(v' = \textbf{M}v\)</span> that has been transformed using this transformation matrix.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new array <span class="math notranslate nohighlight">\(v' = \textbf{M}v\)</span> that has been transformed using this transformation matrix.</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -633,16 +662,19 @@ This 4x4 matrix encodes rotations, translations and scaling.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.geometry.Transform.combine_transforms">
-<span class="sig-name descname"><span class="pre">combine_transforms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#tcutility.geometry.Transform" title="tcutility.geometry.Transform"><span class="pre">Transform</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#tcutility.geometry.Transform" title="tcutility.geometry.Transform"><span class="pre">Transform</span></a></span></span><a class="reference internal" href="../_modules/tcutility/geometry.html#Transform.combine_transforms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.Transform.combine_transforms" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">combine_transforms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#Transform.combine_transforms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.Transform.combine_transforms" title="Link to this definition">#</a></dt>
 <dd><p>Combine two different transform objects. This involves creating
 a new Transform object and multiplying the two transform matrices
 and assigning it to the new object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>other</strong> – the transformation matrix object to combine this one with.</p>
+<dd class="field-odd"><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.geometry.Transform" title="tcutility.geometry.Transform"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transform</span></code></a></span>) – the transformation matrix object to combine this one with.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new transformation matrix that is a product of the original (left side) and other (right side) matrices.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.geometry.Transform" title="tcutility.geometry.Transform"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transform</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A new transformation matrix that is a product of the original (left side) and other (right side) matrices.</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -653,7 +685,7 @@ and assigning it to the new object.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.geometry.Transform.translate">
-<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#Transform.translate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.Transform.translate" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#Transform.translate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.Transform.translate" title="Link to this definition">#</a></dt>
 <dd><p>Add a translation component to the transformation matrix.
 Arguments can be given as a container of x, y, z values. They can also be given separately.
 You can also specify x, y and z components separately</p>
@@ -668,7 +700,7 @@ You can also specify x, y and z components separately</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.geometry.Transform.rotate">
-<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#Transform.rotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.Transform.rotate" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#Transform.rotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.Transform.rotate" title="Link to this definition">#</a></dt>
 <dd><p>Add a rotational component to transformation matrix.
 Arguments can be given as a rotation matrix R in R^3x3 or by specifying the angle to rotate along the x, y or z axes</p>
 <dl>
@@ -687,7 +719,7 @@ Arguments can be given as a rotation matrix R in R^3x3 or by specifying the angl
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.geometry.Transform.scale">
-<span class="sig-name descname"><span class="pre">scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">S</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#Transform.scale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.Transform.scale" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">S</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#Transform.scale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.Transform.scale" title="Link to this definition">#</a></dt>
 <dd><p>Add a scaling component to the transformation matrix.
 Arguments can be given as a container of x, y, z values.
 You can also specify x, y and z components separately</p>
@@ -704,7 +736,7 @@ You can also specify x, y and z components separately</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tcutility.geometry.KabschTransform">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">KabschTransform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#KabschTransform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.KabschTransform" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">KabschTransform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#KabschTransform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.KabschTransform" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tcutility.geometry.Transform" title="tcutility.geometry.Transform"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transform</span></code></a></p>
 <p>Use Kabsch-Umeyama algorithm to calculate the optimal transformation matrix <span class="math notranslate nohighlight">\(T_{Kabsch}\)</span> that minimizes the
 RMSD between two sets of coordinates <span class="math notranslate nohighlight">\(X \in \mathbb{R}^{N \times 3}\)</span> and <span class="math notranslate nohighlight">\(Y \in \mathbb{R}^{N \times 3}\)</span>, such that</p>
@@ -715,8 +747,8 @@ The coordinates are first centered onto their centroids before determining the o
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> – array containing the first set of coordinates. The Kabsch transformation matrix will be made such that applying it to <code class="docutils literal notranslate"><span class="pre">X</span></code> will yield <code class="docutils literal notranslate"><span class="pre">Y</span></code>.</p></li>
-<li><p><strong>Y</strong> – array containing the second set of coordinates. These coordinates is the target to transform to.</p></li>
+<li><p><strong>X</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – array containing the first set of coordinates. The Kabsch transformation matrix will be made such that applying it to <code class="docutils literal notranslate"><span class="pre">X</span></code> will yield <code class="docutils literal notranslate"><span class="pre">Y</span></code>.</p></li>
+<li><p><strong>Y</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – array containing the second set of coordinates. These coordinates is the target to transform to.</p></li>
 </ul>
 </dd>
 </dl>
@@ -763,7 +795,7 @@ If you would like to make use of 2D or 1D Transforms we suggest you simply set t
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.geometry.get_rotmat">
-<span class="sig-name descname"><span class="pre">get_rotmat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/tcutility/geometry.html#get_rotmat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.get_rotmat" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_rotmat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#get_rotmat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.get_rotmat" title="Link to this definition">#</a></dt>
 <dd><p>Create a rotation matrix based on the Tait-Bryant sytem.
 In this system, x, y, and z are angles of rotation around
 the corresponding axes. This function uses the right-handed
@@ -771,13 +803,16 @@ convention</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – Rotation around the x-axis in radians.</p></li>
-<li><p><strong>y</strong> – Rotation around the y-axis in radians.</p></li>
-<li><p><strong>z</strong> – Rotation around the z-axis in radians.</p></li>
+<li><p><strong>x</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Rotation around the x-axis in radians.</p></li>
+<li><p><strong>y</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Rotation around the y-axis in radians.</p></li>
+<li><p><strong>z</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Rotation around the z-axis in radians.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the rotation matrix <span class="math notranslate nohighlight">\(\textbf{R} \in \mathbb{R}^{3 \times 3}\)</span> with the specified axis rotations.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the rotation matrix <span class="math notranslate nohighlight">\(\textbf{R} \in \mathbb{R}^{3 \times 3}\)</span> with the specified axis rotations.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -795,13 +830,13 @@ convention</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.geometry.apply_rotmat">
-<span class="sig-name descname"><span class="pre">apply_rotmat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/tcutility/geometry.html#apply_rotmat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.apply_rotmat" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">apply_rotmat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#apply_rotmat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.apply_rotmat" title="Link to this definition">#</a></dt>
 <dd><p>Apply a rotation matrix to a set of coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coords</strong> – the coordinates :math`in mathbb{R}^{n times 3}` to rotate.</p></li>
-<li><p><strong>R</strong> – the rotation matrix to apply.</p></li>
+<li><p><strong>coords</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – the coordinates :math`in mathbb{R}^{n times 3}` to rotate.</p></li>
+<li><p><strong>R</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – the rotation matrix to apply.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -824,16 +859,19 @@ convention</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.geometry.rotate">
-<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/tcutility/geometry.html#rotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.rotate" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#rotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.rotate" title="Link to this definition">#</a></dt>
 <dd><p>Build and apply a rotation matrix to a set of coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coords</strong> – the coordinates :math`in mathbb{R}^{n times 3}` to rotate.</p></li>
-<li><p><strong>x</strong> – Rotation around the x-axis in radians.</p></li>
-<li><p><strong>y</strong> – Rotation around the y-axis in radians.</p></li>
-<li><p><strong>z</strong> – Rotation around the z-axis in radians.</p></li>
+<li><p><strong>coords</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – the coordinates :math`in mathbb{R}^{n times 3}` to rotate.</p></li>
+<li><p><strong>x</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Rotation around the x-axis in radians.</p></li>
+<li><p><strong>y</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Rotation around the y-axis in radians.</p></li>
+<li><p><strong>z</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – Rotation around the z-axis in radians.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -847,24 +885,27 @@ convention</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.geometry.vector_align_rotmat">
-<span class="sig-name descname"><span class="pre">vector_align_rotmat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/tcutility/geometry.html#vector_align_rotmat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.vector_align_rotmat" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">vector_align_rotmat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#vector_align_rotmat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.vector_align_rotmat" title="Link to this definition">#</a></dt>
 <dd><p>Calculate a rotation matrix that aligns vector a onto vector b.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> – vector that is to be aligned.</p></li>
-<li><p><strong>b</strong> – vector that is the target of the alignment.</p></li>
+<li><p><strong>a</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – vector that is to be aligned.</p></li>
+<li><p><strong>b</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – vector that is the target of the alignment.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Rotation matrix R, such that <code class="docutils literal notranslate"><span class="pre">geometry.apply_rotmat(a,</span> <span class="pre">R)</span> <span class="pre">==</span> <span class="pre">b</span></code>.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Rotation matrix R, such that <code class="docutils literal notranslate"><span class="pre">geometry.apply_rotmat(a,</span> <span class="pre">R)</span> <span class="pre">==</span> <span class="pre">b</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.geometry.RMSD">
-<span class="sig-name descname"><span class="pre">RMSD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_kabsch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/tcutility/geometry.html#RMSD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.RMSD" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">RMSD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_kabsch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#RMSD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.RMSD" title="Link to this definition">#</a></dt>
 <dd><p>Calculate Root Mean Squared Deviations between two sets of points <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">Y</span></code>.
 By default Kabsch’ algorithm is used to align the sets of points prior to calculating the RMSD.
 Optionally the axis can be given to calculate the RMSD along different axes.</p>
@@ -875,14 +916,17 @@ Optionally the axis can be given to calculate the RMSD along different axes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> – the first set of coordinates to compare. It must have the same dimensions as <code class="docutils literal notranslate"><span class="pre">Y</span></code>.</p></li>
-<li><p><strong>Y</strong> – the second set of coordinates to compare. It must have the same dimensions as <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p></li>
-<li><p><strong>axis</strong> – axis to compare. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>use_kabsch</strong> – whether to use Kabsch’ algorithm to align <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">Y</span></code> before calculating the RMSD. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>X</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – the first set of coordinates to compare. It must have the same dimensions as <code class="docutils literal notranslate"><span class="pre">Y</span></code>.</p></li>
+<li><p><strong>Y</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – the second set of coordinates to compare. It must have the same dimensions as <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p></li>
+<li><p><strong>axis</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – axis to compare. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>use_kabsch</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – whether to use Kabsch’ algorithm to align <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">Y</span></code> before calculating the RMSD. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>RMSD in the units of X and Y. If <code class="docutils literal notranslate"><span class="pre">axis</span></code> is set to an integer this function will return a vector of RMSD’s along that axis.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RMSD in the units of X and Y. If <code class="docutils literal notranslate"><span class="pre">axis</span></code> is set to an integer this function will return a vector of RMSD’s along that axis.</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -898,13 +942,35 @@ This will ensure you get the lowest possible RMSD for you sets of coordinates.</
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.geometry.random_points_on_sphere">
-<span class="sig-name descname"><span class="pre">random_points_on_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/tcutility/geometry.html#random_points_on_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.random_points_on_sphere" title="Link to this definition">#</a></dt>
-<dd><p>Generate a random points on a sphere with a specified radius.</p>
+<span class="sig-name descname"><span class="pre">random_points_on_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#random_points_on_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.random_points_on_sphere" title="Link to this definition">#</a></dt>
+<dd><p>Generate random points on a sphere with a specified radius.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>shape</strong> – The shape of the resulting points, generally shape[0] coordinates with shape[1] dimensions</p></li>
-<li><p><strong>radius</strong> – The radius of the sphere to generate the points on.</p></li>
+<li><p><strong>shape</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – The shape of the resulting points, generally shape[0] coordinates with shape[1] dimensions</p></li>
+<li><p><strong>radius</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The radius of the sphere to generate the points on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of coordinates on a sphere.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.geometry.random_points_in_anular_sphere">
+<span class="sig-name descname"><span class="pre">random_points_in_anular_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#random_points_in_anular_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.random_points_in_anular_sphere" title="Link to this definition">#</a></dt>
+<dd><p>Generate random points in an sphere or anular sphere with specified radii.
+An anular sphere is a hollow sphere of a certain thickness.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – The shape of the resulting points, generally shape[0] coordinates with shape[1] dimensions</p></li>
+<li><p><strong>min_radius</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The lowest radius of the sphere to generate the points in.</p></li>
+<li><p><strong>max_radius</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The largest radius of the sphere to generate the points in.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -914,19 +980,19 @@ This will ensure you get the lowest possible RMSD for you sets of coordinates.</
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="tcutility.geometry.random_points_in_anular_sphere">
-<span class="sig-name descname"><span class="pre">random_points_in_anular_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#random_points_in_anular_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.random_points_in_anular_sphere" title="Link to this definition">#</a></dt>
-<dd><p>Generate a random points in a sphere with specified radii.</p>
+<dt class="sig sig-object py" id="tcutility.geometry.random_points_on_spheroid">
+<span class="sig-name descname"><span class="pre">random_points_on_spheroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#random_points_on_spheroid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.random_points_on_spheroid" title="Link to this definition">#</a></dt>
+<dd><p>Generate random points on a spheroid generated by a set of coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>shape</strong> – The shape of the resulting points, generally shape[0] coordinates with shape[1] dimensions</p></li>
-<li><p><strong>min_radius</strong> – The lowest radius of the sphere to generate the points in.</p></li>
-<li><p><strong>max_radius</strong> – The largest radius of the sphere to generate the points in.</p></li>
+<li><p><strong>coordinates</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – The (n x dim) set of coordinates that is used to generate the minimum-volume spheroid.</p></li>
+<li><p><strong>Nsamples</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The number of samples to return.</p></li>
+<li><p><strong>margin</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – the spacing between the sampling spheroid and the minimum-volume spheroid.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Array of coordinates on a sphere.</p>
+<dd class="field-even"><p>Array of coordinates on a spheroid.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1044,23 +1110,28 @@ This file is deleted after exiting the context-manager.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.flow">
-<span class="sig-name descname"><span class="pre">flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['straight']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/tcutility/log.html#flow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.flow" title="Link to this definition">#</a></dt>
-<dd><p>Function to create flowchart-like output.
+<span class="sig-name descname"><span class="pre">flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['straight']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#flow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.flow" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+<p>Function to create flowchart-like output.
 It will print a message prepended by flow elements (arrows and lines).
 The flow elements are determined based on the given tags.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.table">
-<span class="sig-name descname"><span class="pre">table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'</span>&#160;&#160; <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hline</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/tcutility/log.html#table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.table" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span>&#160;&#160; <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.table" title="Link to this definition">#</a></dt>
 <dd><p>Print a table given rows and a header. Values in rows will be cast to strings first.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>rows</strong> – list of <cite>nrows</cite> sequences containing <cite>ncols</cite> data inside the table.</p></li>
-<li><p><strong>header</strong> – list of <cite>ncols</cite> strings that represent the column names of the table. They will be printed at the top of the table.</p></li>
-<li><p><strong>sep</strong> – str representing the separation between columns.</p></li>
-<li><p><strong>hline</strong> – list of integers specifying rows after which lines will be drawn. Supports negative indices, e.g. -1 will draw a line at the end of the table.</p></li>
+<li><p><strong>rows</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]</span>) – list of <cite>nrows</cite> sequences containing <cite>ncols</cite> data inside the table.</p></li>
+<li><p><strong>header</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</span>) – list of <cite>ncols</cite> strings that represent the column names of the table. They will be printed at the top of the table.</p></li>
+<li><p><strong>sep</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – str representing the separation between columns.</p></li>
+<li><p><strong>hline</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – list of integers specifying rows after which lines will be drawn. Supports negative indices, e.g. -1 will draw a line at the end of the table.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1074,88 +1145,97 @@ The flow elements are determined based on the given tags.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.loadbar">
-<span class="sig-name descname"><span class="pre">loadbar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nsegments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nsteps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/tcutility/log.html#loadbar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.loadbar" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">loadbar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nsegments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nsteps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#loadbar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.loadbar" title="Link to this definition">#</a></dt>
 <dd><p>Return values from an iterable <code class="docutils literal notranslate"><span class="pre">sequence</span></code> and also print a progress bar for the iteration over this sequence.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sequence</strong> – any iterable sequence. Should define the <code class="docutils literal notranslate"><span class="pre">__len__</span></code> method.</p></li>
-<li><p><strong>comment</strong> – a string to be printed at the end of the loading bar to give information about the loading bar.</p></li>
-<li><p><strong>Nsegments</strong> – length of the loading bar in characters.</p></li>
-<li><p><strong>Nsteps</strong> – number of times to print the loading bar during iteration. If the output is a tty-type stream Nsteps will be set to the length of sequence.</p></li>
+<li><p><strong>sequence</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></span>) – any iterable sequence. Should define the <code class="docutils literal notranslate"><span class="pre">__len__</span></code> method.</p></li>
+<li><p><strong>comment</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – a string to be printed at the end of the loading bar to give information about the loading bar.</p></li>
+<li><p><strong>Nsegments</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – length of the loading bar in characters.</p></li>
+<li><p><strong>Nsteps</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – number of times to print the loading bar during iteration. If the output is a tty-type stream Nsteps will be set to the length of sequence.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.boxed">
-<span class="sig-name descname"><span class="pre">boxed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message_align</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'left'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_align</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'left'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round_corners</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">double_edge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/tcutility/log.html#boxed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.boxed" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">boxed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message_align</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'left'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_align</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'left'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round_corners</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">double_edge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#boxed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.boxed" title="Link to this definition">#</a></dt>
 <dd><p>Print a message surrounded by a box with optional title.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> – the message to place in the box. Multiline messages are separated by “n”.</p></li>
-<li><p><strong>title</strong> – the title placed in the top edge of the box.</p></li>
-<li><p><strong>message_align</strong> – alignment of the text inside the box. One of [“left”, “center”, “right”].</p></li>
-<li><p><strong>title_align</strong> – alignment of the title. One of [“left”, “center”, “right”].</p></li>
-<li><p><strong>round_corners</strong> – whether the corners of the box should be rounded or not. Rounded corners are only available for single-edge boxes.</p></li>
-<li><p><strong>double_edge</strong> – whether the edges of the box should be double.</p></li>
+<li><p><strong>message</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the message to place in the box. Multiline messages are separated by “n”.</p></li>
+<li><p><strong>title</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span>) – the title placed in the top edge of the box.</p></li>
+<li><p><strong>message_align</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – alignment of the text inside the box. One of [“left”, “center”, “right”].</p></li>
+<li><p><strong>title_align</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – alignment of the title. One of [“left”, “center”, “right”].</p></li>
+<li><p><strong>round_corners</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – whether the corners of the box should be rounded or not. Rounded corners are only available for single-edge boxes.</p></li>
+<li><p><strong>double_edge</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – whether the edges of the box should be double.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The printed message in strings format.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The printed message in strings format.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.debug">
-<span class="sig-name descname"><span class="pre">debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#debug"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.debug" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#debug"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.debug" title="Link to this definition">#</a></dt>
 <dd><p>Print a debug message.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.info">
-<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.info" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.info" title="Link to this definition">#</a></dt>
 <dd><p>Print an informative message.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.warn">
-<span class="sig-name descname"><span class="pre">warn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#warn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.warn" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">warn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#warn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.warn" title="Link to this definition">#</a></dt>
 <dd><p>Print a warning message.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.error">
-<span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.error" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.error" title="Link to this definition">#</a></dt>
 <dd><p>Print an error message.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.critical">
-<span class="sig-name descname"><span class="pre">critical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#critical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.critical" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">critical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#critical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.critical" title="Link to this definition">#</a></dt>
 <dd><p>Print a critical message.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.caller_name">
-<span class="sig-name descname"><span class="pre">caller_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/tcutility/log.html#caller_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.caller_name" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">caller_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#caller_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.caller_name" title="Link to this definition">#</a></dt>
 <dd><p>Return the full name of the caller of a function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>level</strong> – the number of levels to skip when getting the caller name. Level 1 is always this function. When used by a different function it should be set to 2. E.g. when using the log.warn function level is set to 2.</p>
+<dd class="field-odd"><p><strong>level</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – the number of levels to skip when getting the caller name. Level 1 is always this function. When used by a different function it should be set to 2. E.g. when using the log.warn function level is set to 2.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The full name of the caller function.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The full name of the caller function.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.log">
-<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'\n'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.log" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\\n'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.log" title="Link to this definition">#</a></dt>
 <dd><p>Print a nicely formatteed message.
 This function adds the current timestamp and supports multi-line printing (split on the <code class="docutils literal notranslate"><span class="pre">\n</span></code> escape character).
 For verbosity levels we use the following convention:</p>
@@ -1170,9 +1250,9 @@ For verbosity levels we use the following convention:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> – the message to send. Before printing we will use the <code class="docutils literal notranslate"><span class="pre">message.__str__</span></code> method to get the string representation. If the message is a <code class="docutils literal notranslate"><span class="pre">dict</span></code> we use the <code class="docutils literal notranslate"><span class="pre">json</span></code> module to format the message nicely.</p></li>
-<li><p><strong>level</strong> – the level to print the message at. We compare the level against the module-wide <code class="docutils literal notranslate"><span class="pre">log_level</span></code> variable (by default <code class="docutils literal notranslate"><span class="pre">log_level</span> <span class="pre">=</span> <span class="pre">20</span></code>). If the level is below <code class="docutils literal notranslate"><span class="pre">log_level</span></code> we do not print it.</p></li>
-<li><p><strong>end</strong> – the end of the string. This is usually the new-line character <code class="docutils literal notranslate"><span class="pre">\n</span></code>.</p></li>
+<li><p><strong>message</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span>) – the message to send. Before printing we will use the <code class="docutils literal notranslate"><span class="pre">message.__str__</span></code> method to get the string representation. If the message is a <code class="docutils literal notranslate"><span class="pre">dict</span></code> we use the <code class="docutils literal notranslate"><span class="pre">json</span></code> module to format the message nicely.</p></li>
+<li><p><strong>level</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – the level to print the message at. We compare the level against the module-wide <code class="docutils literal notranslate"><span class="pre">log_level</span></code> variable (by default <code class="docutils literal notranslate"><span class="pre">log_level</span> <span class="pre">=</span> <span class="pre">20</span></code>). If the level is below <code class="docutils literal notranslate"><span class="pre">log_level</span></code> we do not print it.</p></li>
+<li><p><strong>end</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the end of the string. This is usually the new-line character <code class="docutils literal notranslate"><span class="pre">\n</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1183,20 +1263,25 @@ For verbosity levels we use the following convention:</p>
 <span id="tcutility-molecule-module"></span><h2>tcutility.molecule module<a class="headerlink" href="#module-tcutility.molecule" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.molecule.parse_str">
-<span class="sig-name descname"><span class="pre">parse_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#parse_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.parse_str" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">parse_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#parse_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.parse_str" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.molecule.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.save" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.save" title="Link to this definition">#</a></dt>
 <dd><p>Save a molecule in a custom xyz file format.
 Molecule and atom flags can be provided as the “flags” parameter of the object (mol.flags and atom.flags).</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.molecule.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Molecule</span></span></span><a class="reference internal" href="../_modules/tcutility/molecule.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.load" title="Link to this definition">#</a></dt>
-<dd><p>Load a molecule from a given xyz file path.
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.load" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code></span></p>
+</dd>
+</dl>
+<p>Load a molecule from a given xyz file path.
 The xyz file is structured as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
 <span class="n">Comment</span> <span class="n">line</span>
@@ -1217,7 +1302,7 @@ Similarly for the atoms, the flags and tags are given as <code class="docutils l
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.molecule.guess_fragments">
-<span class="sig-name descname"><span class="pre">guess_fragments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Molecule</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Molecule</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/molecule.html#guess_fragments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.guess_fragments" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">guess_fragments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#guess_fragments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.guess_fragments" title="Link to this definition">#</a></dt>
 <dd><p>Guess fragments based on data from the xyz file. Two methods are currently supported, see the tabs below.
 We also support reading of charges and spin-polarizations for the fragments.
 They should be given as <code class="docutils literal notranslate"><span class="pre">charge_{fragment_name}</span></code> and <code class="docutils literal notranslate"><span class="pre">spinpol_{fragment_name}</span></code> respectively.</p>
@@ -1260,11 +1345,14 @@ The fragment name must be prefixed with <code class="docutils literal notranslat
 </div></div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mol</strong> – the molecule that is to be split into fragments. It should have defined either method shown above.
+<dd class="field-odd"><p><strong>mol</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code></span>) – the molecule that is to be split into fragments. It should have defined either method shown above.
 If it does not define these methods this function returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A dictionary containing fragment names as keys and <code class="xref py py-class docutils literal notranslate"><span class="pre">plams.Molecule</span></code> objects as values.
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing fragment names as keys and <code class="xref py py-class docutils literal notranslate"><span class="pre">plams.Molecule</span></code> objects as values.
 Atoms that were not included by either method will be placed in the molecule object with key <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
 </dl>
@@ -1275,14 +1363,17 @@ Atoms that were not included by either method will be placed in the molecule obj
 <span id="tcutility-pathfunc-module"></span><h2>tcutility.pathfunc module<a class="headerlink" href="#module-tcutility.pathfunc" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.pathfunc.split_all">
-<span class="sig-name descname"><span class="pre">split_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#split_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.split_all" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">split_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#split_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.split_all" title="Link to this definition">#</a></dt>
 <dd><p>Split a path into all of its parts.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – the path to be split, it will be separated using <code class="xref py py-func docutils literal notranslate"><span class="pre">os.path.split()</span></code>.</p>
+<dd class="field-odd"><p><strong>path</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the path to be split, it will be separated using <code class="xref py py-func docutils literal notranslate"><span class="pre">os.path.split()</span></code>.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of parts of the original path.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of parts of the original path.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -1294,17 +1385,20 @@ Atoms that were not included by either method will be placed in the molecule obj
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.pathfunc.get_subdirectories">
-<span class="sig-name descname"><span class="pre">get_subdirectories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_intermediates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#get_subdirectories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.get_subdirectories" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_subdirectories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_intermediates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#get_subdirectories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.get_subdirectories" title="Link to this definition">#</a></dt>
 <dd><p>Get all sub-directories of a root directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>root</strong> – the root directory.</p></li>
-<li><p><strong>include_intermediates</strong> – whether to include intermediate sub-directories instead of only the lowest levels.</p></li>
+<li><p><strong>root</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the root directory.</p></li>
+<li><p><strong>include_intermediates</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – whether to include intermediate sub-directories instead of only the lowest levels.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of sub-directories with <code class="docutils literal notranslate"><span class="pre">root</span></code> included in the paths.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of sub-directories with <code class="docutils literal notranslate"><span class="pre">root</span></code> included in the paths.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -1340,24 +1434,27 @@ Atoms that were not included by either method will be placed in the molecule obj
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.pathfunc.match">
-<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.match" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">match</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#match"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.match" title="Link to this definition">#</a></dt>
 <dd><p>Find and return information about subdirectories of a root that match a given pattern.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>root</strong> – the root of the subdirectories to look in.</p></li>
-<li><p><strong>pattern</strong> – a string specifying the pattern the subdirectories should correspond to.
+<li><p><strong>root</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the root of the subdirectories to look in.</p></li>
+<li><p><strong>pattern</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – a string specifying the pattern the subdirectories should correspond to.
 It should look similar to a format string, without the <code class="docutils literal notranslate"><span class="pre">f</span></code> in front of the string.
 Inside curly braces you can put a variable name, which you can later extract from the results.
 Anything inside curly braces will be matched to word characters (<code class="docutils literal notranslate"><span class="pre">[a-zA-Z0-9_-]</span></code>) including dashes and underscores.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><div class="line-block">
-<div class="line">A <a href="#id1"><span class="problematic" id="id2">|Result|</span></a> object containing the matched directories as keys and information (also <a href="#id3"><span class="problematic" id="id4">|Result|</span></a> object) about those matches as the values.</div>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><div class="line-block">
+<div class="line">A <a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> object containing the matched directories as keys and information (also <a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> object) about those matches as the values.</div>
 </div>
 <p>Each information dictionary contains the variables given in the pattern.
-| E.g. using a pattern such as <code class="docutils literal notranslate"><span class="pre">{a}/{b}/{c}</span></code> will populate the <code class="docutils literal notranslate"><span class="pre">info.a</span></code>, <code class="docutils literal notranslate"><span class="pre">info.b</span></code> and <code class="docutils literal notranslate"><span class="pre">info.c</span></code> keys of the info <a href="#id5"><span class="problematic" id="id6">|Result|</span></a> object.</p>
+| E.g. using a pattern such as <code class="docutils literal notranslate"><span class="pre">{a}/{b}/{c}</span></code> will populate the <code class="docutils literal notranslate"><span class="pre">info.a</span></code>, <code class="docutils literal notranslate"><span class="pre">info.b</span></code> and <code class="docutils literal notranslate"><span class="pre">info.c</span></code> keys of the info <a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> object.</p>
 </p>
 </dd>
 </dl>
@@ -1412,18 +1509,18 @@ Anything inside curly braces will be matched to word characters (<code class="do
 <span id="tcutility-report-module"></span><h2>tcutility.report module<a class="headerlink" href="#module-tcutility.report" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="tcutility.report.SI">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/report.html#SI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.report.SI" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/report.html#SI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.report.SI" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.report.SI.add_xyz">
-<span class="sig-name descname"><span class="pre">add_xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/report.html#SI.add_xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.report.SI.add_xyz" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">add_xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/report.html#SI.add_xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.report.SI.add_xyz" title="Link to this definition">#</a></dt>
 <dd><p>Add the coordinates and information about a calculation to the SI.
 It will add the electronic bond energy, Gibb’s free energy, enthalpy and imaginary mode, as well as the coordinates of the molecule.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>obj</strong> – a string specifying a calculation directory or a <cite>TCutility.results.Result</cite> object from a calculation.</p></li>
-<li><p><strong>title</strong> – title to be written before the coordinates and information.</p></li>
+<li><p><strong>obj</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – a string specifying a calculation directory or a <cite>TCutility.results.Result</cite> object from a calculation.</p></li>
+<li><p><strong>title</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – title to be written before the coordinates and information.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1431,7 +1528,7 @@ It will add the electronic bond energy, Gibb’s free energy, enthalpy and imagi
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.report.SI.add_heading">
-<span class="sig-name descname"><span class="pre">add_heading</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/report.html#SI.add_heading"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.report.SI.add_heading" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">add_heading</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/report.html#SI.add_heading"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.report.SI.add_heading" title="Link to this definition">#</a></dt>
 <dd><p>Add a heading to the file. This method has the same arguments and functionality as docx.Document.add_heading.</p>
 </dd></dl>
 
@@ -1442,28 +1539,34 @@ It will add the electronic bond energy, Gibb’s free energy, enthalpy and imagi
 <span id="tcutility-slurm-module"></span><h2>tcutility.slurm module<a class="headerlink" href="#module-tcutility.slurm" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.slurm.has_slurm">
-<span class="sig-name descname"><span class="pre">has_slurm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/tcutility/slurm.html#has_slurm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.slurm.has_slurm" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">has_slurm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/slurm.html#has_slurm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.slurm.has_slurm" title="Link to this definition">#</a></dt>
 <dd><p>Function to check if the current platform uses slurm.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Whether slurm is available on this platform.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Whether slurm is available on this platform.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.slurm.squeue">
-<span class="sig-name descname"><span class="pre">squeue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/slurm.html#squeue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.slurm.squeue" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">squeue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/slurm.html#squeue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.slurm.squeue" title="Link to this definition">#</a></dt>
 <dd><p>Get information about jobs managed by slurm using squeue.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><p>Result object containing information about the calculation status:</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>A <a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> object containing information about the calculation status:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>directory (list[str])</strong> – path to slurm directories.</p></li>
-<li><p><strong>id (list[str])</strong> – slurm job id’s.</p></li>
-<li><p><strong>status (list[str])</strong> – slurm job status name. See squeue documentation.</p></li>
-<li><p><strong>statuscode (list[str])</strong> – slurm job status codes. See squeue documentation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">directory</span></code> <strong>(list[str])</strong> – path to slurm directories.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> <strong>(list[str])</strong> – slurm job id’s.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">status</span></code> <strong>(list[str])</strong> – slurm job status name. See squeue documentation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">statuscode</span></code> <strong>(list[str])</strong> – slurm job status codes. See squeue documentation</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -1471,47 +1574,60 @@ It will add the electronic bond energy, Gibb’s free energy, enthalpy and imagi
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>By default this function uses a timed cache (see <code class="xref py py-func docutils literal notranslate"><span class="pre">cache.timed_cache()</span></code>) with a 3 second delay to lessen the load on HPC systems.</p>
+<p>By default this function uses a timed cache (see <a class="reference internal" href="#tcutility.cache.timed_cache" title="tcutility.cache.timed_cache"><code class="xref py py-func docutils literal notranslate"><span class="pre">timed_cache</span></code></a>) with a 3 second delay to lessen the load on HPC systems.</p>
 </div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.slurm.sbatch">
-<span class="sig-name descname"><span class="pre">sbatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">runfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/slurm.html#sbatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.slurm.sbatch" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sbatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">runfile</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/slurm.html#sbatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.slurm.sbatch" title="Link to this definition">#</a></dt>
 <dd><p>Submit a job to slurm using sbatch.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>runfile</strong> – the path to the filename to be submitted.</p></li>
-<li><p><strong>options</strong> – options to be used for sbatch.</p></li>
+<li><p><strong>runfile</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the path to the filename to be submitted.</p></li>
+<li><p><strong>options</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span>) – options to be used for sbatch.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">results.Result</span></code> containing the slurm job ID as the <code class="docutils literal notranslate"><span class="pre">id</span></code> key and the full command used for submitting the job as the <code class="docutils literal notranslate"><span class="pre">command</span></code> key.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>A <a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> object containing information about the newly submitted slurm job</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> <strong>(str)</strong> - the ID for the submitted slurm job.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">command</span></code> <strong>(str)</strong> - the command used to submit the job.</p></li>
+</ul>
+</div></blockquote>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.slurm.workdir_info">
-<span class="sig-name descname"><span class="pre">workdir_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="../_modules/tcutility/slurm.html#workdir_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.slurm.workdir_info" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">workdir_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workdir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/slurm.html#workdir_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.slurm.workdir_info" title="Link to this definition">#</a></dt>
 <dd><p>Function that gets squeue information given a working directory. This will return None if the directory is not being actively referenced by slurm.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Result object containing information about the calculation status, see <a class="reference internal" href="#tcutility.slurm.squeue" title="tcutility.slurm.squeue"><code class="xref py py-func docutils literal notranslate"><span class="pre">squeue()</span></code></a>.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result object containing information about the calculation status, see <a class="reference internal" href="#tcutility.slurm.squeue" title="tcutility.slurm.squeue"><code class="xref py py-func docutils literal notranslate"><span class="pre">squeue()</span></code></a>.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.slurm.wait_for_job">
-<span class="sig-name descname"><span class="pre">wait_for_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slurmid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_every</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/slurm.html#wait_for_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.slurm.wait_for_job" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">wait_for_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slurmid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_every</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/slurm.html#wait_for_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.slurm.wait_for_job" title="Link to this definition">#</a></dt>
 <dd><p>Wait for a slurm job to finish. We check every <cite>check_every</cite> seconds if the slurm job id is still present in squeue.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>slurmid</strong> – the ID of the slurm job we are waiting for.</p></li>
-<li><p><strong>check_every</strong> – the amount of seconds to wait before checking squeue again. Don’t put this too high, or you will anger the cluster people.</p></li>
+<li><p><strong>slurmid</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – the ID of the slurm job we are waiting for.</p></li>
+<li><p><strong>check_every</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – the amount of seconds to wait before checking squeue again. Don’t put this too high, or you will anger the cluster people.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1522,18 +1638,21 @@ It will add the electronic bond energy, Gibb’s free energy, enthalpy and imagi
 <span id="tcutility-spell-check-module"></span><h2>tcutility.spell_check module<a class="headerlink" href="#module-tcutility.spell_check" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.spell_check.naive_recursive">
-<span class="sig-name descname"><span class="pre">naive_recursive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/tcutility/spell_check.html#naive_recursive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.naive_recursive" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">naive_recursive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/spell_check.html#naive_recursive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.naive_recursive" title="Link to this definition">#</a></dt>
 <dd><p>The naïve recursive algorithm to obtain the Levenshtein distance between two strings.
 We do not recommend using this algorithm as it is quite slow and faster alternatives exist.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> – strings to compare.</p></li>
-<li><p><strong>b</strong> – strings to compare.</p></li>
+<li><p><strong>a</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – strings to compare.</p></li>
+<li><p><strong>b</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – strings to compare.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The Levenshtein distance between the strings <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The Levenshtein distance between the strings <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -1547,22 +1666,25 @@ We do not recommend using this algorithm as it is quite slow and faster alternat
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.spell_check.wagner_fischer">
-<span class="sig-name descname"><span class="pre">wagner_fischer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">substitution_cost</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_missmatch_cost</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insertion_cost</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/tcutility/spell_check.html#wagner_fischer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.wagner_fischer" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">wagner_fischer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">substitution_cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_missmatch_cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insertion_cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/spell_check.html#wagner_fischer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.wagner_fischer" title="Link to this definition">#</a></dt>
 <dd><p>Return the Levenshtein distance using the Wagner-Fischer algorithm.
 You can also change the penalty for various errors for this algorithm.
 By default, all types of errors incur a penalty of 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> – strings to compare.</p></li>
-<li><p><strong>b</strong> – strings to compare.</p></li>
-<li><p><strong>substitution_cost</strong> – the penalty for the erroneous substitution of a character.</p></li>
-<li><p><strong>case_missmatch_cost</strong> – the penalty for miss-matching the case of a character.</p></li>
-<li><p><strong>insertion_cost</strong> – the cost for the erroneous insertion or deletion of a character.</p></li>
+<li><p><strong>a</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – strings to compare.</p></li>
+<li><p><strong>b</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – strings to compare.</p></li>
+<li><p><strong>substitution_cost</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – the penalty for the erroneous substitution of a character.</p></li>
+<li><p><strong>case_missmatch_cost</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – the penalty for miss-matching the case of a character.</p></li>
+<li><p><strong>insertion_cost</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – the cost for the erroneous insertion or deletion of a character.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The Levenshtein distance between the strings <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The Levenshtein distance between the strings <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -1581,23 +1703,26 @@ By default, all types of errors incur a penalty of 1.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.spell_check.get_closest">
-<span class="sig-name descname"><span class="pre">get_closest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">a:</span> <span class="pre">str,</span> <span class="pre">others:</span> <span class="pre">~typing.List[str],</span> <span class="pre">compare_func=&lt;function</span> <span class="pre">wagner_fischer&gt;,</span> <span class="pre">ignore_case:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">ignore_chars:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'',</span> <span class="pre">maximum_distance:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">**kwargs</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tcutility/spell_check.html#get_closest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.get_closest" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_closest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">others</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compare_func=&lt;function</span> <span class="pre">wagner_fischer&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_case=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_chars=''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_distance=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/spell_check.html#get_closest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.get_closest" title="Link to this definition">#</a></dt>
 <dd><p>Return strings that are similar to an input string using the Levenshtein distance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> – the string to compare the rest to.</p></li>
-<li><p><strong>others</strong> – a collection of strings to compare to a. The returned strings will be taken from this collection.</p></li>
+<li><p><strong>a</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the string to compare the rest to.</p></li>
+<li><p><strong>others</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span>) – a collection of strings to compare to a. The returned strings will be taken from this collection.</p></li>
 <li><p><strong>compare_func</strong> – the function to use to compare the strings. Defaults to the efficient <a class="reference internal" href="#tcutility.spell_check.wagner_fischer" title="tcutility.spell_check.wagner_fischer"><code class="xref py py-func docutils literal notranslate"><span class="pre">wagner_fischer()</span></code></a> algorithm.</p></li>
-<li><p><strong>ignore_case</strong> – whether the case of the strings is taken into account. If enabled, all strings are turned to lower-case before comparison.</p></li>
-<li><p><strong>ignore_chars</strong> – a strings specifying characters that should be ignored.</p></li>
-<li><p><strong>maximum_distance</strong> – the maximum Levenshtein distance to allow.
+<li><p><strong>ignore_case</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – whether the case of the strings is taken into account. If enabled, all strings are turned to lower-case before comparison.</p></li>
+<li><p><strong>ignore_chars</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – a strings specifying characters that should be ignored.</p></li>
+<li><p><strong>maximum_distance</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – the maximum Levenshtein distance to allow.
 If it is lower than the lowest distance for the collection of strings, we return the strings with the lowest distance.
 If set to <code class="docutils literal notranslate"><span class="pre">None</span></code> we return the lowest distance strings.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A collection of strings that have a Levenshtein distance to <code class="docutils literal notranslate"><span class="pre">a</span></code> below <code class="docutils literal notranslate"><span class="pre">maximum_distance</span></code>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A collection of strings that have a Levenshtein distance to <code class="docutils literal notranslate"><span class="pre">a</span></code> below <code class="docutils literal notranslate"><span class="pre">maximum_distance</span></code>
 or have the lowest distance to <code class="docutils literal notranslate"><span class="pre">a</span></code> if all strings have a distance greater than <code class="docutils literal notranslate"><span class="pre">maximum_distance</span></code>.
 If the lowest distance is <code class="docutils literal notranslate"><span class="pre">0</span></code>, return an empty list instead.</p>
 </dd>
@@ -1612,7 +1737,7 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.spell_check.make_suggestion">
-<span class="sig-name descname"><span class="pre">make_suggestion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">others</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/spell_check.html#make_suggestion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.make_suggestion" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">make_suggestion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">others</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/spell_check.html#make_suggestion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.make_suggestion" title="Link to this definition">#</a></dt>
 <dd><p>Print a warning that gives suggestions for strings that are close to a given string.</p>
 <p class="rubric">Example</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">make_suggestion</span><span class="p">(</span><span class="s1">&#39;kitten&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;mitten&#39;</span><span class="p">,</span> <span class="s1">&#39;bitten&#39;</span><span class="p">,</span> <span class="s1">&#39;sitting&#39;</span><span class="p">])</span>
@@ -1627,7 +1752,7 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.spell_check.check">
-<span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">others</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/spell_check.html#check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.check" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">others</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caller_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/spell_check.html#check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.spell_check.check" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1727,6 +1852,7 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.RMSD"><code class="docutils literal notranslate"><span class="pre">RMSD()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.random_points_on_sphere"><code class="docutils literal notranslate"><span class="pre">random_points_on_sphere()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.random_points_in_anular_sphere"><code class="docutils literal notranslate"><span class="pre">random_points_in_anular_sphere()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.random_points_on_spheroid"><code class="docutils literal notranslate"><span class="pre">random_points_on_spheroid()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.log">tcutility.log module</a><ul class="nav section-nav flex-column">

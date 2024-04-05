@@ -1,8 +1,8 @@
 from scm import plams
 from tcutility import log, results, formula, spell_check, data, molecule
 from tcutility.job.ams import AMSJob
+from tcutility.job.generic import Job
 import os
-
 
 j = os.path.join
 
@@ -11,6 +11,7 @@ class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._functional = None
+        self._core = None
         self.solvent('vacuum')
         self.basis_set('TZ2P')
         self.quality('Good')
@@ -45,6 +46,7 @@ class ADFJob(AMSJob):
             log.warn(f'Basis set {typ} is not allowed with r2SCAN-3c, switching to mTZ2P.')
             typ = 'mTZ2P'
         self._basis_set = typ
+        self._core = core
         self.settings.input.adf.basis.type = typ
         self.settings.input.adf.basis.core = core
 
@@ -77,6 +79,18 @@ class ADFJob(AMSJob):
         Whether the calculation should be unrestricted.
         '''
         self.settings.input.adf.Unrestricted = 'Yes' if val else 'No'
+
+    def occupations(self, strategy: str):
+        '''
+        Set the orbital filling strategy for ADF.
+
+        Args:
+            strategy: the name of the filling strategy. This can contain multiple of the options allowed.
+
+        .. seealso::
+            The SCM documentation can be found at https://www.scm.com/doc/ADF/Input/Electronic_Configuration.html#aufbau-smearing-freezing
+        '''
+        self.settings.input.adf.Occupations = strategy
 
     def quality(self, val: str = 'Good'):
         '''
@@ -111,9 +125,16 @@ class ADFJob(AMSJob):
         Args:
             iterations: number of iterations to perform for this calculation. Defaults to 300.
             thresh: the convergence criteria for the SCF procedure. Defaults to 1e-8.
+
+        .. note::
+            When setting the number of iterations to 0 or 1 the ``AlwaysClaimSuccess`` key will also be set to ``Yes``.
+            This is to prevent the job from being flagged as a failure when reading it using :mod:`tcutility.results`.
         '''
         self.settings.input.adf.SCF.Iterations = iterations
         self.settings.input.adf.SCF.Converge = thresh
+
+        if iterations in [0, 1]:
+            self.settings.input.ams.EngineDebugging.AlwaysClaimSuccess = 'Yes'
 
     def functional(self, funtional_name: str, dispersion: str = None):
         '''
@@ -139,16 +160,14 @@ class ADFJob(AMSJob):
         self._functional = functional
 
         if functional == 'r2SCAN-3c' and self._basis_set != 'mTZ2P':
-            log.warn(f'Switching basis set from {self._basis_set} to mTZ2P for r2SCAN-3c.')
+            log.info(f'Switching basis set from {self._basis_set} to mTZ2P for r2SCAN-3c.')
             self.basis_set('mTZ2P')
 
         if functional == 'SSB-D':
-            log.error('There are two functionals called SSB-D, please use "GGA:SSB-D" or "MetaGGA:SSB-D".')
-            return
+            raise ValueError('There are two functionals called SSB-D, please use "GGA:SSB-D" or "MetaGGA:SSB-D".')
 
         if not data.functionals.get(functional):
-            log.warn(f'XC-functional {functional} not found. Please ask a TheoCheM developer to add it. Adding functional as LibXC.')
-            self.settings.input.adf.XC.LibXC = functional
+            raise ValueError(f'XC-functional {functional} not found.')
         else:
             func = data.functionals.get(functional)
             self.settings.input.adf.update(func.adf_settings)
@@ -225,6 +244,15 @@ class ADFJob(AMSJob):
             }
             self.settings.input.adf.solvation.radii = radii
 
+    def symmetry(self, group: str):
+        '''
+        Specify the symmetry group to be used by ADF.
+
+        Args:
+            group: the symmetry group to be used.
+        '''
+        self.settings.input.adf.Symmetry = group
+
 
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
@@ -259,6 +287,13 @@ class ADFFragmentJob(ADFJob):
             [mol_.add_atom(self._molecule[i]) for i in mol]
             mol = mol_.copy()
             add_frag_to_mol = False
+
+        # check if the atoms in the new fragment are already present in the other fragments.
+        # if it is we should raise an error
+        for child in self.childjobs.values():
+            if any((atom.symbol, atom.coords) == (myatom.symbol, myatom.coords) for atom in child._molecule for myatom in mol):
+                log.error('An atom is present in multiple fragments.')
+                return
 
         name = name or f'fragment{len(self.childjobs) + 1}'
         self.childjobs[name] = ADFJob(test_mode=self.test_mode)
@@ -301,6 +336,43 @@ class ADFFragmentJob(ADFJob):
             self.add_fragment(fragment, fragment_name, charge=charge, spin_polarization=spin_polarization)
 
         return True
+        
+    def remove_virtuals(self, frag=None, subspecies=None, nremove=None):
+        '''
+        Remove virtual orbitals from the fragments.
+
+        Args:
+            frag: the fragment to remove virtuals from. If set to ``None`` we remove all virtual orbitals of all fragments.
+            subspecies: the symmetry subspecies to remove virtuals from. If set to ``None`` we assume we have ``A`` subspecies.
+            nremove: the number of virtuals to remove. If set to ``None`` we will guess the number of virtuals based on the basis-set chosen.
+        '''
+        if frag is None:
+            self.settings.input.adf.RemoveAllFragVirtuals = 'Yes'
+            return
+
+        # if nremove is not given we will get it from the atoms in the fragment
+        if nremove is None:
+            # guess the virtual numbers only works for non-frozen-core calculations
+            if self._core.lower() != 'none':
+                raise ValueError('Cannot guess number of virtual orbitals for calculations with frozen cores.')
+            # the basis-set has to be present in the prepared data
+            if self._basis_set.lower() not in [bs.lower() for bs in data.basis_sets._number_of_orbitals.keys()]:
+                raise ValueError(f'Cannot guess number of virtual orbitals for calculations with the {self._basis_set} basis-set.')
+
+            # sum up the number of virtuals per atom in the fragment
+            nremove = 0
+            for atom in self.childjobs[frag]._molecule:
+                nremove += data.basis_sets.number_of_virtuals(atom.symbol, self._basis_set)
+            # positive charge adds a virtual and negative removes a virtual
+            nremove += self.childjobs[frag].settings.input.ams.System.charge or 0
+
+        self.settings.input.adf.setdefault('RemoveFragOrbitals', '')
+        self.settings.input.adf.RemoveFragOrbitals += f"""
+    {frag}
+      {subspecies or 'A'} {nremove}
+    SubEnd
+  End
+        """
 
     def run(self):
         '''
@@ -341,6 +413,8 @@ class ADFFragmentJob(ADFJob):
         child_setts = {name: child.settings.as_plams_settings() for name, child in self.childjobs.items()}
         # update the children using the parent settings
         [child_sett.update(sett) for child_sett in child_setts.values()]
+        [child_sett.input.adf.pop('RemoveFragOrbitals', None) for child_sett in child_setts.values()]
+        [child_sett.input.adf.pop('RemoveAllFragVirtuals', None) for child_sett in child_setts.values()]
         # same for sbatch settings
         [child.sbatch(**self._sbatch) for child in self.childjobs.values()]
 
@@ -414,13 +488,110 @@ class ADFFragmentJob(ADFJob):
         log.flow(log.Emojis.finish + ' Done, bye!', ['startinv'])
 
 
+class DensfJob(Job):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.rundir = 'tmp'
+        self.name = 'densf'
+        self.gridsize()
+        self._mos = []
+        self._sfos = []
+        self.settings.ADFFile = None
+
+    def __str__(self):
+        return f'Densf({self.target}), running in {self.workdir}'
+
+    def gridsize(self, size='medium'):
+        '''
+        Set the size of the grid to be used by Densf.
+
+        Args:
+            size: either "coarse", "medium", "fine". Defaults to "medium".
+        '''
+        spell_check.check(size, ['coarse', 'medium', 'fine'], ignore_case=True)
+        self.settings.grid = size
+
+    def orbital(self, orbital: 'pyfmo.orbitals.sfo.SFO' or 'pyfmo.orbitals.mo.MO'):  # noqa: F821
+        '''
+        Add a PyOrb orbital for Densf to calculate.
+        '''
+        import pyfmo
+
+        if isinstance(orbital, pyfmo.orbitals.sfo.SFO):
+            self._sfos.append(orbital)
+        elif isinstance(orbital, pyfmo.orbitals.mo.MO):
+            self._mos.append(orbital)
+        else:
+            raise ValueError(f'Unknown object {orbital} of type{type(orbital)}. It should be a pyfmo.orbitals.sfo.SFO or pyfmo.orbitals.mos.MO object.')
+
+        # check if the ADFFile is the same for all added orbitals
+        if self.settings.ADFFile is None:
+            self.settings.ADFFile = orbital.kfpath
+
+        elif self.settings.ADFFile != orbital.kfpath:
+            raise ValueError('RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.')
+
+    def _setup_job(self):
+        os.makedirs(self.workdir, exist_ok=True)
+
+        # set up the input file. This should always contain calling of the densf program, as per the SCM documentation
+        with open(self.inputfile_path, 'w+') as inpf:
+            inpf.write( '$AMSBIN/densf << eor\n')
+            inpf.write(f'ADFFile {self.settings.ADFFile}\n')
+            inpf.write(f'GRID {self.settings.grid}\n')
+            inpf.write( 'END\n')
+
+            if len(self._mos) > 0:
+                inpf.write('Orbitals SCF\n')
+                for orb in self._mos:
+                    inpf.write(f'    {orb.symmetry} {orb.index}\n')
+                inpf.write('END\n')
+
+            if len(self._sfos) > 0:
+                inpf.write('Orbitals SFO\n')
+                for orb in self._sfos:
+                    inpf.write(f'    {orb.symmetry} {orb.index}\n')
+                inpf.write('END\n')
+            # cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size
+            inpf.write(f'CUBOUTPUT {os.path.split(self.settings.ADFFile)[0]}/{self.settings.grid}\n')
+            inpf.write('eor\n')
+
+        # the runfile should simply execute the input file.
+        with open(self.runfile_path, 'w+') as runf:
+            runf.write('#!/bin/sh\n\n')
+            runf.write('\n'.join(self._preambles) + '\n\n')
+            runf.write(f'sh {self.inputfile_path}\n')
+            runf.write('\n'.join(self._postambles))
+
+        return True
+
+    @property
+    def output_cub_paths(self):
+        '''
+        The output cube file paths that will be/were calculated by this job.
+        '''
+        paths = []
+        cuboutput = f'{os.path.split(self.settings.ADFFile)[0]}/{self.settings.grid}'
+
+        for mo in self._mos:
+            paths.append(f'{cuboutput}%SCF_{mo.symmetry}%{mo.index}.cub')
+
+        for sfo in self._sfos:
+            paths.append(f'{cuboutput}%SFO_{sfo.symmetry}%{sfo.index}.cub')
+
+        return paths
+
+    def can_skip(self):
+        return all(os.path.exists(path) for path in self.output_cub_paths)
+
+
 if __name__ == '__main__':
-    with ADFJob(test_mode=True) as job:
-        job.rundir = 'tmp/SN2/EDA'
-        job.molecule('../../../test/fixtures/xyz/pyr.xyz')
-        job.sbatch(p='tc', ntasks_per_node=15)
-        job.solvent('')
-        job.basis_set('tz2p')
-        job.SCF_convergence(1e-10)
-        job.quality('veryGood')
-        job.functional('LYP-D3BJ')
+    # import pyfmo
+
+    # orbs = pyfmo.orbitals.Orbitals('/Users/yumanhordijk/PhD/MM2024/calculations/IRC/pi_beta_trans_TS1/pi_beta/pi_beta_trans/complex.00039/adf.rkf')
+    # with DensfJob() as job:
+    #     job.orbital(orbs.sfos['frag1(HOMO)'])
+
+
+    with ADFFragmentJob() as job:
+        ...

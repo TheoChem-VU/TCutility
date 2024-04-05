@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.geometry &#8212; TCutility v0.10.2 documentation</title>
+    <title>tcutility.geometry &#8212; TCutility v0.11.1 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../_static/documentation_options.js?v=bacca286"></script>
+    <script src="../../_static/documentation_options.js?v=fce162b5"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,7 +118,7 @@
     }
 </style>
 <div class="myDiv">
-    <a href="./index.html">
+    <a href="/index.html">
         <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
         TCutility
     </a>
@@ -686,7 +686,7 @@
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.geometry.random_points_on_sphere">[docs]</a>
 <span class="k">def</span> <span class="nf">random_points_on_sphere</span><span class="p">(</span><span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate a random points on a sphere with a specified radius.</span>
+<span class="sd">    Generate random points on a sphere with a specified radius.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        shape: The shape of the resulting points, generally shape[0] coordinates with shape[1] dimensions</span>
@@ -696,7 +696,7 @@
 <span class="sd">        Array of coordinates on a sphere.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="n">shape</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span>
     <span class="k">return</span> <span class="n">x</span></div>
 
 
@@ -705,7 +705,8 @@
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.geometry.random_points_in_anular_sphere">[docs]</a>
 <span class="k">def</span> <span class="nf">random_points_in_anular_sphere</span><span class="p">(</span><span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">min_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">max_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate a random points in a sphere with specified radii.</span>
+<span class="sd">    Generate random points in an sphere or anular sphere with specified radii. </span>
+<span class="sd">    An anular sphere is a hollow sphere of a certain thickness.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        shape: The shape of the resulting points, generally shape[0] coordinates with shape[1] dimensions</span>
@@ -717,6 +718,41 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">random_radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_radius</span> <span class="o">-</span> <span class="n">min_radius</span><span class="p">)</span> <span class="o">+</span> <span class="n">min_radius</span>
     <span class="k">return</span> <span class="n">random_points_on_sphere</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">random_radii</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="random_points_on_spheroid">
+<a class="viewcode-back" href="../../api/tcutility.html#tcutility.geometry.random_points_on_spheroid">[docs]</a>
+<span class="k">def</span> <span class="nf">random_points_on_spheroid</span><span class="p">(</span><span class="n">coordinates</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Nsamples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">margin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate random points on a spheroid generated by a set of coordinates.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        coordinates: The (n x dim) set of coordinates that is used to generate the minimum-volume spheroid.</span>
+<span class="sd">        Nsamples: The number of samples to return.</span>
+<span class="sd">        margin: the spacing between the sampling spheroid and the minimum-volume spheroid.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Array of coordinates on a spheroid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># for this to work we should first get the centroid of our molecule</span>
+    <span class="n">centroid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># and get the centered coordiantes</span>
+    <span class="n">Xc</span> <span class="o">=</span> <span class="n">coordinates</span> <span class="o">-</span> <span class="n">centroid</span>
+
+    <span class="c1"># we then do a singular-value decomposition to obtain</span>
+    <span class="c1"># the three principle components (Vh) with their eigenvalues (s)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vh</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">Xc</span><span class="p">)</span>
+
+    <span class="c1"># then compute a transformation matrix for generating the correct spheroid</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">Transform</span><span class="p">()</span>
+    <span class="n">transform</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">centroid</span><span class="p">)</span>
+    <span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">s</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">margin</span><span class="p">)</span> <span class="o">@</span> <span class="n">Vh</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="c1"># to sample the spheroid we generate points on a </span>
+    <span class="c1"># sphere and transform them to our spheroid</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">random_points_on_sphere</span><span class="p">((</span><span class="n">Nsamples</span><span class="p">,</span> <span class="n">Xc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">transform</span><span class="p">(</span><span class="n">p</span><span class="p">)</span></div>
 
 </pre></div>
 

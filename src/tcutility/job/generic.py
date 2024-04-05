@@ -21,7 +21,7 @@ class Job:
         overwrite: whether to overwrite a previously run job in the same working directory.
         wait_for_finish: whether to wait for this job to finish running before continuing your runscript.
     '''
-    def __init__(self, test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = False):
+    def __init__(self, test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = False, delete_on_finish: bool = False):
         self.settings = results.Result()
         self._sbatch = results.Result()
         self._molecule = None
@@ -32,13 +32,19 @@ class Job:
         self.test_mode = test_mode
         self.overwrite = overwrite
         self.wait_for_finish = wait_for_finish
+        self.delete_on_finish = delete_on_finish
         self._preambles = []
         self._postambles = []
+        self._postscripts = []
 
     def __enter__(self):
         return self
 
-    def __exit__(self, *args):
+    def __exit__(self, exc_type, exc_value, exc_tb):
+        if exc_type:
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            log.error(f'Job set-up failed with exception: {exc_type.__name__}({exc_value}) in File "{fname}", line {exc_tb.tb_lineno}.')
+            return True
         self.run()
 
     def can_skip(self):
@@ -108,6 +114,13 @@ class Job:
             log.info(f'Skipping calculation {j(self.rundir, self.name)}, it is already finished or currently pending or running.')
             return
 
+        # write the post-script calls to the post-ambles:
+        if self.delete_on_finish:
+            self.add_postamble(f'rm -r {self.workdir}')
+
+        for postscript in self._postscripts:
+            print(postscript)
+            self._postambles.append(f'python {postscript[0]} {" ".join(postscript[1])}')
         # setup the job and check if it was successfull
         setup_success = self._setup_job()
 
@@ -141,7 +154,8 @@ class Job:
         else:
             # if we are not using slurm, we can execute the file. For this we need special permissions, so we have to set that first.
             os.chmod(self.runfile_path, stat.S_IRWXU)
-            sp.run(self.runfile_path, cwd=os.path.split(self.runfile_path)[0])
+            with open(f'{os.path.split(self.runfile_path)[0]}/{self.name}.out', 'w+') as out:
+                sp.run(self.runfile_path, cwd=os.path.split(self.runfile_path)[0], stdout=out)
 
     def add_preamble(self, line: str):
         '''
@@ -159,9 +173,19 @@ class Job:
         '''
         self._postambles.append(line)
 
-    def add_postscript(self, script):
-        self.add_postamble(f'cd {self.workdir}')
-        self.add_postamble(f'python {script.__file__}')
+    def add_postscript(self, script, *args):
+        '''
+        Add a post-script to this calculation. 
+        This should be either a Python module with a __file__ attribute or the path to a Python script.
+        The post-script will be called with Python and any given args will be added as arguments when calling the script.
+
+        Args:
+            script: a Python object with a __file__ attribute or the file-path to a script.
+            *args: positional arguments to pass to the post-script.
+        '''
+        if not isinstance(script, str):
+            script = script.__file__
+        self._postscripts.append((script, args))
 
     def dependency(self, otherjob: 'Job'):
         '''

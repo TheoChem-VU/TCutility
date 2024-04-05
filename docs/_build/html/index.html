@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>TCutility v0.10.2 documentation &#8212; TCutility v0.10.2 documentation</title>
+    <title>TCutility v0.11.1 documentation &#8212; TCutility v0.11.1 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="_static/documentation_options.js?v=bacca286"></script>
+    <script src="_static/documentation_options.js?v=fce162b5"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -47,7 +47,7 @@
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Reading a calculation" href="tcutility.results.html" />
+    <link rel="next" title="tcutility.results" href="results/results.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -120,7 +120,7 @@
     }
 </style>
 <div class="myDiv">
-    <a href="./index.html">
+    <a href="/index.html">
         <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
         TCutility
     </a>
@@ -229,26 +229,73 @@
                 <article class="bd-article">
                   
   <section id="tcutility-projectversion-documentation">
-<h1>TCutility v0.10.2 documentation<a class="headerlink" href="#tcutility-projectversion-documentation" title="Link to this heading">#</a></h1>
+<h1>TCutility v0.11.1 documentation<a class="headerlink" href="#tcutility-projectversion-documentation" title="Link to this heading">#</a></h1>
 <p><strong>TCutility</strong> is a Python library containing many helper functions and classes for use in programs written in the TheoCheM group.</p>
 <div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Main modules</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tcutility.results.html">Reading a calculation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="analysis/analysis.html">Overview of the analysis module</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="results/results.html">tcutility.results</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="results/results.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="results/results.html#available-keys-present-in-the-result-object">Available keys present in the <code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code> object</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="results/results.html#adf-calculation">ADF calculation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tcutility.job.html">tcutility.job</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.job.html#overview">Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#job-classes">Job classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#slurm-support">Slurm support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#job-dependencies">Job dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#rerun-prevention">Rerun prevention</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#supported-engines">Supported engines</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.job.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.job.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#geometry-optimization-using-adf">Geometry optimization using ADF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#fragment-calculation-using-adf">Fragment calculation using ADF</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="analysis/analysis.html">tcutility.analysis</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="analysis/transition_state_analysis.html">Transition State Analysis module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="analysis/vdd_charge_analysis.html">VDD Charge Analysis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis/vdd_charge_analysis.html">VDD Charge Analysis module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="analysis/vdd_charge_analysis.html#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/vdd_charge_analysis.html#example">Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analysis/vdd_charge_analysis.html#vdd-analysis-api">VDD analysis API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli_scripts/main.html">Command-line interface (CLI) scripts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli_scripts/main.html#overview">Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli_scripts/main.html#tcutility-command-line-scripts">TCutility command-line scripts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli_scripts/main.html#Sub-commands">Sub-commands</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extra (utility) modules are:</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Utility modules</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tcutility.constants.html">tcutility.constants package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/tcutility.data.html">tcutility.data package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/tcutility.data.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/tcutility.data.html#module-tcutility.data.atom">tcutility.data.atom module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/tcutility.data.html#module-tcutility.data.basis_sets">tcutility.data.basis_sets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/tcutility.data.html#module-tcutility.data.cosmo">tcutility.data.cosmo module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/tcutility.data.html#module-tcutility.data.functionals">tcutility.data.functionals module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/tcutility.data.html#module-tcutility.data.molecules">tcutility.data.molecules module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/tcutility.data.html#module-tcutility.data">Module contents</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Full API:</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Full API</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/modules.html">tcutility</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/tcutility.html">tcutility package</a></li>
@@ -281,11 +328,11 @@
                   
 <div class="prev-next-area">
     <a class="right-next"
-       href="tcutility.results.html"
+       href="results/results.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Reading a calculation</p>
+        <p class="prev-next-title">tcutility.results</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -307,7 +354,7 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">TCutility v0.10.2 documentation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">TCutility v0.11.1 documentation</a><ul class="visible nav section-nav flex-column">
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#indices-and-tables">Indices and tables</a></li>

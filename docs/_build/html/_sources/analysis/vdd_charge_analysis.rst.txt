@@ -99,7 +99,7 @@ To visualize the VDD charges further, the charge for each atom can be plotted in
     # Plot the VDD charges per atom in a bar graph
     vdd_manager.plot_vdd_charges_per_atom(output_dir)
 
-.. image:: ../_static/analyisis/VDD/VDD_charges_per_atom.png
+.. image:: ../_static/analysis/VDD/VDD_charges_per_atom.png
     :align: center
 
 
@@ -113,7 +113,7 @@ Finally, multiple |VDDmanager| objects can be made and written to a single .txt 
     vdd_managers = [manager.create_vdd_charge_manager(name=calc_dir.name, results=res) for calc_dir, res in zip(calc_dirs, calc_res)]
     manager.VDDChargeManager.write_to_txt(output_dir, vdd_managers)
 
-.. literalinclude:: ../_static/analyisis/VDD/VDD_charges_per_atom.txt
+.. literalinclude:: ../_static/analysis/VDD/VDD_charges_per_atom.txt
     :language: python
     :lines: 1-
 

@@ -49,19 +49,19 @@ def get_calc_settings(info: Result) -> Result:
     reader_adf = cache.get(info.files["adf.rkf"])
 
     relativistic_type_map = {
-        0: 'None',
-        1: 'scalar Pauli',
-        3: 'scalar ZORA',  # scalar ZORA + MAPA
-        4: 'scalar ZORA + full pot.',
-        5: 'scalar ZORA + APA',
-        6: 'scalar X2C + MAPA',
-        7: 'scalar X2C ZORA + MAPA',
-        11: 'spin-orbit Pauli',
-        13: 'spin-orbit ZORA',  # spin-orbit ZORA + MAPA
-        14: 'spin-orbit ZORA + full pot.',
-        15: 'spin-orbit ZORA + APA',
-        16: 'spin-orbit X2C + MAPA',
-        17: 'spin-orbit X2C ZORA + MAPA',
+        0: "None",
+        1: "scalar Pauli",
+        3: "scalar ZORA",  # scalar ZORA + MAPA
+        4: "scalar ZORA + full pot.",
+        5: "scalar ZORA + APA",
+        6: "scalar X2C + MAPA",
+        7: "scalar X2C ZORA + MAPA",
+        11: "spin-orbit Pauli",
+        13: "spin-orbit ZORA",  # spin-orbit ZORA + MAPA
+        14: "spin-orbit ZORA + full pot.",
+        15: "spin-orbit ZORA + APA",
+        16: "spin-orbit X2C + MAPA",
+        17: "spin-orbit X2C ZORA + MAPA",
     }
     # determine if calculation used relativistic corrections
     # if it did, variable 'escale' will be present in 'SFOs'
@@ -172,12 +172,16 @@ def get_properties(info: Result) -> Result:
             - **energy.enthalpy (float)** – enthalpy (|kcal/mol|). Only populated if vibrational modes were calculated.
             - **energy.nuclear_internal (float)** – nuclear internal energy (|kcal/mol|). Only populated if vibrational modes were calculated.
             - **vibrations.number_of_modes (int)** – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.
-            - **vibrations.number_of_imaginary_modes (int)** – number of imaginary vibrational modes for this molecule.
+            - **vibrations.number_of_imag_modes (int)** – number of imaginary vibrational modes for this molecule.
             - **vibrations.frequencies (float)** – vibrational frequencies associated with the vibrational modes, sorted from low to high (|cm-1|).
             - **vibrations.intensities (float)** – vibrational intensities associated with the vibrational modes (|km/mol|).
             - **vibrations.modes (list[float])** – list of vibrational modes sorted from low frequency to high frequency.
+            - **vibrations.character (str)** – Character of the molecule based on the number of imaginary vibrational modes. Can be "minimum" or "transition state".
             - **vdd.charges (nparray[float] (1D))** - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges.
             - **vdd.charges.{symmetry label} (nparray[float] (1D))** - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons] per irrep.
+            - **s2** - expectation value of the :math:`S^2` operator.
+            - **s2_expected** - ideal expectation value of the :math:`S^2` operator. For restricted calculations this should always equal ``s2``.
+            - **spin_contamination** - the amount of spin-contamination observed in this calculation. It is equal to (s2 - s2_expected) / (s2_expected). Ideally this value should be below 0.1.
     """
 
     assert info.engine == "adf", f"This function reads ADF data, not {info.engine} data"
@@ -216,6 +220,23 @@ def get_properties(info: Result) -> Result:
         ret.vdd.update(_get_vdd_charges_per_irrep(reader_adf))
     except KeyError:
         pass
+
+    # read spin-squared operator info
+    # the total spin
+    S = info.adf.spin_polarization * 1 / 2
+    ret.s2_expected = S * (S + 1)
+    # this is the real expectation value
+    if ('Properties', 'S2calc') in reader_adf:
+        ret.s2 = reader_adf.read('Properties', 'S2calc')
+    else:
+        ret.s2 = 0
+
+    # calculate the contamination
+    # if S is 0 then we will get a divide by zero error, but spin-contamination should be 0
+    if S != 0:
+        ret.spin_contamination = (ret.s2 - ret.s2_expected) / (ret.s2_expected)
+    else:
+        ret.spin_contamination = 0
 
     return ret
 

@@ -229,6 +229,7 @@ def get_calculation_status(calc_dir: str) -> Result:
         return ret
 
     if termination_status == "IN PROGRESS":
+        ret.fatal = False
         ret.reasons.append("Calculation in progress")
         ret.name = "RUNNING"
         ret.code = "R"

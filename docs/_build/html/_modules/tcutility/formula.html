@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.formula &#8212; TCutility v0.10.2 documentation</title>
+    <title>tcutility.formula &#8212; TCutility v0.11.1 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../_static/documentation_options.js?v=bacca286"></script>
+    <script src="../../_static/documentation_options.js?v=fce162b5"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -118,7 +118,7 @@
     }
 </style>
 <div class="myDiv">
-    <a href="./index.html">
+    <a href="/index.html">
         <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
         TCutility
     </a>
@@ -289,11 +289,11 @@
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.formula.molecule">[docs]</a>
 <span class="k">def</span> <span class="nf">molecule</span><span class="p">(</span><span class="n">molecule</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">],</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;unicode&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parse and return a string containing a molecular formula that will show up properly in LaTeX or HTML.</span>
+<span class="sd">    Parse and return a string containing a molecular formula that will show up properly in LaTeX, HTML or unicode.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        molecule: plams.Molecule object or a string that contains the molecular formula to be parsed. It can be either single molecule or a reaction. Molecules should be separated by &#39;+&#39; or &#39;-&gt;&#39;.</span>
-<span class="sd">        mode: the formatter to convert the string to. Should be &#39;unicode&#39;, &#39;html&#39;, &#39;latex&#39;.</span>
+<span class="sd">        mode: the formatter to convert the string to. Should be &#39;unicode&#39;, &#39;html&#39;, &#39;latex&#39;, &#39;pyplot&#39;.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A string that is formatted to be rendered nicely in either HTML or LaTeX.</span>
@@ -315,7 +315,7 @@
         <span class="n">partret</span> <span class="o">=</span> <span class="n">part</span>
         <span class="c1"># numbers should be subscript</span>
         <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="s2">&quot;0123456789&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;latex&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;latex&quot;</span><span class="p">,</span> <span class="s2">&quot;pyplot&quot;</span><span class="p">]:</span>
                 <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;html&quot;</span><span class="p">:</span>
                 <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;&lt;sub&gt;</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2">&lt;/sub&gt;&quot;</span><span class="p">)</span>
@@ -325,7 +325,7 @@
         <span class="c1"># signs should be superscript</span>
         <span class="k">for</span> <span class="n">sign</span> <span class="ow">in</span> <span class="s2">&quot;+-&quot;</span><span class="p">:</span>
             <span class="c1"># negative charges should be denoted by em dash and not a normal dash</span>
-            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;latex&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;latex&quot;</span><span class="p">,</span> <span class="s2">&quot;pyplot&quot;</span><span class="p">]:</span>
                 <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sign</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;^</span><span class="si">{</span><span class="n">sign</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;—&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;html&quot;</span><span class="p">:</span>
                 <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sign</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;&lt;sup&gt;</span><span class="si">{</span><span class="n">sign</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;—&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&lt;/sup&gt;&#39;</span><span class="p">)</span>
@@ -333,6 +333,9 @@
                 <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sign</span><span class="p">,</span> <span class="s2">&quot;⁺⁻&quot;</span><span class="p">[</span><span class="s2">&quot;+-&quot;</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">sign</span><span class="p">)])</span>
         <span class="c1"># replace the part in the original string</span>
         <span class="n">molstring</span> <span class="o">=</span> <span class="n">molstring</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">partret</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;pyplot&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">fr</span><span class="s2">&quot;$</span><span class="si">{</span><span class="n">molstring</span><span class="si">}</span><span class="s2">$&quot;</span>
 
     <span class="k">return</span> <span class="n">molstring</span></div>
 
