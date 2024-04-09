@@ -6,7 +6,10 @@ import numpy as np
 import json
 from tcutility import ensure_2d
 from typing import Any, Iterable, List, Union
+from types import GeneratorType
 import inspect
+# from threading import Thread
+
 
 ###########################################################
 # MODULE LEVEL VARIABLES USED TO CHANGE LOGGING BEHAVIOUR #
@@ -195,6 +198,27 @@ def loadbar(sequence: Iterable, comment: str = "", Nsegments: int = 50, Nsteps: 
         Nsegments: length of the loading bar in characters.
         Nsteps: number of times to print the loading bar during iteration. If the output is a tty-type stream Nsteps will be set to the length of sequence.
     """
+    if isinstance(sequence, GeneratorType):
+        chars = ["⠀", "⠄", "⠆", "⠦", "⠧", "⠷", "⠿", "⠻", "⠛", "⠙", "⠉", "⠈", "⠀"]
+        iteration = 0
+        if not logfile.isatty() and comment:
+            log(comment, level=level)
+
+        starttime = perf_counter()
+        for val in sequence:
+            iteration += 1
+            elapsed_time = (perf_counter() - starttime)
+            time_per_step = elapsed_time / iteration
+            # every 0.1 seconds we change the character
+            char_step = int(elapsed_time / 0.1) % len(chars)
+            if logfile.isatty():
+                log(f'{chars[char_step]} {comment} [Steps: {iteration}, Elapsed: {elapsed_time:.1f}s]', end="\r", level=level)
+
+            yield val
+
+        log(level=level)
+        return
+
     N = len(sequence)
     # if the output stream is tty-type we set the number of steps to the lenth of the sequence so the loading bar looks smoother
     Nsteps = N if logfile.isatty() else Nsteps
