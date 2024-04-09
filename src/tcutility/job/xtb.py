@@ -104,6 +104,9 @@ class XTBJob(Job):
         '''
         self._options.append(f'-c {val}')
 
+    def vibrations(self, enable: bool = True):
+        self._options.append('--hess')
+
     def optimization(self, quality: str = 'Normal', calculate_hess: bool = True):
         '''
         Do a geometry optimization and calculate the normal modes of the input structure.
