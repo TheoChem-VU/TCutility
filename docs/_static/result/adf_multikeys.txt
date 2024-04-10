@@ -1,8 +1,8 @@
 files.root
-files.err
 files.log
-files.ams.rkf
+files.err
 files.adf.rkf
+files.ams.rkf
 engine
 input.Task
 input.properties.NormalModes
@@ -71,6 +71,9 @@ properties.vibrations.number_of_imag_modes
 properties.vibrations.character
 properties.vibrations.modes
 properties.vdd.charges
+properties.s2_expected
+properties.s2
+properties.spin_contamination
 level.xc.functional
 level.xc.category
 level.xc.dispersion

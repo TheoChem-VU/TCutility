@@ -357,6 +357,9 @@
 <li><p><strong>vibrations.character (str)</strong> – Character of the molecule based on the number of imaginary vibrational modes. Can be “minimum” or “transition state”.</p></li>
 <li><p><strong>vdd.charges (nparray[float] (1D))</strong> - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges.</p></li>
 <li><p><strong>vdd.charges.{symmetry label} (nparray[float] (1D))</strong> - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons] per irrep.</p></li>
+<li><p><strong>s2</strong> - expectation value of the <span class="math notranslate nohighlight">\(S^2\)</span> operator.</p></li>
+<li><p><strong>s2_expected</strong> - ideal expectation value of the <span class="math notranslate nohighlight">\(S^2\)</span> operator. For restricted calculations this should always equal <code class="docutils literal notranslate"><span class="pre">s2</span></code>.</p></li>
+<li><p><strong>spin_contamination</strong> - the amount of spin-contamination observed in this calculation. It is equal to (s2 - s2_expected) / (s2_expected). Ideally this value should be below 0.1.</p></li>
 </ul>
 </div></blockquote>
 </p>

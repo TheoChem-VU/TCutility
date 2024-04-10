@@ -481,7 +481,7 @@
             <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;spinpol_</span><span class="si">{</span><span class="n">frag_name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">:</span>
                 <span class="n">fragment_mols</span><span class="p">[</span><span class="n">frag_name</span><span class="p">]</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s1">&#39;spinpol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;spinpol_</span><span class="si">{</span><span class="n">frag_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">fragment_mols</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">Result</span><span class="p">(</span><span class="n">fragment_mols</span><span class="p">)</span>
 
     <span class="c1"># second method, check if the atoms have a frag= flag defined</span>
     <span class="n">fragment_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;frag&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="p">)</span>
@@ -498,7 +498,7 @@
             <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;spinpol_</span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">:</span>
                 <span class="n">fragment_mols</span><span class="p">[</span><span class="n">frag</span><span class="p">]</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s1">&#39;spinpol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;spinpol_</span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">fragment_mols</span></div>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">Result</span><span class="p">(</span><span class="n">fragment_mols</span><span class="p">)</span></div>
 
 
 
