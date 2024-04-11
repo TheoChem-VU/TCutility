@@ -8,6 +8,10 @@ def get_calc_settings(info: Result) -> Result:
     """
 
     assert info.engine == "dftb", f"This function reads DFTB data, not {info.engine} data"
+
+    if info.input.task == 'PESScan':
+        return Result()
+
     assert "dftb.rkf" in info.files, f'Missing dftb.rkf file, [{", ".join([": ".join(item) for item in info.files.items()])}]'
 
     ret = Result()
@@ -19,18 +23,22 @@ def get_calc_settings(info: Result) -> Result:
 
 
 def get_properties(info: Result) -> Result:
-    """Function to get properties from an ADF calculation.
+    """Function to get properties from an DFTB calculation.
 
     Args:
-        info: Result object containing ADF properties.
+        info: Result object containing DFTB properties.
 
     Returns:
-        :Result object containing properties from the ADF calculation:
+        :Result object containing properties from the DFTB calculation:
 
             - **energy.bond (float)** – bonding energy (|kcal/mol|).
     """
 
     assert info.engine == "dftb", f"This function reads DFTB data, not {info.engine} data"
+
+    if info.input.task == 'PESScan':
+        return Result()
+
     assert "dftb.rkf" in info.files, f'Missing dftb.rkf file, [{", ".join([": ".join(item) for item in info.files.items()])}]'
 
     reader_dftb = cache.get(info.files["dftb.rkf"])
@@ -53,6 +61,9 @@ def get_properties(info: Result) -> Result:
     # then simply add the properties to ret
     for typ, subtyp, value in zip(types, subtypes, values):
         ret[typ.replace(" ", "_")][subtyp] = value
+
+    if ret.energy['DFTB Final Energy']:
+        ret.energy.bond = ret.energy['DFTB Final Energy']
 
     # we also read vibrations
     ret.vibrations.number_of_modes = reader_dftb.read("Vibrations", "nNormalModes")
