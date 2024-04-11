@@ -9,6 +9,22 @@ import shutil
 j = os.path.join
 
 
+def _python_path():
+    '''
+    Sometimes it is necessary to have the Python path as some environments don't have its path.
+    This function attempts to find the Python path and returns it.
+    '''
+    python = sp.run('which python', shell=True, capture_output=True).stdout.decode().strip()
+
+    if python == '' or not os.path.exists(python):
+        python = sp.run('which python3', shell=True, capture_output=True).stdout.decode().strip()
+
+    # we default to the python executable 
+    if python == '' or not os.path.exists(python):
+        python = 'python'
+
+    return python
+
 class Job:
     '''This is the base Job class used to build more advanced classes such as :class:`AMSJob <tcutility.job.ams.AMSJob>` and :class:`ORCAJob <tcutility.job.orca.ORCAJob>`.
     The base class contains an empty :class:`Result <tcutility.results.result.Result>` object that holds the settings. 
@@ -111,8 +127,8 @@ class Job:
             self.add_postamble(f'rm -r {self.workdir}')
 
         for postscript in self._postscripts:
-            print(postscript)
-            self._postambles.append(f'python {postscript[0]} {" ".join(postscript[1])}')
+            self._postambles.append(f'{_python_path()} {postscript[0]} {" ".join(postscript[1])}')
+
         # setup the job and check if it was successfull
         setup_success = self._setup_job()
 
@@ -181,7 +197,8 @@ class Job:
 
     def dependency(self, otherjob: 'Job'):
         '''
-        Set a dependency between this job and another job. This means that this job will run after the other job is finished running succesfully.
+        Set a dependency between this job and otherjob. 
+        This means that this job will run after the other job is finished running succesfully.
         '''
         if hasattr(otherjob, 'slurm_job_id'):
             self.sbatch(dependency=f'afterok:{otherjob.slurm_job_id}')
