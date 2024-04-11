@@ -261,6 +261,7 @@
                   
   <h1>Source code for tcutility.results.result</h1><div class="highlight"><pre>
 <span></span><span class="sd">&#39;&#39;&#39;Module containing the TCutility.results.result.Result class.&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">dictfunc</span>
 
 
 <div class="viewcode-block" id="Result">
@@ -268,6 +269,17 @@
 <span class="k">class</span> <span class="nc">Result</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary. </span>
 <span class="sd">    The class works case-insensitively, but will retain the case of the key when it was first set.&#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># if we are casting an object to a Result object</span>
+        <span class="c1"># we will copy all data to this one and all dictionaries will be turned into Result object</span>
+        <span class="c1"># turn every value into a Result object if possible</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Result</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;Calling of a dictionary subclass should not be possible, instead we raise an error with information about the key and method that were attempted to be called.&#39;&#39;&#39;</span>
@@ -431,6 +443,19 @@
 
         <span class="n">clean_dict</span> <span class="o">=</span> <span class="n">dictfunc</span><span class="o">.</span><span class="n">list_to_dict</span><span class="p">(</span><span class="n">dictfunc</span><span class="o">.</span><span class="n">dict_to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">plams</span><span class="o">.</span><span class="n">Settings</span><span class="p">(</span><span class="n">clean_dict</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Result.copy">
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.copy">[docs]</a>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">copy</span>
+
+        <span class="c1"># cast this object to a list of keys and values</span>
+        <span class="n">lsts</span> <span class="o">=</span> <span class="n">dictfunc</span><span class="o">.</span><span class="n">dict_to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># copy everthing in the lists</span>
+        <span class="n">lsts</span> <span class="o">=</span> <span class="p">[[</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">lsts</span><span class="p">]</span>
+        <span class="c1"># and return a new result object</span>
+        <span class="k">return</span> <span class="n">Result</span><span class="p">(</span><span class="n">dictfunc</span><span class="o">.</span><span class="n">list_to_dict</span><span class="p">(</span><span class="n">lsts</span><span class="p">))</span></div>
 </div>
 
 

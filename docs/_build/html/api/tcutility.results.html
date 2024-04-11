@@ -698,12 +698,12 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.dftb.get_calc_settings">
 <span class="sig-name descname"><span class="pre">get_calc_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/dftb.html#get_calc_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.dftb.get_calc_settings" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Function to read useful calculation settings from kf reader</p>
+<dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
 </dd>
 </dl>
-<p>Function to read useful calculation settings from kf reader</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1004,7 +1004,7 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <p>Module containing the TCutility.results.result.Result class.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tcutility.results.result.Result">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary.
 The class works case-insensitively, but will retain the case of the key when it was first set.</p>
@@ -1050,6 +1050,11 @@ E.g. res.properties.energy.bond can be gotten by calling res.get_multi_key(“pr
 <span class="sig-name descname"><span class="pre">as_plams_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result.as_plams_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result.as_plams_settings" title="Link to this definition">#</a></dt>
 <dd><p>Returns this Result object as a plams.Settings object.</p>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.results.result.Result.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">shallow</span> <span class="pre">copy</span> <span class="pre">of</span> <span class="pre">D</span></span></span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result.copy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1186,6 +1191,7 @@ This information is used in further analysis programs.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result.prune"><code class="docutils literal notranslate"><span class="pre">Result.prune()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result.get_multi_key"><code class="docutils literal notranslate"><span class="pre">Result.get_multi_key()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result.as_plams_settings"><code class="docutils literal notranslate"><span class="pre">Result.as_plams_settings()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result.copy"><code class="docutils literal notranslate"><span class="pre">Result.copy()</span></code></a></li>
 </ul>
 </li>
 </ul>
