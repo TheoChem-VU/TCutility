@@ -56,24 +56,33 @@ def get_properties(info: Result) -> Result:
     for i in range(1, number_of_properties + 1):
         subtypes.append(reader_dftb.read("Properties", f"Subtype({i})").strip())
         types.append(reader_dftb.read("Properties", f"Type({i})").strip())
-        values.append(reader_dftb.read("Properties", f"Value({i})"))
+        if types[-1] == 'Energy':
+            values.append(reader_dftb.read("Properties", f"Value({i})") * constants.HA2KCALMOL)
+        else:
+            values.append(reader_dftb.read("Properties", f"Value({i})"))
 
     # then simply add the properties to ret
     for typ, subtyp, value in zip(types, subtypes, values):
         ret[typ.replace(" ", "_")][subtyp] = value
 
     if ret.energy['DFTB Final Energy']:
-        ret.energy.bond = ret.energy['DFTB Final Energy']
+        ret.energy.bond = ret.energy['DFTB Final Energy'] * constants.HA2KCALMOL
 
     # we also read vibrations
-    ret.vibrations.number_of_modes = reader_dftb.read("Vibrations", "nNormalModes")
-    ret.vibrations.frequencies = ensure_list(reader_dftb.read("Vibrations", "Frequencies[cm-1]"))
-    if ("Vibrations", "Intensities[km/mol]") in reader_dftb:
-        ret.vibrations.intensities = ensure_list(reader_dftb.read("Vibrations", "Intensities[km/mol]"))
-    ret.vibrations.number_of_imag_modes = len([freq for freq in ret.vibrations.frequencies if freq < 0])
-    ret.vibrations.character = "minimum" if ret.vibrations.number_of_imag_modes == 0 else "transitionstate"
-    ret.vibrations.modes = []
-    for i in range(ret.vibrations.number_of_modes):
-        ret.vibrations.modes.append(reader_dftb.read("Vibrations", f"NoWeightNormalMode({i+1})"))
+    if ('Vibrations', 'nNormalModes') in reader_dftb:
+        ret.vibrations.number_of_modes = reader_dftb.read("Vibrations", "nNormalModes")
+        ret.vibrations.frequencies = ensure_list(reader_dftb.read("Vibrations", "Frequencies[cm-1]"))
+        if ("Vibrations", "Intensities[km/mol]") in reader_dftb:
+            ret.vibrations.intensities = ensure_list(reader_dftb.read("Vibrations", "Intensities[km/mol]"))
+        ret.vibrations.number_of_imag_modes = len([freq for freq in ret.vibrations.frequencies if freq < 0])
+        ret.vibrations.character = "minimum" if ret.vibrations.number_of_imag_modes == 0 else "transitionstate"
+        ret.vibrations.modes = []
+        for i in range(ret.vibrations.number_of_modes):
+            ret.vibrations.modes.append(reader_dftb.read("Vibrations", f"NoWeightNormalMode({i+1})"))
+
+    if ("Thermodynamics", "Gibbs free Energy") in reader_adf:
+        ret.energy.gibbs = reader_adf.read("Thermodynamics", "Gibbs free Energy") * constants.HA2KCALMOL
+        ret.energy.enthalpy = reader_adf.read("Thermodynamics", "Enthalpy") * constants.HA2KCALMOL
+        ret.energy.nuclear_internal = reader_adf.read("Thermodynamics", "Internal Energy total") * constants.HA2KCALMOL
 
     return ret
