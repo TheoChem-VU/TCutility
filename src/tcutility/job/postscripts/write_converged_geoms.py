@@ -24,3 +24,9 @@ if __name__ == '__main__':
 			amv.write('\n')
 
 			molecule.save(mol, f'converged_mols/{i}.xyz', comment=f'E = {energy * constants.HA2KCALMOL:.6f} kcal/mol')
+
+			if energy == max(energies):
+				molecule.save(mol, 'converged_mols/highest_energy.xyz', comment=f'E = {energy * constants.HA2KCALMOL:.6f} kcal/mol')
+
+			if energy == min(energies):
+				molecule.save(mol, 'converged_mols/lowest_energy.xyz', comment=f'E = {energy * constants.HA2KCALMOL:.6f} kcal/mol')
