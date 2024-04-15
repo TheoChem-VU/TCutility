@@ -198,6 +198,13 @@ class ORCAJob(Job):
 
         return True
 
+    @property
+    def output_mol_path(self):
+        '''
+        The default file path for output molecules when running ADF calculations. It will not be created for singlepoint calculations.
+        '''
+        return j(self.workdir, 'OPT.xyz')
+
 
 
 
