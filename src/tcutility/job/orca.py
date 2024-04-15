@@ -3,6 +3,7 @@ from tcutility.job.generic import Job
 import subprocess as sp
 import os
 from typing import List, Union
+from scm import plams
 
 
 j = os.path.join
@@ -115,11 +116,28 @@ class ORCAJob(Job):
 
         return mem, ntasks
 
+    def molecule(self, mol: Union[str, plams.Molecule, plams.Atom, list[plams.Atom]], natoms: int = None):
+        '''
+        Add a molecule to this calculation in various formats.
+
+        Args:
+            mol: the molecule to read, can be a path (str). If the path exists already we read it. If it does not exist yet, it will be read in later. mol can also be a plams.Molecule object or a single or a list of plams.Atom objects.
+            natoms: If the molecule is supplied as a path you should also give the number of atoms.
+        '''
+        super().molecule(mol)
+        self.natoms = natoms
+
     def get_input(self):
         # set the correct memory usage and processes
         mem, ntasks = self.get_memory_usage()
         if ntasks and mem:
-            natoms = len(self._molecule) - len(self._ghosts)
+            if self._molecule is not None:
+                natoms = len(self._molecule) - len(self._ghosts)
+            else:
+                if not hasattr(self, 'natoms') or self.natoms is None:
+                    raise ValueError(f'You set the molecule as a path and did not supply the number of atoms.')
+                natoms = self.natoms
+
             ntasks = min(ntasks, (natoms - 1) * 3)
             self.settings.PAL.nprocs = ntasks
             self.settings.maxcore = int(mem / ntasks * 0.75)
