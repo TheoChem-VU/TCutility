@@ -492,6 +492,7 @@ class ADFFragmentJob(ADFJob):
 class DensfJob(Job):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.settings = results.Result()
         self.rundir = 'tmp'
         self.name = 'densf'
         self.gridsize()
