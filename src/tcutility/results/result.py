@@ -1,5 +1,6 @@
 '''Module containing the TCutility.results.result.Result class.'''
 import dictfunc
+import sys
 
 
 class Result(dict):
@@ -98,6 +99,21 @@ class Result(dict):
     def __bool__(self):
         '''Make sure that keys starting and ending in "__" are skipped'''
         return len([key for key in self.keys() if not (key.startswith('__') and key.endswith('__'))]) > 0
+
+    def __sizeof__(self):
+        '''
+        Magic method used by `sys.getsizeof <https://docs.python.org/3/library/sys.html#sys.getsizeof>`_ to determine the memory footprint of this object.
+        '''
+        s = super().__sizeof__()
+        for key in self.multi_keys():
+            s += sys.getsizeof(self.get_multi_key(key))
+        return s
+
+    def getsizeof(self):
+        '''
+        Return the size of this object in bytes.
+        '''
+        return self.__sizeof__()
 
     def get_parent_tree(self):
         '''Method to get the path from this object to the parent object. The result is presented in a formatted string'''
