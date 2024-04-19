@@ -1,5 +1,5 @@
 from tcutility.results import cache, Result
-from tcutility import ensure_list
+from tcutility import ensure_list, constants
 
 
 def get_calc_settings(info: Result) -> Result:
