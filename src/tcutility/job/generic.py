@@ -200,6 +200,9 @@ class Job:
         Set a dependency between this job and otherjob. 
         This means that this job will run after the other job is finished running succesfully.
         '''
+        if otherjob.can_skip:
+            return
+            
         if hasattr(otherjob, 'slurm_job_id'):
             self.sbatch(dependency=f'afterok:{otherjob.slurm_job_id}')
             self.sbatch(kill_on_invalid_dep='Yes')
