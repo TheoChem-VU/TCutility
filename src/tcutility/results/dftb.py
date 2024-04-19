@@ -80,9 +80,9 @@ def get_properties(info: Result) -> Result:
         for i in range(ret.vibrations.number_of_modes):
             ret.vibrations.modes.append(reader_dftb.read("Vibrations", f"NoWeightNormalMode({i+1})"))
 
-    if ("Thermodynamics", "Gibbs free Energy") in reader_adf:
-        ret.energy.gibbs = reader_adf.read("Thermodynamics", "Gibbs free Energy") * constants.HA2KCALMOL
-        ret.energy.enthalpy = reader_adf.read("Thermodynamics", "Enthalpy") * constants.HA2KCALMOL
-        ret.energy.nuclear_internal = reader_adf.read("Thermodynamics", "Internal Energy total") * constants.HA2KCALMOL
+    if ("Thermodynamics", "Gibbs free Energy") in reader_dftb:
+        ret.energy.gibbs = reader_dftb.read("Thermodynamics", "Gibbs free Energy") * constants.HA2KCALMOL
+        ret.energy.enthalpy = reader_dftb.read("Thermodynamics", "Enthalpy") * constants.HA2KCALMOL
+        ret.energy.nuclear_internal = reader_dftb.read("Thermodynamics", "Internal Energy total") * constants.HA2KCALMOL
 
     return ret
