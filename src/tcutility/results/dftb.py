@@ -66,7 +66,7 @@ def get_properties(info: Result) -> Result:
         ret[typ.replace(" ", "_")][subtyp] = value
 
     if ret.energy['DFTB Final Energy']:
-        ret.energy.bond = ret.energy['DFTB Final Energy'] * constants.HA2KCALMOL
+        ret.energy.bond = ret.energy['DFTB Final Energy']
 
     # we also read vibrations
     if ('Vibrations', 'nNormalModes') in reader_dftb:
