@@ -52,19 +52,19 @@ class ORCAJob(Job):
 
     def method(self, method):
         spell_check.check(method, ['MP2', 'CCSD', 'CCSD(T)', 'CCSDT'])
-        self.settings.main.append(method)
+        self.settings.main.add(method)
         self._method = method
 
     def reference(self, ref):
         spell_check.check(ref, ['UNO', 'UHF', 'UKS', 'RHF', 'RKS', 'ROHF', 'ROKS'])
-        self.settings.main.append(ref)
+        self.settings.main.add(ref)
         self._method = ref
 
     def QRO(self, enable=True):
         self.settings.MDCI.UseQROs = enable
 
     def basis_set(self, value):
-        self.settings.main.append(value)
+        self.settings.main.add(value)
 
     def single_point(self):
         self.__remove_task()
