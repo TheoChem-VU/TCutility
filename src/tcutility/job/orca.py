@@ -48,7 +48,7 @@ class ORCAJob(Job):
                 self.settings.main.discard(lower_main[v.casefold()])
 
     def __remove_task(self):
-        [self.remove_main(task) for task in ['sp', 'opt', 'tsopt', 'neb-ts']]
+        [self.remove_main(task) for task in ['sp', 'opt', 'optts', 'neb-ts']]
 
     def method(self, method):
         spell_check.check(method, ['MP2', 'CCSD', 'CCSD(T)', 'CCSDT'])
