@@ -82,7 +82,7 @@ def sbatch(runfile: str, **options: dict) -> results.Result:
     for key, val in options.items():
         key = key.replace('_', '-')
 
-        if val == True:
+        if val is True:
             if len(key) > 1:
                 cmd += f'--{key} '
             else:

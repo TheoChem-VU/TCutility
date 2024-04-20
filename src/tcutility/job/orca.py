@@ -135,7 +135,7 @@ class ORCAJob(Job):
                 natoms = len(self._molecule) - len(self._ghosts)
             else:
                 if not hasattr(self, 'natoms') or self.natoms is None:
-                    raise ValueError(f'You set the molecule as a path and did not supply the number of atoms.')
+                    raise ValueError('You set the molecule as a path and did not supply the number of atoms.')
                 natoms = self.natoms
 
             ntasks = min(ntasks, (natoms - 1) * 3)
