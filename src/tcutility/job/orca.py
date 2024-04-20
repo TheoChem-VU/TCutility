@@ -56,7 +56,7 @@ class ORCAJob(Job):
         self._method = method
 
     def reference(self, ref):
-        spell_check.check(ref, ['UHF', 'UKS', 'RHF', 'RKS', 'ROHF', 'ROKS'])
+        spell_check.check(ref, ['UNO', 'UHF', 'UKS', 'RHF', 'RKS', 'ROHF', 'ROKS'])
         self.settings.main.append(ref)
         self._method = ref
 
