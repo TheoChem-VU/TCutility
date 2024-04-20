@@ -549,12 +549,3 @@ def get_properties(info: Result) -> Result:
 
     return ret
 
-
-if __name__ == "__main__":
-    # ret = get_info("/Users/yumanhordijk/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/RadicalAdditionBenchmark/data/abinitio/P_C2H2_NH2/OPT_pVTZ")
-    # print(ret.molecule)
-
-    ret = get_info('/Users/yumanhordijk/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/RadicalAdditionBenchmark2/data/SP_CCSDpT_augCCpVQZ')
-    print(ret.input)
-    prop = get_properties(ret)
-    # print(ret)
