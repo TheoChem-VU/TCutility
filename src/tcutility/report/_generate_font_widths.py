@@ -6,6 +6,7 @@ fonts = [
 	'arial',
 	'times new roman',
 	'helvetica',
+	'garamond',
 ]
 
 characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ.,/?<>{}[]+-_=^:; '
