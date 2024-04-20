@@ -281,10 +281,10 @@ def get_calculation_status(info: Result) -> Result:
         'R': 'RUNNING'
     }.get(state, 'UNKNOWN')
 
-    res.fatal = False
-    res.name = state_name
-    res.code = state
-    res.reasons = []
+    ret.fatal = False
+    ret.name = state_name
+    ret.code = state
+    ret.reasons = []
 
     return ret
 
