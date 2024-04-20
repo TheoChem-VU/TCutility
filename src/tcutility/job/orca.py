@@ -166,7 +166,7 @@ class ORCAJob(Job):
         ret += '\n'
 
         if self._molecule_path:
-            ret += f'* xyz {self._charge} {self._multiplicity} {os.path.abspath(self._molecule_path)}\n'
+            ret += f'* xyzfile {self._charge} {self._multiplicity} {os.path.abspath(self._molecule_path)}\n'
 
         else:
             ret += f'* xyz {self._charge} {self._multiplicity}\n'
