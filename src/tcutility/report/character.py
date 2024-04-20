@@ -1,5 +1,5 @@
 import os
-from tcutility import cache
+from tcutility import cache, log
 
 
 def _load_data() -> dict:
@@ -57,6 +57,9 @@ def get_pixel_width(character: str, font: str = 'calibri', font_size: float = 11
 		font: the font family that is used.
 		font_size: the font-size to get the pixel width at.
 	'''
+	if font not in widths.keys():
+		raise ValueError(f'Could not find font {font}.')
+
 	return widths[font][character] * font_size
 
 
@@ -75,6 +78,10 @@ def text_width(text: str, font: str = 'calibri', font_size: float = 11, mode: st
 		The width of the text for a certain font and font size.
 		If mode is 'excel' we pad it with 8 pixels and then divide by 7.6 (i.e. standard excel char width).
 	'''
+	if font not in widths.keys():
+		log.error(f'Could not find font {font}. Defaulting to Calibri.')
+		font = 'calibri'
+
 	pixels = sum(get_pixel_width(char, font, font_size) for char in str(text))
 	if mode == 'excel':
 		return (pixels + 8)/7.6
@@ -85,4 +92,4 @@ def text_width(text: str, font: str = 'calibri', font_size: float = 11, mode: st
 
 
 if __name__ == '__main__':
-	print(text_width('this is a test text'))
+	print(text_width('this is a test text', font='test'))
