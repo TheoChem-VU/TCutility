@@ -196,9 +196,12 @@ class ORCAJob(Job):
             inp.write(self.get_input())
 
         with open(self.runfile_path, 'w+') as runf:
-            runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
+            runf.write('#!/bin/sh\n\n')
             runf.write('\n'.join(self._preambles) + '\n\n')
             
+            # when using temporary directories for SLURM we need to do some extra setup
+            # this is mainly moving the calculation directory to the TMPDIR location
+            # and after the jobs is finished we copy back the results and remove the TMPDIR
             if self.use_tmpdir and slurm.has_slurm():
                 runf.write('export TMPDIR="$TMPDIR/$SLURM_JOB_ID"\n')
                 runf.write('mkdir -p $TMPDIR\n')
@@ -209,6 +212,7 @@ class ORCAJob(Job):
 
                 runf.write(f'cp $TMPDIR/* {self.workdir}\n')
                 runf.write('rm -rf $TMPDIR\n')
+                
             else:
                 runf.write(f'{self.orca_path} {self.inputfile_path}.in\n')
 
