@@ -184,8 +184,8 @@ class ORCAJob(Job):
             if self.orca_path is None and not self.test_mode:
                 self.orca_path = sp.check_output(['which', 'orca']).decode().strip()
         except sp.CalledProcessError:
-            log.error(f'Could not find the orca path. Set the {self.__class__.__name__}.orca_path attribute to add it.')
-            return
+            log.warn(f'Could not find the orca path. Set the {self.__class__.__name__}.orca_path attribute to add it. Now setting it to "$(which orca)", make sure the orca executable is findable.')
+            self.orca_path = '$(which orca)'
 
         if not self._molecule and not self._molecule_path:
             log.error(f'You did not supply a molecule for this job. Call the {self.__class__.__name__}.molecule method to add one.')
