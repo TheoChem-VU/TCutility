@@ -380,7 +380,7 @@ def get_pes(calc_dir: str) -> Result:
     reader_ams = cache.get(files["ams.rkf"])
 
     # check if we have done a PESScan
-    if not ('PESScan', 'nPoints') in reader_ams:
+    if ('PESScan', 'nPoints') not in reader_ams:
         return
 
     ret = Result()
