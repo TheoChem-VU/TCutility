@@ -22,7 +22,14 @@ def get(functional_name: str) -> results.Result:
     .. seealso::
         :func:`get_available_functionals` for an overview of the information returned.
     '''
-    return functionals.get(functional_name)
+    info = functionals.get(functional_name, None)
+    if info is None:
+        info = functionals.get(functional_name_from_path_safe_name(functional_name), None)
+
+    if info is None:
+        raise KeyError(f'Could not find info for functional {functional_name}.')
+
+    return info
 
 
 def functional_name_from_path_safe_name(path_safe_name: str) -> results.Result:
@@ -194,4 +201,4 @@ functionals = get_available_functionals()
 
 
 if __name__ == '__main__':
-    log.log(get('OLYP'))
+    log.log(get('OLYP_D3BJ'))
