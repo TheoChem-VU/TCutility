@@ -1,5 +1,5 @@
 from tcutility.results import Result
-from tcutility import constants
+from tcutility import constants, slurm
 import os
 from scm import plams
 import numpy as np
@@ -147,6 +147,7 @@ def get_input(info: Result) -> Result:
     if coordinates in ["xyz", "int"]:
         ret.system.molecule = plams.Molecule()
         for line in system_lines:
+            line = line.replace(':', '')
             ret.system.molecule.add_atom(plams.Atom(symbol=line.split()[0], coords=[float(x) for x in line.split()[1:4]]))
 
     info.task = "SinglePoint"
@@ -247,12 +248,14 @@ def get_calculation_status(info: Result) -> Result:
     ret.code = None
     ret.reasons = []
 
+    # if we do not have an output file the calculation failed
     if "out" not in info.files.out:
         ret.reasons.append("Calculation status unknown")
         ret.name = "UNKNOWN"
         ret.code = "U"
         return ret
 
+    # try to read if the calculation succeeded
     with open(info.files.out) as out:
         lines = out.readlines()
         if any(["ORCA TERMINATED NORMALLY" in line for line in lines]):
@@ -261,8 +264,28 @@ def get_calculation_status(info: Result) -> Result:
             ret.code = "S"
             return ret
 
+    # if it didnt we default to failed
     ret.name = "FAILED"
     ret.code = "F"
+
+    # otherwise we check if the job is being managed by slurm
+    if not slurm.workdir_info(os.path.abspath(info.files.root)):
+        return ret
+
+    # get the statuscode from the workdir
+    state = slurm.workdir_info(os.path.abspath(info.files.root)).statuscode
+    state_name = {
+        'CG': 'COMPLETING',
+        'CF': 'CONFIGURING',
+        'PD': 'PENDING',
+        'R': 'RUNNING'
+    }.get(state, 'UNKNOWN')
+
+    ret.fatal = False
+    ret.name = state_name
+    ret.code = state
+    ret.reasons = []
+
     return ret
 
 
@@ -526,7 +549,3 @@ def get_properties(info: Result) -> Result:
 
     return ret
 
-
-if __name__ == "__main__":
-    ret = get_info("/Users/yumanhordijk/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/RadicalAdditionBenchmark/data/abinitio/P_C2H2_NH2/OPT_pVTZ")
-    print(ret.molecule)
