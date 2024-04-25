@@ -61,14 +61,14 @@ def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str
                 partret = partret.replace(num, "₀₁₂₃₄₅₆₇₈₉"[int(num)])
 
         # signs should be superscript
-        for sign in "+-":
+        for sign in "+-•":
             # negative charges should be denoted by em dash and not a normal dash
             if mode in ["latex", "pyplot"]:
                 partret = partret.replace(sign, f'^{sign.replace("-", "—")}')
             if mode == "html":
                 partret = partret.replace(sign, f'<sup>{sign.replace("-", "—")}</sup>')
             if mode == "unicode":
-                partret = partret.replace(sign, "⁺⁻"["+-".index(sign)])
+                partret = partret.replace(sign, "⁺⁻•"["+-•".index(sign)])
         # replace the part in the original string
         molstring = molstring.replace(part, partret)
 
