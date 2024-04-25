@@ -281,7 +281,14 @@
 <span class="sd">    .. seealso::</span>
 <span class="sd">        :func:`get_available_functionals` for an overview of the information returned.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">functionals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">functional_name</span><span class="p">)</span></div>
+    <span class="n">info</span> <span class="o">=</span> <span class="n">functionals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">functional_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">functionals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">functional_name_from_path_safe_name</span><span class="p">(</span><span class="n">functional_name</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find info for functional </span><span class="si">{</span><span class="n">functional_name</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">info</span></div>
 
 
 
@@ -460,7 +467,7 @@
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;OLYP&#39;</span><span class="p">))</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;OLYP_D3BJ&#39;</span><span class="p">))</span>
 </pre></div>
 
                 </article>
@@ -513,7 +520,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

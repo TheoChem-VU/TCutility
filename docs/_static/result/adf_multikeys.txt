@@ -43,6 +43,7 @@ history.rmsgrad
 history.maxstep
 history.rmsstep
 history.molecule
+pes
 adf.task
 adf.relativistic
 adf.relativistic_type

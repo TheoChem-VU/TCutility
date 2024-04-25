@@ -323,14 +323,14 @@
                 <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="s2">&quot;₀₁₂₃₄₅₆₇₈₉&quot;</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)])</span>
 
         <span class="c1"># signs should be superscript</span>
-        <span class="k">for</span> <span class="n">sign</span> <span class="ow">in</span> <span class="s2">&quot;+-&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">sign</span> <span class="ow">in</span> <span class="s2">&quot;+-•&quot;</span><span class="p">:</span>
             <span class="c1"># negative charges should be denoted by em dash and not a normal dash</span>
             <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;latex&quot;</span><span class="p">,</span> <span class="s2">&quot;pyplot&quot;</span><span class="p">]:</span>
                 <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sign</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;^</span><span class="si">{</span><span class="n">sign</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;—&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;html&quot;</span><span class="p">:</span>
                 <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sign</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;&lt;sup&gt;</span><span class="si">{</span><span class="n">sign</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;—&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&lt;/sup&gt;&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;unicode&quot;</span><span class="p">:</span>
-                <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sign</span><span class="p">,</span> <span class="s2">&quot;⁺⁻&quot;</span><span class="p">[</span><span class="s2">&quot;+-&quot;</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">sign</span><span class="p">)])</span>
+                <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sign</span><span class="p">,</span> <span class="s2">&quot;⁺⁻•&quot;</span><span class="p">[</span><span class="s2">&quot;+-•&quot;</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">sign</span><span class="p">)])</span>
         <span class="c1"># replace the part in the original string</span>
         <span class="n">molstring</span> <span class="o">=</span> <span class="n">molstring</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">partret</span><span class="p">)</span>
 
@@ -397,7 +397,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>
