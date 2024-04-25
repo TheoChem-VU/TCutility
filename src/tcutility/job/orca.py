@@ -51,7 +51,7 @@ class ORCAJob(Job):
         [self.remove_main(task) for task in ['sp', 'opt', 'optts', 'neb-ts']]
 
     def method(self, method):
-        spell_check.check(method, ['MP2', 'CCSD', 'CCSD(T)', 'CCSDT'])
+        spell_check.check(method, ['HF', 'MP2', 'CCSD', 'CCSD(T)', 'CCSDT'])
         self.settings.main.add(method)
         self._method = method
 
