@@ -1292,7 +1292,7 @@
     "name_latex": "B97-D",
     "name_html": "B97-D",
     "path_safe_name": "B97-D",
-    "use_libxc": false,
+    "use_libxc": true,
     "includes_disp": true,
     "available_in_adf": true,
     "available_in_band": false,
@@ -1302,7 +1302,7 @@
     "dispersion_name": "DEFAULT",
     "adf_settings": {
         "XC": {
-            "GGA": "B97-D"
+            "LibXC": "B97-D"
         }
     }
 }
@@ -1314,7 +1314,7 @@
     "name_html": "B97-D-D3",
     "path_safe_name": "B97-D-D3",
     "disp_params": "GRIMME3 PAR1=1.0000 PAR2=0.892 PAR3=0.909",
-    "use_libxc": false,
+    "use_libxc": true,
     "includes_disp": false,
     "available_in_adf": true,
     "available_in_band": false,
@@ -1325,7 +1325,49 @@
     "adf_settings": {
         "XC": {
             "Dispersion": "GRIMME3 PAR1=1.0000 PAR2=0.892 PAR3=0.909",
-            "GGA": "B97-D"
+            "LibXC": "B97-D"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "B97-GGA1",
+    "name_latex": "B97-GGA1",
+    "name_html": "B97-GGA1",
+    "path_safe_name": "B97-GGA1",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B97-GGA1",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "B97-GGA1"
+        }
+    }
+}
+
+{
+    "category": "GGA",
+    "name": "B97-K",
+    "name_latex": "B97-K",
+    "name_html": "B97-K",
+    "path_safe_name": "B97-K",
+    "use_libxc": true,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "B97-K",
+    "dispersion": null,
+    "dispersion_name": null,
+    "adf_settings": {
+        "XC": {
+            "LibXC": "B97-K"
         }
     }
 }
@@ -3866,6 +3908,7 @@
     "name_latex": "PBE0-DH-D3(BJ)",
     "name_html": "PBE0-DH-D3(BJ)",
     "path_safe_name": "PBE0-DH-D3BJ",
+    "disp_params": "GRIMME3 BJDAMP PAR1=0.880 PAR2=0.000 PAR3=0.165 PAR4=6.385",
     "use_libxc": false,
     "includes_disp": false,
     "available_in_adf": true,
@@ -3874,10 +3917,9 @@
     "name_no_disp": "PBE0-DH",
     "dispersion": "D3(BJ)",
     "dispersion_name": "GRIMME3 BJDAMP",
-    "disp_params": {},
     "adf_settings": {
         "XC": {
-            "Dispersion": "GRIMME3 BJDAMP",
+            "Dispersion": "GRIMME3 BJDAMP PAR1=0.880 PAR2=0.000 PAR3=0.165 PAR4=6.385",
             "DoubleHybrid": "PBE0-DH"
         }
     }
@@ -4073,6 +4115,7 @@
     "name_latex": "PBE0-DH-D4",
     "name_html": "PBE0-DH-D4",
     "path_safe_name": "PBE0-DH-D4",
+    "disp_params": "GRIMME4 s6=0.875 s8=0.9681 a1=0.4759 a2=5.0862",
     "use_libxc": false,
     "includes_disp": false,
     "available_in_adf": true,
@@ -4081,10 +4124,9 @@
     "name_no_disp": "PBE0-DH",
     "dispersion": "D4",
     "dispersion_name": "GRIMME4",
-    "disp_params": {},
     "adf_settings": {
         "XC": {
-            "Dispersion": "GRIMME4",
+            "Dispersion": "GRIMME4 s6=0.875 s8=0.9681 a1=0.4759 a2=5.0862",
             "DoubleHybrid": "PBE0-DH"
         }
     }
