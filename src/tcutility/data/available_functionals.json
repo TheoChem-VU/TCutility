@@ -2746,7 +2746,7 @@
     "name_html": "rev-DOD-BLYP",
     "path_safe_name": "rev-DOD-BLYP",
     "use_libxc": false,
-    "includes_disp": false,
+    "includes_disp": true,
     "available_in_adf": true,
     "available_in_band": false,
     "available_in_orca": false,
@@ -2755,6 +2755,29 @@
     "dispersion_name": null,
     "adf_settings": {
         "XC": {
+            "DoubleHybrid": "rev-DOD-BLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DOD-BLYP-D3(BJ)",
+    "name_latex": "rev-DOD-BLYP-D3(BJ)",
+    "name_html": "rev-DOD-BLYP-D3(BJ)",
+    "path_safe_name": "rev-DOD-BLYP-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DOD-BLYP",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
             "DoubleHybrid": "rev-DOD-BLYP"
         }
     }
@@ -2788,7 +2811,7 @@
     "name_html": "rev-DOD-PBE",
     "path_safe_name": "rev-DOD-PBE",
     "use_libxc": false,
-    "includes_disp": false,
+    "includes_disp": true,
     "available_in_adf": true,
     "available_in_band": false,
     "available_in_orca": false,
@@ -2797,6 +2820,29 @@
     "dispersion_name": null,
     "adf_settings": {
         "XC": {
+            "DoubleHybrid": "rev-DOD-PBE"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DOD-PBE-D3(BJ)",
+    "name_latex": "rev-DOD-PBE-D3(BJ)",
+    "name_html": "rev-DOD-PBE-D3(BJ)",
+    "path_safe_name": "rev-DOD-PBE-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DOD-PBE",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
             "DoubleHybrid": "rev-DOD-PBE"
         }
     }
@@ -2830,7 +2876,7 @@
     "name_html": "rev-DOD-PBEP86",
     "path_safe_name": "rev-DOD-PBEP86",
     "use_libxc": false,
-    "includes_disp": false,
+    "includes_disp": true,
     "available_in_adf": true,
     "available_in_band": false,
     "available_in_orca": false,
@@ -2839,6 +2885,29 @@
     "dispersion_name": null,
     "adf_settings": {
         "XC": {
+            "DoubleHybrid": "rev-DOD-PBEP86"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DOD-PBEP86-D3(BJ)",
+    "name_latex": "rev-DOD-PBEP86-D3(BJ)",
+    "name_html": "rev-DOD-PBEP86-D3(BJ)",
+    "path_safe_name": "rev-DOD-PBEP86-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DOD-PBEP86",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
             "DoubleHybrid": "rev-DOD-PBEP86"
         }
     }
@@ -2903,6 +2972,52 @@
     "adf_settings": {
         "XC": {
             "DoubleHybrid": "DOD-SCAN"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "DOD-SCAN-D3(BJ)",
+    "name_latex": "DOD-SCAN-D3(BJ)",
+    "name_html": "DOD-SCAN-D3(BJ)",
+    "path_safe_name": "DOD-SCAN-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "DOD-SCAN",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "DoubleHybrid": "DOD-SCAN"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "rev-DOD-SCAN-D3(BJ)",
+    "name_latex": "rev-DOD-SCAN-D3(BJ)",
+    "name_html": "rev-DOD-SCAN-D3(BJ)",
+    "path_safe_name": "rev-DOD-SCAN-D3BJ",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "rev-DOD-SCAN",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "disp_params": {},
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP",
+            "DoubleHybrid": "rev-DOD-SCAN"
         }
     }
 }
