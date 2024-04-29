@@ -1,5 +1,7 @@
 import time
 import functools
+import json
+import os
 
 
 _timed_func_cache = {}
@@ -72,7 +74,91 @@ def cache(func):
     return inner_decorator
 
 
-if __name__ == '__main__':
-    @timed_cache(1)
-    def test_timer(a, b):
-        return a * b
+def _get_from_cache_file(file, func, args, kwargs):
+    with open(file) as cfile:
+        data = json.loads(cfile.read())
+
+    for datum in data:
+        if datum['func'] != func.__qualname__:
+            continue
+
+        if datum['args'] != list(args):
+            continue
+
+        if datum['kwargs'] != kwargs:
+            continue
+
+        return datum['value']
+
+
+def _write_to_cache_file(file, func, args, kwargs, value):
+    with open(file) as cfile:
+        data = json.loads(cfile.read())
+
+    new = {
+        'func': func.__qualname__,
+        'args': args,
+        'kwargs': kwargs,
+        'value': value
+    }
+    data.append(new)
+
+    # data.setdefault(func.__qualname__, {})
+    # data[func.__qualname__][arguments] = value
+    with open(file, 'w+') as cfile:
+        cfile.write(json.dumps(data, indent=4))
+
+
+def _clear_cache_file(file):
+    with open(file, 'w+') as cfile:
+        cfile.write('[]')
+
+
+def cache_file(file):
+    '''
+    Function decorator that stores results of a function to a file.
+    '''
+    def decorator(func):
+        # make the file if it doesnt exist
+        if not os.path.exists(file):
+            _clear_cache_file(file)
+
+        @functools.wraps(func)
+        def inner_decorator(*args, **kwargs):
+            # we have to create a tuple of the kwargs items to ensure we can hash the arguments
+            # arguments = args, list(kwargs.items())
+
+            # check if the arguments were called before
+            cached = _get_from_cache_file(file, func,  args, kwargs)
+            if cached is not None:
+                return cached
+
+            # if it is not present we add it to the cache
+            res = func(*args, **kwargs)
+            _write_to_cache_file(file, func,  args, kwargs, res)
+            return res
+
+        return inner_decorator
+    return decorator
+
+
+
+
+# if __name__ == '__main__':
+    # @timed_cache(1)
+    # def test_timer(a, b):
+    #     return a * b
+
+    # _clear_cache_file('test.json')
+
+    @cache_file('test.json')
+    def test(a, b, c):
+        return a + b * c
+
+    test(1, 2, 3)
+    test(1, 2, 3)
+    test(1, 4, 3)
+    test(1, 2, 3)
+    test(1, 4, 3)
+
+    # _write_to_cache_file('test.json', test, (1, 2, 3), {}, test(1, 2, 3))
