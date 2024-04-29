@@ -1,7 +1,6 @@
 from tcutility.job import ADFJob
 from tcutility.data import functionals
-from tcutility import results, log
-from yutility import pathfunc
+from tcutility import results, log, pathfunc
 
 # run the calculations:
 available_functionals = functionals.get_available_functionals()
