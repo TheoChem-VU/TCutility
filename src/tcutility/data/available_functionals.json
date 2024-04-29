@@ -2345,29 +2345,6 @@
 
 {
     "category": "Hybrid",
-    "name": "BMK-D3(BJ)",
-    "name_latex": "BMK-D3(BJ)",
-    "name_html": "BMK-D3(BJ)",
-    "path_safe_name": "BMK-D3BJ",
-    "disp_params": "GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.1940 PAR3=2.0860 PAR4=5.9197",
-    "use_libxc": true,
-    "includes_disp": false,
-    "available_in_adf": true,
-    "available_in_band": false,
-    "available_in_orca": false,
-    "name_no_disp": "BMK",
-    "dispersion": "D3(BJ)",
-    "dispersion_name": "GRIMME3 BJDAMP",
-    "adf_settings": {
-        "XC": {
-            "Dispersion": "GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.1940 PAR3=2.0860 PAR4=5.9197",
-            "LibXC": "HYB_MGGA_X_BMK GGA_C_BMK"
-        }
-    }
-}
-
-{
-    "category": "Hybrid",
     "name": "B1B95",
     "name_latex": "B1B95",
     "name_html": "B1B95",
