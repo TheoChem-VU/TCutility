@@ -1049,29 +1049,6 @@
 
 {
     "category": "GGA",
-    "name": "OPBE-D3",
-    "name_latex": "OPBE-D3",
-    "name_html": "OPBE-D3",
-    "path_safe_name": "OPBE-D3",
-    "disp_params": "GRIMME3 PAR1=1.0000 PAR2=0.837 PAR3=2.055",
-    "use_libxc": false,
-    "includes_disp": false,
-    "available_in_adf": true,
-    "available_in_band": false,
-    "available_in_orca": false,
-    "name_no_disp": "OPBE",
-    "dispersion": "D3",
-    "dispersion_name": "GRIMME3",
-    "adf_settings": {
-        "XC": {
-            "Dispersion": "GRIMME3 PAR1=1.0000 PAR2=0.837 PAR3=2.055",
-            "GGA": "OPBE"
-        }
-    }
-}
-
-{
-    "category": "GGA",
     "name": "OPBE-D3(BJ)",
     "name_latex": "OPBE-D3(BJ)",
     "name_html": "OPBE-D3(BJ)",
@@ -2368,29 +2345,6 @@
 
 {
     "category": "Hybrid",
-    "name": "BMK-D3",
-    "name_latex": "BMK-D3",
-    "name_html": "BMK-D3",
-    "path_safe_name": "BMK-D3",
-    "disp_params": "GRIMME3 PAR1=1.0000 PAR2=1.931 PAR3=2.168",
-    "use_libxc": true,
-    "includes_disp": false,
-    "available_in_adf": true,
-    "available_in_band": false,
-    "available_in_orca": false,
-    "name_no_disp": "BMK",
-    "dispersion": "D3",
-    "dispersion_name": "GRIMME3",
-    "adf_settings": {
-        "XC": {
-            "Dispersion": "GRIMME3 PAR1=1.0000 PAR2=1.931 PAR3=2.168",
-            "LibXC": "HYB_MGGA_X_BMK GGA_C_BMK"
-        }
-    }
-}
-
-{
-    "category": "Hybrid",
     "name": "BMK-D3(BJ)",
     "name_latex": "BMK-D3(BJ)",
     "name_html": "BMK-D3(BJ)",
@@ -3037,29 +2991,6 @@
         "XC": {
             "Dispersion": "GRIMME3 BJDAMP",
             "DoubleHybrid": "DOD-SCAN"
-        }
-    }
-}
-
-{
-    "category": "DoubleHybrid",
-    "name": "rev-DOD-SCAN-D3(BJ)",
-    "name_latex": "rev-DOD-SCAN-D3(BJ)",
-    "name_html": "rev-DOD-SCAN-D3(BJ)",
-    "path_safe_name": "rev-DOD-SCAN-D3BJ",
-    "use_libxc": false,
-    "includes_disp": false,
-    "available_in_adf": true,
-    "available_in_band": false,
-    "available_in_orca": false,
-    "name_no_disp": "rev-DOD-SCAN",
-    "dispersion": "D3(BJ)",
-    "dispersion_name": "GRIMME3 BJDAMP",
-    "disp_params": {},
-    "adf_settings": {
-        "XC": {
-            "Dispersion": "GRIMME3 BJDAMP",
-            "DoubleHybrid": "rev-DOD-SCAN"
         }
     }
 }
@@ -3816,6 +3747,7 @@
     "name_latex": "mPW2PLYP-D3(BJ)",
     "name_html": "mPW2PLYP-D3(BJ)",
     "path_safe_name": "mPW2PLYP-D3BJ",
+    "disp_params": "GRIMME3 BJDAMP PAR1=0.400 PAR2=03065 PAR3=0.9147 PAR4=5.057",
     "use_libxc": false,
     "includes_disp": false,
     "available_in_adf": true,
@@ -3824,34 +3756,10 @@
     "name_no_disp": "mPW2PLYP",
     "dispersion": "D3(BJ)",
     "dispersion_name": "GRIMME3 BJDAMP",
-    "disp_params": {},
     "adf_settings": {
         "XC": {
-            "Dispersion": "GRIMME3 BJDAMP",
+            "Dispersion": "GRIMME3 BJDAMP PAR1=0.400 PAR2=03065 PAR3=0.9147 PAR4=5.057",
             "DoubleHybrid": "mPW2PLYP"
-        }
-    }
-}
-
-{
-    "category": "DoubleHybrid",
-    "name": "mPW2KPLYP-D3(BJ)",
-    "name_latex": "mPW2KPLYP-D3(BJ)",
-    "name_html": "mPW2KPLYP-D3(BJ)",
-    "path_safe_name": "mPW2KPLYP-D3BJ",
-    "use_libxc": false,
-    "includes_disp": false,
-    "available_in_adf": true,
-    "available_in_band": false,
-    "available_in_orca": false,
-    "name_no_disp": "mPW2KPLYP",
-    "dispersion": "D3(BJ)",
-    "dispersion_name": "GRIMME3 BJDAMP",
-    "disp_params": {},
-    "adf_settings": {
-        "XC": {
-            "Dispersion": "GRIMME3 BJDAMP",
-            "DoubleHybrid": "mPW2KPLYP"
         }
     }
 }
@@ -3862,6 +3770,7 @@
     "name_latex": "mPW2NCPLYP-D3(BJ)",
     "name_html": "mPW2NCPLYP-D3(BJ)",
     "path_safe_name": "mPW2NCPLYP-D3BJ",
+    "disp_params": "GRIMME3 BJDAMP PAR1=0.385 PAR2=-0.493 PAR3=0.0 PAR4=9.529",
     "use_libxc": false,
     "includes_disp": false,
     "available_in_adf": true,
@@ -3870,11 +3779,33 @@
     "name_no_disp": "mPW2NCPLYP",
     "dispersion": "D3(BJ)",
     "dispersion_name": "GRIMME3 BJDAMP",
-    "disp_params": {},
     "adf_settings": {
         "XC": {
-            "Dispersion": "GRIMME3 BJDAMP",
+            "Dispersion": "GRIMME3 BJDAMP PAR1=0.385 PAR2=-0.493 PAR3=0.0 PAR4=9.529",
             "DoubleHybrid": "mPW2NCPLYP"
+        }
+    }
+}
+
+{
+    "category": "DoubleHybrid",
+    "name": "mPW2KPLYP-D3(BJ)",
+    "name_latex": "mPW2KPLYP-D3(BJ)",
+    "name_html": "mPW2KPLYP-D3(BJ)",
+    "path_safe_name": "mPW2KPLYP-D3BJ",
+    "disp_params": "GRIMME3 BJDAMP PAR1=0.490 PAR2=0.306 PAR3=0.915 PAR4=5.057",
+    "use_libxc": false,
+    "includes_disp": false,
+    "available_in_adf": true,
+    "available_in_band": false,
+    "available_in_orca": false,
+    "name_no_disp": "mPW2KPLYP",
+    "dispersion": "D3(BJ)",
+    "dispersion_name": "GRIMME3 BJDAMP",
+    "adf_settings": {
+        "XC": {
+            "Dispersion": "GRIMME3 BJDAMP PAR1=0.490 PAR2=0.306 PAR3=0.915 PAR4=5.057",
+            "DoubleHybrid": "mPW2KPLYP"
         }
     }
 }
@@ -3885,6 +3816,7 @@
     "name_latex": "DH-BLYP-D3(BJ)",
     "name_html": "DH-BLYP-D3(BJ)",
     "path_safe_name": "DH-BLYP-D3BJ",
+    "disp_params": "GRIMME3 BJDAMP PAR1=0.488 PAR2=0.306 PAR3=0.915 PAR4=5.057",
     "use_libxc": false,
     "includes_disp": false,
     "available_in_adf": true,
@@ -3893,10 +3825,9 @@
     "name_no_disp": "DH-BLYP",
     "dispersion": "D3(BJ)",
     "dispersion_name": "GRIMME3 BJDAMP",
-    "disp_params": {},
     "adf_settings": {
         "XC": {
-            "Dispersion": "GRIMME3 BJDAMP",
+            "Dispersion": "GRIMME3 BJDAMP PAR1=0.488 PAR2=0.306 PAR3=0.915 PAR4=5.057",
             "DoubleHybrid": "DH-BLYP"
         }
     }
@@ -4092,6 +4023,7 @@
     "name_latex": "mPW2PLYP-D4",
     "name_html": "mPW2PLYP-D4",
     "path_safe_name": "mPW2PLYP-D4",
+    "disp_params": "GRIMME4 s6=0.750 s8=0.4579 a1=0.43 a2=5.0765",
     "use_libxc": false,
     "includes_disp": false,
     "available_in_adf": true,
@@ -4100,10 +4032,9 @@
     "name_no_disp": "mPW2PLYP",
     "dispersion": "D4",
     "dispersion_name": "GRIMME4",
-    "disp_params": {},
     "adf_settings": {
         "XC": {
-            "Dispersion": "GRIMME4",
+            "Dispersion": "GRIMME4 s6=0.750 s8=0.4579 a1=0.43 a2=5.0765",
             "DoubleHybrid": "mPW2PLYP"
         }
     }
