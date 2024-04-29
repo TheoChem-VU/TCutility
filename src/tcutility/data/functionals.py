@@ -169,6 +169,10 @@ def get_available_functionals():
         if not line.strip():
             continue
 
+        # and comment lines
+        if line.startswith('#'):
+            continue
+
         # functional names are given starting with -
         # category names without -
         if not line.startswith('- '):
