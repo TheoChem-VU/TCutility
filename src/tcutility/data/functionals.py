@@ -4,6 +4,7 @@ For example, it can be useful to obtain
 '''
 import os
 from tcutility import results, cache
+import re
 
 
 j = os.path.join
@@ -76,6 +77,7 @@ def get_available_functionals():
                 - ``adf_settings`` **(:class:`Result <tcutility.results.result.Result>`)** - the settings that are used to select the functional in the ADF input.
                 - ``name_latex`` **(str)** - the name of the functional formatted to be used with LaTeX renderers.
                 - ``name_html`` **(str)** - the name of the functional formatted to be used with HTML renderers.
+                - ``dois`` **(List[str])** - a list of relevant dois for this functional.
     '''
     def set_dispersion(func):
         disp_map = {
@@ -164,6 +166,22 @@ def get_available_functionals():
     with open(j(os.path.split(__file__)[0], 'available_functionals.txt')) as file:
         lines = file.readlines()
 
+    # read the references first
+    # references are given as 
+    # [refname] doi
+    # and in-line
+    # - xcname {options} [refname1][refname2]...
+    dois = {}
+    for line in lines:
+        if not line.startswith('['):
+            continue
+
+        line = line.split('#')[0].strip()
+
+        ref, doi = line.strip().split()
+        ref = ref[1:-1]
+        dois[ref] = doi
+
     for line in lines:
         # there can be empty lines
         if not line.strip():
@@ -173,17 +191,23 @@ def get_available_functionals():
         if line.startswith('#'):
             continue
 
+        # we don't read the references here
+        if line.startswith('['):
+            continue
+
         # functional names are given starting with -
         # category names without -
         if not line.startswith('- '):
             curr_category = line.strip()
             continue
 
+        line = line.split('#')[0].strip()
+
         # store data about the func in a dict
         func = results.Result()
         func.category = curr_category
         # separate the functional name from the line
-        functional_name = line[2:].split('!')[0].split(',')[0].strip()
+        functional_name = line[2:].split('!')[0].split(',')[0].split('[')[0].strip()
         func.name = functional_name
         func.name_latex = functional_name
         func.name_html = functional_name
@@ -219,6 +243,10 @@ def get_available_functionals():
         func.available_in_band = '!band' in line
         func.available_in_orca = '!orca' in line
 
+        # get references
+        refs = re.findall(r'\[([a-zA-Z0-9]+)\]', line)
+        func.dois = [dois[ref] for ref in refs]
+
         set_dispersion(func)
         set_functional(func)
 
@@ -234,5 +262,74 @@ for functional in functionals:
         categories.append(get(functional).category)
 
 if __name__ == '__main__':
+    from pprint import pprint
     # log.log(get('OLYP_D3BJ'))
-    print(get('VWN'))
+    # pprint(get('PW91-dUFF'))
+
+    functionals = [
+        'VWN',
+        'PW92',
+        'BP86',
+        'BLYP',
+        'BEE',
+        'PW91',
+        'PBE',
+        'PBEsol',
+        'RPBE',
+        'revPBE',
+        'mPBE',
+        'mPW',
+        'HTBS',
+        'OLYP',
+        'OPBE',
+        'BP86-D3(BJ)',
+        'BLYP-D3(BJ)',
+        'OLYP-D3(BJ)',
+        'OPBE-D3(BJ)',
+        'B3LYP',
+        'B3LYP*',
+        'B1LYP',
+        'KMLYP',
+        'O3LYP',
+        'X3LYP',
+        'BHandH',
+        'BHandHLYP',
+        'B1PW91',
+        'mPW1PW',
+        'mPW1K',
+        'PBE0',
+        'S12H',
+        'B3LYP-D3(BJ)',
+        'PBE0-DH-D3(BJ)',
+        'TPSS',
+        'revTPSS',
+        'MVS',
+        'M06L',
+        'M06',
+        'M06-2X',
+        'M06-HF',
+        'BMK',
+        'MN12-SX',
+        'LCY-PBE',
+        'WB97',
+        'WB97X',
+        'CAM-B3LYP',
+        'B2PLYP',
+        'PBE0-DH',
+        'B2TPLYP-D3(BJ)',
+        'B2PIPLYP-D3(BJ)',
+        'rev-DOD-BLYP-D3(BJ)',
+        'rev-DOD-PBE-D3(BJ)',
+        'rev-DOD-PBEP86-D3(BJ)',
+        'SCAN',
+        'rSCAN',
+        'revSCAN',
+        'r2SCAN',
+        'SCAN-D3(BJ)',
+        'r2SCAN-3c',
+        'revSCAN0'
+    ]
+
+    for fun in functionals:
+        print(fun.ljust(21), get(fun).dois)
+
