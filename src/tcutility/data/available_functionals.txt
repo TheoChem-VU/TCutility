@@ -59,8 +59,10 @@ GGA
 - LB94
 - KT1
 - KT2
-- B97-D !includesdisp
-- B97-D-D3, 'GRIMME3 PAR1=1.0000 PAR2=0.892 PAR3=0.909'
+- B97-D !includesdisp !libxc
+- B97-D-D3, 'GRIMME3 PAR1=1.0000 PAR2=0.892 PAR3=0.909' !libxc
+- B97-GGA1 !libxc
+- B97-K !libxc
 
 MetaGGA
 - M06L
