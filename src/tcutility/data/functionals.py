@@ -3,7 +3,7 @@ Module used for obtaining information about exchange-correlation functionals.
 For example, it can be useful to obtain 
 '''
 import os
-from tcutility import results, log, cache
+from tcutility import results, cache
 
 
 j = os.path.join
