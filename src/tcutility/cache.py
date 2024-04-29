@@ -11,6 +11,8 @@ _func_cache = {}
 
 _general_cache = {}
 
+_cache_dir = os.path.join(os.path.split(__file__)[0], '.cache')
+
 
 def timed_cache(delay: float):
     '''
@@ -79,7 +81,7 @@ def _get_from_cache_file(file, func, args, kwargs):
     Retrieve results from a JSON file.
     '''
     # open the file and parse the data
-    with open(file) as cfile:
+    with open(os.path.join(_cache_dir, file)) as cfile:
         data = json.loads(cfile.read())
 
     # we now go through the data
@@ -107,7 +109,7 @@ def _write_to_cache_file(file, func, args, kwargs, value):
     Write results to the file.
     '''
     # we open the file to get the data
-    with open(file) as cfile:
+    with open(os.path.join(_cache_dir, file)) as cfile:
         data = json.loads(cfile.read())
 
     # add the new results to the file
@@ -119,7 +121,7 @@ def _write_to_cache_file(file, func, args, kwargs, value):
     }
     data.append(new)
 
-    with open(file, 'w+') as cfile:
+    with open(os.path.join(_cache_dir, file), 'w+') as cfile:
         cfile.write(json.dumps(data, indent=4))
 
 
@@ -127,7 +129,8 @@ def _clear_cache_file(file):
     '''
     Function that clears a file and writes a new beginning of a list.
     '''
-    with open(file, 'w+') as cfile:
+    os.makedirs(_cache_dir, exist_ok=True)
+    with open(os.path.join(_cache_dir, file), 'w+') as cfile:
         cfile.write('[]')
 
 
@@ -140,7 +143,7 @@ def cache_file(file):
     '''
     def decorator(func):
         # make the file if it doesnt exist
-        if not os.path.exists(file):
+        if not os.path.exists(os.path.join(_cache_dir, file)):
             _clear_cache_file(file)
 
         @functools.wraps(func)
