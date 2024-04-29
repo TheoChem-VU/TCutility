@@ -1,160 +1,162 @@
 LDA
-- VWN
-- PW92
+- VWN 																						[Vosko1980]
+- VWN Stoll 																				[Vosko1980][Stoll1978]
+- PW92 																						[Perdew1992]
 - Xonly
 - Xalpha
 
 GGA
-- BP86
-- BP86-D
-- BP86-D3
-- BP86-D3(BJ)
-- BP86-D4
-- BP86-dDsC
-- PW91
-- PW91-dUFF
-- mPW
-- PBE
-- PBE-D
-- PBE-D3
-- PBE-D3(BJ)
-- PBE-D4
-- PBE-dDsC
-- PBE-MBD@rsSC
-- PBE-dUFF
-- RPBE
-- RPBE-D3
-- RPBE-D3(BJ)
-- RPBE-D4
-- revPBE
-- revPBE-D3
-- revPBE-D3(BJ)
-- revPBE-D4
-- revPBE-dDsC
-- mPBE
-- PBEsol
-- PBEsol-D
-- PBEsol-D3
-- PBEsol-D3(BJ)
-- HTBS
-- BLYP
-- BLYP-D
-- BLYP-D3
-- BLYP-D3(BJ)
-- BLYP-D4
-- BLYP-dDsC
-- OLYP
-- OLYP-D3, 'GRIMME3 PAR1=1.0000 PAR2=0.806 PAR3=1.764'
-- OLYP-D3(BJ), 'GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.5299 PAR3=2.6205 PAR4=2.8065'
-- OLYP-D4
-- OPBE
-# - OPBE-D3, 'GRIMME3 PAR1=1.0000 PAR2=0.837 PAR3=2.055'
-- OPBE-D3(BJ), 'GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.5512 PAR3=3.3816 PAR4=2.9444'
-- OPBE-D4
-- BEE
-- XLYP
-- GGA:SSB-D  !includesdisp
+- BP86 																						[Becke1988][Perdew1986]
+- BP86-D 																					[Becke1988][Perdew1986][Grimme2004]
+- BP86-D3 																					[Becke1988][Perdew1986][Grimme2010]
+- BP86-D3(BJ) 																				[Becke1988][Perdew1986][Grimme2011]
+- BP86-D4 																					[Becke1988][Perdew1986][Grimme2019]
+- BP86-dDsC 																				[Becke1988][Perdew1986][Steinman2011]
+- PW91 																						[Perdew1992b]
+- PW91-dUFF 																				[Perdew1992b][Kim2012]
+- mPW 																						[Perdew1992b][Adamo1998]
+- PBE																						[Perdew1996]
+- PBE-D																						[Perdew1996][Grimme2004]
+- PBE-D3																					[Perdew1996][Grimme2010]
+- PBE-D3(BJ)																				[Perdew1996][Grimme2011]
+- PBE-D4																					[Perdew1996][Grimme2019]
+- PBE-dDsC																					[Perdew1996][Steinman2011]
+- PBE-MBD@rsSC																				[Perdew1996][Ambrosetti2014]
+- PBE-dUFF 																					[Perdew1996][Kim2012]
+- RPBE																						[Hammer1999][Perdew1996]
+- RPBE-D3																					[Hammer1999][Perdew1996][Grimme2010]
+- RPBE-D3(BJ)																				[Hammer1999][Perdew1996][Grimme2011]
+- RPBE-D4																					[Hammer1999][Perdew1996][Grimme2019]
+- revPBE 																					[Zhang1998][Perdew1996]
+- revPBE-D3 																				[Zhang1998][Perdew1996][Grimme2010]
+- revPBE-D3(BJ)																				[Zhang1998][Perdew1996][Grimme2011]
+- revPBE-D4 																				[Zhang1998][Perdew1996][Grimme2019]
+- revPBE-dDsC 																				[Zhang1998][Perdew1996][Steinman2011]
+- mPBE																						[Perdew1996][Adamo2002]
+- PBEsol 																					[Perdew2008]
+- PBEsol-D 																					[Perdew2008][Grimme2004]
+- PBEsol-D3 																				[Perdew2008][Grimme2010]
+- PBEsol-D3(BJ) 																			[Perdew2008][Grimme2011]
+- PBEsol-D4, 'GRIMME4 s6=1.0000 s8=0.59493760 a1=0.71422359 a2=6.35314182'					[Perdew2008][Grimme2019]
+- HTBS																						[Perdew1996][Haas2011]
+- BLYP 																						[Becke1988][Lee1988]
+- BLYP-D 																					[Becke1988][Lee1988][Grimme2004]
+- BLYP-D3 																					[Becke1988][Lee1988][Grimme2010]
+- BLYP-D3(BJ) 																				[Becke1988][Lee1988][Grimme2011]
+- BLYP-D4 																					[Becke1988][Lee1988][Grimme2019]
+- BLYP-dDsC 																				[Becke1988][Lee1988][Steinman2011]
+- OLYP 																						[Handy2000][Lee1988]
+- OLYP-D3, 'GRIMME3 PAR1=1.0000 PAR2=0.806 PAR3=1.764' 										[Handy2000][Lee1988][Grimme2010]
+- OLYP-D3(BJ), 'GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.5299 PAR3=2.6205 PAR4=2.8065' 			[Handy2000][Lee1988][Grimme2011]
+- OLYP-D4 																					[Handy2000][Lee1988][Grimme2019]
+- OPBE 																						[Handy2000][Perdew1996]
+# - OPBE-D3, 'GRIMME3 PAR1=1.0000 PAR2=0.837 PAR3=2.055'									[Handy2000][Perdew1996][Grimme2010]
+- OPBE-D3(BJ), 'GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.5512 PAR3=3.3816 PAR4=2.9444'				[Handy2000][Perdew1996][Grimme2011]
+- OPBE-D4 																					[Handy2000][Perdew1996][Grimme2019]
+- BEE 																						[Mortensen2005][Perdew1996]
+- XLYP 																						[Xu2004][Lee1988]
+- GGA:SSB-D  !includesdisp 																	[Swart2009][Swart2009b][Grimme2004]
 - S12g
-- S12g-D3
+- S12g-D3 																					
 - LB94
 - KT1
 - KT2
-- B97-D !includesdisp !libxc
-- B97-D-D3, 'GRIMME3 PAR1=1.0000 PAR2=0.892 PAR3=0.909' !libxc
-- B97-GGA1 !libxc
-- B97-K !libxc
+- B97-D !includesdisp !libxc																[Grimme2006][Grimme2004][Lehtola2017][Marques2012]
+- B97-D-D3, 'GRIMME3 PAR1=1.0000 PAR2=0.892 PAR3=0.909' !libxc 								[Grimme2006][Grimme2004][Grimme2010][Lehtola2017][Marques2012]
+- B97-GGA1 !libxc 																			
+- B97-K !libxc    																			
 
 MetaGGA
-- M06L
-- M06L-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.581 PAR3=0.000'
-- M06L-D4, 'GRIMME4 s6=1.0000 s8=0.59493760 a1=0.71422359 a2=6.35314182'
+- M06L 																						[Zhao2006][Zhao2008]
+- M06L-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.581 PAR3=0.000' 										[Zhao2006][Zhao2008][Grimme2010]
+- M06L-D4, 'GRIMME4 s6=1.0000 s8=0.59493760 a1=0.71422359 a2=6.35314182'					[Zhao2006][Zhao2008][Grimme2019]
 - MN15-L !libxc
-- TPSS
-- TPSS-D3(BJ)
-- TPSS-D4
-- revTPSS
-- MetaGGA:SSB-D  !includesdisp
-- MVS
+- TPSS 																						[Tao2003][Staroverov2003]
+- TPSS-D3(BJ)																				[Tao2003][Staroverov2003][Grimme2010]
+- TPSS-D4 																					[Tao2003][Staroverov2003][Grimme2019]
+- revTPSS 																					[Perdew2009]
+- MetaGGA:SSB-D  !includesdisp 																[Grimme2004]
+- MVS 																						[Sun2015]
 - MS0
 - MS1
-- MS2
-- SCAN
-- SCAN-D3(BJ)
+- MS2 
+- SCAN 																						[Sun2015b]
+- SCAN-D3(BJ)																				[Sun2015b][Grimme2011]
 - TASKxc
 - TASKCC
-- revSCAN !libxc
-- rSCAN !libxc
-- r2SCAN !libxc
-- r2SCAN-D4 !libxc
-- r2SCAN-3c 
+- revSCAN !libxc 																			[Lehtola2017][Marques2012][Mezei2018]
+- rSCAN !libxc 																				[Lehtola2017][Marques2012][Bartok2019]
+- r2SCAN !libxc 																			[Lehtola2017][Marques2012][Furness2020][Furness2020b]
+- r2SCAN-D4 !libxc 																			[Lehtola2017][Marques2012][Furness2020][Furness2020b][Grimme2019]
+- r2SCAN-3c 																				[Gasevic2022][Grimme2019]
 
 HartreeFock
 - HartreeFock
 - HartreeFock-D4
 
 Hybrid
-- B3LYP
-- B3LYP-D
-- B3LYP-D3
-- B3LYP-D3(BJ)
-- B3LYP-D4
-- B3LYP*
-- B1LYP
-- KMLYP
-- O3LYP
-- X3LYP
-- BHandH
-- BHandHLYP
-- B1PW91
-- mPW1PW
-- mPW1K
-- PBE0
-- PBE0-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.287 PAR3=0.928'
-- PBE0-D3(BJ), 'GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.4145 PAR3=1.2177 PAR4=4.8593' 
-- PBE0-D4
+- B3LYP 																					[Stephens1994]
+- B3LYP-D 																					[Stephens1994][Grimme2004]
+- B3LYP-D3 																					[Stephens1994][Grimme2010]
+- B3LYP-D3(BJ)																				[Stephens1994][Grimme2011]
+- B3LYP-D4 																					[Stephens1994][Grimme2019]
+- B3LYP* 																					[Reiher2001]
+- B1LYP 																					[Adamo1997]
+- KMLYP 																					[Kang2001]
+- O3LYP 																					[Cohen2000]
+- X3LYP 																					[Xu2004]
+- BHandH    																				[Becke1993]
+- BHandHLYP 																				[Becke1993][Lee1988]
+- B1PW91 																					[Adamo1997]
+- mPW1PW 																					[Adamo1998]
+- mPW1K  																					[Lynch2000]
+- PBE0 																						[Adamo1999][Perdew1996b]
+- PBE0-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.287 PAR3=0.928'										[Adamo1999][Perdew1996b][Grimme2010]
+- PBE0-D3(BJ), 'GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.4145 PAR3=1.2177 PAR4=4.8593'  			[Adamo1999][Perdew1996b][Grimme2011]
+- PBE0-D4 																					[Adamo1999][Perdew1996b][Grimme2019]
 - OPBE0
-- S12H
-- BMK !libxc
-# - BMK-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.931 PAR3=2.168' !libxc
-# - BMK-D3(BJ), 'GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.1940 PAR3=2.0860 PAR4=5.9197' !libxc
+- S12H !includesdisp 																		[Swart2013][Grimme2010]
+- BMK !libxc 																				[Boese2004][Lehtola2017][Marques2012]
+# - BMK-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.931 PAR3=2.168' !libxc 								[Boese2004][Grimme2010][Lehtola2017][Marques2012]
+# - BMK-D3(BJ), 'GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.1940 PAR3=2.0860 PAR4=5.9197' !libxc 	[Boese2004][Grimme2011][Lehtola2017][Marques2012]
 - B1B95 !libxc
 - B1B95-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.613 PAR3=1.868' !libxc
-- B97 !libxc
-- B97-1 !libxc
-- B97-2 !libxc
-- B97-3 !libxc
+- B97 !libxc 																				
+- B97-1 !libxc																				
+- B97-2 !libxc																				
+- B97-3 !libxc																				
 
 MetaHybrid
 - MN15 !libxc
-- M06
-- M06-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.325 PAR3=0.000'
-- M06-D4, 'GRIMME4 s6=1.0000 s8=0.16366729 a1=0.53456413 a2=6.06192174'
-- M06-2X
-- M06-2X-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.619 PAR3=0.000'
-- M06-HF
-- M06-HF-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.446 PAR3=0.000'
+- M06 																						[Zhao2006][Zhao2008]
+- M06-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.325 PAR3=0.000'										[Zhao2006][Zhao2008][Grimme2010]
+- M06-D4, 'GRIMME4 s6=1.0000 s8=0.16366729 a1=0.53456413 a2=6.06192174'						[Zhao2006][Zhao2008][Grimme2019]
+- M06-2X 																					[Zhao2006][Zhao2008]
+- M06-2X-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.619 PAR3=0.000' 									[Zhao2006][Zhao2008][Grimme2010]
+- M06-HF 																					[Zhao2006][Zhao2008]
+- M06-HF-D3, 'GRIMME3 PAR1=1.0000 PAR2=1.446 PAR3=0.000'									[Zhao2006][Zhao2008][Grimme2010]
 - TPSSH
 - TPSSH-D4
-- revSCAN0 !libxc
+- revSCAN0 !libxc 																			[Lehtola2017][Marques2012][Mezei2018]
 
 DoubleHybrid
-- rev-DOD-BLYP  !includesdisp
-- rev-DOD-BLYP-D3(BJ)
-- rev-DOD-BLYP-D4  !includesdisp
-- rev-DOD-PBE  !includesdisp
-- rev-DOD-PBE-D3(BJ)
-- rev-DOD-PBE-D4  !includesdisp
-- rev-DOD-PBEP86  !includesdisp
-- rev-DOD-PBEP86-D3(BJ)
-- rev-DOD-PBEP86-D4  !includesdisp
-- SOS1-PBE-QIDH
-- DOD-SCAN
-- DOD-SCAN-D3(BJ)
-- rev-DOD-SCAN-D4  !includesdisp
-- B2PLYP
-- B2PIPLYP
+- rev-DOD-BLYP  !includesdisp 																[Santra2019]
+- rev-DOD-BLYP-D3(BJ) 																		[Santra2019][Grimme2011]
+- rev-DOD-BLYP-D4  !includesdisp 															[Santra2019][Grimme2019]
+- rev-DOD-PBE  !includesdisp 																[Santra2019]
+- rev-DOD-PBE-D3(BJ) 																		[Santra2019][Grimme2011]
+- rev-DOD-PBE-D4  !includesdisp 															[Santra2019][Grimme2019]
+- rev-DOD-PBEP86  !includesdisp 															[Santra2019]
+- rev-DOD-PBEP86-D3(BJ) 																	[Santra2019][Grimme2011]
+- rev-DOD-PBEP86-D4  !includesdisp 															[Santra2019][Grimme2019]
+- SOS1-PBE-QIDH 																			
+- DOD-SCAN 																					[Santra2019]
+- DOD-SCAN-D3(BJ) 																			[Santra2019][Grimme2011]
+- rev-DOD-SCAN-D4  !includesdisp 															[Santra2019][Grimme2019]
+- B2PLYP 																					[Grimme2006b]
+- B2PIPLYP 																					[SanchoGarcia2009]
 - ROB2PLYP
-- B2TPLYP
+- B2TPLYP 																					[Tarnopolsky2008]
 - B2GPPLYP
 - B2KPLYP
 - B2NCPLYP
@@ -162,7 +164,7 @@ DoubleHybrid
 - mPW2KPLYP
 - mPW2NCPLYP
 - DH-BLYP
-- PBE0-DH
+- PBE0-DH  																					[Bremond2011]
 - PBE-QIDH
 - LS1-DH
 - PBE0-2
@@ -172,15 +174,15 @@ DoubleHybrid
 - B2GPPLYP-D3
 - B2NCPLYP-D3
 - mPW2NCPLYP-D3
-- PBE0-DH-D3
+- PBE0-DH-D3  																				[Bremond2011][Grimme2010]
 - PBE-QIDH-D3
 - LS1-DH-D3
 - PBE0-2-D3
 - LS1-TPSS-D3
-- B2PLYP-D3(BJ)
-- B2PIPLYP-D3(BJ)
+- B2PLYP-D3(BJ) 																			[Grimme2006b][Grimme2011]
+- B2PIPLYP-D3(BJ) 																			[SanchoGarcia2009][Grimme2011]
 - ROB2PLYP-D3(BJ)
-- B2TPLYP-D3(BJ)
+- B2TPLYP-D3(BJ) 																			[Tarnopolsky2008][Grimme2011]
 - B2GPPLYP-D3(BJ)
 - B2KPLYP-D3(BJ)
 - B2NCPLYP-D3(BJ)
@@ -188,7 +190,7 @@ DoubleHybrid
 - mPW2NCPLYP-D3(BJ), 'GRIMME3 BJDAMP PAR1=0.385 PAR2=-0.493 PAR3=0.0 PAR4=9.529'
 - mPW2KPLYP-D3(BJ), 'GRIMME3 BJDAMP PAR1=0.490 PAR2=0.306 PAR3=0.915 PAR4=5.057'
 - DH-BLYP-D3(BJ), 'GRIMME3 BJDAMP PAR1=0.488 PAR2=0.306 PAR3=0.915 PAR4=5.057'
-- PBE0-DH-D3(BJ), 'GRIMME3 BJDAMP PAR1=0.880 PAR2=0.000 PAR3=0.165 PAR4=6.385' 
+- PBE0-DH-D3(BJ), 'GRIMME3 BJDAMP PAR1=0.880 PAR2=0.000 PAR3=0.165 PAR4=6.385'  			[Bremond2011][Grimme2011]
 - PBE-QIDH-D3(BJ)
 - LS1-DH-D3(BJ)
 - PBE0-2-D3(BJ)
@@ -197,7 +199,7 @@ DoubleHybrid
 - B2PLYP-D4
 - B2GPPLYP-D4
 - mPW2PLYP-D4, 'GRIMME4 s6=0.750 s8=0.4579 a1=0.43 a2=5.0765'
-- PBE0-DH-D4, 'GRIMME4 s6=0.875 s8=0.9681 a1=0.4759 a2=5.0862'
+- PBE0-DH-D4, 'GRIMME4 s6=0.875 s8=0.9681 a1=0.4759 a2=5.0862' 								[Bremond2011][Grimme2019]
 - PBE0-2-D4, 'GRIMME4 s6=0.500 s8=0.6430 a1=0.7654 a2=5.7858'
 - DSD-BLYP
 - rev-DSD-BLYP
@@ -212,12 +214,9 @@ DoubleHybrid
 - SD-SCAN69
 
 RangeSeparated
-- LCY-BLYP
-- LCY-BP86
-- LCY-PBE
-- CAM-B3LYP !libxc
-- CAM-B3LYP-D4 !libxc
-- CAMY-B3LYP !libxc
+- CAM-B3LYP !libxc 																				[Lehtola2017][Marques2012][Yanai2004]
+- CAM-B3LYP-D4 !libxc																			[Lehtola2017][Marques2012][Yanai2004][Grimme2019]
+- CAMY-B3LYP 
 - HJS-PBE !libxc
 - HJS-PBESOL !libxc
 - HJS-B97X !libxc
@@ -225,18 +224,19 @@ RangeSeparated
 - HSE06 !libxc
 - LRC_WPBE !libxc
 - LRC_WPBEH !libxc
-- LCY-BLYP !libxc
-- LCY-PBE !libxc
+- LCY-BLYP 																						[Seth2012][Ekstrom2010][Becke1988][Lee1988]
+- LCY-BP86																						[Seth2012][Ekstrom2010][Becke1988][Perdew1986]
+- LCY-PBE  																						[Seth2012][Ekstrom2010][Perdew1996]
 - M06-SX !libxc
 - M11 !libxc
-- MN12-SX !libxc
-- N12-SX !libxc
+- MN12-SX !libxc 																				[Peverati2012][Lehtola2017][Marques2012]
+- N12-SX !libxc 																				[Peverati2012][Lehtola2017][Marques2012]
 - TUNED-CAM-B3LYP !libxc
-- WB97 !libxc
-- WB97X !libxc
-- WB97-D4, 'GRIMME4 s6=1.0000 s8=6.55792598 a1=0.76666802 a2=8.36027334' !libxc
-- WB97X-D4, 'GRIMME4 s6=1.0000 s8=-0.07519516 a1=0.45094893 a2=6.78425255' !libxc
-
+- WB97 !libxc 																					[Chai2008][Lehtola2017][Marques2012]
+- WB97X !libxc  																				[Chai2008][Lehtola2017][Marques2012]
+- WB97-D4, 'GRIMME4 s6=1.0000 s8=6.55792598 a1=0.76666802 a2=8.36027334' !libxc 				[Chai2008][Grimme2019][Lehtola2017][Marques2012]
+- WB97X-D4, 'GRIMME4 s6=1.0000 s8=-0.07519516 a1=0.45094893 a2=6.78425255' !libxc 				[Chai2008][Grimme2019][Lehtola2017][Marques2012]
+ 
 MP2
 - MP2
 - SOS-MP2
@@ -246,3 +246,68 @@ Model
 - SAOP
 - LB94
 
+
+# REFERENCE LIST
+[Vosko1980] 		10.1139/p80-159
+[Stoll1978] 		10.1007/BF00551408
+[Perdew1986] 		10.1103/PhysRevB.33.8800
+[Perdew1992] 		10.1103/PhysRevB.45.13244
+[Perdew1992b] 		10.1103/PhysRevB.46.6671
+[Perdew1996] 		10.1103/PhysRevLett.77.3865
+[Perdew1996b]		10.1063/1.472933
+[Perdew2008]		10.1103/PhysRevLett.100.136406
+[Perdew2009]		10.1103/PhysRevLett.103.026403
+[Becke1993]			10.1063/1.464304
+[Becke1988] 		10.1103/PhysRevA.38.3098
+[Becke1997] 		10.1063/1.475007
+[Kim2012] 			10.1021/jz2016395
+[Lee1988] 			10.1103/PhysRevB.37.785
+[Handy2000] 		10.1080/00268970010018431
+[Hammer1999] 		10.1103/PhysRevB.59.7413
+[Zhang1998]			10.1103/PhysRevLett.80.890
+[Adamo1997]			10.1016/S0009-2614(97)00651-9
+[Adamo1998]			10.1063/1.475428
+[Adamo1999]			10.1063/1.478522
+[Adamo2002]			10.1063/1.1458927
+[Haas2011]			10.1103/PhysRevB.83.205117
+[Xu2004]			10.1073/pnas.0308730100
+[Mortensen2005] 	10.1103/PhysRevLett.95.216401
+[Swart2009]			10.1063/1.3213193
+[Swart2009b]		10.3233/JCM-2009-0230
+[Swart2013]			10.1016/j.cplett.2013.06.045 
+[Grimme2004]		10.1002/jcc.20078  					# -D
+[Grimme2006]		10.1002/jcc.20495					# B97-D
+[Grimme2006b]		10.1063/1.2148954 					# B2PLYP
+[Grimme2010]		10.1063/1.3382344  					# -D3
+[Grimme2011]		10.1002/jcc.21759  					# -D3(BJ)
+[Grimme2019]		10.1063/1.5090222  					# -D4
+[Chai2008]			10.1063/1.2834918 
+[Steinman2011]		10.1021/ct200602x
+[Ambrosetti2014] 	10.1063/1.4865104
+[Marques2012]		10.1016/j.cpc.2012.05.007 			# libxc
+[Lehtola2017]		10.1016/j.softx.2017.11.002 		# libxc
+[Zhao2006]			10.1063/1.2370993
+[Zhao2008] 			10.1007/s00214-007-0310-x
+[Stephens1994]		10.1021/j100096a001
+[Reiher2001]		10.1007/s00214-001-0300-3
+[Kang2001]			10.1063/1.1415079
+[Cohen2000]			10.1080/00268970010023435
+[Lynch2000]			10.1021/jp000497z
+[Bremond2011]		10.1063/1.3604569
+[Tao2003] 			10.1103/PhysRevLett.91.146401
+[Staroverov2003]	10.1063/1.1626543
+[Sun2015]			10.1073/pnas.1423145112
+[Sun2015b]			10.1103/PhysRevLett.115.036402
+[Boese2004]			10.1063/1.1774975
+[Peverati2012]		10.1039/C2CP42576A
+[Ekstrom2010]		10.1021/ct100117s					# xcfun
+[Seth2012]			10.1021/ct300006h 					# RANGESEP
+[Yanai2004]			10.1016/j.cplett.2004.06.011
+[SanchoGarcia2009] 	10.1063/1.3212881
+[Tarnopolsky2008]	10.1021/jp710179r
+[Santra2019]		10.1021/acs.jpca.9b03157
+[Gasevic2022]		10.1021/acs.jpca.2c02951
+[Mezei2018] 		10.1021/acs.jctc.8b00072
+[Furness2020]		10.1021/acs.jpclett.0c02405
+[Furness2020b]		10.1021/acs.jpclett.0c03077
+[Bartok2019]		10.1063/1.5094646
