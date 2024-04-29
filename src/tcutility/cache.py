@@ -75,26 +75,42 @@ def cache(func):
 
 
 def _get_from_cache_file(file, func, args, kwargs):
+    '''
+    Retrieve results from a JSON file.
+    '''
+    # open the file and parse the data
     with open(file) as cfile:
         data = json.loads(cfile.read())
 
+    # we now go through the data
+    # it is formatted as a list of dicts
+    # each dict has the 'func', 'args', 'kwargs' and 'value' keys
     for datum in data:
+        # func is set as the function qualname
         if datum['func'] != func.__qualname__:
             continue
 
+        # args is retrieved as a list
         if datum['args'] != list(args):
             continue
 
+        # kwargs is simply a dict
         if datum['kwargs'] != kwargs:
             continue
 
+        # if we did not exit the loop yet we return the value
         return datum['value']
 
 
 def _write_to_cache_file(file, func, args, kwargs, value):
+    '''
+    Write results to the file.
+    '''
+    # we open the file to get the data
     with open(file) as cfile:
         data = json.loads(cfile.read())
 
+    # add the new results to the file
     new = {
         'func': func.__qualname__,
         'args': args,
@@ -103,13 +119,14 @@ def _write_to_cache_file(file, func, args, kwargs, value):
     }
     data.append(new)
 
-    # data.setdefault(func.__qualname__, {})
-    # data[func.__qualname__][arguments] = value
     with open(file, 'w+') as cfile:
         cfile.write(json.dumps(data, indent=4))
 
 
 def _clear_cache_file(file):
+    '''
+    Function that clears a file and writes a new beginning of a list.
+    '''
     with open(file, 'w+') as cfile:
         cfile.write('[]')
 
@@ -117,6 +134,9 @@ def _clear_cache_file(file):
 def cache_file(file):
     '''
     Function decorator that stores results of a function to a file.
+
+    Args:
+        file: the filepath to store function call results to.
     '''
     def decorator(func):
         # make the file if it doesnt exist
@@ -125,15 +145,12 @@ def cache_file(file):
 
         @functools.wraps(func)
         def inner_decorator(*args, **kwargs):
-            # we have to create a tuple of the kwargs items to ensure we can hash the arguments
-            # arguments = args, list(kwargs.items())
-
             # check if the arguments were called before
             cached = _get_from_cache_file(file, func,  args, kwargs)
             if cached is not None:
                 return cached
 
-            # if it is not present we add it to the cache
+            # if it is not present we add it to the cache file
             res = func(*args, **kwargs)
             _write_to_cache_file(file, func,  args, kwargs, res)
             return res
@@ -145,12 +162,6 @@ def cache_file(file):
 
 
 # if __name__ == '__main__':
-    # @timed_cache(1)
-    # def test_timer(a, b):
-    #     return a * b
-
-    # _clear_cache_file('test.json')
-
     @cache_file('test.json')
     def test(a, b, c):
         return a + b * c
@@ -160,5 +171,3 @@ def cache_file(file):
     test(1, 4, 3)
     test(1, 2, 3)
     test(1, 4, 3)
-
-    # _write_to_cache_file('test.json', test, (1, 2, 3), {}, test(1, 2, 3))
