@@ -3720,29 +3720,6 @@
 
 {
     "category": "DoubleHybrid",
-    "name": "mPW2PLYP-D3(BJ)",
-    "name_latex": "mPW2PLYP-D3(BJ)",
-    "name_html": "mPW2PLYP-D3(BJ)",
-    "path_safe_name": "mPW2PLYP-D3BJ",
-    "disp_params": "GRIMME3 BJDAMP PAR1=0.400 PAR2=03065 PAR3=0.9147 PAR4=5.057",
-    "use_libxc": false,
-    "includes_disp": false,
-    "available_in_adf": true,
-    "available_in_band": false,
-    "available_in_orca": false,
-    "name_no_disp": "mPW2PLYP",
-    "dispersion": "D3(BJ)",
-    "dispersion_name": "GRIMME3 BJDAMP",
-    "adf_settings": {
-        "XC": {
-            "Dispersion": "GRIMME3 BJDAMP PAR1=0.400 PAR2=03065 PAR3=0.9147 PAR4=5.057",
-            "DoubleHybrid": "mPW2PLYP"
-        }
-    }
-}
-
-{
-    "category": "DoubleHybrid",
     "name": "mPW2NCPLYP-D3(BJ)",
     "name_latex": "mPW2NCPLYP-D3(BJ)",
     "name_html": "mPW2NCPLYP-D3(BJ)",
@@ -4046,6 +4023,7 @@
     "name_latex": "PBE0-2-D4",
     "name_html": "PBE0-2-D4",
     "path_safe_name": "PBE0-2-D4",
+    "disp_params": "GRIMME4 s6=0.500 s8=0.6430 a1=0.7654 a2=5.7858",
     "use_libxc": false,
     "includes_disp": false,
     "available_in_adf": true,
@@ -4054,10 +4032,9 @@
     "name_no_disp": "PBE0-2",
     "dispersion": "D4",
     "dispersion_name": "GRIMME4",
-    "disp_params": {},
     "adf_settings": {
         "XC": {
-            "Dispersion": "GRIMME4",
+            "Dispersion": "GRIMME4 s6=0.500 s8=0.6430 a1=0.7654 a2=5.7858",
             "DoubleHybrid": "PBE0-2"
         }
     }
