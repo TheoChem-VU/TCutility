@@ -3,12 +3,13 @@ Module used for obtaining information about exchange-correlation functionals.
 For example, it can be useful to obtain 
 '''
 import os
-from tcutility import results, log
+from tcutility import results, log, cache
 
 
 j = os.path.join
 
 
+@cache.cache
 def get(functional_name: str) -> results.Result:
     '''
     Return information about a given functional.
@@ -73,6 +74,8 @@ def get_available_functionals():
                 - ``available_in_band`` **(bool)** - whether the functional is available in BAND.
                 - ``available_in_orca`` **(bool)** - whether the functional is available in ORCA.
                 - ``adf_settings`` **(:class:`Result <tcutility.results.result.Result>`)** - the settings that are used to select the functional in the ADF input.
+                - ``name_latex`` **(str)** - the name of the functional formatted to be used with LaTeX renderers.
+                - ``name_html`` **(str)** - the name of the functional formatted to be used with HTML renderers.
     '''
     def set_dispersion(func):
         disp_map = {
@@ -178,7 +181,29 @@ def get_available_functionals():
         # separate the functional name from the line
         functional_name = line[2:].split('!')[0].split(',')[0].strip()
         func.name = functional_name
+        func.name_latex = functional_name
+        func.name_html = functional_name
         func.path_safe_name = functional_name.replace(')', '').replace('(', '').replace('*', 's')
+
+        if functional_name.startswith('WB'):
+            func.name_latex = func.name_latex.replace('WB', r'$\omega$B')
+            func.name_html = func.name_html.replace('WB', '&omega;B')
+
+        if 'r2SCAN' in functional_name:
+            func.name_latex = func.name_latex.replace('r2SCAN', r'r$^2$SCAN')
+            func.name_html = func.name_html.replace('r2SCAN', 'r<sup>2</sup>SCAN')
+
+        if 'and' in functional_name:
+            func.name_latex = func.name_latex.replace('and', '&')
+            func.name_html = func.name_html.replace('and', '&amp;')
+
+        if '*' in functional_name:
+            func.name_latex = func.name_latex.replace('*', r'$^*$')
+            func.name_html = func.name_html.replace('*', '<sup>*</sup>')
+
+        if 'B2PIPLYP' in functional_name:
+            func.name_latex = func.name_latex.replace('B2PIPLYP', r'B2$\pi$PLYP')
+            func.name_html = func.name_html.replace('B2PIPLYP', 'B2&pi;PLYP')
 
         # check if custom params were given for dispersion
         if 'GRIMME' in line:
@@ -199,6 +224,11 @@ def get_available_functionals():
 
 functionals = get_available_functionals()
 
+categories = []
+for functional in functionals:
+    if get(functional).category not in categories:
+        categories.append(get(functional).category)
 
 if __name__ == '__main__':
-    log.log(get('OLYP_D3BJ'))
+    # log.log(get('OLYP_D3BJ'))
+    print(get('VWN'))
