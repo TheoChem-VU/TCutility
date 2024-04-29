@@ -260,7 +260,7 @@
 <span class="sd">For example, it can be useful to obtain </span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">results</span><span class="p">,</span> <span class="n">log</span>
+<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">results</span><span class="p">,</span> <span class="n">cache</span>
 
 
 <span class="n">j</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
@@ -268,6 +268,7 @@
 
 <div class="viewcode-block" id="get">
 <a class="viewcode-back" href="../../../api/tcutility.data.html#tcutility.data.functionals.get">[docs]</a>
+<span class="nd">@cache</span><span class="o">.</span><span class="n">cache</span>
 <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">functional_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Return information about a given functional.</span>
@@ -338,6 +339,8 @@
 <span class="sd">                - ``available_in_band`` **(bool)** - whether the functional is available in BAND.</span>
 <span class="sd">                - ``available_in_orca`` **(bool)** - whether the functional is available in ORCA.</span>
 <span class="sd">                - ``adf_settings`` **(:class:`Result &lt;tcutility.results.result.Result&gt;`)** - the settings that are used to select the functional in the ADF input.</span>
+<span class="sd">                - ``name_latex`` **(str)** - the name of the functional formatted to be used with LaTeX renderers.</span>
+<span class="sd">                - ``name_html`` **(str)** - the name of the functional formatted to be used with HTML renderers.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">def</span> <span class="nf">set_dispersion</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="n">disp_map</span> <span class="o">=</span> <span class="p">{</span>
@@ -431,6 +434,10 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
             <span class="k">continue</span>
 
+        <span class="c1"># and comment lines</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">):</span>
+            <span class="k">continue</span>
+
         <span class="c1"># functional names are given starting with -</span>
         <span class="c1"># category names without -</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;- &#39;</span><span class="p">):</span>
@@ -443,7 +450,29 @@
         <span class="c1"># separate the functional name from the line</span>
         <span class="n">functional_name</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">func</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">functional_name</span>
+        <span class="n">func</span><span class="o">.</span><span class="n">name_latex</span> <span class="o">=</span> <span class="n">functional_name</span>
+        <span class="n">func</span><span class="o">.</span><span class="n">name_html</span> <span class="o">=</span> <span class="n">functional_name</span>
         <span class="n">func</span><span class="o">.</span><span class="n">path_safe_name</span> <span class="o">=</span> <span class="n">functional_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">functional_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;WB&#39;</span><span class="p">):</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">name_latex</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">name_latex</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;WB&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\omega$B&#39;</span><span class="p">)</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">name_html</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">name_html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;WB&#39;</span><span class="p">,</span> <span class="s1">&#39;&amp;omega;B&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;r2SCAN&#39;</span> <span class="ow">in</span> <span class="n">functional_name</span><span class="p">:</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">name_latex</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">name_latex</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;r2SCAN&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;r$^2$SCAN&#39;</span><span class="p">)</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">name_html</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">name_html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;r2SCAN&#39;</span><span class="p">,</span> <span class="s1">&#39;r&lt;sup&gt;2&lt;/sup&gt;SCAN&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;and&#39;</span> <span class="ow">in</span> <span class="n">functional_name</span><span class="p">:</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">name_latex</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">name_latex</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;&amp;&#39;</span><span class="p">)</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">name_html</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">name_html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;&amp;amp;&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">functional_name</span><span class="p">:</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">name_latex</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">name_latex</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$^*$&#39;</span><span class="p">)</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">name_html</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">name_html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;sup&gt;*&lt;/sup&gt;&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;B2PIPLYP&#39;</span> <span class="ow">in</span> <span class="n">functional_name</span><span class="p">:</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">name_latex</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">name_latex</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;B2PIPLYP&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;B2$\pi$PLYP&#39;</span><span class="p">)</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">name_html</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">name_html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;B2PIPLYP&#39;</span><span class="p">,</span> <span class="s1">&#39;B2&amp;pi;PLYP&#39;</span><span class="p">)</span>
 
         <span class="c1"># check if custom params were given for dispersion</span>
         <span class="k">if</span> <span class="s1">&#39;GRIMME&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
@@ -465,9 +494,14 @@
 
 <span class="n">functionals</span> <span class="o">=</span> <span class="n">get_available_functionals</span><span class="p">()</span>
 
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">functional</span> <span class="ow">in</span> <span class="n">functionals</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">get</span><span class="p">(</span><span class="n">functional</span><span class="p">)</span><span class="o">.</span><span class="n">category</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
+        <span class="n">categories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get</span><span class="p">(</span><span class="n">functional</span><span class="p">)</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;OLYP_D3BJ&#39;</span><span class="p">))</span>
+    <span class="c1"># log.log(get(&#39;OLYP_D3BJ&#39;))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;VWN&#39;</span><span class="p">))</span>
 </pre></div>
 
                 </article>
