@@ -147,6 +147,8 @@ DoubleHybrid
 - rev-DOD-PBEP86-D4  !includesdisp
 - SOS1-PBE-QIDH
 - DOD-SCAN
+- DOD-SCAN-D3(BJ)
+- rev-DOD-SCAN-D3(BJ)
 - rev-DOD-SCAN-D4  !includesdisp
 - B2PLYP
 - B2PIPLYP
