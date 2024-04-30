@@ -29,13 +29,14 @@ class Docx:
     def __exit__(self, *args):
         self.doc.save(self.file)
 
-    def write_paragraph(self, text):
+    def write_paragraph(self, text, alignment=WD_ALIGN_PARAGRAPH.LEFT):
         '''
         Write a piece of text as a pragraph to this Docx file.
         This function will parse any HTML that is given in the text.
         E.g. you can use the <b></b> tags to make a piece of text bold.
         '''
         self.html_parser.add_html_to_document(text, self.doc)
+        self.doc.paragraphs[-1].alignment = alignment
 
     def open(self):
         '''
@@ -187,6 +188,9 @@ def main(args: argparse.Namespace):
                 spell_check.make_suggestion(obj, available_citations, ignore_case=True)
                 continue
 
-            out.write_paragraph(paragraph)
+            out.write_paragraph(paragraph_title)
+            for paragraph in paragraphs:
+                out.write_paragraph(paragraph, alignment=WD_ALIGN_PARAGRAPH.JUSTIFY)
+            out.write_paragraph(' ')
 
     out.open()
