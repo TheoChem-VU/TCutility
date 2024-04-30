@@ -32,7 +32,7 @@ def _get_journal_abbreviation(journal: str) -> str:
 	return requests.get(f"https://abbreviso.toolforge.org/a/{journal}").text
 
 
-def cite(doi: str, style: str = 'wiley') -> str:
+def cite(doi: str, style: str = 'wiley', mode='html') -> str:
 	'''
 	Format an article in a certain style.
 
@@ -76,5 +76,17 @@ def cite(doi: str, style: str = 'wiley') -> str:
 
 	elif style == 'rsc':
 		raise NotImplementedError()
+
+	if mode == 'plain':
+		citation = citation.replace('<i>', '')
+		citation = citation.replace('</i>', '')
+		citation = citation.replace('<b>', '')
+		citation = citation.replace('</b>', '')
+
+	if mode == 'latex':
+		citation = citation.replace('<i>', r'\textit{')
+		citation = citation.replace('</i>', '}')
+		citation = citation.replace('<b>', r'\textbf{')
+		citation = citation.replace('</b>', '}')
 
 	return citation
