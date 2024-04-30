@@ -211,7 +211,7 @@ def get_available_functionals():
         func.name = functional_name
         func.name_latex = functional_name
         func.name_html = functional_name
-        func.path_safe_name = functional_name.replace(')', '').replace('(', '').replace('*', 's')
+        func.path_safe_name = functional_name.replace(')', '').replace('(', '').replace('*', 's').replace(' ', '-')
 
         if functional_name.startswith('WB'):
             func.name_latex = func.name_latex.replace('WB', r'$\omega$B')
