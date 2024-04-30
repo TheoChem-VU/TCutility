@@ -14,6 +14,8 @@ def _get_doi_data(doi: str) -> dict:
 		doi: the DOI to get information about.
 	'''
 	data = requests.get(f'http://api.crossref.org/works/{doi}').text
+	if data == 'Resource not found.':
+		raise ValueError(f'Could not find DOI {doi}.')
 	data = json.loads(data)
 	return data
 
