@@ -216,7 +216,7 @@ def rectangle_list(values: List, spaces_before: int = 0, level: int = 20):
 
     # then print the strings with the right column widths
     for row in prev_mat:
-        log(" " * spaces_before + "  ".join([x.ljust(col_len) for x, col_len in zip(row, prev_col_lens)]))
+        log(" " * spaces_before + "  ".join([x.ljust(col_len) for x, col_len in zip(row, prev_col_lens)]), level=level)
 
 
 def loadbar(sequence: Iterable, comment: str = "", Nsegments: int = 50, Nsteps: int = 10, level: int = 20) -> None:
