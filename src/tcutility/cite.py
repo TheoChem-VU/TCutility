@@ -53,7 +53,10 @@ def cite(doi: str, style: str = 'wiley', mode='html') -> str:
 	year = data['message']['issued']['date-parts'][0][0]
 	volume = data['message']['volume']
 	pages = data['message'].get('page')
+	title = data['message']['title'][0]
 
+	# Get the initials from the author given names
+	# also store the family names
 	initials = []
 	last_names = []
 	for author in data['message']['author']:
@@ -64,7 +67,7 @@ def cite(doi: str, style: str = 'wiley', mode='html') -> str:
 		initials.append(firsts)
 		last_names.append(author['family'].title())
 
-	# and format the citation correctly
+	# format the citation correctly
 	if style == 'wiley':
 		names = [f'{first} {last}' for first, last in zip(initials, last_names)]
 		citation = f'{", ".join(names)}, <i>{journal_abbreviation}</i> <b>{year}</b>, <i>{volume}</i>'
@@ -73,10 +76,19 @@ def cite(doi: str, style: str = 'wiley', mode='html') -> str:
 		citation += '.'
 
 	elif style == 'acs':
-		raise NotImplementedError()
+		names = [f'{last}, {first}' for first, last in zip(initials, last_names)]
+		citation = f'{"; ".join(names)} {title} <i>{journal_abbreviation}</i> <b>{year}</b>, <i>{volume}</i>'
+		if pages:
+			citation += f', {pages}'
+		citation += f'. DOI: {doi}'
+
 
 	elif style == 'rsc':
-		raise NotImplementedError()
+		names = [f'{first} {last}' for first, last in zip(initials, last_names)]
+		citation = f'{", ".join(names)}, <i>{journal_abbreviation}</i> {year}, <b>{volume}</b>'
+		if pages:
+			citation += f', {pages}'
+		citation += '.'
 
 	if mode == 'plain':
 		citation = citation.replace('<i>', '')
