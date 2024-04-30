@@ -45,7 +45,7 @@ class Docx:
 
 
 def create_subparser(parent_parser: argparse.ArgumentParser):
-    desc = "Generate citations for various things. Currently supports generating citations for functionals, programs and methodology."
+    desc = "Generate citations for various things. Currently supports generating citations for functionals, basis-sets, programs, methodologies and DOIs."
     subparser = parent_parser.add_parser('cite', help=desc, description=desc)
     subparser.add_argument("-s", "--style",
                            help="set the citation style.",
@@ -54,7 +54,7 @@ def create_subparser(parent_parser: argparse.ArgumentParser):
                            choices=["wiley", "acs", "rsc"])
     subparser.add_argument("object",
                            type=str,
-                           help="the objects to generate citations for. This can be functionals, basis-sets, programs or methodologies.",
+                           help="the objects to generate citations for. This can be functionals, basis-sets, programs, methodologies or DOIs.",
                            nargs='*')
     subparser.add_argument("-o", "--output",
                            help="the output Word file to write the citations to.",
@@ -114,11 +114,16 @@ doi_order = []
 def format_paragraph(title, dois):
     paragraph = title + '<br>'
     for doi in dois:
-        print('\t' + doi)
         if doi not in doi_order:
             doi_order.append(doi)
+        try:
+            citation = cite.cite(doi, mode="plain")
+        except Exception as exp:
+            print('\t' + str(exp))
+            return
 
-        paragraph += f'[{doi_order.index(doi)}] {cite.cite(doi)}<br>'
+        print(f'  [{doi}] {citation}')
+        paragraph += f'[{doi_order.index(doi) + 1}] {cite.cite(doi, mode="html")}<br>'
     return paragraph
 
 
@@ -154,22 +159,29 @@ def main(args: argparse.Namespace):
 
     with Docx(file=args.output, overwrite=True) as out:
         for obj in objs:
-            paragraph = None
-            print(obj)
-            # try to format a functional
+            paragraph = None            # try to format a functional
             try:
                 xc_info = data.functionals.get(obj)
+                print('Functional', obj)
                 paragraph = format_paragraph(f'XC-Functional: <b>{xc_info.name_html}</b>', xc_info.dois)
+
             except KeyError:
                 pass
 
             # if its not a functional we look in the programs
             if obj.lower() in program_references:
+                print('Program', obj)
                 paragraph = format_paragraph(f'Program: <b>{obj}</b>', program_references[obj.lower()])
 
             # and the methodologies
             if obj.lower() in methodology_references:
+                print('Methodology', obj)
                 paragraph = format_paragraph(f'Method: <b>{obj}</b>', methodology_references[obj.lower()])
+
+            # if we still dont have a paragraph we check if it is a DOI
+            if paragraph is None and obj.startswith('10.'):
+                print('DOI')
+                paragraph = format_paragraph(f'DOI: <b>{obj}</b>', [obj])
 
             if paragraph is None:
                 spell_check.make_suggestion(obj, available_citations, ignore_case=True)
