@@ -56,10 +56,10 @@ def cite(doi: str, style: str = 'wiley') -> str:
 	for author in data['message']['author']:
 		# we get the capital letters from the first names
 		# these will become the initials for this author
-		firsts = [char + '.' for char in author['given'] if char.isupper()]
+		firsts = [char + '.' for char in author['given'].title() if char.isupper()]
 		firsts = " ".join(firsts)
 		initials.append(firsts)
-		last_names.append(author['family'])
+		last_names.append(author['family'].title())
 
 	# and format the citation correctly
 	if style == 'wiley':
