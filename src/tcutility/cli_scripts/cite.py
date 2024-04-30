@@ -8,6 +8,9 @@ import htmldocx
 
 
 class Docx:
+    '''
+    Small class that handles writing to a docx file. This should and will be moved to its own module in TCutility soon.
+    '''
     def __init__(self, file='test.docx', overwrite=False):
         self.file = file
         if not os.path.exists(file) or overwrite:
@@ -20,8 +23,6 @@ class Docx:
         self.doc.styles['Normal'].paragraph_format.space_after = 0
         self.html_parser = htmldocx.HtmlToDocx()
 
-        self.figure_number = 1
-
     def __enter__(self):
         return self
 
@@ -29,112 +30,148 @@ class Docx:
         self.doc.save(self.file)
 
     def write_paragraph(self, text):
+        '''
+        Write a piece of text as a pragraph to this Docx file.
+        This function will parse any HTML that is given in the text.
+        E.g. you can use the <b></b> tags to make a piece of text bold.
+        '''
         self.html_parser.add_html_to_document(text, self.doc)
 
     def open(self):
-    	os.system(f'open {self.file}')
+        '''
+        Open this file in Word.
+        '''
+        os.system(f'open {self.file}')
 
 
 def create_subparser(parent_parser: argparse.ArgumentParser):
-    desc = "Generate citations for various things."
+    desc = "Generate citations for various things. Currently supports generating citations for functionals, programs and methodology."
     subparser = parent_parser.add_parser('cite', help=desc, description=desc)
     subparser.add_argument("-s", "--style",
-                           help="Set the citation style.",
+                           help="set the citation style.",
                            type=str,
                            default="wiley",
                            choices=["wiley", "acs", "rsc"])
     subparser.add_argument("object",
                            type=str,
-                           help="The objects to generate citations for. This can be functionals, basis-sets or programs.",
-                           nargs='+')
+                           help="the objects to generate citations for. This can be functionals, basis-sets, programs or methodologies.",
+                           nargs='*')
     subparser.add_argument("-o", "--output",
-    					   help="The output Word file to write the citations to.",
-    					   type=str,
-    					   default="citations.docx")
+                           help="the output Word file to write the citations to.",
+                           type=str,
+                           default="citations.docx")
+    subparser.add_argument("-l", "--list",
+                           help="list currently available citations.",
+                           action='store_true',
+                           default=False)
 
 
 program_references = {
-	'ams': [
-		'10.1002/jcc.1056',
-		'10.1007/s002140050353',
-	],
-	'adf': [
-		'10.1002/jcc.1056',
-		'10.1007/s002140050353',
-	],
-	'orca': [
-		'10.1002/wcms.81',
-		'10.1063/5.0004608',
-		'10.1002/wcms.1606',
-	],
-	'dftb': [],
-	'xtb': [],
-	'cosmo': [],
-	'crest': [],
-	'pyfrag': [],
-	'pyorb': [],
-	'cylview': [],
+    'ams': [
+        '10.1002/jcc.1056',
+        '10.1007/s002140050353',
+    ],
+    'adf': [
+        '10.1002/jcc.1056',
+        '10.1007/s002140050353',
+    ],
+    'orca': [
+        '10.1002/wcms.81',
+        '10.1063/5.0004608',
+        '10.1002/wcms.1606',
+    ],
+    'dftb': [],
+    'xtb': [],
+    'cosmo': [],
+    'crest': [],
+    'pyfrag': [],
+    'pyorb': [],
+    'cylview': [],
 }
 
 methodology_references = {
-	'fmatsfo': [],
-	'eda': [],
-	'asm': [],
-	'zora': [],
-	'ksmo': [],
-	'vdd': [],
-	'hydrogen bonding': [],
-	'halogen bonding': [],
-	'chalcogen bonding': [],
-	'pnictogen bondding': [],
-	'zlm fit': [],
-	'becke grid': [],
-	'vibrational analysis': [],
-	'irc': [],
+    'fmatsfo': [],
+    'eda': [],
+    'asm': [],
+    'zora': [],
+    'ksmo': [],
+    'vdd': [],
+    'hydrogen bonding': [],
+    'halogen bonding': [],
+    'chalcogen bonding': [],
+    'pnictogen bondding': [],
+    'zlm fit': [],
+    'becke grid': [],
+    'vibrational analysis': [],
+    'irc': [],
 }
 
 
 doi_order = []
 def format_paragraph(title, dois):
-	paragraph = title + '<br>'
-	for doi in dois:
-		if doi not in doi_order:
-			doi_order.append(doi)
+    paragraph = title + '<br>'
+    for doi in dois:
+        print('\t' + doi)
+        if doi not in doi_order:
+            doi_order.append(doi)
 
-		paragraph += f'[{doi_order.index(doi)}] {cite.cite(doi)}<br>'
-	return paragraph
+        paragraph += f'[{doi_order.index(doi)}] {cite.cite(doi)}<br>'
+    return paragraph
 
 
 def main(args: argparse.Namespace):
-	objs = args.object
-	if len(objs) == 1 and os.path.isfile(objs[0]):
-		with open(objs[0]) as inp:
-			objs = [line.strip() for line in inp.readlines()]
+    available_citations = list(program_references.keys()) + list(methodology_references.keys()) + list(data.functionals.functionals.keys())
+    if args.list:
+        print('Programs:')
+        for prog, dois in program_references.items():
+            if len(dois) == 0:
+                continue
+            print('\t' + prog)
 
-	with Docx(file=args.output, overwrite=True) as out:
-		for obj in objs:
-			paragraph = None
-			print(obj)
-			# try to format a functional
-			try:
-				xc_info = data.functionals.get(obj)
-				paragraph = format_paragraph(f'XC-Functional: <b>{xc_info.name_html}</b>', xc_info.dois)
-			except KeyError:
-				pass
+        print('Methodology:')
+        for meth, dois in methodology_references.items():
+            if len(dois) == 0:
+                continue
+            print('\t' + meth)
 
-			# if its not a functional we look in the programs
-			if obj.lower() in program_references:
-				paragraph = format_paragraph(f'Program: <b>{obj}</b>', program_references[obj.lower()])
+        print('Functionals:')
+        for xc, xc_info in data.functionals.functionals.items():
+            if len(xc_info.dois) == 0:
+                continue
+            print('\t' + xc_info.path_safe_name)
 
-			# and the methodologies
-			if obj.lower() in methodology_references:
-				paragraph = format_paragraph(f'Method: <b>{obj}</b>', methodology_references[obj.lower()])
+        return
 
-			if paragraph is None:
-				available = list(program_references.keys()) + list(methodology_references.keys()) + list(data.functionals.functionals.keys())
-				spell_check.make_suggestion(obj, available, caller_level=3, ignore_case=True)
-				continue
 
-			out.write_paragraph(paragraph)
 
-	out.open()
+    objs = args.object
+    if len(objs) == 1 and os.path.isfile(objs[0]):
+        with open(objs[0]) as inp:
+            objs = [line.strip() for line in inp.readlines()]
+
+    with Docx(file=args.output, overwrite=True) as out:
+        for obj in objs:
+            paragraph = None
+            print(obj)
+            # try to format a functional
+            try:
+                xc_info = data.functionals.get(obj)
+                paragraph = format_paragraph(f'XC-Functional: <b>{xc_info.name_html}</b>', xc_info.dois)
+            except KeyError:
+                pass
+
+            # if its not a functional we look in the programs
+            if obj.lower() in program_references:
+                paragraph = format_paragraph(f'Program: <b>{obj}</b>', program_references[obj.lower()])
+
+            # and the methodologies
+            if obj.lower() in methodology_references:
+                paragraph = format_paragraph(f'Method: <b>{obj}</b>', methodology_references[obj.lower()])
+
+            if paragraph is None:
+                spell_check.make_suggestion(obj, available_citations, ignore_case=True)
+                continue
+
+            out.write_paragraph(paragraph)
+
+    out.open()
