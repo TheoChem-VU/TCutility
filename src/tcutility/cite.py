@@ -5,6 +5,7 @@ from tcutility import spell_check, cache
 
 
 # @cache.cache_file('dois')
+@cache.cache
 def _get_doi_data(doi: str) -> dict:
 	'''
 	Get information about an article using the crossref.org API.
@@ -18,6 +19,7 @@ def _get_doi_data(doi: str) -> dict:
 
 
 # @cache.cache_file('journal_abbrvs')
+@cache.cache
 def _get_journal_abbreviation(journal: str) -> str:
 	'''
 	Get the journal name abbreviation using the abbreviso API.
