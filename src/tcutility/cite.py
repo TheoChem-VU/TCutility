@@ -39,6 +39,7 @@ def cite(doi: str, style: str = 'wiley', mode='html') -> str:
 	Args:
 		doi: the article DOI to generate a citation for.
 		style: the style formatting to use. Can be ``['wiley', 'acs', 'rsc']``.
+		mode: the formatting mode. Can be ``['html', 'latex', 'plain']``.
 	'''
 	# check if the style was correctly given
 	spell_check.check(style, ['wiley', 'acs', 'rsc'])
