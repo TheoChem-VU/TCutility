@@ -104,6 +104,9 @@ methodology_references = {
     'becke grid': [],
     'vibrational analysis': [],
     'irc': [],
+    'd3': ['10.1063/1.3382344'],
+    'd3bj': ['10.1002/jcc.21759'],
+    'd4': ['10.1063/1.5090222'],
 }
 
 
