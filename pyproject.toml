@@ -13,7 +13,7 @@ name = "TCutility"
 # Original authors
 authors = [{ name = "TheoCheM group" }]
 dependencies = [
-  "lxml==4.6.2",
+  "lxml==5.2.0",
   "gitpython",
   "numpy>=1.20.0",
   "matplotlib>=3.4.0",
