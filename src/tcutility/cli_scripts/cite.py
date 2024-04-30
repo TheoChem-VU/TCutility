@@ -4,7 +4,9 @@ from tcutility import cite, data, spell_check
 import os
 import docx
 from docx.shared import Pt
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 import htmldocx
+from math import ceil
 
 
 class Docx:
@@ -48,15 +50,25 @@ class Docx:
 def create_subparser(parent_parser: argparse.ArgumentParser):
     desc = "Generate citations for various things. Currently supports generating citations for functionals, basis-sets, programs, methodologies and DOIs."
     subparser = parent_parser.add_parser('cite', help=desc, description=desc)
-    subparser.add_argument("-s", "--style",
-                           help="set the citation style.",
-                           type=str,
-                           default="wiley",
-                           choices=["wiley", "acs", "rsc"])
-    subparser.add_argument("object",
+    subparser.add_argument("objects",
                            type=str,
                            help="the objects to generate citations for. This can be functionals, basis-sets, programs, methodologies or DOIs.",
                            nargs='*')
+    subparser.add_argument("-w", "--wiley",
+                           help="set the citation style to Wiley.",
+                           dest='style',
+                           action='store_const',
+                           const='wiley')
+    subparser.add_argument("-a", "--acs",
+                           help="set the citation style to ACS.",
+                           dest='style',
+                           action='store_const',
+                           const='acs')
+    subparser.add_argument("-r", "--rsc",
+                           help="set the citation style to RSC.",
+                           dest='style',
+                           action='store_const',
+                           const='rsc')
     subparser.add_argument("-o", "--output",
                            help="the output Word file to write the citations to.",
                            type=str,
