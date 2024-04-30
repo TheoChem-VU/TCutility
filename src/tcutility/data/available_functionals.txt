@@ -87,8 +87,10 @@ MetaGGA
 - TASKCC
 - revSCAN !libxc 																			[Lehtola2017][Marques2012][Mezei2018]
 - rSCAN !libxc 																				[Lehtola2017][Marques2012][Bartok2019]
+- rSCAN-D3(BJ), 'GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.47023427 PAR3=1.08859014 PAR4=5.73408312' !libxc 	[Lehtola2017][Marques2012][Bartok2019][Grimme2011]
 - rSCAN-D4, 'GRIMME4 s6=1.0000 s8=0.87728975, a1=0.49116966, a2=5.75859346' !libxc 			[Lehtola2017][Marques2012][Bartok2019][Grimme2019][Ehlert2021]
 - r2SCAN !libxc 																			[Lehtola2017][Marques2012][Furness2020][Furness2020b]
+- r2SCAN-D3(BJ), 'GRIMME3 BJDAMP PAR1=1.0000 PAR2=0.49484001 PAR3=0.78981345 PAR4=5.73083694' !libxc 	[Lehtola2017][Marques2012][Furness2020][Furness2020b][Grimme2011]
 - r2SCAN-D4 !libxc 																			[Lehtola2017][Marques2012][Furness2020][Furness2020b][Grimme2019]
 - r2SCAN-3c 																				[Gasevic2022][Grimme2019]
 
