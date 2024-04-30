@@ -112,59 +112,92 @@ methodology_references = {
 
 
 doi_order = []
-def format_paragraph(title, dois):
-    paragraph = title + '<br>'
+def format_paragraph(dois, style):
+    paragraphs = []
     for doi in dois:
         if doi not in doi_order:
             doi_order.append(doi)
         try:
-            citation = cite.cite(doi, mode="plain")
+            citation = cite.cite(doi, style=style, mode="plain")
         except Exception as exp:
             print('\t' + str(exp))
             return
 
         print(f'  [{doi}] {citation}')
-        paragraph += f'[{doi_order.index(doi) + 1}] {cite.cite(doi, mode="html")}<br>'
-    return paragraph
+        paragraph = f'[{doi_order.index(doi) + 1}] {cite.cite(doi, style=style, mode="html")}'
+        paragraphs.append(paragraph)
+
+    return paragraphs
+
+
+def _print_rect_list(printables, spaces_before=0):
+    '''
+    This function prints a list of strings in a rectangle to the output.
+    This is similar to what the ls program does in unix.
+    '''
+    n_shell_col = os.get_terminal_size().columns
+    # we first have to determine the correct dimensions of our rectangle
+    for ncol in range(1, n_shell_col):
+        # the number of rows for the number of columns
+        nrows = ceil(len(printables) / ncol)
+        # we then get what the rectangle would be
+        mat = [printables[i * ncol: (i+1) * ncol] for i in range(nrows)]
+        # and determine for each column the width
+        col_lens = [max([len(row[i]) for row in mat if i < len(row)] + [0]) for i in range(ncol)]
+        # then calculate the length of each row based on the column lengths
+        # we use a spacing of 2 spaces between each column
+        row_len = spaces_before + sum(col_lens) + 2 * len(col_lens) - 2
+
+        # if the rows are too big we exit the loop
+        if row_len > n_shell_col:
+            break
+
+        # store the previous loops results
+        prev_col_lens = col_lens
+        prev_mat = mat
+
+    # then print the strings with the right column widths
+    for row in prev_mat:
+        print(" " * spaces_before + "  ".join([x.ljust(col_len) for x, col_len in zip(row, prev_col_lens)]))
 
 
 def main(args: argparse.Namespace):
     available_citations = list(program_references.keys()) + list(methodology_references.keys()) + list(data.functionals.functionals.keys())
     if args.list:
-        print('Programs:')
-        for prog, dois in program_references.items():
-            if len(dois) == 0:
-                continue
-            print('\t' + prog)
+        print('OBJECTS WITH AVAILABLE REFERENCES:')
+        print('    Programs')
+        print('    ========')
+        printables = [prog for prog, dois in program_references.items() if len(dois) > 0]
+        _print_rect_list(printables, 4)
+        print()
 
-        print('Methodology:')
-        for meth, dois in methodology_references.items():
-            if len(dois) == 0:
-                continue
-            print('\t' + meth)
+        print('    Methodology')
+        print('    ===========')
+        printables = [meth for meth, dois in methodology_references.items() if len(dois) > 0]
+        _print_rect_list(printables, 4)
+        print()
 
-        print('Functionals:')
-        for xc, xc_info in data.functionals.functionals.items():
-            if len(xc_info.dois) == 0:
-                continue
-            print('\t' + xc_info.path_safe_name)
+        print('    Functionals')
+        print('    ===========')
+        printables = [xc_info.path_safe_name for xc, xc_info in data.functionals.functionals.items() if len(xc_info.dois) > 0]
+        _print_rect_list(printables, 4)
+        print()
 
         return
 
-
-
-    objs = args.object
+    objs = args.objects
     if len(objs) == 1 and os.path.isfile(objs[0]):
         with open(objs[0]) as inp:
             objs = [line.strip() for line in inp.readlines()]
 
     with Docx(file=args.output, overwrite=True) as out:
         for obj in objs:
-            paragraph = None            # try to format a functional
+            paragraphs = None            # try to format a functional
             try:
                 xc_info = data.functionals.get(obj)
                 print('Functional', obj)
-                paragraph = format_paragraph(f'XC-Functional: <b>{xc_info.name_html}</b>', xc_info.dois)
+                paragraph_title = f'XC-Functional: <b>{xc_info.name_html}</b>'
+                paragraphs = format_paragraph(xc_info.dois, style=args.style)
 
             except KeyError:
                 pass
@@ -172,19 +205,22 @@ def main(args: argparse.Namespace):
             # if its not a functional we look in the programs
             if obj.lower() in program_references:
                 print('Program', obj)
-                paragraph = format_paragraph(f'Program: <b>{obj}</b>', program_references[obj.lower()])
+                paragraph_title = f'Program: <b>{obj}</b>'
+                paragraphs = format_paragraph(program_references[obj.lower()], style=args.style)
 
             # and the methodologies
             if obj.lower() in methodology_references:
                 print('Methodology', obj)
-                paragraph = format_paragraph(f'Method: <b>{obj}</b>', methodology_references[obj.lower()])
+                paragraph_title = f'Method: <b>{obj}</b>'
+                paragraphs = format_paragraph(methodology_references[obj.lower()], style=args.style)
 
-            # if we still dont have a paragraph we check if it is a DOI
-            if paragraph is None and obj.startswith('10.'):
+            # if we still dont have a paragraphs we check if it is a DOI
+            if paragraphs is None and obj.startswith('10.'):
                 print('DOI')
-                paragraph = format_paragraph(f'DOI: <b>{obj}</b>', [obj])
+                paragraph_title = f'DOI: <b>{obj}</b>'
+                paragraphs = format_paragraph([obj], style=args.style)
 
-            if paragraph is None:
+            if paragraphs is None:
                 spell_check.make_suggestion(obj, available_citations, ignore_case=True)
                 continue
 
