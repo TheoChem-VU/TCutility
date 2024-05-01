@@ -48,14 +48,44 @@ class Docx:
 
 
 def create_subparser(parent_parser: argparse.ArgumentParser):
-    desc = "Generate citations for various things. Currently supports generating citations for functionals, basis-sets, programs, methodologies and DOIs."
+    desc = """Generate citations for objects. Currently supports generating citations for functionals, basis-sets, programs, methodologies and DOIs.
+This program also generates, and if possible, opens a Word document that contains the formatted citations. 
+Multiple objects can be given separated by spaces.
+If the supplied object is also a file path it will read each line as a separate object.
+
+Example usage:
+
+.. code-block::
+
+    > tc cite ADF
+    Program ORCA
+      [10.1002/wcms.81] F. Neese, WIREs Comput. Mol. Sci. 2011, 2, 73-78.
+      [10.1063/5.0004608] F. Neese, F. Wennmohs, U. Becker, C. Riplinger, J. Chem. Phys. 2020, 152.
+      [10.1002/wcms.1606] F. Neese, WIREs Comput. Mol. Sci. 2022, 12.
+
+    > tc cite BP86 BLYP OLYP OPBE D3BJ
+    Functional BP86
+      [10.1103/PhysRevA.38.3098] A. D. Becke, Phys. Rev. A 1988, 38, 3098-3100.
+      [10.1103/PhysRevB.33.8800] J. P. Perdew, W. Yue, Phys. Rev. B 1986, 33, 8800-8802.
+    Functional BLYP
+      [10.1103/PhysRevA.38.3098] A. D. Becke, Phys. Rev. A 1988, 38, 3098-3100.
+      [10.1103/PhysRevB.37.785] C. Lee, W. Yang, R. G. Parr, Phys. Rev. B 1988, 37, 785-789.
+    Functional OLYP
+      [10.1080/00268970010018431] N. C. Handy, A. J. Cohen, Mol. Phys. 2001, 99, 403-412.
+      [10.1103/PhysRevB.37.785] C. Lee, W. Yang, R. G. Parr, Phys. Rev. B 1988, 37, 785-789.
+    Functional OPBE
+      [10.1080/00268970010018431] N. C. Handy, A. J. Cohen, Mol. Phys. 2001, 99, 403-412.
+      [10.1103/PhysRevLett.77.3865] J. P. Perdew, K. Burke, M. Ernzerhof, Phys. Rev. Lett. 1996, 77, 3865-3868.
+    Methodology D3BJ
+      [10.1002/jcc.21759] S. Grimme, S. Ehrlich, L. Goerigk, J. Comput. Chem. 2011, 32, 1456-1465.
+    """
     subparser = parent_parser.add_parser('cite', help=desc, description=desc)
     subparser.add_argument("objects",
                            type=str,
                            help="the objects to generate citations for. This can be functionals, basis-sets, programs, methodologies or DOIs.",
                            nargs='*')
     subparser.add_argument("-w", "--wiley",
-                           help="set the citation style to Wiley.",
+                           help="set the citation style to Wiley. This is the default style.",
                            dest='style',
                            action='store_const',
                            const='wiley')
@@ -133,6 +163,7 @@ def format_paragraph(dois, style):
             citation = cite.cite(doi, style=style, mode="plain")
         except Exception as exp:
             print('\t' + str(exp))
+            raise
             return
 
         print(f'  [{doi}] {citation}')
@@ -209,7 +240,7 @@ def main(args: argparse.Namespace):
                 xc_info = data.functionals.get(obj)
                 print('Functional', obj)
                 paragraph_title = f'XC-Functional: <b>{xc_info.name_html}</b>'
-                paragraphs = format_paragraph(xc_info.dois, style=args.style)
+                paragraphs = format_paragraph(xc_info.dois, style=args.style or 'wiley')
 
             except KeyError:
                 pass
@@ -218,19 +249,19 @@ def main(args: argparse.Namespace):
             if obj.lower() in program_references:
                 print('Program', obj)
                 paragraph_title = f'Program: <b>{obj}</b>'
-                paragraphs = format_paragraph(program_references[obj.lower()], style=args.style)
+                paragraphs = format_paragraph(program_references[obj.lower()], style=args.style or 'wiley')
 
             # and the methodologies
             if obj.lower() in methodology_references:
                 print('Methodology', obj)
                 paragraph_title = f'Method: <b>{obj}</b>'
-                paragraphs = format_paragraph(methodology_references[obj.lower()], style=args.style)
+                paragraphs = format_paragraph(methodology_references[obj.lower()], style=args.style or 'wiley')
 
             # if we still dont have a paragraphs we check if it is a DOI
             if paragraphs is None and obj.startswith('10.'):
                 print('DOI')
                 paragraph_title = f'DOI: <b>{obj}</b>'
-                paragraphs = format_paragraph([obj], style=args.style)
+                paragraphs = format_paragraph([obj], style=args.style or 'wiley')
 
             if paragraphs is None:
                 spell_check.make_suggestion(obj, available_citations, ignore_case=True)
