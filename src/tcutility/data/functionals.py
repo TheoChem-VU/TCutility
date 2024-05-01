@@ -200,7 +200,7 @@ def get_available_functionals():
         if not line.startswith('- '):
             curr_category = line.strip()
             continue
-
+ 
         line = line.split('#')[0].strip()
 
         # store data about the func in a dict
@@ -235,7 +235,8 @@ def get_available_functionals():
 
         # check if custom params were given for dispersion
         if 'GRIMME' in line:
-            func.disp_params = line.split('!')[0].split(',')[1].strip().strip("'")
+            # func.disp_params = line.split('!')[0].split(',')[1].strip().strip("'")
+            func.disp_params = re.findall(r"'(.*)'", line)
 
         func.use_libxc = '!libxc' in line
         func.includes_disp = '!includesdisp' in line
