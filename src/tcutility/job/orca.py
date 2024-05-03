@@ -12,6 +12,7 @@ j = os.path.join
 class ORCAJob(Job):
     def __init__(self, use_tmpdir=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.settings = results.Result()
         self.settings.main = set()
         self._charge = 0
         self._multiplicity = 1
