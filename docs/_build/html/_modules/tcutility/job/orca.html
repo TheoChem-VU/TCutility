@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.job.orca &#8212; TCutility v0.10.4 documentation</title>
+    <title>tcutility.job.orca &#8212; TCutility v0.12.0 documentation</title>
   
   
   
@@ -36,8 +36,8 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../_static/documentation_options.js?v=d53db652"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/documentation_options.js?v=cae63847"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
@@ -118,7 +118,7 @@
     }
 </style>
 <div class="myDiv">
-    <a href="./index.html">
+    <a href="/index.html">
         <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
         TCutility
     </a>
@@ -255,10 +255,12 @@
                 <article class="bd-article">
                   
   <h1>Source code for tcutility.job.orca</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">results</span>
+<span></span><span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">ensure_list</span><span class="p">,</span> <span class="n">spell_check</span><span class="p">,</span> <span class="n">slurm</span>
 <span class="kn">from</span> <span class="nn">tcutility.job.generic</span> <span class="kn">import</span> <span class="n">Job</span>
 <span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">scm</span> <span class="kn">import</span> <span class="n">plams</span>
 
 
 <span class="n">j</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
@@ -267,29 +269,86 @@
 <div class="viewcode-block" id="ORCAJob">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.orca.ORCAJob">[docs]</a>
 <span class="k">class</span> <span class="nc">ORCAJob</span><span class="p">(</span><span class="n">Job</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_tmpdir</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;LARGEPRINT&#39;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_charge</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_multiplicity</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ghosts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">processes</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">orca_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_tmpdir</span> <span class="o">=</span> <span class="n">use_tmpdir</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">single_point</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__casefold_main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="o">.</span><span class="n">casefold</span><span class="p">()</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="p">}</span>
+<div class="viewcode-block" id="ORCAJob.main">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.orca.ORCAJob.main">[docs]</a>
+    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Add main options for this ORCA calculation, they will be added to the input prepended with exclamation marks.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            val: the main options to add. This can be a string or a list of strings with the main options.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># we want to split a string such as &#39;CC-pVTZ Opt CCSD(T)&#39; into loose parts and add them separately</span>
+        <span class="c1"># this should always return a list</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="c1"># add each </span>
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">val</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ORCAJob.remove_main">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.orca.ORCAJob.remove_main">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+        <span class="n">lower_main</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="o">.</span><span class="n">casefold</span><span class="p">():</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">casefold</span><span class="p">()</span> <span class="ow">in</span> <span class="n">lower_main</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">lower_main</span><span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">casefold</span><span class="p">()])</span></div>
+
 
     <span class="k">def</span> <span class="nf">__remove_task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__casefold_main</span><span class="p">()</span>
-        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">task</span><span class="p">)</span> <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;sp&#39;</span><span class="p">,</span> <span class="s1">&#39;opt&#39;</span><span class="p">,</span> <span class="s1">&#39;tsopt&#39;</span><span class="p">,</span> <span class="s1">&#39;neb-ts&#39;</span><span class="p">]]</span>
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_main</span><span class="p">(</span><span class="n">task</span><span class="p">)</span> <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;sp&#39;</span><span class="p">,</span> <span class="s1">&#39;opt&#39;</span><span class="p">,</span> <span class="s1">&#39;optts&#39;</span><span class="p">,</span> <span class="s1">&#39;neb-ts&#39;</span><span class="p">]]</span>
+
+<div class="viewcode-block" id="ORCAJob.method">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.orca.ORCAJob.method">[docs]</a>
+    <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+        <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;HF&#39;</span><span class="p">,</span> <span class="s1">&#39;MP2&#39;</span><span class="p">,</span> <span class="s1">&#39;CCSD&#39;</span><span class="p">,</span> <span class="s1">&#39;CCSD(T)&#39;</span><span class="p">,</span> <span class="s1">&#39;CCSDT&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method</span> <span class="o">=</span> <span class="n">method</span></div>
+
+
+<div class="viewcode-block" id="ORCAJob.reference">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.orca.ORCAJob.reference">[docs]</a>
+    <span class="k">def</span> <span class="nf">reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">):</span>
+        <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;UNO&#39;</span><span class="p">,</span> <span class="s1">&#39;UHF&#39;</span><span class="p">,</span> <span class="s1">&#39;UKS&#39;</span><span class="p">,</span> <span class="s1">&#39;RHF&#39;</span><span class="p">,</span> <span class="s1">&#39;RKS&#39;</span><span class="p">,</span> <span class="s1">&#39;ROHF&#39;</span><span class="p">,</span> <span class="s1">&#39;ROKS&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method</span> <span class="o">=</span> <span class="n">ref</span></div>
+
+
+<div class="viewcode-block" id="ORCAJob.QRO">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.orca.ORCAJob.QRO">[docs]</a>
+    <span class="k">def</span> <span class="nf">QRO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">MDCI</span><span class="o">.</span><span class="n">UseQROs</span> <span class="o">=</span> <span class="n">enable</span></div>
+
+
+<div class="viewcode-block" id="ORCAJob.basis_set">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.orca.ORCAJob.basis_set">[docs]</a>
+    <span class="k">def</span> <span class="nf">basis_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="ORCAJob.single_point">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.orca.ORCAJob.single_point">[docs]</a>
     <span class="k">def</span> <span class="nf">single_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__remove_task</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;sp&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;SP&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ORCAJob.transition_state">
@@ -297,7 +356,7 @@
     <span class="k">def</span> <span class="nf">transition_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__remove_task</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;optts&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;OptTS&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ORCAJob.optimization">
@@ -305,21 +364,20 @@
     <span class="k">def</span> <span class="nf">optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__remove_task</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vibrations</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;opt&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;Opt&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ORCAJob.vibrations">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.orca.ORCAJob.vibrations">[docs]</a>
     <span class="k">def</span> <span class="nf">vibrations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">numerical</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__casefold_main</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="s1">&#39;numfreq&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="s1">&#39;freq&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_main</span><span class="p">(</span><span class="s1">&#39;NumFreq&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_main</span><span class="p">(</span><span class="s1">&#39;Freq&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">enable</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">if</span> <span class="n">numerical</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;numfreq&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;NumFreq&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;freq&#39;</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;Freq&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ORCAJob.charge">
@@ -331,13 +389,19 @@
 <div class="viewcode-block" id="ORCAJob.spin_polarization">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.orca.ORCAJob.spin_polarization">[docs]</a>
     <span class="k">def</span> <span class="nf">spin_polarization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_multiplicity</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">val</span> <span class="o">+</span> <span class="mi">1</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_multiplicity</span> <span class="o">=</span> <span class="n">val</span> <span class="o">+</span> <span class="mi">1</span></div>
 
 
 <div class="viewcode-block" id="ORCAJob.multiplicity">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.orca.ORCAJob.multiplicity">[docs]</a>
     <span class="k">def</span> <span class="nf">multiplicity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_multiplicity</span> <span class="o">=</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="ORCAJob.ghost_atoms">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.orca.ORCAJob.ghost_atoms">[docs]</a>
+    <span class="k">def</span> <span class="nf">ghost_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ghosts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ensure_list</span><span class="p">(</span><span class="n">indices</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="ORCAJob.get_memory_usage">
@@ -357,13 +421,33 @@
         <span class="k">return</span> <span class="n">mem</span><span class="p">,</span> <span class="n">ntasks</span></div>
 
 
+<div class="viewcode-block" id="ORCAJob.molecule">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.orca.ORCAJob.molecule">[docs]</a>
+    <span class="k">def</span> <span class="nf">molecule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">]],</span> <span class="n">natoms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Add a molecule to this calculation in various formats.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mol: the molecule to read, can be a path (str). If the path exists already we read it. If it does not exist yet, it will be read in later. mol can also be a plams.Molecule object or a single or a list of plams.Atom objects.</span>
+<span class="sd">            natoms: If the molecule is supplied as a path you should also give the number of atoms.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">natoms</span> <span class="o">=</span> <span class="n">natoms</span></div>
+
+
 <div class="viewcode-block" id="ORCAJob.get_input">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.orca.ORCAJob.get_input">[docs]</a>
     <span class="k">def</span> <span class="nf">get_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># set the correct memory usage and processes</span>
         <span class="n">mem</span><span class="p">,</span> <span class="n">ntasks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_memory_usage</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">ntasks</span> <span class="ow">and</span> <span class="n">mem</span><span class="p">:</span>
-            <span class="n">natoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">natoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ghosts</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;natoms&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">natoms</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You set the molecule as a path and did not supply the number of atoms.&#39;</span><span class="p">)</span>
+                <span class="n">natoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">natoms</span>
+
             <span class="n">ntasks</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ntasks</span><span class="p">,</span> <span class="p">(</span><span class="n">natoms</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">PAL</span><span class="o">.</span><span class="n">nprocs</span> <span class="o">=</span> <span class="n">ntasks</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">maxcore</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mem</span> <span class="o">/</span> <span class="n">ntasks</span> <span class="o">*</span> <span class="mf">0.75</span><span class="p">)</span>
@@ -392,12 +476,15 @@
         <span class="n">ret</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_molecule_path</span><span class="p">:</span>
-            <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;* xyz </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_charge</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_multiplicity</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_molecule_path</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;* xyzfile </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_charge</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_multiplicity</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_molecule_path</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;* xyz </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_charge</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_multiplicity</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
-            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="p">:</span>
-                <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;    </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="si">:</span><span class="s1">2</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">x</span><span class="si">:</span><span class="s1"> &gt;13f</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">y</span><span class="si">:</span><span class="s1"> &gt;13f</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">z</span><span class="si">:</span><span class="s1"> &gt;13f</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ghosts</span><span class="p">:</span>
+                    <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;    </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="si">:</span><span class="s1">2</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">x</span><span class="si">:</span><span class="s1"> &gt;13f</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">y</span><span class="si">:</span><span class="s1"> &gt;13f</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">z</span><span class="si">:</span><span class="s1"> &gt;13f</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;    </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="si">:</span><span class="s1">3</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">x</span><span class="si">:</span><span class="s1"> &gt;13f</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">y</span><span class="si">:</span><span class="s1"> &gt;13f</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">z</span><span class="si">:</span><span class="s1"> &gt;13f</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
             <span class="n">ret</span> <span class="o">+=</span> <span class="s1">&#39;*</span><span class="se">\n</span><span class="s1">&#39;</span>
 
         <span class="k">return</span> <span class="n">ret</span></div>
@@ -405,14 +492,14 @@
 
     <span class="k">def</span> <span class="nf">_setup_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orca_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orca_path</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_mode</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">orca_path</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s1">&#39;which&#39;</span><span class="p">,</span> <span class="s1">&#39;orca&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">sp</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Could not find the orca path. Please set it manually.&#39;</span><span class="p">)</span>
-            <span class="k">return</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find the orca path. Set the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">.orca_path attribute to add it. Now setting it to &quot;$(which orca)&quot;, make sure the orca executable is findable.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">orca_path</span> <span class="o">=</span> <span class="s1">&#39;$(which orca)&#39;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_molecule_path</span><span class="p">:</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;You did not supply a molecule for this job. Call the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="si">}</span><span class="s1">.molecule method to add one.&#39;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;You did not supply a molecule for this job. Call the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">.molecule method to add one.&#39;</span><span class="p">)</span>
             <span class="k">return</span>
 
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -420,19 +507,45 @@
             <span class="n">inp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_input</span><span class="p">())</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runfile_path</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">runf</span><span class="p">:</span>
-            <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/sh</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># the shebang is not written by default by ADF</span>
+            <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/sh</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_preambles</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">orca_path</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">inputfile_path</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            
+            <span class="c1"># when using temporary directories for SLURM we need to do some extra setup</span>
+            <span class="c1"># this is mainly moving the calculation directory to the TMPDIR location</span>
+            <span class="c1"># and after the jobs is finished we copy back the results and remove the TMPDIR</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_tmpdir</span> <span class="ow">and</span> <span class="n">slurm</span><span class="o">.</span><span class="n">has_slurm</span><span class="p">():</span>
+                <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;export TMPDIR=&quot;$TMPDIR/$SLURM_JOB_ID&quot;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;mkdir -p $TMPDIR</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;cd $TMPDIR</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cp </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">inputfile_path</span><span class="si">}</span><span class="s1"> $TMPDIR</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+                <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">orca_path</span><span class="si">}</span><span class="s1"> $TMPDIR/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.in</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+                <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cp $TMPDIR/* </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;rm -rf $TMPDIR</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">orca_path</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">inputfile_path</span><span class="si">}</span><span class="s1">.in</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
             <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_postambles</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="kc">True</span></div>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">output_mol_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        The default file path for output molecules when running ADF calculations. It will not be created for singlepoint calculations.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s1">&#39;OPT.xyz&#39;</span><span class="p">)</span></div>
+
+
 
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">job</span> <span class="o">=</span> <span class="n">ORCAJob</span><span class="p">()</span>
-    <span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;water.xyz&#39;</span><span class="p">)</span>
-    <span class="n">job</span><span class="o">.</span><span class="n">_setup_job</span><span class="p">()</span>
+    <span class="n">job</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="s1">&#39;OPT cc-pVTZ&#39;</span><span class="p">)</span>
+    <span class="n">job</span><span class="o">.</span><span class="n">remove_main</span><span class="p">(</span><span class="s1">&#39;OPT OPTTS NEB&#39;</span><span class="p">)</span>
 </pre></div>
 
                 </article>
@@ -485,7 +598,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

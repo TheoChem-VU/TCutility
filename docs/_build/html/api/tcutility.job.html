@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.job package &#8212; TCutility v0.10.4 documentation</title>
+    <title>tcutility.job package &#8212; TCutility v0.12.0 documentation</title>
   
   
   
@@ -37,8 +37,8 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=d53db652"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/documentation_options.js?v=cae63847"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -121,7 +121,7 @@
     }
 </style>
 <div class="myDiv">
-    <a href="./index.html">
+    <a href="/index.html">
         <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
         TCutility
     </a>
@@ -363,6 +363,21 @@ We use the following values:</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.adf.ADFJob.occupations">
+<span class="sig-name descname"><span class="pre">occupations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFJob.occupations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFJob.occupations" title="Link to this definition">#</a></dt>
+<dd><p>Set the orbital filling strategy for ADF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>strategy</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the name of the filling strategy. This can contain multiple of the options allowed.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The SCM documentation can be found at <a class="reference external" href="https://www.scm.com/doc/ADF/Input/Electronic_Configuration.html#aufbau-smearing-freezing">https://www.scm.com/doc/ADF/Input/Electronic_Configuration.html#aufbau-smearing-freezing</a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.adf.ADFJob.quality">
 <span class="sig-name descname"><span class="pre">quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Good'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFJob.quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFJob.quality" title="Link to this definition">#</a></dt>
 <dd><p>Set the numerical quality of the calculation.</p>
@@ -523,10 +538,68 @@ This will automatically set the correct fragment molecules, names, charges and s
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.adf.ADFFragmentJob.remove_virtuals">
+<span class="sig-name descname"><span class="pre">remove_virtuals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subspecies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nremove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFFragmentJob.remove_virtuals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFFragmentJob.remove_virtuals" title="Link to this definition">#</a></dt>
+<dd><p>Remove virtual orbitals from the fragments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frag</strong> – the fragment to remove virtuals from. If set to <code class="docutils literal notranslate"><span class="pre">None</span></code> we remove all virtual orbitals of all fragments.</p></li>
+<li><p><strong>subspecies</strong> – the symmetry subspecies to remove virtuals from. If set to <code class="docutils literal notranslate"><span class="pre">None</span></code> we assume we have <code class="docutils literal notranslate"><span class="pre">A</span></code> subspecies.</p></li>
+<li><p><strong>nremove</strong> – the number of virtuals to remove. If set to <code class="docutils literal notranslate"><span class="pre">None</span></code> we will guess the number of virtuals based on the basis-set chosen.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.adf.ADFFragmentJob.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFFragmentJob.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFFragmentJob.run" title="Link to this definition">#</a></dt>
 <dd><p>Run the <code class="docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code>. This involves setting up the calculations for each fragment as well as the parent job.
 It will also submit a calculation with the SCF iterations set to 0 in order to facilitate investigation of the field effects using PyOrb.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tcutility.job.adf.DensfJob">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DensfJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#DensfJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.DensfJob" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.adf.DensfJob.gridsize">
+<span class="sig-name descname"><span class="pre">gridsize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#DensfJob.gridsize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.DensfJob.gridsize" title="Link to this definition">#</a></dt>
+<dd><p>Set the size of the grid to be used by Densf.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> – either “coarse”, “medium”, “fine”. Defaults to “medium”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.adf.DensfJob.orbital">
+<span class="sig-name descname"><span class="pre">orbital</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orbital</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#DensfJob.orbital"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.DensfJob.orbital" title="Link to this definition">#</a></dt>
+<dd><p>Add a PyOrb orbital for Densf to calculate.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tcutility.job.adf.DensfJob.output_cub_paths">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_cub_paths</span></span><a class="headerlink" href="#tcutility.job.adf.DensfJob.output_cub_paths" title="Link to this definition">#</a></dt>
+<dd><p>The output cube file paths that will be/were calculated by this job.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.adf.DensfJob.can_skip">
+<span class="sig-name descname"><span class="pre">can_skip</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#DensfJob.can_skip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.DensfJob.can_skip" title="Link to this definition">#</a></dt>
+<dd><p>Check whether the job can be skipped. We check this by loading the calculation and checking if the job status was fatal.
+Fatal in this case means that the job failed, canceled or could not be found. In those cases we want to run the job.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method works for the <a class="reference internal" href="#tcutility.job.adf.ADFJob" title="tcutility.job.adf.ADFJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADFJob</span></code></a>, <a class="reference internal" href="#tcutility.job.adf.ADFFragmentJob" title="tcutility.job.adf.ADFFragmentJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code></a>,
+<a class="reference internal" href="#tcutility.job.dftb.DFTBJob" title="tcutility.job.dftb.DFTBJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">DFTBJob</span></code></a> and <a class="reference internal" href="#tcutility.job.orca.ORCAJob" title="tcutility.job.orca.ORCAJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ORCAJob</span></code></a> objects, but not
+yet for <a class="reference internal" href="#tcutility.job.crest.CRESTJob" title="tcutility.job.crest.CRESTJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">CRESTJob</span></code></a> and <a class="reference internal" href="#tcutility.job.crest.QCGJob" title="tcutility.job.crest.QCGJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">QCGJob</span></code></a>. For the latter objects the job will always be rerun.
+This will be fixed in a later version of TCutility.</p>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -536,7 +609,7 @@ It will also submit a calculation with the SCF iterations set to 0 in order to f
 <span id="tcutility-job-ams-module"></span><h2>tcutility.job.ams module<a class="headerlink" href="#module-tcutility.job.ams" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="tcutility.job.ams.AMSJob">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AMSJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AMSJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">base_jobs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_for_finish</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_on_finish</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a></p>
 <p>This is the AMS base job which will serve as the parent class for ADFJob, DFTBJob and the future BANDJob.
 It holds all methods related to changing the settings at the AMS level. It also handles preparing the jobs, e.g. writing runfiles and inputs.</p>
@@ -651,6 +724,20 @@ Use this option when you experience a lot of numerical noise.</p></li>
 <dt class="sig sig-object py" id="tcutility.job.ams.AMSJob.charge">
 <span class="sig-name descname"><span class="pre">charge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob.charge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob.charge" title="Link to this definition">#</a></dt>
 <dd><p>Set the charge of the system.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.ams.AMSJob.electric_field">
+<span class="sig-name descname"><span class="pre">electric_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob.electric_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob.electric_field" title="Link to this definition">#</a></dt>
+<dd><p>Set an electric field for this system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>direction</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span>) – the vector with the direction and strength of the electric field.</p></li>
+<li><p><strong>magnitude</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – if given, the direction will be normalized and magnitude will be used as the field strength.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
@@ -849,7 +936,7 @@ This class supports all methods of the parent <a class="reference internal" href
 <span id="tcutility-job-generic-module"></span><h2>tcutility.job.generic module<a class="headerlink" href="#module-tcutility.job.generic" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="tcutility.job.generic.Job">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_for_finish</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/generic.html#Job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.generic.Job" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">base_jobs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_for_finish</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_on_finish</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/generic.html#Job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.generic.Job" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This is the base Job class used to build more advanced classes such as <a class="reference internal" href="#tcutility.job.ams.AMSJob" title="tcutility.job.ams.AMSJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">AMSJob</span></code></a> and <a class="reference internal" href="#tcutility.job.orca.ORCAJob" title="tcutility.job.orca.ORCAJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ORCAJob</span></code></a>.
 The base class contains an empty <a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> object that holds the settings.
@@ -861,6 +948,7 @@ It also provides <code class="xref py py-meth docutils literal notranslate"><spa
 <li><p><strong>test_mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – whether to enable the testing mode. If enabled, the job will be setup like normally, but the running step is skipped. This is useful if you want to know what the job settings look like before running the real calculations.</p></li>
 <li><p><strong>overwrite</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – whether to overwrite a previously run job in the same working directory.</p></li>
 <li><p><strong>wait_for_finish</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – whether to wait for this job to finish running before continuing your runscript.</p></li>
+<li><p><strong>delete_on_finish</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – whether to remove the workdir for this job after it is finished running.</p></li>
 </ul>
 </dd>
 </dl>
@@ -883,7 +971,9 @@ This will be fixed in a later version of TCutility.</p>
 <span class="sig-name descname"><span class="pre">sbatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/generic.html#Job.sbatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.generic.Job.sbatch" title="Link to this definition">#</a></dt>
 <dd><p>Change slurm settings, for example, to change the partition or change the number of cores to use.
 The arguments are the same as you would use for sbatch (<a class="reference external" href="https://slurm.schedmd.com/sbatch.html">see sbatch manual</a>). E.g. to change the partition to ‘tc’ call:</p>
-<p><code class="docutils literal notranslate"><span class="pre">job.sbatch(p='tc')</span></code> or <code class="docutils literal notranslate"><span class="pre">job.sbatch(partition='tc')</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">job.sbatch(p='tc')</span></code> or <code class="docutils literal notranslate"><span class="pre">job.sbatch(partition='tc')</span></code>.</p>
+<p>Flags can be set as arguments with a boolean to enable or disable them:</p>
+<p><code class="docutils literal notranslate"><span class="pre">job.sbatch(exclusive=True)</span></code> will set the <code class="docutils literal notranslate"><span class="pre">--exclusive</span></code> flag.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Note that some sbatch options, such as <code class="docutils literal notranslate"><span class="pre">--job-name</span></code> contain a dash, which cannot be used in Python arguments.
@@ -981,6 +1071,12 @@ E.g. for ADF it will be output.xyz in the workdir for optimization jobs.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.generic.Job.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/generic.html#Job.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.generic.Job.copy" title="Link to this definition">#</a></dt>
+<dd><p>Make and return a copy of this object.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -1012,8 +1108,44 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 <span id="tcutility-job-orca-module"></span><h2>tcutility.job.orca module<a class="headerlink" href="#module-tcutility.job.orca" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="tcutility.job.orca.ORCAJob">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ORCAJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/orca.html#ORCAJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.orca.ORCAJob" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ORCAJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_tmpdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/orca.html#ORCAJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.orca.ORCAJob" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.orca.ORCAJob.main">
+<span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/orca.html#ORCAJob.main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.orca.ORCAJob.main" title="Link to this definition">#</a></dt>
+<dd><p>Add main options for this ORCA calculation, they will be added to the input prepended with exclamation marks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>val</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</span>) – the main options to add. This can be a string or a list of strings with the main options.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.orca.ORCAJob.remove_main">
+<span class="sig-name descname"><span class="pre">remove_main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/orca.html#ORCAJob.remove_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.orca.ORCAJob.remove_main" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.orca.ORCAJob.method">
+<span class="sig-name descname"><span class="pre">method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/orca.html#ORCAJob.method"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.orca.ORCAJob.method" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.orca.ORCAJob.reference">
+<span class="sig-name descname"><span class="pre">reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/orca.html#ORCAJob.reference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.orca.ORCAJob.reference" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.orca.ORCAJob.QRO">
+<span class="sig-name descname"><span class="pre">QRO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/orca.html#ORCAJob.QRO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.orca.ORCAJob.QRO" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.orca.ORCAJob.basis_set">
+<span class="sig-name descname"><span class="pre">basis_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/orca.html#ORCAJob.basis_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.orca.ORCAJob.basis_set" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.orca.ORCAJob.single_point">
 <span class="sig-name descname"><span class="pre">single_point</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/orca.html#ORCAJob.single_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.orca.ORCAJob.single_point" title="Link to this definition">#</a></dt>
@@ -1050,14 +1182,39 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.orca.ORCAJob.ghost_atoms">
+<span class="sig-name descname"><span class="pre">ghost_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/orca.html#ORCAJob.ghost_atoms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.orca.ORCAJob.ghost_atoms" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.orca.ORCAJob.get_memory_usage">
 <span class="sig-name descname"><span class="pre">get_memory_usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/orca.html#ORCAJob.get_memory_usage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.orca.ORCAJob.get_memory_usage" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.orca.ORCAJob.molecule">
+<span class="sig-name descname"><span class="pre">molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">natoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/orca.html#ORCAJob.molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.orca.ORCAJob.molecule" title="Link to this definition">#</a></dt>
+<dd><p>Add a molecule to this calculation in various formats.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Atom</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Atom</span></code>]]</span>) – the molecule to read, can be a path (str). If the path exists already we read it. If it does not exist yet, it will be read in later. mol can also be a plams.Molecule object or a single or a list of plams.Atom objects.</p></li>
+<li><p><strong>natoms</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – If the molecule is supplied as a path you should also give the number of atoms.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.orca.ORCAJob.get_input">
 <span class="sig-name descname"><span class="pre">get_input</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/orca.html#ORCAJob.get_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.orca.ORCAJob.get_input" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tcutility.job.orca.ORCAJob.output_mol_path">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_mol_path</span></span><a class="headerlink" href="#tcutility.job.orca.ORCAJob.output_mol_path" title="Link to this definition">#</a></dt>
+<dd><p>The default file path for output molecules when running ADF calculations. It will not be created for singlepoint calculations.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1121,6 +1278,7 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.spin_polarization"><code class="docutils literal notranslate"><span class="pre">ADFJob.spin_polarization()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.multiplicity"><code class="docutils literal notranslate"><span class="pre">ADFJob.multiplicity()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.unrestricted"><code class="docutils literal notranslate"><span class="pre">ADFJob.unrestricted()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.occupations"><code class="docutils literal notranslate"><span class="pre">ADFJob.occupations()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.quality"><code class="docutils literal notranslate"><span class="pre">ADFJob.quality()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.SCF_convergence"><code class="docutils literal notranslate"><span class="pre">ADFJob.SCF_convergence()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.SCF"><code class="docutils literal notranslate"><span class="pre">ADFJob.SCF()</span></code></a></li>
@@ -1133,7 +1291,15 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.add_fragment"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.add_fragment()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.guess_fragments"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.guess_fragments()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.remove_virtuals"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.remove_virtuals()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.run"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.run()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.DensfJob"><code class="docutils literal notranslate"><span class="pre">DensfJob</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.DensfJob.gridsize"><code class="docutils literal notranslate"><span class="pre">DensfJob.gridsize()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.DensfJob.orbital"><code class="docutils literal notranslate"><span class="pre">DensfJob.orbital()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.DensfJob.output_cub_paths"><code class="docutils literal notranslate"><span class="pre">DensfJob.output_cub_paths</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.DensfJob.can_skip"><code class="docutils literal notranslate"><span class="pre">DensfJob.can_skip()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1148,6 +1314,7 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.vibrations"><code class="docutils literal notranslate"><span class="pre">AMSJob.vibrations()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.geometry_convergence"><code class="docutils literal notranslate"><span class="pre">AMSJob.geometry_convergence()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.charge"><code class="docutils literal notranslate"><span class="pre">AMSJob.charge()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.electric_field"><code class="docutils literal notranslate"><span class="pre">AMSJob.electric_field()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">AMSJob.output_mol_path</span></code></a></li>
 </ul>
 </li>
@@ -1203,6 +1370,7 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.inputfile_path"><code class="docutils literal notranslate"><span class="pre">Job.inputfile_path</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.output_mol_path"><code class="docutils literal notranslate"><span class="pre">Job.output_mol_path</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.molecule"><code class="docutils literal notranslate"><span class="pre">Job.molecule()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.copy"><code class="docutils literal notranslate"><span class="pre">Job.copy()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1216,6 +1384,12 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.job.orca">tcutility.job.orca module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob"><code class="docutils literal notranslate"><span class="pre">ORCAJob</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.main"><code class="docutils literal notranslate"><span class="pre">ORCAJob.main()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.remove_main"><code class="docutils literal notranslate"><span class="pre">ORCAJob.remove_main()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.method"><code class="docutils literal notranslate"><span class="pre">ORCAJob.method()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.reference"><code class="docutils literal notranslate"><span class="pre">ORCAJob.reference()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.QRO"><code class="docutils literal notranslate"><span class="pre">ORCAJob.QRO()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.basis_set"><code class="docutils literal notranslate"><span class="pre">ORCAJob.basis_set()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.single_point"><code class="docutils literal notranslate"><span class="pre">ORCAJob.single_point()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.transition_state"><code class="docutils literal notranslate"><span class="pre">ORCAJob.transition_state()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.optimization"><code class="docutils literal notranslate"><span class="pre">ORCAJob.optimization()</span></code></a></li>
@@ -1223,8 +1397,11 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.charge"><code class="docutils literal notranslate"><span class="pre">ORCAJob.charge()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.spin_polarization"><code class="docutils literal notranslate"><span class="pre">ORCAJob.spin_polarization()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.multiplicity"><code class="docutils literal notranslate"><span class="pre">ORCAJob.multiplicity()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.ghost_atoms"><code class="docutils literal notranslate"><span class="pre">ORCAJob.ghost_atoms()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.get_memory_usage"><code class="docutils literal notranslate"><span class="pre">ORCAJob.get_memory_usage()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.molecule"><code class="docutils literal notranslate"><span class="pre">ORCAJob.molecule()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.get_input"><code class="docutils literal notranslate"><span class="pre">ORCAJob.get_input()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">ORCAJob.output_mol_path</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1276,7 +1453,7 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

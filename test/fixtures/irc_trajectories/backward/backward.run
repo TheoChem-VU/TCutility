@@ -1,0 +1,11 @@
+#!/bin/sh
+
+
+
+unset AMS_SWITCH_LOGFILE_AND_STDOUT
+AMS_JOBNAME="backward" AMS_RESULTSDIR=. $AMSBIN/ams <"backward.in"
+
+cd /scistor/tc/tcstud8/MolecularModelling2024/workspace/scripts/tmp/calc
+python /scistor/tc/tcstud8/TCutility/src/tcutility/job/postscripts/clean_workdir.py
+cd /scistor/tc/tcstud8/MolecularModelling2024/workspace/scripts/tmp/calc
+python /scistor/tc/tcstud8/TCutility/src/tcutility/job/postscripts/write_converged_geoms.py

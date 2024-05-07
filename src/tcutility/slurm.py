@@ -81,10 +81,17 @@ def sbatch(runfile: str, **options: dict) -> results.Result:
     cmd = 'sbatch '
     for key, val in options.items():
         key = key.replace('_', '-')
-        if len(key) > 1:
-            cmd += f'--{key}={val} '
+
+        if val is True:
+            if len(key) > 1:
+                cmd += f'--{key} '
+            else:
+                cmd += f'-{key} '
         else:
-            cmd += f'-{key} {val} '
+            if len(key) > 1:
+                cmd += f'--{key}={val} '
+            else:
+                cmd += f'-{key} {val} '
 
     cmd = cmd + runfile
 

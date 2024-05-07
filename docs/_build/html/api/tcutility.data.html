@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.data package &#8212; TCutility v0.10.4 documentation</title>
+    <title>tcutility.data package &#8212; TCutility v0.12.0 documentation</title>
   
   
   
@@ -37,8 +37,8 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=d53db652"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/documentation_options.js?v=cae63847"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -48,7 +48,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="tcutility" href="modules.html" />
-    <link rel="prev" title="VDD Charge Analysis module" href="../analysis/vdd_charge_analysis.html" />
+    <link rel="prev" title="Command-line interface (CLI) scripts" href="../cli_scripts/main.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -121,7 +121,7 @@
     }
 </style>
 <div class="myDiv">
-    <a href="./index.html">
+    <a href="/index.html">
         <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
         TCutility
     </a>
@@ -315,9 +315,65 @@
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.data.atom.atom_number">
+<span class="sig-name descname"><span class="pre">atom_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/atom.html#atom_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.atom.atom_number" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.data.atom.symbol">
+<span class="sig-name descname"><span class="pre">symbol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/atom.html#symbol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.atom.symbol" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.data.atom.element">
+<span class="sig-name descname"><span class="pre">element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/atom.html#element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.atom.element" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-tcutility.data.basis_sets">
 <span id="tcutility-data-basis-sets-module"></span><h2>tcutility.data.basis_sets module<a class="headerlink" href="#module-tcutility.data.basis_sets" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.data.basis_sets.number_of_orbitals">
+<span class="sig-name descname"><span class="pre">number_of_orbitals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/basis_sets.html#number_of_orbitals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.basis_sets.number_of_orbitals" title="Link to this definition">#</a></dt>
+<dd><p>Get the number of atomic orbitals for a certain element and basis-set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>element</strong> – the element for which to get the number of AOs.</p></li>
+<li><p><strong>basis_set</strong> – the basis-set for which to get the number of AOs.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function currently only works for the following basis-sets:
+[<code class="docutils literal notranslate"><span class="pre">SZ</span></code>, <code class="docutils literal notranslate"><span class="pre">DZ</span></code>, <code class="docutils literal notranslate"><span class="pre">DZP</span></code>, <code class="docutils literal notranslate"><span class="pre">TZP</span></code>, <code class="docutils literal notranslate"><span class="pre">TZ2P</span></code>, <code class="docutils literal notranslate"><span class="pre">TZ2P-J</span></code>, <code class="docutils literal notranslate"><span class="pre">mTZ2P</span></code>, <code class="docutils literal notranslate"><span class="pre">QZ4P</span></code>, <code class="docutils literal notranslate"><span class="pre">QZ4P-J</span></code>, <code class="docutils literal notranslate"><span class="pre">jcpl</span></code>].
+It also only works for no-frozen-core calculations with <code class="docutils literal notranslate"><span class="pre">NOSYM</span></code> symmetry.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.data.basis_sets.number_of_virtuals">
+<span class="sig-name descname"><span class="pre">number_of_virtuals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/basis_sets.html#number_of_virtuals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.basis_sets.number_of_virtuals" title="Link to this definition">#</a></dt>
+<dd><p>Get the number of virtual atomic orbitals for a certain element and basis-set.
+The number of virtuals is equal to the total number of AOs minus half the number of electrons in the atom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>element</strong> – the element for which to get the number of AOs.</p></li>
+<li><p><strong>basis_set</strong> – the basis-set for which to get the number of AOs.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function currently only works for the following basis-sets:
+[<code class="docutils literal notranslate"><span class="pre">SZ</span></code>, <code class="docutils literal notranslate"><span class="pre">DZ</span></code>, <code class="docutils literal notranslate"><span class="pre">DZP</span></code>, <code class="docutils literal notranslate"><span class="pre">TZP</span></code>, <code class="docutils literal notranslate"><span class="pre">TZ2P</span></code>, <code class="docutils literal notranslate"><span class="pre">TZ2P-J</span></code>, <code class="docutils literal notranslate"><span class="pre">mTZ2P</span></code>, <code class="docutils literal notranslate"><span class="pre">QZ4P</span></code>, <code class="docutils literal notranslate"><span class="pre">QZ4P-J</span></code>, <code class="docutils literal notranslate"><span class="pre">jcpl</span></code>].
+It also only works for no-frozen-core calculations with <code class="docutils literal notranslate"><span class="pre">NOSYM</span></code> symmetry.</p>
+</div>
+</dd></dl>
+
 </section>
 <section id="module-tcutility.data.cosmo">
 <span id="tcutility-data-cosmo-module"></span><h2>tcutility.data.cosmo module<a class="headerlink" href="#module-tcutility.data.cosmo" title="Link to this heading">#</a></h2>
@@ -393,6 +449,9 @@ The values contain the following information:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">available_in_band</span></code> <strong>(bool)</strong> - whether the functional is available in BAND.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">available_in_orca</span></code> <strong>(bool)</strong> - whether the functional is available in ORCA.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">adf_settings</span></code> <strong>(:class:`Result &lt;tcutility.results.result.Result&gt;`)</strong> - the settings that are used to select the functional in the ADF input.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name_latex</span></code> <strong>(str)</strong> - the name of the functional formatted to be used with LaTeX renderers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name_html</span></code> <strong>(str)</strong> - the name of the functional formatted to be used with HTML renderers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dois</span></code> <strong>(List[str])</strong> - a list of relevant dois for this functional.</p></li>
 </ul>
 </div></blockquote>
 </dd>
@@ -432,12 +491,12 @@ The values contain the following information:</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../analysis/vdd_charge_analysis.html"
+       href="../cli_scripts/main.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">VDD Charge Analysis module</p>
+        <p class="prev-next-title">Command-line interface (CLI) scripts</p>
       </div>
     </a>
     <a class="right-next"
@@ -472,9 +531,16 @@ The values contain the following information:</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.atom.parse_element"><code class="docutils literal notranslate"><span class="pre">parse_element()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.atom.radius"><code class="docutils literal notranslate"><span class="pre">radius()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.atom.color"><code class="docutils literal notranslate"><span class="pre">color()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.atom.atom_number"><code class="docutils literal notranslate"><span class="pre">atom_number()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.atom.symbol"><code class="docutils literal notranslate"><span class="pre">symbol()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.atom.element"><code class="docutils literal notranslate"><span class="pre">element()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.data.basis_sets">tcutility.data.basis_sets module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.data.basis_sets">tcutility.data.basis_sets module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.basis_sets.number_of_orbitals"><code class="docutils literal notranslate"><span class="pre">number_of_orbitals()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.basis_sets.number_of_virtuals"><code class="docutils literal notranslate"><span class="pre">number_of_virtuals()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.data.cosmo">tcutility.data.cosmo module</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.data.functionals">tcutility.data.functionals module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.data.functionals.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
@@ -534,7 +600,7 @@ The values contain the following information:</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

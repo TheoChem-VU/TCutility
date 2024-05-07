@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility package &#8212; TCutility v0.10.4 documentation</title>
+    <title>tcutility package &#8212; TCutility v0.12.0 documentation</title>
   
   
   
@@ -37,8 +37,8 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=d53db652"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/documentation_options.js?v=cae63847"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -122,7 +122,7 @@
     }
 </style>
 <div class="myDiv">
-    <a href="./index.html">
+    <a href="/index.html">
         <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
         TCutility
     </a>
@@ -315,9 +315,16 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.parse_element"><code class="docutils literal notranslate"><span class="pre">parse_element()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.radius"><code class="docutils literal notranslate"><span class="pre">radius()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.color"><code class="docutils literal notranslate"><span class="pre">color()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.atom_number"><code class="docutils literal notranslate"><span class="pre">atom_number()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.symbol"><code class="docutils literal notranslate"><span class="pre">symbol()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.atom.element"><code class="docutils literal notranslate"><span class="pre">element()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.basis_sets">tcutility.data.basis_sets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.basis_sets">tcutility.data.basis_sets module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.basis_sets.number_of_orbitals"><code class="docutils literal notranslate"><span class="pre">number_of_orbitals()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.basis_sets.number_of_virtuals"><code class="docutils literal notranslate"><span class="pre">number_of_virtuals()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.cosmo">tcutility.data.cosmo module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.functionals">tcutility.data.functionals module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.data.html#tcutility.data.functionals.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
@@ -352,6 +359,7 @@
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.spin_polarization"><code class="docutils literal notranslate"><span class="pre">ADFJob.spin_polarization()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.multiplicity"><code class="docutils literal notranslate"><span class="pre">ADFJob.multiplicity()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.unrestricted"><code class="docutils literal notranslate"><span class="pre">ADFJob.unrestricted()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.occupations"><code class="docutils literal notranslate"><span class="pre">ADFJob.occupations()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.quality"><code class="docutils literal notranslate"><span class="pre">ADFJob.quality()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.SCF_convergence"><code class="docutils literal notranslate"><span class="pre">ADFJob.SCF_convergence()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.SCF"><code class="docutils literal notranslate"><span class="pre">ADFJob.SCF()</span></code></a></li>
@@ -364,7 +372,15 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob.add_fragment"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.add_fragment()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob.guess_fragments"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.guess_fragments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob.remove_virtuals"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.remove_virtuals()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob.run"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.run()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.DensfJob"><code class="docutils literal notranslate"><span class="pre">DensfJob</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.DensfJob.gridsize"><code class="docutils literal notranslate"><span class="pre">DensfJob.gridsize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.DensfJob.orbital"><code class="docutils literal notranslate"><span class="pre">DensfJob.orbital()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.DensfJob.output_cub_paths"><code class="docutils literal notranslate"><span class="pre">DensfJob.output_cub_paths</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.DensfJob.can_skip"><code class="docutils literal notranslate"><span class="pre">DensfJob.can_skip()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -379,6 +395,7 @@
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.vibrations"><code class="docutils literal notranslate"><span class="pre">AMSJob.vibrations()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.geometry_convergence"><code class="docutils literal notranslate"><span class="pre">AMSJob.geometry_convergence()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.charge"><code class="docutils literal notranslate"><span class="pre">AMSJob.charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.electric_field"><code class="docutils literal notranslate"><span class="pre">AMSJob.electric_field()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">AMSJob.output_mol_path</span></code></a></li>
 </ul>
 </li>
@@ -434,6 +451,7 @@
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.generic.Job.inputfile_path"><code class="docutils literal notranslate"><span class="pre">Job.inputfile_path</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.generic.Job.output_mol_path"><code class="docutils literal notranslate"><span class="pre">Job.output_mol_path</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.generic.Job.molecule"><code class="docutils literal notranslate"><span class="pre">Job.molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.generic.Job.copy"><code class="docutils literal notranslate"><span class="pre">Job.copy()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -447,6 +465,12 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.job.html#module-tcutility.job.orca">tcutility.job.orca module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob"><code class="docutils literal notranslate"><span class="pre">ORCAJob</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.main"><code class="docutils literal notranslate"><span class="pre">ORCAJob.main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.remove_main"><code class="docutils literal notranslate"><span class="pre">ORCAJob.remove_main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.method"><code class="docutils literal notranslate"><span class="pre">ORCAJob.method()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.reference"><code class="docutils literal notranslate"><span class="pre">ORCAJob.reference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.QRO"><code class="docutils literal notranslate"><span class="pre">ORCAJob.QRO()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.basis_set"><code class="docutils literal notranslate"><span class="pre">ORCAJob.basis_set()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.single_point"><code class="docutils literal notranslate"><span class="pre">ORCAJob.single_point()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.transition_state"><code class="docutils literal notranslate"><span class="pre">ORCAJob.transition_state()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.optimization"><code class="docutils literal notranslate"><span class="pre">ORCAJob.optimization()</span></code></a></li>
@@ -454,8 +478,11 @@
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.charge"><code class="docutils literal notranslate"><span class="pre">ORCAJob.charge()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.spin_polarization"><code class="docutils literal notranslate"><span class="pre">ORCAJob.spin_polarization()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.multiplicity"><code class="docutils literal notranslate"><span class="pre">ORCAJob.multiplicity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.ghost_atoms"><code class="docutils literal notranslate"><span class="pre">ORCAJob.ghost_atoms()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.get_memory_usage"><code class="docutils literal notranslate"><span class="pre">ORCAJob.get_memory_usage()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.molecule"><code class="docutils literal notranslate"><span class="pre">ORCAJob.molecule()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.get_input"><code class="docutils literal notranslate"><span class="pre">ORCAJob.get_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.orca.ORCAJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">ORCAJob.output_mol_path</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -478,6 +505,7 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.results.html#tcutility.results.ams.get_timing"><code class="docutils literal notranslate"><span class="pre">get_timing()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.results.html#tcutility.results.ams.get_calculation_status"><code class="docutils literal notranslate"><span class="pre">get_calculation_status()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.results.html#tcutility.results.ams.get_molecules"><code class="docutils literal notranslate"><span class="pre">get_molecules()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.results.html#tcutility.results.ams.get_pes"><code class="docutils literal notranslate"><span class="pre">get_pes()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.results.html#tcutility.results.ams.get_history"><code class="docutils literal notranslate"><span class="pre">get_history()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.results.html#tcutility.results.ams.get_input_blocks"><code class="docutils literal notranslate"><span class="pre">get_input_blocks()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.results.html#tcutility.results.ams.get_ams_input"><code class="docutils literal notranslate"><span class="pre">get_ams_input()</span></code></a></li>
@@ -516,10 +544,12 @@
 <li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.items"><code class="docutils literal notranslate"><span class="pre">Result.items()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.keys"><code class="docutils literal notranslate"><span class="pre">Result.keys()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.multi_keys"><code class="docutils literal notranslate"><span class="pre">Result.multi_keys()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.getsizeof"><code class="docutils literal notranslate"><span class="pre">Result.getsizeof()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.get_parent_tree"><code class="docutils literal notranslate"><span class="pre">Result.get_parent_tree()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.prune"><code class="docutils literal notranslate"><span class="pre">Result.prune()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.get_multi_key"><code class="docutils literal notranslate"><span class="pre">Result.get_multi_key()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.as_plams_settings"><code class="docutils literal notranslate"><span class="pre">Result.as_plams_settings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#tcutility.results.result.Result.copy"><code class="docutils literal notranslate"><span class="pre">Result.copy()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -561,6 +591,45 @@ This cache will expire after a chosen amount of time.</p>
 <dt class="sig sig-object py" id="tcutility.cache.cache">
 <span class="sig-name descname"><span class="pre">cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/cache.html#cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.cache.cache" title="Link to this definition">#</a></dt>
 <dd><p>Function decorator that stores results from previous calls to the function or method.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.cache.cache_file">
+<span class="sig-name descname"><span class="pre">cache_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/cache.html#cache_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.cache.cache_file" title="Link to this definition">#</a></dt>
+<dd><p>Function decorator that stores results of a function to a file.
+Because results are written to a file the values persist between Python sessions.
+This is useful, for example, for online API calls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> – the filepath to store function call results to.
+Files will be stored in the platform dependent temporary file directory.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://platformdirs.readthedocs.io/en/latest/api.html#platformdirs.user_cache_dir">platformdirs.user_cache_dir</a> for information on the temporary directory.</p>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-tcutility.cite">
+<span id="tcutility-cite-module"></span><h2>tcutility.cite module<a class="headerlink" href="#module-tcutility.cite" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.cite.cite">
+<span class="sig-name descname"><span class="pre">cite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'wiley'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'html'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/cite.html#cite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.cite.cite" title="Link to this definition">#</a></dt>
+<dd><p>Format an article in a certain style.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doi</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the article DOI to generate a citation for.</p></li>
+<li><p><strong>style</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the style formatting to use. Can be <code class="docutils literal notranslate"><span class="pre">['wiley',</span> <span class="pre">'acs',</span> <span class="pre">'rsc']</span></code>.</p></li>
+<li><p><strong>mode</strong> – the formatting mode. Can be <code class="docutils literal notranslate"><span class="pre">['html',</span> <span class="pre">'latex',</span> <span class="pre">'plain']</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -926,7 +995,7 @@ This will ensure you get the lowest possible RMSD for you sets of coordinates.</
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.geometry.random_points_on_sphere">
 <span class="sig-name descname"><span class="pre">random_points_on_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#random_points_on_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.random_points_on_sphere" title="Link to this definition">#</a></dt>
-<dd><p>Generate a random points on a sphere with a specified radius.</p>
+<dd><p>Generate random points on a sphere with a specified radius.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -946,7 +1015,8 @@ This will ensure you get the lowest possible RMSD for you sets of coordinates.</
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.geometry.random_points_in_anular_sphere">
 <span class="sig-name descname"><span class="pre">random_points_in_anular_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#random_points_in_anular_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.random_points_in_anular_sphere" title="Link to this definition">#</a></dt>
-<dd><p>Generate a random points in a sphere with specified radii.</p>
+<dd><p>Generate random points in an sphere or anular sphere with specified radii.
+An anular sphere is a hollow sphere of a certain thickness.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -957,6 +1027,24 @@ This will ensure you get the lowest possible RMSD for you sets of coordinates.</
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Array of coordinates on a sphere.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.geometry.random_points_on_spheroid">
+<span class="sig-name descname"><span class="pre">random_points_on_spheroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nsamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#random_points_on_spheroid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.random_points_on_spheroid" title="Link to this definition">#</a></dt>
+<dd><p>Generate random points on a spheroid generated by a set of coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – The (n x dim) set of coordinates that is used to generate the minimum-volume spheroid.</p></li>
+<li><p><strong>Nsamples</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The number of samples to return.</p></li>
+<li><p><strong>margin</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – the spacing between the sampling spheroid and the minimum-volume spheroid.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of coordinates on a spheroid.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1075,14 +1163,14 @@ This file is deleted after exiting the context-manager.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.flow">
 <span class="sig-name descname"><span class="pre">flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['straight']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#flow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.flow" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Function to create flowchart-like output.
+It will print a message prepended by flow elements (arrows and lines).
+The flow elements are determined based on the given tags.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 </dl>
-<p>Function to create flowchart-like output.
-It will print a message prepended by flow elements (arrows and lines).
-The flow elements are determined based on the given tags.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1105,6 +1193,13 @@ The flow elements are determined based on the given tags.</p>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.log.rectangle_list">
+<span class="sig-name descname"><span class="pre">rectangle_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spaces_before</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#rectangle_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.rectangle_list" title="Link to this definition">#</a></dt>
+<dd><p>This function prints a list of strings in a rectangle to the output.
+This is similar to what the ls program does in unix.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1240,12 +1335,7 @@ Molecule and atom flags can be provided as the “flags” parameter of the obje
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.molecule.load">
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.load" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code></span></p>
-</dd>
-</dl>
-<p>Load a molecule from a given xyz file path.
+<dd><p>Load a molecule from a given xyz file path.
 The xyz file is structured as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
 <span class="n">Comment</span> <span class="n">line</span>
@@ -1262,6 +1352,11 @@ The xyz file is structured as follows:</p>
 <p>The xyz file is parsed and returned as a <code class="xref py py-class docutils literal notranslate"><span class="pre">plams.Molecule</span></code> object.
 Flags and tags are given as <code class="docutils literal notranslate"><span class="pre">mol.flags</span></code> and <code class="docutils literal notranslate"><span class="pre">mol.flags.tags</span></code> respectively.
 Similarly for the atoms, the flags and tags are given as <code class="docutils literal notranslate"><span class="pre">mol.atoms[i].flags</span></code> and <code class="docutils literal notranslate"><span class="pre">mol.atoms[i].flags.tags</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -1791,6 +1886,11 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.cache">tcutility.cache module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.cache.timed_cache"><code class="docutils literal notranslate"><span class="pre">timed_cache()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.cache.cache"><code class="docutils literal notranslate"><span class="pre">cache()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.cache.cache_file"><code class="docutils literal notranslate"><span class="pre">cache_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.cite">tcutility.cite module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.cite.cite"><code class="docutils literal notranslate"><span class="pre">cite()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.constants">tcutility.constants module</a></li>
@@ -1816,6 +1916,7 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.RMSD"><code class="docutils literal notranslate"><span class="pre">RMSD()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.random_points_on_sphere"><code class="docutils literal notranslate"><span class="pre">random_points_on_sphere()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.random_points_in_anular_sphere"><code class="docutils literal notranslate"><span class="pre">random_points_in_anular_sphere()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.random_points_on_spheroid"><code class="docutils literal notranslate"><span class="pre">random_points_on_spheroid()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.log">tcutility.log module</a><ul class="nav section-nav flex-column">
@@ -1843,6 +1944,7 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.time_stamp"><code class="docutils literal notranslate"><span class="pre">time_stamp()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.flow"><code class="docutils literal notranslate"><span class="pre">flow()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.table"><code class="docutils literal notranslate"><span class="pre">table()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.rectangle_list"><code class="docutils literal notranslate"><span class="pre">rectangle_list()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.loadbar"><code class="docutils literal notranslate"><span class="pre">loadbar()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.boxed"><code class="docutils literal notranslate"><span class="pre">boxed()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.debug"><code class="docutils literal notranslate"><span class="pre">debug()</span></code></a></li>
@@ -1943,7 +2045,7 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

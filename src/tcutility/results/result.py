@@ -1,9 +1,22 @@
 '''Module containing the TCutility.results.result.Result class.'''
+import dictfunc
+import sys
 
 
 class Result(dict):
     '''Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary. 
     The class works case-insensitively, but will retain the case of the key when it was first set.'''
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # if we are casting an object to a Result object
+        # we will copy all data to this one and all dictionaries will be turned into Result object
+        # turn every value into a Result object if possible
+        for key, value in self.items():
+            if isinstance(value, dict):
+                self[key] = Result(value)
+            else:
+                self[key] = value
 
     def __call__(self):
         '''Calling of a dictionary subclass should not be possible, instead we raise an error with information about the key and method that were attempted to be called.'''
@@ -87,6 +100,21 @@ class Result(dict):
         '''Make sure that keys starting and ending in "__" are skipped'''
         return len([key for key in self.keys() if not (key.startswith('__') and key.endswith('__'))]) > 0
 
+    def __sizeof__(self):
+        '''
+        Magic method used by `sys.getsizeof <https://docs.python.org/3/library/sys.html#sys.getsizeof>`_ to determine the memory footprint of this object.
+        '''
+        s = super().__sizeof__()
+        for key in self.multi_keys():
+            s += sys.getsizeof(self.get_multi_key(key))
+        return s
+
+    def getsizeof(self):
+        '''
+        Return the size of this object in bytes.
+        '''
+        return self.__sizeof__()
+
     def get_parent_tree(self):
         '''Method to get the path from this object to the parent object. The result is presented in a formatted string'''
         # every parent except the top-most parent has defined a __parent__ attribute
@@ -147,6 +175,16 @@ class Result(dict):
 
         clean_dict = dictfunc.list_to_dict(dictfunc.dict_to_list(self))
         return plams.Settings(clean_dict)
+
+    def copy(self):
+        import copy
+
+        # cast this object to a list of keys and values
+        lsts = dictfunc.dict_to_list(self)
+        # copy everthing in the lists
+        lsts = [[copy.copy(x) for x in lst] for lst in lsts]
+        # and return a new result object
+        return Result(dictfunc.list_to_dict(lsts))
 
 
 if __name__ == '__main__':

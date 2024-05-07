@@ -24,7 +24,7 @@ def get_calc_files(calc_dir: str) -> dict:
     """
     # collect all files in the current directory and subdirectories
     files = []
-    for root, _, files_ in os.walk(calc_dir):
+    for root, _, files_ in os.walk(os.path.abspath(calc_dir)):
         if os.path.split(root)[1].startswith('.'):
             continue
 
@@ -157,6 +157,8 @@ def get_ams_info(calc_dir: str) -> Result:
 
     # and history variables
     ret.history = get_history(calc_dir)
+
+    ret.pes = get_pes(calc_dir)
 
     cache.unload(ret.files["ams.rkf"])
     return ret
@@ -354,6 +356,50 @@ def get_molecules(calc_dir: str) -> Result:
     return ret
 
 
+def get_pes(calc_dir: str) -> Result:
+    """
+    Function to get PES scan variables.
+
+    Args:
+        calc_dir: path pointing to the desired calculation.
+
+    Returns:
+        :Dictionary containing information about the PES scan:
+
+            - ``nscan_coords`` **int** – the number of scan-coordinates for this PES scan.
+            - ``scan_coord_name`` **list[str] | str** – the names of the scan-coordinates. 
+                If there is more than one scan-coordinates it will be a list of strings, otherwise it will be a single string.
+            - ``scan_coord`` **list[np.ndarray] | np.ndarray** – arrays of values for the scan-coordinates. 
+                If there is more than one scan-coordinates it will be a list of arrays, otherwise it will be a single array.
+            - ``npoints`` **list[int] | int** – number of scan points for the scan-coordinates. 
+                If there is more than one scan-coordinates it will be a list of integers, otherwise it will be a single integer.
+    """
+    # read history mols
+    files = get_calc_files(calc_dir)
+    # all info is stored in reader_ams
+    reader_ams = cache.get(files["ams.rkf"])
+
+    # check if we have done a PESScan
+    if ('PESScan', 'nPoints') not in reader_ams:
+        return
+
+    ret = Result()
+
+    ret.nscan_coords = reader_ams.read('PESScan', 'nScanCoord')
+    ret.scan_coord_name = [reader_ams.read('PESScan', f'ScanCoord({i+1})').strip() for i in range(ret.nscan_coords)]
+    ret.npoints = [reader_ams.read('PESScan', f'nPoints({i+1})') for i in range(ret.nscan_coords)]
+    ret.scan_coord = [np.linspace(reader_ams.read('PESScan', f'RangeStart({i+1})'), reader_ams.read('PESScan', f'RangeEnd({i+1})'), ret.npoints[i]) for i in range(ret.nscan_coords)]
+    if ('PESScan', 'PES') in reader_ams:
+        ret.energies = np.array(reader_ams.read('PESScan', 'PES')).reshape(*ret.npoints) * constants.HA2KCALMOL
+
+    if ret.nscan_coords == 1:
+        ret.scan_coord_name = ret.scan_coord_name[0]
+        ret.scan_coord = ret.scan_coord[0]
+        ret.npoints = ret.npoints[0]
+
+    return ret
+
+
 def get_history(calc_dir: str) -> Result:
     """
     Function to get history variables. The type of variables read depends on the type of calculation.
@@ -421,6 +467,12 @@ def get_history(calc_dir: str) -> Result:
                 else:
                     val = reader_ams.read("History", f"{item}({i+1})")
                     ret[item.lower()].append(val)
+
+        if 'converged' not in ret.keys() and ('PESScan', 'HistoryIndices') in reader_ams:
+            ret['converged'] = [False] * ret.number_of_entries
+            for idx in ensure_list(reader_ams.read('PESScan', 'HistoryIndices')):
+                ret['converged'][idx - 1] = True
+
 
     return ret
 

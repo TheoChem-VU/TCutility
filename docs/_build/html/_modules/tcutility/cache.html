@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.cache &#8212; TCutility v0.10.4 documentation</title>
+    <title>tcutility.cache &#8212; TCutility v0.12.0 documentation</title>
   
   
   
@@ -36,8 +36,8 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../_static/documentation_options.js?v=d53db652"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/documentation_options.js?v=cae63847"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -118,7 +118,7 @@
     }
 </style>
 <div class="myDiv">
-    <a href="./index.html">
+    <a href="/index.html">
         <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
         TCutility
     </a>
@@ -257,6 +257,9 @@
   <h1>Source code for tcutility.cache</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">platformdirs</span>
 
 
 <span class="n">_timed_func_cache</span> <span class="o">=</span> <span class="p">{}</span>
@@ -266,6 +269,7 @@
 
 <span class="n">_general_cache</span> <span class="o">=</span> <span class="p">{}</span>
 
+<span class="n">_cache_dir</span> <span class="o">=</span> <span class="n">platformdirs</span><span class="o">.</span><span class="n">user_cache_dir</span><span class="p">(</span><span class="n">appname</span><span class="o">=</span><span class="s1">&#39;TCutility&#39;</span><span class="p">,</span> <span class="n">appauthor</span><span class="o">=</span><span class="s1">&#39;TheoCheM&#39;</span><span class="p">,</span> <span class="n">ensure_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <div class="viewcode-block" id="timed_cache">
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.cache.timed_cache">[docs]</a>
@@ -335,10 +339,99 @@
 
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="nd">@timed_cache</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">test_timer</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+<span class="k">def</span> <span class="nf">_get_from_cache_file</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Retrieve results from a JSON file. Return `None` if not found.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># open the file and parse the data</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_cache_dir</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span> <span class="k">as</span> <span class="n">cfile</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">cfile</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+    <span class="c1"># we now go through the data</span>
+    <span class="c1"># it is formatted as a list of dicts</span>
+    <span class="c1"># each dict has the &#39;func&#39;, &#39;args&#39;, &#39;kwargs&#39; and &#39;value&#39; keys</span>
+    <span class="k">for</span> <span class="n">datum</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="c1"># func is set as the function qualname</span>
+        <span class="k">if</span> <span class="n">datum</span><span class="p">[</span><span class="s1">&#39;func&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># args is retrieved as a list</span>
+        <span class="k">if</span> <span class="n">datum</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># kwargs is simply a dict</span>
+        <span class="k">if</span> <span class="n">datum</span><span class="p">[</span><span class="s1">&#39;kwargs&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># if we did not exit the loop yet we return the value</span>
+        <span class="k">return</span> <span class="n">datum</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_write_to_cache_file</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Write results to the file.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># we open the file to get the data</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_cache_dir</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span> <span class="k">as</span> <span class="n">cfile</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">cfile</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+    <span class="c1"># add the new results to the file</span>
+    <span class="n">new</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="n">func</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span>
+        <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="n">args</span><span class="p">,</span>
+        <span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">,</span>
+        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span>
+    <span class="p">}</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_cache_dir</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cfile</span><span class="p">:</span>
+        <span class="n">cfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_clear_cache_file</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Function that clears a file and writes a new beginning of a list.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">_cache_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_cache_dir</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cfile</span><span class="p">:</span>
+        <span class="n">cfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;[]&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="cache_file">
+<a class="viewcode-back" href="../../api/tcutility.html#tcutility.cache.cache_file">[docs]</a>
+<span class="k">def</span> <span class="nf">cache_file</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Function decorator that stores results of a function to a file.</span>
+<span class="sd">    Because results are written to a file the values persist between Python sessions.</span>
+<span class="sd">    This is useful, for example, for online API calls.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file: the filepath to store function call results to. </span>
+<span class="sd">            Files will be stored in the platform dependent temporary file directory.</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        `platformdirs.user_cache_dir &lt;https://platformdirs.readthedocs.io/en/latest/api.html#platformdirs.user_cache_dir&gt;`_ for information on the temporary directory.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="c1"># make the file if it doesnt exist</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_cache_dir</span><span class="p">,</span> <span class="n">file</span><span class="p">)):</span>
+            <span class="n">_clear_cache_file</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">inner_decorator</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="c1"># check if the arguments were called before</span>
+            <span class="n">cached</span> <span class="o">=</span> <span class="n">_get_from_cache_file</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span>  <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cached</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">cached</span>
+
+            <span class="c1"># if it is not present we add it to the cache file</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">_write_to_cache_file</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span>  <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">res</span>
+
+        <span class="k">return</span> <span class="n">inner_decorator</span>
+    <span class="k">return</span> <span class="n">decorator</span></div>
+
 </pre></div>
 
                 </article>
@@ -391,7 +484,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

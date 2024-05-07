@@ -6,7 +6,11 @@ import numpy as np
 import json
 from tcutility import ensure_2d
 from typing import Any, Iterable, List, Union
+from types import GeneratorType
 import inspect
+from math import ceil
+# from threading import Thread
+
 
 ###########################################################
 # MODULE LEVEL VARIABLES USED TO CHANGE LOGGING BEHAVIOUR #
@@ -185,6 +189,37 @@ def table(rows: List[List[Any]], header: Union[List[str], None] = None, sep: str
     return return_str
 
 
+def rectangle_list(values: List, spaces_before: int = 0, level: int = 20):
+    '''
+    This function prints a list of strings in a rectangle to the output.
+    This is similar to what the ls program does in unix.
+    '''
+    n_shell_col = os.get_terminal_size().columns
+    # we first have to determine the correct dimensions of our rectangle
+    for ncol in range(1, n_shell_col):
+        # the number of rows for the number of columns
+        nrows = ceil(len(values) / ncol)
+        # we then get what the rectangle would be
+        mat = [[str(x) for x in values[i * ncol: (i+1) * ncol]] for i in range(nrows)]
+        # and determine for each column the width
+        col_lens = [max([len(row[i]) for row in mat if i < len(row)] + [0]) for i in range(ncol)]
+        # then calculate the length of each row based on the column lengths
+        # we use a spacing of 2 spaces between each column
+        row_len = 22 * print_date + spaces_before + sum(col_lens) + 2 * len(col_lens) - 2
+
+        # if the rows are too big we exit the loop
+        if row_len > n_shell_col:
+            break
+
+        # store the previous loops results
+        prev_col_lens = col_lens
+        prev_mat = mat
+
+    # then print the strings with the right column widths
+    for row in prev_mat:
+        log(" " * spaces_before + "  ".join([x.ljust(col_len) for x, col_len in zip(row, prev_col_lens)]), level=level)
+
+
 def loadbar(sequence: Iterable, comment: str = "", Nsegments: int = 50, Nsteps: int = 10, level: int = 20) -> None:
     """
     Return values from an iterable ``sequence`` and also print a progress bar for the iteration over this sequence.
@@ -195,6 +230,27 @@ def loadbar(sequence: Iterable, comment: str = "", Nsegments: int = 50, Nsteps: 
         Nsegments: length of the loading bar in characters.
         Nsteps: number of times to print the loading bar during iteration. If the output is a tty-type stream Nsteps will be set to the length of sequence.
     """
+    if isinstance(sequence, GeneratorType):
+        chars = ["⠀", "⠄", "⠆", "⠦", "⠧", "⠷", "⠿", "⠻", "⠛", "⠙", "⠉", "⠈", "⠀"]
+        iteration = 0
+        if not logfile.isatty() and comment:
+            log(comment, level=level)
+
+        starttime = perf_counter()
+        for val in sequence:
+            iteration += 1
+            elapsed_time = (perf_counter() - starttime)
+            time_per_step = elapsed_time / iteration
+            # every 0.1 seconds we change the character
+            char_step = int(elapsed_time / 0.1) % len(chars)
+            if logfile.isatty():
+                log(f'{chars[char_step]} {comment} [Steps: {iteration}, Elapsed: {elapsed_time:.1f}s]', end="\r", level=level)
+
+            yield val
+
+        log(level=level)
+        return
+
     N = len(sequence)
     # if the output stream is tty-type we set the number of steps to the lenth of the sequence so the loading bar looks smoother
     Nsteps = N if logfile.isatty() else Nsteps
@@ -424,3 +480,5 @@ if __name__ == "__main__":
             log.warn("I am testing the warning function")
 
     TestClass().test_method()
+
+    rectangle_list(range(1000))

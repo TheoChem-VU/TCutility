@@ -2,12 +2,29 @@ from tcutility import log, results, slurm, molecule
 import subprocess as sp
 import os
 import stat
-from typing import Union
+from typing import Union, List
 from scm import plams
 import shutil
+import dictfunc 
 
 j = os.path.join
 
+
+def _python_path():
+    '''
+    Sometimes it is necessary to have the Python path as some environments don't have its path.
+    This function attempts to find the Python path and returns it.
+    '''
+    python = sp.run('which python', shell=True, capture_output=True).stdout.decode().strip()
+
+    if python == '' or not os.path.exists(python):
+        python = sp.run('which python3', shell=True, capture_output=True).stdout.decode().strip()
+
+    # we default to the python executable 
+    if python == '' or not os.path.exists(python):
+        python = 'python'
+
+    return python
 
 class Job:
     '''This is the base Job class used to build more advanced classes such as :class:`AMSJob <tcutility.job.ams.AMSJob>` and :class:`ORCAJob <tcutility.job.orca.ORCAJob>`.
@@ -20,28 +37,42 @@ class Job:
         test_mode: whether to enable the testing mode. If enabled, the job will be setup like normally, but the running step is skipped. This is useful if you want to know what the job settings look like before running the real calculations.
         overwrite: whether to overwrite a previously run job in the same working directory.
         wait_for_finish: whether to wait for this job to finish running before continuing your runscript.
+        delete_on_finish: whether to remove the workdir for this job after it is finished running.
     '''
-    def __init__(self, test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = False, delete_on_finish: bool = False, delete_on_fail: bool = False):
-        self.settings = results.Result()
+    def __init__(self, *base_jobs: List['Job'], test_mode: bool = None, overwrite: bool = None, wait_for_finish: bool = None, delete_on_finish: bool = None, delete_on_fail: bool = None):
         self._sbatch = results.Result()
         self._molecule = None
         self._molecule_path = None
         self.slurm_job_id = None
         self.name = 'calc'
         self.rundir = 'tmp'
-        self.test_mode = test_mode
-        self.overwrite = overwrite
-        self.wait_for_finish = wait_for_finish
-        self.delete_on_finish = delete_on_finish
-        self.delete_on_fail = delete_on_fail
         self._preambles = []
         self._postambles = []
         self._postscripts = []
 
+        self.test_mode = test_mode
+        self.overwrite = overwrite
+        self.wait_for_finish = wait_for_finish
+        self.delete_on_finish = delete_on_finish
+
+        # update this job with base_jobs
+        for base_job in base_jobs:
+            self.__dict__.update(base_job.copy().__dict__)
+
+        self.test_mode = self.test_mode if test_mode is None else test_mode
+        self.overwrite = self.overwrite if overwrite is None else overwrite
+        self.wait_for_finish = self.wait_for_finish if wait_for_finish is None else wait_for_finish
+        self.delete_on_finish = self.delete_on_finish if delete_on_finish is None else delete_on_finish
+        self.delete_on_fail = delete_on_fail if delete_on_fail is None else delete_on_fail
+
     def __enter__(self):
         return self
 
-    def __exit__(self, *args):
+    def __exit__(self, exc_type, exc_value, exc_tb):
+        if exc_type:
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            log.error(f'Job set-up failed with exception: {exc_type.__name__}({exc_value}) in File "{fname}", line {exc_tb.tb_lineno}.')
+            return True
         self.run()
 
     def can_skip(self):
@@ -66,7 +97,11 @@ class Job:
         Change slurm settings, for example, to change the partition or change the number of cores to use.
         The arguments are the same as you would use for sbatch (`see sbatch manual <https://slurm.schedmd.com/sbatch.html>`_). E.g. to change the partition to 'tc' call:
 
-        ``job.sbatch(p='tc')`` or ``job.sbatch(partition='tc')``
+        ``job.sbatch(p='tc')`` or ``job.sbatch(partition='tc')``.
+
+        Flags can be set as arguments with a boolean to enable or disable them:
+
+        ``job.sbatch(exclusive=True)`` will set the ``--exclusive`` flag.
 
         .. warning::
 
@@ -116,8 +151,8 @@ class Job:
             self.add_postamble(f'if [[ `tc read -s {self.workdir}` = FAILED || `tc read -s {self.workdir}` = UNKNOWN ]]; then rm -r {self.workdir}; fi;')
 
         for postscript in self._postscripts:
-            self.add_postamble(f'python {postscript[0]} {" ".join(postscript[1])}')
-
+            self._postambles.append(f'{_python_path()} {postscript[0]} {" ".join(postscript[1])}')
+            
         # setup the job and check if it was successfull
         setup_success = self._setup_job()
 
@@ -151,7 +186,8 @@ class Job:
         else:
             # if we are not using slurm, we can execute the file. For this we need special permissions, so we have to set that first.
             os.chmod(self.runfile_path, stat.S_IRWXU)
-            sp.run(self.runfile_path, cwd=os.path.split(self.runfile_path)[0])
+            with open(f'{os.path.split(self.runfile_path)[0]}/{self.name}.out', 'w+') as out:
+                sp.run(self.runfile_path, cwd=os.path.split(self.runfile_path)[0], stdout=out)
 
     def add_preamble(self, line: str):
         '''
@@ -185,8 +221,12 @@ class Job:
 
     def dependency(self, otherjob: 'Job'):
         '''
-        Set a dependency between this job and another job. This means that this job will run after the other job is finished running succesfully.
+        Set a dependency between this job and otherjob. 
+        This means that this job will run after the other job is finished running succesfully.
         '''
+        if otherjob.can_skip:
+            return
+            
         if hasattr(otherjob, 'slurm_job_id'):
             self.sbatch(dependency=f'afterok:{otherjob.slurm_job_id}')
             self.sbatch(kill_on_invalid_dep='Yes')
@@ -243,3 +283,18 @@ class Job:
         elif isinstance(mol, plams.Atom):
             self._molecule = plams.Molecule()
             self._molecule.add_atom(mol)
+
+    def copy(self):
+        '''
+        Make and return a copy of this object. 
+        '''
+        import copy
+
+        cp = Job()
+        # cast this object to a list of keys and values
+        lsts = dictfunc.dict_to_list(self.__dict__)
+        # copy everthing in the lists
+        lsts = [[copy.copy(x) for x in lst] for lst in lsts]
+        # and return a new result object
+        cp.__dict__.update(results.Result(dictfunc.list_to_dict(lsts)))
+        return cp

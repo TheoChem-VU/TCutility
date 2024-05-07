@@ -15,6 +15,7 @@ TCutility |ProjectVersion| documentation
    results/results
    tcutility.job
    analysis/analysis
+   cli_scripts/main
 
 .. toctree::
    :maxdepth: 2

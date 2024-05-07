@@ -116,3 +116,5 @@
 116, livermorium
 117, tennessine
 118, oganesson
+119, ununennium
+120, unbinilium

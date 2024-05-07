@@ -1,6 +1,6 @@
 [build-system]
 requires = [
-  "setuptools>=68.2.2",
+  "setuptools>=69.5.1",
   "wheel",
   "gitpython",
   "setuptools-git-versioning",
@@ -13,6 +13,7 @@ name = "TCutility"
 # Original authors
 authors = [{ name = "TheoCheM group" }]
 dependencies = [
+  "lxml==5.2.0",
   "gitpython",
   "numpy>=1.20.0",
   "matplotlib>=3.4.0",
@@ -25,6 +26,8 @@ dependencies = [
   "pytest>=7.4.4",
   "openpyxl>=3.1.2",
   "pandas>=1.3.0",
+  "platformdirs",
+  "requests",
 ]
 # Current maintainers
 maintainers = [{ name = "TheoCheM group" }]
