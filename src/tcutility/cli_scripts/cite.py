@@ -55,8 +55,6 @@ If the supplied object is also a file path it will read each line as a separate 
 
 Example usage:
 
-.. code-block::
-
     > tc cite ADF
     Program ORCA
       [10.1002/wcms.81] F. Neese, WIREs Comput. Mol. Sci. 2011, 2, 73-78.
