@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 from tcutility import spell_check, cache
 
 
@@ -31,6 +32,16 @@ def _get_journal_abbreviation(journal: str) -> str:
 		journal: the name of the journal to get the abbreviation of.
 	'''
 	return requests.get(f"https://abbreviso.toolforge.org/a/{journal}").text
+
+
+@cache.cache
+def _get_publisher_city(publisher: str) -> str:
+	'''
+	Get the city of a publisher.
+	'''
+	with open(os.path.join(os.path.split(__file__)[0], 'data', 'cite', '_publisher_cities.json')) as cities:
+		cities = json.loads(cities.read())
+	return cities.get(publisher)
 
 
 def cite(doi: str, style: str = 'wiley', mode='html') -> str:
@@ -124,6 +135,7 @@ def _format_book_chapter(data: dict, style: str) -> str:
 	pages = data['message'].get('page')
 	book_title = data['message']['container-title'][0]
 	chapter_title = data['message']['title'][0]
+	city = _get_publisher_city(publisher)
 
 	for isbn in data['message']['isbn-type']:
 		if isbn['type'] == 'electronic':
@@ -154,7 +166,6 @@ def _format_book_chapter(data: dict, style: str) -> str:
 		editor_initials.append(firsts)
 		editor_last_names.append(author['family'].title())
 
-
 	# format the citation correctly
 	if style == 'wiley':
 		names = [f'{last}, {first}' for first, last in zip(initials, last_names)]
@@ -177,7 +188,7 @@ def _format_book_chapter(data: dict, style: str) -> str:
 		if n_editors >= 4:
 			editors = ", ".join(editors[:3]) + ' et al.'
 
-		citation = f'{names} ({year}). {chapter_title}. In: <i>{book_title}</i> (ed. {editors}), {pages}. {publisher}'
+		citation = f'{names} ({year}). {chapter_title}. In: <i>{book_title}</i> (ed. {editors}), {pages}. {city}: {publisher}'
 
 	elif style == 'acs':
 		raise NotImplementedError('No support for ACS style yet')
