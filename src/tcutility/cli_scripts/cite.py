@@ -113,39 +113,64 @@ program_references = {
     'ams': [
         '10.1002/jcc.1056',
         '10.1007/s002140050353',
-    ],
+        ],
     'adf': [
         '10.1002/jcc.1056',
         '10.1007/s002140050353',
-    ],
+        ],
     'orca': [
         '10.1002/wcms.81',
         '10.1063/5.0004608',
         '10.1002/wcms.1606',
-    ],
+        ],
     'dftb': [],
     'xtb': [],
     'cosmo': [],
     'crest': [],
-    'pyfrag': [],
+    'pyfrag': [
+        '10.1002/jcc.20786',
+        '10.1002/jcc.25871',
+        '10.5281/zenodo.1045523',
+        ],
     'pyorb': [],
     'cylview': [],
 }
 
 methodology_references = {
     'fmatsfo': [],
-    'eda': [],
+    'eda': [
+        '10.1002/9780470125922.ch1',
+        '10.1515/9783110660074-008'
+        ],
     'asm': [],
-    'zora': [],
+    'zora': [
+        '10.1063/1.466059',
+        '10.1063/1.467943',
+        ],
     'ksmo': [],
-    'vdd': [],
-    'hydrogen bonding': [],
-    'halogen bonding': [],
-    'chalcogen bonding': [],
-    'pnictogen bondding': [],
-    'zlm fit': [],
-    'becke grid': [],
-    'vibrational analysis': [],
+    'vdd': [
+        '10.1002/jcc.10351',
+        '10.1002/jcc.27184',
+        '10.1039/c5cp07483e',
+        ],
+    'hydrogen-bonding': [],
+    'halogen-bonding': [],
+    'chalcogen-bonding': [],
+    'pnictogen-bondding': [],
+    'zlm-fit': [
+        '10.1021/ct500172n',
+        ],
+    'becke-grid': [
+        '1.1002/jcc.23323',
+        ],
+    'sto': [
+        '10.1002/jcc.10255',
+        ],
+    'vibrational-analysis': [
+        '10.1016/s0010-4655(96)00120-8',
+        '10.1016/S0010-4655(96)00119-1',
+        '10.1002/qua.20653',
+        ],
     'irc': [],
     'd3': ['10.1063/1.3382344'],
     'd3bj': ['10.1002/jcc.21759'],
