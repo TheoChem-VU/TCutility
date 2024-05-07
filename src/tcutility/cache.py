@@ -166,17 +166,3 @@ def cache_file(file):
 
         return inner_decorator
     return decorator
-
-
-
-
-# if __name__ == '__main__':
-    @cache_file('test.json')
-    def test(a, b, c):
-        return a + b * c
-
-    test(1, 2, 3)
-    test(1, 2, 3)
-    test(1, 4, 3)
-    test(1, 2, 3)
-    test(1, 4, 3)
