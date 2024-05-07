@@ -593,6 +593,24 @@ This cache will expire after a chosen amount of time.</p>
 <dd><p>Function decorator that stores results from previous calls to the function or method.</p>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.cache.cache_file">
+<span class="sig-name descname"><span class="pre">cache_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/cache.html#cache_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.cache.cache_file" title="Link to this definition">#</a></dt>
+<dd><p>Function decorator that stores results of a function to a file.
+Because results are written to a file the values persist between Python sessions.
+This is useful, for example, for online API calls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> – the filepath to store function call results to.
+Files will be stored in the platform dependent temporary file directory.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://platformdirs.readthedocs.io/en/latest/api.html#platformdirs.user_cache_dir">platformdirs.user_cache_dir</a> for information on the temporary directory.</p>
+</div>
+</dd></dl>
+
 </section>
 <section id="module-tcutility.cite">
 <span id="tcutility-cite-module"></span><h2>tcutility.cite module<a class="headerlink" href="#module-tcutility.cite" title="Link to this heading">#</a></h2>
@@ -1868,6 +1886,7 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.cache">tcutility.cache module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.cache.timed_cache"><code class="docutils literal notranslate"><span class="pre">timed_cache()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.cache.cache"><code class="docutils literal notranslate"><span class="pre">cache()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.cache.cache_file"><code class="docutils literal notranslate"><span class="pre">cache_file()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.cite">tcutility.cite module</a><ul class="nav section-nav flex-column">
