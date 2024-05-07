@@ -78,6 +78,7 @@ def _format_article(data: dict, style: str) -> str:
 	volume = data['message']['volume']
 	pages = data['message'].get('page')
 	title = data['message']['title'][0]
+	doi = data['message']['DOI']
 
 	# Get the initials from the author given names
 	# also store the family names
