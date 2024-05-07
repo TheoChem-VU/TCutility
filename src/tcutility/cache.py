@@ -78,7 +78,7 @@ def cache(func):
 
 def _get_from_cache_file(file, func, args, kwargs):
     '''
-    Retrieve results from a JSON file.
+    Retrieve results from a JSON file. Return `None` if not found.
     '''
     # open the file and parse the data
     with open(os.path.join(_cache_dir, file)) as cfile:
@@ -137,9 +137,15 @@ def _clear_cache_file(file):
 def cache_file(file):
     '''
     Function decorator that stores results of a function to a file.
+    Because results are written to a file the values persist between Python sessions.
+    This is useful, for example, for online API calls.
 
     Args:
-        file: the filepath to store function call results to.
+        file: the filepath to store function call results to. 
+            Files will be stored in the platform dependent temporary file directory.
+
+    .. seealso::
+        `platformdirs.user_cache_dir <https://platformdirs.readthedocs.io/en/latest/api.html#platformdirs.user_cache_dir>`_ for information on the temporary directory.
     '''
     def decorator(func):
         # make the file if it doesnt exist
