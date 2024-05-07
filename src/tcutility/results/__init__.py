@@ -98,12 +98,23 @@ def read(calc_dir: Union[str, pl.Path]) -> Result:
     elif ret.engine == "dftb":
         ret.dftb = dftb.get_calc_settings(ret)
         ret.properties = dftb.get_properties(ret)
-    elif ret.engine == "orca":
-        ret.orca = orca.get_calc_settings(ret)
-        ret.properties = orca.get_properties(ret)
     elif ret.engine == "xtb":
         # ret.xtb = xtb.get_calc_settings(ret)
         ret.properties = xtb.get_properties(ret)
+        
+    elif ret.engine == "orca":
+        try:
+            ret.orca = orca.get_calc_settings(ret)
+        except:
+            ret.orca = None
+            print('Error reading:', calc_dir)
+            raise
+        try:
+            ret.properties = orca.get_properties(ret)
+        except:
+            ret.properties = None
+            print('Error reading:', calc_dir)
+            raise
 
     # unload cached KFReaders associated with this calc_dir
     to_delete = [key for key in cache._cache if key.startswith(os.path.abspath(calc_dir))]

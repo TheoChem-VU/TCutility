@@ -1,5 +1,8 @@
 import time
 import functools
+import json
+import os
+import platformdirs
 
 
 _timed_func_cache = {}
@@ -9,6 +12,7 @@ _func_cache = {}
 
 _general_cache = {}
 
+_cache_dir = platformdirs.user_cache_dir(appname='TCutility', appauthor='TheoCheM', ensure_exists=True)
 
 def timed_cache(delay: float):
     '''
@@ -72,7 +76,93 @@ def cache(func):
     return inner_decorator
 
 
-if __name__ == '__main__':
-    @timed_cache(1)
-    def test_timer(a, b):
-        return a * b
+def _get_from_cache_file(file, func, args, kwargs):
+    '''
+    Retrieve results from a JSON file. Return `None` if not found.
+    '''
+    # open the file and parse the data
+    with open(os.path.join(_cache_dir, file)) as cfile:
+        data = json.loads(cfile.read())
+
+    # we now go through the data
+    # it is formatted as a list of dicts
+    # each dict has the 'func', 'args', 'kwargs' and 'value' keys
+    for datum in data:
+        # func is set as the function qualname
+        if datum['func'] != func.__qualname__:
+            continue
+
+        # args is retrieved as a list
+        if datum['args'] != list(args):
+            continue
+
+        # kwargs is simply a dict
+        if datum['kwargs'] != kwargs:
+            continue
+
+        # if we did not exit the loop yet we return the value
+        return datum['value']
+
+
+def _write_to_cache_file(file, func, args, kwargs, value):
+    '''
+    Write results to the file.
+    '''
+    # we open the file to get the data
+    with open(os.path.join(_cache_dir, file)) as cfile:
+        data = json.loads(cfile.read())
+
+    # add the new results to the file
+    new = {
+        'func': func.__qualname__,
+        'args': args,
+        'kwargs': kwargs,
+        'value': value
+    }
+    data.append(new)
+
+    with open(os.path.join(_cache_dir, file), 'w+') as cfile:
+        cfile.write(json.dumps(data, indent=4))
+
+
+def _clear_cache_file(file):
+    '''
+    Function that clears a file and writes a new beginning of a list.
+    '''
+    os.makedirs(_cache_dir, exist_ok=True)
+    with open(os.path.join(_cache_dir, file), 'w+') as cfile:
+        cfile.write('[]')
+
+
+def cache_file(file):
+    '''
+    Function decorator that stores results of a function to a file.
+    Because results are written to a file the values persist between Python sessions.
+    This is useful, for example, for online API calls.
+
+    Args:
+        file: the filepath to store function call results to. 
+            Files will be stored in the platform dependent temporary file directory.
+
+    .. seealso::
+        `platformdirs.user_cache_dir <https://platformdirs.readthedocs.io/en/latest/api.html#platformdirs.user_cache_dir>`_ for information on the temporary directory.
+    '''
+    def decorator(func):
+        # make the file if it doesnt exist
+        if not os.path.exists(os.path.join(_cache_dir, file)):
+            _clear_cache_file(file)
+
+        @functools.wraps(func)
+        def inner_decorator(*args, **kwargs):
+            # check if the arguments were called before
+            cached = _get_from_cache_file(file, func,  args, kwargs)
+            if cached is not None:
+                return cached
+
+            # if it is not present we add it to the cache file
+            res = func(*args, **kwargs)
+            _write_to_cache_file(file, func,  args, kwargs, res)
+            return res
+
+        return inner_decorator
+    return decorator

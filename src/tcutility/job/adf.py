@@ -9,7 +9,7 @@ j = os.path.join
 
 class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        self.settings = results.Result()
         self._functional = None
         self._core = None
         self.solvent('vacuum')
@@ -20,6 +20,7 @@ class ADFJob(AMSJob):
 
         # by default print the fock matrix
         self.settings.input.adf.print = 'SFOSiteEnergies'
+        super().__init__(*args, **kwargs)
 
     def __str__(self):
         return f'{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}'
@@ -160,16 +161,14 @@ class ADFJob(AMSJob):
         self._functional = functional
 
         if functional == 'r2SCAN-3c' and self._basis_set != 'mTZ2P':
-            log.warn(f'Switching basis set from {self._basis_set} to mTZ2P for r2SCAN-3c.')
+            log.info(f'Switching basis set from {self._basis_set} to mTZ2P for r2SCAN-3c.')
             self.basis_set('mTZ2P')
 
         if functional == 'SSB-D':
-            log.error('There are two functionals called SSB-D, please use "GGA:SSB-D" or "MetaGGA:SSB-D".')
-            return
+            raise ValueError('There are two functionals called SSB-D, please use "GGA:SSB-D" or "MetaGGA:SSB-D".')
 
         if not data.functionals.get(functional):
-            log.warn(f'XC-functional {functional} not found. Please ask a TheoCheM developer to add it. Adding functional as LibXC.')
-            self.settings.input.adf.XC.LibXC = functional
+            raise ValueError(f'XC-functional {functional} not found.')
         else:
             func = data.functionals.get(functional)
             self.settings.input.adf.update(func.adf_settings)
@@ -493,6 +492,7 @@ class ADFFragmentJob(ADFJob):
 class DensfJob(Job):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.settings = results.Result()
         self.rundir = 'tmp'
         self.name = 'densf'
         self.gridsize()

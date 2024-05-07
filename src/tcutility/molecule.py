@@ -213,7 +213,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
             if f'spinpol_{frag_name}' in mol.flags:
                 fragment_mols[frag_name].flags['spinpol'] = mol.flags[f'spinpol_{frag_name}']
 
-        return fragment_mols
+        return result.Result(fragment_mols)
 
     # second method, check if the atoms have a frag= flag defined
     fragment_names = set(atom.flags.get('frag') for atom in mol)
@@ -230,7 +230,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
             if f'spinpol_{frag}' in mol.flags:
                 fragment_mols[frag].flags['spinpol'] = mol.flags[f'spinpol_{frag}']
 
-        return fragment_mols
+        return result.Result(fragment_mols)
 
 
 

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Command-line interface (CLI) scripts &#8212; TCutility v0.11.0 documentation</title>
+    <title>Command-line interface (CLI) scripts &#8212; TCutility v0.12.0 documentation</title>
   
   
   
@@ -37,8 +37,8 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=5899e6ac"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/documentation_options.js?v=cae63847"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -268,14 +268,14 @@
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>CLI scripts are invoked using the parent <code class="docutils literal notranslate"><span class="pre">tc</span></code> command followed by the sub-program (see below). If you have suggestions for useful scripts please contact the developers or <a class="reference external" href="https://github.com/TheoChem-VU/TCutility/issues/new">open an issue</a> on our GitHub page.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">tc</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">{</span><span class="n">read</span><span class="p">,</span><span class="n">optimize</span><span class="p">,</span><span class="n">concat</span><span class="o">-</span><span class="n">irc</span><span class="p">}</span> <span class="o">...</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">tc</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">{</span><span class="n">read</span><span class="p">,</span><span class="n">optimize</span><span class="p">,</span><span class="n">concat</span><span class="o">-</span><span class="n">irc</span><span class="p">,</span><span class="n">cite</span><span class="p">}</span> <span class="o">...</span>
 </pre></div>
 </div>
 <section id="tcutility-command-line-scripts">
 <h3>TCutility command-line scripts<a class="headerlink" href="#tcutility-command-line-scripts" title="Link to this heading">#</a></h3>
 <dl class="option-list">
 <dt><kbd>subprogram</kbd></dt>
-<dd><p>Possible choices: read, optimize, concat-irc</p>
+<dd><p>Possible choices: read, optimize, concat-irc, cite</p>
 </dd>
 </dl>
 </section>
@@ -385,6 +385,75 @@ In addition, the -r flag can be used to reverse the trajectory.</p>
 </dl>
 </section>
 </section>
+<section id="cite">
+<h4>cite<a class="headerlink" href="#cite" title="Link to this heading">#</a></h4>
+<p>Generate citations for objects. Currently supports generating citations for functionals, basis-sets, programs, methodologies and DOIs.
+This program also generates, and if possible, opens a Word document that contains the formatted citations.
+Multiple objects can be given separated by spaces.
+If the supplied object is also a file path it will read each line as a separate object.</p>
+<p>Example usage:</p>
+<blockquote>
+<div><p>&gt; tc cite ADF
+Program ORCA</p>
+<blockquote>
+<div><p>[10.1002/wcms.81] F. Neese, WIREs Comput. Mol. Sci. 2011, 2, 73-78.
+[10.1063/5.0004608] F. Neese, F. Wennmohs, U. Becker, C. Riplinger, J. Chem. Phys. 2020, 152.
+[10.1002/wcms.1606] F. Neese, WIREs Comput. Mol. Sci. 2022, 12.</p>
+</div></blockquote>
+<p>&gt; tc cite BP86 BLYP OLYP OPBE D3BJ
+Functional BP86</p>
+<blockquote>
+<div><p>[10.1103/PhysRevA.38.3098] A. D. Becke, Phys. Rev. A 1988, 38, 3098-3100.
+[10.1103/PhysRevB.33.8800] J. P. Perdew, W. Yue, Phys. Rev. B 1986, 33, 8800-8802.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Functional BLYP</dt><dd><p>[10.1103/PhysRevA.38.3098] A. D. Becke, Phys. Rev. A 1988, 38, 3098-3100.
+[10.1103/PhysRevB.37.785] C. Lee, W. Yang, R. G. Parr, Phys. Rev. B 1988, 37, 785-789.</p>
+</dd>
+<dt>Functional OLYP</dt><dd><p>[10.1080/00268970010018431] N. C. Handy, A. J. Cohen, Mol. Phys. 2001, 99, 403-412.
+[10.1103/PhysRevB.37.785] C. Lee, W. Yang, R. G. Parr, Phys. Rev. B 1988, 37, 785-789.</p>
+</dd>
+<dt>Functional OPBE</dt><dd><p>[10.1080/00268970010018431] N. C. Handy, A. J. Cohen, Mol. Phys. 2001, 99, 403-412.
+[10.1103/PhysRevLett.77.3865] J. P. Perdew, K. Burke, M. Ernzerhof, Phys. Rev. Lett. 1996, 77, 3865-3868.</p>
+</dd>
+<dt>Methodology D3BJ</dt><dd><p>[10.1002/jcc.21759] S. Grimme, S. Ehrlich, L. Goerigk, J. Comput. Chem. 2011, 32, 1456-1465.</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tc</span> <span class="n">cite</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">w</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">l</span><span class="p">]</span> <span class="p">[</span><span class="n">objects</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+<section id="positional-arguments_repeat3">
+<h5>Positional Arguments<a class="headerlink" href="#positional-arguments_repeat3" title="Link to this heading">#</a></h5>
+<dl class="option-list">
+<dt><kbd>objects</kbd></dt>
+<dd><p>the objects to generate citations for. This can be functionals, basis-sets, programs, methodologies or DOIs.</p>
+</dd>
+</dl>
+</section>
+<section id="named-arguments_repeat3">
+<h5>Named Arguments<a class="headerlink" href="#named-arguments_repeat3" title="Link to this heading">#</a></h5>
+<dl class="option-list">
+<dt><kbd>-w, --wiley</kbd></dt>
+<dd><p>set the citation style to Wiley. This is the default style.</p>
+</dd>
+<dt><kbd>-a, --acs</kbd></dt>
+<dd><p>set the citation style to ACS.</p>
+</dd>
+<dt><kbd>-r, --rsc</kbd></dt>
+<dd><p>set the citation style to RSC.</p>
+</dd>
+<dt><kbd>-o, --output</kbd></dt>
+<dd><p>the output Word file to write the citations to.</p>
+<p>Default: “citations.docx”</p>
+</dd>
+<dt><kbd>-l, --list</kbd></dt>
+<dd><p>list currently available citations.</p>
+<p>Default: False</p>
+</dd>
+</dl>
+</section>
+</section>
 </section>
 </section>
 </section>
@@ -453,6 +522,11 @@ In addition, the -r flag can be used to reverse the trajectory.</p>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#named-arguments_repeat2">Named Arguments</a></li>
 </ul>
 </li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cite">cite</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#positional-arguments_repeat3">Positional Arguments</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#named-arguments_repeat3">Named Arguments</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -503,7 +577,7 @@ In addition, the -r flag can be used to reverse the trajectory.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

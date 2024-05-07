@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.results.orca &#8212; TCutility v0.11.0 documentation</title>
+    <title>tcutility.results.orca &#8212; TCutility v0.12.0 documentation</title>
   
   
   
@@ -36,8 +36,8 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../_static/documentation_options.js?v=5899e6ac"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/documentation_options.js?v=cae63847"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
@@ -261,7 +261,7 @@
                   
   <h1>Source code for tcutility.results.orca</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">tcutility.results</span> <span class="kn">import</span> <span class="n">Result</span>
-<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">constants</span>
+<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">slurm</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">scm</span> <span class="kn">import</span> <span class="n">plams</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -417,6 +417,7 @@
     <span class="k">if</span> <span class="n">coordinates</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;xyz&quot;</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">]:</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">molecule</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">system_lines</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
             <span class="n">ret</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coords</span><span class="o">=</span><span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]]))</span>
 
     <span class="n">info</span><span class="o">.</span><span class="n">task</span> <span class="o">=</span> <span class="s2">&quot;SinglePoint&quot;</span>
@@ -526,12 +527,14 @@
     <span class="n">ret</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">reasons</span> <span class="o">=</span> <span class="p">[]</span>
 
+    <span class="c1"># if we do not have an output file the calculation failed</span>
     <span class="k">if</span> <span class="s2">&quot;out&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">out</span><span class="p">:</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Calculation status unknown&quot;</span><span class="p">)</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;UNKNOWN&quot;</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;U&quot;</span>
         <span class="k">return</span> <span class="n">ret</span>
 
+    <span class="c1"># try to read if the calculation succeeded</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">out</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="s2">&quot;ORCA TERMINATED NORMALLY&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]):</span>
@@ -540,8 +543,28 @@
             <span class="n">ret</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;S&quot;</span>
             <span class="k">return</span> <span class="n">ret</span>
 
+    <span class="c1"># if it didnt we default to failed</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;FAILED&quot;</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>
+
+    <span class="c1"># otherwise we check if the job is being managed by slurm</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">slurm</span><span class="o">.</span><span class="n">workdir_info</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">root</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="c1"># get the statuscode from the workdir</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">slurm</span><span class="o">.</span><span class="n">workdir_info</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">root</span><span class="p">))</span><span class="o">.</span><span class="n">statuscode</span>
+    <span class="n">state_name</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;CG&#39;</span><span class="p">:</span> <span class="s1">&#39;COMPLETING&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;CF&#39;</span><span class="p">:</span> <span class="s1">&#39;CONFIGURING&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;PD&#39;</span><span class="p">:</span> <span class="s1">&#39;PENDING&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="s1">&#39;RUNNING&#39;</span>
+    <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="s1">&#39;UNKNOWN&#39;</span><span class="p">)</span>
+
+    <span class="n">ret</span><span class="o">.</span><span class="n">fatal</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">state_name</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">reasons</span> <span class="o">=</span> <span class="p">[]</span>
+
     <span class="k">return</span> <span class="n">ret</span></div>
 
 
@@ -818,10 +841,6 @@
     <span class="k">return</span> <span class="n">ret</span></div>
 
 
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">ret</span> <span class="o">=</span> <span class="n">get_info</span><span class="p">(</span><span class="s2">&quot;/Users/yumanhordijk/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/RadicalAdditionBenchmark/data/abinitio/P_C2H2_NH2/OPT_pVTZ&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">molecule</span><span class="p">)</span>
 </pre></div>
 
                 </article>
@@ -874,7 +893,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

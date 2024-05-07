@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility &#8212; TCutility v0.11.0 documentation</title>
+    <title>tcutility &#8212; TCutility v0.12.0 documentation</title>
   
   
   
@@ -37,8 +37,8 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../_static/documentation_options.js?v=5899e6ac"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/documentation_options.js?v=cae63847"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -336,6 +336,11 @@
 <li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.cache">tcutility.cache module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.cache.timed_cache"><code class="docutils literal notranslate"><span class="pre">timed_cache()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.cache.cache"><code class="docutils literal notranslate"><span class="pre">cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.cache.cache_file"><code class="docutils literal notranslate"><span class="pre">cache_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.cite">tcutility.cite module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.cite.cite"><code class="docutils literal notranslate"><span class="pre">cite()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.constants">tcutility.constants module</a></li>
@@ -361,6 +366,7 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.RMSD"><code class="docutils literal notranslate"><span class="pre">RMSD()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.random_points_on_sphere"><code class="docutils literal notranslate"><span class="pre">random_points_on_sphere()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.random_points_in_anular_sphere"><code class="docutils literal notranslate"><span class="pre">random_points_in_anular_sphere()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.random_points_on_spheroid"><code class="docutils literal notranslate"><span class="pre">random_points_on_spheroid()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.log">tcutility.log module</a><ul>
@@ -388,6 +394,7 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.time_stamp"><code class="docutils literal notranslate"><span class="pre">time_stamp()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.flow"><code class="docutils literal notranslate"><span class="pre">flow()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.table"><code class="docutils literal notranslate"><span class="pre">table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.rectangle_list"><code class="docutils literal notranslate"><span class="pre">rectangle_list()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.loadbar"><code class="docutils literal notranslate"><span class="pre">loadbar()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.boxed"><code class="docutils literal notranslate"><span class="pre">boxed()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.debug"><code class="docutils literal notranslate"><span class="pre">debug()</span></code></a></li>
@@ -529,7 +536,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>
