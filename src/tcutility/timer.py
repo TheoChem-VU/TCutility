@@ -1,12 +1,11 @@
 from time import perf_counter
-from functools import wraps
 import numpy as np
 from tcutility import log
 from types import FunctionType
 import listfunc
 import atexit
 '''
-Implements a decorator that records and stores the number of times a function
+Implements a decorator and context manager that records and stores the number of times a function
 has been called and also the amount of time taken in total/per call
 '''
 times = {}
