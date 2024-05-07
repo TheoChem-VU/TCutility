@@ -348,9 +348,6 @@ def get_properties(info: Result) -> Result:
     with open(info.files.out) as out:
         lines = [line.strip() for line in out.readlines()]
 
-    if info.orca.frequencies:
-        ret.vibrations = get_vibrations(lines)
-
     # read some important info about the calculation
     for line in lines:
         if "TOTAL ENERGY" in line:
@@ -373,7 +370,7 @@ def get_properties(info: Result) -> Result:
             ret.vibrations.number_of_imaginary_modes = int(line.split()[4])
             continue
 
-        if 'projected vibrational frequencies' in line:
+        if 'vibrational frequencies' in line:
             ret.vibrations.frequencies = []
             continue
 
