@@ -2,6 +2,7 @@ import time
 import functools
 import json
 import os
+import platformdirs
 
 
 _timed_func_cache = {}
@@ -11,8 +12,7 @@ _func_cache = {}
 
 _general_cache = {}
 
-_cache_dir = os.path.join(os.path.split(__file__)[0], '.cache')
-
+_cache_dir = platformdirs.user_cache_dir(appname='TCutility', appauthor='TheoCheM', ensure_exists=True)
 
 def timed_cache(delay: float):
     '''
