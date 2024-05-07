@@ -142,18 +142,10 @@ def _format_book_chapter(data: dict, style: str) -> str:
 		citation = f'{", ".join(names)}, ({year}). {chapter_title}. In: <i>{book_title}</i> <b>{year}</b>, {pages}.'
 
 	elif style == 'acs':
-		names = [f'{last}, {first}' for first, last in zip(initials, last_names)]
-		citation = f'{"; ".join(names)} {title} <i>{journal_abbreviation}</i> <b>{year}</b>, <i>{volume}</i>'
-		if pages:
-			citation += f', {pages}'
-		citation += f'. DOI: {doi}'
+		raise NotImplementedError('No support for ACS style yet')
 
 	elif style == 'rsc':
-		names = [f'{first} {last}' for first, last in zip(initials, last_names)]
-		citation = f'{", ".join(names)}, <i>{journal_abbreviation}</i> {year}, <b>{volume}</b>'
-		if pages:
-			citation += f', {pages}'
-		citation += '.'
+		raise NotImplementedError('No support for RSC style yet')
 
 	return citation
 
