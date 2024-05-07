@@ -47,8 +47,6 @@ class timer:
         else:
             return self.function(*args, **kwargs)
 
-        return inner
-
 
 def print_timings():
     if not enabled:
