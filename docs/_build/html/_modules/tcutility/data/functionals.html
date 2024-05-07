@@ -261,6 +261,7 @@
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">results</span><span class="p">,</span> <span class="n">cache</span>
+<span class="kn">import</span> <span class="nn">re</span>
 
 
 <span class="n">j</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
@@ -341,6 +342,7 @@
 <span class="sd">                - ``adf_settings`` **(:class:`Result &lt;tcutility.results.result.Result&gt;`)** - the settings that are used to select the functional in the ADF input.</span>
 <span class="sd">                - ``name_latex`` **(str)** - the name of the functional formatted to be used with LaTeX renderers.</span>
 <span class="sd">                - ``name_html`` **(str)** - the name of the functional formatted to be used with HTML renderers.</span>
+<span class="sd">                - ``dois`` **(List[str])** - a list of relevant dois for this functional.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">def</span> <span class="nf">set_dispersion</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="n">disp_map</span> <span class="o">=</span> <span class="p">{</span>
@@ -429,6 +431,22 @@
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">j</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;available_functionals.txt&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
 
+    <span class="c1"># read the references first</span>
+    <span class="c1"># references are given as </span>
+    <span class="c1"># [refname] doi</span>
+    <span class="c1"># and in-line</span>
+    <span class="c1"># - xcname {options} [refname1][refname2]...</span>
+    <span class="n">dois</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="n">ref</span><span class="p">,</span> <span class="n">doi</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">ref</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">dois</span><span class="p">[</span><span class="n">ref</span><span class="p">]</span> <span class="o">=</span> <span class="n">doi</span>
+
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
         <span class="c1"># there can be empty lines</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
@@ -438,21 +456,27 @@
         <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">):</span>
             <span class="k">continue</span>
 
+        <span class="c1"># we don&#39;t read the references here</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">):</span>
+            <span class="k">continue</span>
+
         <span class="c1"># functional names are given starting with -</span>
         <span class="c1"># category names without -</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;- &#39;</span><span class="p">):</span>
             <span class="n">curr_category</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="k">continue</span>
+ 
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
         <span class="c1"># store data about the func in a dict</span>
         <span class="n">func</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">()</span>
         <span class="n">func</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">curr_category</span>
         <span class="c1"># separate the functional name from the line</span>
-        <span class="n">functional_name</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">functional_name</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">func</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">functional_name</span>
         <span class="n">func</span><span class="o">.</span><span class="n">name_latex</span> <span class="o">=</span> <span class="n">functional_name</span>
         <span class="n">func</span><span class="o">.</span><span class="n">name_html</span> <span class="o">=</span> <span class="n">functional_name</span>
-        <span class="n">func</span><span class="o">.</span><span class="n">path_safe_name</span> <span class="o">=</span> <span class="n">functional_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+        <span class="n">func</span><span class="o">.</span><span class="n">path_safe_name</span> <span class="o">=</span> <span class="n">functional_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">functional_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;WB&#39;</span><span class="p">):</span>
             <span class="n">func</span><span class="o">.</span><span class="n">name_latex</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">name_latex</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;WB&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\omega$B&#39;</span><span class="p">)</span>
@@ -476,13 +500,18 @@
 
         <span class="c1"># check if custom params were given for dispersion</span>
         <span class="k">if</span> <span class="s1">&#39;GRIMME&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-            <span class="n">func</span><span class="o">.</span><span class="n">disp_params</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+            <span class="c1"># func.disp_params = line.split(&#39;!&#39;)[0].split(&#39;,&#39;)[1].strip().strip(&quot;&#39;&quot;)</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">disp_params</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&#39;(.*)&#39;&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
 
         <span class="n">func</span><span class="o">.</span><span class="n">use_libxc</span> <span class="o">=</span> <span class="s1">&#39;!libxc&#39;</span> <span class="ow">in</span> <span class="n">line</span>
         <span class="n">func</span><span class="o">.</span><span class="n">includes_disp</span> <span class="o">=</span> <span class="s1">&#39;!includesdisp&#39;</span> <span class="ow">in</span> <span class="n">line</span>
         <span class="n">func</span><span class="o">.</span><span class="n">available_in_adf</span> <span class="o">=</span> <span class="s1">&#39;!noadf&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">line</span>
         <span class="n">func</span><span class="o">.</span><span class="n">available_in_band</span> <span class="o">=</span> <span class="s1">&#39;!band&#39;</span> <span class="ow">in</span> <span class="n">line</span>
         <span class="n">func</span><span class="o">.</span><span class="n">available_in_orca</span> <span class="o">=</span> <span class="s1">&#39;!orca&#39;</span> <span class="ow">in</span> <span class="n">line</span>
+
+        <span class="c1"># get references</span>
+        <span class="n">refs</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\[([a-zA-Z0-9]+)\]&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="n">func</span><span class="o">.</span><span class="n">dois</span> <span class="o">=</span> <span class="p">[</span><span class="n">dois</span><span class="p">[</span><span class="n">ref</span><span class="p">]</span> <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">refs</span><span class="p">]</span>
 
         <span class="n">set_dispersion</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
         <span class="n">set_functional</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
@@ -498,10 +527,6 @@
 <span class="k">for</span> <span class="n">functional</span> <span class="ow">in</span> <span class="n">functionals</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">get</span><span class="p">(</span><span class="n">functional</span><span class="p">)</span><span class="o">.</span><span class="n">category</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
         <span class="n">categories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get</span><span class="p">(</span><span class="n">functional</span><span class="p">)</span><span class="o">.</span><span class="n">category</span><span class="p">)</span>
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="c1"># log.log(get(&#39;OLYP_D3BJ&#39;))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;VWN&#39;</span><span class="p">))</span>
 </pre></div>
 
                 </article>

@@ -24,6 +24,14 @@ tcutility.cache module
    :undoc-members:
    :show-inheritance:
 
+tcutility.cite module
+---------------------
+
+.. automodule:: tcutility.cite
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tcutility.constants module
 --------------------------
 
