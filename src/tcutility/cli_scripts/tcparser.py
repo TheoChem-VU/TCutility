@@ -1,4 +1,4 @@
-from tcutility.cli_scripts import read, job_script, concatenate_irc
+from tcutility.cli_scripts import read, job_script, concatenate_irc, cite
 
 # to add a script:
 # 1. Add a create_subparser function and main function to your script.
@@ -8,6 +8,7 @@ sub_programs = {
     "read": read,
     "optimize": job_script,
     "concat-irc": concatenate_irc,
+    "cite": cite,
 }
 
 
