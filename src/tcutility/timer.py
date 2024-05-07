@@ -15,7 +15,7 @@ exec_start = perf_counter()
 enabled: bool = True
 
 
-class Timer:
+class timer:
     '''
     The main timer class. It acts both as a context-manager and decorator.
     '''
