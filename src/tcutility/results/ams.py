@@ -24,7 +24,7 @@ def get_calc_files(calc_dir: str) -> dict:
     """
     # collect all files in the current directory and subdirectories
     files = []
-    for root, _, files_ in os.walk(calc_dir):
+    for root, _, files_ in os.walk(os.path.abspath(calc_dir)):
         if os.path.split(root)[1].startswith('.'):
             continue
 
@@ -467,6 +467,12 @@ def get_history(calc_dir: str) -> Result:
                 else:
                     val = reader_ams.read("History", f"{item}({i+1})")
                     ret[item.lower()].append(val)
+
+        if 'converged' not in ret.keys() and ('PESScan', 'HistoryIndices') in reader_ams:
+            ret['converged'] = [False] * ret.number_of_entries
+            for idx in ensure_list(reader_ams.read('PESScan', 'HistoryIndices')):
+                ret['converged'][idx - 1] = True
+
 
     return ret
 

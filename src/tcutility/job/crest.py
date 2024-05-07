@@ -37,7 +37,6 @@ class CRESTJob(Job):
             'coords.xyz',
             f'-xnam "{self.xtb_path}"',
             '--noreftopo',
-            '-rthr 1'
             f'-c {self._charge}',
             f'-u {self._spinpol}',
             f'-tnmd {self._temp}',

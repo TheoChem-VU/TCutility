@@ -15,7 +15,7 @@ import os  # noqa: E402
 import pathlib as pl  # noqa: E402
 
 from .. import slurm  # noqa: E402
-from . import adf, ams, cache, dftb, orca  # noqa: E402
+from . import adf, ams, cache, dftb, orca, xtb  # noqa: E402
 
 
 def get_info(calc_dir: str):
@@ -26,6 +26,11 @@ def get_info(calc_dir: str):
 
     try:
         return orca.get_info(calc_dir)
+    except:  # noqa
+        pass
+
+    try:
+        return xtb.get_info(calc_dir)
     except:  # noqa
         pass
 
@@ -93,6 +98,10 @@ def read(calc_dir: Union[str, pl.Path]) -> Result:
     elif ret.engine == "dftb":
         ret.dftb = dftb.get_calc_settings(ret)
         ret.properties = dftb.get_properties(ret)
+    elif ret.engine == "xtb":
+        # ret.xtb = xtb.get_calc_settings(ret)
+        ret.properties = xtb.get_properties(ret)
+        
     elif ret.engine == "orca":
         try:
             ret.orca = orca.get_calc_settings(ret)
@@ -100,7 +109,6 @@ def read(calc_dir: Union[str, pl.Path]) -> Result:
             ret.orca = None
             print('Error reading:', calc_dir)
             raise
-
         try:
             ret.properties = orca.get_properties(ret)
         except:
