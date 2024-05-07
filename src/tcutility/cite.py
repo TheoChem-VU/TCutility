@@ -158,7 +158,7 @@ def _format_book_chapter(data: dict, style: str) -> str:
 	# format the citation correctly
 	if style == 'wiley':
 		names = [f'{last}, {first}' for first, last in zip(initials, last_names)]
-		editors = [f'{last}, {first}' for first, last in zip(editor_initials, editor_last_names)]
+		editors = [f'{first} {last}' for first, last in zip(editor_initials, editor_last_names)]
 		if n_authors == 1:
 			names = names[0]
 
