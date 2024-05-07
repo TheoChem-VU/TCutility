@@ -54,17 +54,19 @@ def print_timings():
     names = list(times.keys())
     names = sorted(names)
     names_splits = [name.split('.') for name in names]
-    ps = []
+
+    # generate names that are common to multiple names
     for i, name in enumerate(names_splits):
         parents = []
         for name_ in names_splits[:i][::-1]:
             parents.append(".".join(listfunc.common_list(name, name_)))
+
         parents = [parent for parent in parents if parent]
         if parents != []:
             longest_parent = sorted(parents, key=lambda x: len(x))[-1]
             if longest_parent not in names:
                 names.append(longest_parent)
-                ps.append(longest_parent)
+
     names = sorted(names)
     names_splits = [name.split('.') for name in names]
     # get the parents:
