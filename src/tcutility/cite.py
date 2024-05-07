@@ -177,7 +177,7 @@ def _format_book_chapter(data: dict, style: str) -> str:
 		if n_editors >= 4:
 			editors = ", ".join(editors[:3]) + ' et al.'
 
-		citation = f'{names} ({year}). {chapter_title}. In: <i>{book_title}</i> (ed. {editors}), {pages}.'
+		citation = f'{names} ({year}). {chapter_title}. In: <i>{book_title}</i> (ed. {editors}), {pages}. {publisher}'
 
 	elif style == 'acs':
 		raise NotImplementedError('No support for ACS style yet')
