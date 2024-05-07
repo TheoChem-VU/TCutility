@@ -16,6 +16,9 @@ enabled: bool = True
 
 
 class Timer:
+    '''
+    The main timer class. It acts both as a context-manager and decorator.
+    '''
     def __init__(self, name=None):
         if isinstance(name, FunctionType):
             self.function = name
@@ -47,26 +50,10 @@ class Timer:
         return inner
 
 
-# def Time(func):
-#     times.setdefault(func.__qualname__, {'calls': 0, 'timings': []})
-
-#     @wraps(func)
-#     def inner(*args, **kwargs):
-#         if enabled and __debug__:
-#             start = perf_counter()
-#             ret = func(*args, **kwargs)
-#             times[func.__qualname__]['calls'] += 1
-#             times[func.__qualname__]['timings'].append(perf_counter() - start)
-#             return ret
-#         else:
-#             return func(*args, **kwargs)
-#     return inner
-
-
 def print_timings():
     if not enabled:
         return
-        
+
     names = list(times.keys())
     names = sorted(names)
     names_splits = [name.split('.') for name in names]
@@ -137,28 +124,5 @@ def print_timings():
     log.table(lines, header=header, hline=[-2])
 
 
+# this makes sure that the timings are printed when Python quits running
 atexit.register(print_timings)
-
-
-if __name__ == '__main__':
-    from time import sleep
-
-    @Time
-    def test():
-        with Timer('test.inner'):
-            sleep(.141 + np.random.rand()/7)
-
-    @Time
-    def test2():
-        sleep(.231 + np.random.rand()/7)
-
-    [test() for _ in range(3)]
-    [test2() for _ in range(5)]
-
-    for i in range(100):
-        with Timer('inner'):
-            x = np.random.randn(1000000)
-
-    print_timings()
-    print()
-    print_timings2()
