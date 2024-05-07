@@ -8,6 +8,7 @@ from tcutility import ensure_2d
 from typing import Any, Iterable, List, Union
 from types import GeneratorType
 import inspect
+from math import ceil
 # from threading import Thread
 
 
@@ -186,6 +187,37 @@ def table(rows: List[List[Any]], header: Union[List[str], None] = None, sep: str
 
     log(return_str, level=level)
     return return_str
+
+
+def rectangle_list(values: List, spaces_before: int = 0, level: int = 20):
+    '''
+    This function prints a list of strings in a rectangle to the output.
+    This is similar to what the ls program does in unix.
+    '''
+    n_shell_col = os.get_terminal_size().columns
+    # we first have to determine the correct dimensions of our rectangle
+    for ncol in range(1, n_shell_col):
+        # the number of rows for the number of columns
+        nrows = ceil(len(values) / ncol)
+        # we then get what the rectangle would be
+        mat = [[str(x) for x in values[i * ncol: (i+1) * ncol]] for i in range(nrows)]
+        # and determine for each column the width
+        col_lens = [max([len(row[i]) for row in mat if i < len(row)] + [0]) for i in range(ncol)]
+        # then calculate the length of each row based on the column lengths
+        # we use a spacing of 2 spaces between each column
+        row_len = 22 * print_date + spaces_before + sum(col_lens) + 2 * len(col_lens) - 2
+
+        # if the rows are too big we exit the loop
+        if row_len > n_shell_col:
+            break
+
+        # store the previous loops results
+        prev_col_lens = col_lens
+        prev_mat = mat
+
+    # then print the strings with the right column widths
+    for row in prev_mat:
+        log(" " * spaces_before + "  ".join([x.ljust(col_len) for x, col_len in zip(row, prev_col_lens)]), level=level)
 
 
 def loadbar(sequence: Iterable, comment: str = "", Nsegments: int = 50, Nsteps: int = 10, level: int = 20) -> None:
@@ -448,3 +480,5 @@ if __name__ == "__main__":
             log.warn("I am testing the warning function")
 
     TestClass().test_method()
+
+    rectangle_list(range(1000))
