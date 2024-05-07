@@ -125,8 +125,14 @@ def _format_book_chapter(data: dict, style: str) -> str:
 	book_title = data['message']['container-title'][0]
 	chapter_title = data['message']['title'][0]
 
+	for isbn in data['message']['isbn-type']:
+		if isbn['type'] == 'electronic':
+			original_book_data = _get_doi_data(f"{data['message']['prefix']}/{isbn['value']}")
+			break
+
 	# Get the initials from the author given names
 	# also store the family names
+	n_authors = len(data['message']['author'])
 	initials = []
 	last_names = []
 	for author in data['message']['author']:
@@ -137,10 +143,41 @@ def _format_book_chapter(data: dict, style: str) -> str:
 		initials.append(firsts)
 		last_names.append(author['family'].title())
 
+	n_editors = len(original_book_data['message']['editor'])
+	editor_initials = []
+	editor_last_names = []
+	for author in original_book_data['message']['editor']:
+		# we get the capital letters from the first names
+		# these will become the initials for this author
+		firsts = [char + '.' for char in author['given'].title() if char.isupper()]
+		firsts = " ".join(firsts)
+		editor_initials.append(firsts)
+		editor_last_names.append(author['family'].title())
+
+
 	# format the citation correctly
 	if style == 'wiley':
 		names = [f'{last}, {first}' for first, last in zip(initials, last_names)]
-		citation = f'{", ".join(names)}, ({year}). {chapter_title}. In: <i>{book_title}</i> <b>{year}</b>, {pages}.'
+		editors = [f'{last}, {first}' for first, last in zip(editor_initials, editor_last_names)]
+		if n_authors == 1:
+			names = names[0]
+
+		if 1 < n_authors < 4:
+			names = ", ".join(names[:-1]) + ' and ' + names[-1]
+
+		if n_authors >= 4:
+			names = ", ".join(names[:3]) + ' et al.'
+
+		if n_editors == 1:
+			editors = editors[0]
+
+		if 1 < n_editors < 4:
+			editors = ", ".join(editors[:-1]) + ' and ' + editors[-1]
+
+		if n_editors >= 4:
+			editors = ", ".join(editors[:3]) + ' et al.'
+
+		citation = f'{names} ({year}). {chapter_title}. In: <i>{book_title}</i> (ed. {editors}), {pages}.'
 
 	elif style == 'acs':
 		raise NotImplementedError('No support for ACS style yet')
