@@ -288,7 +288,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># collect all files in the current directory and subdirectories</span>
     <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files_</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files_</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)):</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">root</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
             <span class="k">continue</span>
 
@@ -752,6 +752,12 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">val</span> <span class="o">=</span> <span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;History&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
                     <span class="n">ret</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;converged&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ret</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;PESScan&#39;</span><span class="p">,</span> <span class="s1">&#39;HistoryIndices&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">reader_ams</span><span class="p">:</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;converged&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="n">ret</span><span class="o">.</span><span class="n">number_of_entries</span>
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">ensure_list</span><span class="p">(</span><span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;PESScan&#39;</span><span class="p">,</span> <span class="s1">&#39;HistoryIndices&#39;</span><span class="p">)):</span>
+                <span class="n">ret</span><span class="p">[</span><span class="s1">&#39;converged&#39;</span><span class="p">][</span><span class="n">idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
 
     <span class="k">return</span> <span class="n">ret</span></div>
 

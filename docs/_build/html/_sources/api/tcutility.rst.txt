@@ -104,6 +104,14 @@ tcutility.spell\_check module
    :undoc-members:
    :show-inheritance:
 
+tcutility.timer module
+----------------------
+
+.. automodule:: tcutility.timer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

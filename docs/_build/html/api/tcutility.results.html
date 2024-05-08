@@ -747,16 +747,16 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.dftb.get_properties">
 <span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/dftb.html#get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.dftb.get_properties" title="Link to this definition">#</a></dt>
-<dd><p>Function to get properties from an ADF calculation.</p>
+<dd><p>Function to get properties from an DFTB calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ADF properties.</p>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing DFTB properties.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><p>Result object containing properties from the ADF calculation:</p>
+<dd class="field-odd"><p><p>Result object containing properties from the DFTB calculation:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>energy.bond (float)</strong> – bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
@@ -1103,6 +1103,196 @@ E.g. res.properties.energy.bond can be gotten by calling res.get_multi_key(“pr
 </dd></dl>
 
 </section>
+<section id="module-tcutility.results.xtb">
+<span id="tcutility-results-xtb-module"></span><h2>tcutility.results.xtb module<a class="headerlink" href="#module-tcutility.results.xtb" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.xtb.get_calc_files">
+<span class="sig-name descname"><span class="pre">get_calc_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/xtb.html#get_calc_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.xtb.get_calc_files" title="Link to this definition">#</a></dt>
+<dd><p>Function that returns files relevant to AMS calculations stored in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path pointing to the desired calculation</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Result object containing filenames and paths</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.xtb.get_version">
+<span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/xtb.html#get_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.xtb.get_version" title="Link to this definition">#</a></dt>
+<dd><p>Function to get the ORCA version used in the calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA calculation settings.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing results about the ORCA version:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>full (str)</strong> – the full version string as written by ORCA.</p></li>
+<li><p><strong>major (str)</strong> – major ORCA version.</p></li>
+<li><p><strong>minor (str)</strong> – minor ORCA version.</p></li>
+<li><p><strong>micro (str)</strong> – micro ORCA version.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.xtb.get_input">
+<span class="sig-name descname"><span class="pre">get_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/xtb.html#get_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.xtb.get_input" title="Link to this definition">#</a></dt>
+<dd><p>Function that parses the input file for this ORCA calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA calculation settings.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing information about the calculation input:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>main (list[str])</strong> - the main inputs for the calculation. These are the lines that start with a “!”.</p></li>
+<li><p><strong>sections (Result)</strong> - extra settings added to the calculation. These are the lines that start with a “%” and optionally end with “END” clause.</p></li>
+<li><p><strong>system (Result)</strong> - settings related to the molecular system. This includes charge, multiplicity and the coordinates.</p></li>
+<li><p><strong>task (str)</strong> - the task that was performed by the calculation, e.g. “SinglePoint”, “TransitionStateSearch”.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.xtb.get_calculation_status">
+<span class="sig-name descname"><span class="pre">get_calculation_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/xtb.html#get_calculation_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.xtb.get_calculation_status" title="Link to this definition">#</a></dt>
+<dd><p>Function that returns the status of the ORCA calculation described in reader. In case of non-succes it will also give possible reasons for the errors/warnings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA calculation information.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing information about the calculation status:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>fatal (bool)</strong> – True if calculation cannot be analysed correctly, False otherwise</p></li>
+<li><p><strong>reasons (list[str])</strong> – list of reasons to explain the status, they can be errors, warnings, etc.</p></li>
+<li><p><strong>name (str)</strong> – calculation status written as a string, one of (“SUCCESS”, “RUNNING”, “UNKNOWN”, “SUCCESS(W)”, “FAILED”)</p></li>
+<li><p><strong>code (str)</strong> – calculation status written as a single character, one of (“S”, “R”, “U”, “W” “F”)</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.xtb.get_molecules">
+<span class="sig-name descname"><span class="pre">get_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/xtb.html#get_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.xtb.get_molecules" title="Link to this definition">#</a></dt>
+<dd><p>Function that returns information about the molecules for this calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA calculation information.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing properties from the ORCA calculation:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>input (plams.Molecule)</strong> - the input molecule for this calculation.</p></li>
+<li><p><strong>output (plams.Molecule)</strong> - the output molecule for this calculation, for example the optimized structure after a geometry optimization.</p></li>
+<li><p><strong>number_of_atoms (int)</strong> - the number of atoms in the molecular system.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.xtb.get_info">
+<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/xtb.html#get_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.xtb.get_info" title="Link to this definition">#</a></dt>
+<dd><p>Function to read useful info about the calculation in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>. Returned information will depend on the type of file that is provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path pointing to the desired calculation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing results about the calculation and AMS:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>version (Result)</strong> – information about the AMS version used, see <a class="reference internal" href="#tcutility.results.xtb.get_version" title="tcutility.results.xtb.get_version"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_version()</span></code></a>.</p></li>
+<li><p><strong>files (Result)</strong> - paths to files that are important for this calculation.</p></li>
+<li><p><strong>input (Result)</strong> - information about the input of this calculation, see <a class="reference internal" href="#tcutility.results.xtb.get_input" title="tcutility.results.xtb.get_input"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_input()</span></code></a>.</p></li>
+<li><p><strong>level (Result)</strong> - information about the level of theory used for this calculation, see <code class="xref py py-func docutils literal notranslate"><span class="pre">get_level_of_theory()</span></code>.</p></li>
+<li><p><strong>engine (str)</strong> – the engine that was used to perform the calculation, for example ‘adf’, ‘dftb’, …</p></li>
+<li><p><strong>status (Result)</strong> – information about calculation status, see <a class="reference internal" href="#tcutility.results.xtb.get_calculation_status" title="tcutility.results.xtb.get_calculation_status"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_calculation_status()</span></code></a>.</p></li>
+<li><p><strong>molecule (Result)</strong> – information about the input and output molecules and the molecular system in general, see <a class="reference internal" href="#tcutility.results.xtb.get_molecules" title="tcutility.results.xtb.get_molecules"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_molecules()</span></code></a>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.xtb.get_properties">
+<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/xtb.html#get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.xtb.get_properties" title="Link to this definition">#</a></dt>
+<dd><p>Function to get properties from an ORCA calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA properties.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing properties from the ORCA calculation:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>energy.bond (float)</strong> – total bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
+<li><p><strong>energy.enthalpy (float)</strong> – enthalpy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.entropy (float)</strong> – entropy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.gibbs (float)</strong> – Gibb’s free energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.[method] (float)</strong> - total energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>) at a certain level (HF, MP2, CCSD, …). This is the sum of energy.HF and energy.[method]_corr.</p></li>
+<li><p><strong>energy.[method]_corr (float)</strong> - electron correlation energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>) at a certain level (HF, MP2, CCSD, …).</p></li>
+<li><p><strong>vibrations.number_of_modes (int)</strong> – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.</p></li>
+<li><p><strong>vibrations.number_of_imaginary_modes (int)</strong> – number of imaginary vibrational modes for this molecule.</p></li>
+<li><p><strong>vibrations.frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-1\)</span>).</p></li>
+<li><p><strong>vibrations.intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
+<li><p><strong>vibrations.modes (list[float])</strong> – list of vibrational modes sorted from low frequency to high frequency.</p></li>
+<li><p><strong>vibrations.character (str)</strong> – the PES character of the molecular system. Either “minimum”, “transitionstate” or “saddlepoint(n_imag)”, for 0, 1, n_imag number of imaginary frequencies.</p></li>
+<li><p><strong>t1</strong> - T1 diagnostic for the highest level of correlation chosen. Used to check the validity of the reference wavefunction.</p></li>
+<li><p><strong>s2</strong> - expectation value of the <span class="math notranslate nohighlight">\(S^2\)</span> operator.</p></li>
+<li><p><strong>s2_expected</strong> - ideal expectation value of the <span class="math notranslate nohighlight">\(S^2\)</span> operator.</p></li>
+<li><p><strong>spin_contamination</strong> - the amount of spin-contamination observed in this calculation. It is equal to (s2 - s2_expected) / (s2_expected). Ideally this value should be below 0.1.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-tcutility.results">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tcutility.results" title="Link to this heading">#</a></h2>
 <p>This module provides basic and general information about calculations done using AMS given a calculation directory.
@@ -1240,6 +1430,16 @@ This information is used in further analysis programs.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.result.Result.copy"><code class="docutils literal notranslate"><span class="pre">Result.copy()</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.results.xtb">tcutility.results.xtb module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.xtb.get_calc_files"><code class="docutils literal notranslate"><span class="pre">get_calc_files()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.xtb.get_version"><code class="docutils literal notranslate"><span class="pre">get_version()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.xtb.get_input"><code class="docutils literal notranslate"><span class="pre">get_input()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.xtb.get_calculation_status"><code class="docutils literal notranslate"><span class="pre">get_calculation_status()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.xtb.get_molecules"><code class="docutils literal notranslate"><span class="pre">get_molecules()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.xtb.get_info"><code class="docutils literal notranslate"><span class="pre">get_info()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.xtb.get_properties"><code class="docutils literal notranslate"><span class="pre">get_properties()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.results">Module contents</a><ul class="nav section-nav flex-column">

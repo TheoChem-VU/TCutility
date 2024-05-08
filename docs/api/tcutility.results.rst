@@ -52,6 +52,14 @@ tcutility.results.result module
    :undoc-members:
    :show-inheritance:
 
+tcutility.results.xtb module
+----------------------------
+
+.. automodule:: tcutility.results.xtb
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

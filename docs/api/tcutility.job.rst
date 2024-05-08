@@ -68,6 +68,14 @@ tcutility.job.orca module
    :undoc-members:
    :show-inheritance:
 
+tcutility.job.xtb module
+------------------------
+
+.. automodule:: tcutility.job.xtb
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

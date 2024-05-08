@@ -1032,7 +1032,8 @@ The post-script will be called with Python and any given args will be added as a
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.generic.Job.dependency">
 <span class="sig-name descname"><span class="pre">dependency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">otherjob</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/generic.html#Job.dependency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.generic.Job.dependency" title="Link to this definition">#</a></dt>
-<dd><p>Set a dependency between this job and another job. This means that this job will run after the other job is finished running succesfully.</p>
+<dd><p>Set a dependency between this job and otherjob.
+This means that this job will run after the other job is finished running succesfully.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -1214,6 +1215,117 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 <dt class="sig sig-object py" id="tcutility.job.orca.ORCAJob.output_mol_path">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_mol_path</span></span><a class="headerlink" href="#tcutility.job.orca.ORCAJob.output_mol_path" title="Link to this definition">#</a></dt>
 <dd><p>The default file path for output molecules when running ADF calculations. It will not be created for singlepoint calculations.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tcutility.job.xtb">
+<span id="tcutility-job-xtb-module"></span><h2>tcutility.job.xtb module<a class="headerlink" href="#module-tcutility.job.xtb" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tcutility.job.xtb.XTBJob">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">XTBJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/xtb.html#XTBJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.xtb.XTBJob" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.xtb.XTBJob.model">
+<span class="sig-name descname"><span class="pre">model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/xtb.html#XTBJob.model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.xtb.XTBJob.model" title="Link to this definition">#</a></dt>
+<dd><p>Set the method used by XTB. This includes GFN0-xTB, GFN1-xTB, GFN2-xTB and GFNFF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>method</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – the method to use. Can be specified by its full name, e.g. ‘GFN2-xTB’, is the same as ‘GFN2’ or simply 2.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.xtb.XTBJob.solvent">
+<span class="sig-name descname"><span class="pre">solvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'alpb'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/xtb.html#XTBJob.solvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.xtb.XTBJob.solvent" title="Link to this definition">#</a></dt>
+<dd><p>Model solvation using the ALPB or GBSA model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the name of the solvent you want to use. Must be <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">Acetone</span></code>, <code class="docutils literal notranslate"><span class="pre">Acetonitrile</span></code>, <code class="docutils literal notranslate"><span class="pre">CHCl3</span></code>, <code class="docutils literal notranslate"><span class="pre">CS2</span></code>, <code class="docutils literal notranslate"><span class="pre">DMSO</span></code>, <code class="docutils literal notranslate"><span class="pre">Ether</span></code>, <code class="docutils literal notranslate"><span class="pre">H2O</span></code>, <code class="docutils literal notranslate"><span class="pre">Methanol</span></code>, <code class="docutils literal notranslate"><span class="pre">THF</span></code> or <code class="docutils literal notranslate"><span class="pre">Toluene</span></code>.</p></li>
+<li><p><strong>grid_size</strong> – the size of the grid used to construct the solvent accessible surface. Must be <code class="docutils literal notranslate"><span class="pre">230</span></code>, <code class="docutils literal notranslate"><span class="pre">974</span></code>, <code class="docutils literal notranslate"><span class="pre">2030</span></code> or <code class="docutils literal notranslate"><span class="pre">5810</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.xtb.XTBJob.spin_polarization">
+<span class="sig-name descname"><span class="pre">spin_polarization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/xtb.html#XTBJob.spin_polarization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.xtb.XTBJob.spin_polarization" title="Link to this definition">#</a></dt>
+<dd><p>Set the spin-polarization of the system.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.xtb.XTBJob.multiplicity">
+<span class="sig-name descname"><span class="pre">multiplicity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/xtb.html#XTBJob.multiplicity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.xtb.XTBJob.multiplicity" title="Link to this definition">#</a></dt>
+<dd><p>Set the multiplicity of the system. If the value is not one the calculation will also be unrestricted.
+We use the following values:</p>
+<ol class="arabic simple">
+<li><p>singlet</p></li>
+<li><p>doublet</p></li>
+<li><p>triplet</p></li>
+<li><p>…</p></li>
+</ol>
+<p>The multiplicity is equal to 2*S+1 for spin-polarization of S.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.xtb.XTBJob.charge">
+<span class="sig-name descname"><span class="pre">charge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/xtb.html#XTBJob.charge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.xtb.XTBJob.charge" title="Link to this definition">#</a></dt>
+<dd><p>Set the charge of the system.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.xtb.XTBJob.vibrations">
+<span class="sig-name descname"><span class="pre">vibrations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/xtb.html#XTBJob.vibrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.xtb.XTBJob.vibrations" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.xtb.XTBJob.optimization">
+<span class="sig-name descname"><span class="pre">optimization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Normal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculate_hess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/xtb.html#XTBJob.optimization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.xtb.XTBJob.optimization" title="Link to this definition">#</a></dt>
+<dd><p>Do a geometry optimization and calculate the normal modes of the input structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>quality</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the convergence criteria of the optimization.
+See <a class="reference external" href="https://xtb-docs.readthedocs.io/en/latest/optimization.html#optimization-levels">https://xtb-docs.readthedocs.io/en/latest/optimization.html#optimization-levels</a>.</p></li>
+<li><p><strong>calculate_hess</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – whether to calculate the Hessian and do a normal mode analysis after optimization.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.xtb.XTBJob.PESScan">
+<span class="sig-name descname"><span class="pre">PESScan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distances</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dihedrals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Normal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'concerted'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/xtb.html#XTBJob.PESScan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.xtb.XTBJob.PESScan" title="Link to this definition">#</a></dt>
+<dd><p>Set the task of the job to potential energy surface scan (PESScan).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>distances</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span>) – sequence of tuples or lists containing <code class="docutils literal notranslate"><span class="pre">[atom_index1,</span> <span class="pre">atom_index2,</span> <span class="pre">start,</span> <span class="pre">end]</span></code>.
+Atom indices start at 1. Distances are given in <span class="math notranslate nohighlight">\(\AA\)</span>.</p></li>
+<li><p><strong>angles</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span>) – sequence of tuples or lists containing <code class="docutils literal notranslate"><span class="pre">[atom_index1,</span> <span class="pre">atom_index2,</span> <span class="pre">atom_index3,</span> <span class="pre">start,</span> <span class="pre">end]</span></code>.
+Atom indices start at 1. Angles are given in degrees</p></li>
+<li><p><strong>dihedrals</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span>) – sequence of tuples or lists containing <code class="docutils literal notranslate"><span class="pre">[atom_index1,</span> <span class="pre">atom_index2,</span> <span class="pre">atom_index3,</span> <span class="pre">atom_index4,</span> <span class="pre">start,</span> <span class="pre">end]</span></code>.
+Atom indices start at 1. Angles are given in degrees</p></li>
+<li><p><strong>npoints</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – the number of PES points to optimize.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently we only support generating settings for 1-dimensional PESScans.
+We will add support for N-dimensional PESScans later.</p>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tcutility.job.xtb.XTBJob.output_mol_path">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_mol_path</span></span><a class="headerlink" href="#tcutility.job.xtb.XTBJob.output_mol_path" title="Link to this definition">#</a></dt>
+<dd><p>This method should return the name of the output molecule if it makes sense to give it back.
+E.g. for ADF it will be output.xyz in the workdir for optimization jobs.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1402,6 +1514,21 @@ New NICS points can be given using the <a class="reference internal" href="#tcut
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.molecule"><code class="docutils literal notranslate"><span class="pre">ORCAJob.molecule()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.get_input"><code class="docutils literal notranslate"><span class="pre">ORCAJob.get_input()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.orca.ORCAJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">ORCAJob.output_mol_path</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.job.xtb">tcutility.job.xtb module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.xtb.XTBJob"><code class="docutils literal notranslate"><span class="pre">XTBJob</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.xtb.XTBJob.model"><code class="docutils literal notranslate"><span class="pre">XTBJob.model()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.xtb.XTBJob.solvent"><code class="docutils literal notranslate"><span class="pre">XTBJob.solvent()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.xtb.XTBJob.spin_polarization"><code class="docutils literal notranslate"><span class="pre">XTBJob.spin_polarization()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.xtb.XTBJob.multiplicity"><code class="docutils literal notranslate"><span class="pre">XTBJob.multiplicity()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.xtb.XTBJob.charge"><code class="docutils literal notranslate"><span class="pre">XTBJob.charge()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.xtb.XTBJob.vibrations"><code class="docutils literal notranslate"><span class="pre">XTBJob.vibrations()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.xtb.XTBJob.optimization"><code class="docutils literal notranslate"><span class="pre">XTBJob.optimization()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.xtb.XTBJob.PESScan"><code class="docutils literal notranslate"><span class="pre">XTBJob.PESScan()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.xtb.XTBJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">XTBJob.output_mol_path</span></code></a></li>
 </ul>
 </li>
 </ul>

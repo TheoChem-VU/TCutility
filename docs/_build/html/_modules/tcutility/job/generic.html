@@ -267,6 +267,22 @@
 <span class="n">j</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
 
 
+<span class="k">def</span> <span class="nf">_python_path</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Sometimes it is necessary to have the Python path as some environments don&#39;t have its path.</span>
+<span class="sd">    This function attempts to find the Python path and returns it.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">python</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;which python&#39;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">python</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">python</span><span class="p">):</span>
+        <span class="n">python</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;which python3&#39;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="c1"># we default to the python executable </span>
+    <span class="k">if</span> <span class="n">python</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">python</span><span class="p">):</span>
+        <span class="n">python</span> <span class="o">=</span> <span class="s1">&#39;python&#39;</span>
+
+    <span class="k">return</span> <span class="n">python</span>
+
 <div class="viewcode-block" id="Job">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job">[docs]</a>
 <span class="k">class</span> <span class="nc">Job</span><span class="p">:</span>
@@ -397,7 +413,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">add_postamble</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;rm -r </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">postscript</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_postscripts</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_postambles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;python </span><span class="si">{</span><span class="n">postscript</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">postscript</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_postambles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_python_path</span><span class="p">()</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">postscript</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">postscript</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            
         <span class="c1"># setup the job and check if it was successfull</span>
         <span class="n">setup_success</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_job</span><span class="p">()</span>
 
@@ -478,8 +495,12 @@
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.dependency">[docs]</a>
     <span class="k">def</span> <span class="nf">dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">otherjob</span><span class="p">:</span> <span class="s1">&#39;Job&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Set a dependency between this job and another job. This means that this job will run after the other job is finished running succesfully.</span>
+<span class="sd">        Set a dependency between this job and otherjob. </span>
+<span class="sd">        This means that this job will run after the other job is finished running succesfully.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">otherjob</span><span class="o">.</span><span class="n">can_skip</span><span class="p">:</span>
+            <span class="k">return</span>
+            
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">otherjob</span><span class="p">,</span> <span class="s1">&#39;slurm_job_id&#39;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">dependency</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;afterok:</span><span class="si">{</span><span class="n">otherjob</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">kill_on_invalid_dep</span><span class="o">=</span><span class="s1">&#39;Yes&#39;</span><span class="p">)</span></div>

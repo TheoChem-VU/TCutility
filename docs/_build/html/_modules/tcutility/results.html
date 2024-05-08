@@ -272,7 +272,7 @@
 <span class="kn">import</span> <span class="nn">pathlib</span> <span class="k">as</span> <span class="nn">pl</span>  <span class="c1"># noqa: E402</span>
 
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">slurm</span>  <span class="c1"># noqa: E402</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">adf</span><span class="p">,</span> <span class="n">ams</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">dftb</span><span class="p">,</span> <span class="n">orca</span>  <span class="c1"># noqa: E402</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">adf</span><span class="p">,</span> <span class="n">ams</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">dftb</span><span class="p">,</span> <span class="n">orca</span><span class="p">,</span> <span class="n">xtb</span>  <span class="c1"># noqa: E402</span>
 
 
 <div class="viewcode-block" id="get_info">
@@ -285,6 +285,11 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_info</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>  <span class="c1"># noqa</span>
+        <span class="k">pass</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">xtb</span><span class="o">.</span><span class="n">get_info</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>  <span class="c1"># noqa</span>
         <span class="k">pass</span>
 
@@ -355,6 +360,10 @@
     <span class="k">elif</span> <span class="n">ret</span><span class="o">.</span><span class="n">engine</span> <span class="o">==</span> <span class="s2">&quot;dftb&quot;</span><span class="p">:</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">dftb</span> <span class="o">=</span> <span class="n">dftb</span><span class="o">.</span><span class="n">get_calc_settings</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="n">dftb</span><span class="o">.</span><span class="n">get_properties</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ret</span><span class="o">.</span><span class="n">engine</span> <span class="o">==</span> <span class="s2">&quot;xtb&quot;</span><span class="p">:</span>
+        <span class="c1"># ret.xtb = xtb.get_calc_settings(ret)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="n">xtb</span><span class="o">.</span><span class="n">get_properties</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+        
     <span class="k">elif</span> <span class="n">ret</span><span class="o">.</span><span class="n">engine</span> <span class="o">==</span> <span class="s2">&quot;orca&quot;</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">ret</span><span class="o">.</span><span class="n">orca</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_calc_settings</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
@@ -362,7 +371,6 @@
             <span class="n">ret</span><span class="o">.</span><span class="n">orca</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error reading:&#39;</span><span class="p">,</span> <span class="n">calc_dir</span><span class="p">)</span>
             <span class="k">raise</span>
-
         <span class="k">try</span><span class="p">:</span>
             <span class="n">ret</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_properties</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
