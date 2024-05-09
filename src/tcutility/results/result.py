@@ -1,6 +1,5 @@
 '''Module containing the TCutility.results.result.Result class.'''
 import dictfunc
-import sys
 from typing import Union, Any, List
 
 
@@ -117,7 +116,7 @@ class Result(dict):
         val = flat.get(self.match_case(key))
 
         # if the value is None we have to do something special
-        if val != None:
+        if val is not None:
             return val
 
         # likely we are trying to access a value that does not exist in this
