@@ -1,204 +1,243 @@
 '''Module containing the TCutility.results.result.Result class.'''
 import dictfunc
 import sys
+from typing import Union, Any, List
+
+
+class ResultInspector:
+    '''
+    Utility class for getting values from Result objects.
+    This allows us to inspect the Result object without accidentally setting keys in it.
+    '''
+    __private__ = ['__parent__', '__key__', '__result__', '__isroot__']
+    def __init__(self, parent: Union['ResultInspector', 'Result'], key: str, is_root: bool = False):
+        self.__parent__ = parent
+        self.__key__ = key
+        self.__result__ = None
+        self.__isroot__ = is_root
+
+    def __getattr__(self, key: str) -> 'ResultInspector':
+        return ResultInspector(self, key)
+
+    #### add multiple arguments to access things
+    def __getitem__(self, key: str) -> 'ResultInspector':
+        return self.__getattr__(key)
+
+    def __setattr__(self, key: str, value: Any):
+        '''
+        We overload __setattr__ to be able to propagate the values upstream to the root
+        '''
+        # we still should be able to use the default setattr functionality:
+        super().__setattr__(key, value)
+        # but if the key is not in the predetermined __private__ keys we do something extra
+        if key in self.__private__:
+            return
+
+        # we store the result
+        self.__result__ = Result()
+        self.__result__[key] = value
+        self.propagate_value()
+        self = self.__result__
+
+    def __setitem__(self, key: str, value: Any):
+        self.__setattr__(key, value)
+
+    def propagate_value(self):
+        '''
+        If we are ready we can define the tree on the root Result object with the correct values.
+        The full tree of objects of this class will be destroyed by the garbage collector afterwards.
+        '''
+        # if we are at the root we can set the key/value on the Result object directly
+        if self.__isroot__:
+            self.__parent__[self.__key__] = self.__result__
+            return
+
+        # otherwise we create a new Result object on the parent that we will propagate upwards
+        self.__parent__.__result__ = Result()
+        # assign the key/value on this intermediate Result object
+        self.__parent__.__result__[self.__key__] = self.__result__
+        # and then propagate the parent until we reach the root
+        self.__parent__.propagate_value()
+
+    def __bool__(self):
+        return False
+
+    def __repr__(self):
+        return 'None'
+
+    def __str__(self):
+        return 'None'
+
+    def __eq__(self, other: Any):
+        '''
+        This class mimics None, so equality operator should only
+        # be True if other is None
+        '''
+        return other is None
+
+    def __call__(self, *args, **kwargs):
+        '''
+        If this object gets called it means there was an attempt to call a method of the parent object.
+        This is not allowed (since the parent is not a valid object), so we raise a descriptive error for the user.
+        '''
+        raise AttributeError(f'"Result().{self.path_to_root[:-len(self.__key__)+1]}" does not have a method named ".{self.__key__}".')
+
+    @property
+    def path_to_root(self) -> str:
+        '''
+        Return a string of the full path from the root to this object.
+        '''
+        parts = [self.__key__]
+        curr_obj = self
+        while not curr_obj.__isroot__:
+            curr_obj = curr_obj.__parent__
+            parts.append(curr_obj.__key__)
+        return '.'.join(parts[::-1])
 
 
 class Result(dict):
-    '''Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary. 
-    The class works case-insensitively, but will retain the case of the key when it was first set.'''
+    '''
+    Sub-class of built-in dict that supports dot-notation for accessing and setting values in this object.
+    Furthermore, keys are case-insensitive and the class allows accessing via multi-keys for ease of use.
+    '''
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        # if we are casting an object to a Result object
-        # we will copy all data to this one and all dictionaries will be turned into Result object
-        # turn every value into a Result object if possible
         for key, value in self.items():
             if isinstance(value, dict):
                 self[key] = Result(value)
-            else:
-                self[key] = value
 
-    def __call__(self):
-        '''Calling of a dictionary subclass should not be possible, instead we raise an error with information about the key and method that were attempted to be called.'''
-        head, method = '.'.join(self.get_parent_tree().split('.')[:-1]), self.get_parent_tree().split('.')[-1]
-        raise AttributeError(f'Tried to call method "{method}" from {head}, but {head} is empty')
+    def __getattr__(self, key: List[str]) -> Any:
+        # we override this so that we can use dot-notation to access values in this object
 
-    def __str__(self):
-        '''Override str method to prevent printing of hidden keys. You can still print them if you call repr instead of str.'''
-        return '{' + ', '.join([f'{key}: {str(val)}' for key, val in self.items()]) + '}'
+        # get the value of the key. This key can be 
+        # any case and can also be a multikey
+        # flattening grants support for multikeys
+        flat = self.flattened(True)
+        # match_case grants support for case-insensitivity
+        val = flat.get(self.match_case(key))
 
-    def items(self):
-        '''We override the items method from dict in order to skip certain keys. We want to hide keys starting and ending
-        with dunders, as they should not be exposed to the user.
+        # if the value is None we have to do something special
+        if val != None:
+            return val
+
+        # likely we are trying to access a value that does not exist in this
+        # object, so we should instead inspect it. this way we are not adding
+        # unnecessary keys to this object due to accessing them
+        return ResultInspector(self, key, is_root=True)
+
+    def __setattr__(self, key: str, value: Any):
+        # override this so that we can use dot-notation for setting values
+        self.__setitem__(key, value)
+
+    def __getitem__(self, key: str) -> Any:
+        # point this to __getattr__ so that the keys are parsed correctly
+        return self.__getattr__(key)
+
+    def __contains__(self, key: str) -> bool:
+        # we override this to make it case-insensitive
+        # and also so that it works with mutli-keys
+        return self.match_case(key) in self.multi_keys(True)
+
+    def match_case(self, key: str) -> str:
         '''
-        return [(key, self[key]) for key in self.keys()]
+        Parse key such that it matches the case that was originally set in this Result object.
 
-    def keys(self):
-        original_keys = super().keys()
-        return [key for key in original_keys if not (key.startswith('__') and key.endswith('__'))]
-
-    def multi_keys(self):
+        Example:
+            >>> r = Result()
+            >>> r.AdF.settings.functional = 'BLYP-D3'
+            >>> r.match_case('adf')
+            AdF
+            >>> r.match_case('ADF:SETTINGS:FUNCTIONAL')
+            AdF.settings.functional
         '''
-        Return multi_keys for this Result object. These are unnested keys that can be used if you want a flattened Result object.
+        # first get a dictionary of lowered keys mapping to the original keys
+        # for the keys and multikeys currently set in this object
+        lowered = {key.lower(): key for key in self.multi_keys(True)}
+        # then simply access it or return the given key if it is not present
+        return lowered.get(key.lower(), key)
+
+    def multi_keys(self, include_intermediates: bool = False) -> List[str]:
         '''
-        def dict_to_list(a):
-            '''
-            Return a nested dictionary as a list of keys and values.
-            '''
-            lst = []
-            if not isinstance(a, dict):
-                return [[a]]
-            for k, v in a.items():
-                if isinstance(v, dict):
-                    if v == {}:
-                        lst.append([k, {}])
-                    else:
-                        [lst.append([k, *x]) for x in dict_to_list(v)]
-                else:
-                    lst.append([k, v])
-            return lst
+        Get multi-keys of this Result object. These keys will point to unnested values.
+        Multi-keys are separate keys that are separated by `:` characters.
 
-        # cast this object to a list of keys and values
-        mks = dict_to_list(self)
-        # write the multi-keys separated with dots
-        mks = ['.'.join(mk[:-1]) for mk in mks]
-        return mks
+        Args:
+            include_intermediates: whether to include intermediate multi-keys. 
+                Enabling this option will return all in-between keys, so not only the endpoints.
+                If enabled, the keys will not always point to unnested values, but could point to nested Result objects.
 
-    def __getitem__(self, key):
-        if key.startswith('__') and key.endswith('__'):
-            return None
-        self.__set_empty(key)
-        val = super().__getitem__(self.__get_case(key))
-        return val
+        Returns:
+            A list of multi-keys that can be used to access values in this Result object.
+            If intermediates are included this method will return a list of all accessible positions in the tree.
 
-    def __getattr__(self, key):
-        return self.__getitem__(key)
+        Example:
 
-    def __setitem__(self, key, val):
-        # we set the item, but if it is a dict we convert the dict to a Result first
-        if isinstance(val, dict):
-            val = Result(val)
-        super().__setitem__(self.__get_case(key), val)
+            .. code-block:: python
 
-    def __setattr__(self, key, val):
-        self.__setitem__(key, val)
-
-    def __contains__(self, key):
-        # Custom method to check if the key is defined in this object and is also non-empty, case-insensitive.
-        return key.lower() in [key_.lower() for key_ in self.keys()] and self[key]
-
-    def __hash__(self):
-        '''Hashing of a dictionary subclass should not be possible, instead we should raise an error to let the user know
-        that they made a mistake. Also give information of which key was being read.
+                >>> res.a.b.c = 10
+                >>> res['a:b:c']
+                10
+                >>> res.a.b.c
+                10
+                >>> res['a:b']
+                {c: 10}
         '''
-        raise KeyError(f'Tried to hash {self.get_parent_tree()}, but it is empty')
-
-    def __reduce__(self):
-        return 'TCutility.results.result.Result'
-
-    def __bool__(self):
-        '''Make sure that keys starting and ending in "__" are skipped'''
-        return len([key for key in self.keys() if not (key.startswith('__') and key.endswith('__'))]) > 0
-
-    def __sizeof__(self):
-        '''
-        Magic method used by `sys.getsizeof <https://docs.python.org/3/library/sys.html#sys.getsizeof>`_ to determine the memory footprint of this object.
-        '''
-        s = super().__sizeof__()
-        for key in self.multi_keys():
-            s += sys.getsizeof(self.get_multi_key(key))
-        return s
-
-    def getsizeof(self):
-        '''
-        Return the size of this object in bytes.
-        '''
-        return self.__sizeof__()
-
-    def get_parent_tree(self):
-        '''Method to get the path from this object to the parent object. The result is presented in a formatted string'''
-        # every parent except the top-most parent has defined a __parent__ attribute
-        if '__parent__' not in self:
-            return 'Head'
-        # iteratively build the tree using the __name__ attribute.
-        parent_names = self.__parent__.get_parent_tree()
-        parent_names += '.' + self.__name__
-        return parent_names
-
-    def __set_empty(self, key):
-        # This function checks if the key has been set. 
-        # If it has not, we create a new Result object and set it at the desired key
-        if self.__get_case(key) not in self.keys():
-            val = Result()
-            # we also keep track of the parent of this object and also the name it was assigned to for later bookkeeping
-            val.__parent__ = self
-            val.__name__ = key
-            self.__setitem__(key, val)
-
-    def __get_case(self, key):
-        # Get the case of the key as it has been set in this object.
-        # The first time a key-value pair has been assigned the case of the key will be set.
-        for key_ in self:
-            if key_.lower() == key.lower():
-                return key_
-        return key
-
-    def prune(self):
-        '''Remove empty paths of this object.
-        '''
-        items = list(self.items())
-        for key, value in items:
-            try:
-                value.prune()
-            except AttributeError:
-                pass
-
-            if not value:
-                del self[key]
-
-    def get_multi_key(self, key: str):
-        '''
-        Method that returns the value of a "multikey". The multikey is multiple keys joined by dots. 
-        E.g. res.properties.energy.bond can be gotten by calling res.get_multi_key("properties.energy.bond")
-        '''
-        data = self
-        for keypart in key.split('.'):
-            data = data[keypart]
-        return data
-
-    def as_plams_settings(self):
-        '''
-        Returns this Result object as a plams.Settings object.
-        '''
-        from scm import plams
-        import dictfunc
-
-        clean_dict = dictfunc.list_to_dict(dictfunc.dict_to_list(self))
-        return plams.Settings(clean_dict)
-
-    def copy(self):
-        import copy
-
-        # cast this object to a list of keys and values
         lsts = dictfunc.dict_to_list(self)
-        # copy everthing in the lists
-        lsts = [[copy.copy(x) for x in lst] for lst in lsts]
-        # and return a new result object
-        return Result(dictfunc.list_to_dict(lsts))
+        if include_intermediates:
+            return [':'.join(lst[:-i]) for lst in lsts for i in range(1, len(lst))]
+        else:
+            return [':'.join(lst[:-1]) for lst in lsts]
+
+    def flattened(self, include_intermediates: bool = False) -> dict:
+        '''
+        Return this Result object as a flattened dictionary.
+        This will be an unnested dictionary with the multikeys and their values.
+
+        Args:
+            include_intermediates: whether to include intermediate multi-keys. Default is False.
+
+        Returns:
+            An unnested dictionary with multi-keys as the key and their values as the value. 
+        '''
+        flattened = {}
+        # each entry in flattened will be a multikey
+        for key in self.multi_keys(include_intermediates):
+            # get the value of the multikey
+            parts = key.split(':')
+            # iterative go down this result object to reach the multikey
+            res = self
+            for part in parts:
+                res = res.get(part)
+            flattened[key] = res
+
+        return flattened
+
+    def asdict(self) -> dict:
+        '''
+        Return this Result object as a dictionary. 
+        This can be useful if you need pure Python classes.
+
+        Returns:
+            This Result object converted to built-in dictionary class.
+        '''
+        ret = {}
+        # get all multikeys that are at the leaves
+        # we exclude intermediates here so that we dont overwrite a deeper key later on
+        for key in self.multi_keys(False):
+            curr_d = ret
+            # split the multikey into parts
+            # and assign empty dicts until you get to the last part
+            parts = key.split(':')
+            for part in parts[:-1]:
+                curr_d = curr_d.setdefault(part, {})
+            # the last part is the name of the final key, so we will set it to the value
+            curr_d[parts[-1]] = self[key]
+        return ret
 
 
 if __name__ == '__main__':
-    ret = Result()
-    # print(ret.adf)
-    # print(dict(ret.adf))
-    # print(bool(ret.adf))
-    ret.adf.x = {'a': 1, 'b': 2}
-    # ret.adf.system.atoms = []
-    # ret.adf.system.atoms.append('test 1 2 3')
-
-    # test_dict[ret.adf.y] = 20
-    # ret.adf.y.join()
-    # {ret.test: 123}
-    # ret.__name__ = 'testname'
-    # print(ret.__name__)
-    print(repr(ret))
+    res = Result()
+    res.a.b.c = 10
+    print(res.a.b.c)
+    print(res['a:b:c'])
+    print(res['a:b'])
