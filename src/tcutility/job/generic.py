@@ -39,7 +39,7 @@ class Job:
         wait_for_finish: whether to wait for this job to finish running before continuing your runscript.
         delete_on_finish: whether to remove the workdir for this job after it is finished running.
     '''
-    def __init__(self, *base_jobs: List['Job'], test_mode: bool = None, overwrite: bool = None, wait_for_finish: bool = None, delete_on_finish: bool = None):
+    def __init__(self, *base_jobs: List['Job'], test_mode: bool = None, overwrite: bool = None, wait_for_finish: bool = None, delete_on_finish: bool = None, delete_on_fail: bool = None):
         self._sbatch = results.Result()
         self._molecule = None
         self._molecule_path = None
@@ -63,6 +63,7 @@ class Job:
         self.overwrite = self.overwrite if overwrite is None else overwrite
         self.wait_for_finish = self.wait_for_finish if wait_for_finish is None else wait_for_finish
         self.delete_on_finish = self.delete_on_finish if delete_on_finish is None else delete_on_finish
+        self.delete_on_fail = delete_on_fail if delete_on_fail is None else delete_on_fail
 
     def __enter__(self):
         return self
@@ -144,6 +145,10 @@ class Job:
         # write the post-script calls to the post-ambles:
         if self.delete_on_finish:
             self.add_postamble(f'rm -r {self.workdir}')
+
+        if self.delete_on_fail:
+            self.add_postamble('# this will delete the calculation if it failed')
+            self.add_postamble(f'if [[ `tc read -s {self.workdir}` = FAILED || `tc read -s {self.workdir}` = UNKNOWN ]]; then rm -r {self.workdir}; fi;')
 
         for postscript in self._postscripts:
             self._postambles.append(f'{_python_path()} {postscript[0]} {" ".join(postscript[1])}')
