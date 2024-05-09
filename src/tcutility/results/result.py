@@ -1,6 +1,7 @@
 '''Module containing the TCutility.results.result.Result class.'''
 import dictfunc
 from typing import Union, Any, List
+from tcutility import ensure_list
 
 
 class ResultInspector:
@@ -105,9 +106,12 @@ class Result(dict):
             if isinstance(value, dict):
                 self[key] = Result(value)
 
-    def __getattr__(self, key: List[str]) -> Any:
+    def __getattr__(self, *key: List[str]) -> Any:
         # we override this so that we can use dot-notation to access values in this object
 
+        # keys can be given multiple at a time
+        # In that case we make the keys into a multikey before accessing
+        key = ":".join(ensure_list(key[0]))
         # get the value of the key. This key can be 
         # any case and can also be a multikey
         # flattening grants support for multikeys
@@ -128,9 +132,24 @@ class Result(dict):
         # override this so that we can use dot-notation for setting values
         self.__setitem__(key, value)
 
-    def __getitem__(self, key: str) -> Any:
+    def __getitem__(self, *key: List[str]) -> Any:
         # point this to __getattr__ so that the keys are parsed correctly
-        return self.__getattr__(key)
+        return self.__getattr__(*key)
+
+    def __setitem__(self, *key: List[str]):
+
+        value = key[-1]
+        key = ":".join(ensure_list(key[0]))
+        key_parts = key.split(':')
+
+        if len(key_parts) == 1:
+            super().__setitem__(key_parts[-1], value)
+            return
+
+        inspector = self
+        for part in key_parts[:-1]:
+            inspector = inspector[part]
+        inspector[key_parts[-1]] = value
 
     def __contains__(self, key: str) -> bool:
         # we override this to make it case-insensitive
@@ -236,7 +255,11 @@ class Result(dict):
 
 if __name__ == '__main__':
     res = Result()
-    res.a.b.c = 10
-    print(res.a.b.c)
-    print(res['a:b:c'])
-    print(res['a:b'])
+    # res.a.b.c = 10
+    # print(res.a.b.c)
+    res['a:b:c'] = 10
+    # print(res['a:b'])
+    # print(res['a', 'b', 'c'])
+    res['a', 'b', 'c'] = 11
+    print(res)
+    # print(res['a', 'b', 'c'])
