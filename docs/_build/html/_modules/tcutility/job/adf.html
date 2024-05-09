@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.job.adf &#8212; TCutility v0.12.0 documentation</title>
+    <title>tcutility.job.adf &#8212; TCutility v0.13.0 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../_static/documentation_options.js?v=cae63847"></script>
+    <script src="../../../_static/documentation_options.js?v=bb33721e"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -547,7 +547,13 @@
 <span class="sd">            group: the symmetry group to be used.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">Symmetry</span> <span class="o">=</span> <span class="n">group</span></div>
-</div>
+
+
+    <span class="k">def</span> <span class="nf">_check_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># if we have spinpolarization we do not want to use DFTB to calculate the initial hessian</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">GeometryOptimization</span><span class="o">.</span><span class="n">InitialHessian</span><span class="o">.</span><span class="n">Type</span> <span class="o">==</span> <span class="s1">&#39;CalculateWithFastEngine&#39;</span><span class="p">:</span>
+            <span class="c1"># we simply remove it from the geometryoptimization block</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">GeometryOptimization</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;InitialHessian&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
 
 
