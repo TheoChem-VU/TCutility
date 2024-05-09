@@ -254,6 +254,12 @@ class ADFJob(AMSJob):
         '''
         self.settings.input.adf.Symmetry = group
 
+    def _check_job(self):
+        # if we have spinpolarization we do not want to use DFTB to calculate the initial hessian
+        if self.settings.input.adf.SpinPolarization != 0 and self.settings.input.ams.GeometryOptimization.InitialHessian.Type == 'CalculateWithFastEngine':
+            # we simply remove it from the geometryoptimization block
+            self.settings.input.ams.GeometryOptimization.pop('InitialHessian', None)
+
 
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
