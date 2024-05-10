@@ -69,3 +69,32 @@ def test_contains_neg4():
     res = results.result.Result()
     res.a
     assert "a" not in res
+
+
+def test_set_multikey():
+    res = results.result.Result()
+    res['a:b:c'] = 10
+    assert res.a.b.c == 10
+
+
+def test_set_multikey2():
+    res = results.result.Result()
+    res['a', 'b', 'c'] = 10
+    assert res.a.b.c == 10
+
+
+# if __name__ == '__main__':
+#     res = Result()
+#     # res.a.b.c = 10
+#     # print(res.a.b.c)
+#     res['a:b:c'] = 10
+#     # print(res['a:b'])
+#     # print(res['a', 'b', 'c'])
+#     res['a', 'b', 'c'] = 11
+#     print(res)
+
+
+if __name__ == '__main__':
+    import pytest
+
+    pytest.main()
