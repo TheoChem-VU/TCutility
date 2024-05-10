@@ -42,6 +42,9 @@ class ResultInspector:
     def __setitem__(self, key: str, value: Any):
         self.__setattr__(key, value)
 
+    def __contains__(self, key: str):
+        return False
+
     def propagate_value(self):
         '''
         If we are ready we can define the tree on the root Result object with the correct values.
