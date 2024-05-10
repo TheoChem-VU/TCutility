@@ -54,8 +54,8 @@ def get_calc_files(calc_dir: str) -> dict:
         files.extend([j(root, file) for file in files_])
 
     # parse the filenames
-    ret = {}
-    ret["root"] = os.path.abspath(calc_dir)
+    ret = Result()
+    ret.root = os.path.abspath(calc_dir)
     for file in files:
         # rkf files are either called /{program}.rkf, or /{name}.{program}.rkf, so we must parse them in a special way
         if file.endswith(".rkf"):
@@ -70,7 +70,6 @@ def get_calc_files(calc_dir: str) -> dict:
             parts = f.split(".")
             f = ".".join(parts[1:]).replace("logfile", "log")
             ret[f] = os.path.abspath(file)
-
     return ret
 
 
@@ -541,14 +540,7 @@ def get_ams_input(inp: str) -> Result:
         possible_blocks = set([block[0] for block in possible_blocks if len(block) > 0])
         return possible_blocks
 
-    sett = Result()
-
-    blocks, nonstandard_blocks = get_input_blocks()
-
-    open_blocks = ["ams"]
-    for line in inp.splitlines():
-        line = line.strip()
-
+    def remove_comment(line: str) -> str:
         # we remove comments from the line
         # comments can be either at the start of a line or after a real statement
         # so we have to search the line for comment starters and remove the part after it
@@ -556,9 +548,20 @@ def get_ams_input(inp: str) -> Result:
             if comment_start in line:
                 idx = line.index(comment_start)
                 line = line[:idx]
+        return line
 
+
+    sett = Result()
+
+    blocks, nonstandard_blocks = get_input_blocks()
+
+    open_blocks = ["ams"]
+    for line in inp.splitlines():
+        line = line.strip()
+        line = remove_comment(line)
+        
         # skip empty lines
-        if not line:
+        if len(line) == 0:
             continue
 
         # if we encounter an end statement we can close the last openblock
@@ -589,38 +592,32 @@ def get_ams_input(inp: str) -> Result:
         if skip:
             continue
 
-        # get the sett to the correct level
         # first check if the block is nonstandard
         is_nonstandard = [block.lower() for block in open_blocks] in nonstandard_blocks
-        sett_ = sett
-        # go to the layer one above the lowest
-        for open_block in open_blocks[:-1]:
-            sett_ = sett_[open_block]
+
         # at the lowest level we have to check if the block is nonstandard. If it is, we add the whole line to the settings object
-        if is_nonstandard and not sett_[open_blocks[-1]]:
-            sett_[open_blocks[-1]] = []
-        # then finally go to the lowest sett layer
-        sett_ = sett_[open_blocks[-1]]
+        if is_nonstandard and not sett[open_blocks]:
+            sett[open_blocks] = []
 
         # if we are in a compact block we just add all the key-value pairs
         if compact_parts:
             for key, val in compact_parts:
-                sett_[key] = val
+                sett[open_blocks][key] = val
             # compact blocks do not have end statements, so we can remove it again from the open_blocks
             open_blocks.pop(-1)
         # in a normal block we split the line and add them to the settings
         else:
             # for nonstandard blocks we add the line to the list
             if is_nonstandard:
-                sett_.append(line.strip())
+                sett[open_blocks].append(line.strip())
             # for normal blocks we split the line and set it as a key, the rest of the line is the value
             else:
-                sett_[line.split()[0]] = line[len(line.split()[0]) :].strip()
+                sett[open_blocks][line.split()[0]] = line[len(line.split()[0]) :].strip()
 
     for engine_block in ["engine adf", "engine dftb", "engine band"]:
-        if engine_block not in sett["ams"]:
+        if engine_block not in sett.ams:
             continue
-        sett["ams"][engine_block.split()[1]] = sett["ams"][engine_block]
-        del sett["ams"][engine_block]
+        sett.ams[engine_block.split()[1]] = sett.ams[engine_block]
+        del sett.ams[engine_block]
 
-    return sett["ams"]
+    return sett.ams
