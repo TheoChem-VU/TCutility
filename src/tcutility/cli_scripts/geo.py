@@ -1,8 +1,6 @@
 """ Module containing functions for calculating geometrical parameters for molecules """
 import argparse
 from tcutility import geometry, molecule
-import tcutility
-import os
 
 
 def create_subparser(parent_parser: argparse.ArgumentParser):
@@ -22,7 +20,7 @@ If the -p/--pyramidal flag is turned on it calculates 360° - ang1 - ang2 - ang3
     subparser.add_argument("atom_indices",
                            type=str,
                            nargs='+',
-                           help="The indices of the atoms to calculate the parameters for. For 1 index return cartesian coordinate. For 2 indices return bond length between atoms. For 3 indices return bond angle, with the second index being the central atom. For 4 indices return dihedral angle by calculating the angle between normal vectors described by atoms at indices 1, 2, 3 and indices 2, 3, 4. If the -p/--pyramidal flag is turned on it calculates")
+                           help="The indices of the atoms to calculate the parameters for.")
     subparser.add_argument("-p", "--pyramidal",
                            help="Instead of calculating dihedral angles, calculate pyramidalisation angle.",
                            default=False,
