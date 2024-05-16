@@ -458,6 +458,8 @@ def parameter(coordinates, *indices, pyramidal=False):
     '''
     Return geometry information about a set of coordinates given indices.
     '''
+    assert 1 <= len(indices) <= 4, "Number of indices must be between 1, 2, 3 or 4"
+
     coordinates = np.array(coordinates)
     selected_coords = [coordinates[i] for i in indices]
 

@@ -28,37 +28,39 @@ If the -p/--pyramidal flag is turned on it calculates 360° - ang1 - ang2 - ang3
 
 
 def main(args: argparse.Namespace):
-	mol = molecule.load(args.xyzfile[0])
-	indices = [int(i) - 1 for i in args.atom_indices]
+    mol = molecule.load(args.xyzfile[0])
+    indices = [int(i) - 1 for i in args.atom_indices]
 
-	atoms = "-".join([f'{mol[i+1].symbol}{i+1}' for i in indices])
+    assert 1 <= len(indices) <= 4, f"Number of indices must be 1, 2, 3 or 4, not {len(indices)}"
 
-	param = geometry.parameter(mol, *indices, pyramidal=args.pyramidal)
+    atoms = "-".join([f'{mol[i+1].symbol}{i+1}' for i in indices])
 
-	if len(indices) == 1:
-		param = "  ".join([f"{x: .6f}" for x in mol[indices[0] + 1].coords])
-		print(f'Coordinate({atoms}) = {param} Å')
-		return
+    param = geometry.parameter(mol, *indices, pyramidal=args.pyramidal)
+
+    if len(indices) == 1:
+        param = "  ".join([f"{x: .6f}" for x in mol[indices[0] + 1].coords])
+        print(f'Coordinate({atoms}) = {param} Å')
+        return
 
 
-	if len(indices) == 2:
-		param_type = 'Distance'
-		unit = ' Å'
-		precision = 3
+    if len(indices) == 2:
+        param_type = 'Distance'
+        unit = ' Å'
+        precision = 3
 
-	if len(indices) == 3:
-		param_type = 'Angle'
-		unit = '°'
-		precision = 2
+    if len(indices) == 3:
+        param_type = 'Angle'
+        unit = '°'
+        precision = 2
 
-	if len(indices) == 4 and not args.pyramidal:
-		param_type = 'Dihedral'
-		unit = '°'
-		precision = 2
+    if len(indices) == 4 and not args.pyramidal:
+        param_type = 'Dihedral'
+        unit = '°'
+        precision = 2
 
-	if len(indices) == 4 and args.pyramidal:
-		param_type = 'Pyramid'
-		unit = '°'
-		precision = 2
+    if len(indices) == 4 and args.pyramidal:
+        param_type = 'Pyramid'
+        unit = '°'
+        precision = 2
 
-	print(f'{param_type}({atoms}) = {param: .{precision}f}{unit}')
+    print(f'{param_type}({atoms}) = {param: .{precision}f}{unit}')
