@@ -102,11 +102,9 @@ def sbatch(runfile: str, **options: dict) -> results.Result:
     sbatch_out = sp.check_output(cmd.split(), stderr=sp.STDOUT).decode()
     # get the slurm job id from the output
     for line in sbatch_out.splitlines():
-        print(line)
         if 'Submitted batch job' in line:
             # set the slurm job id for this calculation, we use this in order to set dependencies between jobs.
             ret.id = line.strip().split()[-1]
-            print(ret.id)
             break
 
     return ret

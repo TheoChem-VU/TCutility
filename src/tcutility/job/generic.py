@@ -232,7 +232,6 @@ class Job:
         Set a dependency between this job and otherjob. 
         This means that this job will run after the other job is finished running succesfully.
         '''
-        print(otherjob, otherjob.slurm_job_id, otherjob.can_skip(), otherjob.in_queue())
         if otherjob.can_skip() and not otherjob.in_queue():
             return
             
