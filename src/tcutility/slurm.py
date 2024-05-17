@@ -106,6 +106,7 @@ def sbatch(runfile: str, **options: dict) -> results.Result:
         if 'Submitted batch job' in line:
             # set the slurm job id for this calculation, we use this in order to set dependencies between jobs.
             ret.id = line.strip().split()[-1]
+            print(ret.id)
             break
 
     return ret
