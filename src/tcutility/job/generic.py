@@ -75,7 +75,6 @@ class Job:
             return True
         self.run()
 
-    @property
     def can_skip(self):
         '''
         Check whether the job can be skipped. We check this by loading the calculation and checking if the job status was fatal.
@@ -90,7 +89,6 @@ class Job:
         res = results.read(self.workdir)
         return not res.status.fatal
 
-    @property
     def in_queue(self):
         '''
         Check whether the job is currently managed by slurm.
@@ -234,8 +232,8 @@ class Job:
         Set a dependency between this job and otherjob. 
         This means that this job will run after the other job is finished running succesfully.
         '''
-        print(otherjob, otherjob.slurm_job_id, otherjob.can_skip, otherjob.in_queue)
-        if otherjob.can_skip and not otherjob.in_queue:
+        print(otherjob, otherjob.slurm_job_id, otherjob.can_skip(), otherjob.in_queue())
+        if otherjob.can_skip() and not otherjob.in_queue():
             return
             
         if hasattr(otherjob, 'slurm_job_id'):
