@@ -452,3 +452,49 @@ def random_points_on_spheroid(coordinates: np.ndarray, Nsamples: int = 1, margin
     # sphere and transform them to our spheroid
     p = random_points_on_sphere((Nsamples, Xc.shape[1]))
     return transform(p)
+
+
+def parameter(coordinates, *indices, pyramidal=False):
+    '''
+    Return geometry information about a set of coordinates given indices.
+    '''
+    assert 1 <= len(indices) <= 4, "Number of indices must be between 1, 2, 3 or 4"
+
+    coordinates = np.array(coordinates)
+    selected_coords = [coordinates[i] for i in indices]
+
+    if len(indices) == 1:
+        return selected_coords[0]
+
+    if len(indices) == 2:
+        return np.linalg.norm(selected_coords[0] - selected_coords[1])
+
+    if len(indices) == 3:
+        a = selected_coords[0] - selected_coords[1]
+        b = selected_coords[2] - selected_coords[1]
+        a = a / np.linalg.norm(a)
+        b = b / np.linalg.norm(b)
+
+        return np.arccos(a @ b) / np.pi * 180
+
+    if len(indices) == 4 and not pyramidal:
+        a = selected_coords[0] - selected_coords[1]
+        b = selected_coords[2] - selected_coords[1]
+
+        u = selected_coords[1] - selected_coords[2]
+        v = selected_coords[3] - selected_coords[2]
+
+        n1, n2 = np.cross(a, b), np.cross(u, v)
+
+        n1 = n1 / np.linalg.norm(n1)
+        n2 = n2 / np.linalg.norm(n2)
+
+        return np.arccos(n1 @ n2) / np.pi * 180
+
+
+    if len(indices) == 4 and pyramidal:
+        ang1 = parameter(coordinates, indices[1], indices[0], indices[2])
+        ang2 = parameter(coordinates, indices[2], indices[0], indices[3])
+        ang3 = parameter(coordinates, indices[3], indices[0], indices[1])
+
+        return 360 - ang1 - ang2 - ang3
