@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.job.generic &#8212; TCutility v0.13.0 documentation</title>
+    <title>tcutility.job.generic &#8212; TCutility v0.13.1 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../_static/documentation_options.js?v=bb33721e"></script>
+    <script src="../../../_static/documentation_options.js?v=1f4bf607"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -351,6 +351,17 @@
         <span class="k">return</span> <span class="ow">not</span> <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">fatal</span></div>
 
 
+<div class="viewcode-block" id="Job.in_queue">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.in_queue">[docs]</a>
+    <span class="k">def</span> <span class="nf">in_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Check whether the job is currently managed by slurm.</span>
+<span class="sd">        We check this by loading the calculation and checking if the job status is &#39;RUNNING&#39;, &#39;COMPLETING&#39;, &#39;CONFIGURING&#39; or &#39;PENDING&#39;.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;RUNNING&#39;</span><span class="p">,</span> <span class="s1">&#39;COMPLETING&#39;</span><span class="p">,</span> <span class="s1">&#39;CONFIGURING&#39;</span><span class="p">,</span> <span class="s1">&#39;PENDING&#39;</span><span class="p">]</span></div>
+
+
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s1">(name=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">, rundir=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="si">}</span><span class="s1">)&#39;</span>
 
@@ -503,7 +514,7 @@
 <span class="sd">        Set a dependency between this job and otherjob. </span>
 <span class="sd">        This means that this job will run after the other job is finished running succesfully.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">otherjob</span><span class="o">.</span><span class="n">can_skip</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">otherjob</span><span class="o">.</span><span class="n">can_skip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">otherjob</span><span class="o">.</span><span class="n">in_queue</span><span class="p">():</span>
             <span class="k">return</span>
             
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">otherjob</span><span class="p">,</span> <span class="s1">&#39;slurm_job_id&#39;</span><span class="p">):</span>
