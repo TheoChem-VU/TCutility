@@ -89,6 +89,14 @@ class Job:
         res = results.read(self.workdir)
         return not res.status.fatal
 
+    def in_queue(self):
+        '''
+        Check whether the job is currently managed by slurm.
+        We check this by loading the calculation and checking if the job status is 'RUNNING', 'COMPLETING', 'CONFIGURING' or 'PENDING'.
+        '''
+        res = results.read(self.workdir)
+        return res.status.name in ['RUNNING', 'COMPLETING', 'CONFIGURING', 'PENDING']
+
     def __repr__(self):
         return f'{type(self)}(name={self.name}, rundir={self.rundir})'
 
@@ -224,7 +232,7 @@ class Job:
         Set a dependency between this job and otherjob. 
         This means that this job will run after the other job is finished running succesfully.
         '''
-        if otherjob.can_skip:
+        if otherjob.can_skip() and not otherjob.in_queue():
             return
             
         if hasattr(otherjob, 'slurm_job_id'):
