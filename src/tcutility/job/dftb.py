@@ -1,4 +1,5 @@
 from tcutility.job.ams import AMSJob
+from tcutility import results
 import os
 
 
@@ -12,6 +13,7 @@ class DFTBJob(AMSJob):
     '''
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.settings = results.Result()
         self._model = None
         self.kspace('Good')
         self.single_point()
