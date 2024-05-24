@@ -180,6 +180,11 @@ class AMSJob(Job):
         '''
         os.makedirs(self.rundir, exist_ok=True)
 
+        for file in os.listdir(self.rundir):
+            p = os.path.join(self.rundir, file)
+            if p.endswith('.rkf'):
+                os.remove(p)
+
         if not self._molecule and not self._molecule_path and 'atoms' not in self.settings.input.ams.system:
             log.error(f'You did not supply a molecule for this job. Call the {self.__class__.__name__}.molecule method to add one.')
             return
