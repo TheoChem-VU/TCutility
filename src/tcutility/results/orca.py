@@ -221,7 +221,7 @@ def get_calc_settings(info: Result) -> Result:
     # determine if the wavefunction are unrestricted or not
     ret.unrestricted = any(tag in main for tag in ["uhf", "uno"])
     ret.used_qros = info.input.sections.mdci.UseQROs and info.input.sections.mdci.UseQROs.lower() == "true"
-    ret.frequencies = "freq" in main
+    ret.frequencies = "freq" in main or 'numfreq' in main
     ret.charge = int(info.input.system.charge)
     ret.spin_polarization = int(info.input.system.multiplicity) - 1
     ret.multiplicity = int(info.input.system.multiplicity)
