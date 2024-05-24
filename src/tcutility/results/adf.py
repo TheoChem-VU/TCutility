@@ -166,6 +166,7 @@ def get_properties(info: Result) -> Result:
             - **energy.elstat (float)** – total electrostatic potential (|kcal/mol|).
             - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label (|kcal/mol|).
             - **energy.orbint.{symmetry label} (float)** – orbital interaction energy from a specific symmetry label (|kcal/mol|).
+            - **energy.orbint.correction (float)** - orbital interaction correction energy (|kcal/mol|)
             - **energy.pauli.total (float)** – total Pauli repulsion energy (|kcal/mol|).
             - **energy.dispersion (float)** – total dispersion energy (|kcal/mol|).
             - **energy.gibbs (float)** – Gibb's free energy (|kcal/mol|). Only populated if vibrational modes were calculated.
@@ -202,6 +203,7 @@ def get_properties(info: Result) -> Result:
     for symlabel in info.adf.symmetry.labels:
         symlabel = symlabel.split(":")[0]
         ret.energy.orbint[symlabel] = reader_adf.read("Energy", f"Orb.Int. {symlabel}") * constants.HA2KCALMOL
+    ret.energy.orbint.correction = (ret.orbint.total - ret.energy.orbint[symlabel]) * constants.HA2KCALMOL
     ret.energy.pauli.total = reader_adf.read("Energy", "Pauli Total") * constants.HA2KCALMOL
     ret.energy.dispersion = reader_adf.read("Energy", "Dispersion Energy") * constants.HA2KCALMOL
 
