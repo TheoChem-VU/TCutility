@@ -150,11 +150,11 @@ def get_input(info: Result) -> Result:
             line = line.replace(':', '')
             ret.system.molecule.add_atom(plams.Atom(symbol=line.split()[0], coords=[float(x) for x in line.split()[1:4]]))
 
-    info.task = "SinglePoint"
+    ret.task = "SinglePoint"
     if "optts" in [x.lower() for x in ret.main]:
-        info.task = "TransitionStateSearch"
+        ret.task = "TransitionStateSearch"
     elif "opt" in [x.lower() for x in ret.main]:
-        info.task = "GeometryOptimization"
+        ret.task = "GeometryOptimization"
 
     return ret
 
