@@ -7,6 +7,7 @@ from htmldocx import HtmlToDocx
 from tcutility import results
 from tcutility.results import Result
 
+from tcutility._report.formatters import xyz
 
 def _hydrogen_bond_format(obj: Result, write_str: str) -> str:
     # add electronic energy. E should be bold and italics. Unit will be kcal mol^-1
@@ -93,26 +94,29 @@ class SI:
                 obj: a string specifying a calculation directory or a `TCutility.results.Result` object from a calculation.
                 title: title to be written before the coordinates and information.
         """
-        if isinstance(obj, str):
-            obj = results.read(obj)
+        # if isinstance(obj, str):
+        #     obj = results.read(obj)
 
-        # title is always bold
-        s = f"<b>{title}</b><br>"
+        # # title is always bold
+        # s = f"<b>{title}</b><br>"
 
+        # parser = HtmlToDocx()
+
+        # # add the electronic energy, Gibbs free energy, enthalpy and imaginary mode
+        # s = self._format_writer(obj, s)
+
+        # # remove trailing line breaks
+        # s = s.removesuffix("<br>")
+
+        # # coords should be written in mono-type font with 8 decimals and 4 spaces between each coordinate
+        # s += "<pre>"
+        # for atom in obj.molecule.output:
+        #     s += f"{atom.symbol:2}    {atom.coords[0]: .8f}    {atom.coords[1]: .8f}    {atom.coords[2]: .8f}<br>"
+        # s += "</pre>"
+        # parser.add_html_to_document(s, self.doc)
         parser = HtmlToDocx()
-
-        # add the electronic energy, Gibbs free energy, enthalpy and imaginary mode
-        s = self._format_writer(obj, s)
-
-        # remove trailing line breaks
-        s = s.removesuffix("<br>")
-
-        # coords should be written in mono-type font with 8 decimals and 4 spaces between each coordinate
-        s += "<pre>"
-        for atom in obj.molecule.output:
-            s += f"{atom.symbol:2}    {atom.coords[0]: .8f}    {atom.coords[1]: .8f}    {atom.coords[2]: .8f}<br>"
-        s += "</pre>"
-        parser.add_html_to_document(s, self.doc)
+        parser.add_html_to_document(xyz.Default()(obj), self.doc)
+        # return xyz.Default()(obj)
 
     def add_heading(self, text: str, level: int = 1):
         """
