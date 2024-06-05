@@ -67,7 +67,8 @@ class WorkFlow(SkipContext):
         exec(self.script, self.globals, self.locals)
         return self.output
 
-    def __call__(self, **inp):
+    def __call__(self, rundir=None,  **inp):
+        self.rundir = rundir or f'{self.name}_{self.version}'
         # os.makedirs(os.path.join(rundir, name), exist_ok=True)
         # os.copy()
         # if slurm.has_slurm():
@@ -109,7 +110,6 @@ if __name__ == '__main__':
 
 
     with WorkFlow(name='SN2', version='v1') as wf:
-        main_rundir = wf.input.rundir
         # load reactant complex
         rc = molecule.load(wf.input.rc)
 
@@ -127,14 +127,14 @@ if __name__ == '__main__':
             reactant_opt_substrate.molecule(R_EtY)
             reactant_opt_substrate.charge(rc.flags.charge_Substrate + rc.flags.charge_Y)
             reactant_opt_substrate.optimization()
-            reactant_opt_substrate.rundir = main_rundir
+            reactant_opt_substrate.rundir = wf.rundir
             reactant_opt_substrate.name = 'R_EtY'
 
         with DFTBJob(overwrite=False, use_slurm=False) as reactant_opt_X:
             reactant_opt_X.molecule(X)
             reactant_opt_X.charge(rc.flags.charge_X)
             reactant_opt_X.optimization()
-            reactant_opt_X.rundir = main_rundir
+            reactant_opt_X.rundir = wf.rundir
             reactant_opt_X.name = 'R_X'
 
 
@@ -146,14 +146,14 @@ if __name__ == '__main__':
             product_opt_substrate.molecule(P_EtX)
             product_opt_substrate.charge(rc.flags.charge_Substrate + rc.flags.charge_X)
             product_opt_substrate.optimization()
-            product_opt_substrate.rundir = main_rundir
+            product_opt_substrate.rundir = wf.rundir
             product_opt_substrate.name = 'P_EtX'
 
         with DFTBJob(overwrite=False, use_slurm=False) as product_opt_Y:
             product_opt_Y.molecule(Y)
             product_opt_Y.charge(rc.flags.charge_Y)
             product_opt_Y.optimization()
-            product_opt_Y.rundir = main_rundir
+            product_opt_Y.rundir = wf.rundir
             product_opt_Y.name = 'P_Y'
 
 
@@ -167,9 +167,5 @@ if __name__ == '__main__':
         R_dist = R_mol[R_rc[0]].distance_to(R_mol[R_rc[1]])
         P_dist = P_mol[P_rc[0]].distance_to(P_mol[P_rc[1]])
 
-
-
     print(wf)
     wf(rundir='SN2', rc='example.xyz')
-
-
