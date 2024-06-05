@@ -35,38 +35,7 @@ def parse_str(s: str):
     return s
 
 
-def save(mol: plams.Molecule, path: str, comment: str = None):
-    """Save a molecule in a custom xyz file format.
-    Molecule and atom flags can be provided as the "flags" parameter of the object (mol.flags and atom.flags).
-    """
-    comment = comment or mol.comment if hasattr(mol, 'comment') else ''
-    with open(path, "w+") as f:
-        f.write(f"{len(mol.atoms)}\n{comment}\n")
-        for atom in mol.atoms:
-            flags_str = ""
-            flags = atom.flags if hasattr(atom, "flags") else {}
-            for key, value in flags.items():
-                if key == "tags":
-                    if len(value) > 0:
-                        flags_str += " ".join([str(x) for x in value]) + " "
-                    else:
-                        continue
-                else:
-                    flags_str += f"{key}={value} "
-
-            f.write(f"{atom.symbol}\t{atom.coords[0]: .10f}\t{atom.coords[1]: .10f}\t{atom.coords[2]: .10f}\t{flags_str}\n")
-
-        f.write("\n")
-
-        flags = mol.flags if hasattr(mol, "flags") else {}
-        for key, value in flags.items():
-            if key == "tags":
-                f.write("\n".join([str(x) for x in value]) + "\n")
-            else:
-                f.write(f"{key} = {value}\n")
-
-
-def load(path) -> plams.Molecule:
+def load_str(inp: str) -> plams.Molecule:
     """
     Load a molecule from a given xyz file path.
     The xyz file is structured as follows:
@@ -103,8 +72,7 @@ def load(path) -> plams.Molecule:
                 ret.tags.add(parse_str(arg.strip()))
         return ret
 
-    with open(path) as f:
-        lines = [line.strip() for line in f.readlines()]
+    lines = [line.strip() for line in inp.splitlines()]
 
     mol = plams.Molecule()
 
@@ -125,6 +93,65 @@ def load(path) -> plams.Molecule:
     mol.flags = parse_flags(flag_lines)
 
     return mol
+
+
+def save(mol: plams.Molecule, path: str, comment: str = None):
+    """Save a molecule in a custom xyz file format.
+    Molecule and atom flags can be provided as the "flags" parameter of the object (mol.flags and atom.flags).
+    """
+    comment = comment or mol.comment if hasattr(mol, 'comment') else ''
+    with open(path, "w+") as f:
+        f.write(f"{len(mol.atoms)}\n{comment}\n")
+        for atom in mol.atoms:
+            flags_str = ""
+            flags = atom.flags if hasattr(atom, "flags") else {}
+            for key, value in flags.items():
+                if key == "tags":
+                    if len(value) > 0:
+                        flags_str += " ".join([str(x) for x in value]) + " "
+                    else:
+                        continue
+                else:
+                    flags_str += f"{key}={value} "
+
+            f.write(f"{atom.symbol}\t{atom.coords[0]: .10f}\t{atom.coords[1]: .10f}\t{atom.coords[2]: .10f}\t{flags_str}\n")
+
+        f.write("\n")
+
+        flags = mol.flags if hasattr(mol, "flags") else {}
+        for key, value in flags.items():
+            if key == "tags":
+                f.write("\n".join([str(x) for x in value]) + "\n")
+            else:
+                f.write(f"{key} = {value}\n")
+
+
+def load(path: str) -> plams.Molecule:
+    """
+    Load a molecule from a given xyz file path.
+    The xyz file is structured as follows:
+
+    .. code-block::
+
+        [int]
+        Comment line
+        [str] [float] [float] [float] atom_tag1 atom_tag2 atom_key1=...
+        [str] [float] [float] [float] atom_tag1 atom_tag2 atom_key1=...
+        [str] [float] [float] [float]
+
+        mol_tag1
+        mol_tag2
+        mol_key1=...
+        mol_key2 = ...
+
+
+    The xyz file is parsed and returned as a :class:`plams.Molecule <plams.mol.molecule.Molecule>` object.
+    Flags and tags are given as ``mol.flags`` and ``mol.flags.tags`` respectively.
+    Similarly for the atoms, the flags and tags are given as ``mol.atoms[i].flags`` and ``mol.atoms[i].flags.tags``
+    """
+
+    with open(path) as f:
+        return load_str(f.read())
 
 
 def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
