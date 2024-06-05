@@ -39,7 +39,7 @@ class Job:
         wait_for_finish: whether to wait for this job to finish running before continuing your runscript.
         delete_on_finish: whether to remove the workdir for this job after it is finished running.
     '''
-    def __init__(self, *base_jobs: List['Job'], test_mode: bool = None, overwrite: bool = None, wait_for_finish: bool = None, delete_on_finish: bool = None, delete_on_fail: bool = None):
+    def __init__(self, *base_jobs: List['Job'], test_mode: bool = None, overwrite: bool = None, wait_for_finish: bool = None, delete_on_finish: bool = None, delete_on_fail: bool = None, use_slurm: bool = None):
         self._sbatch = results.Result()
         self._molecule = None
         self._molecule_path = None
@@ -54,6 +54,8 @@ class Job:
         self.overwrite = overwrite
         self.wait_for_finish = wait_for_finish
         self.delete_on_finish = delete_on_finish
+        self.delete_on_fail = delete_on_fail
+        self.use_slurm = use_slurm if use_slurm is not None else True
 
         # update this job with base_jobs
         for base_job in base_jobs:
@@ -63,7 +65,8 @@ class Job:
         self.overwrite = self.overwrite if overwrite is None else overwrite
         self.wait_for_finish = self.wait_for_finish if wait_for_finish is None else wait_for_finish
         self.delete_on_finish = self.delete_on_finish if delete_on_finish is None else delete_on_finish
-        self.delete_on_fail = delete_on_fail if delete_on_fail is None else delete_on_fail
+        self.delete_on_fail = self.delete_on_fail if delete_on_fail is None else delete_on_fail
+        self.use_slurm = self.use_slurm if use_slurm is None else use_slurm
 
     def __enter__(self):
         return self
@@ -167,7 +170,7 @@ class Job:
         if self.test_mode or not setup_success:
             return
 
-        if slurm.has_slurm():
+        if slurm.has_slurm() and self.use_slurm:
             # set some default sbatch settings
             if any(option not in self._sbatch for option in ['D', 'chdir']):
                 self._sbatch.setdefault('D', self.workdir)
