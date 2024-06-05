@@ -104,68 +104,71 @@ class WorkFlow(SkipContext):
             script.write(self.script)
 
 
-if __name__ == '__main__':
-    from tcutility import molecule, results
-    from tcutility.job import DFTBJob
+# from tcutility import molecule, results
+# from tcutility.job import DFTBJob, WorkFlow
 
 
-    with WorkFlow(name='SN2', version='v1') as wf:
-        # load reactant complex
-        rc = molecule.load(wf.input.rc)
+# with WorkFlow(name='SN2', version='v1') as wf:
+#     # load reactant complex
+#     rc = molecule.load(wf.input.rc)
 
-        # separate the fragments
-        substrate = [atom for atom in rc if atom.flags.frag == 'Substrate']
-        X = [atom for atom in rc if atom.flags.frag == 'X']
-        Y = [atom for atom in rc if atom.flags.frag == 'Y']
-
-
-        # optimize the reactants
-        R_EtY = substrate + Y
-        # get the C-Y atoms
-        R_rc = [i + 1 for i, atom in enumerate(R_EtY) if 'anchor_Y' in atom.flags.tags]
-        with DFTBJob(overwrite=False, use_slurm=False) as reactant_opt_substrate:
-            reactant_opt_substrate.molecule(R_EtY)
-            reactant_opt_substrate.charge(rc.flags.charge_Substrate + rc.flags.charge_Y)
-            reactant_opt_substrate.optimization()
-            reactant_opt_substrate.rundir = wf.rundir
-            reactant_opt_substrate.name = 'R_EtY'
-
-        with DFTBJob(overwrite=False, use_slurm=False) as reactant_opt_X:
-            reactant_opt_X.molecule(X)
-            reactant_opt_X.charge(rc.flags.charge_X)
-            reactant_opt_X.optimization()
-            reactant_opt_X.rundir = wf.rundir
-            reactant_opt_X.name = 'R_X'
+#     # separate the fragments
+#     substrate = [atom for atom in rc if atom.flags.frag == 'Substrate']
+#     X = [atom for atom in rc if atom.flags.frag == 'X']
+#     Y = [atom for atom in rc if atom.flags.frag == 'Y']
 
 
-        # optimize the products
-        P_EtX = substrate + X
-        # get the C-X atoms
-        P_rc = [i + 1 for i, atom in enumerate(P_EtX) if 'anchor_X' in atom.flags.tags]
-        with DFTBJob(overwrite=False, use_slurm=False) as product_opt_substrate:
-            product_opt_substrate.molecule(P_EtX)
-            product_opt_substrate.charge(rc.flags.charge_Substrate + rc.flags.charge_X)
-            product_opt_substrate.optimization()
-            product_opt_substrate.rundir = wf.rundir
-            product_opt_substrate.name = 'P_EtX'
+#     # optimize the reactants
+#     R_EtY = substrate + Y
+#     # get the C-Y atoms
+#     R_rc = [i + 1 for i, atom in enumerate(R_EtY) if 'anchor_Y' in atom.flags.tags]
+#     with DFTBJob(overwrite=False, use_slurm=False) as reactant_opt_substrate:
+#         reactant_opt_substrate.sbatch(p='tc', n=8)
+#         reactant_opt_substrate.molecule(R_EtY)
+#         reactant_opt_substrate.charge(rc.flags.charge_Substrate + rc.flags.charge_Y)
+#         reactant_opt_substrate.optimization()
+#         reactant_opt_substrate.rundir = wf.rundir
+#         reactant_opt_substrate.name = 'R_EtY'
 
-        with DFTBJob(overwrite=False, use_slurm=False) as product_opt_Y:
-            product_opt_Y.molecule(Y)
-            product_opt_Y.charge(rc.flags.charge_Y)
-            product_opt_Y.optimization()
-            product_opt_Y.rundir = wf.rundir
-            product_opt_Y.name = 'P_Y'
+#     with DFTBJob(overwrite=False, use_slurm=False) as reactant_opt_X:
+#         reactant_opt_X.sbatch(p='tc', n=8)
+#         reactant_opt_X.molecule(X)
+#         reactant_opt_X.charge(rc.flags.charge_X)
+#         reactant_opt_X.optimization()
+#         reactant_opt_X.rundir = wf.rundir
+#         reactant_opt_X.name = 'R_X'
 
 
-        # do a pesscan
-        R_results = results.read(reactant_opt_substrate.workdir)
-        P_results = results.read(product_opt_substrate.workdir)
+#     # optimize the products
+#     P_EtX = substrate + X
+#     # get the C-X atoms
+#     P_rc = [i + 1 for i, atom in enumerate(P_EtX) if 'anchor_X' in atom.flags.tags]
+#     with DFTBJob(overwrite=False, use_slurm=False) as product_opt_substrate:
+#         product_opt_substrate.sbatch(p='tc', n=8)
+#         product_opt_substrate.molecule(P_EtX)
+#         product_opt_substrate.charge(rc.flags.charge_Substrate + rc.flags.charge_X)
+#         product_opt_substrate.optimization()
+#         product_opt_substrate.rundir = wf.rundir
+#         product_opt_substrate.name = 'P_EtX'
 
-        R_mol = R_results.molecule.output
-        P_mol = P_results.molecule.output
+#     with DFTBJob(overwrite=False, use_slurm=False) as product_opt_Y:
+#         product_opt_Y.sbatch(p='tc', n=8)
+#         product_opt_Y.molecule(Y)
+#         product_opt_Y.charge(rc.flags.charge_Y)
+#         product_opt_Y.optimization()
+#         product_opt_Y.rundir = wf.rundir
+#         product_opt_Y.name = 'P_Y'
 
-        R_dist = R_mol[R_rc[0]].distance_to(R_mol[R_rc[1]])
-        P_dist = P_mol[P_rc[0]].distance_to(P_mol[P_rc[1]])
 
-    print(wf)
-    wf(rundir='SN2', rc='example.xyz')
+#     # do a pesscan
+#     R_results = results.read(reactant_opt_substrate.workdir)
+#     P_results = results.read(product_opt_substrate.workdir)
+
+#     R_mol = R_results.molecule.output
+#     P_mol = P_results.molecule.output
+
+#     R_dist = R_mol[R_rc[0]].distance_to(R_mol[R_rc[1]])
+#     P_dist = P_mol[P_rc[0]].distance_to(P_mol[P_rc[1]])
+
+# print(wf)
+# wf(rundir='SN2', rc='example.xyz')
