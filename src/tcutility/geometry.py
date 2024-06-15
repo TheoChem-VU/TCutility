@@ -126,6 +126,30 @@ class Transform:
 
         self.M = self.M @ self._build_matrix(S=S)
 
+    def reflect(self, normal: np.ndarray = None):
+        """
+        Add a reflection across a plane given by a normal vector to the transformation matrix.
+        The reflection is given as
+
+            :math:`R \\in \\mathbb{R}^{3 \\times 3} = \\mathbb{I} - 2\\frac{nn^T}{n^Tn}`
+
+        Args:
+            normal: the normal vector of the plane to reflect across. 
+                If not given or ``None``, it will be set to one unit along the x-axis, i.e. a reflection along the yz-plane.
+
+        References:
+            https://en.wikipedia.org/wiki/Reflection_(mathematics)
+        """
+        if normal is None:
+            normal = np.array([[1, 0, 0]])
+
+        normal = np.atleast_2d(np.array(normal))
+
+        # normalize the normal to be sure
+        normal = normal.T / np.linalg.norm(normal)
+        R = np.eye(3) - 2 * (normal @ normal.T) / (normal.T @ normal)
+        self.M = self.M @ self._build_matrix(R=R)
+
     def _build_matrix(self, R: np.ndarray = None, T: np.ndarray = None, S: np.ndarray = None) -> np.ndarray:
         '''
         Build the transformation matrix for this object.
