@@ -87,7 +87,7 @@ def _format_article(data: dict, style: str) -> str:
 	journal_abbreviation = _get_journal_abbreviation(journal)
 	year = data['message']['issued']['date-parts'][0][0]
 	volume = data['message']['volume']
-	pages = data['message'].get('page')
+	pages = data['message'].get('page').replace('-', '–')
 	title = data['message']['title'][0]
 	doi = data['message']['DOI']
 
