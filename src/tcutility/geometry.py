@@ -384,7 +384,7 @@ def vector_align_rotmat(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     return R
 
 
-def RMSD(X: np.ndarray, Y: np.ndarray, axis: Union[int, None] = None, use_kabsch: bool = True) -> float:
+def RMSD(X: np.ndarray, Y: np.ndarray, axis: Union[int, None] = None, use_kabsch: bool = True, include_mirror: bool = False) -> float:
     r"""
     Calculate Root Mean Squared Deviations between two sets of points ``X`` and ``Y``.
     By default Kabsch' algorithm is used to align the sets of points prior to calculating the RMSD.
@@ -403,6 +403,8 @@ def RMSD(X: np.ndarray, Y: np.ndarray, axis: Union[int, None] = None, use_kabsch
         Y: the second set of coordinates to compare. It must have the same dimensions as ``X``.
         axis: axis to compare. Defaults to ``None``. 
         use_kabsch: whether to use Kabsch' algorithm to align ``X`` and ``Y`` before calculating the RMSD. Defaults to ``True``.
+        include_mirror: return the lowest value between the RMSD of the supplied coordinates and also the RMSD of mirrored X with Y.
+            This will only be done if ``use_kabsch == True``.
 
     Returns:
         RMSD in the units of X and Y. If ``axis`` is set to an integer this function will return a vector of RMSD's along that axis.
@@ -414,14 +416,31 @@ def RMSD(X: np.ndarray, Y: np.ndarray, axis: Union[int, None] = None, use_kabsch
     .. seealso::
         :class:`KabschTransform`
     """
+
+    X = np.array(X)
+    Y = np.array(Y)
+
     assert X.shape == Y.shape
 
     # apply Kabsch transform
     if use_kabsch:
         Tkabsch = KabschTransform(X, Y)
-        X = Tkabsch(X)
+        Xprime = Tkabsch(X)
 
-    return np.sqrt(np.sum((X - Y) ** 2, axis=axis) / X.shape[0])
+    rmsd = np.sqrt(np.sum((Xprime - Y) ** 2, axis=axis) / X.shape[0])
+
+    # if we include the mirror image we have to apply a reflection to the coordinates
+    # and then recalculate the kabsch transform in the mirror coordinates
+    # then we calculate the new RMSD and take the smaller of the new and old RMSD
+    if include_mirror and use_kabsch:
+        Tmirror = Transform()
+        Tmirror.reflect()
+        Tkabsch_mirror = KabschTransform(Tmirror(X), Y)
+        Xprime = Tkabsch_mirror(Tmirror(X))
+        rmsd_mirrored = np.sqrt(np.sum((Xprime - Y) ** 2, axis=axis) / X.shape[0])
+        rmsd = min(rmsd, rmsd_mirrored)
+
+    return rmsd
 
 
 def random_points_on_sphere(shape: Tuple[int], radius: float = 1) -> np.ndarray:
