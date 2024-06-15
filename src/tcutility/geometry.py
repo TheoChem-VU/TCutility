@@ -2,6 +2,7 @@ import numpy as np
 from math import sin, cos
 import scipy
 from typing import Tuple, Union
+from scm import plams
 
 
 class Transform:
@@ -44,11 +45,21 @@ class Transform:
 
             The ``Transform.__call__()`` method redirects to this method. Calling ``transform.apply(coords)`` is the same as ``transform(coords)``.
         """
+        is_mol = isinstance(v, plams.Molecule)
+        if is_mol:
+            mol = v.copy()
+
+        v = np.array(v)
         v = np.atleast_2d(v)
         v = np.asarray(v).T
         N = v.shape[1]
         v = np.vstack([v, np.ones(N)])
         vprime = self.M @ v
+
+        if is_mol:
+            mol.from_array(vprime[:3, :].T)
+            return mol
+
         return vprime[:3, :].T
 
     def __matmul__(self, other):
