@@ -1,7 +1,7 @@
 from scm import plams
-from tcutility.results import result
-from tcutility import ensure_list
-from typing import Dict
+from tcutility import results, ensure_list
+from typing import Dict, List
+import os
 
 def parse_str(s: str):
     # checks if string should be an int, float, bool or string
@@ -35,6 +35,66 @@ def parse_str(s: str):
     return s
 
 
+def load_str(inp: str) -> plams.Molecule:
+    """
+    Load a molecule from a given xyz file path.
+    The xyz file is structured as follows:
+
+    .. code-block::
+
+        [int]
+        Comment line
+        [str] [float] [float] [float] atom_tag1 atom_tag2 atom_key1=...
+        [str] [float] [float] [float] atom_tag1 atom_tag2 atom_key1=...
+        [str] [float] [float] [float]
+
+        mol_tag1
+        mol_tag2
+        mol_key1=...
+        mol_key2 = ...
+
+
+    The xyz file is parsed and returned as a :class:`plams.Molecule <plams.mol.molecule.Molecule>` object.
+    Flags and tags are given as ``mol.flags`` and ``mol.flags.tags`` respectively.
+    Similarly for the atoms, the flags and tags are given as ``mol.atoms[i].flags`` and ``mol.atoms[i].flags.tags``
+    """
+
+    def parse_flags(args):
+        ret = results.Result()
+        ret.tags = set()
+        for arg in args:
+            # flags are given as key=value pairs
+            # tags are given as loose keys
+            if "=" in arg:
+                key, value = arg.split("=")
+                ret[key.strip()] = parse_str(value.strip())
+            else:
+                ret.tags.add(parse_str(arg.strip()))
+        return ret
+
+    lines = [line.strip() for line in inp.splitlines()]
+
+    mol = plams.Molecule()
+
+    natoms = int(lines[0])
+    mol.comment = lines[1]
+    # not all lines in the file will define atoms. Lines after line natoms+2 will be used for flags
+    atom_lines = lines[2 : natoms + 2]
+    for line in atom_lines:
+        # parse every atom first
+        symbol, x, y, z, *args = line.split()
+        atom = plams.Atom(symbol=symbol, coords=(float(x), float(y), float(z)))
+        atom.flags = parse_flags(args)
+        mol.add_atom(atom)
+
+    # after the atoms we parse the flags for the molecule
+    flag_lines = lines[natoms + 2 :]
+    flag_lines = [line.strip() for line in flag_lines if line.strip()]
+    mol.flags = parse_flags(flag_lines)
+
+    return mol
+
+
 def save(mol: plams.Molecule, path: str, comment: str = None):
     """Save a molecule in a custom xyz file format.
     Molecule and atom flags can be provided as the "flags" parameter of the object (mol.flags and atom.flags).
@@ -66,7 +126,7 @@ def save(mol: plams.Molecule, path: str, comment: str = None):
                 f.write(f"{key} = {value}\n")
 
 
-def load(path) -> plams.Molecule:
+def load(path: str) -> plams.Molecule:
     """
     Load a molecule from a given xyz file path.
     The xyz file is structured as follows:
@@ -90,41 +150,31 @@ def load(path) -> plams.Molecule:
     Similarly for the atoms, the flags and tags are given as ``mol.atoms[i].flags`` and ``mol.atoms[i].flags.tags``
     """
 
-    def parse_flags(args):
-        ret = result.Result()
-        ret.tags = set()
-        for arg in args:
-            # flags are given as key=value pairs
-            # tags are given as loose keys
-            if "=" in arg:
-                key, value = arg.split("=")
-                ret[key.strip()] = parse_str(value.strip())
-            else:
-                ret.tags.add(parse_str(arg.strip()))
-        return ret
-
     with open(path) as f:
-        lines = [line.strip() for line in f.readlines()]
+        return load_str(f.read())
 
-    mol = plams.Molecule()
 
-    natoms = int(lines[0])
-    mol.comment = lines[1]
-    # not all lines in the file will define atoms. Lines after line natoms+2 will be used for flags
-    atom_lines = lines[2 : natoms + 2]
-    for line in atom_lines:
-        # parse every atom first
-        symbol, x, y, z, *args = line.split()
-        atom = plams.Atom(symbol=symbol, coords=(float(x), float(y), float(z)))
-        atom.flags = parse_flags(args)
-        mol.add_atom(atom)
+def load_from(obj: str | results.Result) -> List[plams.Molecule]:
+    if isinstance(obj, str):
+        if obj.endswith('.xyz'):
+            NotImplemented
 
-    # after the atoms we parse the flags for the molecule
-    flag_lines = lines[natoms + 2 :]
-    flag_lines = [line.strip() for line in flag_lines if line.strip()]
-    mol.flags = parse_flags(flag_lines)
+        if obj.endswith('.amv'):
+            NotImplemented
 
-    return mol
+        if obj.endswith('ams.rkf'):
+            NotImplemented
+
+        if os.path.isdir(obj):
+            # if obj is a directory we read the results from this calculation
+            obj = results.read(obj)
+
+    # read molecules from a job
+    if isinstance(obj, results.Result):
+        # get the converged molecules
+        return [mol for mol, converged in zip(obj.history.molecule, obj.history.converged) if converged]
+
+    return obj
 
 
 def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
@@ -213,7 +263,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
             if f'spinpol_{frag_name}' in mol.flags:
                 fragment_mols[frag_name].flags['spinpol'] = mol.flags[f'spinpol_{frag_name}']
 
-        return result.Result(fragment_mols)
+        return results.Result(fragment_mols)
 
     # second method, check if the atoms have a frag= flag defined
     fragment_names = set(atom.flags.get('frag') for atom in mol)
@@ -230,7 +280,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
             if f'spinpol_{frag}' in mol.flags:
                 fragment_mols[frag].flags['spinpol'] = mol.flags[f'spinpol_{frag}']
 
-        return result.Result(fragment_mols)
+        return results.Result(fragment_mols)
 
 
 
