@@ -31,11 +31,14 @@ def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str
     Parse and return a string containing a molecular formula that will show up properly in LaTeX, HTML or unicode.
 
     Args:
-        molecule: ``plams.Molecule`` object or a string that contains the molecular formula to be parsed. It can be either single molecule or a reaction. Molecules should be separated by ``+`` or ``->``.
+        molecule: ``plams.Molecule`` object or a string that contains the molecular formula to be parsed. 
+            It can be either single molecule or a reaction. Molecules should be separated by ``+`` or ``->``.
         mode: the formatter to convert the string to. Should be ``unicode``, ``html``, ``latex``, ``pyplot``.
 
     Returns:
-        A string that is formatted to be rendered nicely in either HTML or LaTeX. In the returned strings any numbers will be subscripted and ``+``, ``-``, ``*`` and ``•`` will be superscripted. For ``latex`` and ``pyplot`` modes we apply ``\\mathrm`` to letters.
+        A string that is formatted to be rendered nicely in either HTML or LaTeX. 
+        In the returned strings any numbers will be subscripted and ``+``, ``-``, ``*`` and ``•`` will be superscripted. 
+        For ``latex`` and ``pyplot`` modes we apply ``\\mathrm`` to letters.
 
     Examples:
         >>> molecule('C9H18NO*')
