@@ -215,7 +215,7 @@ class ORCAJob(Job):
                 runf.write('rm -rf $TMPDIR\n')
                 
             else:
-                runf.write(f'{self.orca_path} {self.inputfile_path}.in\n')
+                runf.write(f'{self.orca_path} {self.inputfile_path}\n')
 
             runf.write('\n'.join(self._postambles))
 
