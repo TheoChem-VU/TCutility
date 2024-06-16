@@ -4,13 +4,13 @@ from scm import plams
 
 def parse_molecule(molecule: plams.Molecule) -> str:
     """
-    Analyse a molecule and return the molstring describing its parts. Each part will then be separated by a `+` sign in the new string.
+    Analyse a molecule and return the molstring describing its parts. Each part will then be separated by a ``+`` sign in the new string.
 
     Args:
-        molecule: `plams.Molecule` object to be parsed.
+        molecule: ``plams.Molecule`` object to be parsed.
 
     Returns:
-        A string that contains each part of the molecule separated by a `+` sign, for use in TCutility.formula.molecule function for further formatting.
+        A string that contains each part of the molecule separated by a ``+`` sign, for use in :func:`molecule` function for further formatting.
     """
     # to separate a molecule we need to have bonds
     molecule.guess_bonds()
@@ -31,13 +31,11 @@ def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str
     Parse and return a string containing a molecular formula that will show up properly in LaTeX, HTML or unicode.
 
     Args:
-        molecule: `plams.Molecule` object or a string that contains the molecular formula to be parsed. It can be either single molecule or a reaction. Molecules should be separated by '+' or '->'.
-        mode: the formatter to convert the string to. Should be 'unicode', 'html', 'latex', 'pyplot'.
+        molecule: ``plams.Molecule`` object or a string that contains the molecular formula to be parsed. It can be either single molecule or a reaction. Molecules should be separated by ``+`` or ``->``.
+        mode: the formatter to convert the string to. Should be ``unicode``, ``html``, ``latex``, ``pyplot``.
 
     Returns:
-        | A string that is formatted to be rendered nicely in either HTML or LaTeX.
-        | In the returned strings any numbers will be subscripted and `+`, `-`, `*` and `•` will be superscripted.
-        | For `latex` and `pyplot` modes we apply `\\mathrm` to letters.
+        A string that is formatted to be rendered nicely in either HTML or LaTeX. In the returned strings any numbers will be subscripted and ``+``, ``-``, ``*`` and ``•`` will be superscripted. For ``latex`` and ``pyplot`` modes we apply ``\\mathrm`` to letters.
 
     Examples:
         >>> molecule('C9H18NO*')
@@ -47,7 +45,7 @@ def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str
         'C<sub>2</sub>H<sub>2</sub> + CH<sub>3</sub><sup>•</sup> -> C<sub>2</sub>H<sub>2</sub>CH3'
 
     .. seealso::
-        The :func:`parse_molecule` function is used to convert `plams.Molecule` objects to a molecular formula.
+        The :func:`parse_molecule` function is used to convert ``plams.Molecule`` objects to a molecular formula.
 
     """
     # to take care of plus-signs used to denote reactions we have to first split
