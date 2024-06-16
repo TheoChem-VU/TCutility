@@ -142,7 +142,9 @@ class Transform:
         Add a reflection across a plane given by a normal vector to the transformation matrix.
         The reflection is given as
 
-            :math:`R \\in \\mathbb{R}^{3 \\times 3} = \\mathbb{I} - 2\\frac{nn^T}{n^Tn}`
+        :math:`R = \\mathbb{I} - 2\\frac{nn^T}{n^Tn} \\in \\mathbb{R}^{3 \\times 3}`
+
+        where :math:`n` is the normal vector of the plane to reflect along.
 
         Args:
             normal: the normal vector of the plane to reflect across. 
