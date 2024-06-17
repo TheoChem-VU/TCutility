@@ -96,8 +96,16 @@ def read(calc_dir: Union[str, pl.Path]) -> Result:
             ret.level = None
 
     elif ret.engine == "dftb":
-        ret.dftb = dftb.get_calc_settings(ret)
-        ret.properties = dftb.get_properties(ret)
+        try:
+            ret.dftb = dftb.get_calc_settings(ret)
+        except:
+            ret.dftb = None
+
+        try:
+            ret.properties = dftb.get_properties(ret)
+        except:
+            ret.properties = None
+            
     elif ret.engine == "xtb":
         # ret.xtb = xtb.get_calc_settings(ret)
         ret.properties = xtb.get_properties(ret)
