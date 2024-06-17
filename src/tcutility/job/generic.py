@@ -235,7 +235,7 @@ class Job:
         if otherjob.can_skip() and not otherjob.in_queue():
             return
             
-        if hasattr(otherjob, 'slurm_job_id'):
+        if hasattr(otherjob, 'slurm_job_id') and otherjob.slurm_job_id is not None:
             self.sbatch(dependency=f'afterok:{otherjob.slurm_job_id}')
             self.sbatch(kill_on_invalid_dep='Yes')
 
