@@ -668,16 +668,16 @@ Files will be stored in the platform dependent temporary file directory.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.formula.parse_molecule">
 <span class="sig-name descname"><span class="pre">parse_molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/formula.html#parse_molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.formula.parse_molecule" title="Link to this definition">#</a></dt>
-<dd><p>Analyse a molecule and return the molstring describing its parts. Each part will then be separated by a + sign in the new string.</p>
+<dd><p>Analyse a molecule and return the molstring describing its parts. Each part will then be separated by a <code class="docutils literal notranslate"><span class="pre">+</span></code> sign in the new string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>molecule</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code></span>) – plams.Molecule object to be parsed.</p>
+<dd class="field-odd"><p><strong>molecule</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code></span>) – <code class="docutils literal notranslate"><span class="pre">plams.Molecule</span></code> object to be parsed.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A string that contains each part of the molecule separated by a + sign, for use in TCutility.formula.molecule function for further formatting.</p>
+<dd class="field-odd"><p>A string that contains each part of the molecule separated by a <code class="docutils literal notranslate"><span class="pre">+</span></code> sign, for use in <a class="reference internal" href="#tcutility.formula.molecule" title="tcutility.formula.molecule"><code class="xref py py-func docutils literal notranslate"><span class="pre">molecule()</span></code></a> function for further formatting.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -689,17 +689,33 @@ Files will be stored in the platform dependent temporary file directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>molecule</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code>]</span>) – plams.Molecule object or a string that contains the molecular formula to be parsed. It can be either single molecule or a reaction. Molecules should be separated by ‘+’ or ‘-&gt;’.</p></li>
-<li><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the formatter to convert the string to. Should be ‘unicode’, ‘html’, ‘latex’, ‘pyplot’.</p></li>
+<li><p><strong>molecule</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code>]</span>) – <code class="docutils literal notranslate"><span class="pre">plams.Molecule</span></code> object or a string that contains the molecular formula to be parsed.
+It can be either single molecule or a reaction. Molecules should be separated by <code class="docutils literal notranslate"><span class="pre">+</span></code> or <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code>.</p></li>
+<li><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the formatter to convert the string to. Should be <code class="docutils literal notranslate"><span class="pre">unicode</span></code>, <code class="docutils literal notranslate"><span class="pre">html</span></code>, <code class="docutils literal notranslate"><span class="pre">latex</span></code>, <code class="docutils literal notranslate"><span class="pre">pyplot</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A string that is formatted to be rendered nicely in either HTML or LaTeX.</p>
+<dd class="field-odd"><p>A string that is formatted to be rendered nicely in either HTML or LaTeX.
+In the returned strings any numbers will be subscripted and <code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code> and <code class="docutils literal notranslate"><span class="pre">•</span></code> will be superscripted.
+For <code class="docutils literal notranslate"><span class="pre">latex</span></code> and <code class="docutils literal notranslate"><span class="pre">pyplot</span></code> modes we apply <code class="docutils literal notranslate"><span class="pre">\mathrm</span></code> to letters.</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;C9H18NO*&#39;</span><span class="p">)</span>
+<span class="go">&#39;C₉H₁₈NO•&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;C2H2 + CH3* -&gt; C2H2CH3&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;html&#39;</span><span class="p">)</span>
+<span class="go">&#39;C&lt;sub&gt;2&lt;/sub&gt;H&lt;sub&gt;2&lt;/sub&gt; + CH&lt;sub&gt;3&lt;/sub&gt;&lt;sup&gt;•&lt;/sup&gt; -&gt; C&lt;sub&gt;2&lt;/sub&gt;H&lt;sub&gt;2&lt;/sub&gt;CH3&#39;</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The <a class="reference internal" href="#tcutility.formula.parse_molecule" title="tcutility.formula.parse_molecule"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_molecule()</span></code></a> function is used to convert <code class="docutils literal notranslate"><span class="pre">plams.Molecule</span></code> objects to a molecular formula.</p>
+</div>
 </dd></dl>
 
 </section>

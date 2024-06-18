@@ -264,13 +264,13 @@
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.formula.parse_molecule">[docs]</a>
 <span class="k">def</span> <span class="nf">parse_molecule</span><span class="p">(</span><span class="n">molecule</span><span class="p">:</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Analyse a molecule and return the molstring describing its parts. Each part will then be separated by a + sign in the new string.</span>
+<span class="sd">    Analyse a molecule and return the molstring describing its parts. Each part will then be separated by a ``+`` sign in the new string.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        molecule: plams.Molecule object to be parsed.</span>
+<span class="sd">        molecule: ``plams.Molecule`` object to be parsed.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A string that contains each part of the molecule separated by a + sign, for use in TCutility.formula.molecule function for further formatting.</span>
+<span class="sd">        A string that contains each part of the molecule separated by a ``+`` sign, for use in :func:`molecule` function for further formatting.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># to separate a molecule we need to have bonds</span>
     <span class="n">molecule</span><span class="o">.</span><span class="n">guess_bonds</span><span class="p">()</span>
@@ -282,6 +282,7 @@
         <span class="c1"># add all elements with their number, but only if the number is larger than 1.</span>
         <span class="c1"># this prevents the creation of strings containing e.g. C1H3Cl2</span>
         <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">sym</span> <span class="o">+</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">sym</span><span class="p">,</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">items</span><span class="p">()]))</span>
+
     <span class="k">return</span> <span class="s2">&quot; + &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span></div>
 
 
@@ -293,11 +294,25 @@
 <span class="sd">    Parse and return a string containing a molecular formula that will show up properly in LaTeX, HTML or unicode.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        molecule: plams.Molecule object or a string that contains the molecular formula to be parsed. It can be either single molecule or a reaction. Molecules should be separated by &#39;+&#39; or &#39;-&gt;&#39;.</span>
-<span class="sd">        mode: the formatter to convert the string to. Should be &#39;unicode&#39;, &#39;html&#39;, &#39;latex&#39;, &#39;pyplot&#39;.</span>
+<span class="sd">        molecule: ``plams.Molecule`` object or a string that contains the molecular formula to be parsed. </span>
+<span class="sd">            It can be either single molecule or a reaction. Molecules should be separated by ``+`` or ``-&gt;``.</span>
+<span class="sd">        mode: the formatter to convert the string to. Should be ``unicode``, ``html``, ``latex``, ``pyplot``.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A string that is formatted to be rendered nicely in either HTML or LaTeX.</span>
+<span class="sd">        A string that is formatted to be rendered nicely in either HTML or LaTeX. </span>
+<span class="sd">        In the returned strings any numbers will be subscripted and ``+``, ``-``, ``*`` and ``•`` will be superscripted. </span>
+<span class="sd">        For ``latex`` and ``pyplot`` modes we apply ``\\mathrm`` to letters.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; molecule(&#39;C9H18NO*&#39;)</span>
+<span class="sd">        &#39;C₉H₁₈NO•&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; molecule(&#39;C2H2 + CH3* -&gt; C2H2CH3&#39;, mode=&#39;html&#39;)</span>
+<span class="sd">        &#39;C&lt;sub&gt;2&lt;/sub&gt;H&lt;sub&gt;2&lt;/sub&gt; + CH&lt;sub&gt;3&lt;/sub&gt;&lt;sup&gt;•&lt;/sup&gt; -&gt; C&lt;sub&gt;2&lt;/sub&gt;H&lt;sub&gt;2&lt;/sub&gt;CH3&#39;</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        The :func:`parse_molecule` function is used to convert ``plams.Molecule`` objects to a molecular formula.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># to take care of plus-signs used to denote reactions we have to first split</span>
     <span class="c1"># the molstring into its parts.</span>
@@ -306,6 +321,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">molstring</span> <span class="o">=</span> <span class="n">molecule</span>
 
+    <span class="n">molstring</span> <span class="o">=</span> <span class="n">molstring</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;•&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">molstring</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
         <span class="c1"># if part is only a plus-sign we skip this part. This is only true when the plus-sign</span>
         <span class="c1"># is used to denote a reaction</span>
@@ -322,6 +338,10 @@
                 <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;&lt;sub&gt;</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2">&lt;/sub&gt;&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;unicode&quot;</span><span class="p">:</span>
                 <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="s2">&quot;₀₁₂₃₄₅₆₇₈₉&quot;</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)])</span>
+
+        <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="s2">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;latex&quot;</span><span class="p">,</span> <span class="s2">&quot;pyplot&quot;</span><span class="p">]:</span>
+                <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;\mathrm</span><span class="se">{{</span><span class="si">{</span><span class="n">letter</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># signs should be superscript</span>
         <span class="k">for</span> <span class="n">sign</span> <span class="ow">in</span> <span class="s2">&quot;+-•&quot;</span><span class="p">:</span>
