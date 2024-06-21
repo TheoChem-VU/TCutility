@@ -827,6 +827,23 @@ You can also specify x, y and z components separately</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.geometry.Transform.reflect">
+<span class="sig-name descname"><span class="pre">reflect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#Transform.reflect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.Transform.reflect" title="Link to this definition">#</a></dt>
+<dd><p>Add a reflection across a plane given by a normal vector to the transformation matrix.
+The reflection is given as</p>
+<p><span class="math notranslate nohighlight">\(R = \mathbb{I} - 2\frac{nn^T}{n^Tn} \in \mathbb{R}^{3 \times 3}\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(n\)</span> is the normal vector of the plane to reflect along.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>normal</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – the normal vector of the plane to reflect across.
+If not given or <code class="docutils literal notranslate"><span class="pre">None</span></code>, it will be set to one unit along the x-axis, i.e. a reflection along the yz-plane.</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Reflection_(mathematics">https://en.wikipedia.org/wiki/Reflection_(mathematics</a>)</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -1000,7 +1017,7 @@ convention</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.geometry.RMSD">
-<span class="sig-name descname"><span class="pre">RMSD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_kabsch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#RMSD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.RMSD" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">RMSD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_kabsch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_mirror</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#RMSD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.RMSD" title="Link to this definition">#</a></dt>
 <dd><p>Calculate Root Mean Squared Deviations between two sets of points <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">Y</span></code>.
 By default Kabsch’ algorithm is used to align the sets of points prior to calculating the RMSD.
 Optionally the axis can be given to calculate the RMSD along different axes.</p>
@@ -1015,6 +1032,8 @@ Optionally the axis can be given to calculate the RMSD along different axes.</p>
 <li><p><strong>Y</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – the second set of coordinates to compare. It must have the same dimensions as <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p></li>
 <li><p><strong>axis</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – axis to compare. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 <li><p><strong>use_kabsch</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – whether to use Kabsch’ algorithm to align <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">Y</span></code> before calculating the RMSD. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>include_mirror</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – return the lowest value between the RMSD of the supplied coordinates and also the RMSD of mirrored X with Y.
+This will only be done if <code class="docutils literal notranslate"><span class="pre">use_kabsch</span> <span class="pre">==</span> <span class="pre">True</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -1958,6 +1977,7 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.Transform.translate"><code class="docutils literal notranslate"><span class="pre">Transform.translate()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.Transform.rotate"><code class="docutils literal notranslate"><span class="pre">Transform.rotate()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.Transform.scale"><code class="docutils literal notranslate"><span class="pre">Transform.scale()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.Transform.reflect"><code class="docutils literal notranslate"><span class="pre">Transform.reflect()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.KabschTransform"><code class="docutils literal notranslate"><span class="pre">KabschTransform</span></code></a></li>

@@ -260,6 +260,7 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
 <span class="kn">import</span> <span class="nn">scipy</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">scm</span> <span class="kn">import</span> <span class="n">plams</span>
 
 
 <div class="viewcode-block" id="Transform">
@@ -306,11 +307,21 @@
 
 <span class="sd">            The ``Transform.__call__()`` method redirects to this method. Calling ``transform.apply(coords)`` is the same as ``transform(coords)``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">is_mol</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_mol</span><span class="p">:</span>
+            <span class="n">mol</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
         <span class="n">N</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">v</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
         <span class="n">vprime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">@</span> <span class="n">v</span>
+
+        <span class="k">if</span> <span class="n">is_mol</span><span class="p">:</span>
+            <span class="n">mol</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">vprime</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">mol</span>
+
         <span class="k">return</span> <span class="n">vprime</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">T</span></div>
 
 
@@ -399,6 +410,35 @@
             <span class="n">S</span> <span class="o">=</span> <span class="p">[</span><span class="n">S</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">S</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_matrix</span><span class="p">(</span><span class="n">S</span><span class="o">=</span><span class="n">S</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Transform.reflect">
+<a class="viewcode-back" href="../../api/tcutility.html#tcutility.geometry.Transform.reflect">[docs]</a>
+    <span class="k">def</span> <span class="nf">reflect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">normal</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a reflection across a plane given by a normal vector to the transformation matrix.</span>
+<span class="sd">        The reflection is given as</span>
+
+<span class="sd">        :math:`R = \\mathbb{I} - 2\\frac{nn^T}{n^Tn} \\in \\mathbb{R}^{3 \\times 3}`</span>
+
+<span class="sd">        where :math:`n` is the normal vector of the plane to reflect along.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            normal: the normal vector of the plane to reflect across. </span>
+<span class="sd">                If not given or ``None``, it will be set to one unit along the x-axis, i.e. a reflection along the yz-plane.</span>
+
+<span class="sd">        References:</span>
+<span class="sd">            https://en.wikipedia.org/wiki/Reflection_(mathematics)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">normal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">normal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+
+        <span class="n">normal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">normal</span><span class="p">))</span>
+
+        <span class="c1"># normalize the normal to be sure</span>
+        <span class="n">normal</span> <span class="o">=</span> <span class="n">normal</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">normal</span><span class="p">)</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">normal</span> <span class="o">@</span> <span class="n">normal</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">normal</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">normal</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_matrix</span><span class="p">(</span><span class="n">R</span><span class="o">=</span><span class="n">R</span><span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="nf">_build_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">T</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -642,7 +682,7 @@
 
 <div class="viewcode-block" id="RMSD">
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.geometry.RMSD">[docs]</a>
-<span class="k">def</span> <span class="nf">RMSD</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_kabsch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">RMSD</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_kabsch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">include_mirror</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate Root Mean Squared Deviations between two sets of points ``X`` and ``Y``.</span>
 <span class="sd">    By default Kabsch&#39; algorithm is used to align the sets of points prior to calculating the RMSD.</span>
@@ -661,6 +701,8 @@
 <span class="sd">        Y: the second set of coordinates to compare. It must have the same dimensions as ``X``.</span>
 <span class="sd">        axis: axis to compare. Defaults to ``None``. </span>
 <span class="sd">        use_kabsch: whether to use Kabsch&#39; algorithm to align ``X`` and ``Y`` before calculating the RMSD. Defaults to ``True``.</span>
+<span class="sd">        include_mirror: return the lowest value between the RMSD of the supplied coordinates and also the RMSD of mirrored X with Y.</span>
+<span class="sd">            This will only be done if ``use_kabsch == True``.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        RMSD in the units of X and Y. If ``axis`` is set to an integer this function will return a vector of RMSD&#39;s along that axis.</span>
@@ -672,14 +714,31 @@
 <span class="sd">    .. seealso::</span>
 <span class="sd">        :class:`KabschTransform`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+
     <span class="k">assert</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span>
 
     <span class="c1"># apply Kabsch transform</span>
     <span class="k">if</span> <span class="n">use_kabsch</span><span class="p">:</span>
         <span class="n">Tkabsch</span> <span class="o">=</span> <span class="n">KabschTransform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
-        <span class="n">X</span> <span class="o">=</span> <span class="n">Tkabsch</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">Xprime</span> <span class="o">=</span> <span class="n">Tkabsch</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">Y</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span> <span class="o">/</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+    <span class="n">rmsd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">Xprime</span> <span class="o">-</span> <span class="n">Y</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span> <span class="o">/</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># if we include the mirror image we have to apply a reflection to the coordinates</span>
+    <span class="c1"># and then recalculate the kabsch transform in the mirror coordinates</span>
+    <span class="c1"># then we calculate the new RMSD and take the smaller of the new and old RMSD</span>
+    <span class="k">if</span> <span class="n">include_mirror</span> <span class="ow">and</span> <span class="n">use_kabsch</span><span class="p">:</span>
+        <span class="n">Tmirror</span> <span class="o">=</span> <span class="n">Transform</span><span class="p">()</span>
+        <span class="n">Tmirror</span><span class="o">.</span><span class="n">reflect</span><span class="p">()</span>
+        <span class="n">Tkabsch_mirror</span> <span class="o">=</span> <span class="n">KabschTransform</span><span class="p">(</span><span class="n">Tmirror</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">Y</span><span class="p">)</span>
+        <span class="n">Xprime</span> <span class="o">=</span> <span class="n">Tkabsch_mirror</span><span class="p">(</span><span class="n">Tmirror</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+        <span class="n">rmsd_mirrored</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">Xprime</span> <span class="o">-</span> <span class="n">Y</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span> <span class="o">/</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">rmsd</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">rmsd</span><span class="p">,</span> <span class="n">rmsd_mirrored</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">rmsd</span></div>
 
 
 
