@@ -3,6 +3,7 @@ from tcutility import constants, slurm
 import os
 from scm import plams
 import numpy as np
+from typing import List
 
 
 j = os.path.join
@@ -181,13 +182,17 @@ def get_level_of_theory(info: Result) -> Result:
             ret.method = method
             break
 
+    if 'casscf' in [key.lower() for key in info.input.sections.keys()]:
+        nel, norb = info.input.sections.casscf.nel, info.input.sections.casscf.norb
+        ret.method = f'CASSCF({nel},{norb})'
+
     ret.basis.type = 'def2-SVP'
     for bs in ["cc-pVDZ", "cc-pVTZ", "cc-pVQZ", "cc-pV5Z", "aug-cc-pVDZ", "aug-cc-pVTZ", "aug-cc-pVQZ", "aug-cc-pV5Z"]:
         if bs.lower() in main:
             ret.basis.type = bs
 
     used_qros = sett.sections.mdci.UseQROs and sett.sections.mdci.UseQROs.lower() == "true"
-    ret.summary = f'{"QRO-" if used_qros else ""}{method}/{ret.basis.type}'
+    ret.summary = f'{"QRO-" if used_qros else ""}{ret.method}/{ret.basis.type}'
 
     return ret
 
@@ -222,6 +227,7 @@ def get_calc_settings(info: Result) -> Result:
     ret.unrestricted = any(tag in main for tag in ["uhf", "uno"])
     ret.used_qros = info.input.sections.mdci.UseQROs and info.input.sections.mdci.UseQROs.lower() == "true"
     ret.frequencies = "freq" in main or 'numfreq' in main
+    ret.casscf = 'casscf' in [key.lower() for key in info.input.sections.keys()]
     ret.charge = int(info.input.system.charge)
     ret.spin_polarization = int(info.input.system.multiplicity) - 1
     ret.multiplicity = int(info.input.system.multiplicity)
@@ -457,6 +463,89 @@ def get_vibrations(lines):
     return ret
 
 
+def get_CASSCF_properties(lines: List[str]) -> Result:
+    ret = Result()
+
+    def is_int(s):
+        try:
+            int(s)
+            return True
+        except:
+            return False
+
+    def is_float(s):
+        try:
+            float(s)
+            return True
+        except:
+            return False
+
+    # read density matrix
+    relevant_lines = []
+    read = False
+    for line in lines:
+        if line.strip().startswith('DENSITY MATRIX'):
+            read = True
+            continue
+
+        if read:
+            parts = line.replace('-', '').strip().split()
+            if len(parts) == 0:
+                continue
+
+            if all(is_int(part) for part in parts):
+                continue
+
+            if any(not (is_int(part) or is_float(part)) for part in parts):
+                read = False
+                break
+
+            relevant_lines.append(parts)
+
+    if len(relevant_lines) > 0:
+        norb = max(int(line[0]) for line in relevant_lines) + 1
+        ret.density_matrix = [[] for _ in range(norb)]
+        for line in relevant_lines:
+            ret.density_matrix[int(line[0])].extend([float(x) for x in line[1:]])
+        ret.density_matrix = np.array(ret.density_matrix)
+        # print(ret.density_matrix)
+
+
+    # read spin-density matrix
+    relevant_lines = []
+    read = False
+    for line in lines:
+        if line.strip().startswith('SPIN-DENSITY MATRIX'):
+            read = True
+            continue
+
+        if read:
+            parts = line.replace('-', '').strip().split()
+            if len(parts) == 0:
+                continue
+
+            if all(is_int(part) for part in parts):
+                continue
+
+            if any(not (is_int(part) or is_float(part)) for part in parts):
+                read = False
+                break
+
+            relevant_lines.append(parts)
+
+    if len(relevant_lines) > 0:
+        norb = max(int(line[0]) for line in relevant_lines) + 1
+        ret.spin_density_matrix = [[] for _ in range(norb)]
+        for line in relevant_lines:
+            ret.spin_density_matrix[int(line[0])].extend([float(x) for x in line[1:]])
+        ret.spin_density_matrix = np.array(ret.spin_density_matrix)
+        s2 = np.sum(ret.spin_density_matrix**2)/2
+        # print(s2)
+
+    return ret
+
+
+
 def get_properties(info: Result) -> Result:
     """Function to get properties from an ORCA calculation.
 
@@ -490,6 +579,9 @@ def get_properties(info: Result) -> Result:
 
     if info.orca.frequencies:
         ret.vibrations = get_vibrations(lines)
+
+    if info.orca.casscf:
+        ret.vibrations = get_CASSCF_properties(lines)
 
     # read some important info about the calculation
     for line in lines:
