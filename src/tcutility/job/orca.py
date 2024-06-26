@@ -64,6 +64,15 @@ class ORCAJob(Job):
     def QRO(self, enable=True):
         self.settings.MDCI.UseQROs = enable
 
+    def CAS(self, nel=None, norb=None, mult=None, enable=True):
+        if not enable:
+            self.settings.pop('CASSCF')
+            return
+
+        self.settings.CASSCF.Nel = nel
+        self.settings.CASSCF.Norb = norb
+        self.settings.CASSCF.Mult = mult
+
     def basis_set(self, value):
         self.settings.main.add(value)
 
