@@ -1,7 +1,11 @@
+import pathlib as pl
+from typing import Dict, List, Union
+
 from scm import plams
-from tcutility.results import result
+
 from tcutility import ensure_list
-from typing import Dict
+from tcutility.results import result
+
 
 def parse_str(s: str):
     # checks if string should be an int, float, bool or string
@@ -33,37 +37,6 @@ def parse_str(s: str):
         return bool(s)
 
     return s
-
-
-def save(mol: plams.Molecule, path: str, comment: str = None):
-    """Save a molecule in a custom xyz file format.
-    Molecule and atom flags can be provided as the "flags" parameter of the object (mol.flags and atom.flags).
-    """
-    comment = comment or mol.comment if hasattr(mol, 'comment') else ''
-    with open(path, "w+") as f:
-        f.write(f"{len(mol.atoms)}\n{comment}\n")
-        for atom in mol.atoms:
-            flags_str = ""
-            flags = atom.flags if hasattr(atom, "flags") else {}
-            for key, value in flags.items():
-                if key == "tags":
-                    if len(value) > 0:
-                        flags_str += " ".join([str(x) for x in value]) + " "
-                    else:
-                        continue
-                else:
-                    flags_str += f"{key}={value} "
-
-            f.write(f"{atom.symbol}\t{atom.coords[0]: .10f}\t{atom.coords[1]: .10f}\t{atom.coords[2]: .10f}\t{flags_str}\n")
-
-        f.write("\n")
-
-        flags = mol.flags if hasattr(mol, "flags") else {}
-        for key, value in flags.items():
-            if key == "tags":
-                f.write("\n".join([str(x) for x in value]) + "\n")
-            else:
-                f.write(f"{key} = {value}\n")
 
 
 def load(path) -> plams.Molecule:
@@ -128,37 +101,37 @@ def load(path) -> plams.Molecule:
 
 
 def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
-    '''
-    Guess fragments based on data from the xyz file. Two methods are currently supported, see the tabs below. 
-    We also support reading of charges and spin-polarizations for the fragments. 
+    """
+    Guess fragments based on data from the xyz file. Two methods are currently supported, see the tabs below.
+    We also support reading of charges and spin-polarizations for the fragments.
     They should be given as ``charge_{fragment_name}`` and ``spinpol_{fragment_name}`` respectively.
-    
-    
+
+
     .. tabs::
-        
+
         .. group-tab:: First method
 
             .. code-block::
 
                 8
 
-                N       0.00000000       0.00000000      -0.81474153 
-                B      -0.00000000      -0.00000000       0.83567034 
-                H       0.47608351      -0.82460084      -1.14410295 
-                H       0.47608351       0.82460084      -1.14410295 
-                H      -0.95216703       0.00000000      -1.14410295 
-                H      -0.58149793       1.00718395       1.13712667 
-                H      -0.58149793      -1.00718395       1.13712667 
-                H       1.16299585      -0.00000000       1.13712667 
+                N       0.00000000       0.00000000      -0.81474153
+                B      -0.00000000      -0.00000000       0.83567034
+                H       0.47608351      -0.82460084      -1.14410295
+                H       0.47608351       0.82460084      -1.14410295
+                H      -0.95216703       0.00000000      -1.14410295
+                H      -0.58149793       1.00718395       1.13712667
+                H      -0.58149793      -1.00718395       1.13712667
+                H       1.16299585      -0.00000000       1.13712667
 
                 frag_Donor = 1, 3-5
                 frag_Acceptor = 2, 6-8
                 charge_Donor = -1
                 spinpol_Acceptor = 2
-            
-            In this case, fragment atom indices must be provided below the coordinates. 
+
+            In this case, fragment atom indices must be provided below the coordinates.
             The fragment name must be prefixed with ``frag_``. Indices can be given as integers or as ranges using ``-``.
-        
+
         .. group-tab:: Second method
 
             .. code-block::
@@ -176,66 +149,149 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
 
                 charge_Donor = -1
                 spinpol_Acceptor = 2
-            
+
             In this case, fragment atoms are marked with the `frag` flag which gives the name of the fragment the atom belongs to.
 
     Args:
-        mol: the molecule that is to be split into fragments. It should have defined either method shown above. 
+        mol: the molecule that is to be split into fragments. It should have defined either method shown above.
              If it does not define these methods this function returns ``None``.
 
     Returns:
-        A dictionary containing fragment names as keys and :class:`plams.Molecule <scm.plams.mol.molecule.Molecule>` objects as values. 
+        A dictionary containing fragment names as keys and :class:`plams.Molecule <scm.plams.mol.molecule.Molecule>` objects as values.
         Atoms that were not included by either method will be placed in the molecule object with key ``None``.
 
-    '''
+    """
 
     # first method, check if the fragments are defined as molecule flags
-    fragment_flags = [flag for flag in mol.flags if flag.startswith('frag_')]
+    fragment_flags = [flag for flag in mol.flags if flag.startswith("frag_")]
     if len(fragment_flags) > 0:
         # we split here to get of the frag_ prefix
-        fragment_mols = {frag.split('_', 1)[1]: plams.Molecule() for frag in fragment_flags}
+        fragment_mols = {frag.split("_", 1)[1]: plams.Molecule() for frag in fragment_flags}
         for frag in fragment_flags:
-            frag_name = frag.split('_', 1)[1]
+            frag_name = frag.split("_", 1)[1]
             indices = []
             index_line = ensure_list(mol.flags[frag])
             for indx in index_line:
                 if isinstance(indx, int):
                     indices.append(indx)
-                elif isinstance(indx, str) and '-' in indx:
-                    indices.extend(range(int(indx.split('-')[0]), int(indx.split('-')[1]) + 1))
+                elif isinstance(indx, str) and "-" in indx:
+                    indices.extend(range(int(indx.split("-")[0]), int(indx.split("-")[1]) + 1))
                 else:
-                    raise ValueError(f'Fragment index {indx} could not be parsed.')
+                    raise ValueError(f"Fragment index {indx} could not be parsed.")
 
             [fragment_mols[frag_name].add_atom(mol[i]) for i in indices]
-            fragment_mols[frag_name].flags = {'tags': set()}
-            if f'charge_{frag_name}' in mol.flags:
-                fragment_mols[frag_name].flags['charge'] = mol.flags[f'charge_{frag_name}']
-            if f'spinpol_{frag_name}' in mol.flags:
-                fragment_mols[frag_name].flags['spinpol'] = mol.flags[f'spinpol_{frag_name}']
+            fragment_mols[frag_name].flags = {"tags": set()}
+            if f"charge_{frag_name}" in mol.flags:
+                fragment_mols[frag_name].flags["charge"] = mol.flags[f"charge_{frag_name}"]
+            if f"spinpol_{frag_name}" in mol.flags:
+                fragment_mols[frag_name].flags["spinpol"] = mol.flags[f"spinpol_{frag_name}"]
 
         return result.Result(fragment_mols)
 
     # second method, check if the atoms have a frag= flag defined
-    fragment_names = set(atom.flags.get('frag') for atom in mol)
+    fragment_names = set(atom.flags.get("frag") for atom in mol)
     if len(fragment_names) > 0:
         fragment_mols = {name: plams.Molecule() for name in fragment_names}
         for atom in mol:
             # get the fragment the atom belongs to and add it to the list
-            fragment_mols[atom.flags.get('frag')].add_atom(atom)
+            fragment_mols[atom.flags.get("frag")].add_atom(atom)
 
         for frag in fragment_names:
-            fragment_mols[frag].flags = {'tags': set()}
-            if f'charge_{frag}' in mol.flags:
-                fragment_mols[frag].flags['charge'] = mol.flags[f'charge_{frag}']
-            if f'spinpol_{frag}' in mol.flags:
-                fragment_mols[frag].flags['spinpol'] = mol.flags[f'spinpol_{frag}']
+            fragment_mols[frag].flags = {"tags": set()}
+            if f"charge_{frag}" in mol.flags:
+                fragment_mols[frag].flags["charge"] = mol.flags[f"charge_{frag}"]
+            if f"spinpol_{frag}" in mol.flags:
+                fragment_mols[frag].flags["spinpol"] = mol.flags[f"spinpol_{frag}"]
 
         return result.Result(fragment_mols)
 
 
+# =============================================================================
+# Writing Functions for Molecule objects ======================================
+# =============================================================================
+
+
+def _xyz_format(mol: plams.Molecule) -> str:
+    """Returns a string representation of a molecule in the xyz format, e.g.:
+
+    Geometry 1, Energy: -0.5 Ha
+    C      0.00000000      0.00000000      0.00000000
+    ...
+    """
+    return "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
+
+
+def _amv_format(mol: plams.Molecule, step: int, energy: Union[float, None] = None) -> str:
+    """Returns a string representation of a molecule in the amv format, e.g.:
+
+    Geometry 1, Energy: -0.5 Ha
+    C      0.00000000      0.00000000      0.00000000
+    ...
+
+    If no energy is provided, the energy is not included in the string representation"""
+    if energy is None:
+        return f"Geometry {step}\n" + "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
+    return f"Geometry {step}, Energy: {energy} Ha\n" + "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
+
+
+def write_mol_to_xyz_file(mols: Union[List[plams.Molecule], plams.Molecule], filename: Union[str, pl.Path]) -> None:
+    """Writes a list of molecules to a file in xyz format."""
+    mols = mols if isinstance(mols, list) else [mols]
+    out_file = pl.Path(f"{filename}.xyz")
+
+    [mol.delete_all_bonds() for mol in mols]
+    write_string = "\n\n".join([_xyz_format(mol) for mol in mols])
+    out_file.write_text(write_string)
+
+    return None
+
+
+def write_mol_to_amv_file(mols: Union[List[plams.Molecule], plams.Molecule], energies: Union[List[float], None], filename: Union[str, pl.Path]) -> None:
+    """Writes a list of molecules to a file in amv format."""
+    mols = mols if isinstance(mols, list) else [mols]
+    out_file = pl.Path(f"{filename}.amv")
+    energies = energies if energies is not None else [0.0 for _ in mols]
+
+    [mol.delete_all_bonds() for mol in mols]
+    write_string = "\n\n".join([_amv_format(mol, step, energy) for step, (mol, energy) in enumerate(zip(mols, energies), 1)])
+    out_file.write_text(write_string)
+
+    return None
+
+
+def save(mol: plams.Molecule, path: str, comment: str = None):
+    """Save a molecule in a custom xyz file format.
+    Molecule and atom flags can be provided as the "flags" parameter of the object (mol.flags and atom.flags).
+    """
+    comment = comment or mol.comment if hasattr(mol, "comment") else ""
+    with open(path, "w+") as f:
+        f.write(f"{len(mol.atoms)}\n{comment}\n")
+        for atom in mol.atoms:
+            flags_str = ""
+            flags = atom.flags if hasattr(atom, "flags") else {}
+            for key, value in flags.items():
+                if key == "tags":
+                    if len(value) > 0:
+                        flags_str += " ".join([str(x) for x in value]) + " "
+                    else:
+                        continue
+                else:
+                    flags_str += f"{key}={value} "
+
+            f.write(f"{atom.symbol}\t{atom.coords[0]: .10f}\t{atom.coords[1]: .10f}\t{atom.coords[2]: .10f}\t{flags_str}\n")
+
+        f.write("\n")
+
+        flags = mol.flags if hasattr(mol, "flags") else {}
+        for key, value in flags.items():
+            if key == "tags":
+                f.write("\n".join([str(x) for x in value]) + "\n")
+            else:
+                f.write(f"{key} = {value}\n")
+
 
 if __name__ == "__main__":
     # mol = load(r"D:\Users\Yuman\Desktop\PhD\ychem\calculations2\5ef3a511141a993d83552515df6bf882a7560dd806f88df4e2c2887b4d2a9595\transitionstate\input_mol.xyz")
-    mol = load('../../examples/job/NH3BH3.xyz')
+    mol = load("../../examples/job/NH3BH3.xyz")
     frags = guess_fragments(mol)
     print(frags)

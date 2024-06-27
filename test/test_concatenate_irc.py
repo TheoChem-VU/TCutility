@@ -1,7 +1,7 @@
 import pathlib as pl
 
 import pytest
-from tcutility.cli_scripts.concatenate_irc import _get_converged_molecules, concatenate_irc_trajectories
+from tcutility.analysis.task_specific.irc import _get_converged_molecules, concatenate_irc_trajectories
 from tcutility.results import read
 from tcutility.results.result import Result
 
@@ -42,12 +42,12 @@ def test_len_irc_trajectories(forward_irc, forward2_irc, backward_irc, backward2
 def test_len_final_trajectory(forward_irc, backward_irc, backward2_irc, forward2_irc):
     expected_lengths = [84, 91, 85, 88]
 
-    concatenated_mols, _ = concatenate_irc_trajectories([forward_irc, backward_irc, backward2_irc, forward2_irc], 10)
+    concatenated_mols, _ = concatenate_irc_trajectories([forward_irc, backward_irc, backward2_irc, forward2_irc])
     assert (
         len(concatenated_mols) == sum(expected_lengths) - 2
     )  # 2 is the number of duplicated points in the concatenated trajectory. In this case, two seperate ircs are concatenated and so there are two duplicated points.
 
-    concatenated_mols, _ = concatenate_irc_trajectories([forward_irc, backward_irc], 10, reverse=True)
+    concatenated_mols, _ = concatenate_irc_trajectories([forward_irc, backward_irc], reverse=True)
     assert len(concatenated_mols) == 84 + 91 - 1
 
 
