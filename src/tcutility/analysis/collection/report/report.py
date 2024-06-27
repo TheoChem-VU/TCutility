@@ -8,7 +8,7 @@ from tcutility.results import Result
 
 
 class SI:
-    def __init__(self, path: str | pl.Path, append_mode: bool = False, font: str = "Arial", format: WordFormatter = XYZFormatter):
+    def __init__(self, path: str | pl.Path, append_mode: bool = False, font: str = "Arial", format: WordFormatter = XYZFormatter()) -> None:
         """Initializes the SI class for creating supporting information (SI) files in Microsoft Word format.
 
         This class is responsible for creating and managing a Microsoft Word document that serves as supporting information (SI) for reports or publications. It allows for the addition of various elements such as text, headings, and formatted content from HTML.
@@ -33,6 +33,8 @@ class SI:
                 self.doc = docx.Document(str(self.path))
             except FileNotFoundError:
                 pass
+            except docx.opc.exceptions.PackageNotFoundError:  # type: ignore  # opc not found in docx by mypy
+                pass
 
         # Set the font to the specified font
         self.doc.styles["Normal"].font.name = font
@@ -45,7 +47,7 @@ class SI:
         """Saves the document upon exiting the context manager."""
         self.doc.save(self.path)
 
-    def add_xyz(self, obj: str | Result, title: str | None) -> str:
+    def add_xyz(self, obj: str | Result | list[Result], title: str | None = None) -> None:
         """Adds XYZ formatted content to the document.
 
         This method is responsible for adding the coordinates and information about a calculation to the supporting information document. It includes details such as the electronic bond energy, Gibb's free energy, enthalpy, imaginary mode, and the coordinates of the molecule.
@@ -55,17 +57,25 @@ class SI:
             title (str | None): The title to be written before the coordinates and information. If None, no title is added.
 
         Returns:
-            str: The formatted content that was added to the document.
+            None
         """
+        ret_str = ""
+
         # Add title to the document
         if title is not None:
-            self.add_heading(title)
+            ret_str += f"<b>{title}</b><br>"
+
+        # Add the formatted content to the document
+        if not isinstance(obj, str):
+            ret_str += self._format_writer.write(obj)  # type: ignore  # Obj is not a string
+        else:
+            ret_str += obj
 
         parser = HtmlToDocx()
-        parser.add_html_to_document(self._format_writer.write(obj), self.doc)
-        return self._format_writer.write(obj)
+        parser.add_html_to_document(ret_str, self.doc)
+        return
 
-    def add_heading(self, text: str, level: int = 1):
+    def add_heading(self, text: str, level: int = 1) -> None:
         """Adds a heading to the document.
 
         This method allows for the addition of a heading to the Word document, with customizable text and level.
@@ -77,7 +87,25 @@ class SI:
         self.doc.add_heading(text, level)
 
 
-def main(): ...
+def main():
+    from tcutility.pathfunc import get_subdirectories
+    from tcutility.results import read
+
+    calc_dir = pl.Path("/Users/siebeld/ADF_Calcs")
+    main_path = pl.Path("/Users/siebeld/Desktop")
+
+    all_subdirs = [pl.Path(dir_) for dir_ in get_subdirectories(str(calc_dir))]
+
+    res_objects = []
+    for dir_ in all_subdirs:
+        try:  # Try to read the results of the calculation
+            res_objects.append(read(dir_))
+        except Exception:
+            pass
+
+    with SI(main_path / "test", append_mode=False) as si:
+        si.add_heading("Test Heading")
+        si.add_xyz(obj=res_objects)
 
 
 if __name__ == "__main__":

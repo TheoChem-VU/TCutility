@@ -1,8 +1,7 @@
 import pathlib as pl
 
-
 # read data
-data_dir = pl.Path(__file__).parents[0] / "_atom_data_info"
+data_dir = pl.Path(__file__).parents[0]
 
 with open(data_dir / "name.txt") as data:
     lines = data.readlines()
@@ -53,24 +52,24 @@ def parse_element(val):
 
 
 def radius(element):
-    '''
+    """
     Args:
         element: the symbol, name or atom number of the element. See :func:`parse_element`.
-    Return: 
+    Return:
         The empirical covalent radius of an element in angstroms, up to element 96.
-    '''
+    """
     num = parse_element(element)
     return _radii.get(num)
 
 
 def color(element):
-    '''
+    """
     Args:
         element: the symbol, name or atom number of the element. See :func:`parse_element`.
 
     Return:
         The standard CPK colors of the elements, up to element 109.
-    '''
+    """
     num = parse_element(element)
     return _colors[num]
 
