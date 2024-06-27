@@ -1,5 +1,5 @@
-from tcutility.data import basis_sets
 import pytest
+from tcutility.data.basis_set import basis_sets
 
 
 def test_number_of_orbitals():

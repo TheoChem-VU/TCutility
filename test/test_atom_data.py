@@ -1,5 +1,5 @@
-from tcutility.data import atom
 import pytest
+from tcutility.data.atom_data_info import atom
 
 
 def test_parse():
