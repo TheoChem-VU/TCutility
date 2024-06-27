@@ -75,6 +75,10 @@ class XYZFormatter:
     def write(self, *results: results.Result | str) -> str:
         write_str = ""
         for obj in results:
+            # The program will crash whwen trying to get data from a calculation, so check before proceeding
+            if not check_if_job_is_suitable_for_xyz_format(obj):
+                continue
+
             data = get_data_for_xyz_format(obj)
             write_str += format(data)
         return write_str
