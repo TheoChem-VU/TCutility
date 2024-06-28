@@ -78,10 +78,11 @@ def format_xyz(data: XYZData) -> str:
     if data.G is not None:
         s += f"<b><i>G</i></b> = {data.G: .2f} kcal mol<sup>-1</sup><br>".replace("-", "–")
     if data.num_imag_modes is not None:
-        s += f"N<sub>imag</sub> = {data.num_imag_modes}"
+        s += f"N<sub>imag</sub> = {data.num_imag_modes} "
         if data.num_imag_modes > 0 and data.imag_freqs is not None:
             freqs = ", ".join([f"{-freq:.1f}<i>i</i>" for freq in data.imag_freqs])
-            s += f"({freqs})"
+            cm_1 = "cm<sup>-1</sup>".replace("-", "–")
+            s += f"({freqs} {cm_1})<br>"
         s += "<br>"
 
     s = s.removesuffix("<br>")

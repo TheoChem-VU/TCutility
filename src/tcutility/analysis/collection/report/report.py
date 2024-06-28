@@ -65,12 +65,15 @@ class SI:
         if isinstance(obj, str):
             obj = read(obj)
 
-        title = "Unknown" if title is None else title
+        if title is None and isinstance(obj.files.root, str):  # type: ignore  # obj is not None
+            title = pl.Path(obj.files.root).stem if title is None else title  # type: ignore  # obj is not None
+        elif title is None:
+            title = "System"
 
         # Add title to the document
         ret_str += f"<b>{title}</b><br>"
 
-        ret_str += self._format_writer.format(obj)  # type: ignore  # Obj is not a string
+        ret_str += self._format_writer.format(obj)
 
         # print(ret_str)
         parser = HtmlToDocx()
