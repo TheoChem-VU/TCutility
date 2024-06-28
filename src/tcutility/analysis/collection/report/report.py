@@ -4,7 +4,7 @@ import docx
 from htmldocx import HtmlToDocx
 from tcutility.analysis.collection.report.formatters.generic import WordFormatter
 from tcutility.analysis.collection.report.formatters.xyz import XYZFormatter
-from tcutility.results import Result
+from tcutility.results import Result, read
 
 
 class SI:
@@ -47,7 +47,7 @@ class SI:
         """Saves the document upon exiting the context manager."""
         self.doc.save(self.path)
 
-    def add_xyz(self, obj: str | Result | list[Result], title: str | None = None) -> None:
+    def add_xyz(self, obj: str | Result, title: str | None = None) -> None:
         """Adds XYZ formatted content to the document.
 
         This method is responsible for adding the coordinates and information about a calculation to the supporting information document. It includes details such as the electronic bond energy, Gibb's free energy, enthalpy, imaginary mode, and the coordinates of the molecule.
@@ -61,16 +61,18 @@ class SI:
         """
         ret_str = ""
 
-        # Add title to the document
-        if title is not None:
-            ret_str += f"<b>{title}</b><br>"
-
         # Add the formatted content to the document
-        if not isinstance(obj, str):
-            ret_str += self._format_writer.write(obj)  # type: ignore  # Obj is not a string
-        else:
-            ret_str += obj
+        if isinstance(obj, str):
+            obj = read(obj)
 
+        title = "Unknown" if title is None else title
+
+        # Add title to the document
+        ret_str += f"<b>{title}</b><br>"
+
+        ret_str += self._format_writer.format(obj)  # type: ignore  # Obj is not a string
+
+        # print(ret_str)
         parser = HtmlToDocx()
         parser.add_html_to_document(ret_str, self.doc)
         return
@@ -105,7 +107,8 @@ def main():
 
     with SI(main_path / "test", append_mode=False) as si:
         si.add_heading("Test Heading")
-        si.add_xyz(obj=res_objects)
+        for obj in res_objects:
+            si.add_xyz(obj=obj)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
 from typing import Union
+
 from scm import plams
 
 
@@ -72,8 +73,8 @@ def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str
         # replace the part in the original string
         molstring = molstring.replace(part, partret)
 
-    if mode == 'pyplot':
-        return fr"${molstring}$"
+    if mode == "pyplot":
+        return rf"${molstring}$"
 
     return molstring
 
