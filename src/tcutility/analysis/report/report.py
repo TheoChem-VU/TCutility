@@ -12,7 +12,8 @@ class SI:
     def __init__(self, path: Union[str, pl.Path], append_mode: bool = False, font: str = "Arial", format: WordFormatter = XYZFormatter()) -> None:
         """Initializes the SI class for creating supporting information (SI) files in Microsoft Word format.
 
-        This class is responsible for creating and managing a Microsoft Word document that serves as supporting information (SI) for reports or publications. It allows for the addition of various elements such as text, headings, and formatted content from HTML.
+        This class is responsible for creating and managing a Microsoft Word document that serves as supporting information (SI) for reports or publications.
+        It allows for the addition of various elements such as text, headings, and formatted content from HTML.
 
         Args:
             path (str | pl.Path): The location of the Word file. Does not have to have a file-extension.
@@ -51,7 +52,8 @@ class SI:
     def add_xyz(self, obj: Union[str, Result], title: Union[str, None] = None) -> None:
         """Adds XYZ formatted content to the document.
 
-        This method is responsible for adding the coordinates and information about a calculation to the supporting information document. It includes details such as the electronic bond energy, Gibb's free energy, enthalpy, imaginary mode, and the coordinates of the molecule.
+        This method is responsible for adding the coordinates and information about a calculation to the supporting information document.
+        It includes details such as the electronic bond energy, Gibb's free energy, enthalpy, imaginary mode, and the coordinates of the molecule.
 
         Args:
             obj (str | Result): A string specifying a calculation directory or a `TCutility.results.Result` object from a calculation.
@@ -66,7 +68,7 @@ class SI:
         if isinstance(obj, str):
             obj = read(obj)
 
-        ret_str += self._format_writer.format(obj)
+        ret_str += self._format_writer.format(obj, title=title)
 
         # print(ret_str)
         parser = HtmlToDocx()
