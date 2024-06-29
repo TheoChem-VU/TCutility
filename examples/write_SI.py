@@ -1,7 +1,7 @@
 import pathlib as pl
 
 from tcutility import formula
-from tcutility.analysis.collection.report import report
+from tcutility.analysis.report import report
 
 pwd = pl.Path(__file__).parent
 with report.SI("test.docx") as si:

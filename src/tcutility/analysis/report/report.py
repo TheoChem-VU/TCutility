@@ -3,8 +3,8 @@ from typing import Union
 
 import docx
 from htmldocx import HtmlToDocx
-from tcutility.analysis.collection.report.formatters.generic import WordFormatter
-from tcutility.analysis.collection.report.formatters.xyz import XYZFormatter
+from tcutility.analysis.report.formatters.generic import WordFormatter
+from tcutility.analysis.report.formatters.xyz import XYZFormatter
 from tcutility.results import Result, read
 
 
@@ -89,8 +89,7 @@ def main():
     from tcutility.results import read
 
     calc_dir = pl.Path("__file__").resolve().parents[0] / "test" / "fixtures"
-    # calc_dir = pl.Path("/Users/siebeld/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/PhD/Scripting/local_packages/TCutility/test/fixtures/")
-    main_path = pl.Path("/Users/siebeld/Desktop")
+    main_path = pl.Path("__file__").resolve().parents[0] / "examples"
 
     all_subdirs = [folder for folder in calc_dir.iterdir() if folder.is_dir()]
     res_objects = []
