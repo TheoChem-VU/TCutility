@@ -5,7 +5,7 @@ from scm.plams import KFReader
 
 from tcutility import constants, ensure_list
 from tcutility.results import Result, cache
-from tcutility.typing import arrays
+from tcutility.tc_typing import arrays
 
 # ------------------------------------------------------------- #
 # ------------------- Calculation Settings -------------------- #
@@ -226,8 +226,8 @@ def get_properties(info: Result) -> Result:
     S = info.adf.spin_polarization * 1 / 2
     ret.s2_expected = S * (S + 1)
     # this is the real expectation value
-    if ('Properties', 'S2calc') in reader_adf:
-        ret.s2 = reader_adf.read('Properties', 'S2calc')
+    if ("Properties", "S2calc") in reader_adf:
+        ret.s2 = reader_adf.read("Properties", "S2calc")
     else:
         ret.s2 = 0
 

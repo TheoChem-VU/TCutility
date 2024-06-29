@@ -1,28 +1,31 @@
-""" Module containing functions for generating citations"""
+"""Module containing functions for generating citations"""
+
 import argparse
-from tcutility import cite, data, spell_check
 import os
-import docx
-from docx.shared import Pt
-from docx.enum.text import WD_ALIGN_PARAGRAPH
-import htmldocx
 from math import ceil
+
+import docx
+import htmldocx
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.shared import Pt
+from tcutility import cite, data, spell_check
 
 
 class Docx:
-    '''
+    """
     Small class that handles writing to a docx file. This should and will be moved to its own module in TCutility soon.
-    '''
-    def __init__(self, file='test.docx', overwrite=False):
+    """
+
+    def __init__(self, file="test.docx", overwrite=False):
         self.file = file
         if not os.path.exists(file) or overwrite:
             self.doc = docx.Document()
         else:
             self.doc = docx.Document(file)
 
-        self.doc.styles['Normal'].font.name = 'Times New Roman'
-        self.doc.styles['Normal'].font.size = Pt(12)
-        self.doc.styles['Normal'].paragraph_format.space_after = 0
+        self.doc.styles["Normal"].font.name = "Times New Roman"
+        self.doc.styles["Normal"].font.size = Pt(12)
+        self.doc.styles["Normal"].paragraph_format.space_after = 0
         self.html_parser = htmldocx.HtmlToDocx()
 
     def __enter__(self):
@@ -32,24 +35,24 @@ class Docx:
         self.doc.save(self.file)
 
     def write_paragraph(self, text, alignment=WD_ALIGN_PARAGRAPH.LEFT):
-        '''
+        """
         Write a piece of text as a pragraph to this Docx file.
         This function will parse any HTML that is given in the text.
         E.g. you can use the <b></b> tags to make a piece of text bold.
-        '''
+        """
         self.html_parser.add_html_to_document(text, self.doc)
         self.doc.paragraphs[-1].alignment = alignment
 
     def open(self):
-        '''
+        """
         Open this file in Word.
-        '''
-        os.system(f'open {self.file}')
+        """
+        os.system(f"open {self.file}")
 
 
 def create_subparser(parent_parser: argparse.ArgumentParser):
     desc = """Generate citations for objects. Currently supports generating citations for functionals, basis-sets, programs, methodologies and DOIs.
-This program also generates, and if possible, opens a Word document that contains the formatted citations. 
+This program also generates, and if possible, opens a Word document that contains the formatted citations.
 Multiple objects can be given separated by spaces.
 If the supplied object is also a file path it will read each line as a separate object.
 
@@ -77,106 +80,84 @@ Example usage:
     Methodology D3BJ
       [10.1002/jcc.21759] S. Grimme, S. Ehrlich, L. Goerigk, J. Comput. Chem. 2011, 32, 1456-1465.
     """
-    subparser = parent_parser.add_parser('cite', help=desc, description=desc)
-    subparser.add_argument("objects",
-                           type=str,
-                           help="the objects to generate citations for. This can be functionals, basis-sets, programs, methodologies or DOIs.",
-                           nargs='*')
-    subparser.add_argument("-w", "--wiley",
-                           help="set the citation style to Wiley. This is the default style.",
-                           dest='style',
-                           action='store_const',
-                           const='wiley')
-    subparser.add_argument("-a", "--acs",
-                           help="set the citation style to ACS.",
-                           dest='style',
-                           action='store_const',
-                           const='acs')
-    subparser.add_argument("-r", "--rsc",
-                           help="set the citation style to RSC.",
-                           dest='style',
-                           action='store_const',
-                           const='rsc')
-    subparser.add_argument("-o", "--output",
-                           help="the output Word file to write the citations to.",
-                           type=str,
-                           default="citations.docx")
-    subparser.add_argument("-l", "--list",
-                           help="list currently available citations.",
-                           action='store_true',
-                           default=False)
+    subparser = parent_parser.add_parser("cite", help=desc, description=desc)
+    subparser.add_argument("objects", type=str, help="the objects to generate citations for. This can be functionals, basis-sets, programs, methodologies or DOIs.", nargs="*")
+    subparser.add_argument("-w", "--wiley", help="set the citation style to Wiley. This is the default style.", dest="style", action="store_const", const="wiley")
+    subparser.add_argument("-a", "--acs", help="set the citation style to ACS.", dest="style", action="store_const", const="acs")
+    subparser.add_argument("-r", "--rsc", help="set the citation style to RSC.", dest="style", action="store_const", const="rsc")
+    subparser.add_argument("-o", "--output", help="the output Word file to write the citations to.", type=str, default="citations.docx")
+    subparser.add_argument("-l", "--list", help="list currently available citations.", action="store_true", default=False)
 
 
 program_references = {
-    'ams': [
-        '10.1002/jcc.1056',
-        '10.1007/s002140050353',
-        ],
-    'adf': [
-        '10.1002/jcc.1056',
-        '10.1007/s002140050353',
-        ],
-    'orca': [
-        '10.1002/wcms.81',
-        '10.1063/5.0004608',
-        '10.1002/wcms.1606',
-        ],
-    'dftb': [],
-    'xtb': [],
-    'cosmo': [],
-    'crest': [],
-    'pyfrag': [
-        '10.1002/jcc.20786',
-        '10.1002/jcc.25871',
-        '10.5281/zenodo.1045523',
-        ],
-    'pyorb': [],
-    'cylview': [],
+    "ams": [
+        "10.1002/jcc.1056",
+        "10.1007/s002140050353",
+    ],
+    "adf": [
+        "10.1002/jcc.1056",
+        "10.1007/s002140050353",
+    ],
+    "orca": [
+        "10.1002/wcms.81",
+        "10.1063/5.0004608",
+        "10.1002/wcms.1606",
+    ],
+    "dftb": [],
+    "xtb": [],
+    "cosmo": [],
+    "crest": [],
+    "pyfrag": [
+        "10.1002/jcc.20786",
+        "10.1002/jcc.25871",
+        "10.5281/zenodo.1045523",
+    ],
+    "pyorb": [],
+    "cylview": [],
 }
 
 methodology_references = {
-    'fmatsfo': [],
-    'eda': [
-        '10.1002/9780470125922.ch1',
-        '10.1515/9783110660074-008'
-        ],
-    'asm': [],
-    'zora': [
-        '10.1063/1.466059',
-        '10.1063/1.467943',
-        ],
-    'ksmo': [],
-    'vdd': [
-        '10.1002/jcc.10351',
-        '10.1002/jcc.27184',
-        '10.1039/c5cp07483e',
-        ],
-    'hydrogen-bonding': [],
-    'halogen-bonding': [],
-    'chalcogen-bonding': [],
-    'pnictogen-bondding': [],
-    'zlm-fit': [
-        '10.1021/ct500172n',
-        ],
-    'becke-grid': [
-        '1.1002/jcc.23323',
-        ],
-    'sto': [
-        '10.1002/jcc.10255',
-        ],
-    'vibrational-analysis': [
-        '10.1016/s0010-4655(96)00120-8',
-        '10.1016/S0010-4655(96)00119-1',
-        '10.1002/qua.20653',
-        ],
-    'irc': [],
-    'd3': ['10.1063/1.3382344'],
-    'd3bj': ['10.1002/jcc.21759'],
-    'd4': ['10.1063/1.5090222'],
+    "fmatsfo": [],
+    "eda": ["10.1002/9780470125922.ch1", "10.1515/9783110660074-008"],
+    "asm": [],
+    "zora": [
+        "10.1063/1.466059",
+        "10.1063/1.467943",
+    ],
+    "ksmo": [],
+    "vdd": [
+        "10.1002/jcc.10351",
+        "10.1002/jcc.27184",
+        "10.1039/c5cp07483e",
+    ],
+    "hydrogen-bonding": [],
+    "halogen-bonding": [],
+    "chalcogen-bonding": [],
+    "pnictogen-bondding": [],
+    "zlm-fit": [
+        "10.1021/ct500172n",
+    ],
+    "becke-grid": [
+        "1.1002/jcc.23323",
+    ],
+    "sto": [
+        "10.1002/jcc.10255",
+    ],
+    "vibrational-analysis": [
+        "10.1016/s0010-4655(96)00120-8",
+        "10.1016/S0010-4655(96)00119-1",
+        "10.1002/qua.20653",
+    ],
+    "irc": [],
+    "d3": ["10.1063/1.3382344"],
+    "d3bj": ["10.1002/jcc.21759"],
+    "d4": ["10.1063/1.5090222"],
 }
 
 
 doi_order = []
+
+
 def format_paragraph(dois, style):
     paragraphs = []
     for doi in dois:
@@ -185,11 +166,11 @@ def format_paragraph(dois, style):
         try:
             citation = cite.cite(doi, style=style, mode="plain")
         except Exception as exp:
-            print('\t' + str(exp))
+            print("\t" + str(exp))
             raise
             return
 
-        print(f'  [{doi}] {citation}')
+        print(f"  [{doi}] {citation}")
         paragraph = f'[{doi_order.index(doi) + 1}] {cite.cite(doi, style=style, mode="html")}'
         paragraphs.append(paragraph)
 
@@ -197,17 +178,17 @@ def format_paragraph(dois, style):
 
 
 def _print_rect_list(printables, spaces_before=0):
-    '''
+    """
     This function prints a list of strings in a rectangle to the output.
     This is similar to what the ls program does in unix.
-    '''
+    """
     n_shell_col = os.get_terminal_size().columns
     # we first have to determine the correct dimensions of our rectangle
     for ncol in range(1, n_shell_col):
         # the number of rows for the number of columns
         nrows = ceil(len(printables) / ncol)
         # we then get what the rectangle would be
-        mat = [printables[i * ncol: (i+1) * ncol] for i in range(nrows)]
+        mat = [printables[i * ncol : (i + 1) * ncol] for i in range(nrows)]
         # and determine for each column the width
         col_lens = [max([len(row[i]) for row in mat if i < len(row)] + [0]) for i in range(ncol)]
         # then calculate the length of each row based on the column lengths
@@ -230,21 +211,21 @@ def _print_rect_list(printables, spaces_before=0):
 def main(args: argparse.Namespace):
     available_citations = list(program_references.keys()) + list(methodology_references.keys()) + list(data.functionals.functionals.keys())
     if args.list:
-        print('OBJECTS WITH AVAILABLE REFERENCES:')
-        print('    Programs')
-        print('    ========')
+        print("OBJECTS WITH AVAILABLE REFERENCES:")
+        print("    Programs")
+        print("    ========")
         printables = [prog for prog, dois in program_references.items() if len(dois) > 0]
         _print_rect_list(printables, 4)
         print()
 
-        print('    Methodology')
-        print('    ===========')
+        print("    Methodology")
+        print("    ===========")
         printables = [meth for meth, dois in methodology_references.items() if len(dois) > 0]
         _print_rect_list(printables, 4)
         print()
 
-        print('    Functionals')
-        print('    ===========')
+        print("    Functionals")
+        print("    ===========")
         printables = [xc_info.path_safe_name for xc, xc_info in data.functionals.functionals.items() if len(xc_info.dois) > 0]
         _print_rect_list(printables, 4)
         print()
@@ -258,33 +239,33 @@ def main(args: argparse.Namespace):
 
     with Docx(file=args.output, overwrite=True) as out:
         for obj in objs:
-            paragraphs = None            # try to format a functional
+            paragraphs = None  # try to format a functional
             try:
                 xc_info = data.functionals.get(obj)
-                print('Functional', obj)
-                paragraph_title = f'XC-Functional: <b>{xc_info.name_html}</b>'
-                paragraphs = format_paragraph(xc_info.dois, style=args.style or 'wiley')
+                print("Functional", obj)
+                paragraph_title = f"XC-Functional: <b>{xc_info.name_html}</b>"
+                paragraphs = format_paragraph(xc_info.dois, style=args.style or "wiley")
 
             except KeyError:
                 pass
 
             # if its not a functional we look in the programs
             if obj.lower() in program_references:
-                print('Program', obj)
-                paragraph_title = f'Program: <b>{obj}</b>'
-                paragraphs = format_paragraph(program_references[obj.lower()], style=args.style or 'wiley')
+                print("Program", obj)
+                paragraph_title = f"Program: <b>{obj}</b>"
+                paragraphs = format_paragraph(program_references[obj.lower()], style=args.style or "wiley")
 
             # and the methodologies
             if obj.lower() in methodology_references:
-                print('Methodology', obj)
-                paragraph_title = f'Method: <b>{obj}</b>'
-                paragraphs = format_paragraph(methodology_references[obj.lower()], style=args.style or 'wiley')
+                print("Methodology", obj)
+                paragraph_title = f"Method: <b>{obj}</b>"
+                paragraphs = format_paragraph(methodology_references[obj.lower()], style=args.style or "wiley")
 
             # if we still dont have a paragraphs we check if it is a DOI
-            if paragraphs is None and obj.startswith('10.'):
-                print('DOI')
-                paragraph_title = f'DOI: <b>{obj}</b>'
-                paragraphs = format_paragraph([obj], style=args.style or 'wiley')
+            if paragraphs is None and obj.startswith("10."):
+                print("DOI")
+                paragraph_title = f"DOI: <b>{obj}</b>"
+                paragraphs = format_paragraph([obj], style=args.style or "wiley")
 
             if paragraphs is None:
                 spell_check.make_suggestion(obj, available_citations, ignore_case=True)
@@ -293,6 +274,6 @@ def main(args: argparse.Namespace):
             out.write_paragraph(paragraph_title)
             for paragraph in paragraphs:
                 out.write_paragraph(paragraph, alignment=WD_ALIGN_PARAGRAPH.JUSTIFY)
-            out.write_paragraph(' ')
+            out.write_paragraph(" ")
 
     out.open()

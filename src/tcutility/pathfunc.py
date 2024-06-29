@@ -1,6 +1,6 @@
 import os
 import re
-from typing import Dict, List
+from typing import Dict, List, Set
 
 from tcutility import results
 
@@ -33,7 +33,7 @@ def split_all(path: str) -> List[str]:
         path = a
 
 
-def get_subdirectories(root: str, include_intermediates: bool = False) -> List[str]:
+def get_subdirectories(root: str, include_intermediates: bool = False) -> Set[str]:
     """
     Get all sub-directories of a root directory.
 

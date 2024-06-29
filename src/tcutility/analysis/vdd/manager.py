@@ -7,6 +7,7 @@ from itertools import zip_longest
 from typing import Dict, List, Optional, Sequence, Union
 
 import attrs
+import matplotlib.axes as axes
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -124,7 +125,7 @@ class VDDChargeManager:
         atom_symbols = [f"{charge.atom_index}{charge.atom_symbol}" for charge in self.vdd_charges["vdd"]]
         charges = [[charge.charge for charge in charges] for _, charges in self.vdd_charges.items()]
         headers = ["Frag", "Atom"] + [irrep for irrep, _ in self.vdd_charges.items()]
-        combined_table = list(zip_longest(frag_indices, atom_symbols, *charges, fillvalue=""))
+        combined_table = list(zip_longest(frag_indices, atom_symbols, *charges, fillvalue=""))  # type: ignore  # the unpack operator is not recognized by mypy
         df = pd.DataFrame(combined_table, columns=headers).rename(columns={"vdd": "Total"})
         return df
 
@@ -186,8 +187,8 @@ class VDDChargeManager:
 
         num_irreps = len(self.vdd_charges)
         n_max_charges = max([len(charges) for charges in self.vdd_charges.values()])
-        _, axs = plt.subplots(num_irreps, 1, figsize=(n_max_charges * 1.15, 5 * num_irreps), sharey=True)
-        axs = [axs] if num_irreps == 1 else axs
+        _, axs = plt.subplots(num_irreps, 1, figsize=(n_max_charges * 1.15, 5 * num_irreps), sharey=True)  # type: ignore
+        axs: List[axes.Axes] = [axs] if num_irreps == 1 else axs  # Make sure axs is a list # type: ignore
 
         # Initialize a variable to keep track of the most positive/negative values
         adjusted_abs_max_values = []
@@ -210,9 +211,9 @@ class VDDChargeManager:
                 x_pos = bar.get_x() + bar.get_width() / 2
 
                 if yval <= 0:
-                    ax.text(x_pos, yval + yval * 0.1, int(yval), va="top", ha="center")
+                    ax.text(x_pos, yval + yval * 0.1, str(int(yval)), va="top", ha="center")
                 else:
-                    ax.text(x_pos, yval + yval * 0.1, int(yval), va="bottom", ha="center")
+                    ax.text(x_pos, yval + yval * 0.1, str(int(yval)), va="bottom", ha="center")
                 adjusted_abs_max_values.append(yval + yval * 0.1)
             counter += 1
 
@@ -222,7 +223,7 @@ class VDDChargeManager:
         # Axes adjustments
         # Set the y-axis limits for all subplots based on the most positive/negative values
         for ax in axs:
-            ax.set_ylim([min_value - abs(min_value) * 0.2, max_value + abs(max_value) * 0.2])
+            ax.set_ylim(bottom=(min_value - abs(min_value) * 0.2), top=max_value + abs(max_value) * 0.2)
 
         # plt.tight_layout()
         plt.savefig(file, dpi=300)
