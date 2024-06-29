@@ -1,4 +1,5 @@
 import pathlib as pl
+from typing import Union
 
 import docx
 from htmldocx import HtmlToDocx
@@ -8,7 +9,7 @@ from tcutility.results import Result, read
 
 
 class SI:
-    def __init__(self, path: str | pl.Path, append_mode: bool = False, font: str = "Arial", format: WordFormatter = XYZFormatter()) -> None:
+    def __init__(self, path: Union[str, pl.Path], append_mode: bool = False, font: str = "Arial", format: WordFormatter = XYZFormatter()) -> None:
         """Initializes the SI class for creating supporting information (SI) files in Microsoft Word format.
 
         This class is responsible for creating and managing a Microsoft Word document that serves as supporting information (SI) for reports or publications. It allows for the addition of various elements such as text, headings, and formatted content from HTML.
@@ -47,7 +48,7 @@ class SI:
         """Saves the document upon exiting the context manager."""
         self.doc.save(self.path)
 
-    def add_xyz(self, obj: str | Result, title: str | None = None) -> None:
+    def add_xyz(self, obj: Union[str, Result], title: Union[str, None] = None) -> None:
         """Adds XYZ formatted content to the document.
 
         This method is responsible for adding the coordinates and information about a calculation to the supporting information document. It includes details such as the electronic bond energy, Gibb's free energy, enthalpy, imaginary mode, and the coordinates of the molecule.
@@ -64,14 +65,6 @@ class SI:
         # Add the formatted content to the document
         if isinstance(obj, str):
             obj = read(obj)
-
-        if title is None and isinstance(obj.files.root, str):  # type: ignore  # obj is not None
-            title = pl.Path(obj.files.root).stem if title is None else title  # type: ignore  # obj is not None
-        elif title is None:
-            title = "System"
-
-        # Add title to the document
-        ret_str += f"<b>{title}</b><br>"
 
         ret_str += self._format_writer.format(obj)
 
@@ -93,14 +86,13 @@ class SI:
 
 
 def main():
-    from tcutility.pathfunc import get_subdirectories
     from tcutility.results import read
 
-    calc_dir = pl.Path("/Users/siebeld/ADF_Calcs")
+    calc_dir = pl.Path("__file__").resolve().parents[0] / "test" / "fixtures"
+    # calc_dir = pl.Path("/Users/siebeld/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/PhD/Scripting/local_packages/TCutility/test/fixtures/")
     main_path = pl.Path("/Users/siebeld/Desktop")
 
-    all_subdirs = [pl.Path(dir_) for dir_ in get_subdirectories(str(calc_dir))]
-
+    all_subdirs = [folder for folder in calc_dir.iterdir() if folder.is_dir()]
     res_objects = []
     for dir_ in all_subdirs:
         try:  # Try to read the results of the calculation
