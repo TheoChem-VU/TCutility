@@ -35,12 +35,36 @@ Available keys present in the |result| object
 After reading a calculation, different keys may be present in the |result| object depending on the engine used. Think of reading an adf calculation, or an orca calculation.
 Below you can find a list of keys that are present in the |result| object for each type of calculation.
 
-ADF calculation
-***************
+ADF GeoOpt calculation
+**********************
 
-.. literalinclude:: ../_static/result/adf_multikeys.txt
+.. literalinclude:: ../_static/result/adf_geo_multikeys.txt
     :language: text
 
+
+ADF TSsearch calculation
+**********************
+.. literalinclude:: ../_static/result/adf_ts_multikeys.txt
+    :language: text
+
+DFT GeoOpt calculation
+**********************
+.. literalinclude:: ../_static/result/dft_geo_multikeys.txt
+    :language: text
+
+
+ORCA GeoOpt calculation
+***********************
+
+.. literalinclude:: ../_static/result/orca_geo_multikeys.txt
+    :language: text
+
+
+ORCA Freq calculation
+*********************
+
+.. literalinclude:: ../_static/result/orca_freq_multikeys.txt
+    :language: text
 
 
 .. _dict: https://docs.python.org/3.12/library/stdtypes.html#dict
