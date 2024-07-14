@@ -1,5 +1,6 @@
+import os
 import pathlib as pl
-from typing import Union
+from typing import List, Union
 
 import docx
 from htmldocx import HtmlToDocx
@@ -86,6 +87,22 @@ class SI:
         """
         self.doc.add_heading(text, level)
 
+def get_subdirs(root_folder: pl.Path) -> List[pl.Path]:
+    """Iteratively searches through a folder and returns all the most nested subdirs."""
+    most_nested_subdirs = []
+    for root, dirs, files in os.walk(root_folder):
+        # If 'dirs' is empty, it means 'root' contains no subdirectories, thus it is most nested.
+        if not dirs:
+            most_nested_subdirs.append(pl.Path(root))
+    return most_nested_subdirs
+
+def replace_files_rkf_to_ams_rkf(root_folder: pl.Path) -> None:
+    """ Iteratively searches through a folder and replaces all files with the extension '.rkf' to '.ams.rkf', except if the file has 'adf.rkf' in the name."""
+    for root, dirs, files in os.walk(root_folder):
+        for file in files:
+            if file.endswith(".rkf") and "adf.rkf" not in file:
+                new_name = file.replace(".rkf", ".ams.rkf")
+                os.rename(pl.Path(root) / file, pl.Path(root) / new_name)
 
 def main():
     from tcutility.results import read
@@ -93,7 +110,8 @@ def main():
     calc_dir = pl.Path("__file__").resolve().parents[0] / "test" / "fixtures"
     main_path = pl.Path("__file__").resolve().parents[0] / "examples"
 
-    all_subdirs = [folder for folder in calc_dir.iterdir() if folder.is_dir()]
+    # all_subdirs = [folder for folder in calc_dir.iterdir() if folder.is_dir()]
+    all_subdirs = get_subdirs(calc_dir)
     res_objects = []
     for dir_ in all_subdirs:
         try:  # Try to read the results of the calculation
@@ -102,7 +120,7 @@ def main():
             pass
 
     with SI(main_path / "test", append_mode=False) as si:
-        si.add_heading("Test Heading")
+        si.add_heading("SI Electronegativity project")
         for obj in res_objects:
             si.add_xyz(obj=obj)
 
