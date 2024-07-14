@@ -82,7 +82,7 @@ def add_title(title: str) -> str:
 def format_xyz(data: XYZData, title: Union[str, None]) -> str:
     s = ""
 
-    s += f"<b>{title}</b><br>" if title is not None else f"<b>{data.name}</b><br>"
+    s += add_title(title) if title is not None else add_title(data.name) if data.name is not None else ""
 
     if data.E is not None:
         s += f"<b><i>E</i></b> = {data.E: .2f} kcal mol<sup>-1</sup><br>".replace("-", "–")
