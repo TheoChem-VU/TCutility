@@ -10,7 +10,7 @@ from tcutility.results import Result, read
 
 
 class SI:
-    def __init__(self, path: Union[str, pl.Path], append_mode: bool = False, font: str = "Arial", format: WordFormatter = XYZFormatter()) -> None:
+    def __init__(self, path: Union[str, pl.Path], append_mode: bool = False, font: str = "Arial") -> None:
         """Initializes the SI class for creating supporting information (SI) files in Microsoft Word format.
 
         This class is responsible for creating and managing a Microsoft Word document that serves as supporting information (SI) for reports or publications.
@@ -20,16 +20,13 @@ class SI:
             path (str | pl.Path): The location of the Word file. Does not have to have a file-extension.
             append_mode (bool, optional): Whether to append to or overwrite the file. Defaults to False.
             font (str, optional): The font to be used in the document. Defaults to "Arial".
-            format (WordFormatter, optional): The formatter to be used for adding content to the document. Defaults to XYZFormatter.
 
         Attributes:
             path (pl.Path): The path to the Word document.
             doc (docx.Document): The Word document object.
-            _format_writer (WordFormatter): The formatter instance for adding formatted content.
         """
         self.path = pl.Path(path).with_suffix(".docx")
         self.doc = docx.Document()
-        self._format_writer = format
 
         if append_mode:
             try:
@@ -50,15 +47,22 @@ class SI:
         """Saves the document upon exiting the context manager."""
         self.doc.save(self.path)
 
-    def add_xyz(self, obj: Union[str, Result], title: Union[str, None] = None) -> None:
+    def add_figure(self, formatter: WordFormatter, data: ..., title: ...) -> None:
+        raise NotImplementedError("This method is not implemented yet.")
+
+    def add_table(self, formatter: WordFormatter, data: ..., title: ...) -> None:
+        raise NotImplementedError("This method is not implemented yet.")
+
+    def add_xyz(self, obj: Union[str, Result], title: Union[str, None] = None, formatter: WordFormatter = XYZFormatter()) -> None:
         """Adds XYZ formatted content to the document.
 
         This method is responsible for adding the coordinates and information about a calculation to the supporting information document.
         It includes details such as the electronic bond energy, Gibb's free energy, enthalpy, imaginary mode, and the coordinates of the molecule.
 
         Args:
-            obj (str | Result): A string specifying a calculation directory or a `TCutility.results.Result` object from a calculation.
-            title (str | None): The title to be written before the coordinates and information. If None, no title is added.
+            obj: A string specifying a calculation directory or a `TCutility.results.Result` object from a calculation.
+            title: The title to be written before the coordinates and information. If None, no title is added.
+            formatter: The formatter to be used for formatting the content. Defaults to `XYZFormatter`.
 
         Returns:
             None
@@ -69,7 +73,7 @@ class SI:
         if isinstance(obj, str):
             obj = read(obj)
 
-        ret_str += self._format_writer.format(obj, title=title)
+        ret_str += formatter.format(obj, title=title)
 
         # print(ret_str)
         parser = HtmlToDocx()
@@ -87,6 +91,7 @@ class SI:
         """
         self.doc.add_heading(text, level)
 
+
 def get_subdirs(root_folder: pl.Path) -> List[pl.Path]:
     """Iteratively searches through a folder and returns all the most nested subdirs."""
     most_nested_subdirs = []
@@ -96,13 +101,15 @@ def get_subdirs(root_folder: pl.Path) -> List[pl.Path]:
             most_nested_subdirs.append(pl.Path(root))
     return most_nested_subdirs
 
+
 def replace_files_rkf_to_ams_rkf(root_folder: pl.Path) -> None:
-    """ Iteratively searches through a folder and replaces all files with the extension '.rkf' to '.ams.rkf', except if the file has 'adf.rkf' in the name."""
+    """Iteratively searches through a folder and replaces all files with the extension '.rkf' to '.ams.rkf', except if the file has 'adf.rkf' in the name."""
     for root, dirs, files in os.walk(root_folder):
         for file in files:
             if file.endswith(".rkf") and "adf.rkf" not in file:
                 new_name = file.replace(".rkf", ".ams.rkf")
                 os.rename(pl.Path(root) / file, pl.Path(root) / new_name)
+
 
 def main():
     from tcutility.results import read
