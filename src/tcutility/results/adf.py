@@ -164,8 +164,9 @@ def get_properties(info: Result) -> Result:
 
             - **energy.bond (float)** – bonding energy (|kcal/mol|).
             - **energy.elstat (float)** – total electrostatic potential (|kcal/mol|).
-            - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label (|kcal/mol|).
+            - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label and correction energy(|kcal/mol|).
             - **energy.orbint.{symmetry label} (float)** – orbital interaction energy from a specific symmetry label (|kcal/mol|).
+            - **energy.orbint.correction (float)** - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (|kcal/mol|)
             - **energy.pauli.total (float)** – total Pauli repulsion energy (|kcal/mol|).
             - **energy.dispersion (float)** – total dispersion energy (|kcal/mol|).
             - **energy.gibbs (float)** – Gibb's free energy (|kcal/mol|). Only populated if vibrational modes were calculated.
@@ -198,10 +199,25 @@ def get_properties(info: Result) -> Result:
     # read energies (given in Ha in rkf files)
     ret.energy.bond = reader_adf.read("Energy", "Bond Energy") * constants.HA2KCALMOL
     ret.energy.elstat = reader_adf.read("Energy", "elstat") * constants.HA2KCALMOL
+
+
+    # read the total orbital interaction energy
     ret.energy.orbint.total = reader_adf.read("Energy", "Orb.Int. Total") * constants.HA2KCALMOL
+
+    # to calculate the orbital interaction term:
+    # the difference between the total and the sum of the symmetrized interaction energies should be calculated
+    # therefore the correction is first set equal to the total orbital interaction.
+    ret.energy.orbint.correction = ret.energy.orbint.total
+
+    # looping over every symlabel, to get the energy per symmetry label
     for symlabel in info.adf.symmetry.labels:
         symlabel = symlabel.split(":")[0]
         ret.energy.orbint[symlabel] = reader_adf.read("Energy", f"Orb.Int. {symlabel}") * constants.HA2KCALMOL
+
+        # the energy per symmetry label is abstracted from the "total orbital interaction"
+        # obtaining the correction to the orbital interaction term
+        ret.energy.orbint.correction -= ret.energy.orbint[symlabel]
+    
     ret.energy.pauli.total = reader_adf.read("Energy", "Pauli Total") * constants.HA2KCALMOL
     ret.energy.dispersion = reader_adf.read("Energy", "Dispersion Energy") * constants.HA2KCALMOL
 
