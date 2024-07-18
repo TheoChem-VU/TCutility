@@ -9,7 +9,7 @@ j = os.path.join
 
 
 def get_calc_files(calc_dir: str) -> Result:
-    """Function that returns files relevant to AMS calculations stored in ``calc_dir``.
+    """Function that returns files relevant to ORCA calculations stored in ``calc_dir``.
 
     Args:
         calc_dir: path pointing to the desired calculation
@@ -32,6 +32,15 @@ def get_calc_files(calc_dir: str) -> Result:
 
             if any(["* O   R   C   A *" in line for line in lines]):
                 ret.out = os.path.abspath(file)
+        except:  # noqa
+            pass
+
+        try:
+            with open(file, errors='ignore') as f:
+                lines = f.readlines()
+
+            if any([line.startswith('!') for line in lines]) and any([(len(line.split()) > 2 and line.split()[0] == '*' and line.split()[1] in ['xyz', 'xyzfile', 'gzmtfile']) for line in lines]):
+                ret.inp = os.path.abspath(file)
         except:  # noqa
             pass
 
@@ -81,22 +90,27 @@ def get_input(info: Result) -> Result:
             - **task (str)** - the task that was performed by the calculation, e.g. "SinglePoint", "TransitionStateSearch".
     """
     ret = Result()
-    with open(info.files.out) as out:
-        start_reading = False
-        lines = []
-        for line in out.readlines():
-            line = line.strip()
-            if start_reading:
-                lines.append(line)
 
-            if "INPUT FILE" in line:
-                start_reading = True
-                continue
+    if 'inp' in info.files:
+        with open(info.files.inp) as inp:
+            lines = inp.readlines()
+    else:
+        with open(info.files.out) as out:
+            start_reading = False
+            lines = []
+            for line in out.readlines():
+                line = line.strip()
+                if start_reading:
+                    lines.append(line)
 
-            if "****END OF INPUT****" in line:
-                break
+                if "INPUT FILE" in line:
+                    start_reading = True
+                    continue
 
-    lines = [line.split(">")[1] for line in lines[2:-1] if line.split(">")[1].strip()]
+                if "****END OF INPUT****" in line:
+                    break
+
+        lines = [line.split(">")[1] for line in lines[2:-1] if line.split(">")[1].strip()]
 
     ret.main = []
     curr_section = None
