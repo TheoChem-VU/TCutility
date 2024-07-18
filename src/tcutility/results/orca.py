@@ -22,27 +22,22 @@ def get_calc_files(calc_dir: str) -> Result:
     for root, _, files_ in os.walk(calc_dir):
         files.extend([j(root, file) for file in files_])
 
-    # parse the filenames
+    # we now go through all the files and check their nature
     ret = Result()
     ret.root = os.path.abspath(calc_dir)
     for file in files:
-        try:
-            with open(file) as f:
-                lines = f.readlines()
-
+        with open(file, errors='ignore') as f:
+            lines = f.readlines()
+            # detect the output file
             if any(["* O   R   C   A *" in line for line in lines]):
                 ret.out = os.path.abspath(file)
-        except:  # noqa
-            pass
+                continue    
 
-        try:
-            with open(file, errors='ignore') as f:
-                lines = f.readlines()
-
-            if any([line.startswith('!') for line in lines]) and any([(len(line.split()) > 2 and line.split()[0] == '*' and line.split()[1] in ['xyz', 'xyzfile', 'gzmtfile']) for line in lines]):
+            # detect the input file
+            # there should be lines starting with ! and also the system line, starting with * xyz, * xyzfile, * gzmtfile or * int
+            if any([line.startswith('!') for line in lines]) and any([(len(line.split()) > 2 and line.split()[0] == '*' and line.split()[1] in ['xyz', 'xyzfile', 'gzmtfile', 'int']) for line in lines]):
                 ret.inp = os.path.abspath(file)
-        except:  # noqa
-            pass
+                continue
 
     return ret
 
@@ -91,9 +86,11 @@ def get_input(info: Result) -> Result:
     """
     ret = Result()
 
+    # we read the input file first
     if 'inp' in info.files:
         with open(info.files.inp) as inp:
             lines = inp.readlines()
+    # if we don't have it we read the output file, which contains the input as a block
     else:
         with open(info.files.out) as out:
             start_reading = False
