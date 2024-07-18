@@ -18,12 +18,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
@@ -33,9 +33,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../_static/documentation_options.js?v=8ccbf874"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -104,7 +104,7 @@
   
     <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -140,7 +140,7 @@
 
  <script>
  document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
     <span class="search-button__default-text">Search</span>
     <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -162,7 +162,7 @@
 
  <script>
  document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
     <span class="search-button__default-text">Search</span>
     <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -173,7 +173,7 @@
   
 
   
-    <button class="sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -272,8 +272,8 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">tc</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">{</span><span class="n">read</span><span class="p">,</span><span class="n">optimize</span><span class="p">,</span><span class="n">concat</span><span class="o">-</span><span class="n">irc</span><span class="p">,</span><span class="n">cite</span><span class="p">,</span><span class="n">geo</span><span class="p">}</span> <span class="o">...</span>
 </pre></div>
 </div>
-<section id="tcutility-command-line-scripts">
-<h3>TCutility command-line scripts<a class="headerlink" href="#tcutility-command-line-scripts" title="Link to this heading">#</a></h3>
+<section id="create_parser-tcutility-command-line-scripts">
+<h3>TCutility command-line scripts<a class="headerlink" href="#create_parser-tcutility-command-line-scripts" title="Link to this heading">#</a></h3>
 <dl class="option-list">
 <dt><kbd>subprogram</kbd></dt>
 <dd><p>Possible choices: read, optimize, concat-irc, cite, geo</p>
@@ -304,11 +304,11 @@
 <dl class="option-list">
 <dt><kbd>-s, --status</kbd></dt>
 <dd><p>Shortcut to only print the status of the calculation.</p>
-<p>Default: False</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 <dt><kbd>-p, --properties</kbd></dt>
 <dd><p>Shortcut to only print calculated properties for the calculation.</p>
-<p>Default: False</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 </dl>
 </section>
@@ -344,7 +344,7 @@
 </dd>
 <dt><kbd>-k, --keep</kbd></dt>
 <dd><p>Keep the calculation directory after finishing the calculation.</p>
-<p>Default: False</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 </dl>
 </section>
@@ -373,15 +373,15 @@ In addition, the -r flag can be used to reverse the trajectory.</p>
 <dl class="option-list">
 <dt><kbd>-r, --reverse</kbd></dt>
 <dd><p>Reverses the trajectory</p>
-<p>Default: False</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 <dt><kbd>-o, --output</kbd></dt>
 <dd><p>Directory in which the outputfile will be saved</p>
-<p>Default: “./”</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">'./'</span></code></p>
 </dd>
 <dt><kbd>-l, --log_level</kbd></dt>
 <dd><p>Set the log level. The lower the value, the more is printed. Default is 20 (info).</p>
-<p>Default: 20</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">20</span></code></p>
 </dd>
 </dl>
 </section>
@@ -446,11 +446,11 @@ Functional BP86</p>
 </dd>
 <dt><kbd>-o, --output</kbd></dt>
 <dd><p>the output Word file to write the citations to.</p>
-<p>Default: “citations.docx”</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">'citations.docx'</span></code></p>
 </dd>
 <dt><kbd>-l, --list</kbd></dt>
 <dd><p>list currently available citations.</p>
-<p>Default: False</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 </dl>
 </section>
@@ -482,7 +482,7 @@ If the -p/–pyramidal flag is turned on it calculates 360° - ang1 - ang2 - ang
 <dl class="option-list">
 <dt><kbd>-p, --pyramidal</kbd></dt>
 <dd><p>Instead of calculating dihedral angles, calculate pyramidalisation angle.</p>
-<p>Default: False</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 </dl>
 </section>
@@ -538,7 +538,7 @@ If the -p/–pyramidal flag is turned on it calculates 360° - ang1 - ang2 - ang
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility-command-line-scripts">TCutility command-line scripts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create_parser-tcutility-command-line-scripts">TCutility command-line scripts</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Sub-commands">Sub-commands</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#read">read</a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#positional-arguments">Positional Arguments</a></li>
@@ -594,8 +594,8 @@ If the -p/–pyramidal flag is turned on it calculates 360° - ang1 - ang2 - ang
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -615,7 +615,7 @@ If the -p/–pyramidal flag is turned on it calculates 360° - ang1 - ang2 - ang
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.5.
     <br/>
   </p>
 </div>
@@ -628,7 +628,7 @@ If the -p/–pyramidal flag is turned on it calculates 360° - ang1 - ang2 - ang
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.3.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
 </p></div>
       
     </div>

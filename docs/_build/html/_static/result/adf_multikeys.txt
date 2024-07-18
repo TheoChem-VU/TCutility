@@ -1,6 +1,6 @@
 files.root
-files.log
 files.err
+files.log
 files.ams.rkf
 files.adf.rkf
 engine
@@ -58,6 +58,7 @@ adf.multiplicity
 properties.energy.bond
 properties.energy.elstat
 properties.energy.orbint.total
+properties.energy.orbint.correction
 properties.energy.orbint.AA
 properties.energy.orbint.AAA
 properties.energy.pauli.total

@@ -17,12 +17,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
@@ -32,9 +32,9 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../../_static/documentation_options.js?v=8ccbf874"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
@@ -101,7 +101,7 @@
   
     <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -137,7 +137,7 @@
 
  <script>
  document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
     <span class="search-button__default-text">Search</span>
     <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -159,7 +159,7 @@
 
  <script>
  document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
     <span class="search-button__default-text">Search</span>
     <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -432,8 +432,9 @@
 
 <span class="sd">            - **energy.bond (float)** – bonding energy (|kcal/mol|).</span>
 <span class="sd">            - **energy.elstat (float)** – total electrostatic potential (|kcal/mol|).</span>
-<span class="sd">            - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label (|kcal/mol|).</span>
+<span class="sd">            - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label and correction energy(|kcal/mol|).</span>
 <span class="sd">            - **energy.orbint.{symmetry label} (float)** – orbital interaction energy from a specific symmetry label (|kcal/mol|).</span>
+<span class="sd">            - **energy.orbint.correction (float)** - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (|kcal/mol|)</span>
 <span class="sd">            - **energy.pauli.total (float)** – total Pauli repulsion energy (|kcal/mol|).</span>
 <span class="sd">            - **energy.dispersion (float)** – total dispersion energy (|kcal/mol|).</span>
 <span class="sd">            - **energy.gibbs (float)** – Gibb&#39;s free energy (|kcal/mol|). Only populated if vibrational modes were calculated.</span>
@@ -466,10 +467,25 @@
     <span class="c1"># read energies (given in Ha in rkf files)</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">bond</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Bond Energy&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;elstat&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+
+
+    <span class="c1"># read the total orbital interaction energy</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Orb.Int. Total&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+
+    <span class="c1"># to calculate the orbital interaction term:</span>
+    <span class="c1"># the difference between the total and the sum of the symmetrized interaction energies should be calculated</span>
+    <span class="c1"># therefore the correction is first set equal to the total orbital interaction.</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="o">.</span><span class="n">correction</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="o">.</span><span class="n">total</span>
+
+    <span class="c1"># looping over every symlabel, to get the energy per symmetry label</span>
     <span class="k">for</span> <span class="n">symlabel</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">symmetry</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
         <span class="n">symlabel</span> <span class="o">=</span> <span class="n">symlabel</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="p">[</span><span class="n">symlabel</span><span class="p">]</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Orb.Int. </span><span class="si">{</span><span class="n">symlabel</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+
+        <span class="c1"># the energy per symmetry label is abstracted from the &quot;total orbital interaction&quot;</span>
+        <span class="c1"># obtaining the correction to the orbital interaction term</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="o">.</span><span class="n">correction</span> <span class="o">-=</span> <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="p">[</span><span class="n">symlabel</span><span class="p">]</span>
+    
     <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">pauli</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Pauli Total&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">dispersion</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Dispersion Energy&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
 
@@ -616,8 +632,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -637,7 +653,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.5.
     <br/>
   </p>
 </div>
@@ -650,7 +666,7 @@
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.3.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
 </p></div>
       
     </div>
