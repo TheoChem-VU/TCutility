@@ -223,6 +223,7 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.job.postscripts.html">tcutility.job.postscripts package</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.report.html">tcutility.report package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.results.html">tcutility.results package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.typing.html">tcutility.typing package</a></li>
 </ul>
@@ -505,6 +506,16 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.job.html#module-tcutility.job">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tcutility.report.html">tcutility.report package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.report.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.report.html#module-tcutility.report.character">tcutility.report.character module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.report.html#tcutility.report.character.get_pixel_width"><code class="docutils literal notranslate"><span class="pre">get_pixel_width()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.report.html#tcutility.report.character.text_width"><code class="docutils literal notranslate"><span class="pre">text_width()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.report.html#module-tcutility.report">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tcutility.results.html">tcutility.results package</a><ul>
@@ -1634,33 +1645,6 @@ Anything inside curly braces will be matched to word characters (<code class="do
 </section>
 <section id="module-tcutility.report">
 <span id="tcutility-report-module"></span><h2>tcutility.report module<a class="headerlink" href="#module-tcutility.report" title="Link to this heading">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="tcutility.report.SI">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/report.html#SI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.report.SI" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.report.SI.add_xyz">
-<span class="sig-name descname"><span class="pre">add_xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/report.html#SI.add_xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.report.SI.add_xyz" title="Link to this definition">#</a></dt>
-<dd><p>Add the coordinates and information about a calculation to the SI.
-It will add the electronic bond energy, Gibb’s free energy, enthalpy and imaginary mode, as well as the coordinates of the molecule.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>obj</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – a string specifying a calculation directory or a <cite>TCutility.results.Result</cite> object from a calculation.</p></li>
-<li><p><strong>title</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – title to be written before the coordinates and information.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tcutility.report.SI.add_heading">
-<span class="sig-name descname"><span class="pre">add_heading</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/report.html#SI.add_heading"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.report.SI.add_heading" title="Link to this definition">#</a></dt>
-<dd><p>Add a heading to the file. This method has the same arguments and functionality as docx.Document.add_heading.</p>
-</dd></dl>
-
-</dd></dl>
-
 </section>
 <section id="module-tcutility.slurm">
 <span id="tcutility-slurm-module"></span><h2>tcutility.slurm module<a class="headerlink" href="#module-tcutility.slurm" title="Link to this heading">#</a></h2>
@@ -2042,14 +2026,7 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.pathfunc.match"><code class="docutils literal notranslate"><span class="pre">match()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.report">tcutility.report module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.report.SI"><code class="docutils literal notranslate"><span class="pre">SI</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.report.SI.add_xyz"><code class="docutils literal notranslate"><span class="pre">SI.add_xyz()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.report.SI.add_heading"><code class="docutils literal notranslate"><span class="pre">SI.add_heading()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.report">tcutility.report module</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.slurm">tcutility.slurm module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.slurm.has_slurm"><code class="docutils literal notranslate"><span class="pre">has_slurm()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.slurm.squeue"><code class="docutils literal notranslate"><span class="pre">squeue()</span></code></a></li>

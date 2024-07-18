@@ -10,6 +10,7 @@ Subpackages
    tcutility.analysis
    tcutility.data
    tcutility.job
+   tcutility.report
    tcutility.results
    tcutility.typing
 

@@ -274,7 +274,7 @@
 <div class="viewcode-block" id="get_calc_files">
 <a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.orca.get_calc_files">[docs]</a>
 <span class="k">def</span> <span class="nf">get_calc_files</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function that returns files relevant to AMS calculations stored in ``calc_dir``.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function that returns files relevant to ORCA calculations stored in ``calc_dir``.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        calc_dir: path pointing to the desired calculation</span>
@@ -287,18 +287,22 @@
     <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files_</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">):</span>
         <span class="n">files</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">j</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files_</span><span class="p">])</span>
 
-    <span class="c1"># parse the filenames</span>
+    <span class="c1"># we now go through all the files and check their nature</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
-
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="c1"># detect the output file</span>
             <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="s2">&quot;* O   R   C   A *&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]):</span>
                 <span class="n">ret</span><span class="o">.</span><span class="n">out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>  <span class="c1"># noqa</span>
-            <span class="k">pass</span>
+                <span class="k">continue</span>    
+
+            <span class="c1"># detect the input file</span>
+            <span class="c1"># there should be lines starting with ! and also the system line, starting with * xyz, * xyzfile, * gzmtfile or * int</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">])</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">([(</span><span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span> <span class="ow">and</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="s1">&#39;xyzfile&#39;</span><span class="p">,</span> <span class="s1">&#39;gzmtfile&#39;</span><span class="p">,</span> <span class="s1">&#39;int&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]):</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">inp</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+                <span class="k">continue</span>
 
     <span class="k">return</span> <span class="n">ret</span></div>
 
@@ -352,22 +356,29 @@
 <span class="sd">            - **task (str)** - the task that was performed by the calculation, e.g. &quot;SinglePoint&quot;, &quot;TransitionStateSearch&quot;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">out</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
-        <span class="n">start_reading</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
-            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">start_reading</span><span class="p">:</span>
-                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;INPUT FILE&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-                <span class="n">start_reading</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">continue</span>
+    <span class="c1"># we read the input file first</span>
+    <span class="k">if</span> <span class="s1">&#39;inp&#39;</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">inp</span><span class="p">)</span> <span class="k">as</span> <span class="n">inp</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">inp</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="c1"># if we don&#39;t have it we read the output file, which contains the input as a block</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">out</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+            <span class="n">start_reading</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">start_reading</span><span class="p">:</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;****END OF INPUT****&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-                <span class="k">break</span>
+                <span class="k">if</span> <span class="s2">&quot;INPUT FILE&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">start_reading</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">continue</span>
 
-    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+                <span class="k">if</span> <span class="s2">&quot;****END OF INPUT****&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
 
     <span class="n">ret</span><span class="o">.</span><span class="n">main</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">curr_section</span> <span class="o">=</span> <span class="kc">None</span>
