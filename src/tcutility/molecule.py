@@ -211,13 +211,20 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
 # =============================================================================
 
 
-def _xyz_format(mol: plams.Molecule) -> str:
+def _xyz_format(mol: plams.Molecule, include_n_atoms: bool = True) -> str:
     """Returns a string representation of a molecule in the xyz format, e.g.:
 
-    Geometry 1, Energy: -0.5 Ha
     C      0.00000000      0.00000000      0.00000000
+    H      1.00000000      0.00000000      0.00000000
+    H      0.00000000      1.00000000      0.00000000
+    H      0.00000000      0.00000000      1.00000000
+
     ...
     """
+    n_atoms = len(mol.atoms)
+    if include_n_atoms:
+        return f"{n_atoms}\n" + "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
+
     return "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
 
 
@@ -226,6 +233,9 @@ def _amv_format(mol: plams.Molecule, step: int, energy: Union[float, None] = Non
 
     Geometry 1, Energy: -0.5 Ha
     C      0.00000000      0.00000000      0.00000000
+    H      1.00000000      0.00000000      0.00000000
+    H      0.00000000      1.00000000      0.00000000
+    H      0.00000000      0.00000000      1.00000000
     ...
 
     If no energy is provided, the energy is not included in the string representation"""
@@ -234,13 +244,13 @@ def _amv_format(mol: plams.Molecule, step: int, energy: Union[float, None] = Non
     return f"Geometry {step}, Energy: {energy} Ha\n" + "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
 
 
-def write_mol_to_xyz_file(mols: Union[List[plams.Molecule], plams.Molecule], filename: Union[str, pl.Path]) -> None:
+def write_mol_to_xyz_file(mols: Union[List[plams.Molecule], plams.Molecule], filename: Union[str, pl.Path], include_n_atoms: bool = False) -> None:
     """Writes a list of molecules to a file in xyz format."""
     mols = mols if isinstance(mols, list) else [mols]
     out_file = pl.Path(f"{filename}.xyz")
 
     [mol.delete_all_bonds() for mol in mols]
-    write_string = "\n\n".join([_xyz_format(mol) for mol in mols])
+    write_string = "\n\n".join([_xyz_format(mol, include_n_atoms) for mol in mols])
     out_file.write_text(write_string)
 
     return None
