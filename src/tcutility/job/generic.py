@@ -65,7 +65,7 @@ class Job:
         self.wait_for_finish = self.wait_for_finish if wait_for_finish is None else wait_for_finish
         self.delete_on_finish = self.delete_on_finish if delete_on_finish is None else delete_on_finish
         self.delete_on_fail = delete_on_fail if delete_on_fail is None else delete_on_fail
-        self.use_slurm = self.use_slurm if use_slurm is Noen else use_slurm
+        self.use_slurm = self.use_slurm if use_slurm is None else use_slurm
 
     def __enter__(self):
         return self
