@@ -582,10 +582,12 @@ class DensfJob(Job):
         cuboutput = f'{os.path.split(self.settings.ADFFile)[0]}/{self.settings.grid}'
 
         for mo in self._mos:
-            paths.append(f'{cuboutput}%SCF_{mo.symmetry}%{mo.index}.cub')
+            spin_part = '' if mo.spin == 'AB' else f'_{mo.spin}'
+            paths.append(f'{cuboutput}%SCF_{mo.symmetry}{spin_part}%{mo.index}.cub')
 
         for sfo in self._sfos:
-            paths.append(f'{cuboutput}%SFO_{sfo.symmetry}%{sfo.index}.cub')
+            spin_part = '' if sfo.spin == 'AB' else f'_{sfo.spin}'
+            paths.append(f'{cuboutput}%SFO_{sfo.symmetry}{spin_part}%{sfo.index}.cub')
 
         return paths
 
