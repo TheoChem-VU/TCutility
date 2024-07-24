@@ -169,7 +169,7 @@ class Job:
         if self.test_mode or not setup_success:
             return
 
-        if slurm.has_slurm() or not self.use_slurm:
+        if slurm.has_slurm() and self.use_slurm:
             # set some default sbatch settings
             if any(option not in self._sbatch for option in ['D', 'chdir']):
                 self._sbatch.setdefault('D', self.workdir)
