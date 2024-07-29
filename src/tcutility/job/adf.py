@@ -525,18 +525,18 @@ class DensfJob(Job):
         '''
         import pyfmo
 
-        if isinstance(orbital, pyfmo.orbitals.sfo.SFO):
+        if isinstance(orbital, (pyfmo.orbitals.sfo.SFO, pyfmo.orbitals2.objects.SFO)):
             self._sfos.append(orbital)
-        elif isinstance(orbital, pyfmo.orbitals.mo.MO):
+        elif isinstance(orbital, (pyfmo.orbitals.mo.MO, pyfmo.orbitals2.objects.MO)):
             self._mos.append(orbital)
         else:
             raise ValueError(f'Unknown object {orbital} of type{type(orbital)}. It should be a pyfmo.orbitals.sfo.SFO or pyfmo.orbitals.mos.MO object.')
 
         # check if the ADFFile is the same for all added orbitals
         if self.settings.ADFFile is None:
-            self.settings.ADFFile = orbital.kfpath
+            self.settings.ADFFile = orbital.parent.parent.kfpath
 
-        elif self.settings.ADFFile != orbital.kfpath:
+        elif self.settings.ADFFile != orbital.parent.parent.kfpath:
             raise ValueError('RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.')
 
     def _setup_job(self):
@@ -588,7 +588,7 @@ class DensfJob(Job):
         for sfo in self._sfos:
             spin_part = '' if sfo.spin == 'AB' else f'_{sfo.spin}'
             paths.append(f'{cuboutput}%SFO_{sfo.symmetry}{spin_part}%{sfo.index}.cub')
-
+        print(paths)
         return paths
 
     def can_skip(self):
