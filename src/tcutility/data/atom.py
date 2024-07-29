@@ -45,10 +45,10 @@ def parse_element(val):
     # if it is not an int it should be a string
     if val.lower() in _element_order:
         # first try to get it in the element name list
-        return _element_order.index(val.lower()) + 1
+        return _element_order.index(val.lower())
     if val in _symbol_order:
         # alternatively try to get it in the symbol list
-        return _symbol_order.index(val) + 1
+        return _symbol_order.index(val)
     raise KeyError(f'Element "{val}" not parsable.')
 
 
@@ -81,13 +81,13 @@ def atom_number(element):
 
 def symbol(element):
     num = parse_element(element)
-    return _symbol_order[num - 1]
+    return _symbol_order[num]
 
 
 def element(element):
     num = parse_element(element)
-    return _element_order[num - 1]
+    return _element_order[num]
 
 
 if __name__ == "__main__":
-    print(symbol(2))
+    print(symbol(0))
