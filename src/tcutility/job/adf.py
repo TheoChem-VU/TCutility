@@ -534,9 +534,9 @@ class DensfJob(Job):
 
         # check if the ADFFile is the same for all added orbitals
         if self.settings.ADFFile is None:
-            self.settings.ADFFile = orbital.parent.parent.kfpath
+            self.settings.ADFFile = orbital.kfpath
 
-        elif self.settings.ADFFile != orbital.parent.parent.kfpath:
+        elif self.settings.ADFFile != orbital.kfpath:
             raise ValueError('RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.')
 
     def _setup_job(self):
@@ -552,7 +552,7 @@ class DensfJob(Job):
             if len(self._mos) > 0:
                 inpf.write('Orbitals SCF\n')
                 for orb in self._mos:
-                    inpf.write(f'    {orb.symmetry} {orb.index}\n')
+                    inpf.write(f'    {orb.symmetry} {orb.index_in_symlabel + 1}\n')
                 inpf.write('END\n')
 
             if len(self._sfos) > 0:
@@ -583,7 +583,7 @@ class DensfJob(Job):
 
         for mo in self._mos:
             spin_part = '' if mo.spin == 'AB' else f'_{mo.spin}'
-            paths.append(f'{cuboutput}%SCF_{mo.symmetry}{spin_part}%{mo.index}.cub')
+            paths.append(f'{cuboutput}%SCF_{mo.symmetry}{spin_part}%{mo.index_in_symlabel + 1}.cub')
 
         for sfo in self._sfos:
             spin_part = '' if sfo.spin == 'AB' else f'_{sfo.spin}'
