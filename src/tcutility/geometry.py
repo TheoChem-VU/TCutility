@@ -99,7 +99,7 @@ class Transform:
         if T is None:
             T = [x or 0, y or 0, z or 0]
 
-        self.M = self.M @ self._build_matrix(T=T)
+        self.M = self._build_matrix(T=T) @ self.M
 
     def rotate(self, R: np.ndarray = None, x: float = None, y: float = None, z: float = None):
         r"""
@@ -118,7 +118,7 @@ class Transform:
         if R is None:
             R = get_rotmat(x=x, y=y, z=z)
 
-        self.M = self.M @ self._build_matrix(R=R)
+        self.M = self._build_matrix(R=R) @ self.M
 
     def scale(self, S: np.ndarray = None, x: float = None, y: float = None, z: float = None):
         """
@@ -135,7 +135,7 @@ class Transform:
         elif isinstance(S, (float, int)):
             S = [S, S, S]
 
-        self.M = self.M @ self._build_matrix(S=S)
+        self.M = self._build_matrix(S=S) @ self.M
 
     def reflect(self, normal: np.ndarray = None):
         """
