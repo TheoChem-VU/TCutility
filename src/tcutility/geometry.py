@@ -274,15 +274,14 @@ class KabschTransform(Transform):
         R = V.T @ d @ U.T
 
         # build the transformation:
-        # for a sequence of transformation operations we have to invert their order
         # We have that Y ~= (R @ (X - centroid_x).T).T + centroid_y
         # the normal order is to first translate X by -centroid_x
         # then rotate with R
         # finally translate by +centroid_y
         self.M = self._build_matrix()
-        self.translate(centroid_y)
-        self.rotate(R)
         self.translate(-centroid_x)
+        self.rotate(R)
+        self.translate(centroid_y)
 
 
 class MolTransform(Transform):
