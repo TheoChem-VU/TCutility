@@ -1,5 +1,5 @@
 import numpy as np
-from math import sin, cos
+from math import sin, cos, atan2, sqrt
 import scipy
 from typing import Tuple, Union
 from scm import plams
@@ -332,6 +332,13 @@ def get_rotmat(x: float = None, y: float = None, z: float = None) -> np.ndarray:
         R = R @ np.array(([c, -s, 0], [s, c, 0], [0, 0, 1]))
 
     return R
+
+
+def rotmat_to_angles(R: np.ndarray) -> Tuple[float]:
+    thetax = atan2(R[2, 1], R[2, 2])
+    thetay = atan2(-R[2, 0], sqrt(R[2, 1]**2 + R[2, 2]**2))
+    thetaz = atan2(R[1, 0], R[0, 0])
+    return thetax, thetay, thetaz
 
 
 def apply_rotmat(coords: np.ndarray, R: np.ndarray) -> np.ndarray:
