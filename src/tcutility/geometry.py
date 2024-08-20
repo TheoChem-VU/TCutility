@@ -174,6 +174,27 @@ class Transform:
 
         return np.array([[R[0, 0] * S[0], R[0, 1], R[0, 2], T[0]], [R[1, 0], R[1, 1] * S[1], R[1, 2], T[1]], [R[2, 0], R[2, 1], R[2, 2] * S[2], T[2]], [0, 0, 0, 1]])
 
+    def get_rotmat(self):
+        return self.M[:3, :3]
+
+    def get_translation(self):
+        return self.M[:3, 3]
+
+    def to_vtkTransform(self):
+        import vtk
+        vtktrans = vtk.vtkTransform()
+        vtktrans.PostMultiply()
+
+        angles = rotmat_to_angles(self.get_rotmat())
+        vtktrans.RotateX(angles[0] * 180 / np.pi)
+        vtktrans.RotateY(angles[1] * 180 / np.pi)
+        vtktrans.RotateZ(angles[2] * 180 / np.pi)
+
+        vtktrans.Translate(self.get_translation())
+
+        return vtktrans
+
+
 
 class KabschTransform(Transform):
     """
