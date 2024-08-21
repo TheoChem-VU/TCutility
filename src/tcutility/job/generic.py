@@ -201,9 +201,14 @@ class Job:
                 slurm.wait_for_job(self.slurm_job_id)
         else:
             # if we are not using slurm, we can execute the file. For this we need special permissions, so we have to set that first.
-            os.chmod(self.runfile_path, stat.S_IRWXU)
+            os.chmod(self.runfile_path, os.stat(self.runfile_path).st_mode | stat.S_IEXEC)
+
+            runfile_dir, runscript = os.path.split(self.runfile_path)
+            command = ["./" + runscript] if os.name == "posix" else ["sh", runscript]
+            print(f"Running command: {command} in directory: {runfile_dir}")
+
             with open(f"{os.path.split(self.runfile_path)[0]}/{self.name}.out", "w+") as out:
-                sp.run(self.runfile_path, cwd=os.path.split(self.runfile_path)[0], stdout=out, shell=True)
+                sp.run(command, cwd=runfile_dir, stdout=out, shell=True)
 
     def add_preamble(self, line: str):
         """
