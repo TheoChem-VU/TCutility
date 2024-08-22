@@ -1,7 +1,7 @@
 import numpy as np
-from math import sin, cos
+from math import sin, cos, atan2, sqrt
 import scipy
-from typing import Tuple, Union
+from typing import Tuple, Union, Sequence
 from scm import plams
 
 
@@ -99,7 +99,7 @@ class Transform:
         if T is None:
             T = [x or 0, y or 0, z or 0]
 
-        self.M = self.M @ self._build_matrix(T=T)
+        self.M = self._build_matrix(T=T) @ self.M
 
     def rotate(self, R: np.ndarray = None, x: float = None, y: float = None, z: float = None):
         r"""
@@ -118,7 +118,7 @@ class Transform:
         if R is None:
             R = get_rotmat(x=x, y=y, z=z)
 
-        self.M = self.M @ self._build_matrix(R=R)
+        self.M = self._build_matrix(R=R) @ self.M
 
     def scale(self, S: np.ndarray = None, x: float = None, y: float = None, z: float = None):
         """
@@ -135,7 +135,7 @@ class Transform:
         elif isinstance(S, (float, int)):
             S = [S, S, S]
 
-        self.M = self.M @ self._build_matrix(S=S)
+        self.M = self._build_matrix(S=S) @ self.M
 
     def reflect(self, normal: np.ndarray = None):
         """
@@ -173,6 +173,27 @@ class Transform:
         S = S if S is not None else np.array([1, 1, 1])
 
         return np.array([[R[0, 0] * S[0], R[0, 1], R[0, 2], T[0]], [R[1, 0], R[1, 1] * S[1], R[1, 2], T[1]], [R[2, 0], R[2, 1], R[2, 2] * S[2], T[2]], [0, 0, 0, 1]])
+
+    def get_rotmat(self):
+        return self.M[:3, :3]
+
+    def get_translation(self):
+        return self.M[:3, 3]
+
+    def to_vtkTransform(self):
+        import vtk
+        vtktrans = vtk.vtkTransform()
+        vtktrans.PostMultiply()
+
+        angles = rotmat_to_angles(self.get_rotmat())
+        vtktrans.RotateX(angles[0] * 180 / np.pi)
+        vtktrans.RotateY(angles[1] * 180 / np.pi)
+        vtktrans.RotateZ(angles[2] * 180 / np.pi)
+
+        vtktrans.Translate(self.get_translation())
+
+        return vtktrans
+
 
 
 class KabschTransform(Transform):
@@ -253,15 +274,86 @@ class KabschTransform(Transform):
         R = V.T @ d @ U.T
 
         # build the transformation:
-        # for a sequence of transformation operations we have to invert their order
         # We have that Y ~= (R @ (X - centroid_x).T).T + centroid_y
         # the normal order is to first translate X by -centroid_x
         # then rotate with R
         # finally translate by +centroid_y
         self.M = self._build_matrix()
-        self.translate(centroid_y)
-        self.rotate(R)
         self.translate(-centroid_x)
+        self.rotate(R)
+        self.translate(centroid_y)
+
+
+class MolTransform(Transform):
+    '''
+    A subclass of :class:`Transform` that is designed to generate transformation for a molecule.
+    It adds, among others, methods for aligning atoms to specific vectors, planes, or setting the centroid of the molecule.
+    The nice thing is that the class applies the transformations based only on the atom indices given by the user.
+
+    Args:
+        mol: the molecule that is used for the alignment.
+
+    .. note::
+        Indexing starts at 1 instead of 0.
+    '''
+    def __init__(self, mol: plams.Molecule):
+        self.mol = mol
+        super().__init__()
+
+    def center(self, *indices):
+        '''
+        Center the molecule on given indices or by its centroid.
+
+        Args:
+            indices: the indices that are used to center the molecule. 
+                If not given the centering will be done based on all atoms.
+        '''
+        tmol = self.apply(self.mol)
+        if len(indices) == 0:
+            indices = range(1, len(tmol) + 1)
+        C = np.array([tmol.as_array()[i - 1] for i in indices])
+        self.translate(-np.mean(C, axis=0))
+
+    def align_to_vector(self, index1: int, index2: int, vector: Sequence[float] = None):
+        '''
+        Align the molecule such that a bond lays on a given vector.
+
+        Args:
+            index1: index of the first atom.
+            index2: index of the second atom.
+            vector: the vector to align the atoms to. If not given or `None` it defaults to `(1, 0, 0)`.
+        '''
+        # get the transformed mol
+        tmol = self.apply(self.mol)
+        # and coordinates
+        C1, C2 = tmol.as_array()[index1 - 1], tmol.as_array()[index2 - 1]
+        if vector is None:
+            vector = [1, 0, 0]
+
+        R = vector_align_rotmat(C1 - C2, vector)
+        self.rotate(R)
+
+    def align_to_plane(self, index1: int, index2: int, index3: int, vector: Sequence[float] = None):
+        '''
+        Align a molecule such that the normal of the plane defined by three atoms is aligned to a given vector.
+
+        Args:
+            index1: index of the first atom.
+            index2: index of the second atom.
+            index3: index of the third atom.
+            vector: the vector to align the atoms to. If not given or `None` it defaults to (0, 1, 0).
+        '''
+        # get the transformed mol
+        tmol = self.apply(self.mol)
+        # and coordinates
+        C1, C2, C3 = tmol.as_array()[index1 - 1], tmol.as_array()[index2 - 1], tmol.as_array()[index3 - 1]
+        if vector is None:
+            vector = [0, 1, 0]
+
+        # calculate normal vector and align it to the given vector
+        n = np.cross(C1 - C2, C3 - C2)
+        R = vector_align_rotmat(n, vector)
+        self.rotate(R)
 
 
 def get_rotmat(x: float = None, y: float = None, z: float = None) -> np.ndarray:
@@ -311,6 +403,13 @@ def get_rotmat(x: float = None, y: float = None, z: float = None) -> np.ndarray:
         R = R @ np.array(([c, -s, 0], [s, c, 0], [0, 0, 1]))
 
     return R
+
+
+def rotmat_to_angles(R: np.ndarray) -> Tuple[float]:
+    thetax = atan2(R[2, 1], R[2, 2])
+    thetay = atan2(-R[2, 0], sqrt(R[2, 1]**2 + R[2, 2]**2))
+    thetaz = atan2(R[1, 0], R[0, 0])
+    return thetax, thetay, thetaz
 
 
 def apply_rotmat(coords: np.ndarray, R: np.ndarray) -> np.ndarray:
