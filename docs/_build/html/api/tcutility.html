@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility package &#8212; TCutility v0.13.3 documentation</title>
+    <title>tcutility package &#8212; TCutility v0.14.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=8ccbf874"></script>
+    <script src="../_static/documentation_options.js?v=356883d0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -855,6 +855,21 @@ If not given or <code class="docutils literal notranslate"><span class="pre">Non
 <p><a class="reference external" href="https://en.wikipedia.org/wiki/Reflection_(mathematics">https://en.wikipedia.org/wiki/Reflection_(mathematics</a>)</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.geometry.Transform.get_rotmat">
+<span class="sig-name descname"><span class="pre">get_rotmat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#Transform.get_rotmat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.Transform.get_rotmat" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.geometry.Transform.get_translation">
+<span class="sig-name descname"><span class="pre">get_translation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#Transform.get_translation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.Transform.get_translation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.geometry.Transform.to_vtkTransform">
+<span class="sig-name descname"><span class="pre">to_vtkTransform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#Transform.to_vtkTransform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.Transform.to_vtkTransform" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -916,6 +931,67 @@ If you would like to make use of 2D or 1D Transforms we suggest you simply set t
 </div>
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="tcutility.geometry.MolTransform">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MolTransform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#MolTransform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.MolTransform" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tcutility.geometry.Transform" title="tcutility.geometry.Transform"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transform</span></code></a></p>
+<p>A subclass of <a class="reference internal" href="#tcutility.geometry.Transform" title="tcutility.geometry.Transform"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transform</span></code></a> that is designed to generate transformation for a molecule.
+It adds, among others, methods for aligning atoms to specific vectors, planes, or setting the centroid of the molecule.
+The nice thing is that the class applies the transformations based only on the atom indices given by the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mol</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code></span>) – the molecule that is used for the alignment.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Indexing starts at 1 instead of 0.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.geometry.MolTransform.center">
+<span class="sig-name descname"><span class="pre">center</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#MolTransform.center"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.MolTransform.center" title="Link to this definition">#</a></dt>
+<dd><p>Center the molecule on given indices or by its centroid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>indices</strong> – the indices that are used to center the molecule.
+If not given the centering will be done based on all atoms.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.geometry.MolTransform.align_to_vector">
+<span class="sig-name descname"><span class="pre">align_to_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#MolTransform.align_to_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.MolTransform.align_to_vector" title="Link to this definition">#</a></dt>
+<dd><p>Align the molecule such that a bond lays on a given vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index1</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – index of the first atom.</p></li>
+<li><p><strong>index2</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – index of the second atom.</p></li>
+<li><p><strong>vector</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span>) – the vector to align the atoms to. If not given or <cite>None</cite> it defaults to <cite>(1, 0, 0)</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.geometry.MolTransform.align_to_plane">
+<span class="sig-name descname"><span class="pre">align_to_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#MolTransform.align_to_plane"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.MolTransform.align_to_plane" title="Link to this definition">#</a></dt>
+<dd><p>Align a molecule such that the normal of the plane defined by three atoms is aligned to a given vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index1</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – index of the first atom.</p></li>
+<li><p><strong>index2</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – index of the second atom.</p></li>
+<li><p><strong>index3</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – index of the third atom.</p></li>
+<li><p><strong>vector</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span>) – the vector to align the atoms to. If not given or <cite>None</cite> it defaults to (0, 1, 0).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.geometry.get_rotmat">
 <span class="sig-name descname"><span class="pre">get_rotmat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#get_rotmat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.get_rotmat" title="Link to this definition">#</a></dt>
@@ -949,6 +1025,16 @@ convention</p>
 </dd>
 </dl>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.geometry.rotmat_to_angles">
+<span class="sig-name descname"><span class="pre">rotmat_to_angles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/geometry.html#rotmat_to_angles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.geometry.rotmat_to_angles" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -1405,13 +1491,6 @@ For verbosity levels we use the following convention:</p>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="tcutility.molecule.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.save" title="Link to this definition">#</a></dt>
-<dd><p>Save a molecule in a custom xyz file format.
-Molecule and atom flags can be provided as the “flags” parameter of the object (mol.flags and atom.flags).</p>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="tcutility.molecule.load">
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.load" title="Link to this definition">#</a></dt>
 <dd><p>Load a molecule from a given xyz file path.
@@ -1494,6 +1573,35 @@ If it does not define these methods this function returns <code class="docutils 
 Atoms that were not included by either method will be placed in the molecule object with key <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.molecule.write_mol_to_xyz_file">
+<span class="sig-name descname"><span class="pre">write_mol_to_xyz_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_n_atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#write_mol_to_xyz_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.write_mol_to_xyz_file" title="Link to this definition">#</a></dt>
+<dd><p>Writes a list of molecules to a file in xyz format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.molecule.write_mol_to_amv_file">
+<span class="sig-name descname"><span class="pre">write_mol_to_amv_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mols</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#write_mol_to_amv_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.write_mol_to_amv_file" title="Link to this definition">#</a></dt>
+<dd><p>Writes a list of molecules to a file in amv format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.molecule.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.save" title="Link to this definition">#</a></dt>
+<dd><p>Save a molecule in a custom xyz file format.
+Molecule and atom flags can be provided as the “flags” parameter of the object (mol.flags and atom.flags).</p>
 </dd></dl>
 
 </section>
@@ -1962,10 +2070,20 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.Transform.rotate"><code class="docutils literal notranslate"><span class="pre">Transform.rotate()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.Transform.scale"><code class="docutils literal notranslate"><span class="pre">Transform.scale()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.Transform.reflect"><code class="docutils literal notranslate"><span class="pre">Transform.reflect()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.Transform.get_rotmat"><code class="docutils literal notranslate"><span class="pre">Transform.get_rotmat()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.Transform.get_translation"><code class="docutils literal notranslate"><span class="pre">Transform.get_translation()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.Transform.to_vtkTransform"><code class="docutils literal notranslate"><span class="pre">Transform.to_vtkTransform()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.KabschTransform"><code class="docutils literal notranslate"><span class="pre">KabschTransform</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.MolTransform"><code class="docutils literal notranslate"><span class="pre">MolTransform</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.MolTransform.center"><code class="docutils literal notranslate"><span class="pre">MolTransform.center()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.MolTransform.align_to_vector"><code class="docutils literal notranslate"><span class="pre">MolTransform.align_to_vector()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.MolTransform.align_to_plane"><code class="docutils literal notranslate"><span class="pre">MolTransform.align_to_plane()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.get_rotmat"><code class="docutils literal notranslate"><span class="pre">get_rotmat()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.rotmat_to_angles"><code class="docutils literal notranslate"><span class="pre">rotmat_to_angles()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.apply_rotmat"><code class="docutils literal notranslate"><span class="pre">apply_rotmat()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.rotate"><code class="docutils literal notranslate"><span class="pre">rotate()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.geometry.vector_align_rotmat"><code class="docutils literal notranslate"><span class="pre">vector_align_rotmat()</span></code></a></li>
@@ -2015,9 +2133,11 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.molecule">tcutility.molecule module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.molecule.parse_str"><code class="docutils literal notranslate"><span class="pre">parse_str()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.molecule.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.molecule.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.molecule.guess_fragments"><code class="docutils literal notranslate"><span class="pre">guess_fragments()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.molecule.write_mol_to_xyz_file"><code class="docutils literal notranslate"><span class="pre">write_mol_to_xyz_file()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.molecule.write_mol_to_amv_file"><code class="docutils literal notranslate"><span class="pre">write_mol_to_amv_file()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.molecule.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.pathfunc">tcutility.pathfunc module</a><ul class="nav section-nav flex-column">
@@ -2096,7 +2216,7 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.5.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

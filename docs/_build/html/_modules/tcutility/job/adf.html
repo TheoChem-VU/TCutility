@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.job.adf &#8212; TCutility v0.13.3 documentation</title>
+    <title>tcutility.job.adf &#8212; TCutility v0.14.0 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../_static/documentation_options.js?v=8ccbf874"></script>
+    <script src="../../../_static/documentation_options.js?v=356883d0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -844,9 +844,9 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="kn">import</span> <span class="nn">pyfmo</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">orbital</span><span class="p">,</span> <span class="n">pyfmo</span><span class="o">.</span><span class="n">orbitals</span><span class="o">.</span><span class="n">sfo</span><span class="o">.</span><span class="n">SFO</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">orbital</span><span class="p">,</span> <span class="p">(</span><span class="n">pyfmo</span><span class="o">.</span><span class="n">orbitals</span><span class="o">.</span><span class="n">sfo</span><span class="o">.</span><span class="n">SFO</span><span class="p">,</span> <span class="n">pyfmo</span><span class="o">.</span><span class="n">orbitals2</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">SFO</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">orbital</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">orbital</span><span class="p">,</span> <span class="n">pyfmo</span><span class="o">.</span><span class="n">orbitals</span><span class="o">.</span><span class="n">mo</span><span class="o">.</span><span class="n">MO</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">orbital</span><span class="p">,</span> <span class="p">(</span><span class="n">pyfmo</span><span class="o">.</span><span class="n">orbitals</span><span class="o">.</span><span class="n">mo</span><span class="o">.</span><span class="n">MO</span><span class="p">,</span> <span class="n">pyfmo</span><span class="o">.</span><span class="n">orbitals2</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">MO</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_mos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">orbital</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown object </span><span class="si">{</span><span class="n">orbital</span><span class="si">}</span><span class="s1"> of type</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">orbital</span><span class="p">)</span><span class="si">}</span><span class="s1">. It should be a pyfmo.orbitals.sfo.SFO or pyfmo.orbitals.mos.MO object.&#39;</span><span class="p">)</span>
@@ -872,7 +872,7 @@
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Orbitals SCF</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">orb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mos</span><span class="p">:</span>
-                    <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">index_in_symlabel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;END</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -902,11 +902,13 @@
         <span class="n">cuboutput</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span><span class="si">}</span><span class="s1">&#39;</span>
 
         <span class="k">for</span> <span class="n">mo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mos</span><span class="p">:</span>
-            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SCF_</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s1">%</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s1">.cub&#39;</span><span class="p">)</span>
+            <span class="n">spin_part</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">mo</span><span class="o">.</span><span class="n">spin</span> <span class="o">==</span> <span class="s1">&#39;AB&#39;</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;_</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">spin</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SCF_</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}{</span><span class="n">spin_part</span><span class="si">}</span><span class="s1">%</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">index_in_symlabel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">.cub&#39;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">sfo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span><span class="p">:</span>
-            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SFO_</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s1">%</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s1">.cub&#39;</span><span class="p">)</span>
-
+            <span class="n">spin_part</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">sfo</span><span class="o">.</span><span class="n">spin</span> <span class="o">==</span> <span class="s1">&#39;AB&#39;</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;_</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">spin</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SFO_</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}{</span><span class="n">spin_part</span><span class="si">}</span><span class="s1">%</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s1">.cub&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">paths</span>
 
 <div class="viewcode-block" id="DensfJob.can_skip">
@@ -977,7 +979,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.5.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

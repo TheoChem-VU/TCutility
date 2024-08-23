@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility &#8212; TCutility v0.13.3 documentation</title>
+    <title>tcutility &#8212; TCutility v0.14.0 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=8ccbf874"></script>
+    <script src="../_static/documentation_options.js?v=356883d0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -367,10 +367,20 @@
 <li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.rotate"><code class="docutils literal notranslate"><span class="pre">Transform.rotate()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.scale"><code class="docutils literal notranslate"><span class="pre">Transform.scale()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.reflect"><code class="docutils literal notranslate"><span class="pre">Transform.reflect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.get_rotmat"><code class="docutils literal notranslate"><span class="pre">Transform.get_rotmat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.get_translation"><code class="docutils literal notranslate"><span class="pre">Transform.get_translation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.to_vtkTransform"><code class="docutils literal notranslate"><span class="pre">Transform.to_vtkTransform()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.KabschTransform"><code class="docutils literal notranslate"><span class="pre">KabschTransform</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.MolTransform"><code class="docutils literal notranslate"><span class="pre">MolTransform</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.MolTransform.center"><code class="docutils literal notranslate"><span class="pre">MolTransform.center()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.MolTransform.align_to_vector"><code class="docutils literal notranslate"><span class="pre">MolTransform.align_to_vector()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.MolTransform.align_to_plane"><code class="docutils literal notranslate"><span class="pre">MolTransform.align_to_plane()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.get_rotmat"><code class="docutils literal notranslate"><span class="pre">get_rotmat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.rotmat_to_angles"><code class="docutils literal notranslate"><span class="pre">rotmat_to_angles()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.apply_rotmat"><code class="docutils literal notranslate"><span class="pre">apply_rotmat()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.rotate"><code class="docutils literal notranslate"><span class="pre">rotate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.vector_align_rotmat"><code class="docutils literal notranslate"><span class="pre">vector_align_rotmat()</span></code></a></li>
@@ -420,9 +430,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.molecule">tcutility.molecule module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.molecule.parse_str"><code class="docutils literal notranslate"><span class="pre">parse_str()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.molecule.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.molecule.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.molecule.guess_fragments"><code class="docutils literal notranslate"><span class="pre">guess_fragments()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.molecule.write_mol_to_xyz_file"><code class="docutils literal notranslate"><span class="pre">write_mol_to_xyz_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.molecule.write_mol_to_amv_file"><code class="docutils literal notranslate"><span class="pre">write_mol_to_amv_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.molecule.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.pathfunc">tcutility.pathfunc module</a><ul>
@@ -542,7 +554,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.5.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>
