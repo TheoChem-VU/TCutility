@@ -525,9 +525,9 @@ class DensfJob(Job):
         '''
         import pyfmo
 
-        if isinstance(orbital, pyfmo.orbitals.sfo.SFO):
+        if isinstance(orbital, (pyfmo.orbitals.sfo.SFO, pyfmo.orbitals2.objects.SFO)):
             self._sfos.append(orbital)
-        elif isinstance(orbital, pyfmo.orbitals.mo.MO):
+        elif isinstance(orbital, (pyfmo.orbitals.mo.MO, pyfmo.orbitals2.objects.MO)):
             self._mos.append(orbital)
         else:
             raise ValueError(f'Unknown object {orbital} of type{type(orbital)}. It should be a pyfmo.orbitals.sfo.SFO or pyfmo.orbitals.mos.MO object.')
@@ -552,7 +552,7 @@ class DensfJob(Job):
             if len(self._mos) > 0:
                 inpf.write('Orbitals SCF\n')
                 for orb in self._mos:
-                    inpf.write(f'    {orb.symmetry} {orb.index}\n')
+                    inpf.write(f'    {orb.symmetry} {orb.index_in_symlabel + 1}\n')
                 inpf.write('END\n')
 
             if len(self._sfos) > 0:
@@ -582,11 +582,13 @@ class DensfJob(Job):
         cuboutput = f'{os.path.split(self.settings.ADFFile)[0]}/{self.settings.grid}'
 
         for mo in self._mos:
-            paths.append(f'{cuboutput}%SCF_{mo.symmetry}%{mo.index}.cub')
+            spin_part = '' if mo.spin == 'AB' else f'_{mo.spin}'
+            paths.append(f'{cuboutput}%SCF_{mo.symmetry}{spin_part}%{mo.index_in_symlabel + 1}.cub')
 
         for sfo in self._sfos:
-            paths.append(f'{cuboutput}%SFO_{sfo.symmetry}%{sfo.index}.cub')
-
+            spin_part = '' if sfo.spin == 'AB' else f'_{sfo.spin}'
+            paths.append(f'{cuboutput}%SFO_{sfo.symmetry}{spin_part}%{sfo.index}.cub')
+        print(paths)
         return paths
 
     def can_skip(self):
