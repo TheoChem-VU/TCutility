@@ -28,6 +28,7 @@ dependencies = [
   "pandas>=1.3.0",
   "platformdirs",
   "requests",
+  "listfunc",
 ]
 # Current maintainers
 maintainers = [{ name = "TheoCheM group" }]
