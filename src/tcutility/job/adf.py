@@ -263,7 +263,9 @@ class ADFJob(AMSJob):
 
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
-        self.childjobs = {}
+        self.decompose_elstat = kwargs.pop('decompose_elstat', False)
+        self.child_jobs = {}
+        # self.childjobs_no_electrons = {}
         super().__init__(*args, **kwargs)
         self.name = 'EDA'
 
@@ -297,25 +299,25 @@ class ADFFragmentJob(ADFJob):
 
         # check if the atoms in the new fragment are already present in the other fragments.
         # if it is we should raise an error
-        for child in self.childjobs.values():
+        for child in self.child_jobs.values():
             if any((atom.symbol, atom.coords) == (myatom.symbol, myatom.coords) for atom in child._molecule for myatom in mol):
                 log.error('An atom is present in multiple fragments.')
                 return
 
-        name = name or f'fragment{len(self.childjobs) + 1}'
-        self.childjobs[name] = ADFJob(test_mode=self.test_mode)
-        self.childjobs[name].molecule(mol)
-        self.childjobs[name].charge(charge)
-        self.childjobs[name].spin_polarization(spin_polarization)
-        setattr(self, name, self.childjobs[name])
+        name = name or f'fragment{len(self.child_jobs) + 1}'
+        self.child_jobs[name] = ADFJob(test_mode=self.test_mode)
+        self.child_jobs[name].molecule(mol)
+        self.child_jobs[name].charge(charge)
+        self.child_jobs[name].spin_polarization(spin_polarization)
+        setattr(self, name, self.child_jobs[name])
 
         if not add_frag_to_mol:
             return
 
         if self._molecule is None:
-            self._molecule = self.childjobs[name]._molecule.copy()
+            self._molecule = self.child_jobs[name]._molecule.copy()
         else:
-            for atom in self.childjobs[name]._molecule.copy():
+            for atom in self.child_jobs[name]._molecule.copy():
                 if any((atom.symbol, atom.coords) == (myatom.symbol, myatom.coords) for myatom in self._molecule):
                     continue
                 self._molecule.add_atom(atom)
@@ -368,10 +370,10 @@ class ADFFragmentJob(ADFJob):
 
             # sum up the number of virtuals per atom in the fragment
             nremove = 0
-            for atom in self.childjobs[frag]._molecule:
+            for atom in self.child_jobs[frag]._molecule:
                 nremove += data.basis_sets.number_of_virtuals(atom.symbol, self._basis_set)
             # positive charge adds a virtual and negative removes a virtual
-            nremove += self.childjobs[frag].settings.input.ams.System.charge or 0
+            nremove += self.child_jobs[frag].settings.input.ams.System.charge or 0
 
         self.settings.input.adf.setdefault('RemoveFragOrbitals', '')
         self.settings.input.adf.RemoveFragOrbitals += f"""
@@ -387,19 +389,19 @@ class ADFFragmentJob(ADFJob):
         It will also submit a calculation with the SCF iterations set to 0 in order to facilitate investigation of the field effects using PyOrb.
         '''
         # check if the user defined fragments for this job
-        if len(self.childjobs) == 0:
+        if len(self.child_jobs) == 0:
             log.warn('Fragments were not specified yet, trying to read them from the xyz file ...')
             # if they did not define the fragments, try to guess them using the xyz-file
             if not self.guess_fragments():
                 log.error('Please specify the fragments using ADFFragmentJob.add_fragment or specify them in the xyz file.')
                 raise 
 
-        mol_str = " + ".join([formula.molecule(child._molecule) for child in self.childjobs.values()])
+        mol_str = " + ".join([formula.molecule(child._molecule) for child in self.child_jobs.values()])
         log.flow(f'ADFFragmentJob [{mol_str}]', ['start'])
         # obtain some system wide properties of the molecules
-        charge = sum([child.settings.input.ams.System.charge or 0 for child in self.childjobs.values()])
-        unrestricted = any([(child.settings.input.adf.Unrestricted or 'no').lower() == 'yes' for child in self.childjobs.values()])
-        spinpol = sum([child.settings.input.adf.SpinPolarization or 0 for child in self.childjobs.values()])
+        charge = sum([child.settings.input.ams.System.charge for child_name, child in self.child_jobs.items() if not child_name.endswith('_NoElectrons')])
+        unrestricted = any([(child.settings.input.adf.Unrestricted or 'no').lower() == 'yes' for child_name, child in self.child_jobs.items() if not child_name.endswith('_NoElectrons')])
+        spinpol = sum([child.settings.input.adf.SpinPolarization for child_name, child in self.child_jobs.items() if not child_name.endswith('_NoElectrons')])
         log.flow(f'Level:             {self._functional}/{self._basis_set}')
         log.flow(f'Solvent:           {self._solvent}')
         log.flow(f'Charge:            {charge}', ['straight'])
@@ -407,24 +409,23 @@ class ADFFragmentJob(ADFJob):
         log.flow(f'Spin-Polarization: {spinpol}', ['straight'])
         log.flow()
         # this job and all its children should have the same value for unrestricted
-        [child.unrestricted(unrestricted) for child in self.childjobs.values()]
+        [child.unrestricted(unrestricted) for child in self.child_jobs.values()]
 
-        # propagate the post- and preambles to the childjobs
-        [child.add_preamble(preamble) for preamble in self._preambles for child in self.childjobs.values()]
-        [child.add_postamble(postamble) for postamble in self._postambles for child in self.childjobs.values()]
+        # propagate the post- and preambles to the child_jobs
+        [child.add_preamble(preamble) for preamble in self._preambles for child in self.child_jobs.values()]
+        [child.add_postamble(postamble) for postamble in self._postambles for child in self.child_jobs.values()]
 
         # we now update the child settings with the parent settings
         # this is because we have to propagate settings such as functionals, basis sets etc.
         sett = self.settings.as_plams_settings()  # first create a plams settings object
         # same for the children
-        child_setts = {name: child.settings.as_plams_settings() for name, child in self.childjobs.items()}
+        child_setts = {name: child.settings.as_plams_settings() for name, child in self.child_jobs.items()}
         # update the children using the parent settings
         [child_sett.update(sett) for child_sett in child_setts.values()]
         [child_sett.input.adf.pop('RemoveFragOrbitals', None) for child_sett in child_setts.values()]
         [child_sett.input.adf.pop('RemoveAllFragVirtuals', None) for child_sett in child_setts.values()]
         # same for sbatch settings
-        [child.sbatch(**self._sbatch) for child in self.childjobs.values()]
-
+        [child.sbatch(**self._sbatch) for child in self.child_jobs.values()]
         # now set the charge, spinpol, unrestricted for the parent 
         self.charge(charge)
         self.spin_polarization(spinpol)
@@ -432,50 +433,101 @@ class ADFFragmentJob(ADFJob):
         if unrestricted:
             self.settings.input.adf.UnrestrictedFragments = 'Yes'
 
+        elstat_jobs = {}
+        
         # now we are going to run each child job
-        for i, (childname, child) in enumerate(self.childjobs.items(), start=1):
-            log.flow(f'Child job ({i}/{len(self.childjobs)}) {childname} [{formula.molecule(child._molecule)}]', ['split'])
-            log.flow(f'Charge:            {child.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
-            log.flow(f'Spin-Polarization: {child.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
+        for i, (child_name, child) in enumerate(self.child_jobs.items(), start=1):
             # the child name will be prepended with SP showing that it is the singlepoint calculation
-            child.name = f'frag_{childname}'
+            child.name = f'frag_{child_name}'
             child.rundir = j(self.rundir, self.name)
 
-            # add the path to the child adf.rkf file as a dependency to the parent job
-            self.settings.input.adf.fragments[childname] = j(child.workdir, 'adf.rkf')
+            # # add the path to the child adf.rkf file as a dependency to the parent job
+            self.settings.input.adf.fragments[child_name] = j(child.workdir, 'adf.rkf')
 
+            # recast the plams.Settings object into a Result object as that is what run expects
+            child.settings = results.Result(child_setts[child_name])
+            log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}]', ['split'])
+            log.flow(f'Charge:            {child.settings.input.ams.System.charge}', ['straight', 'straight'])
+            log.flow(f'Spin-Polarization: {child.settings.input.adf.SpinPolarization}', ['straight', 'straight'])
+            log.flow(f'Work dir:          {child.workdir}', ['straight', 'straight'])
             if child.can_skip():
                 log.flow(log.Emojis.warning + ' Already ran, skipping', ['straight', 'end'])
                 log.flow()
-                continue
+            else:
+                log.flow(log.Emojis.good + ' Submitting', ['straight', 'end'])
+                child.run()
+                self.dependency(child)
+                log.flow(f'SlurmID:  {child.slurm_job_id}', ['straight', 'skip', 'end'])
+                log.flow()
 
-            log.flow(log.Emojis.good + ' Submitting', ['straight', 'end'])
-            # recast the plams.Settings object into a Result object as that is what run expects
-            child.settings = results.Result(child_setts[childname])
-            child.run()
-            self.dependency(child)
+            if self.decompose_elstat:
+                child_STOFIT = ADFJob(child)
+                child_STOFIT.name += '_STOFIT'
+                elstat_jobs[child_STOFIT.name] = child_STOFIT
+                child_STOFIT.settings.input.adf.STOFIT = ''
+                child_STOFIT.settings.input.adf.PRINT = 'SFOSiteEnergies Elstat'
+                child_STOFIT.settings.input.adf.pop("NumericalQuality")
+                child_STOFIT.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
-            log.flow(f'SlurmID:  {child.slurm_job_id}', ['straight', 'skip', 'straight'])
-            log.flow(f'Work dir: {child.workdir}', ['straight', 'skip', 'end'])
-            log.flow()
+                log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] with STOFIT', ['split'])
+                log.flow(f'Charge:            {child_STOFIT.settings.input.ams.System.charge}', ['straight', 'straight'])
+                log.flow(f'Spin-Polarization: {child_STOFIT.settings.input.adf.SpinPolarization}', ['straight', 'straight'])
+                log.flow(f'Work dir:          {child_STOFIT.workdir}', ['straight', 'straight'])
+
+                if child_STOFIT.can_skip():
+                    log.flow(log.Emojis.warning + ' Already ran, skipping', ['straight', 'end'])
+                    log.flow()
+                else:
+                    log.flow(log.Emojis.good + ' Submitting', ['straight', 'end'])
+                    child_STOFIT.run()
+                    self.dependency(child_STOFIT)
+                    log.flow(f'SlurmID:  {child_STOFIT.slurm_job_id}', ['straight', 'skip', 'end'])
+                    log.flow()
+
+                child_NoElectrons = ADFJob(child)
+                child_NoElectrons.name += '_NoElectrons'
+                elstat_jobs[child_NoElectrons.name] = child_NoElectrons
+                child_NoElectrons.settings.input.adf.STOFIT = ''
+                child_NoElectrons.settings.input.adf.PRINT = 'SFOSiteEnergies Elstat'
+                child_NoElectrons.charge(molecule.number_of_electrons(child_NoElectrons._molecule))
+                child_NoElectrons.spin_polarization(0)
+                child_NoElectrons.settings.input.adf.pop("NumericalQuality")
+                child_NoElectrons.settings.input.adf.BeckeGrid.Quality = "Excellent"
+
+                log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] without Electrons', ['split'])
+                log.flow(f'Charge:            {child_NoElectrons.settings.input.ams.System.charge}', ['straight', 'straight'])
+                log.flow(f'Spin-Polarization: {child_NoElectrons.settings.input.adf.SpinPolarization}', ['straight', 'straight'])
+                log.flow(f'Work dir:          {child_NoElectrons.workdir}', ['straight', 'straight'])
+                
+                if child_NoElectrons.can_skip():
+                    log.flow(log.Emojis.warning + ' Already ran, skipping', ['straight', 'end'])
+                    log.flow()
+                else:
+                    log.flow(log.Emojis.good + ' Submitting', ['straight', 'end'])
+                    child_NoElectrons.run()
+                    self.dependency(child_NoElectrons)
+                    log.flow(f'SlurmID:  {child_NoElectrons.slurm_job_id}', ['straight', 'skip', 'end'])
+                    log.flow()
+
 
         # in the parent job the atoms should have the region and adf.f defined as options
         atom_lines = []
         # for each atom we check which child it came from
         for atom in self._molecule:
-            for childname, child in self.childjobs.items():
+            for child_name, child in self.child_jobs.items():
                 for childatom in child._molecule:
                     # we check by looking at the symbol and coordinates of the atom
                     if (atom.symbol, atom.x, atom.y, atom.z) == (childatom.symbol, childatom.x, childatom.y, childatom.z):
                         # now write the symbol and coords as a string with the correct suffix
-                        atom_lines.append(f'\t\t{atom.symbol} {atom.x} {atom.y} {atom.z} region={childname} adf.f={childname}')
+                        atom_lines.append(f'\t\t{atom.symbol} {atom.x} {atom.y} {atom.z} region={child_name} adf.f={child_name}')
 
+        old_name = self.name
         # write the atoms block as a string with new line characters
         self.settings.input.ams.system.atoms = ('\n' + '\n'.join(atom_lines) + '\n\tEnd').expandtabs(4)
         # set the _molecule to None, otherwise it will overwrite the atoms block
         self._molecule = None
         # run this job
-        self.rundir = j(self.rundir, self.name)
+        self.rundir = j(self.rundir, old_name)
         self.name = 'complex'
         log.flow(log.Emojis.good + ' Submitting parent job', ['split'])
         super().run()
@@ -483,6 +535,7 @@ class ADFFragmentJob(ADFJob):
         log.flow()
 
         # also do the calculation with SCF cycles set to 1
+        old_iters = self.settings.input.adf.SCF.Iterations or 300
         self.SCF(iterations=0)
         # we must repopulate the sbatch settings for the new run
         [self._sbatch.pop(key, None) for key in ['D', 'chdir', 'J', 'job_name', 'o', 'output']]
@@ -492,6 +545,74 @@ class ADFFragmentJob(ADFJob):
         super().run()
         log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
         log.flow()
+
+        # also do the calculation with no electrons on the fragments if the user requested a elstat decomposition
+        if self.decompose_elstat:
+            frag_names = self.child_jobs.keys()
+            # reset the SCF iterations
+            self.SCF(iterations=old_iters)
+            self.settings.input.adf.pop("NumericalQuality")
+            self.settings.input.adf.BeckeGrid.Quality = "Excellent"
+            [self._sbatch.pop(key, None) for key in ['D', 'chdir', 'J', 'job_name', 'o', 'output']]
+            self.name = 'complex_STOFIT'
+
+            # set the region and fragment files correctly
+            atom_lines_ = []
+            for line in atom_lines:
+                for frag in frag_names:
+                    line = line.replace(frag, f'{frag}_STOFIT')
+                atom_lines_.append(line)
+
+            self.settings.input.ams.system.atoms = ('\n' + '\n'.join(atom_lines_) + '\n\tEnd').expandtabs(4)
+            # set the fragment references correctly
+            self.settings.input.adf.pop('fragments')
+            for frag_name in frag_names:
+                self.settings.input.adf.fragments[frag_name + '_STOFIT'] = j(elstat_jobs['frag_' + frag_name + '_STOFIT'].workdir, 'adf.rkf')
+            self.settings.input.adf.STOFIT = ''
+            self.settings.input.adf.PRINT = 'SFOSiteEnergies Elstat'
+
+            log.flow(log.Emojis.good + ' Submitting complex with STOFIT', ['split'])
+            super().run()
+            log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
+            log.flow()
+
+            for frag in frag_names:
+                # other_frags stores fragment names for fragments that keep their electrons
+                other_frags = [frag_ for frag_ in frag_names if frag_ != frag]
+
+                # we must repopulate the sbatch settings for the new run
+                [self._sbatch.pop(key, None) for key in ['D', 'chdir', 'J', 'job_name', 'o', 'output']]
+                self.name = f'complex_{frag}_NoElectrons'
+
+                # set the region and fragment files correctly
+                atom_lines_ = []
+                for line in atom_lines:
+                    line = line.replace(frag, f'{frag}_NoElectrons')
+                    for other_frag in other_frags:
+                        line = line.replace(other_frag, f'{other_frag}_STOFIT')
+                    atom_lines_.append(line)
+                self.settings.input.ams.system.atoms = ('\n' + '\n'.join(atom_lines_) + '\n\tEnd').expandtabs(4)
+
+                # set the fragment references correctly
+                self.settings.input.adf.pop('fragments')
+                self.settings.input.adf.fragments[frag + '_NoElectrons'] = j(elstat_jobs['frag_' + frag + '_NoElectrons'].workdir, 'adf.rkf')
+                for other_frag in other_frags:
+                    self.settings.input.adf.fragments[other_frag + '_STOFIT'] = j(elstat_jobs['frag_' + other_frag + '_STOFIT'].workdir, 'adf.rkf')
+            
+                other_charge = sum([elstat_jobs['frag_' + other_frag + '_STOFIT'].settings.input.ams.System.charge for other_frag in other_frags])
+                total_charge = other_charge + (elstat_jobs['frag_' + frag + '_NoElectrons'].settings.input.ams.System.charge)
+                self.charge(total_charge)
+
+                other_spin_polarization = sum([elstat_jobs['frag_' + other_frag + '_STOFIT'].settings.input.adf.SpinPolarization for other_frag in other_frags])
+                total_spin_polarization = other_spin_polarization + (elstat_jobs['frag_' + frag + '_NoElectrons'].settings.input.adf.SpinPolarization)
+                self.spin_polarization(total_spin_polarization)
+
+                log.flow(log.Emojis.good + f' Submitting complex with 0 electrons in fragment {frag}', ['split'])
+
+                super().run()
+                log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
+                log.flow()
+
         log.flow(log.Emojis.finish + ' Done, bye!', ['startinv'])
 
 
@@ -588,7 +709,7 @@ class DensfJob(Job):
         for sfo in self._sfos:
             spin_part = '' if sfo.spin == 'AB' else f'_{sfo.spin}'
             paths.append(f'{cuboutput}%SFO_{sfo.symmetry}{spin_part}%{sfo.index}.cub')
-        print(paths)
+        # print(paths)
         return paths
 
     def can_skip(self):
