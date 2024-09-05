@@ -163,7 +163,7 @@ def get_properties(info: Result) -> Result:
         :Result object containing properties from the ADF calculation:
 
             - **energy.bond (float)** – bonding energy (|kcal/mol|).
-            - **energy.elstat (float)** – total electrostatic potential (|kcal/mol|).
+            - **energy.elstat.total (float)** – total electrostatic potential (|kcal/mol|).
             - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label and correction energy(|kcal/mol|).
             - **energy.orbint.{symmetry label} (float)** – orbital interaction energy from a specific symmetry label (|kcal/mol|).
             - **energy.orbint.correction (float)** - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (|kcal/mol|)
