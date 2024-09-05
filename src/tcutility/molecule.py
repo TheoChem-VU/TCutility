@@ -5,6 +5,14 @@ from scm import plams
 
 from tcutility import ensure_list
 from tcutility.results import result
+from tcutility.data import atom
+
+
+def number_of_electrons(mol: plams.Molecule) -> int:
+    nel = 0
+    for at in mol:
+        nel += atom.atom_number(at.symbol)
+    return nel
 
 
 def parse_str(s: str):
