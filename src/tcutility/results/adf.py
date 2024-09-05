@@ -164,6 +164,9 @@ def get_properties(info: Result) -> Result:
 
             - **energy.bond (float)** – bonding energy (|kcal/mol|).
             - **energy.elstat.total (float)** – total electrostatic potential (|kcal/mol|).
+            - **energy.elstat.Vee (float)** – electron-electron repulsive term of the electrostatic potential (|kcal/mol|).
+            - **energy.elstat.Ven (float)** – electron-nucleus attractive term of the electrostatic potential (|kcal/mol|).
+            - **energy.elstat.Vnn (float)** – nucleus-nucleus repulsive term of the electrostatic potential (|kcal/mol|).
             - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label and correction energy(|kcal/mol|).
             - **energy.orbint.{symmetry label} (float)** – orbital interaction energy from a specific symmetry label (|kcal/mol|).
             - **energy.orbint.correction (float)** - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (|kcal/mol|)
@@ -198,7 +201,29 @@ def get_properties(info: Result) -> Result:
 
     # read energies (given in Ha in rkf files)
     ret.energy.bond = reader_adf.read("Energy", "Bond Energy") * constants.HA2KCALMOL
-    ret.energy.elstat = reader_adf.read("Energy", "elstat") * constants.HA2KCALMOL
+
+    # total electrostatic potential
+    ret.energy.elstat.total = reader_adf.read("Energy", "elstat") * constants.HA2KCALMOL
+
+    # we can further decompose elstat if it was enabled
+    if info.files.out:
+        with open(info.files.out) as output:
+            lines = output.readlines()
+
+        skip_next = -1
+        for line in lines:
+            if "Electrostatic Interaction Energies" in line:
+                skip_next = 4
+                continue
+            if skip_next == 0:
+                f1, f2, Vee, Ven, Vnn, total = line.strip().split()
+                ret.energy.elstat.Vee = float(Vee) * constants.HA2KCALMOL
+                ret.energy.elstat.Ven = float(Ven) * constants.HA2KCALMOL
+                ret.energy.elstat.Vnn = float(Vnn) * constants.HA2KCALMOL
+            skip_next -= 1
+
+
+    # print(info.files)
 
 
     # read the total orbital interaction energy
