@@ -71,6 +71,9 @@ def get_calc_files(calc_dir: str) -> dict:
             f = ".".join(parts[1:]).replace("logfile", "log")
             ret[f] = os.path.abspath(file)
 
+        if file.endswith(".out") and not "CreateAtoms" in file:
+            ret["out"] = os.path.abspath(file)
+
     return ret
 
 
