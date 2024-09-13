@@ -8,6 +8,8 @@ import dictfunc
 from scm import plams
 
 from tcutility import log, molecule, results, slurm
+from tcutility.environment import OSName, get_os_name
+from tcutility.errors import TCJobError
 
 j = os.path.join
 
@@ -200,6 +202,11 @@ class Job:
             if self.wait_for_finish:
                 slurm.wait_for_job(self.slurm_job_id)
         else:
+            os_name = get_os_name()
+
+            if os_name == OSName.Windows:
+                raise TCJobError("Generic Job", "Running jobs on Windows is not supported.")
+
             # if we are not using slurm, we can execute the file. For this we need special permissions, so we have to set that first.
             os.chmod(self.runfile_path, os.stat(self.runfile_path).st_mode | stat.S_IEXEC)
 
