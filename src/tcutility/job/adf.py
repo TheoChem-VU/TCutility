@@ -3,6 +3,7 @@ import os
 from scm import plams
 
 from tcutility import data, formula, log, molecule, results, spell_check
+from tcutility.errors import TCCompDetailsError, TCJobError
 from tcutility.job.ams import AMSJob
 from tcutility.job.generic import Job
 
@@ -167,10 +168,10 @@ class ADFJob(AMSJob):
             self.basis_set("mTZ2P")
 
         if functional == "SSB-D":
-            raise ValueError('There are two functionals called SSB-D, please use "GGA:SSB-D" or "MetaGGA:SSB-D".')
+            raise TCCompDetailsError(section="Functional", message='There are two functionals called SSB-D, please use "GGA:SSB-D" or "MetaGGA:SSB-D".')
 
         if not data.functionals.get(functional):
-            raise ValueError(f"XC-functional {functional} not found.")
+            raise TCCompDetailsError(section="Functional", message=f"XC-functional {functional} not found.")
         else:
             func = data.functionals.get(functional)
             self.settings.input.adf.update(func.adf_settings)
@@ -289,8 +290,7 @@ class ADFFragmentJob(ADFJob):
         # if it is we should raise an error
         for child in self.childjobs.values():
             if any((atom.symbol, atom.coords) == (myatom.symbol, myatom.coords) for atom in child._molecule for myatom in mol):
-                log.error("An atom is present in multiple fragments.")
-                return
+                raise TCJobError(job_class=self.__class__.__name__, message="The atoms in the new fragment are already present in the other fragments.")
 
         name = name or f"fragment{len(self.childjobs) + 1}"
         self.childjobs[name] = ADFJob(test_mode=self.test_mode)
@@ -351,10 +351,10 @@ class ADFFragmentJob(ADFJob):
         if nremove is None:
             # guess the virtual numbers only works for non-frozen-core calculations
             if self._core.lower() != "none":
-                raise ValueError("Cannot guess number of virtual orbitals for calculations with frozen cores.")
+                raise TCJobError(job_class=self.__class__.__name__, message="Cannot guess number of virtual orbitals for calculations with a frozen core.")
             # the basis-set has to be present in the prepared data
             if self._basis_set.lower() not in [bs.lower() for bs in data.basis_sets._number_of_orbitals.keys()]:
-                raise ValueError(f"Cannot guess number of virtual orbitals for calculations with the {self._basis_set} basis-set.")
+                raise TCJobError(job_class=self.__class__.__name__, message=f"Cannot guess number of virtual orbitals for calculations with the {self._basis_set} basis-set.")
 
             # sum up the number of virtuals per atom in the fragment
             nremove = 0
@@ -520,14 +520,14 @@ class DensfJob(Job):
         elif isinstance(orbital, pyfmo.orbitals.mo.MO):
             self._mos.append(orbital)
         else:
-            raise ValueError(f"Unknown object {orbital} of type{type(orbital)}. It should be a pyfmo.orbitals.sfo.SFO or pyfmo.orbitals.mos.MO object.")
+            raise TCJobError(job_class=self.__class__.__name__, message=f"Unknown object {orbital} of type{type(orbital)}. It should be a pyfmo.orbitals.sfo.SFO or pyfmo.orbitals.mos.MO object.")
 
         # check if the ADFFile is the same for all added orbitals
         if self.settings.ADFFile is None:
             self.settings.ADFFile = orbital.kfpath
 
         elif self.settings.ADFFile != orbital.kfpath:
-            raise ValueError("RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
+            raise TCJobError(job_class=self.__class__.__name__, message="RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
     def _setup_job(self):
         os.makedirs(self.workdir, exist_ok=True)

@@ -5,6 +5,7 @@ from typing import List, Union
 from scm import plams
 
 from tcutility import ensure_list, log, results, slurm, spell_check
+from tcutility.errors import TCMoleculeError
 from tcutility.job.generic import Job
 
 j = os.path.join
@@ -137,7 +138,7 @@ class ORCAJob(Job):
                 natoms = len(self._molecule) - len(self._ghosts)
             else:
                 if not hasattr(self, "natoms") or self.natoms is None:
-                    raise ValueError("You set the molecule as a path and did not supply the number of atoms.")
+                    raise TCMoleculeError("You set the molecule as a path and did not supply the number of atoms.")
                 natoms = self.natoms
 
             ntasks = min(ntasks, (natoms - 1) * 3)
