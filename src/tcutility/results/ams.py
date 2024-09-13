@@ -71,6 +71,9 @@ def get_calc_files(calc_dir: str) -> dict:
             f = ".".join(parts[1:]).replace("logfile", "log")
             ret[f] = os.path.abspath(file)
 
+        if file.endswith(".out") and "CreateAtoms" not in file:
+            ret["out"] = os.path.abspath(file)
+
     return ret
 
 
@@ -274,10 +277,7 @@ def _get_fragment_indices_from_input_order(results_type) -> arrays.Array1D:
     """Function to get the fragment indices from the input order. This is needed because the fragment indices are stored in internal order in the rkf file."""
     frag_indices = np.array(results_type.read("Geometry", "fragment and atomtype index")).reshape(2, -1)  # 1st row: Fragment index; 2nd row atomtype index
     atom_order = np.array(results_type.read("Geometry", "atom order index")).reshape(2, -1)  # 1st row: input order; 2nd row: internal order
-    combined = np.concatenate((frag_indices, atom_order), axis=0)
-    sorted_by_input_order = np.array(sorted(combined.T, key=lambda x: x[2]))  # sort the fragment indices by input order
-    frag_order = sorted_by_input_order[:, 0]
-    return frag_order
+    return frag_indices[0][atom_order[0] - 1]
 
 
 # ------------------------ Molecule -------------------------- #

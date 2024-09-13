@@ -65,7 +65,7 @@ def vdd_manager_geo_nosym():
 
 def test_get_fragment_indices_from_input_order_disordered(kfreader_fa_disordered_fragindices_cs):
     frag_indices = ams._get_fragment_indices_from_input_order(kfreader_fa_disordered_fragindices_cs)
-    assert np.array_equal(frag_indices, np.array([1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1]))
+    assert np.array_equal(frag_indices, np.array([1, 1, 1, 2, 2, 2, 1, 1, 2, 2, 2]))
 
 
 def test_get_fragment_indices_from_input_order_ordered(kfreader_fa_ordered_fragindices_cs):
