@@ -431,7 +431,10 @@
 <span class="sd">        :Result object containing properties from the ADF calculation:</span>
 
 <span class="sd">            - **energy.bond (float)** – bonding energy (|kcal/mol|).</span>
-<span class="sd">            - **energy.elstat (float)** – total electrostatic potential (|kcal/mol|).</span>
+<span class="sd">            - **energy.elstat.total (float)** – total electrostatic potential (|kcal/mol|).</span>
+<span class="sd">            - **energy.elstat.Vee (float)** – electron-electron repulsive term of the electrostatic potential (|kcal/mol|).</span>
+<span class="sd">            - **energy.elstat.Ven (float)** – electron-nucleus attractive term of the electrostatic potential (|kcal/mol|).</span>
+<span class="sd">            - **energy.elstat.Vnn (float)** – nucleus-nucleus repulsive term of the electrostatic potential (|kcal/mol|).</span>
 <span class="sd">            - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label and correction energy(|kcal/mol|).</span>
 <span class="sd">            - **energy.orbint.{symmetry label} (float)** – orbital interaction energy from a specific symmetry label (|kcal/mol|).</span>
 <span class="sd">            - **energy.orbint.correction (float)** - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (|kcal/mol|)</span>
@@ -466,7 +469,29 @@
 
     <span class="c1"># read energies (given in Ha in rkf files)</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">bond</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Bond Energy&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
-    <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;elstat&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+
+    <span class="c1"># total electrostatic potential</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;elstat&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+
+    <span class="c1"># we can further decompose elstat if it was enabled</span>
+    <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">out</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">out</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+        <span class="n">skip_next</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;Electrostatic Interaction Energies&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">skip_next</span> <span class="o">=</span> <span class="mi">4</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">skip_next</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">Vee</span><span class="p">,</span> <span class="n">Ven</span><span class="p">,</span> <span class="n">Vnn</span><span class="p">,</span> <span class="n">total</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span><span class="o">.</span><span class="n">Vee</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Vee</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span><span class="o">.</span><span class="n">Ven</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Ven</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span><span class="o">.</span><span class="n">Vnn</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Vnn</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+            <span class="n">skip_next</span> <span class="o">-=</span> <span class="mi">1</span>
+
+
+    <span class="c1"># print(info.files)</span>
 
 
     <span class="c1"># read the total orbital interaction energy</span>
