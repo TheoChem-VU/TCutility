@@ -5,7 +5,7 @@ from scm.plams import KFReader
 
 from tcutility import constants, ensure_list
 from tcutility.results import Result, cache
-from tcutility.typing import arrays
+from tcutility.tc_typing import arrays
 
 # ------------------------------------------------------------- #
 # ------------------- Calculation Settings -------------------- #
@@ -200,7 +200,6 @@ def get_properties(info: Result) -> Result:
     ret.energy.bond = reader_adf.read("Energy", "Bond Energy") * constants.HA2KCALMOL
     ret.energy.elstat = reader_adf.read("Energy", "elstat") * constants.HA2KCALMOL
 
-
     # read the total orbital interaction energy
     ret.energy.orbint.total = reader_adf.read("Energy", "Orb.Int. Total") * constants.HA2KCALMOL
 
@@ -217,7 +216,7 @@ def get_properties(info: Result) -> Result:
         # the energy per symmetry label is abstracted from the "total orbital interaction"
         # obtaining the correction to the orbital interaction term
         ret.energy.orbint.correction -= ret.energy.orbint[symlabel]
-    
+
     ret.energy.pauli.total = reader_adf.read("Energy", "Pauli Total") * constants.HA2KCALMOL
     ret.energy.dispersion = reader_adf.read("Energy", "Dispersion Energy") * constants.HA2KCALMOL
 
@@ -242,8 +241,8 @@ def get_properties(info: Result) -> Result:
     S = info.adf.spin_polarization * 1 / 2
     ret.s2_expected = S * (S + 1)
     # this is the real expectation value
-    if ('Properties', 'S2calc') in reader_adf:
-        ret.s2 = reader_adf.read('Properties', 'S2calc')
+    if ("Properties", "S2calc") in reader_adf:
+        ret.s2 = reader_adf.read("Properties", "S2calc")
     else:
         ret.s2 = 0
 
