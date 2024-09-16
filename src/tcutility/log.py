@@ -225,7 +225,7 @@ def rectangle_list(values: Sequence, spaces_before: int = 0, level: int = 20):
 T = TypeVar("T")
 
 
-def loadbar(sequence: Union[Iterable[T], Sequence[T]], comment: str = "", Nsegments: int = 50, Nsteps: int = 10, level: int = 20) -> Generator[T]:
+def loadbar(sequence: Union[Iterable[T], Sequence[T]], comment: str = "", Nsegments: int = 50, Nsteps: int = 10, level: int = 20) -> Generator[T, None, None]:
     """
     Return values from an iterable ``sequence`` and also print a progress bar for the iteration over this sequence.
 
@@ -478,11 +478,11 @@ if __name__ == "__main__":
     rows = np.vstack([x, x**2, x**3, x**4, x**5]).astype(int).T.tolist()
     table(rows, header=["X", "y=x^2", "y=x^3", "y=x^4", "y=x^5"], hline=[-1])
 
-    from tcutility import log
+    from tcutility import log as cli_log
 
     class TestClass:
         def test_method(self):
-            log.warn("I am testing the warning function")
+            cli_log.warn("I am testing the warning function")
 
     TestClass().test_method()
 
