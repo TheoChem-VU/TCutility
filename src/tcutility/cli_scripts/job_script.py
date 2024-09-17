@@ -1,4 +1,4 @@
-﻿""" Module containing functions for quickly submitting geometry optimization jobs via the command line """
+""" Module containing functions for quickly submitting geometry optimization jobs via the command line """
 import argparse
 from tcutility import job as tcjob
 import tcutility
