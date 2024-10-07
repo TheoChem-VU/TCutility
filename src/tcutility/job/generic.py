@@ -204,7 +204,7 @@ class Job:
         else:
             os_name = get_os_name()
 
-            if os_name == OSName.Windows:
+            if os_name == OSName.WINDOWS:
                 raise TCJobError("Generic Job", "Running jobs on Windows is not supported.")
 
             # if we are not using slurm, we can execute the file. For this we need special permissions, so we have to set that first.
