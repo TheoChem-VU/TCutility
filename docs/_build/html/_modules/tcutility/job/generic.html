@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.job.generic &#8212; TCutility v0.14.4 documentation</title>
+    <title>tcutility.job.generic &#8212; TCutility v0.14.5 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../_static/documentation_options.js?v=c9199977"></script>
+    <script src="../../../_static/documentation_options.js?v=6d611d6e"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -475,7 +475,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">os_name</span> <span class="o">=</span> <span class="n">get_os_name</span><span class="p">()</span>
 
-            <span class="k">if</span> <span class="n">os_name</span> <span class="o">==</span> <span class="n">OSName</span><span class="o">.</span><span class="n">Windows</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os_name</span> <span class="o">==</span> <span class="n">OSName</span><span class="o">.</span><span class="n">WINDOWS</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">TCJobError</span><span class="p">(</span><span class="s2">&quot;Generic Job&quot;</span><span class="p">,</span> <span class="s2">&quot;Running jobs on Windows is not supported.&quot;</span><span class="p">)</span>
 
             <span class="c1"># if we are not using slurm, we can execute the file. For this we need special permissions, so we have to set that first.</span>
