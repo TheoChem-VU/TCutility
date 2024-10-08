@@ -79,7 +79,7 @@ def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str
         partret_ = partret
         partret = ''
         for char in partret_:
-            if char in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" and mode in ["latex", "pyplot"]:
+            if char.isalpha() and mode in ["latex", "pyplot"]:
                 partret += f"\mathrm{{{char}}}"
             else:
                 partret += char
