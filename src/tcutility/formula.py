@@ -76,9 +76,13 @@ def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str
             if mode == "unicode":
                 partret = partret.replace(num, "₀₁₂₃₄₅₆₇₈₉"[int(num)])
 
-        for letter in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ":
-            if mode in ["latex", "pyplot"]:
-                partret = partret.replace(letter, f"\mathrm{{{letter}}}")
+        partret_ = partret
+        partret = ''
+        for char in partret_:
+            if char in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" and mode in ["latex", "pyplot"]:
+                partret += f"\mathrm{{{char}}}"
+            else:
+                partret += char
 
         # signs should be superscript
         for sign in "+-•":
@@ -99,6 +103,8 @@ def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str
 
 
 if __name__ == "__main__":
-    print(molecule("F- + CH3Cl", "html"))
-    mol = plams.Molecule(r"D:\Users\Yuman\Desktop\PhD\TCutility\test\fixtures\chloromethane_sn2_ts\ts sn2.results\output.xyz")
-    print(molecule(mol))
+    # print(molecule("F- + CH3Cl", "html"))
+    # mol = plams.Molecule(r"D:\Users\Yuman\Desktop\PhD\TCutility\test\fixtures\chloromethane_sn2_ts\ts sn2.results\output.xyz")
+    # print(molecule(mol))
+
+    print(molecule('NMe2*', mode='latex'))
