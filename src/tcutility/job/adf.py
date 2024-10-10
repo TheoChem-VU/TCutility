@@ -28,12 +28,12 @@ class ADFJob(AMSJob):
     def __str__(self):
         return f"{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}"
 
-    def basis_set(self, typ: str = "TZ2P", core: str = "None"):
+    def basis_set(self, size: str = "TZ2P", core: str = "None"):
         """
         Set the basis-set type and frozen core approximation for this calculation.
 
         Args:
-            typ: the type of basis-set to use. Default is TZ2P.
+            size: the type of basis-set to use. Default is TZ2P.
             core: the size of the frozen core approximation. Default is None.
 
         Raises:
@@ -44,14 +44,14 @@ class ADFJob(AMSJob):
         .. seealso::
             :mod:`tcutility.data.basis_sets` for an overview of the available basis-sets in ADF.
         """
-        spell_check.check(typ, data.basis_sets.available_basis_sets["ADF"], ignore_case=True)
+        spell_check.check(size, data.basis_sets.available_basis_sets["ADF"], ignore_case=True)
         spell_check.check(core, ["None", "Small", "Large"], ignore_case=True)
-        if self._functional == "r2SCAN-3c" and typ != "mTZ2P":
-            log.warn(f"Basis set {typ} is not allowed with r2SCAN-3c, switching to mTZ2P.")
-            typ = "mTZ2P"
-        self._basis_set = typ
+        if self._functional == "r2SCAN-3c" and size != "mTZ2P":
+            log.warn(f"Basis set {size} is not allowed with r2SCAN-3c, switching to mTZ2P.")
+            size = "mTZ2P"
+        self._basis_set = size
         self._core = core
-        self.settings.input.adf.basis.type = typ
+        self.settings.input.adf.basis.type = size
         self.settings.input.adf.basis.core = core
 
     def spin_polarization(self, val: int):
