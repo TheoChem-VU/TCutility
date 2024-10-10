@@ -1,8 +1,6 @@
 import os
 
-import numpy as np
-
-from tcutility import constants, molecule, pathfunc
+from tcutility import molecule, pathfunc
 from tcutility.results import Result
 
 j = os.path.join
