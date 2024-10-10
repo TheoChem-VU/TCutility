@@ -28,7 +28,7 @@ class ADFJob(AMSJob):
     def __str__(self):
         return f"{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}"
 
-    def basis_set(self, type: str = "TZ2P", core: str = "None"):
+    def basis_set(self, typ: str = "TZ2P", core: str = "None"):
         """
         Set the basis-set type and frozen core approximation for this calculation.
 
@@ -44,10 +44,10 @@ class ADFJob(AMSJob):
         .. seealso::
             :mod:`tcutility.data.basis_sets` for an overview of the available basis-sets in ADF.
         """
-        spell_check.check(type, data.basis_sets.available_basis_sets["ADF"], ignore_case=True)
+        spell_check.check(typ, data.basis_sets.available_basis_sets["ADF"], ignore_case=True)
         spell_check.check(core, ["None", "Small", "Large"], ignore_case=True)
-        if self._functional == "r2SCAN-3c" and type != "mTZ2P":
-            log.warn(f"Basis set {type} is not allowed with r2SCAN-3c, switching to mTZ2P.")
+        if self._functional == "r2SCAN-3c" and typ != "mTZ2P":
+            log.warn(f"Basis set {typ} is not allowed with r2SCAN-3c, switching to mTZ2P.")
             typ = "mTZ2P"
         self._basis_set = typ
         self._core = core
