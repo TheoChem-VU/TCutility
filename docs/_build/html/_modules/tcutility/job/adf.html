@@ -29,7 +29,6 @@
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -37,11 +36,10 @@
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../../_static/documentation_options.js?v=6d611d6e"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/tabs.js?v=3030b3cb"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tcutility/job/adf';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -290,7 +288,7 @@
 
 <div class="viewcode-block" id="ADFJob.basis_set">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.basis_set">[docs]</a>
-    <span class="k">def</span> <span class="nf">basis_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;TZ2P&quot;</span><span class="p">,</span> <span class="n">core</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">basis_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;TZ2P&quot;</span><span class="p">,</span> <span class="n">core</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the basis-set type and frozen core approximation for this calculation.</span>
 
@@ -306,10 +304,10 @@
 <span class="sd">        .. seealso::</span>
 <span class="sd">            :mod:`tcutility.data.basis_sets` for an overview of the available basis-sets in ADF.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">basis_sets</span><span class="o">.</span><span class="n">available_basis_sets</span><span class="p">[</span><span class="s2">&quot;ADF&quot;</span><span class="p">],</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">basis_sets</span><span class="o">.</span><span class="n">available_basis_sets</span><span class="p">[</span><span class="s2">&quot;ADF&quot;</span><span class="p">],</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="s2">&quot;Small&quot;</span><span class="p">,</span> <span class="s2">&quot;Large&quot;</span><span class="p">],</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_functional</span> <span class="o">==</span> <span class="s2">&quot;r2SCAN-3c&quot;</span> <span class="ow">and</span> <span class="nb">type</span> <span class="o">!=</span> <span class="s2">&quot;mTZ2P&quot;</span><span class="p">:</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Basis set </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> is not allowed with r2SCAN-3c, switching to mTZ2P.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_functional</span> <span class="o">==</span> <span class="s2">&quot;r2SCAN-3c&quot;</span> <span class="ow">and</span> <span class="n">typ</span> <span class="o">!=</span> <span class="s2">&quot;mTZ2P&quot;</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Basis set </span><span class="si">{</span><span class="n">typ</span><span class="si">}</span><span class="s2"> is not allowed with r2SCAN-3c, switching to mTZ2P.&quot;</span><span class="p">)</span>
             <span class="n">typ</span> <span class="o">=</span> <span class="s2">&quot;mTZ2P&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_basis_set</span> <span class="o">=</span> <span class="n">typ</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_core</span> <span class="o">=</span> <span class="n">core</span>
@@ -1091,7 +1089,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.2.
     <br/>
   </p>
 </div>
