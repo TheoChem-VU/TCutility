@@ -299,6 +299,12 @@ class ADFFragmentJob(ADFJob):
         self.child_jobs[name].molecule(mol)
         self.child_jobs[name].charge(charge)
         self.child_jobs[name].spin_polarization(spin_polarization)
+        self.child_jobs[name]._sbatch.pop('D', None)
+        self.child_jobs[name]._sbatch.pop('chdir', None)
+        self.child_jobs[name]._sbatch.pop('J', None)
+        self.child_jobs[name]._sbatch.pop('job_name', None)
+        self.child_jobs[name]._sbatch.pop('o', None)
+        self.child_jobs[name]._sbatch.pop('output', None)
         setattr(self, name, self.child_jobs[name])
 
         if not add_frag_to_mol:
