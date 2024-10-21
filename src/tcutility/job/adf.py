@@ -447,6 +447,7 @@ class ADFFragmentJob(ADFJob):
                 log.flow()
             else:
                 log.flow(log.Emojis.good + ' Submitting', ['straight', 'end'])
+                [child._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                 child.run()
                 self.dependency(child)
                 log.flow(f'SlurmID:  {child.slurm_job_id}', ['straight', 'skip', 'end'])
@@ -471,6 +472,7 @@ class ADFFragmentJob(ADFJob):
                     log.flow()
                 else:
                     log.flow(log.Emojis.good + ' Submitting', ['straight', 'end'])
+                    [child_STOFIT._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                     child_STOFIT.run()
                     self.dependency(child_STOFIT)
                     log.flow(f'SlurmID:  {child_STOFIT.slurm_job_id}', ['straight', 'skip', 'end'])
@@ -496,6 +498,7 @@ class ADFFragmentJob(ADFJob):
                     log.flow()
                 else:
                     log.flow(log.Emojis.good + ' Submitting', ['straight', 'end'])
+                    [child_NoElectrons._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                     child_NoElectrons.run()
                     self.dependency(child_NoElectrons)
                     log.flow(f'SlurmID:  {child_NoElectrons.slurm_job_id}', ['straight', 'skip', 'end'])
