@@ -299,12 +299,6 @@ class ADFFragmentJob(ADFJob):
         self.child_jobs[name].molecule(mol)
         self.child_jobs[name].charge(charge)
         self.child_jobs[name].spin_polarization(spin_polarization)
-        self.child_jobs[name]._sbatch.pop('D', None)
-        self.child_jobs[name]._sbatch.pop('chdir', None)
-        self.child_jobs[name]._sbatch.pop('J', None)
-        self.child_jobs[name]._sbatch.pop('job_name', None)
-        self.child_jobs[name]._sbatch.pop('o', None)
-        self.child_jobs[name]._sbatch.pop('output', None)
         setattr(self, name, self.child_jobs[name])
 
         if not add_frag_to_mol:
@@ -568,7 +562,7 @@ class ADFFragmentJob(ADFJob):
                 self.settings.input.adf.fragments[frag_name + '_STOFIT'] = j(elstat_jobs['frag_' + frag_name + '_STOFIT'].workdir, 'adf.rkf')
             self.settings.input.adf.STOFIT = ''
             self.settings.input.adf.PRINT = 'FmatSFO Elstat'
-
+            [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
             log.flow(log.Emojis.good + ' Submitting complex with STOFIT', ['split'])
             super().run()
             log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
@@ -606,7 +600,7 @@ class ADFFragmentJob(ADFJob):
                 self.spin_polarization(total_spin_polarization)
 
                 log.flow(log.Emojis.good + f' Submitting complex with 0 electrons in fragment {frag}', ['split'])
-
+                [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                 super().run()
                 log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
                 log.flow()
