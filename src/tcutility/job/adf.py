@@ -256,7 +256,7 @@ class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
         self.decompose_elstat = kwargs.pop('decompose_elstat', False)
         self.child_jobs = {}
-        # self.childjobs_no_electrons = {}
+        # self.child_jobs_no_electrons = {}
         super().__init__(*args, **kwargs)
         self.name = "EDA"
 
@@ -294,12 +294,12 @@ class ADFFragmentJob(ADFJob):
             if any((atom.symbol, atom.coords) == (myatom.symbol, myatom.coords) for atom in child._molecule for myatom in mol):
                 raise TCJobError(job_class=self.__class__.__name__, message="The atoms in the new fragment are already present in the other fragments.")
 
-        name = name or f"fragment{len(self.childjobs) + 1}"
-        self.childjobs[name] = ADFJob(test_mode=self.test_mode)
-        self.childjobs[name].molecule(mol)
-        self.childjobs[name].charge(charge)
-        self.childjobs[name].spin_polarization(spin_polarization)
-        setattr(self, name, self.childjobs[name])
+        name = name or f"fragment{len(self.child_jobs) + 1}"
+        self.child_jobs[name] = ADFJob(test_mode=self.test_mode)
+        self.child_jobs[name].molecule(mol)
+        self.child_jobs[name].charge(charge)
+        self.child_jobs[name].spin_polarization(spin_polarization)
+        setattr(self, name, self.child_jobs[name])
 
         if not add_frag_to_mol:
             return
@@ -380,7 +380,7 @@ class ADFFragmentJob(ADFJob):
         """
         # check if the user defined fragments for this job
 
-        if len(self.childjobs) == 0:
+        if len(self.child_jobs) == 0:
             log.warn("Fragments were not specified yet, trying to read them from the xyz file ...")
 
             # if they did not define the fragments, try to guess them using the xyz-file
@@ -388,12 +388,12 @@ class ADFFragmentJob(ADFJob):
                 log.error("Please specify the fragments using ADFFragmentJob.add_fragment or specify them in the xyz file.")
                 raise
 
-        mol_str = " + ".join([formula.molecule(child._molecule) for child in self.childjobs.values()])
+        mol_str = " + ".join([formula.molecule(child._molecule) for child in self.child_jobs.values()])
         log.flow(f"ADFFragmentJob [{mol_str}]", ["start"])
         # obtain some system wide properties of the molecules
-        charge = sum([child.settings.input.ams.System.charge or 0 for child in self.childjobs.values()])
-        unrestricted = any([(child.settings.input.adf.Unrestricted or "no").lower() == "yes" for child in self.childjobs.values()])
-        spinpol = sum([child.settings.input.adf.SpinPolarization or 0 for child in self.childjobs.values()])
+        charge = sum([child.settings.input.ams.System.charge or 0 for child in self.child_jobs.values()])
+        unrestricted = any([(child.settings.input.adf.Unrestricted or "no").lower() == "yes" for child in self.child_jobs.values()])
+        spinpol = sum([child.settings.input.adf.SpinPolarization or 0 for child in self.child_jobs.values()])
         log.flow(f"Level:             {self._functional}/{self._basis_set}")
         log.flow(f"Solvent:           {self._solvent}")
         log.flow(f"Charge:            {charge}", ["straight"])
