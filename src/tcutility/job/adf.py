@@ -458,7 +458,7 @@ class ADFFragmentJob(ADFJob):
                 child_STOFIT.name += '_STOFIT'
                 elstat_jobs[child_STOFIT.name] = child_STOFIT
                 child_STOFIT.settings.input.adf.STOFIT = ''
-                child_STOFIT.settings.input.adf.PRINT = 'FmatSFO Elstat'
+                child_STOFIT.settings.input.adf.PRINT += ' Elstat'
                 child_STOFIT.settings.input.adf.pop("NumericalQuality")
                 child_STOFIT.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
@@ -482,7 +482,7 @@ class ADFFragmentJob(ADFJob):
                 child_NoElectrons.name += '_NoElectrons'
                 elstat_jobs[child_NoElectrons.name] = child_NoElectrons
                 child_NoElectrons.settings.input.adf.STOFIT = ''
-                child_NoElectrons.settings.input.adf.PRINT = 'FmatSFO Elstat'
+                child_NoElectrons.settings.input.adf.PRINT = +' Elstat'
                 child_NoElectrons.charge(molecule.number_of_electrons(child_NoElectrons._molecule))
                 child_NoElectrons.spin_polarization(0)
                 child_NoElectrons.settings.input.adf.pop("NumericalQuality")
@@ -564,7 +564,7 @@ class ADFFragmentJob(ADFJob):
             for frag_name in frag_names:
                 self.settings.input.adf.fragments[frag_name + '_STOFIT'] = j(elstat_jobs['frag_' + frag_name + '_STOFIT'].workdir, 'adf.rkf')
             self.settings.input.adf.STOFIT = ''
-            self.settings.input.adf.PRINT = 'FmatSFO Elstat'
+            self.settings.input.adf.PRINT += ' Elstat'
             [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
             log.flow(log.Emojis.good + ' Submitting complex with STOFIT', ['split'])
             super().run()
