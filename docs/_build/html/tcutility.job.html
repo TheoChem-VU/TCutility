@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.job &#8212; TCutility v0.14.0 documentation</title>
+    <title>tcutility.job &#8212; TCutility v0.14.5 documentation</title>
   
   
   
@@ -37,13 +37,13 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=356883d0"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/documentation_options.js?v=6d611d6e"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/tabs.js?v=3030b3cb"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/tabs.js?v=3030b3cb"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tcutility.job';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -431,25 +431,55 @@ For example, if we want to run a simple geometry optimization using ADF we can u
 To handle the ADF settings you can refer to the GUI. For example, to use a specific functional simply enter the name of the functional as it appears in the ADF GUI. The same applies to pretty much all settings. The <a class="reference internal" href="api/tcutility.job.html#tcutility.job.adf.ADFJob" title="tcutility.job.adf.ADFJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADFJob</span></code></a> class will handle everything in the background for you.</p>
 <p>The job will be run in the <code class="docutils literal notranslate"><span class="pre">./calculations/GO_water_dimer</span></code> directory. The <a class="reference internal" href="api/tcutility.job.html#module-tcutility.job" title="tcutility.job"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tcutility.job</span></code></a> package will handle running of the calculation as well. It will detect if your platform supports slurm and if it does, will use <code class="docutils literal notranslate"><span class="pre">sbatch</span></code> to run your calculations. Otherwise, it will simply run the calculation locally.</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" name="UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" role="tab" tabindex="0">Runscript (<a class="reference download internal" download="" href="_downloads/d1984d07233b61c9fa5986aed5cd64fb/GO_water_dimer.py"><code class="xref download docutils literal notranslate"><span class="pre">󠀠download</span></code></a>)</button><button aria-controls="panel-0-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" name="WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" role="tab" tabindex="-1">XYZ-file (<a class="reference download internal" download="" href="_downloads/1a62c028c9da69253548783ae8a76070/water_dimer.xyz"><code class="xref download docutils literal notranslate"><span class="pre">󠀠download</span></code></a>)</button></div><div aria-labelledby="tab-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" class="sphinx-tabs-panel group-tab" id="panel-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" name="UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">tcutility.job</span> <span class="kn">import</span> <span class="n">ADFJob</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" name="UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" role="tab" tabindex="0">Runscript (<a class="reference download internal" download="" href="_downloads/d1984d07233b61c9fa5986aed5cd64fb/GO_water_dimer.py"><code class="xref download docutils literal notranslate"><span class="pre">󠀠download</span></code></a>)</button><button aria-controls="panel-0-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" name="WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" role="tab" tabindex="-1">XYZ-file (<a class="reference download internal" download="" href="_downloads/1a62c028c9da69253548783ae8a76070/water_dimer.xyz"><code class="xref download docutils literal notranslate"><span class="pre">󠀠download</span></code></a>)</button></div><div aria-labelledby="tab-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" class="sphinx-tabs-panel group-tab" id="panel-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" name="UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">pathlib</span> <span class="k">as</span> <span class="nn">pl</span>
 <span class="linenos"> 2</span>
-<span class="linenos"> 3</span><span class="c1"># define a new job using the Job context-manager</span>
-<span class="linenos"> 4</span><span class="k">with</span> <span class="n">ADFJob</span><span class="p">()</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
-<span class="linenos"> 5</span>	<span class="c1"># add the molecule</span>
-<span class="linenos"> 6</span>	<span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;water_dimer.xyz&#39;</span><span class="p">)</span>
-<span class="linenos"> 7</span>
-<span class="linenos"> 8</span>	<span class="c1"># set the rundir and name of the job, they will </span>
-<span class="linenos"> 9</span>	<span class="c1"># determine where the job will run</span>
-<span class="linenos">10</span>	<span class="n">job</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="s1">&#39;calculations&#39;</span>
-<span class="linenos">11</span>	<span class="n">job</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;GO_water_dimer&#39;</span>
-<span class="linenos">12</span>	
-<span class="linenos">13</span>	<span class="c1"># set the ADF settings</span>
-<span class="linenos">14</span>	<span class="n">job</span><span class="o">.</span><span class="n">functional</span><span class="p">(</span><span class="s1">&#39;BP86-D3(BJ)&#39;</span><span class="p">)</span>
-<span class="linenos">15</span>	<span class="n">job</span><span class="o">.</span><span class="n">basis_set</span><span class="p">(</span><span class="s1">&#39;TZ2P&#39;</span><span class="p">)</span>
-<span class="linenos">16</span>	<span class="n">job</span><span class="o">.</span><span class="n">quality</span><span class="p">(</span><span class="s1">&#39;Good&#39;</span><span class="p">)</span>
-<span class="linenos">17</span>
-<span class="linenos">18</span>	<span class="c1"># set the job task</span>
-<span class="linenos">19</span>	<span class="n">job</span><span class="o">.</span><span class="n">optimization</span><span class="p">()</span>
+<span class="linenos"> 3</span><span class="kn">from</span> <span class="nn">scm.plams</span> <span class="kn">import</span> <span class="n">AMSJob</span><span class="p">,</span> <span class="n">Molecule</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">finish</span><span class="p">,</span> <span class="n">init</span>
+<span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">tcutility.job</span> <span class="kn">import</span> <span class="n">ADFJob</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="n">current_file_path</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+<span class="linenos"> 7</span><span class="n">mol_path</span> <span class="o">=</span> <span class="n">current_file_path</span> <span class="o">/</span> <span class="s2">&quot;water_dimer.xyz&quot;</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="k">def</span> <span class="nf">try_plams_job</span><span class="p">(</span><span class="n">mol</span><span class="p">:</span> <span class="n">Molecule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="linenos">11</span>    <span class="c1"># Test case with plams for checking if plams works solely on Windows</span>
+<span class="linenos">12</span>    <span class="n">run_set</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
+<span class="linenos">13</span>    <span class="n">run_set</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">Task</span> <span class="o">=</span> <span class="s2">&quot;GeometryOptimization&quot;</span>
+<span class="linenos">14</span>    <span class="n">run_set</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">Basis</span><span class="o">.</span><span class="n">Type</span> <span class="o">=</span> <span class="s2">&quot;DZP&quot;</span>
+<span class="linenos">15</span>    <span class="n">run_set</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">XC</span><span class="o">.</span><span class="n">GGA</span> <span class="o">=</span> <span class="s2">&quot;BP86&quot;</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="n">config</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="linenos">18</span>    <span class="n">config</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>    <span class="n">init</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">current_file_path</span><span class="p">),</span> <span class="n">folder</span><span class="o">=</span><span class="s2">&quot;GO_water_dimer&quot;</span><span class="p">,</span> <span class="n">config_settings</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<span class="linenos">21</span>    <span class="n">AMSJob</span><span class="p">(</span><span class="n">molecule</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;water_dimer&quot;</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">run_set</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="linenos">22</span>    <span class="n">finish</span><span class="p">()</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span><span class="k">def</span> <span class="nf">try_tcutility_job</span><span class="p">(</span><span class="n">mol</span><span class="p">:</span> <span class="n">Molecule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="linenos">26</span>    <span class="c1"># Test case with tcutility for checking if tcutility works solely on Windows</span>
+<span class="linenos">27</span>    <span class="k">with</span> <span class="n">ADFJob</span><span class="p">(</span><span class="n">use_slurm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
+<span class="linenos">28</span>        <span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+<span class="linenos">29</span>        <span class="n">job</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_file_path</span> <span class="o">/</span> <span class="s2">&quot;calculations&quot;</span><span class="p">)</span>
+<span class="linenos">30</span>        <span class="n">job</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;GO_water_dimer&quot;</span>
+<span class="linenos">31</span>        <span class="n">job</span><span class="o">.</span><span class="n">functional</span><span class="p">(</span><span class="s2">&quot;BP86-D3(BJ)&quot;</span><span class="p">)</span>
+<span class="linenos">32</span>        <span class="n">job</span><span class="o">.</span><span class="n">basis_set</span><span class="p">(</span><span class="s2">&quot;TZ2P&quot;</span><span class="p">)</span>
+<span class="linenos">33</span>        <span class="n">job</span><span class="o">.</span><span class="n">quality</span><span class="p">(</span><span class="s2">&quot;Good&quot;</span><span class="p">)</span>
+<span class="linenos">34</span>        <span class="n">job</span><span class="o">.</span><span class="n">optimization</span><span class="p">()</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="linenos">38</span>    <span class="n">current_file_path</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+<span class="linenos">39</span>    <span class="n">mol_path</span> <span class="o">=</span> <span class="n">current_file_path</span> <span class="o">/</span> <span class="s2">&quot;water_dimer.xyz&quot;</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span>    <span class="n">mol</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">mol_path</span><span class="p">))</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span>    <span class="c1"># Use these functions to test if a plams and tcutility job can be run on Windows, Mac, and Linux. Both do not use slurm.</span>
+<span class="linenos">44</span>    <span class="n">try_plams_job</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+<span class="linenos">45</span>    <span class="n">try_tcutility_job</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+<span class="linenos">46</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="linenos">49</span>    <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-0-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" name="WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">6</span>
@@ -607,7 +637,7 @@ To handle the ADF settings you can refer to the GUI. For example, to use a speci
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>

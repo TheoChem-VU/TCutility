@@ -5,6 +5,14 @@ from scm import plams
 
 from tcutility import ensure_list
 from tcutility.results import result
+from tcutility.data import atom
+
+
+def number_of_electrons(mol: plams.Molecule) -> int:
+    nel = 0
+    for at in mol:
+        nel += atom.atom_number(at.symbol)
+    return nel
 
 
 def parse_str(s: str):
@@ -88,9 +96,9 @@ def load(path) -> plams.Molecule:
     for line in atom_lines:
         # parse every atom first
         symbol, x, y, z, *args = line.split()
-        atom = plams.Atom(symbol=symbol, coords=(float(x), float(y), float(z)))
-        atom.flags = parse_flags(args)
-        mol.add_atom(atom)
+        at = plams.Atom(symbol=symbol, coords=(float(x), float(y), float(z)))
+        at.flags = parse_flags(args)
+        mol.add_atom(at)
 
     # after the atoms we parse the flags for the molecule
     flag_lines = lines[natoms + 2 :]
@@ -98,6 +106,28 @@ def load(path) -> plams.Molecule:
     mol.flags = parse_flags(flag_lines)
 
     return mol
+
+def from_string(s: str) -> plams.Molecule:
+    mol = plams.Molecule()
+    for line in s.splitlines():
+        parts = [parse_str(part) for part in line.split()]
+        if len(parts) < 4:
+            continue
+
+        # check if first part is the symbol of the molecule
+        if not isinstance(parts[0], str) and len(parts[0]) > 2:
+            continue
+
+        # check if
+        if not all(isinstance(part, (float, int)) for part in parts[1:4]):
+            continue
+
+        atom = plams.Atom(symbol=parts[0], coords=parts[1:4])
+        mol.add_atom(atom)
+
+    return mol
+
+
 
 
 def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
@@ -189,12 +219,12 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         return result.Result(fragment_mols)
 
     # second method, check if the atoms have a frag= flag defined
-    fragment_names = set(atom.flags.get("frag") for atom in mol)
+    fragment_names = set(at.flags.get("frag") for at in mol)
     if len(fragment_names) > 0:
         fragment_mols = {name: plams.Molecule() for name in fragment_names}
-        for atom in mol:
+        for at in mol:
             # get the fragment the atom belongs to and add it to the list
-            fragment_mols[atom.flags.get("frag")].add_atom(atom)
+            fragment_mols[at.flags.get("frag")].add_atom(at)
 
         for frag in fragment_names:
             fragment_mols[frag].flags = {"tags": set()}
@@ -223,9 +253,9 @@ def _xyz_format(mol: plams.Molecule, include_n_atoms: bool = True) -> str:
     """
     n_atoms = len(mol.atoms)
     if include_n_atoms:
-        return f"{n_atoms}\n" + "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
+        return f"{n_atoms}\n" + "\n".join([f"{at.symbol:6s}{at.x:16.8f}{at.y:16.8f}{at.z:16.8f}" for at in mol.atoms])
 
-    return "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
+    return "\n".join([f"{at.symbol:6s}{at.x:16.8f}{at.y:16.8f}{at.z:16.8f}" for at in mol.atoms])
 
 
 def _amv_format(mol: plams.Molecule, step: int, energy: Union[float, None] = None) -> str:
@@ -240,8 +270,8 @@ def _amv_format(mol: plams.Molecule, step: int, energy: Union[float, None] = Non
 
     If no energy is provided, the energy is not included in the string representation"""
     if energy is None:
-        return f"Geometry {step}\n" + "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
-    return f"Geometry {step}, Energy: {energy} Ha\n" + "\n".join([f"{atom.symbol:6s}{atom.x:16.8f}{atom.y:16.8f}{atom.z:16.8f}" for atom in mol.atoms])
+        return f"Geometry {step}\n" + "\n".join([f"{at.symbol:6s}{at.x:16.8f}{at.y:16.8f}{at.z:16.8f}" for at in mol.atoms])
+    return f"Geometry {step}, Energy: {energy} Ha\n" + "\n".join([f"{at.symbol:6s}{at.x:16.8f}{at.y:16.8f}{at.z:16.8f}" for at in mol.atoms])
 
 
 def write_mol_to_xyz_file(mols: Union[List[plams.Molecule], plams.Molecule], filename: Union[str, pl.Path], include_n_atoms: bool = False) -> None:
@@ -276,9 +306,9 @@ def save(mol: plams.Molecule, path: str, comment: str = None):
     comment = comment or mol.comment if hasattr(mol, "comment") else ""
     with open(path, "w+") as f:
         f.write(f"{len(mol.atoms)}\n{comment}\n")
-        for atom in mol.atoms:
+        for at in mol.atoms:
             flags_str = ""
-            flags = atom.flags if hasattr(atom, "flags") else {}
+            flags = at.flags if hasattr(at, "flags") else {}
             for key, value in flags.items():
                 if key == "tags":
                     if len(value) > 0:
@@ -288,7 +318,7 @@ def save(mol: plams.Molecule, path: str, comment: str = None):
                 else:
                     flags_str += f"{key}={value} "
 
-            f.write(f"{atom.symbol}\t{atom.coords[0]: .10f}\t{atom.coords[1]: .10f}\t{atom.coords[2]: .10f}\t{flags_str}\n")
+            f.write(f"{at.symbol}\t{at.coords[0]: .10f}\t{at.coords[1]: .10f}\t{at.coords[2]: .10f}\t{flags_str}\n")
 
         f.write("\n")
 

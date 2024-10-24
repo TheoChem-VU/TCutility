@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility package &#8212; TCutility v0.14.0 documentation</title>
+    <title>tcutility package &#8212; TCutility v0.14.5 documentation</title>
   
   
   
@@ -37,13 +37,13 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=356883d0"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/documentation_options.js?v=6d611d6e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
-    <script src="../_static/tabs.js?v=3030b3cb"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/tabs.js?v=3030b3cb"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/tcutility';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -225,7 +225,7 @@
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.report.html">tcutility.report package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.results.html">tcutility.results package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.typing.html">tcutility.typing package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.tc_typing.html">tcutility.tc_typing package</a></li>
 </ul>
 </details></li>
 </ul>
@@ -599,10 +599,10 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tcutility.typing.html">tcutility.typing package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.typing.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.typing.html#module-tcutility.typing.arrays">tcutility.typing.arrays module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.typing.html#module-tcutility.typing">Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tcutility.tc_typing.html">tcutility.tc_typing package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.tc_typing.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.tc_typing.html#module-tcutility.tc_typing.arrays">tcutility.tc_typing.arrays module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.tc_typing.html#module-tcutility.tc_typing">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -673,6 +673,74 @@ Files will be stored in the platform dependent temporary file directory.</p>
 </section>
 <section id="module-tcutility.constants">
 <span id="tcutility-constants-module"></span><h2>tcutility.constants module<a class="headerlink" href="#module-tcutility.constants" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-tcutility.environment">
+<span id="tcutility-environment-module"></span><h2>tcutility.environment module<a class="headerlink" href="#module-tcutility.environment" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tcutility.environment.OSName">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OSName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/environment.html#OSName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.environment.OSName" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>An enumeration of the different operating systems.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tcutility.environment.OSName.WINDOWS">
+<span class="sig-name descname"><span class="pre">WINDOWS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#tcutility.environment.OSName.WINDOWS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tcutility.environment.OSName.LINUX">
+<span class="sig-name descname"><span class="pre">LINUX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#tcutility.environment.OSName.LINUX" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tcutility.environment.OSName.MACOS">
+<span class="sig-name descname"><span class="pre">MACOS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#tcutility.environment.OSName.MACOS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.environment.get_os_name">
+<span class="sig-name descname"><span class="pre">get_os_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/environment.html#get_os_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.environment.get_os_name" title="Link to this definition">#</a></dt>
+<dd><p>Get the name of the operating system. Returns a value from the <a class="reference internal" href="#tcutility.environment.OSName" title="tcutility.environment.OSName"><code class="xref py py-class docutils literal notranslate"><span class="pre">OSName</span></code></a> enumeration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.environment.OSName" title="tcutility.environment.OSName"><code class="xref py py-class docutils literal notranslate"><span class="pre">OSName</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-tcutility.errors">
+<span id="tcutility-errors-module"></span><h2>tcutility.errors module<a class="headerlink" href="#module-tcutility.errors" title="Link to this heading">#</a></h2>
+<p>Module containing errors to distinguish between tcutility-specific errors and general python errors from other packages / scripts.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="tcutility.errors.TCError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TCError</span></span><a class="reference internal" href="../_modules/tcutility/errors.html#TCError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.errors.TCError" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Base class for all errors in the tcutility package.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="tcutility.errors.TCJobError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TCJobError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/errors.html#TCJobError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.errors.TCJobError" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tcutility.errors.TCError" title="tcutility.errors.TCError"><code class="xref py py-class docutils literal notranslate"><span class="pre">TCError</span></code></a></p>
+<p>An error that occurs when a job fails to run properly.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="tcutility.errors.TCMoleculeError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TCMoleculeError</span></span><a class="reference internal" href="../_modules/tcutility/errors.html#TCMoleculeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.errors.TCMoleculeError" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tcutility.errors.TCError" title="tcutility.errors.TCError"><code class="xref py py-class docutils literal notranslate"><span class="pre">TCError</span></code></a></p>
+<p>An error that occurs when a molecule is not in a valid state.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="tcutility.errors.TCCompDetailsError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TCCompDetailsError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/errors.html#TCCompDetailsError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.errors.TCCompDetailsError" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tcutility.errors.TCError" title="tcutility.errors.TCError"><code class="xref py py-class docutils literal notranslate"><span class="pre">TCError</span></code></a></p>
+<p>An error that occurs when the computation details are not in a valid state. It expects a section such as a “Functional” or “Basis set” and a message.</p>
+</dd></dl>
+
 </section>
 <section id="module-tcutility.formula">
 <span id="tcutility-formula-module"></span><h2>tcutility.formula module<a class="headerlink" href="#module-tcutility.formula" title="Link to this heading">#</a></h2>
@@ -1326,6 +1394,31 @@ This file is deleted after exiting the context-manager.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="tcutility.log.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\\n'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.log" title="Link to this definition">#</a></dt>
+<dd><p>Print a nicely formatteed message.
+This function adds the current timestamp and supports multi-line printing (split on the <code class="docutils literal notranslate"><span class="pre">\n</span></code> escape character).
+For verbosity levels we use the following convention:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NOTSET</span>   <span class="o">=</span> <span class="mi">0</span>
+<span class="n">DEBUG</span>    <span class="o">=</span> <span class="mi">10</span>
+<span class="n">INFO</span>     <span class="o">=</span> <span class="mi">20</span>
+<span class="n">WARN</span>     <span class="o">=</span> <span class="mi">30</span>
+<span class="n">ERROR</span>    <span class="o">=</span> <span class="mi">40</span>
+<span class="n">CRITICAL</span> <span class="o">=</span> <span class="mi">50</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span>) – the message to send. Before printing we will use the <code class="docutils literal notranslate"><span class="pre">message.__str__</span></code> method to get the string representation. If the message is a <code class="docutils literal notranslate"><span class="pre">dict</span></code> we use the <code class="docutils literal notranslate"><span class="pre">json</span></code> module to format the message nicely.</p></li>
+<li><p><strong>level</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – the level to print the message at. We compare the level against the module-wide <code class="docutils literal notranslate"><span class="pre">log_level</span></code> variable (by default <code class="docutils literal notranslate"><span class="pre">log_level</span> <span class="pre">=</span> <span class="pre">20</span></code>). If the level is below <code class="docutils literal notranslate"><span class="pre">log_level</span></code> we do not print it.</p></li>
+<li><p><strong>end</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the end of the string. This is usually the new-line character <code class="docutils literal notranslate"><span class="pre">\n</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="tcutility.log.flow">
 <span class="sig-name descname"><span class="pre">flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['straight']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#flow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.flow" title="Link to this definition">#</a></dt>
 <dd><p>Function to create flowchart-like output.
@@ -1374,14 +1467,14 @@ This is similar to what the ls program does in unix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sequence</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></span>) – any iterable sequence. Should define the <code class="docutils literal notranslate"><span class="pre">__len__</span></code> method.</p></li>
+<li><p><strong>sequence</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">T</span></code>)], <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">T</span></code>)]]</span>) – any iterable sequence. Should define the <code class="docutils literal notranslate"><span class="pre">__len__</span></code> method.</p></li>
 <li><p><strong>comment</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – a string to be printed at the end of the loading bar to give information about the loading bar.</p></li>
 <li><p><strong>Nsegments</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – length of the loading bar in characters.</p></li>
 <li><p><strong>Nsteps</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – number of times to print the loading bar during iteration. If the output is a tty-type stream Nsteps will be set to the length of sequence.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code>(<code class="docutils literal notranslate"><span class="pre">T</span></code>), <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1402,7 +1495,7 @@ This is similar to what the ls program does in unix.</p>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The printed message in strings format.</p>
@@ -1457,34 +1550,19 @@ This is similar to what the ls program does in unix.</p>
 </dl>
 </dd></dl>
 
+</section>
+<section id="module-tcutility.molecule">
+<span id="tcutility-molecule-module"></span><h2>tcutility.molecule module<a class="headerlink" href="#module-tcutility.molecule" title="Link to this heading">#</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="tcutility.log.log">
-<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\\n'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/log.html#log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.log.log" title="Link to this definition">#</a></dt>
-<dd><p>Print a nicely formatteed message.
-This function adds the current timestamp and supports multi-line printing (split on the <code class="docutils literal notranslate"><span class="pre">\n</span></code> escape character).
-For verbosity levels we use the following convention:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NOTSET</span>   <span class="o">=</span> <span class="mi">0</span>
-<span class="n">DEBUG</span>    <span class="o">=</span> <span class="mi">10</span>
-<span class="n">INFO</span>     <span class="o">=</span> <span class="mi">20</span>
-<span class="n">WARN</span>     <span class="o">=</span> <span class="mi">30</span>
-<span class="n">ERROR</span>    <span class="o">=</span> <span class="mi">40</span>
-<span class="n">CRITICAL</span> <span class="o">=</span> <span class="mi">50</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span>) – the message to send. Before printing we will use the <code class="docutils literal notranslate"><span class="pre">message.__str__</span></code> method to get the string representation. If the message is a <code class="docutils literal notranslate"><span class="pre">dict</span></code> we use the <code class="docutils literal notranslate"><span class="pre">json</span></code> module to format the message nicely.</p></li>
-<li><p><strong>level</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – the level to print the message at. We compare the level against the module-wide <code class="docutils literal notranslate"><span class="pre">log_level</span></code> variable (by default <code class="docutils literal notranslate"><span class="pre">log_level</span> <span class="pre">=</span> <span class="pre">20</span></code>). If the level is below <code class="docutils literal notranslate"><span class="pre">log_level</span></code> we do not print it.</p></li>
-<li><p><strong>end</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the end of the string. This is usually the new-line character <code class="docutils literal notranslate"><span class="pre">\n</span></code>.</p></li>
-</ul>
+<dt class="sig sig-object py" id="tcutility.molecule.number_of_electrons">
+<span class="sig-name descname"><span class="pre">number_of_electrons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#number_of_electrons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.number_of_electrons" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
 
-</section>
-<section id="module-tcutility.molecule">
-<span id="tcutility-molecule-module"></span><h2>tcutility.molecule module<a class="headerlink" href="#module-tcutility.molecule" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.molecule.parse_str">
 <span class="sig-name descname"><span class="pre">parse_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#parse_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.parse_str" title="Link to this definition">#</a></dt>
@@ -1975,8 +2053,20 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 <dd></dd></dl>
 
 </section>
-<section id="tcutility-timer-module">
-<h2>tcutility.timer module<a class="headerlink" href="#tcutility-timer-module" title="Link to this heading">#</a></h2>
+<section id="module-tcutility.timer">
+<span id="tcutility-timer-module"></span><h2>tcutility.timer module<a class="headerlink" href="#module-tcutility.timer" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tcutility.timer.timer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">timer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/timer.html#timer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.timer.timer" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The main timer class. It acts both as a context-manager and decorator.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.timer.print_timings">
+<span class="sig-name descname"><span class="pre">print_timings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/timer.html#print_timings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.timer.print_timings" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-tcutility">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tcutility" title="Link to this heading">#</a></h2>
@@ -2057,6 +2147,23 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.constants">tcutility.constants module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.environment">tcutility.environment module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.environment.OSName"><code class="docutils literal notranslate"><span class="pre">OSName</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.environment.OSName.WINDOWS"><code class="docutils literal notranslate"><span class="pre">OSName.WINDOWS</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.environment.OSName.LINUX"><code class="docutils literal notranslate"><span class="pre">OSName.LINUX</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.environment.OSName.MACOS"><code class="docutils literal notranslate"><span class="pre">OSName.MACOS</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.environment.get_os_name"><code class="docutils literal notranslate"><span class="pre">get_os_name()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.errors">tcutility.errors module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.errors.TCError"><code class="docutils literal notranslate"><span class="pre">TCError</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.errors.TCJobError"><code class="docutils literal notranslate"><span class="pre">TCJobError</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.errors.TCMoleculeError"><code class="docutils literal notranslate"><span class="pre">TCMoleculeError</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.errors.TCCompDetailsError"><code class="docutils literal notranslate"><span class="pre">TCCompDetailsError</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.formula">tcutility.formula module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.formula.parse_molecule"><code class="docutils literal notranslate"><span class="pre">parse_molecule()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.formula.molecule"><code class="docutils literal notranslate"><span class="pre">molecule()</span></code></a></li>
@@ -2117,6 +2224,7 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.NoPrint"><code class="docutils literal notranslate"><span class="pre">NoPrint</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.time_stamp"><code class="docutils literal notranslate"><span class="pre">time_stamp()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.log"><code class="docutils literal notranslate"><span class="pre">log()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.flow"><code class="docutils literal notranslate"><span class="pre">flow()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.table"><code class="docutils literal notranslate"><span class="pre">table()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.rectangle_list"><code class="docutils literal notranslate"><span class="pre">rectangle_list()</span></code></a></li>
@@ -2128,10 +2236,10 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.error"><code class="docutils literal notranslate"><span class="pre">error()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.critical"><code class="docutils literal notranslate"><span class="pre">critical()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.caller_name"><code class="docutils literal notranslate"><span class="pre">caller_name()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.log.log"><code class="docutils literal notranslate"><span class="pre">log()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.molecule">tcutility.molecule module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.molecule.number_of_electrons"><code class="docutils literal notranslate"><span class="pre">number_of_electrons()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.molecule.parse_str"><code class="docutils literal notranslate"><span class="pre">parse_str()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.molecule.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.molecule.guess_fragments"><code class="docutils literal notranslate"><span class="pre">guess_fragments()</span></code></a></li>
@@ -2163,7 +2271,11 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.spell_check.check"><code class="docutils literal notranslate"><span class="pre">check()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility-timer-module">tcutility.timer module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.timer">tcutility.timer module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.timer.timer"><code class="docutils literal notranslate"><span class="pre">timer</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.timer.print_timings"><code class="docutils literal notranslate"><span class="pre">print_timings()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility">Module contents</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.ensure_list"><code class="docutils literal notranslate"><span class="pre">ensure_list()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.squeeze_list"><code class="docutils literal notranslate"><span class="pre">squeeze_list()</span></code></a></li>
@@ -2216,7 +2328,7 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>

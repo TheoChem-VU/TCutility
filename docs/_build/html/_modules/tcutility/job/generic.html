@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.job.generic &#8212; TCutility v0.14.0 documentation</title>
+    <title>tcutility.job.generic &#8212; TCutility v0.14.5 documentation</title>
   
   
   
@@ -29,19 +29,17 @@
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../_static/documentation_options.js?v=356883d0"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/documentation_options.js?v=6d611d6e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/tabs.js?v=3030b3cb"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tcutility/job/generic';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -256,41 +254,46 @@
                 <article class="bd-article">
                   
   <h1>Source code for tcutility.job.generic</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">slurm</span><span class="p">,</span> <span class="n">molecule</span>
-<span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">stat</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
-<span class="kn">from</span> <span class="nn">scm</span> <span class="kn">import</span> <span class="n">plams</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">import</span> <span class="nn">dictfunc</span> 
+<span class="kn">import</span> <span class="nn">stat</span>
+<span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">dictfunc</span>
+<span class="kn">from</span> <span class="nn">scm</span> <span class="kn">import</span> <span class="n">plams</span>
+
+<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">slurm</span>
+<span class="kn">from</span> <span class="nn">tcutility.environment</span> <span class="kn">import</span> <span class="n">OSName</span><span class="p">,</span> <span class="n">get_os_name</span>
+<span class="kn">from</span> <span class="nn">tcutility.errors</span> <span class="kn">import</span> <span class="n">TCJobError</span>
 
 <span class="n">j</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
 
 
 <span class="k">def</span> <span class="nf">_python_path</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sometimes it is necessary to have the Python path as some environments don&#39;t have its path.</span>
 <span class="sd">    This function attempts to find the Python path and returns it.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">python</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;which python&#39;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">python</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;which python&quot;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">python</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">python</span><span class="p">):</span>
-        <span class="n">python</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;which python3&#39;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">python</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">python</span><span class="p">):</span>
+        <span class="n">python</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;which python3&quot;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
-    <span class="c1"># we default to the python executable </span>
-    <span class="k">if</span> <span class="n">python</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">python</span><span class="p">):</span>
-        <span class="n">python</span> <span class="o">=</span> <span class="s1">&#39;python&#39;</span>
+    <span class="c1"># we default to the python executable</span>
+    <span class="k">if</span> <span class="n">python</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">python</span><span class="p">):</span>
+        <span class="n">python</span> <span class="o">=</span> <span class="s2">&quot;python&quot;</span>
 
     <span class="k">return</span> <span class="n">python</span>
+
 
 <div class="viewcode-block" id="Job">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job">[docs]</a>
 <span class="k">class</span> <span class="nc">Job</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;This is the base Job class used to build more advanced classes such as :class:`AMSJob &lt;tcutility.job.ams.AMSJob&gt;` and :class:`ORCAJob &lt;tcutility.job.orca.ORCAJob&gt;`.</span>
-<span class="sd">    The base class contains an empty :class:`Result &lt;tcutility.results.result.Result&gt;` object that holds the settings. </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is the base Job class used to build more advanced classes such as :class:`AMSJob &lt;tcutility.job.ams.AMSJob&gt;` and :class:`ORCAJob &lt;tcutility.job.orca.ORCAJob&gt;`.</span>
+<span class="sd">    The base class contains an empty :class:`Result &lt;tcutility.results.result.Result&gt;` object that holds the settings.</span>
 <span class="sd">    It also provides :meth:`__enter__` and :meth:`__exit__` methods to make use of context manager syntax.</span>
-<span class="sd">    </span>
+
 <span class="sd">    All class methods are in principle safe to overwrite, but the :meth:`_setup_job` method **must** be overwritten.</span>
 
 <span class="sd">    Args:</span>
@@ -298,14 +301,17 @@
 <span class="sd">        overwrite: whether to overwrite a previously run job in the same working directory.</span>
 <span class="sd">        wait_for_finish: whether to wait for this job to finish running before continuing your runscript.</span>
 <span class="sd">        delete_on_finish: whether to remove the workdir for this job after it is finished running.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">base_jobs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;Job&#39;</span><span class="p">],</span> <span class="n">test_mode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wait_for_finish</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">delete_on_finish</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">delete_on_fail</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">base_jobs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;Job&quot;</span><span class="p">],</span> <span class="n">test_mode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">wait_for_finish</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">delete_on_finish</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">delete_on_fail</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_slurm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_molecule_path</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slurm_job_id</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;calc&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="s1">&#39;tmp&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;calc&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="s2">&quot;tmp&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_preambles</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_postambles</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_postscripts</span> <span class="o">=</span> <span class="p">[]</span>
@@ -314,6 +320,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="n">overwrite</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_finish</span> <span class="o">=</span> <span class="n">wait_for_finish</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delete_on_finish</span> <span class="o">=</span> <span class="n">delete_on_finish</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_slurm</span> <span class="o">=</span> <span class="n">use_slurm</span>
 
         <span class="c1"># update this job with base_jobs</span>
         <span class="k">for</span> <span class="n">base_job</span> <span class="ow">in</span> <span class="n">base_jobs</span><span class="p">:</span>
@@ -324,6 +331,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_finish</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_finish</span> <span class="k">if</span> <span class="n">wait_for_finish</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">wait_for_finish</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delete_on_finish</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_on_finish</span> <span class="k">if</span> <span class="n">delete_on_finish</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">delete_on_finish</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delete_on_fail</span> <span class="o">=</span> <span class="n">delete_on_fail</span> <span class="k">if</span> <span class="n">delete_on_fail</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">delete_on_fail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_slurm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_slurm</span> <span class="k">if</span> <span class="n">use_slurm</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">use_slurm</span>
 
     <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -338,16 +346,16 @@
 <div class="viewcode-block" id="Job.can_skip">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.can_skip">[docs]</a>
     <span class="k">def</span> <span class="nf">can_skip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check whether the job can be skipped. We check this by loading the calculation and checking if the job status was fatal.</span>
 <span class="sd">        Fatal in this case means that the job failed, canceled or could not be found. In those cases we want to run the job.</span>
 
 <span class="sd">        .. note::</span>
-<span class="sd">            This method works for the :class:`ADFJob &lt;tcutility.job.adf.ADFJob&gt;`, :class:`ADFFragmentJob &lt;tcutility.job.adf.ADFFragmentJob&gt;`, </span>
+<span class="sd">            This method works for the :class:`ADFJob &lt;tcutility.job.adf.ADFJob&gt;`, :class:`ADFFragmentJob &lt;tcutility.job.adf.ADFFragmentJob&gt;`,</span>
 <span class="sd">            :class:`DFTBJob &lt;tcutility.job.dftb.DFTBJob&gt;` and :class:`ORCAJob &lt;tcutility.job.orca.ORCAJob&gt;` objects, but not</span>
-<span class="sd">            yet for :class:`CRESTJob &lt;tcutility.job.crest.CRESTJob&gt;` and :class:`QCGJob &lt;tcutility.job.crest.QCGJob&gt;`. For the latter objects the job will always be rerun. </span>
+<span class="sd">            yet for :class:`CRESTJob &lt;tcutility.job.crest.CRESTJob&gt;` and :class:`QCGJob &lt;tcutility.job.crest.QCGJob&gt;`. For the latter objects the job will always be rerun.</span>
 <span class="sd">            This will be fixed in a later version of TCutility.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">)</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">fatal</span></div>
 
@@ -355,21 +363,21 @@
 <div class="viewcode-block" id="Job.in_queue">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.in_queue">[docs]</a>
     <span class="k">def</span> <span class="nf">in_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check whether the job is currently managed by slurm.</span>
 <span class="sd">        We check this by loading the calculation and checking if the job status is &#39;RUNNING&#39;, &#39;COMPLETING&#39;, &#39;CONFIGURING&#39; or &#39;PENDING&#39;.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;RUNNING&#39;</span><span class="p">,</span> <span class="s1">&#39;COMPLETING&#39;</span><span class="p">,</span> <span class="s1">&#39;CONFIGURING&#39;</span><span class="p">,</span> <span class="s1">&#39;PENDING&#39;</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;RUNNING&quot;</span><span class="p">,</span> <span class="s2">&quot;COMPLETING&quot;</span><span class="p">,</span> <span class="s2">&quot;CONFIGURING&quot;</span><span class="p">,</span> <span class="s2">&quot;PENDING&quot;</span><span class="p">]</span></div>
 
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s1">(name=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">, rundir=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="si">}</span><span class="s1">)&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">(name=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, rundir=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="si">}</span><span class="s2">)&quot;</span>
 
 <div class="viewcode-block" id="Job.sbatch">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.sbatch">[docs]</a>
     <span class="k">def</span> <span class="nf">sbatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Change slurm settings, for example, to change the partition or change the number of cores to use.</span>
 <span class="sd">        The arguments are the same as you would use for sbatch (`see sbatch manual &lt;https://slurm.schedmd.com/sbatch.html&gt;`_). E.g. to change the partition to &#39;tc&#39; call:</span>
 
@@ -393,59 +401,59 @@
 <span class="sd">            * ``-o/--output {self.name}.out``              to redirect the output from the default slurm-{id}.out</span>
 
 <span class="sd">            You can still overwrite them if you wish.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;dependency&#39;</span> <span class="ow">and</span> <span class="s1">&#39;dependency&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="p">[</span><span class="s1">&#39;dependency&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="n">value</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;dependency&quot;</span> <span class="ow">and</span> <span class="s2">&quot;dependency&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="p">[</span><span class="s2">&quot;dependency&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="n">value</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
 
 
     <span class="k">def</span> <span class="nf">_setup_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set up the current job. This method should create the working directory, runscript and input file.</span>
 <span class="sd">        Method must return True if it was successful.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">NotImplemented</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;You must implement the _setup_job method in your subclass.&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Job.run">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.run">[docs]</a>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run this job. We detect if we are using slurm. If we are we submit this job using sbatch. Otherwise, we will run the job locally.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_skip</span><span class="p">():</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Skipping calculation </span><span class="si">{</span><span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s1">, it is already finished or currently pending or running.&#39;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skipping calculation </span><span class="si">{</span><span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">, it is already finished or currently pending or running.&quot;</span><span class="p">)</span>
             <span class="k">return</span>
 
         <span class="c1"># write the post-script calls to the post-ambles:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_on_finish</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_postamble</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;rm -r </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_postamble</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rm -r </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_on_fail</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_postamble</span><span class="p">(</span><span class="s1">&#39;# this will delete the calculation if it failed&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_postamble</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;if [[ `tc read -s </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s1">` = FAILED || `tc read -s </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s1">` = UNKNOWN ]]; then rm -r </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s1">; fi;&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_postamble</span><span class="p">(</span><span class="s2">&quot;# this will delete the calculation if it failed&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_postamble</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;if [[ `tc read -s </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s2">` = FAILED || `tc read -s </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s2">` = UNKNOWN ]]; then rm -r </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s2">; fi;&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">postscript</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_postscripts</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_postambles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_python_path</span><span class="p">()</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">postscript</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">postscript</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-            
+
         <span class="c1"># setup the job and check if it was successfull</span>
         <span class="n">setup_success</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_job</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_mode</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">setup_success</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="k">if</span> <span class="n">slurm</span><span class="o">.</span><span class="n">has_slurm</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">slurm</span><span class="o">.</span><span class="n">has_slurm</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_slurm</span><span class="p">:</span>
             <span class="c1"># set some default sbatch settings</span>
-            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">option</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span> <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;chdir&#39;</span><span class="p">]):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">option</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span> <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;job_name&#39;</span><span class="p">]):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">option</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span> <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">]):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.out&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">option</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span> <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;chdir&quot;</span><span class="p">]):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">option</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span> <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="s2">&quot;job_name&quot;</span><span class="p">]):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">option</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span> <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.out&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">prune</span><span class="p">()</span>
 
             <span class="c1"># submit the job with sbatch</span>
@@ -454,55 +462,65 @@
             <span class="c1"># store the slurm job ID</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">slurm_job_id</span> <span class="o">=</span> <span class="n">sbatch_result</span><span class="o">.</span><span class="n">id</span>
             <span class="c1"># and write the command to a file so we can rerun it later</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s1">&#39;submit.sh&#39;</span><span class="p">),</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cmd_file</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s2">&quot;submit.sh&quot;</span><span class="p">),</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cmd_file</span><span class="p">:</span>
                 <span class="n">cmd_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sbatch_result</span><span class="o">.</span><span class="n">command</span><span class="p">)</span>
             <span class="c1"># make the submit command executable</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s1">&#39;submit.sh&#39;</span><span class="p">),</span> <span class="n">stat</span><span class="o">.</span><span class="n">S_IRWXU</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s2">&quot;submit.sh&quot;</span><span class="p">),</span> <span class="n">stat</span><span class="o">.</span><span class="n">S_IRWXU</span><span class="p">)</span>
 
             <span class="c1"># if we requested the job to hold we will wait for the slurm job to finish</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_finish</span><span class="p">:</span>
                 <span class="n">slurm</span><span class="o">.</span><span class="n">wait_for_job</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="n">os_name</span> <span class="o">=</span> <span class="n">get_os_name</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">os_name</span> <span class="o">==</span> <span class="n">OSName</span><span class="o">.</span><span class="n">WINDOWS</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TCJobError</span><span class="p">(</span><span class="s2">&quot;Generic Job&quot;</span><span class="p">,</span> <span class="s2">&quot;Running jobs on Windows is not supported.&quot;</span><span class="p">)</span>
+
             <span class="c1"># if we are not using slurm, we can execute the file. For this we need special permissions, so we have to set that first.</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runfile_path</span><span class="p">,</span> <span class="n">stat</span><span class="o">.</span><span class="n">S_IRWXU</span><span class="p">)</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runfile_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.out&#39;</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
-                <span class="n">sp</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runfile_path</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runfile_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">out</span><span class="p">)</span></div>
+            <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runfile_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runfile_path</span><span class="p">)</span><span class="o">.</span><span class="n">st_mode</span> <span class="o">|</span> <span class="n">stat</span><span class="o">.</span><span class="n">S_IEXEC</span><span class="p">)</span>
+
+            <span class="n">runfile_dir</span><span class="p">,</span> <span class="n">runscript</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runfile_path</span><span class="p">)</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;./&quot;</span> <span class="o">+</span> <span class="n">runscript</span><span class="p">]</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;posix&quot;</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;sh&quot;</span><span class="p">,</span> <span class="n">runscript</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running command: </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2"> in directory: </span><span class="si">{</span><span class="n">runfile_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runfile_path</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.out&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+                <span class="n">sp</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">runfile_dir</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">out</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Job.add_preamble">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.add_preamble">[docs]</a>
     <span class="k">def</span> <span class="nf">add_preamble</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a preamble for the runscript. This should come after the shebang, but before the calculation is ran by the program (ADF or ORCA).</span>
 <span class="sd">        This can used, for example, to load some modules. E.g. to load a specific version of AMS we can call:</span>
 <span class="sd">        job.add_preamble(&#39;module load ams/2023.101&#39;)</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_preambles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Job.add_postamble">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.add_postamble">[docs]</a>
     <span class="k">def</span> <span class="nf">add_postamble</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a postamble for the runscript. This should come after the calculation is ran by the program (ADF or ORCA).</span>
 <span class="sd">        This can be used, for example, to remove or copy some files. E.g. to remove all t12.* files we can call:</span>
 <span class="sd">        job.add_postamble(&#39;rm t12.*&#39;)</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_postambles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Job.add_postscript">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.add_postscript">[docs]</a>
     <span class="k">def</span> <span class="nf">add_postscript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Add a post-script to this calculation. </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a post-script to this calculation.</span>
 <span class="sd">        This should be either a Python module with a __file__ attribute or the path to a Python script.</span>
 <span class="sd">        The post-script will be called with Python and any given args will be added as arguments when calling the script.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            script: a Python object with a __file__ attribute or the file-path to a script.</span>
 <span class="sd">            *args: positional arguments to pass to the post-script.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">script</span> <span class="o">=</span> <span class="n">script</span><span class="o">.</span><span class="vm">__file__</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_postscripts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">script</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span></div>
@@ -510,57 +528,57 @@
 
 <div class="viewcode-block" id="Job.dependency">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.dependency">[docs]</a>
-    <span class="k">def</span> <span class="nf">dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">otherjob</span><span class="p">:</span> <span class="s1">&#39;Job&#39;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Set a dependency between this job and otherjob. </span>
+    <span class="k">def</span> <span class="nf">dependency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">otherjob</span><span class="p">:</span> <span class="s2">&quot;Job&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set a dependency between this job and otherjob.</span>
 <span class="sd">        This means that this job will run after the other job is finished running succesfully.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">otherjob</span><span class="o">.</span><span class="n">can_skip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">otherjob</span><span class="o">.</span><span class="n">in_queue</span><span class="p">():</span>
             <span class="k">return</span>
-            
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">otherjob</span><span class="p">,</span> <span class="s1">&#39;slurm_job_id&#39;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">dependency</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;afterok:</span><span class="si">{</span><span class="n">otherjob</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">kill_on_invalid_dep</span><span class="o">=</span><span class="s1">&#39;Yes&#39;</span><span class="p">)</span></div>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">otherjob</span><span class="p">,</span> <span class="s2">&quot;slurm_job_id&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">dependency</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;afterok:</span><span class="si">{</span><span class="n">otherjob</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">kill_on_invalid_dep</span><span class="o">=</span><span class="s2">&quot;Yes&quot;</span><span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">workdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The working directory of this job. All important files are written here, for example the input file and runscript.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">j</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">runfile_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The file path to the runscript of this job.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.run&#39;</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.run&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">inputfile_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The file path to the input file of this job.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">.in&#39;</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.in&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">output_mol_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method should return the name of the output molecule if it makes sense to give it back.</span>
 <span class="sd">        E.g. for ADF it will be output.xyz in the workdir for optimization jobs.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">NotImplemented</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;You must implement the _setup_job method in your subclass.&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Job.molecule">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.molecule">[docs]</a>
-    <span class="k">def</span> <span class="nf">molecule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">]]):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">molecule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">]]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a molecule to this calculation in various formats.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            mol: the molecule to read, can be a path (str). If the path exists already we read it. If it does not exist yet, it will be read in later. mol can also be a plams.Molecule object or a single or a list of plams.Atom objects.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="n">mol</span>
 
@@ -582,9 +600,9 @@
 <div class="viewcode-block" id="Job.copy">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.copy">[docs]</a>
     <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Make and return a copy of this object. </span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make and return a copy of this object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">copy</span>
 
         <span class="n">cp</span> <span class="o">=</span> <span class="n">Job</span><span class="p">()</span>
@@ -647,7 +665,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>

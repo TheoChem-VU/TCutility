@@ -1,8 +1,9 @@
 files.root
 files.log
 files.err
-files.ams.rkf
+files.out
 files.adf.rkf
+files.ams.rkf
 engine
 input.Task
 input.properties.NormalModes
@@ -56,7 +57,7 @@ adf.charge
 adf.spin_polarization
 adf.multiplicity
 properties.energy.bond
-properties.energy.elstat
+properties.energy.elstat.total
 properties.energy.orbint.total
 properties.energy.orbint.correction
 properties.energy.orbint.AA

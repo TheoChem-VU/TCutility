@@ -12,7 +12,7 @@ Subpackages
    tcutility.job
    tcutility.report
    tcutility.results
-   tcutility.typing
+   tcutility.tc_typing
 
 Submodules
 ----------
@@ -37,6 +37,22 @@ tcutility.constants module
 --------------------------
 
 .. automodule:: tcutility.constants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tcutility.environment module
+----------------------------
+
+.. automodule:: tcutility.environment
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tcutility.errors module
+-----------------------
+
+.. automodule:: tcutility.errors
    :members:
    :undoc-members:
    :show-inheritance:

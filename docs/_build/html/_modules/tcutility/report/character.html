@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.report.character &#8212; TCutility v0.14.0 documentation</title>
+    <title>tcutility.report.character &#8212; TCutility v0.14.5 documentation</title>
   
   
   
@@ -29,19 +29,17 @@
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../_static/documentation_options.js?v=356883d0"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/documentation_options.js?v=6d611d6e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/tabs.js?v=3030b3cb"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tcutility/report/character';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -257,45 +255,46 @@
                   
   <h1>Source code for tcutility.report.character</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
+
 <span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">cache</span><span class="p">,</span> <span class="n">log</span>
 
 
 <span class="k">def</span> <span class="nf">_load_data</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Load character width data. It is stored in a file where each line is formatted as:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load character width data. It is stored in a file where each line is formatted as:</span>
 
-<span class="sd">		{font} {character} {width}</span>
+<span class="sd">            {font} {character} {width}</span>
 
-<span class="sd">	Font names that originally contained spaces, for example &quot;Times New Roman&quot;, will have the spaces replaced</span>
-<span class="sd">	by underscores.</span>
-<span class="sd">	</span>
-<span class="sd">	Returns:</span>
-<span class="sd">		We return a nested dictionary with the first key being the font and the nested key the characters.</span>
-<span class="sd">		The widths are given in pixel sizes and are for font-size 1.</span>
-<span class="sd">	&#39;&#39;&#39;</span>
-	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;_char_widths.txt&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">widths</span><span class="p">:</span>
-		<span class="n">lines</span> <span class="o">=</span> <span class="n">widths</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+<span class="sd">    Font names that originally contained spaces, for example &quot;Times New Roman&quot;, will have the spaces replaced</span>
+<span class="sd">    by underscores.</span>
 
-	<span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
-	<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
-		<span class="c1"># we split each line into parts by white space</span>
-		<span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-		<span class="c1"># if there are only 2 parts, that means that the character was a space</span>
-		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-			<span class="n">font</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">parts</span>
-			<span class="n">character</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="n">font</span><span class="p">,</span> <span class="n">character</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="sd">    Returns:</span>
+<span class="sd">            We return a nested dictionary with the first key being the font and the nested key the characters.</span>
+<span class="sd">            The widths are given in pixel sizes and are for font-size 1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;_char_widths.txt&quot;</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">widths</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">widths</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
 
-		<span class="c1"># fonts that contain spaces in the name had the spaces replaced by underscores</span>
-		<span class="c1"># here we restore the original spaces</span>
-		<span class="n">font</span> <span class="o">=</span> <span class="n">font</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
-		<span class="n">width</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="c1"># we split each line into parts by white space</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="c1"># if there are only 2 parts, that means that the character was a space</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">font</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">parts</span>
+            <span class="n">character</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">font</span><span class="p">,</span> <span class="n">character</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
 
-		<span class="n">ret</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="p">{})</span>
-		<span class="n">ret</span><span class="p">[</span><span class="n">font</span><span class="p">][</span><span class="n">character</span><span class="p">]</span> <span class="o">=</span> <span class="n">width</span>
-	
-	<span class="k">return</span> <span class="n">ret</span>
+        <span class="c1"># fonts that contain spaces in the name had the spaces replaced by underscores</span>
+        <span class="c1"># here we restore the original spaces</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="n">font</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
+
+        <span class="n">ret</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">ret</span><span class="p">[</span><span class="n">font</span><span class="p">][</span><span class="n">character</span><span class="p">]</span> <span class="o">=</span> <span class="n">width</span>
+
+    <span class="k">return</span> <span class="n">ret</span>
 
 
 <span class="n">widths</span> <span class="o">=</span> <span class="n">_load_data</span><span class="p">()</span>
@@ -304,59 +303,59 @@
 <div class="viewcode-block" id="get_pixel_width">
 <a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.character.get_pixel_width">[docs]</a>
 <span class="nd">@cache</span><span class="o">.</span><span class="n">cache</span>
-<span class="k">def</span> <span class="nf">get_pixel_width</span><span class="p">(</span><span class="n">character</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">font</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;calibri&#39;</span><span class="p">,</span> <span class="n">font_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">11</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Get the pixel width of a character for a given font and font-size.</span>
-<span class="sd">	For this we need to interpolate the pixel width between two reference values.</span>
-<span class="sd">	In the _char_widths.txt file you will find for each font a set of character pixel widths for font-size 1.</span>
-<span class="sd">	We then simply multiply the 1-width value by the desired value to get the correct pixel width.</span>
-<span class="sd">	See </span>
+<span class="k">def</span> <span class="nf">get_pixel_width</span><span class="p">(</span><span class="n">character</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">font</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;calibri&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">11</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the pixel width of a character for a given font and font-size.</span>
+<span class="sd">    For this we need to interpolate the pixel width between two reference values.</span>
+<span class="sd">    In the _char_widths.txt file you will find for each font a set of character pixel widths for font-size 1.</span>
+<span class="sd">    We then simply multiply the 1-width value by the desired value to get the correct pixel width.</span>
+<span class="sd">    See</span>
 
-<span class="sd">	Args:</span>
-<span class="sd">		character: the character to get the pixel width for.</span>
-<span class="sd">		font: the font family that is used.</span>
-<span class="sd">		font_size: the font-size to get the pixel width at.</span>
-<span class="sd">	&#39;&#39;&#39;</span>
-	<span class="k">if</span> <span class="n">font</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">widths</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find font </span><span class="si">{</span><span class="n">font</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+<span class="sd">    Args:</span>
+<span class="sd">            character: the character to get the pixel width for.</span>
+<span class="sd">            font: the font family that is used.</span>
+<span class="sd">            font_size: the font-size to get the pixel width at.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">font</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">widths</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find font </span><span class="si">{</span><span class="n">font</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
-	<span class="k">return</span> <span class="n">widths</span><span class="p">[</span><span class="n">font</span><span class="p">][</span><span class="n">character</span><span class="p">]</span> <span class="o">*</span> <span class="n">font_size</span></div>
+    <span class="k">return</span> <span class="n">widths</span><span class="p">[</span><span class="n">font</span><span class="p">][</span><span class="n">character</span><span class="p">]</span> <span class="o">*</span> <span class="n">font_size</span></div>
 
 
 
 <div class="viewcode-block" id="text_width">
 <a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.character.text_width">[docs]</a>
-<span class="k">def</span> <span class="nf">text_width</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">font</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;calibri&#39;</span><span class="p">,</span> <span class="n">font_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">11</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;pixels&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Get the width of a string for a given font and font size.</span>
+<span class="k">def</span> <span class="nf">text_width</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">font</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;calibri&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">11</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pixels&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the width of a string for a given font and font size.</span>
 
-<span class="sd">	Args:</span>
-<span class="sd">		text: the object to determine the length for. </span>
-<span class="sd">			Will be cast to a string before calculating width.</span>
-<span class="sd">		font: the font family that is used.</span>
-<span class="sd">		font_size: the font-size to get the pixel width at.</span>
-<span class="sd">		mode: the width-mode. Can be &#39;excel&#39; or &#39;pixels&#39;.</span>
+<span class="sd">    Args:</span>
+<span class="sd">            text: the object to determine the length for.</span>
+<span class="sd">                    Will be cast to a string before calculating width.</span>
+<span class="sd">            font: the font family that is used.</span>
+<span class="sd">            font_size: the font-size to get the pixel width at.</span>
+<span class="sd">            mode: the width-mode. Can be &#39;excel&#39; or &#39;pixels&#39;.</span>
 
-<span class="sd">	Returns:</span>
-<span class="sd">		The width of the text for a certain font and font size.</span>
-<span class="sd">		If mode is &#39;excel&#39; we pad it with 8 pixels and then divide by 7.6 (i.e. standard excel char width).</span>
-<span class="sd">	&#39;&#39;&#39;</span>
-	<span class="k">if</span> <span class="n">font</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">widths</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-		<span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find font </span><span class="si">{</span><span class="n">font</span><span class="si">}</span><span class="s1">. Defaulting to Calibri.&#39;</span><span class="p">)</span>
-		<span class="n">font</span> <span class="o">=</span> <span class="s1">&#39;calibri&#39;</span>
+<span class="sd">    Returns:</span>
+<span class="sd">            The width of the text for a certain font and font size.</span>
+<span class="sd">            If mode is &#39;excel&#39; we pad it with 8 pixels and then divide by 7.6 (i.e. standard excel char width).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">font</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">widths</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find font </span><span class="si">{</span><span class="n">font</span><span class="si">}</span><span class="s2">. Defaulting to Calibri.&quot;</span><span class="p">)</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="s2">&quot;calibri&quot;</span>
 
-	<span class="n">pixels</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">get_pixel_width</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
-	<span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;excel&#39;</span><span class="p">:</span>
-		<span class="k">return</span> <span class="p">(</span><span class="n">pixels</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span><span class="o">/</span><span class="mf">7.6</span>
-	<span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;word&#39;</span><span class="p">:</span>
-		<span class="k">return</span> <span class="p">(</span><span class="n">pixels</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span><span class="o">/</span><span class="mf">7.6</span>
+    <span class="n">pixels</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">get_pixel_width</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;excel&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">pixels</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span> <span class="o">/</span> <span class="mf">7.6</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;word&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">pixels</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span> <span class="o">/</span> <span class="mf">7.6</span>
 
-	<span class="k">return</span> <span class="n">pixels</span></div>
+    <span class="k">return</span> <span class="n">pixels</span></div>
 
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-	<span class="nb">print</span><span class="p">(</span><span class="n">text_width</span><span class="p">(</span><span class="s1">&#39;this is a test text&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">))</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">text_width</span><span class="p">(</span><span class="s2">&quot;this is a test text&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">))</span>
 </pre></div>
 
                 </article>
@@ -407,7 +406,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>

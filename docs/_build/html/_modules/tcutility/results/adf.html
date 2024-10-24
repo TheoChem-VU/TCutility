@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.results.adf &#8212; TCutility v0.14.0 documentation</title>
+    <title>tcutility.results.adf &#8212; TCutility v0.14.5 documentation</title>
   
   
   
@@ -29,19 +29,17 @@
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../_static/documentation_options.js?v=356883d0"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/documentation_options.js?v=6d611d6e"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/tabs.js?v=3030b3cb"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tcutility/results/adf';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -268,7 +266,7 @@
 
 <span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">ensure_list</span>
 <span class="kn">from</span> <span class="nn">tcutility.results</span> <span class="kn">import</span> <span class="n">Result</span><span class="p">,</span> <span class="n">cache</span>
-<span class="kn">from</span> <span class="nn">tcutility.typing</span> <span class="kn">import</span> <span class="n">arrays</span>
+<span class="kn">from</span> <span class="nn">tcutility.tc_typing</span> <span class="kn">import</span> <span class="n">arrays</span>
 
 <span class="c1"># ------------------------------------------------------------- #</span>
 <span class="c1"># ------------------- Calculation Settings -------------------- #</span>
@@ -431,7 +429,10 @@
 <span class="sd">        :Result object containing properties from the ADF calculation:</span>
 
 <span class="sd">            - **energy.bond (float)** – bonding energy (|kcal/mol|).</span>
-<span class="sd">            - **energy.elstat (float)** – total electrostatic potential (|kcal/mol|).</span>
+<span class="sd">            - **energy.elstat.total (float)** – total electrostatic potential (|kcal/mol|).</span>
+<span class="sd">            - **energy.elstat.Vee (float)** – electron-electron repulsive term of the electrostatic potential (|kcal/mol|).</span>
+<span class="sd">            - **energy.elstat.Ven (float)** – electron-nucleus attractive term of the electrostatic potential (|kcal/mol|).</span>
+<span class="sd">            - **energy.elstat.Vnn (float)** – nucleus-nucleus repulsive term of the electrostatic potential (|kcal/mol|).</span>
 <span class="sd">            - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label and correction energy(|kcal/mol|).</span>
 <span class="sd">            - **energy.orbint.{symmetry label} (float)** – orbital interaction energy from a specific symmetry label (|kcal/mol|).</span>
 <span class="sd">            - **energy.orbint.correction (float)** - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (|kcal/mol|)</span>
@@ -466,8 +467,29 @@
 
     <span class="c1"># read energies (given in Ha in rkf files)</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">bond</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Bond Energy&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
-    <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;elstat&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
 
+    <span class="c1"># total electrostatic potential</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;elstat&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+
+    <span class="c1"># we can further decompose elstat if it was enabled</span>
+    <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">out</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">out</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+        <span class="n">skip_next</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;Electrostatic Interaction Energies&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">skip_next</span> <span class="o">=</span> <span class="mi">4</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">skip_next</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">Vee</span><span class="p">,</span> <span class="n">Ven</span><span class="p">,</span> <span class="n">Vnn</span><span class="p">,</span> <span class="n">total</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span><span class="o">.</span><span class="n">Vee</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Vee</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span><span class="o">.</span><span class="n">Ven</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Ven</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span><span class="o">.</span><span class="n">Vnn</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Vnn</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+            <span class="n">skip_next</span> <span class="o">-=</span> <span class="mi">1</span>
+
+
+    <span class="c1"># print(info.files)</span>
 
     <span class="c1"># read the total orbital interaction energy</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Orb.Int. Total&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
@@ -485,7 +507,7 @@
         <span class="c1"># the energy per symmetry label is abstracted from the &quot;total orbital interaction&quot;</span>
         <span class="c1"># obtaining the correction to the orbital interaction term</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="o">.</span><span class="n">correction</span> <span class="o">-=</span> <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="p">[</span><span class="n">symlabel</span><span class="p">]</span>
-    
+
     <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">pauli</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Pauli Total&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">dispersion</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Dispersion Energy&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
 
@@ -510,8 +532,8 @@
     <span class="n">S</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">spin_polarization</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">s2_expected</span> <span class="o">=</span> <span class="n">S</span> <span class="o">*</span> <span class="p">(</span><span class="n">S</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="c1"># this is the real expectation value</span>
-    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;Properties&#39;</span><span class="p">,</span> <span class="s1">&#39;S2calc&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">reader_adf</span><span class="p">:</span>
-        <span class="n">ret</span><span class="o">.</span><span class="n">s2</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Properties&#39;</span><span class="p">,</span> <span class="s1">&#39;S2calc&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;Properties&quot;</span><span class="p">,</span> <span class="s2">&quot;S2calc&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">reader_adf</span><span class="p">:</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">s2</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Properties&quot;</span><span class="p">,</span> <span class="s2">&quot;S2calc&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">s2</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -653,7 +675,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>

@@ -1,4 +1,4 @@
-﻿from typing import TypeVar
+from typing import TypeVar
 import numpy.typing as npt
 import numpy as np
 

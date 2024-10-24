@@ -1,8 +1,9 @@
-from tcutility.results import Result
-from tcutility import constants, molecule
 import os
+
 import numpy as np
 
+from tcutility import constants, molecule
+from tcutility.results import Result
 
 j = os.path.join
 
@@ -26,22 +27,22 @@ def get_calc_files(calc_dir: str) -> Result:
     ret.extra = []
     ret.root = os.path.abspath(calc_dir)
     for file in files:
-        if file.endswith('.out') and not file.endswith('g98.out'):
+        if file.endswith(".out") and not file.endswith("g98.out"):
             ret.out = os.path.abspath(file)
             continue
-        if file.endswith('xtbopt.xyz'):
+        if file.endswith("xtbopt.xyz"):
             ret.opt_out = os.path.abspath(file)
             continue
-        if file.endswith('xtbopt.log'):
+        if file.endswith("xtbopt.log"):
             ret.opt_history = os.path.abspath(file)
             continue
-        if file.endswith('xtbscan.log'):
+        if file.endswith("xtbscan.log"):
             ret.scan_out = os.path.abspath(file)
             continue
-        if file.endswith('vibspectrum'):
+        if file.endswith("vibspectrum"):
             ret.vibspectrum = os.path.abspath(file)
             continue
-        if file.endswith('hessian'):
+        if file.endswith("hessian"):
             ret.hessian = os.path.abspath(file)
             continue
 
@@ -96,35 +97,35 @@ def get_input(info: Result) -> Result:
     with open(info.files.out) as out:
         for line in out.readlines():
             line = line.strip()
-            if line.startswith('program call'):
-                call = line.split(':')[1].strip().split()
-            if line.startswith('coordinate file'):
-                ret.coord_file = line.split(':')[1].strip()
+            if line.startswith("program call"):
+                call = line.split(":")[1].strip().split()
+            if line.startswith("coordinate file"):
+                ret.coord_file = line.split(":")[1].strip()
 
     ret.call = " ".join(call)
 
     ### TASK
-    ret.task = 'SinglePoint'
-    for option in ['--opt', '--ohess']:
+    ret.task = "SinglePoint"
+    for option in ["--opt", "--ohess"]:
         # check if we used the option in our call
         if option not in call:
             continue
 
         # if we used it we did a geo-opt
-        ret.task = 'GeometrOptimization'
+        ret.task = "GeometrOptimization"
         # check if we did a PESScan, it also requires using the --opt option
-        if 'scan_out' in info.files:
-            ret.task = 'PESScan'
+        if "scan_out" in info.files:
+            ret.task = "PESScan"
 
         # check if we gave convergence criteria
-        ret.geometry_convergence = 'Normal'
+        ret.geometry_convergence = "Normal"
         option_idx = call.index(option)
-        if not call[option_idx + 1].startswith('-'):
+        if not call[option_idx + 1].startswith("-"):
             ret.geometry_convergence = call[option_idx + 1]
 
     ### CHARGE
     ret.charge = 0
-    for option in ['--charge', '-c']:
+    for option in ["--charge", "-c"]:
         # check if we used the option in our call
         if option not in call:
             continue
@@ -134,7 +135,7 @@ def get_input(info: Result) -> Result:
 
     ### SPIN-POLARIZATION
     ret.spin_polarization = 0
-    for option in ['--uhf', '-u']:
+    for option in ["--uhf", "-u"]:
         # check if we used the option in our call
         if option not in call:
             continue
@@ -146,23 +147,23 @@ def get_input(info: Result) -> Result:
     ret.solvent = None
     ret.solvation_model = None
 
-    if '--alpb' in call:
-        option_idx = call.index('--alpb')
+    if "--alpb" in call:
+        option_idx = call.index("--alpb")
         ret.solvent = call[option_idx + 1]
-        ret.solvation_model = 'ALPB'
+        ret.solvation_model = "ALPB"
 
-    for option in ['-g', '--gbsa']:
+    for option in ["-g", "--gbsa"]:
         if option not in call:
             continue
         option_idx = call.index(option)
         ret.solvent = call[option_idx + 1]
-        ret.solvation_model = 'GBSA'
+        ret.solvation_model = "GBSA"
 
     ### DETAILED INPUT
     ret.detailed = None
-    if '--input' in call:
+    if "--input" in call:
         ret.detailed = Result()
-        option_idx = call.index('--input')
+        option_idx = call.index("--input")
         inp_file = call[option_idx + 1]
         for file in info.files.extra:
             if file.endswith(inp_file):
@@ -174,28 +175,28 @@ def get_input(info: Result) -> Result:
 
         for line in content:
             line = line.strip()
-            if line.startswith('$'):
+            if line.startswith("$"):
                 curr_section = line[1:]
                 continue
 
-            if ':' in line:
-                key, val = line.split(':')
+            if ":" in line:
+                key, val = line.split(":")
                 ret.detailed[curr_section].setdefault(key, [])
                 ret.detailed[curr_section][key].append(val.strip())
 
-            elif '=' in line:
-                key, val = line.split('=')
+            elif "=" in line:
+                key, val = line.split("=")
                 ret.detailed[curr_section][key] = val.strip()
 
     ### MODEL HAMILTONIAN
-    ret.model = 'GFN2-xTB'
-    if '--gfn' in call:
-        option_idx = call.index('--gfn')
+    ret.model = "GFN2-xTB"
+    if "--gfn" in call:
+        option_idx = call.index("--gfn")
         version = call[option_idx + 1]
-        ret.model = f'GFN{version}-xTB'
+        ret.model = f"GFN{version}-xTB"
 
-    if '--gfnff' in call:
-        ret.model = 'GFNFF'
+    if "--gfnff" in call:
+        ret.model = "GFNFF"
 
     return ret
 
@@ -228,14 +229,14 @@ def get_calculation_status(info: Result) -> Result:
 
     with open(info.files.out) as out:
         lines = out.readlines()
-        if any(['[WARNING] Runtime exception occurred' in line for line in lines]):
+        if any(["[WARNING] Runtime exception occurred" in line for line in lines]):
             ret.fatal = True
             ret.name = "FAILED"
             ret.code = "F"
 
-            line_index = [i for i, line in enumerate(lines) if '[WARNING] Runtime exception occurred' in line][0]
-            for line in lines[line_index + 1:]:
-                if '##########' in line:
+            line_index = [i for i, line in enumerate(lines) if "[WARNING] Runtime exception occurred" in line][0]
+            for line in lines[line_index + 1 :]:
+                if "##########" in line:
                     break
                 ret.reasons.append(line.strip())
             return ret
@@ -273,7 +274,7 @@ def get_molecules(info: Result) -> Result:
     ret.input = molecule.load(coord_file)
     ret.output = ret.input.copy()
 
-    if 'opt_out' in info.files:
+    if "opt_out" in info.files:
         ret.output = molecule.load(info.files.opt_out)
 
     return ret
@@ -314,7 +315,6 @@ def get_info(calc_dir: str) -> Result:
     ret.molecule = get_molecules(ret)
 
     return ret
-
 
 
 def get_properties(info: Result) -> Result:
@@ -370,25 +370,25 @@ def get_properties(info: Result) -> Result:
             ret.vibrations.number_of_imaginary_modes = int(line.split()[4])
             continue
 
-        if 'vibrational frequencies' in line:
+        if "vibrational frequencies" in line:
             ret.vibrations.frequencies = []
             continue
 
-        if 'eigval :' in line:
+        if "eigval :" in line:
             ret.vibrations.frequencies.extend([float(freq) for freq in line.split()[2:]])
 
     if ret.vibrations.frequencies:
         # get the number of the first vibrational mode, so without the translations and rotations
         first_mode = len(ret.vibrations.frequencies) - ret.vibrations.number_of_modes + 1
         # we have to remove the first 5 or 6 frequencies, because they are translation+rotation
-        ret.vibrations.frequencies = ret.vibrations.frequencies[first_mode - 1:]
+        ret.vibrations.frequencies = ret.vibrations.frequencies[first_mode - 1 :]
 
         # read in the vibspectrum file to get the vibrational intensities:
         ret.vibrations.intensities = []
         if info.files.vibspectrum:
             with open(info.files.vibspectrum) as spec:
                 for line in spec.readlines()[3:-1]:
-                    if line.startswith('$'):
+                    if line.startswith("$"):
                         continue
 
                     if int(line.split()[0]) < first_mode:

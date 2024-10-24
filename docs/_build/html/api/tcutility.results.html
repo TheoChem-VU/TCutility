@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.results package &#8212; TCutility v0.14.0 documentation</title>
+    <title>tcutility.results package &#8212; TCutility v0.14.5 documentation</title>
   
   
   
@@ -30,15 +30,14 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=356883d0"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/documentation_options.js?v=6d611d6e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -47,7 +46,7 @@
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="tcutility.typing package" href="tcutility.typing.html" />
+    <link rel="next" title="tcutility.tc_typing package" href="tcutility.tc_typing.html" />
     <link rel="prev" title="tcutility.job.postscripts package" href="tcutility.job.postscripts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -224,7 +223,7 @@
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.report.html">tcutility.report package</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">tcutility.results package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.typing.html">tcutility.typing package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.tc_typing.html">tcutility.tc_typing package</a></li>
 </ul>
 </details></li>
 </ul>
@@ -343,7 +342,10 @@
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>energy.bond (float)</strong> – bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.elstat (float)</strong> – total electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
+<li><p><strong>energy.elstat.total (float)</strong> – total electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
+<li><p><strong>energy.elstat.Vee (float)</strong> – electron-electron repulsive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
+<li><p><strong>energy.elstat.Ven (float)</strong> – electron-nucleus attractive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
+<li><p><strong>energy.elstat.Vnn (float)</strong> – nucleus-nucleus repulsive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
 <li><p><strong>energy.orbint.total (float)</strong> – total orbital interaction energy containing contributions from each symmetry label and correction energy(<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
 <li><p><strong>energy.orbint.{symmetry label} (float)</strong> – orbital interaction energy from a specific symmetry label (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
 <li><p><strong>energy.orbint.correction (float)</strong> - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>)</p></li>
@@ -1346,11 +1348,11 @@ This information is used in further analysis programs.</p>
       </div>
     </a>
     <a class="right-next"
-       href="tcutility.typing.html"
+       href="tcutility.tc_typing.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">tcutility.typing package</p>
+        <p class="prev-next-title">tcutility.tc_typing package</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1496,7 +1498,7 @@ This information is used in further analysis programs.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>
