@@ -620,6 +620,7 @@ class DensfJob(Job):
         self.gridsize()
         self._mos = []
         self._sfos = []
+        self._extras = []
         self.settings.ADFFile = None
 
     def __str__(self):
@@ -655,6 +656,18 @@ class DensfJob(Job):
         elif self.settings.ADFFile != orbital.kfpath:
             raise TCJobError(job_class=self.__class__.__name__, message="RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
+    def density(self, orbitals: 'pyfmo.orbitals.Orbitals'):
+        import pyfmo
+
+        # check if the ADFFile is the same for all added orbitals
+        if self.settings.ADFFile is None:
+            self.settings.ADFFile = orbitals.kfpath
+
+        elif self.settings.ADFFile != orbitals.kfpath:
+            raise ValueError('RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.')
+
+        self._extras.append('Density SCF')
+
     def _setup_job(self):
         os.makedirs(self.workdir, exist_ok=True)
 
@@ -674,8 +687,12 @@ class DensfJob(Job):
             if len(self._sfos) > 0:
                 inpf.write("Orbitals SFO\n")
                 for orb in self._sfos:
-                    inpf.write(f"    {orb.symmetry} {orb.index}\n")
-                inpf.write("END\n")
+                    inpf.write(f'    {orb.symmetry} {orb.index}\n')
+                inpf.write('END\n')
+
+            for line in self._extras:
+                inpf.write(line + '\n')
+
             # cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size
             inpf.write(f"CUBOUTPUT {os.path.split(self.settings.ADFFile)[0]}/{self.settings.grid}\n")
             inpf.write("eor\n")
@@ -704,6 +721,10 @@ class DensfJob(Job):
         for sfo in self._sfos:
             spin_part = '' if sfo.spin == 'AB' else f'_{sfo.spin}'
             paths.append(f'{cuboutput}%SFO_{sfo.symmetry}{spin_part}%{sfo.index}.cub')
+
+        for extra in self._extras:
+            if extra == 'Density SCF':
+                paths.append(f'{cuboutput}%SCF%Density.cub')
 
         return paths
 
