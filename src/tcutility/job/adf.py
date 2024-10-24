@@ -447,6 +447,7 @@ class ADFFragmentJob(ADFJob):
                 log.flow()
             else:
                 log.flow(log.Emojis.good + ' Submitting', ['straight', 'end'])
+                [child._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                 child.run()
                 self.dependency(child)
                 log.flow(f'SlurmID:  {child.slurm_job_id}', ['straight', 'skip', 'end'])
@@ -457,7 +458,7 @@ class ADFFragmentJob(ADFJob):
                 child_STOFIT.name += '_STOFIT'
                 elstat_jobs[child_STOFIT.name] = child_STOFIT
                 child_STOFIT.settings.input.adf.STOFIT = ''
-                child_STOFIT.settings.input.adf.PRINT = 'FmatSFO Elstat'
+                child_STOFIT.settings.input.adf.PRINT += ' Elstat'
                 child_STOFIT.settings.input.adf.pop("NumericalQuality")
                 child_STOFIT.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
@@ -471,6 +472,7 @@ class ADFFragmentJob(ADFJob):
                     log.flow()
                 else:
                     log.flow(log.Emojis.good + ' Submitting', ['straight', 'end'])
+                    [child_STOFIT._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                     child_STOFIT.run()
                     self.dependency(child_STOFIT)
                     log.flow(f'SlurmID:  {child_STOFIT.slurm_job_id}', ['straight', 'skip', 'end'])
@@ -480,7 +482,7 @@ class ADFFragmentJob(ADFJob):
                 child_NoElectrons.name += '_NoElectrons'
                 elstat_jobs[child_NoElectrons.name] = child_NoElectrons
                 child_NoElectrons.settings.input.adf.STOFIT = ''
-                child_NoElectrons.settings.input.adf.PRINT = 'FmatSFO Elstat'
+                child_NoElectrons.settings.input.adf.PRINT = +' Elstat'
                 child_NoElectrons.charge(molecule.number_of_electrons(child_NoElectrons._molecule))
                 child_NoElectrons.spin_polarization(0)
                 child_NoElectrons.settings.input.adf.pop("NumericalQuality")
@@ -496,6 +498,7 @@ class ADFFragmentJob(ADFJob):
                     log.flow()
                 else:
                     log.flow(log.Emojis.good + ' Submitting', ['straight', 'end'])
+                    [child_NoElectrons._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                     child_NoElectrons.run()
                     self.dependency(child_NoElectrons)
                     log.flow(f'SlurmID:  {child_NoElectrons.slurm_job_id}', ['straight', 'skip', 'end'])
@@ -561,8 +564,8 @@ class ADFFragmentJob(ADFJob):
             for frag_name in frag_names:
                 self.settings.input.adf.fragments[frag_name + '_STOFIT'] = j(elstat_jobs['frag_' + frag_name + '_STOFIT'].workdir, 'adf.rkf')
             self.settings.input.adf.STOFIT = ''
-            self.settings.input.adf.PRINT = 'FmatSFO Elstat'
-
+            self.settings.input.adf.PRINT += ' Elstat'
+            [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
             log.flow(log.Emojis.good + ' Submitting complex with STOFIT', ['split'])
             super().run()
             log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
@@ -600,7 +603,7 @@ class ADFFragmentJob(ADFJob):
                 self.spin_polarization(total_spin_polarization)
 
                 log.flow(log.Emojis.good + f' Submitting complex with 0 electrons in fragment {frag}', ['split'])
-
+                [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                 super().run()
                 log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
                 log.flow()
@@ -617,6 +620,7 @@ class DensfJob(Job):
         self.gridsize()
         self._mos = []
         self._sfos = []
+        self._extras = []
         self.settings.ADFFile = None
 
     def __str__(self):
@@ -652,6 +656,18 @@ class DensfJob(Job):
         elif self.settings.ADFFile != orbital.kfpath:
             raise TCJobError(job_class=self.__class__.__name__, message="RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
+    def density(self, orbitals: 'pyfmo.orbitals.Orbitals'):
+        import pyfmo
+
+        # check if the ADFFile is the same for all added orbitals
+        if self.settings.ADFFile is None:
+            self.settings.ADFFile = orbitals.kfpath
+
+        elif self.settings.ADFFile != orbitals.kfpath:
+            raise ValueError('RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.')
+
+        self._extras.append('Density SCF')
+
     def _setup_job(self):
         os.makedirs(self.workdir, exist_ok=True)
 
@@ -671,8 +687,12 @@ class DensfJob(Job):
             if len(self._sfos) > 0:
                 inpf.write("Orbitals SFO\n")
                 for orb in self._sfos:
-                    inpf.write(f"    {orb.symmetry} {orb.index}\n")
-                inpf.write("END\n")
+                    inpf.write(f'    {orb.symmetry} {orb.index}\n')
+                inpf.write('END\n')
+
+            for line in self._extras:
+                inpf.write(line + '\n')
+
             # cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size
             inpf.write(f"CUBOUTPUT {os.path.split(self.settings.ADFFile)[0]}/{self.settings.grid}\n")
             inpf.write("eor\n")
@@ -701,6 +721,10 @@ class DensfJob(Job):
         for sfo in self._sfos:
             spin_part = '' if sfo.spin == 'AB' else f'_{sfo.spin}'
             paths.append(f'{cuboutput}%SFO_{sfo.symmetry}{spin_part}%{sfo.index}.cub')
+
+        for extra in self._extras:
+            if extra == 'Density SCF':
+                paths.append(f'{cuboutput}%SCF%Density.cub')
 
         return paths
 
