@@ -107,6 +107,28 @@ def load(path) -> plams.Molecule:
 
     return mol
 
+def from_string(s: str) -> plams.Molecule:
+    mol = plams.Molecule()
+    for line in s.splitlines():
+        parts = [parse_str(part) for part in line.split()]
+        if len(parts) < 4:
+            continue
+
+        # check if first part is the symbol of the molecule
+        if not isinstance(parts[0], str) and len(parts[0]) > 2:
+            continue
+
+        # check if
+        if not all(isinstance(part, (float, int)) for part in parts[1:4]):
+            continue
+
+        atom = plams.Atom(symbol=parts[0], coords=parts[1:4])
+        mol.add_atom(atom)
+
+    return mol
+
+
+
 
 def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
     """
