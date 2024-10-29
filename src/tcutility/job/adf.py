@@ -656,7 +656,7 @@ class DensfJob(Job):
         elif self.settings.ADFFile != orbital.kfpath:
             raise TCJobError(job_class=self.__class__.__name__, message="RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
-    def density(self, orbitals: 'pyfmo.orbitals.Orbitals'):
+    def density(self, orbitals: 'pyfmo.orbitals.Orbitals'):  # noqa: F821
         import pyfmo
 
         # check if the ADFFile is the same for all added orbitals
