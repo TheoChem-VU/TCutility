@@ -482,7 +482,7 @@ class ADFFragmentJob(ADFJob):
                 child_NoElectrons.name += '_NoElectrons'
                 elstat_jobs[child_NoElectrons.name] = child_NoElectrons
                 child_NoElectrons.settings.input.adf.STOFIT = ''
-                child_NoElectrons.settings.input.adf.PRINT = +' Elstat'
+                child_NoElectrons.settings.input.adf.PRINT += ' Elstat'
                 child_NoElectrons.charge(molecule.number_of_electrons(child_NoElectrons._molecule))
                 child_NoElectrons.spin_polarization(0)
                 child_NoElectrons.settings.input.adf.pop("NumericalQuality")
