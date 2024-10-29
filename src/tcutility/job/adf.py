@@ -636,6 +636,9 @@ class DensfJob(Job):
         spell_check.check(size, ["coarse", "medium", "fine"], ignore_case=True)
         self.settings.grid = size
 
+    def grid(self, args):
+        self.settings.grid = '\n' + '\n'.join(args)
+
     def orbital(self, orbital: "pyfmo.orbitals.sfo.SFO" or "pyfmo.orbitals.mo.MO"):  # noqa: F821
         """
         Add a PyOrb orbital for Densf to calculate.
@@ -694,7 +697,8 @@ class DensfJob(Job):
                 inpf.write(line + '\n')
 
             # cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size
-            inpf.write(f"CUBOUTPUT {os.path.split(self.settings.ADFFile)[0]}/{self.settings.grid}\n")
+            outname = self.settings.grid if self.settings.grid.lower() in ['coarse', 'medium', 'fine'] else 'custom_grid'
+            inpf.write(f"CUBOUTPUT {os.path.split(self.settings.ADFFile)[0]}/{outname}\n")
             inpf.write("eor\n")
 
         # the runfile should simply execute the input file.
