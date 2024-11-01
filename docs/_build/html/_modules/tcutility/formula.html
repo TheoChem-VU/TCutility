@@ -29,7 +29,6 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -37,11 +36,10 @@
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=6d611d6e"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/tabs.js?v=3030b3cb"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tcutility/formula';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -339,9 +337,13 @@
             <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;unicode&quot;</span><span class="p">:</span>
                 <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="s2">&quot;₀₁₂₃₄₅₆₇₈₉&quot;</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)])</span>
 
-        <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="s2">&quot;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;latex&quot;</span><span class="p">,</span> <span class="s2">&quot;pyplot&quot;</span><span class="p">]:</span>
-                <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;\mathrm</span><span class="se">{{</span><span class="si">{</span><span class="n">letter</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">partret_</span> <span class="o">=</span> <span class="n">partret</span>
+        <span class="n">partret</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">partret_</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">char</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;latex&quot;</span><span class="p">,</span> <span class="s2">&quot;pyplot&quot;</span><span class="p">]:</span>
+                <span class="n">partret</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;\mathrm</span><span class="se">{{</span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">partret</span> <span class="o">+=</span> <span class="n">char</span>
 
         <span class="c1"># signs should be superscript</span>
         <span class="k">for</span> <span class="n">sign</span> <span class="ow">in</span> <span class="s2">&quot;+-•&quot;</span><span class="p">:</span>
@@ -363,9 +365,11 @@
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">molecule</span><span class="p">(</span><span class="s2">&quot;F- + CH3Cl&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">))</span>
-    <span class="n">mol</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;D:\Users\Yuman\Desktop\PhD\TCutility\test\fixtures\chloromethane_sn2_ts\ts sn2.results\output.xyz&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">))</span>
+    <span class="c1"># print(molecule(&quot;F- + CH3Cl&quot;, &quot;html&quot;))</span>
+    <span class="c1"># mol = plams.Molecule(r&quot;D:\Users\Yuman\Desktop\PhD\TCutility\test\fixtures\chloromethane_sn2_ts\ts sn2.results\output.xyz&quot;)</span>
+    <span class="c1"># print(molecule(mol))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;NMe2*&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;latex&#39;</span><span class="p">))</span>
 </pre></div>
 
                 </article>
@@ -416,7 +420,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>
