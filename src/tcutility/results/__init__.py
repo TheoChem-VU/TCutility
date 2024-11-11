@@ -15,7 +15,7 @@ import os  # noqa: E402
 import pathlib as pl  # noqa: E402
 
 from .. import slurm  # noqa: E402
-from . import adf, ams, cache, dftb, orca, xtb  # noqa: E402
+from . import adf, ams, cache, dftb, orca, xtb, crest  # noqa: E402
 
 
 def get_info(calc_dir: str):
@@ -33,6 +33,12 @@ def get_info(calc_dir: str):
         return xtb.get_info(calc_dir)
     except:  # noqa
         pass
+
+    try:
+        return crest.get_info(calc_dir)
+    except:  # noqa
+        pass
+
 
     res = Result()
 
