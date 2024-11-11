@@ -122,14 +122,13 @@ def _read_vdd_charges(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
 def _read_vdd_charges_initial(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
     """Returns the initial VDD charges from the KFReader object."""
     vdd_ini: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_initial Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
-    return np.array(vdd_scf)
+    return np.array(vdd_ini)
 
 
 def _read_vdd_charges_SCF(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
     """Returns the SCF VDD charges from the KFReader object."""
     vdd_scf: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_SCF Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
     return np.array(vdd_scf)
-
 
 
 def _get_vdd_charges_per_irrep(results_type: KFReader) -> Dict[str, arrays.Array1D[np.float64]]:
