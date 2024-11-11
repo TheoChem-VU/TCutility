@@ -290,7 +290,7 @@ def _make_molecule(kf_variable: str, reader_ams: plams.KFReader, natoms: int, at
     coords = np.array(reader_ams.read(kf_variable, "Coords")).reshape(natoms, 3) * constants.BOHR2ANG
     for atnum, coord in zip(atnums, coords):
         ret_mol.add_atom(plams.Atom(atnum=atnum, coords=coord))
-    if ("Molecule", "fromAtoms") in reader_ams and ("Molecule", "toAtoms") in reader_ams and ("Molecule", "bondOrders"):
+    if ("Molecule", "fromAtoms") in reader_ams and ("Molecule", "toAtoms") in reader_ams and ("Molecule", "bondOrders") in reader_ams:
         at_from = ensure_list(reader_ams.read("InputMolecule", "fromAtoms"))
         at_to = ensure_list(reader_ams.read("InputMolecule", "toAtoms"))
         bos = ensure_list(reader_ams.read("InputMolecule", "bondOrders"))
