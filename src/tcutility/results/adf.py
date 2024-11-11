@@ -285,7 +285,7 @@ def get_properties(info: Result) -> Result:
     ret.dipole_vector = reader_adf.read("Properties", "Dipole")
     ret.dipole_moment = np.linalg.norm(ret.dipole_vector)
     ret.quadrupole_moment = reader_adf.read("Properties", "Quadrupole")
-    ret.dens_at_atom = ensure_list(reader_adf.read("Properties", "Electron Density at nuclear_internal"))
+    ret.dens_at_atom = ensure_list(reader_adf.read("Properties", "Electron Density at Nuclei"))
 
 
     return ret
