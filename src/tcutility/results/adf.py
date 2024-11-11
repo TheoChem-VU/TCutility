@@ -119,6 +119,19 @@ def _read_vdd_charges(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
     return np.array([float((scf - ini)) for scf, ini in zip(vdd_scf, vdd_ini)])
 
 
+def _read_vdd_charges_initial(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
+    """Returns the initial VDD charges from the KFReader object."""
+    vdd_ini: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_initial Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
+    return np.array(vdd_scf)
+
+
+def _read_vdd_charges_SCF(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
+    """Returns the SCF VDD charges from the KFReader object."""
+    vdd_scf: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_SCF Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
+    return np.array(vdd_scf)
+
+
+
 def _get_vdd_charges_per_irrep(results_type: KFReader) -> Dict[str, arrays.Array1D[np.float64]]:
     """Extracts the Voronoi Deformation Density charges from the fragment calculation sorted per irrep."""
     symlabels = str(results_type.read("Symmetry", "symlab")).split()  # split on whitespace
@@ -261,6 +274,8 @@ def get_properties(info: Result) -> Result:
     # read the Voronoi Deformation Charges Deformation (VDD) before and after SCF convergence (being "inital" and "SCF")
     try:
         ret.vdd.charges = _read_vdd_charges(reader_adf)
+        ret.vdd.charges_initial = _read_vdd_charges_initial(reader_adf)
+        ret.vdd.charges_SCF = _read_vdd_charges_SCF(reader_adf)
         ret.vdd.update(_get_vdd_charges_per_irrep(reader_adf))
     except KeyError:
         pass
@@ -286,7 +301,6 @@ def get_properties(info: Result) -> Result:
     ret.dipole_moment = np.linalg.norm(ret.dipole_vector)
     ret.quadrupole_moment = reader_adf.read("Properties", "Quadrupole")
     ret.dens_at_atom = ensure_list(reader_adf.read("Properties", "Electron Density at Nuclei"))
-
 
     return ret
 
