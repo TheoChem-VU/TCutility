@@ -189,6 +189,7 @@ def get_properties(info: Result) -> Result:
             - **dipole_vector** - the dipole moment vector.
             - **dipole_moment** - the magnitude of the dipole moment vector.
             - **quadrupole_moment** - the quadrupole moment vector.
+            - **dens_at_atom** - the electron density at each atom.
     """
 
     assert info.engine == "adf", f"This function reads ADF data, not {info.engine} data"
@@ -284,6 +285,8 @@ def get_properties(info: Result) -> Result:
     ret.dipole_vector = reader_adf.read("Properties", "Dipole")
     ret.dipole_moment = np.linalg.norm(ret.dipole_vector)
     ret.quadrupole_moment = reader_adf.read("Properties", "Quadrupole")
+    ret.dens_at_atom = ensure_list(reader_adf.read("Properties", "Electron Density at nuclear_internal"))
+
 
     return ret
 
