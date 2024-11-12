@@ -297,8 +297,10 @@ class ADFFragmentJob(ADFJob):
         name = name or f"fragment{len(self.child_jobs) + 1}"
         self.child_jobs[name] = ADFJob(test_mode=self.test_mode)
         self.child_jobs[name].molecule(mol)
-        self.child_jobs[name].charge(charge)
-        self.child_jobs[name].spin_polarization(spin_polarization)
+        if charge:
+            self.child_jobs[name].charge(charge)
+        if spin_polarization:
+            self.child_jobs[name].spin_polarization(spin_polarization)
         setattr(self, name, self.child_jobs[name])
 
         if not add_frag_to_mol:
@@ -373,6 +375,36 @@ class ADFFragmentJob(ADFJob):
   End
         """
 
+    def frag_occupations(self, frag=None, subspecies=None, alpha=None, beta=None):
+        """
+        Set the occupations of the fragments.
+
+        Args:
+            frag: the fragment to set the occupations for.
+            subspecies: the symmetry subspecies to set the occupations for. If set to ``None`` we assume we have ``A`` subspecies.
+            alpha: the number of alpha electrons. If set to ``None`` we will guess the number of electrons based on the spin-polarization set.
+            beta: the number of beta electrons. If set to ``None`` we will guess the number of electrons based on the spin-polarization set.
+        """
+
+        child_job = self.child_jobs[frag]
+
+        if alpha is None and beta is None:
+            spinpol = child_job.settings.input.adf.SpinPolarization or 0
+            charge = child_job.settings.input.ams.system.charge or 0
+            print(child_job._molecule)
+            nelectrons = sum(atom.atnum for atom in child_job._molecule) - charge
+            alpha = nelectrons // 2 + spinpol
+            beta  = nelectrons // 2
+
+        self.settings.input.adf.setdefault("FragOccupations", "")
+        self.settings.input.adf.FragOccupations = self.settings.input.adf.FragOccupations.replace(" End", "")
+        self.settings.input.adf.FragOccupations += f"""
+    {frag}
+      {subspecies or 'A'} {alpha} // {beta}
+    SubEnd
+  End
+        """
+
     def run(self):
         """
         Run the ``ADFFragmentJob``. This involves setting up the calculations for each fragment as well as the parent job.
@@ -400,8 +432,9 @@ class ADFFragmentJob(ADFJob):
         log.flow(f"Unrestricted:      {unrestricted}", ["straight"])
         log.flow(f"Spin-Polarization: {spinpol}", ["straight"])
         log.flow()
+        
         # this job and all its children should have the same value for unrestricted
-        [child.unrestricted(unrestricted) for child in self.child_jobs.values()]
+        # [child.unrestricted(unrestricted) for child in self.child_jobs.values()]
 
         # propagate the post- and preambles to the child_jobs
         [child.add_preamble(preamble) for preamble in self._preambles for child in self.child_jobs.values()]
@@ -416,13 +449,16 @@ class ADFFragmentJob(ADFJob):
         [child_sett.update(sett) for child_sett in child_setts.values()]
         [child_sett.input.adf.pop("RemoveFragOrbitals", None) for child_sett in child_setts.values()]
         [child_sett.input.adf.pop("RemoveAllFragVirtuals", None) for child_sett in child_setts.values()]
+        [child_sett.input.adf.pop("FragOccupations", None) for child_sett in child_setts.values()]
         # same for sbatch settings
         [child.sbatch(**self._sbatch) for child in self.child_jobs.values()]
         # now set the charge, spinpol, unrestricted for the parent 
-        self.charge(charge)
-        self.spin_polarization(spinpol)
-        self.unrestricted(unrestricted)
+        if charge:
+            self.charge(charge)
+        if spinpol:
+            self.spin_polarization(spinpol)
         if unrestricted:
+            self.unrestricted(unrestricted)
             self.settings.input.adf.UnrestrictedFragments = "Yes"
 
         elstat_jobs = {}
