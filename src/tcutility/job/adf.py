@@ -255,6 +255,7 @@ class ADFJob(AMSJob):
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
         self.decompose_elstat = kwargs.pop('decompose_elstat', False)
+        self.counter_poise = kwargs.pop('counter_poise', False)
         self.child_jobs = {}
         # self.child_jobs_no_electrons = {}
         super().__init__(*args, **kwargs)
@@ -432,7 +433,7 @@ class ADFFragmentJob(ADFJob):
         log.flow(f"Unrestricted:      {unrestricted}", ["straight"])
         log.flow(f"Spin-Polarization: {spinpol}", ["straight"])
         log.flow()
-        
+
         # this job and all its children should have the same value for unrestricted
         # [child.unrestricted(unrestricted) for child in self.child_jobs.values()]
 
@@ -644,7 +645,44 @@ class ADFFragmentJob(ADFJob):
                 log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
                 log.flow()
 
+        if self.counter_poise:
+            self.SCF(iterations=old_iters)
+            self.settings.input.ams.EngineDebugging.pop('AlwaysClaimSuccess', None)
+            self.settings.input.adf.pop('fragments', None)
+            for frag, frag_job in self.child_jobs.items():
+                other_jobs = [job for other_frag, job in self.child_jobs.items() if other_frag != frag]
+                atoms = [atom for job in self.child_jobs.values() for atom in job._molecule]
+
+                # in the parent job the atoms should have the region and adf.f defined as options
+                atom_lines = []
+                # for each atom we check which child it came from
+                for atom in atoms:
+                    for child_name, child in self.child_jobs.items():
+                        for childatom in child._molecule:
+                            # we check by looking at the symbol and coordinates of the atom
+                            if (atom.symbol, atom.x, atom.y, atom.z) == (childatom.symbol, childatom.x, childatom.y, childatom.z):
+                                # now write the symbol and coords as a string with the correct suffix and ghost indicator
+                                if child_name == frag:
+                                    atom_lines.append(f'\t\t{atom.symbol} {atom.x} {atom.y} {atom.z}')
+                                else:
+                                    atom_lines.append(f'\t\tGh.{atom.symbol} {atom.x} {atom.y} {atom.z}')
+
+                # write the atoms block as a string with new line characters
+                self.settings.input.ams.system.atoms = ("\n" + "\n".join(atom_lines) + "\n\tEnd").expandtabs(4)
+                self.spin_polarization(frag_job.settings.input.adf.SpinPolarization or 0)
+                self.charge(frag_job.settings.input.ams.System.charge or 0)
+                self.unrestricted((frag_job.settings.input.adf.Unrestricted or 'no').lower() == 'yes')
+
+                # we must repopulate the sbatch settings for the new run
+                self.name = f'complex_{frag}_Ghost'
+                log.flow(log.Emojis.good + f' Submitting {frag} with the basis-set of the complex', ['split'])
+                [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
+                super().run()
+                log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
+                log.flow()
+
         log.flow(log.Emojis.finish + ' Done, bye!', ['startinv'])
+
 
 
 class DensfJob(Job):
