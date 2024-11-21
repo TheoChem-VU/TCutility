@@ -476,8 +476,8 @@ class ADFFragmentJob(ADFJob):
             # recast the plams.Settings object into a Result object as that is what run expects
             child.settings = results.Result(child_setts[child_name])
             log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}]', ['split'])
-            log.flow(f'Charge:            {child.settings.input.ams.System.charge}', ['straight', 'straight'])
-            log.flow(f'Spin-Polarization: {child.settings.input.adf.SpinPolarization}', ['straight', 'straight'])
+            log.flow(f'Charge:            {child.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
+            log.flow(f'Spin-Polarization: {child.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
             log.flow(f'Work dir:          {child.workdir}', ['straight', 'straight'])
             if child.can_skip():
                 log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"])
@@ -500,8 +500,8 @@ class ADFFragmentJob(ADFJob):
                 child_STOFIT.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
                 log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] with STOFIT', ['split'])
-                log.flow(f'Charge:            {child_STOFIT.settings.input.ams.System.charge}', ['straight', 'straight'])
-                log.flow(f'Spin-Polarization: {child_STOFIT.settings.input.adf.SpinPolarization}', ['straight', 'straight'])
+                log.flow(f'Charge:            {child_STOFIT.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
+                log.flow(f'Spin-Polarization: {child_STOFIT.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
                 log.flow(f'Work dir:          {child_STOFIT.workdir}', ['straight', 'straight'])
 
                 if child_STOFIT.can_skip():
@@ -526,8 +526,8 @@ class ADFFragmentJob(ADFJob):
                 child_NoElectrons.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
                 log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] without Electrons', ['split'])
-                log.flow(f'Charge:            {child_NoElectrons.settings.input.ams.System.charge}', ['straight', 'straight'])
-                log.flow(f'Spin-Polarization: {child_NoElectrons.settings.input.adf.SpinPolarization}', ['straight', 'straight'])
+                log.flow(f'Charge:            {child_NoElectrons.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
+                log.flow(f'Spin-Polarization: {child_NoElectrons.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
                 log.flow(f'Work dir:          {child_NoElectrons.workdir}', ['straight', 'straight'])
                 
                 if child_NoElectrons.can_skip():
