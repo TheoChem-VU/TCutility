@@ -650,7 +650,6 @@ class ADFFragmentJob(ADFJob):
             self.settings.input.ams.EngineDebugging.pop('AlwaysClaimSuccess', None)
             self.settings.input.adf.pop('fragments', None)
             for frag, frag_job in self.child_jobs.items():
-                other_jobs = [job for other_frag, job in self.child_jobs.items() if other_frag != frag]
                 atoms = [atom for job in self.child_jobs.values() for atom in job._molecule]
 
                 # in the parent job the atoms should have the region and adf.f defined as options
