@@ -743,13 +743,24 @@ class DensfJob(Job):
 
         self._extras.append('Density SCF')
 
+    def NCI(self, density: str = 'both', rhovdw=0.02, rdg=0.5):
+        '''
+        Setup calculation of NCI values.
+
+        Args:
+            density: the density to calculate for, either "FIT" or  "BOTH", default is "BOTH".
+            rhovdw: threshold of density for detection of weak interaction regions, default is `0.02`.
+            rdg: threshold of reduced density gradient, default is `0.5`.
+        '''
+        self._extras.append(f'NCI {density} RHOVDW={rhovdw} RDG={rdg}')
+
     def _setup_job(self):
         os.makedirs(self.workdir, exist_ok=True)
 
         # set up the input file. This should always contain calling of the densf program, as per the SCM documentation
         with open(self.inputfile_path, "w+") as inpf:
             inpf.write("$AMSBIN/densf << eor\n")
-            inpf.write(f"ADFFile {self.settings.ADFFile}\n")
+            inpf.write(f"ADFFile {os.path.abspath(self.settings.ADFFile)}\n")
             inpf.write(f"GRID {self.settings.grid}\n")
             inpf.write("END\n")
 
@@ -770,7 +781,7 @@ class DensfJob(Job):
 
             # cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size
             outname = self.settings.grid if self.settings.grid.lower() in ['coarse', 'medium', 'fine'] else 'custom_grid'
-            inpf.write(f"CUBOUTPUT {os.path.split(self.settings.ADFFile)[0]}/{outname}\n")
+            inpf.write(f"CUBOUTPUT {os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}\n")
             inpf.write("eor\n")
 
         # the runfile should simply execute the input file.
@@ -788,7 +799,7 @@ class DensfJob(Job):
         The output cube file paths that will be/were calculated by this job.
         """
         paths = []
-        cuboutput = f"{os.path.split(self.settings.ADFFile)[0]}/{self.settings.grid}"
+        cuboutput = f"{os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{self.settings.grid}"
 
         for mo in self._mos:
             spin_part = '' if mo.spin == 'AB' else f'_{mo.spin}'
@@ -801,6 +812,20 @@ class DensfJob(Job):
         for extra in self._extras:
             if extra == 'Density SCF':
                 paths.append(f'{cuboutput}%SCF%Density.cub')
+
+            if extra.startswith('NCI'):
+                paths.append(f'{cuboutput}%SCF%FitDenSigned.cub')
+                paths.append(f'{cuboutput}%SCF%Fitdensity.cub')
+                paths.append(f'{cuboutput}%SCF%FitNCI.cub')
+                paths.append(f'{cuboutput}%SCF%FitRDG.cub')
+                paths.append(f'{cuboutput}%SCF%FitRDGforNCI.cub')
+                if 'both' in extra.lower():
+                    paths.append(f'{cuboutput}%SCF%DenSigned.cub')
+                    paths.append(f'{cuboutput}%SCF%Density.cub')
+                    paths.append(f'{cuboutput}%SCF%NCI.cub')
+                    paths.append(f'{cuboutput}%SCF%RDG.cub')
+                    paths.append(f'{cuboutput}%SCF%RDGforNCI.cub')
+
 
         return paths
 
