@@ -101,7 +101,7 @@ def get_subdirectories(root: str, include_intermediates: bool = False) -> List[s
     return subdirs
 
 
-def match(root: str, pattern: str) -> Dict[str, dict]:
+def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
     """
     Find and return information about subdirectories of a root that match a given pattern.
 
