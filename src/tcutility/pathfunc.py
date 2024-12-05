@@ -192,4 +192,7 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
         # get the group data and add it to the return dictionary. We skip the first group because it is the full directory path
         ret[p] = results.Result(directory=p, **{substitutions[i]: match.group(i + 1) for i in range(len(substitutions))})
 
-    return ret
+    if not sort_by:
+        return ret
+
+    return results.Result(sorted(ret.items(), key=lambda d: d[1][sort_by]))
