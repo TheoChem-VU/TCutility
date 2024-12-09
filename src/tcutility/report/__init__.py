@@ -1,1 +1,1 @@
-from . import character  # noqa
+from . import character, figure_resizer  # noqa
