@@ -1,18 +1,18 @@
 """ Module containing functions for calculating geometrical parameters for molecules """
 import argparse
-from tcutility import geometry, molecule
+from tcutility import geometry, molecule, results
 
 
 def create_subparser(parent_parser: argparse.ArgumentParser):
     desc = """Calculate geometrical parameters for atoms at the provided indices.
 
-For 1 index this program returns the cartesian coordinate for this atom. 
-For 2 indices return bond length between atoms. 
-For 3 indices return bond angle, with the second index being the central atom. 
-For 4 indices return dihedral angle by calculating the angle between normal vectors described by atoms at indices 1-2-3 and indices 2-3-4. 
+For 1 index this program returns the cartesian coordinate for this atom.
+For 2 indices return bond length between atoms.
+For 3 indices return bond angle, with the second index being the central atom.
+For 4 indices return dihedral angle by calculating the angle between normal vectors described by atoms at indices 1-2-3 and indices 2-3-4.
 If the -p/--pyramidal flag is turned on it calculates 360° - ang1 - ang2 - ang3, where ang1, ang2 and ang3 are the angles described by indices 2-1-3, 3-1-4 and 4-1-2 respectively.
 """
-    subparser = parent_parser.add_parser('geo', help=desc, description=desc)
+    subparser = parent_parser.add_parser('geo', help=desc, description=desc, formatter_class=argparse.RawTextHelpFormatter)
     subparser.add_argument("xyzfile",
                            type=str,
                            nargs=1,
@@ -28,7 +28,10 @@ If the -p/--pyramidal flag is turned on it calculates 360° - ang1 - ang2 - ang3
 
 
 def main(args: argparse.Namespace):
-    mol = molecule.load(args.xyzfile[0])
+    try:
+        mol = molecule.load(args.xyzfile[0])
+    except IsADirectoryError:
+        mol = results.read(args.xyzfile[0]).molecule.output
     indices = [int(i) - 1 for i in args.atom_indices]
 
     assert 1 <= len(indices) <= 4, f"Number of indices must be 1, 2, 3 or 4, not {len(indices)}"
