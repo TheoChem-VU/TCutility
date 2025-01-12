@@ -92,9 +92,9 @@ def read(calc_dir: Union[str, pl.Path]) -> Result:
             ret.adf = None
 
         try:
-         ret.properties = adf.get_properties(ret)
+            ret.properties = adf.get_properties(ret)
         except:  # noqa
-         ret.properties = None
+            ret.properties = None
 
         try:
             ret.level = adf.get_level_of_theory(ret)
