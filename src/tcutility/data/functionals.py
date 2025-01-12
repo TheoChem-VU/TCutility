@@ -1,6 +1,6 @@
 '''
 Module used for obtaining information about exchange-correlation functionals.
-For example, it can be useful to obtain 
+For example, it can be useful to obtain
 '''
 import os
 from tcutility import results, cache
@@ -20,7 +20,7 @@ def get(functional_name: str) -> results.Result:
 
     Return:
         A :class:`Result <tcutility.results.result.Result>` object containing information about the functional if it exists. Else it will return ``None``.
-    
+
     .. seealso::
         :func:`get_available_functionals` for an overview of the information returned.
     '''
@@ -41,7 +41,7 @@ def functional_name_from_path_safe_name(path_safe_name: str) -> results.Result:
 
     Return:
         A :class:`Result <tcutility.results.result.Result>` object containing information about the functional if it exists. Else it will return ``None``.
-    
+
     .. seealso::
         :func:`get_available_functionals` for an overview of the information returned.
     '''
@@ -63,7 +63,7 @@ def get_available_functionals():
             The values contain the following information:
 
                 - ``name`` **(str)** - the name of the functional.
-                - ``path_safe_name`` **(str)** - the name of the functional made suitable for file paths. 
+                - ``path_safe_name`` **(str)** - the name of the functional made suitable for file paths.
                     This name is the same as the normal name, but without parentheses. Asterisks are replaced with lower-case ``s``.
                 - ``name_no_disp`` **(str)** - the name of functional without the dispersion correction.
                 - ``category`` **(str)** - the category the functional belongs to.
@@ -167,7 +167,7 @@ def get_available_functionals():
         lines = file.readlines()
 
     # read the references first
-    # references are given as 
+    # references are given as
     # [refname] doi
     # and in-line
     # - xcname {options} [refname1][refname2]...
@@ -200,7 +200,7 @@ def get_available_functionals():
         if not line.startswith('- '):
             curr_category = line.strip()
             continue
- 
+
         line = line.split('#')[0].strip()
 
         # store data about the func in a dict
