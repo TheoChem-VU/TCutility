@@ -4,7 +4,7 @@ from tcutility import log
 from tcutility.job.generic import Job
 import os
 import numpy as np
-from typing import List
+from typing import List, Optional
 
 j = os.path.join
 
@@ -30,7 +30,7 @@ class AMSJob(Job):
         By default also calculates the normal modes after convergence.
 
         Args:
-            distances: sequence of tuples or lists containing [atom_index1, atom_index2, factor]. Atom indices start at 1. 
+            distances: sequence of tuples or lists containing [atom_index1, atom_index2, factor]. Atom indices start at 1.
             angles: sequence of tuples or lists containing [atom_index1, atom_index2, atom_index3, factor]. Atom indices start at 1.
             dihedrals: sequence of tuples or lists containing [atom_index1, atom_index2, atom_index3, atom_index4, factor]. Atom indices start at 1.
             ModeToFollow: the vibrational mode to follow during optimization.
@@ -66,7 +66,7 @@ class AMSJob(Job):
 
         Args:
             direction: the direction to take the first step into. By default it will be set to ``both``.
-            hess_file: the path to a ``.rkf`` file to read the Hessian from. This is the ``adf.rkf`` file for ADF calculations. 
+            hess_file: the path to a ``.rkf`` file to read the Hessian from. This is the ``adf.rkf`` file for ADF calculations.
                 If set to ``None`` the Hessian will be calculated prior to starting the IRC calculation.
             step_size: the size of the step taken between each constrained optimization. By default it will be set to ``0.2`` :math:`a_0\\sqrt{Da}`.
             min_path_length: the length of the IRC path before switching to minimization. By default it will be set to ``0.1`` |angstrom|.
@@ -90,20 +90,20 @@ class AMSJob(Job):
         Set the task of the job to potential energy surface scan (PESScan).
 
         Args:
-            distances: sequence of tuples or lists containing ``[atom_index1, atom_index2, start, end]``. 
+            distances: sequence of tuples or lists containing ``[atom_index1, atom_index2, start, end]``.
                 Atom indices start at 1. Distances are given in |angstrom|.
-            angles: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, start, end]``. 
+            angles: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, start, end]``.
                 Atom indices start at 1. Angles are given in degrees
-            dihedrals: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, atom_index4, start, end]``. 
+            dihedrals: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, atom_index4, start, end]``.
                 Atom indices start at 1. Angles are given in degrees
-            sumdists: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, atom_index4, start, end]``. 
+            sumdists: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, atom_index4, start, end]``.
                 Atom indices start at 1. Sum of distances is given in |angstrom|.
-            difdists: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, atom_index4, start, end]``. 
+            difdists: sequence of tuples or lists containing ``[atom_index1, atom_index2, atom_index3, atom_index4, start, end]``.
                 Atom indices start at 1. Difference of distances is given in |angstrom|.
             npoints: the number of PES points to optimize.
 
         .. note::
-            Currently we only support generating settings for 1-dimensional PESScans. 
+            Currently we only support generating settings for 1-dimensional PESScans.
             We will add support for N-dimensional PESScans later.
         '''
         self._task = 'PESScan'
@@ -119,22 +119,23 @@ class AMSJob(Job):
             self.settings.input.ams.PESScan.ScanCoordinate.SumDist = [" ".join([str(x) for x in dist]) for dist in sumdists]
         if difdists is not None:
             self.settings.input.ams.PESScan.ScanCoordinate.DifDist = [" ".join([str(x) for x in dist]) for dist in difdists]
-            
+
         self.add_postscript(tcutility.job.postscripts.clean_workdir)
         self.add_postscript(tcutility.job.postscripts.write_converged_geoms)
 
-    def vibrations(self, enable: bool = True, NegativeFrequenciesTolerance: float = -5):
+    def vibrations(self, enable: bool = True, NegativeFrequenciesTolerance: float = 0.0):
         '''
-        Set the calculation of vibrational modes. 
+        Set the calculation of vibrational modes.
 
         Args:
             enable: whether to calculate the vibrational modes.
-            NegativeFrequenciesTolerance: the tolerance for negative modes. 
-                Modes with frequencies above this value will not be counted as imaginary. 
+            NegativeFrequenciesTolerance: the tolerance for negative modes.
+                Modes with frequencies above this value will not be counted as imaginary.
                 Use this option when you experience a lot of numerical noise.
         '''
         self.settings.input.ams.Properties.NormalModes = 'Yes' if enable else 'No'
         self.settings.input.ams.Properties.PESPointCharacter = 'Yes'
+
         self.settings.input.ams.PESPointCharacter.NegativeFrequenciesTolerance = NegativeFrequenciesTolerance
         self.settings.input.ams.NormalModes.ReScanFreqRange = '-10000000.0 10.0'
 
