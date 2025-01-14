@@ -1,44 +1,22 @@
-from tcutility.cli_scripts import read, job_script, concatenate_irc, cite, geo
-
-# to add a script:
-# 1. Add a create_subparser function and main function to your script.
-# 2. Import the script.
-# 3. Add it to the dictionary below {program_name: script-module}.
-sub_programs = {
-    "read": read,
-    "optimize": job_script,
-    "concat-irc": concatenate_irc,
-    "cite": cite,
-    "geo": geo,
-}
+import click
+from tcutility.cli_scripts.cite import generate_citations
+from tcutility.cli_scripts.concatenate_irc import concatenate_irc_paths
+from tcutility.cli_scripts.geo import calculate_geometry_parameter
+from tcutility.cli_scripts.job_script import optimize_geometry
+from tcutility.cli_scripts.read import read_results
 
 
-def create_parser():
-    import argparse
-
-    parser = argparse.ArgumentParser(prog="tc")
-    # add the subparsers. dest ensures we can retrieve the subparser name later on
-    subparsers = parser.add_subparsers(dest="subprogram", title="TCutility command-line scripts")
-
-    # add the subparsers to the main parser
-    for sub_program in sub_programs.values():
-        sub_program.create_subparser(subparsers)
-
-    return parser
+@click.group()
+def tc():
+    """TCutility command line interface."""
+    pass
 
 
-def main():
-    parser = create_parser()
-    args = parser.parse_args()
-
-    # if the program was called without a subprogram we simply print the help message
-    if args.subprogram is None:
-        parser.print_help()
-        return
-
-    # call the main function of the subprogram that was called
-    sub_programs[args.subprogram].main(args)
-
+tc.add_command(read_results, name="read")
+tc.add_command(optimize_geometry, name="optimize")
+tc.add_command(generate_citations, name="cite")
+tc.add_command(calculate_geometry_parameter, name="geo")
+tc.add_command(concatenate_irc_paths, name="concat-irc")
 
 if __name__ == "__main__":
-    main()
+    tc()

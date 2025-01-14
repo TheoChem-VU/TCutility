@@ -30,6 +30,8 @@ dependencies = [
   "platformdirs",
   "requests",
   "listfunc",
+  "strenum>=0.4",
+  "click>=8.1",
 ]
 # Current maintainers
 maintainers = [{ name = "TheoCheM group" }]
@@ -66,4 +68,4 @@ exclude = [
 namespaces = false # to disable scanning PEP 420 namespaces (true by default)
 
 [project.scripts]
-tc = "tcutility.cli_scripts.tcparser:main"
+tc = "tcutility.cli_scripts.tcparser:tc"
