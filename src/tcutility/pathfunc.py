@@ -101,7 +101,7 @@ def get_subdirectories(root: str, include_intermediates: bool = False) -> List[s
     return subdirs
 
 
-def match(root: str, pattern: str) -> Dict[str, dict]:
+def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
     """
     Find and return information about subdirectories of a root that match a given pattern.
 
@@ -192,4 +192,7 @@ def match(root: str, pattern: str) -> Dict[str, dict]:
         # get the group data and add it to the return dictionary. We skip the first group because it is the full directory path
         ret[p] = results.Result(directory=p, **{substitutions[i]: match.group(i + 1) for i in range(len(substitutions))})
 
-    return ret
+    if not sort_by:
+        return ret
+
+    return results.Result(sorted(ret.items(), key=lambda d: d[1][sort_by]))
