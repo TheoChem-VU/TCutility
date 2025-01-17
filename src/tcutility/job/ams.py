@@ -4,7 +4,7 @@ from tcutility import log
 from tcutility.job.generic import Job
 import os
 import numpy as np
-from typing import List, Optional
+from typing import List
 
 j = os.path.join
 

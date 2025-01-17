@@ -32,6 +32,7 @@ dependencies = [
   "listfunc",
   "strenum>=0.4",
   "click>=8.1",
+  "opencv-python",
 ]
 # Current maintainers
 maintainers = [{ name = "TheoCheM group" }]
