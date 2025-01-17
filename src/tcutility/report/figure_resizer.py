@@ -57,7 +57,7 @@ def _remove_padding(img):
     return rect
 
 
-def resize(d, circle_numbers: Optional[Dict] = None, padding: Union[str, int | float] = 0):
+def resize(d, circle_numbers: Optional[Dict] = None, padding: Union[str, int, float] = 0):
     '''
     The main function for this module.
     Takes a directory `d` and selected circles and resizes and moves images in order to produce new aligned images.
