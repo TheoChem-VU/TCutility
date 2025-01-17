@@ -1,4 +1,5 @@
 """ Module containing CLI functionality for resizing pictures containing molecules """
+
 from tcutility import report
 import os
 import click
@@ -20,10 +21,4 @@ def resize(folder, padding):
     circle_numbers = {}
     for img_path in os.listdir(folder):
         report.figure_resizer.get_data(os.path.join(folder, img_path), plot=True)
-        circle = input(f'Select circle for {img_path}, leave empty to skip: ')
-        if circle == '':
-            continue
 
-        circle_numbers[img_path] = int(circle)
-
-    report.figure_resizer.resize(folder, circle_numbers, padding=padding)

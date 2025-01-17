@@ -1,7 +1,7 @@
 import os
 
 from scm import plams
-from typing import Dict, Optional
+from typing import Dict, Optional, TYPE_CHECKING
 from tcutility import data, formula, log, molecule, results, spell_check
 from tcutility.errors import TCCompDetailsError, TCJobError
 from tcutility.job.ams import AMSJob
@@ -9,6 +9,8 @@ from tcutility.job.generic import Job
 
 j = os.path.join
 
+if TYPE_CHECKING:
+    import pyfmo
 
 class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
@@ -256,7 +258,9 @@ class ADFJob(AMSJob):
 
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
-        self.decompose_elstat = kwargs.pop("decompose_elstat", False)
+
+        self.decompose_elstat = kwargs.pop('decompose_elstat', False)
+        self.counter_poise = kwargs.pop('counter_poise', False)
         self.child_jobs = {}
         # self.child_jobs_no_electrons = {}
         super().__init__(*args, **kwargs)
@@ -302,8 +306,10 @@ class ADFFragmentJob(ADFJob):
         name = name or f"fragment{len(self.child_jobs) + 1}"
         self.child_jobs[name] = ADFJob(test_mode=self.test_mode)
         self.child_jobs[name].molecule(mol)
-        self.child_jobs[name].charge(charge)
-        self.child_jobs[name].spin_polarization(spin_polarization)
+        if charge:
+            self.child_jobs[name].charge(charge)
+        if spin_polarization:
+            self.child_jobs[name].spin_polarization(spin_polarization)
         setattr(self, name, self.child_jobs[name])
 
         if not add_frag_to_mol:
@@ -378,6 +384,36 @@ class ADFFragmentJob(ADFJob):
   End
         """
 
+    def frag_occupations(self, frag=None, subspecies=None, alpha=None, beta=None):
+        """
+        Set the occupations of the fragments.
+
+        Args:
+            frag: the fragment to set the occupations for.
+            subspecies: the symmetry subspecies to set the occupations for. If set to ``None`` we assume we have ``A`` subspecies.
+            alpha: the number of alpha electrons. If set to ``None`` we will guess the number of electrons based on the spin-polarization set.
+            beta: the number of beta electrons. If set to ``None`` we will guess the number of electrons based on the spin-polarization set.
+        """
+
+        child_job = self.child_jobs[frag]
+
+        if alpha is None and beta is None:
+            spinpol = child_job.settings.input.adf.SpinPolarization or 0
+            charge = child_job.settings.input.ams.system.charge or 0
+            print(child_job._molecule)
+            nelectrons = sum(atom.atnum for atom in child_job._molecule) - charge
+            alpha = nelectrons // 2 + spinpol
+            beta  = nelectrons // 2
+
+        self.settings.input.adf.setdefault("FragOccupations", "")
+        self.settings.input.adf.FragOccupations = self.settings.input.adf.FragOccupations.replace(" End", "")
+        self.settings.input.adf.FragOccupations += f"""
+    {frag}
+      {subspecies or 'A'} {alpha} // {beta}
+    SubEnd
+  End
+        """
+
     def run(self):
         """
         Run the ``ADFFragmentJob``. This involves setting up the calculations for each fragment as well as the parent job.
@@ -405,8 +441,9 @@ class ADFFragmentJob(ADFJob):
         log.flow(f"Unrestricted:      {unrestricted}", ["straight"])
         log.flow(f"Spin-Polarization: {spinpol}", ["straight"])
         log.flow()
+
         # this job and all its children should have the same value for unrestricted
-        [child.unrestricted(unrestricted) for child in self.child_jobs.values()]
+        # [child.unrestricted(unrestricted) for child in self.child_jobs.values()]
 
         # propagate the post- and preambles to the child_jobs
         [child.add_preamble(preamble) for preamble in self._preambles for child in self.child_jobs.values()]
@@ -421,13 +458,17 @@ class ADFFragmentJob(ADFJob):
         [child_sett.update(sett) for child_sett in child_setts.values()]
         [child_sett.input.adf.pop("RemoveFragOrbitals", None) for child_sett in child_setts.values()]
         [child_sett.input.adf.pop("RemoveAllFragVirtuals", None) for child_sett in child_setts.values()]
+        [child_sett.input.adf.pop("FragOccupations", None) for child_sett in child_setts.values()]
         # same for sbatch settings
         [child.sbatch(**self._sbatch) for child in self.child_jobs.values()]
-        # now set the charge, spinpol, unrestricted for the parent
-        self.charge(charge)
-        self.spin_polarization(spinpol)
-        self.unrestricted(unrestricted)
+
+        # now set the charge, spinpol, unrestricted for the parent 
+        if charge:
+            self.charge(charge)
+        if spinpol:
+            self.spin_polarization(spinpol)
         if unrestricted:
+            self.unrestricted(unrestricted)
             self.settings.input.adf.UnrestrictedFragments = "Yes"
 
         elstat_jobs = {}
@@ -443,10 +484,12 @@ class ADFFragmentJob(ADFJob):
 
             # recast the plams.Settings object into a Result object as that is what run expects
             child.settings = results.Result(child_setts[child_name])
-            log.flow(f"Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}]", ["split"])
-            log.flow(f"Charge:            {child.settings.input.ams.System.charge}", ["straight", "straight"])
-            log.flow(f"Spin-Polarization: {child.settings.input.adf.SpinPolarization}", ["straight", "straight"])
-            log.flow(f"Work dir:          {child.workdir}", ["straight", "straight"])
+
+            log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}]', ['split'])
+            log.flow(f'Charge:            {child.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
+            log.flow(f'Spin-Polarization: {child.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
+            log.flow(f'Work dir:          {child.workdir}', ['straight', 'straight'])
+
             if child.can_skip():
                 log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"])
                 log.flow()
@@ -467,10 +510,10 @@ class ADFFragmentJob(ADFJob):
                 child_STOFIT.settings.input.adf.pop("NumericalQuality")
                 child_STOFIT.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
-                log.flow(f"Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] with STOFIT", ["split"])
-                log.flow(f"Charge:            {child_STOFIT.settings.input.ams.System.charge}", ["straight", "straight"])
-                log.flow(f"Spin-Polarization: {child_STOFIT.settings.input.adf.SpinPolarization}", ["straight", "straight"])
-                log.flow(f"Work dir:          {child_STOFIT.workdir}", ["straight", "straight"])
+                log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] with STOFIT', ['split'])
+                log.flow(f'Charge:            {child_STOFIT.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
+                log.flow(f'Spin-Polarization: {child_STOFIT.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
+                log.flow(f'Work dir:          {child_STOFIT.workdir}', ['straight', 'straight'])
 
                 if child_STOFIT.can_skip():
                     log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"])
@@ -486,18 +529,20 @@ class ADFFragmentJob(ADFJob):
                 child_NoElectrons = ADFJob(child)
                 child_NoElectrons.name += "_NoElectrons"
                 elstat_jobs[child_NoElectrons.name] = child_NoElectrons
-                child_NoElectrons.settings.input.adf.STOFIT = ""
-                child_NoElectrons.settings.input.adf.PRINT = +" Elstat"
+
+                child_NoElectrons.settings.input.adf.STOFIT = ''
+                child_NoElectrons.settings.input.adf.PRINT += ' Elstat'
                 child_NoElectrons.charge(molecule.number_of_electrons(child_NoElectrons._molecule))
                 child_NoElectrons.spin_polarization(0)
                 child_NoElectrons.settings.input.adf.pop("NumericalQuality")
                 child_NoElectrons.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
-                log.flow(f"Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] without Electrons", ["split"])
-                log.flow(f"Charge:            {child_NoElectrons.settings.input.ams.System.charge}", ["straight", "straight"])
-                log.flow(f"Spin-Polarization: {child_NoElectrons.settings.input.adf.SpinPolarization}", ["straight", "straight"])
-                log.flow(f"Work dir:          {child_NoElectrons.workdir}", ["straight", "straight"])
 
+                log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] without Electrons', ['split'])
+                log.flow(f'Charge:            {child_NoElectrons.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
+                log.flow(f'Spin-Polarization: {child_NoElectrons.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
+                log.flow(f'Work dir:          {child_NoElectrons.workdir}', ['straight', 'straight'])
+                
                 if child_NoElectrons.can_skip():
                     log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"])
                     log.flow()
@@ -613,7 +658,43 @@ class ADFFragmentJob(ADFJob):
                 log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
                 log.flow()
 
-        log.flow(log.Emojis.finish + " Done, bye!", ["startinv"])
+        if self.counter_poise:
+            self.SCF(iterations=old_iters)
+            self.settings.input.ams.EngineDebugging.pop('AlwaysClaimSuccess', None)
+            self.settings.input.adf.pop('fragments', None)
+            for frag, frag_job in self.child_jobs.items():
+                atoms = [atom for job in self.child_jobs.values() for atom in job._molecule]
+
+                # in the parent job the atoms should have the region and adf.f defined as options
+                atom_lines = []
+                # for each atom we check which child it came from
+                for atom in atoms:
+                    for child_name, child in self.child_jobs.items():
+                        for childatom in child._molecule:
+                            # we check by looking at the symbol and coordinates of the atom
+                            if (atom.symbol, atom.x, atom.y, atom.z) == (childatom.symbol, childatom.x, childatom.y, childatom.z):
+                                # now write the symbol and coords as a string with the correct suffix and ghost indicator
+                                if child_name == frag:
+                                    atom_lines.append(f'\t\t{atom.symbol} {atom.x} {atom.y} {atom.z}')
+                                else:
+                                    atom_lines.append(f'\t\tGh.{atom.symbol} {atom.x} {atom.y} {atom.z}')
+
+                # write the atoms block as a string with new line characters
+                self.settings.input.ams.system.atoms = ("\n" + "\n".join(atom_lines) + "\n\tEnd").expandtabs(4)
+                self.spin_polarization(frag_job.settings.input.adf.SpinPolarization or 0)
+                self.charge(frag_job.settings.input.ams.System.charge or 0)
+                self.unrestricted((frag_job.settings.input.adf.Unrestricted or 'no').lower() == 'yes')
+
+                # we must repopulate the sbatch settings for the new run
+                self.name = f'complex_{frag}_Ghost'
+                log.flow(log.Emojis.good + f' Submitting {frag} with the basis-set of the complex', ['split'])
+                [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
+                super().run()
+                log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
+                log.flow()
+
+        log.flow(log.Emojis.finish + ' Done, bye!', ['startinv'])
+
 
 
 class DensfJob(Job):
@@ -641,6 +722,9 @@ class DensfJob(Job):
         spell_check.check(size, ["coarse", "medium", "fine"], ignore_case=True)
         self.settings.grid = size
 
+    def grid(self, args):
+        self.settings.grid = '\n' + '\n'.join(args)
+
     def orbital(self, orbital: "pyfmo.orbitals.sfo.SFO" or "pyfmo.orbitals.mo.MO"):  # noqa: F821
         """
         Add a PyOrb orbital for Densf to calculate.
@@ -661,7 +745,9 @@ class DensfJob(Job):
         elif self.settings.ADFFile != orbital.kfpath:
             raise TCJobError(job_class=self.__class__.__name__, message="RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
-    def density(self, orbitals: "pyfmo.orbitals.Orbitals"):
+            
+    def density(self, orbitals: 'pyfmo.orbitals.Orbitals'):  # noqa: F821
+      
         # check if the ADFFile is the same for all added orbitals
         if self.settings.ADFFile is None:
             self.settings.ADFFile = orbitals.kfpath
@@ -671,13 +757,24 @@ class DensfJob(Job):
 
         self._extras.append("Density SCF")
 
+    def NCI(self, density: str = 'both', rhovdw=0.02, rdg=0.5):
+        '''
+        Setup calculation of NCI values.
+
+        Args:
+            density: the density to calculate for, either "FIT" or  "BOTH", default is "BOTH".
+            rhovdw: threshold of density for detection of weak interaction regions, default is `0.02`.
+            rdg: threshold of reduced density gradient, default is `0.5`.
+        '''
+        self._extras.append(f'NCI {density} RHOVDW={rhovdw} RDG={rdg}')
+
     def _setup_job(self):
         os.makedirs(self.workdir, exist_ok=True)
 
         # set up the input file. This should always contain calling of the densf program, as per the SCM documentation
         with open(self.inputfile_path, "w+") as inpf:
             inpf.write("$AMSBIN/densf << eor\n")
-            inpf.write(f"ADFFile {self.settings.ADFFile}\n")
+            inpf.write(f"ADFFile {os.path.abspath(self.settings.ADFFile)}\n")
             inpf.write(f"GRID {self.settings.grid}\n")
             inpf.write("END\n")
 
@@ -697,7 +794,8 @@ class DensfJob(Job):
                 inpf.write(line + "\n")
 
             # cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size
-            inpf.write(f"CUBOUTPUT {os.path.split(self.settings.ADFFile)[0]}/{self.settings.grid}\n")
+            outname = self.settings.grid if self.settings.grid.lower() in ['coarse', 'medium', 'fine'] else 'custom_grid'
+            inpf.write(f"CUBOUTPUT {os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}\n")
             inpf.write("eor\n")
 
         # the runfile should simply execute the input file.
@@ -715,7 +813,7 @@ class DensfJob(Job):
         The output cube file paths that will be/were calculated by this job.
         """
         paths = []
-        cuboutput = f"{os.path.split(self.settings.ADFFile)[0]}/{self.settings.grid}"
+        cuboutput = f"{os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{self.settings.grid}"
 
         for mo in self._mos:
             spin_part = "" if mo.spin == "AB" else f"_{mo.spin}"
@@ -728,6 +826,20 @@ class DensfJob(Job):
         for extra in self._extras:
             if extra == "Density SCF":
                 paths.append(f"{cuboutput}%SCF%Density.cub")
+
+            if extra.startswith('NCI'):
+                paths.append(f'{cuboutput}%SCF%FitDenSigned.cub')
+                paths.append(f'{cuboutput}%SCF%Fitdensity.cub')
+                paths.append(f'{cuboutput}%SCF%FitNCI.cub')
+                paths.append(f'{cuboutput}%SCF%FitRDG.cub')
+                paths.append(f'{cuboutput}%SCF%FitRDGforNCI.cub')
+                if 'both' in extra.lower():
+                    paths.append(f'{cuboutput}%SCF%DenSigned.cub')
+                    paths.append(f'{cuboutput}%SCF%Density.cub')
+                    paths.append(f'{cuboutput}%SCF%NCI.cub')
+                    paths.append(f'{cuboutput}%SCF%RDG.cub')
+                    paths.append(f'{cuboutput}%SCF%RDGforNCI.cub')
+
 
         return paths
 
