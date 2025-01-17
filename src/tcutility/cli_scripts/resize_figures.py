@@ -3,6 +3,7 @@
 from tcutility import report
 import os
 import click
+from pathlib import Path
 
 
 @click.command()
@@ -10,7 +11,7 @@ import click
 @click.option('-p', '--padding', default='10%', help="""The amount of padding to add to the resized figures.
 If given an integer we use pixel padding. E.g. -p 50 will add a padding of 50 pixels.
 Add a %%-sign to use relative padding. E.g. -p 10%% will add a padding of 10%%.""")
-def resize(folder, padding):
+def resize(folder: Path, padding: str):
     """Resize images containing molecules.
 
     This CLI-program resizes images in a directory based on detected circles. It will ensure the selected circles are placed at the same location and are also resized to be the same size.
@@ -21,4 +22,10 @@ def resize(folder, padding):
     circle_numbers = {}
     for img_path in os.listdir(folder):
         report.figure_resizer.get_data(os.path.join(folder, img_path), plot=True)
+        circle = input(f'Select circle for {img_path}, leave empty to skip: ')
+        if circle == '':
+            continue
 
+        circle_numbers[img_path] = int(circle)
+
+    report.figure_resizer.resize(folder, circle_numbers, padding=padding)
