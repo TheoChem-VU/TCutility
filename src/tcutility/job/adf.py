@@ -261,13 +261,14 @@ class ADFFragmentJob(ADFJob):
 
         self.decompose_elstat = kwargs.pop('decompose_elstat', False)
         self.counter_poise = kwargs.pop('counter_poise', False)
+        self.scf0_calculation = kwargs.pop('sfo0_calculation', False)
         self.child_jobs = {}
         # self.child_jobs_no_electrons = {}
         super().__init__(*args, **kwargs)
         self.name = "EDA"
 
         # by default print the fock matrix
-        self.settings.input.adf.print = "FmatSFO"
+        # self.settings.input.adf.print = "FmatSFO"
 
     def add_fragment(self, mol: plams.Molecule, name: str = None, charge: int = 0, spin_polarization: int = 0):
         """
@@ -462,7 +463,7 @@ class ADFFragmentJob(ADFJob):
         # same for sbatch settings
         [child.sbatch(**self._sbatch) for child in self.child_jobs.values()]
 
-        # now set the charge, spinpol, unrestricted for the parent 
+        # now set the charge, spinpol, unrestricted for the parent
         if charge:
             self.charge(charge)
         if spinpol:
@@ -542,7 +543,7 @@ class ADFFragmentJob(ADFJob):
                 log.flow(f'Charge:            {child_NoElectrons.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
                 log.flow(f'Spin-Polarization: {child_NoElectrons.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
                 log.flow(f'Work dir:          {child_NoElectrons.workdir}', ['straight', 'straight'])
-                
+
                 if child_NoElectrons.can_skip():
                     log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"])
                     log.flow()
@@ -579,17 +580,18 @@ class ADFFragmentJob(ADFJob):
         log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
         log.flow()
 
-        # also do the calculation with SCF cycles set to 1
-        old_iters = self.settings.input.adf.SCF.Iterations or 300
-        self.SCF(iterations=0)
-        # we must repopulate the sbatch settings for the new run
-        [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
-        self.name = "complex_SCF0"
-        log.flow(log.Emojis.good + " Submitting extra job with 0 SCF iterations", ["split"])
+        # also do the calculation with SCF cycles set to 1 if desired
+        if self.scf0_calculation:
+            old_iters = self.settings.input.adf.SCF.Iterations or 300
+            self.SCF(iterations=0)
+            # we must repopulate the sbatch settings for the new run
+            [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
+            self.name = "complex_SCF0"
+            log.flow(log.Emojis.good + " Submitting extra job with 0 SCF iterations", ["split"])
 
-        super().run()
-        log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
-        log.flow()
+            super().run()
+            log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
+            log.flow()
 
         # also do the calculation with no electrons on the fragments if the user requested a elstat decomposition
         if self.decompose_elstat:
@@ -745,9 +747,9 @@ class DensfJob(Job):
         elif self.settings.ADFFile != orbital.kfpath:
             raise TCJobError(job_class=self.__class__.__name__, message="RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
-            
+
     def density(self, orbitals: 'pyfmo.orbitals.Orbitals'):  # noqa: F821
-      
+
         # check if the ADFFile is the same for all added orbitals
         if self.settings.ADFFile is None:
             self.settings.ADFFile = orbitals.kfpath

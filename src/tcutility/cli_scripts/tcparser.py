@@ -20,6 +20,3 @@ tc.add_command(generate_citations, name="cite")
 tc.add_command(calculate_geometry_parameter, name="geo")
 tc.add_command(concatenate_irc_paths, name="concat-irc")
 tc.add_command(resize, name="resize")
-
-if __name__ == "__main__":
-    tc()

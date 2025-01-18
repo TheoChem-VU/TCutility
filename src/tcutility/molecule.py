@@ -191,10 +191,10 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         Atoms that were not included by either method will be placed in the molecule object with key ``None``.
 
     """
+    HAS_FLAGS = hasattr(mol, "flags")
 
     # first method, check if the fragments are defined as molecule flags
-    fragment_flags = [flag for flag in mol.flags if flag.startswith("frag_")]
-    if len(fragment_flags) > 0:
+    if HAS_FLAGS:
         # we split here to get of the frag_ prefix
         fragment_mols = {frag.split("_", 1)[1]: plams.Molecule() for frag in fragment_flags}
         for frag in fragment_flags:

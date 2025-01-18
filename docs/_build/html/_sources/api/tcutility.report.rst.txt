@@ -12,6 +12,14 @@ tcutility.report.character module
    :undoc-members:
    :show-inheritance:
 
+tcutility.report.figure\_resizer module
+---------------------------------------
+
+.. automodule:: tcutility.report.figure_resizer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

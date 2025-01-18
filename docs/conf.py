@@ -50,7 +50,9 @@ extensions = [
     # 'sphinx.ext.autosummary',
     "sphinx_autodoc_typehints",
     "sphinxarg.ext",
+    "sphinx_click.ext",
 ]
+
 napoleon_use_param = True
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]

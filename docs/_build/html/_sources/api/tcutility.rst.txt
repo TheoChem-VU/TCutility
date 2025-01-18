@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    tcutility.analysis
+   tcutility.cli_scripts
    tcutility.data
    tcutility.job
    tcutility.report
