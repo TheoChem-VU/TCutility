@@ -195,6 +195,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
 
     # first method, check if the fragments are defined as molecule flags
     if HAS_FLAGS:
+        fragment_flags = [flag for flag in mol.flags if flag.startswith("frag_")]
         # we split here to get of the frag_ prefix
         fragment_mols = {frag.split("_", 1)[1]: plams.Molecule() for frag in fragment_flags}
         for frag in fragment_flags:
