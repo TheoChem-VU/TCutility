@@ -49,7 +49,7 @@ extensions = [
     "sphinx_copybutton",
     # 'sphinx.ext.autosummary',
     "sphinx_autodoc_typehints",
-    "sphinx_clickt",
+    "sphinx_click",
 ]
 
 napoleon_use_param = True
