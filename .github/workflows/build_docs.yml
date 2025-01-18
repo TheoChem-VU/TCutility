@@ -40,7 +40,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Build package
         run: |
@@ -48,15 +48,8 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install -e .
 
-      - name: Install sphinx
-        run: pip install sphinx sphinx-tabs sphinx-copybutton sphinx-autodoc-typehints sphinx-argparse
-
-      - name: Install sphinx theme
-        run: pip install pydata-sphinx-theme
-
-      - name: Install other dependencies
-        run: pip install plams
-
+      - name: Install documentation dependencies (see [docs] in pyproject.toml)
+        pip install ".[docs]
 
       - name: Run sphinx-apidoc
         run: cd docs; sphinx-apidoc -f -o api ../src/tcutility/
