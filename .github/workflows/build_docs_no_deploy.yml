@@ -31,7 +31,7 @@ jobs:
           pip install -e .
 
       - name: Install documentation dependencies (see [docs] in pyproject.toml)
-        pip install ".[docs]
+        pip install ".[docs]"
 
       - name: Run sphinx-apidoc
         run: cd docs; sphinx-apidoc -f -o api ../src/tcutility/
