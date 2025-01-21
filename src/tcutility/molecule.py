@@ -8,14 +8,24 @@ from tcutility.results import result
 from tcutility.data import atom
 
 
-def number_of_electrons(mol: plams.Molecule) -> int:
+def number_of_electrons(mol: plams.Molecule, charge: int = 0) -> int:
+    """
+    The number of electrons in a molecule.
+
+    Args:
+        mol: the molecule to count the number of electrons from.
+        charge: the charge of the molecule.
+
+    Returns:
+        The sum of the atomic numbers in the molecule minus the charge of the molecule.
+    """
     nel = 0
     for at in mol:
         nel += atom.atom_number(at.symbol)
-    return nel
+    return nel - charge
 
 
-def parse_str(s: str):
+def _parse_str(s: str):
     # checks if string should be an int, float, bool or string
 
     # sanitization first
