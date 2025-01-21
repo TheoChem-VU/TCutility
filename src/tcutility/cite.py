@@ -81,15 +81,36 @@ def cite(doi: str, style: str = 'wiley', mode='html') -> str:
 	return citation
 
 
+def get_pages(data):
+	try:
+		pages = data['message'].get('page').replace('-', '–')
+		return pages
+	except:
+		pages = '???'
+
+	url = data['message']['URL']
+	if 'ceur.' in url:
+		return 'e' + url.split('ceur.')[-1]
+
+
+def is_accepted(data):
+	for assertion in data['message'].get('assertion', []):
+		if assertion['name'] == 'accepted':
+			return True
+	return False
+
+
 def _format_article(data: dict, style: str) -> str:
 	# grab usefull data
 	journal = data['message']['container-title'][0]
 	journal_abbreviation = _get_journal_abbreviation(journal)
 	year = data['message']['issued']['date-parts'][0][0]
-	volume = data['message']['volume']
-	pages = data['message'].get('page').replace('-', '–')
+	volume = data['message'].get('volume', '')
+	pages = get_pages(data)
 	title = data['message']['title'][0]
 	doi = data['message']['DOI']
+
+	accepted = is_accepted(data)
 
 	# Get the initials from the author given names
 	# also store the family names
