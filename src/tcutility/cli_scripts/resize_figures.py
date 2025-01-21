@@ -2,6 +2,11 @@
 import argparse
 from tcutility import report
 import os
+import tkinter as tk
+from tkinter import filedialog
+
+root = tk.Tk()
+root.withdraw()
 
 
 def create_subparser(parent_parser: argparse.ArgumentParser):
@@ -26,14 +31,17 @@ Add a %%-sign to use relative padding. E.g. -p 10%% will add a padding of 10%%."
 
 def main(args: argparse.Namespace):
     circle_numbers = {}
-    for img_path in os.listdir(args.folder[0]):
-        report.figure_resizer.get_data(os.path.join(args.folder[0], img_path), plot=True)
+    if args.folder is not None:
+        img_paths = [os.path.join(args.folder, img_path) for img_path in os.listdir(args.folder)]
+    else:
+        img_paths = filedialog.askopenfilenames()
+
+    for img_path in img_paths:
+        report.figure_resizer._analyse_img(img_path, plot=True)
         circle = input(f'Select circle for {img_path}, leave empty to skip: ')
         if circle == '':
             continue
 
         circle_numbers[img_path] = int(circle)
 
-    report.figure_resizer.resize(args.folder[0], circle_numbers, padding=args.padding)
-
-    # print(args.folder)
+    report.figure_resizer.resize(img_paths, circle_numbers, padding=args.padding)
