@@ -1,5 +1,4 @@
 """ Module containing CLI functionality for resizing pictures containing molecules """
-import argparse
 from tcutility import report
 import os
 import tkinter as tk
