@@ -101,6 +101,9 @@ class PyFragResult:
             S = abs(S)
         return S[self._order][self._mask[self._order]]
 
+    def orbital_energy_gap(self, orb1, orb2, calc: str = 'complex'):
+        dE = np.array([abs(orb.sfos[orb1].energy - orb.sfos[orb2].energy) for orb in self.orbs(calc)])
+        return dE[self._order][self._mask[self._order]]
     def sfo_coefficient(self, sfo, mo, calc: str = 'complex'):
         C = np.array([orb.sfos[sfo].coefficient(orb.mos[mo]) for orb in self.orbs(calc)])
         return C[self._order][self._mask[self._order]]
