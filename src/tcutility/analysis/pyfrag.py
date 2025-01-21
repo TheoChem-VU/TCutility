@@ -17,6 +17,7 @@ class PyFragResult:
         self._step_results = []
         self._order = []
         self._mask = []
+        self._properties = {}
 
         self._load()
 
@@ -37,6 +38,8 @@ class PyFragResult:
         self._mask = np.array(self._mask)
 
     def get_property(self, key: str, calc: str = 'complex'):
+        if key in self._properties:
+            return self._properties[key][self._order][self._mask[self._order]]
         p = np.array([res[calc].properties.get_multi_key(key) for res in self._step_results])
         return p[self._order][self._mask[self._order]]
 
@@ -65,13 +68,17 @@ class PyFragResult:
 
     def coord(self):
         return self._coord[self._order][self._mask[self._order]]
+
+    def set_property(self, name: str, vals):
+        self._properties[name] = vals
+
     @property
     def ts_idx(self):
-        energies = self.get_property('energy.bond', 'complex')
+        energies = self.total_energy()
         highest = -float('inf')
-        for i in range(1, len(self) - 1):
+        for i in range(len(self) - 2, 1, -1):
             if energies[i-1] < energies[i] and energies[i] < energies[i+1]:
-                return i
+                return i + 1
 
     def total_energy(self):
         return self.interaction_energy() + self.strain_energy()
