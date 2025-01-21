@@ -95,8 +95,10 @@ class PyFragResult:
 
         return self.get_property('energy.bond', f'frag_{fragment}') - self._frag_results[fragment].properties.energy.bond
 
-    def overlap(self, orb1, orb2, calc: str = 'complex'):
+    def overlap(self, orb1, orb2, calc: str = 'complex', absolute: bool = True):
         S = np.array([orb.sfos[orb1] @ orb.sfos[orb2] for orb in self.orbs(calc)])
+        if absolute:
+            S = abs(S)
         return S[self._order][self._mask[self._order]]
 
     def sfo_coefficient(self, sfo, mo, calc: str = 'complex'):
