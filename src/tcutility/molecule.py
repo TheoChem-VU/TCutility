@@ -117,9 +117,21 @@ def load(path) -> plams.Molecule:
 
     return mol
 
-def from_string(s: str) -> plams.Molecule:
+
+def from_string(mol: str) -> plams.Molecule:
+    """
+    Load a molecule from a string. Currently only supports simple XYZ-files, 
+    e.g. not extended XYZ-files with flags.
+
+    Args:
+        mol: string containing the molecule to parse.
+            This function only reads the element, x, y and z coordinates on each line.
+
+    Returns:
+        A new molecule object with the elements and coordinates from the input.
+    """
     mol = plams.Molecule()
-    for line in s.splitlines():
+    for line in mol.splitlines():
         parts = [_parse_str(part) for part in line.split()]
         if len(parts) < 4:
             continue
@@ -136,8 +148,6 @@ def from_string(s: str) -> plams.Molecule:
         mol.add_atom(atom)
 
     return mol
-
-
 
 
 def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
