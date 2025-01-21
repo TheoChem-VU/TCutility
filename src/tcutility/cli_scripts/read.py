@@ -1,51 +1,33 @@
-""" Module containing functions for reading and printing calculation results to the CL """
-import argparse
-from tcutility import results
 from pprint import pprint
+from typing import List
+
+import click
+from tcutility import results
 
 
-def create_subparser(parent_parser: argparse.ArgumentParser):
-    desc = "Read results from a calculation."
-    subparser = parent_parser.add_parser('read', help=desc, description=desc)
-    subparser.add_argument("-s", "--status",
-                           help="Shortcut to only print the status of the calculation.",
-                           default=False,
-                           action="store_true")
-    subparser.add_argument("-p", "--properties",
-                           help="Shortcut to only print calculated properties for the calculation.",
-                           default=False,
-                           action="store_true")
-    subparser.add_argument("workdir",
-                           type=str,
-                           help="The calculation directory to read the results from.")
-    subparser.add_argument("keys",
-                           type=str,
-                           nargs='*',
-                           help="The keys to read from the results.")
+@click.command()
+@click.option("-s", "--status", is_flag=True, help="Shortcut to only print the status of the calculation.")
+@click.option("-p", "--properties", is_flag=True, help="Shortcut to only print calculated properties for the calculation.")
+@click.argument("workdir")
+@click.argument("keys", nargs=-1)
+def read_results(status: bool, properties: bool, workdir: str, keys: List[str]):
+    """Read results from a calculation."""
+    res = results.read(workdir)
 
-
-def main(args: argparse.Namespace):
-    res = results.read(args.workdir)
-
-    # if status flag was set we print the status name
-    if args.status:
-        print(res.status.name)
+    if status:
+        print(res.status.name)  # type: ignore # status is a str
         return
 
-    # if properties flag was set we print all properties
-    if args.properties:
+    if properties:
         pprint(res.properties)
         return
 
-    # print specific keys
-    if len(args.keys) > 0:
-        ret = {k: res.get_multi_key(k) for k in args.keys}
-        # if only one key was given we just print the value
+    if len(keys) > 0:
+        ret = {k: res.get_multi_key(k) for k in keys}
         if len(ret) == 1:
             print(list(ret.values())[0])
             return
         pprint(ret)
         return
 
-    # if we did not give keys or set flags we just print everything
     pprint(res)

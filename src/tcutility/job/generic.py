@@ -153,7 +153,7 @@ class Job:
         Run this job. We detect if we are using slurm. If we are we submit this job using sbatch. Otherwise, we will run the job locally.
         """
         if self.overwrite:
-            shutil.rmtree(self.workdir)
+            shutil.rmtree(self.workdir) if os.path.exists(self.workdir) else None
             os.makedirs(self.workdir, exist_ok=True)
 
         if self.can_skip():

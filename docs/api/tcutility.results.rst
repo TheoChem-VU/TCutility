@@ -28,6 +28,14 @@ tcutility.results.cache module
    :undoc-members:
    :show-inheritance:
 
+tcutility.results.crest module
+------------------------------
+
+.. automodule:: tcutility.results.crest
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tcutility.results.dftb module
 -----------------------------
 

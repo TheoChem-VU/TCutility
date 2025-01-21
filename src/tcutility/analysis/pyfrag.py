@@ -2,8 +2,6 @@ import tcutility
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-import pyfmo
-
 
 def read(path):
     return PyFragResult(path)
@@ -63,7 +61,6 @@ class PyFragResult:
     @property
     def ts_idx(self):
         energies = self.get_property('energy.bond', 'complex')
-        highest = -float('inf')
         for i in range(1, len(self) - 1):
             if energies[i-1] < energies[i] and energies[i] < energies[i+1]:
                 return i
@@ -93,6 +90,11 @@ class PyFragResult:
 
     @tcutility.cache.cache
     def orbs(self, calc: str = 'complex'):
+        try:
+            import pyfmo.orbitals2.objects
+        except ImportError:
+            raise ImportError('pyfmo is not installed. Please install it using `pip install pyfmo`')
+
         return [pyfmo.orbitals2.objects.Orbitals(res[calc].files['adf.rkf']) for res in self._step_results]
 
 if __name__ == '__main__':

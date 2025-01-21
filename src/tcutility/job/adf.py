@@ -1,7 +1,7 @@
 import os
 
 from scm import plams
-
+from typing import Dict, Optional, TYPE_CHECKING
 from tcutility import data, formula, log, molecule, results, spell_check
 from tcutility.errors import TCCompDetailsError, TCJobError
 from tcutility.job.ams import AMSJob
@@ -9,6 +9,8 @@ from tcutility.job.generic import Job
 
 j = os.path.join
 
+if TYPE_CHECKING:
+    import pyfmo
 
 class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
@@ -21,8 +23,6 @@ class ADFJob(AMSJob):
         self.SCF(thresh=1e-8)
         self.single_point()
 
-        # by default print the fock matrix
-        self.settings.input.adf.print = "FmatSFO"
         super().__init__(*args, **kwargs)
 
     def __str__(self):
@@ -189,7 +189,7 @@ class ADFJob(AMSJob):
         spell_check.check(level, ["Scalar", "None", "Spin-Orbit"], ignore_case=True)
         self.settings.input.adf.relativity.level = level
 
-    def solvent(self, name: str = None, eps: float = None, rad: float = None, use_klamt: bool = False):
+    def solvent(self, name: str = None, eps: float = None, rad: float = None, use_klamt: bool = False, radii: Optional[Dict[str, float]] = None):
         """
         Model solvation using COSMO for this calculation.
 
@@ -198,6 +198,7 @@ class ADFJob(AMSJob):
             eps: the dielectric constant of your solvent. You can use this in place of the solvent name if you need more control over COSMO.
             rad: the radius of the solvent molecules. You can use this in place of the solvent name if you need more control over COSMO.
             use_klamt: whether to use the klamt atomic radii. This is usually used when you have charged species (?).
+            radii: the atomic radii to use for the COSMO calculation. A dictionary such as {Cl: 1.04} will be converted to Cl = 0.01 in the input script. This gets (partially) overwritten if use_klamt is enables.
 
         Raises:
             ValueError: if the solvent name is given, but incorrect.
@@ -232,6 +233,9 @@ class ADFJob(AMSJob):
         self.settings.input.adf.Solvation.SCF = "VAR ALL"
         self.settings.input.adf.Solvation.CSMRSP = None
 
+        if radii is not None:
+            self.settings.input.adf.solvation.radii = radii
+
         if use_klamt:
             radii = {"H": 1.30, "C": 2.00, "N": 1.83, "O": 1.72, "F": 1.72, "Si": 2.48, "P": 2.13, "S": 2.16, "Cl": 2.05, "Br": 2.16, "I": 2.32}
             self.settings.input.adf.solvation.radii = radii
@@ -254,12 +258,17 @@ class ADFJob(AMSJob):
 
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
+
         self.decompose_elstat = kwargs.pop('decompose_elstat', False)
         self.counter_poise = kwargs.pop('counter_poise', False)
+        self.scf0_calculation = kwargs.pop('sfo0_calculation', False)
         self.child_jobs = {}
         # self.child_jobs_no_electrons = {}
         super().__init__(*args, **kwargs)
         self.name = "EDA"
+
+        # by default print the fock matrix
+        # self.settings.input.adf.print = "FmatSFO"
 
     def add_fragment(self, mol: plams.Molecule, name: str = None, charge: int = 0, spin_polarization: int = 0):
         """
@@ -453,7 +462,8 @@ class ADFFragmentJob(ADFJob):
         [child_sett.input.adf.pop("FragOccupations", None) for child_sett in child_setts.values()]
         # same for sbatch settings
         [child.sbatch(**self._sbatch) for child in self.child_jobs.values()]
-        # now set the charge, spinpol, unrestricted for the parent 
+
+        # now set the charge, spinpol, unrestricted for the parent
         if charge:
             self.charge(charge)
         if spinpol:
@@ -463,39 +473,41 @@ class ADFFragmentJob(ADFJob):
             self.settings.input.adf.UnrestrictedFragments = "Yes"
 
         elstat_jobs = {}
-        
+
         # now we are going to run each child job
         for i, (child_name, child) in enumerate(self.child_jobs.items(), start=1):
             # the child name will be prepended with SP showing that it is the singlepoint calculation
-            child.name = f'frag_{child_name}'
+            child.name = f"frag_{child_name}"
             child.rundir = j(self.rundir, self.name)
 
             # # add the path to the child adf.rkf file as a dependency to the parent job
-            self.settings.input.adf.fragments[child_name] = j(child.workdir, 'adf.rkf')
+            self.settings.input.adf.fragments[child_name] = j(child.workdir, "adf.rkf")
 
             # recast the plams.Settings object into a Result object as that is what run expects
             child.settings = results.Result(child_setts[child_name])
+
             log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}]', ['split'])
             log.flow(f'Charge:            {child.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
             log.flow(f'Spin-Polarization: {child.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
             log.flow(f'Work dir:          {child.workdir}', ['straight', 'straight'])
+
             if child.can_skip():
                 log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"])
                 log.flow()
             else:
-                log.flow(log.Emojis.good + ' Submitting', ['straight', 'end'])
+                log.flow(log.Emojis.good + " Submitting", ["straight", "end"])
                 [child._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                 child.run()
                 self.dependency(child)
-                log.flow(f'SlurmID:  {child.slurm_job_id}', ['straight', 'skip', 'end'])
+                log.flow(f"SlurmID:  {child.slurm_job_id}", ["straight", "skip", "end"])
                 log.flow()
 
             if self.decompose_elstat:
                 child_STOFIT = ADFJob(child)
-                child_STOFIT.name += '_STOFIT'
+                child_STOFIT.name += "_STOFIT"
                 elstat_jobs[child_STOFIT.name] = child_STOFIT
-                child_STOFIT.settings.input.adf.STOFIT = ''
-                child_STOFIT.settings.input.adf.PRINT += ' Elstat'
+                child_STOFIT.settings.input.adf.STOFIT = ""
+                child_STOFIT.settings.input.adf.PRINT += " Elstat"
                 child_STOFIT.settings.input.adf.pop("NumericalQuality")
                 child_STOFIT.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
@@ -505,19 +517,20 @@ class ADFFragmentJob(ADFJob):
                 log.flow(f'Work dir:          {child_STOFIT.workdir}', ['straight', 'straight'])
 
                 if child_STOFIT.can_skip():
-                    log.flow(log.Emojis.warning + ' Already ran, skipping', ['straight', 'end'])
+                    log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"])
                     log.flow()
                 else:
-                    log.flow(log.Emojis.good + ' Submitting', ['straight', 'end'])
+                    log.flow(log.Emojis.good + " Submitting", ["straight", "end"])
                     [child_STOFIT._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                     child_STOFIT.run()
                     self.dependency(child_STOFIT)
-                    log.flow(f'SlurmID:  {child_STOFIT.slurm_job_id}', ['straight', 'skip', 'end'])
+                    log.flow(f"SlurmID:  {child_STOFIT.slurm_job_id}", ["straight", "skip", "end"])
                     log.flow()
 
                 child_NoElectrons = ADFJob(child)
-                child_NoElectrons.name += '_NoElectrons'
+                child_NoElectrons.name += "_NoElectrons"
                 elstat_jobs[child_NoElectrons.name] = child_NoElectrons
+
                 child_NoElectrons.settings.input.adf.STOFIT = ''
                 child_NoElectrons.settings.input.adf.PRINT += ' Elstat'
                 child_NoElectrons.charge(molecule.number_of_electrons(child_NoElectrons._molecule))
@@ -525,20 +538,21 @@ class ADFFragmentJob(ADFJob):
                 child_NoElectrons.settings.input.adf.pop("NumericalQuality")
                 child_NoElectrons.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
+
                 log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] without Electrons', ['split'])
                 log.flow(f'Charge:            {child_NoElectrons.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
                 log.flow(f'Spin-Polarization: {child_NoElectrons.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
                 log.flow(f'Work dir:          {child_NoElectrons.workdir}', ['straight', 'straight'])
-                
+
                 if child_NoElectrons.can_skip():
-                    log.flow(log.Emojis.warning + ' Already ran, skipping', ['straight', 'end'])
+                    log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"])
                     log.flow()
                 else:
-                    log.flow(log.Emojis.good + ' Submitting', ['straight', 'end'])
+                    log.flow(log.Emojis.good + " Submitting", ["straight", "end"])
                     [child_NoElectrons._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                     child_NoElectrons.run()
                     self.dependency(child_NoElectrons)
-                    log.flow(f'SlurmID:  {child_NoElectrons.slurm_job_id}', ['straight', 'skip', 'end'])
+                    log.flow(f"SlurmID:  {child_NoElectrons.slurm_job_id}", ["straight", "skip", "end"])
                     log.flow()
 
         # in the parent job the atoms should have the region and adf.f defined as options
@@ -550,7 +564,7 @@ class ADFFragmentJob(ADFJob):
                     # we check by looking at the symbol and coordinates of the atom
                     if (atom.symbol, atom.x, atom.y, atom.z) == (childatom.symbol, childatom.x, childatom.y, childatom.z):
                         # now write the symbol and coords as a string with the correct suffix
-                        atom_lines.append(f'\t\t{atom.symbol} {atom.x} {atom.y} {atom.z} region={child_name} adf.f={child_name}')
+                        atom_lines.append(f"\t\t{atom.symbol} {atom.x} {atom.y} {atom.z} region={child_name} adf.f={child_name}")
 
         old_name = self.name
         # write the atoms block as a string with new line characters
@@ -559,24 +573,25 @@ class ADFFragmentJob(ADFJob):
         self._molecule = None
         # run this job
         self.rundir = j(self.rundir, old_name)
-        self.name = 'complex'
-        log.flow(log.Emojis.good + ' Submitting parent job', ['split'])
-      
-        super().run()
-        log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
-        log.flow()
-
-        # also do the calculation with SCF cycles set to 1
-        old_iters = self.settings.input.adf.SCF.Iterations or 300
-        self.SCF(iterations=0)
-        # we must repopulate the sbatch settings for the new run
-        [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
-        self.name = "complex_SCF0"
-        log.flow(log.Emojis.good + " Submitting extra job with 0 SCF iterations", ["split"])
+        self.name = "complex"
+        log.flow(log.Emojis.good + " Submitting parent job", ["split"])
 
         super().run()
         log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
         log.flow()
+
+        # also do the calculation with SCF cycles set to 1 if desired
+        if self.scf0_calculation:
+            old_iters = self.settings.input.adf.SCF.Iterations or 300
+            self.SCF(iterations=0)
+            # we must repopulate the sbatch settings for the new run
+            [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
+            self.name = "complex_SCF0"
+            log.flow(log.Emojis.good + " Submitting extra job with 0 SCF iterations", ["split"])
+
+            super().run()
+            log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
+            log.flow()
 
         # also do the calculation with no electrons on the fragments if the user requested a elstat decomposition
         if self.decompose_elstat:
@@ -585,27 +600,27 @@ class ADFFragmentJob(ADFJob):
             self.SCF(iterations=old_iters)
             self.settings.input.adf.pop("NumericalQuality")
             self.settings.input.adf.BeckeGrid.Quality = "Excellent"
-            [self._sbatch.pop(key, None) for key in ['D', 'chdir', 'J', 'job_name', 'o', 'output']]
-            self.name = 'complex_STOFIT'
+            [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
+            self.name = "complex_STOFIT"
 
             # set the region and fragment files correctly
             atom_lines_ = []
             for line in atom_lines:
                 for frag in frag_names:
-                    line = line.replace(frag, f'{frag}_STOFIT')
+                    line = line.replace(frag, f"{frag}_STOFIT")
                 atom_lines_.append(line)
 
-            self.settings.input.ams.system.atoms = ('\n' + '\n'.join(atom_lines_) + '\n\tEnd').expandtabs(4)
+            self.settings.input.ams.system.atoms = ("\n" + "\n".join(atom_lines_) + "\n\tEnd").expandtabs(4)
             # set the fragment references correctly
-            self.settings.input.adf.pop('fragments')
+            self.settings.input.adf.pop("fragments")
             for frag_name in frag_names:
-                self.settings.input.adf.fragments[frag_name + '_STOFIT'] = j(elstat_jobs['frag_' + frag_name + '_STOFIT'].workdir, 'adf.rkf')
-            self.settings.input.adf.STOFIT = ''
-            self.settings.input.adf.PRINT += ' Elstat'
+                self.settings.input.adf.fragments[frag_name + "_STOFIT"] = j(elstat_jobs["frag_" + frag_name + "_STOFIT"].workdir, "adf.rkf")
+            self.settings.input.adf.STOFIT = ""
+            self.settings.input.adf.PRINT += " Elstat"
             [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
-            log.flow(log.Emojis.good + ' Submitting complex with STOFIT', ['split'])
+            log.flow(log.Emojis.good + " Submitting complex with STOFIT", ["split"])
             super().run()
-            log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
+            log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
             log.flow()
 
             for frag in frag_names:
@@ -613,36 +628,36 @@ class ADFFragmentJob(ADFJob):
                 other_frags = [frag_ for frag_ in frag_names if frag_ != frag]
 
                 # we must repopulate the sbatch settings for the new run
-                [self._sbatch.pop(key, None) for key in ['D', 'chdir', 'J', 'job_name', 'o', 'output']]
-                self.name = f'complex_{frag}_NoElectrons'
+                [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
+                self.name = f"complex_{frag}_NoElectrons"
 
                 # set the region and fragment files correctly
                 atom_lines_ = []
                 for line in atom_lines:
-                    line = line.replace(frag, f'{frag}_NoElectrons')
+                    line = line.replace(frag, f"{frag}_NoElectrons")
                     for other_frag in other_frags:
-                        line = line.replace(other_frag, f'{other_frag}_STOFIT')
+                        line = line.replace(other_frag, f"{other_frag}_STOFIT")
                     atom_lines_.append(line)
-                self.settings.input.ams.system.atoms = ('\n' + '\n'.join(atom_lines_) + '\n\tEnd').expandtabs(4)
+                self.settings.input.ams.system.atoms = ("\n" + "\n".join(atom_lines_) + "\n\tEnd").expandtabs(4)
 
                 # set the fragment references correctly
-                self.settings.input.adf.pop('fragments')
-                self.settings.input.adf.fragments[frag + '_NoElectrons'] = j(elstat_jobs['frag_' + frag + '_NoElectrons'].workdir, 'adf.rkf')
+                self.settings.input.adf.pop("fragments")
+                self.settings.input.adf.fragments[frag + "_NoElectrons"] = j(elstat_jobs["frag_" + frag + "_NoElectrons"].workdir, "adf.rkf")
                 for other_frag in other_frags:
-                    self.settings.input.adf.fragments[other_frag + '_STOFIT'] = j(elstat_jobs['frag_' + other_frag + '_STOFIT'].workdir, 'adf.rkf')
-            
-                other_charge = sum([elstat_jobs['frag_' + other_frag + '_STOFIT'].settings.input.ams.System.charge for other_frag in other_frags])
-                total_charge = other_charge + (elstat_jobs['frag_' + frag + '_NoElectrons'].settings.input.ams.System.charge)
+                    self.settings.input.adf.fragments[other_frag + "_STOFIT"] = j(elstat_jobs["frag_" + other_frag + "_STOFIT"].workdir, "adf.rkf")
+
+                other_charge = sum([elstat_jobs["frag_" + other_frag + "_STOFIT"].settings.input.ams.System.charge for other_frag in other_frags])
+                total_charge = other_charge + (elstat_jobs["frag_" + frag + "_NoElectrons"].settings.input.ams.System.charge)
                 self.charge(total_charge)
 
-                other_spin_polarization = sum([elstat_jobs['frag_' + other_frag + '_STOFIT'].settings.input.adf.SpinPolarization for other_frag in other_frags])
-                total_spin_polarization = other_spin_polarization + (elstat_jobs['frag_' + frag + '_NoElectrons'].settings.input.adf.SpinPolarization)
+                other_spin_polarization = sum([elstat_jobs["frag_" + other_frag + "_STOFIT"].settings.input.adf.SpinPolarization for other_frag in other_frags])
+                total_spin_polarization = other_spin_polarization + (elstat_jobs["frag_" + frag + "_NoElectrons"].settings.input.adf.SpinPolarization)
                 self.spin_polarization(total_spin_polarization)
 
-                log.flow(log.Emojis.good + f' Submitting complex with 0 electrons in fragment {frag}', ['split'])
+                log.flow(log.Emojis.good + f" Submitting complex with 0 electrons in fragment {frag}", ["split"])
                 [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                 super().run()
-                log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
+                log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
                 log.flow()
 
         if self.counter_poise:
@@ -732,15 +747,17 @@ class DensfJob(Job):
         elif self.settings.ADFFile != orbital.kfpath:
             raise TCJobError(job_class=self.__class__.__name__, message="RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
+
     def density(self, orbitals: 'pyfmo.orbitals.Orbitals'):  # noqa: F821
+
         # check if the ADFFile is the same for all added orbitals
         if self.settings.ADFFile is None:
             self.settings.ADFFile = orbitals.kfpath
 
         elif self.settings.ADFFile != orbitals.kfpath:
-            raise ValueError('RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.')
+            raise ValueError("RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
-        self._extras.append('Density SCF')
+        self._extras.append("Density SCF")
 
     def NCI(self, density: str = 'both', rhovdw=0.02, rdg=0.5):
         '''
@@ -766,17 +783,17 @@ class DensfJob(Job):
             if len(self._mos) > 0:
                 inpf.write("Orbitals SCF\n")
                 for orb in self._mos:
-                    inpf.write(f'    {orb.symmetry} {orb.index_in_symlabel + 1}\n')
-                inpf.write('END\n')
+                    inpf.write(f"    {orb.symmetry} {orb.index_in_symlabel + 1}\n")
+                inpf.write("END\n")
 
             if len(self._sfos) > 0:
                 inpf.write("Orbitals SFO\n")
                 for orb in self._sfos:
-                    inpf.write(f'    {orb.symmetry} {orb.index}\n')
-                inpf.write('END\n')
+                    inpf.write(f"    {orb.symmetry} {orb.index}\n")
+                inpf.write("END\n")
 
             for line in self._extras:
-                inpf.write(line + '\n')
+                inpf.write(line + "\n")
 
             # cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size
             outname = self.settings.grid if self.settings.grid.lower() in ['coarse', 'medium', 'fine'] else 'custom_grid'
@@ -801,16 +818,16 @@ class DensfJob(Job):
         cuboutput = f"{os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{self.settings.grid}"
 
         for mo in self._mos:
-            spin_part = '' if mo.spin == 'AB' else f'_{mo.spin}'
-            paths.append(f'{cuboutput}%SCF_{mo.symmetry}{spin_part}%{mo.index_in_symlabel + 1}.cub')
+            spin_part = "" if mo.spin == "AB" else f"_{mo.spin}"
+            paths.append(f"{cuboutput}%SCF_{mo.symmetry}{spin_part}%{mo.index_in_symlabel + 1}.cub")
 
         for sfo in self._sfos:
-            spin_part = '' if sfo.spin == 'AB' else f'_{sfo.spin}'
-            paths.append(f'{cuboutput}%SFO_{sfo.symmetry}{spin_part}%{sfo.index}.cub')
+            spin_part = "" if sfo.spin == "AB" else f"_{sfo.spin}"
+            paths.append(f"{cuboutput}%SFO_{sfo.symmetry}{spin_part}%{sfo.index}.cub")
 
         for extra in self._extras:
-            if extra == 'Density SCF':
-                paths.append(f'{cuboutput}%SCF%Density.cub')
+            if extra == "Density SCF":
+                paths.append(f"{cuboutput}%SCF%Density.cub")
 
             if extra.startswith('NCI'):
                 paths.append(f'{cuboutput}%SCF%FitDenSigned.cub')
