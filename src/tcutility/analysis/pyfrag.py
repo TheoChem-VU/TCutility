@@ -112,22 +112,43 @@ class PyFragResult:
     def orbs(self, calc: str = 'complex'):
         return [pyfmo.orbitals2.objects.Orbitals(res[calc].files['adf.rkf']) for res in self._step_results]
 
-if __name__ == '__main__':
-    res = read('/Users/yumanhordijk/PhD/Projects/RadicalAdditionASMEDA/data/DFT/TS_C_O/PyFrag_OLYP_TZ2P')
-    res.sort_by(res.get_geometry(0, 1))
-    res.set_mask(res.get_geometry(0, 1) < res.get_geometry(0, 1)[res.ts_idx])
-    # plt.plot(res.get_geometry(0, 1), res.total_energy())
-    # plt.plot(res.get_geometry(0, 1), res.interaction_energy())
-    # plt.plot(res.get_geometry(0, 1), res.strain_energy())
-    # plt.xlim(3, 2.2)
-    # plt.show()
 
-    plt.plot(res.get_geometry(0, 1), abs(res.overlap('Substrate(7A_A)', 'Methyl(5A_A)')))
-    plt.plot(res.get_geometry(0, 1), abs(res.overlap('Substrate(4A_A)', 'Methyl(5A_A)')))
-    plt.plot(res.get_geometry(0, 1), abs(res.overlap('Substrate(3A_A)', 'Methyl(5A_A)')))
-    # Px_coeff = res.sfo_coefficient('C(1P:x)', '7A_A', calc='frag_Substrate')
-    # Py_coeff = res.sfo_coefficient('C(1P:y)', '7A_A', calc='frag_Substrate')
-    # Pz_coeff = res.sfo_coefficient('C(1P:z)', '7A_A', calc='frag_Substrate')
-    # plt.plot(res.get_geometry(0, 1), np.sqrt(Px_coeff**2 + Py_coeff**2 + Pz_coeff**2))
+if __name__ == '__main__':
+    res_C = read('/Users/yumanhordijk/PhD/Projects/RadicalAdditionASMEDA/data/DFT/TS_C_O/PyFrag_OLYP_TZ2P')
+    res_X = read('/Users/yumanhordijk/PhD/Projects/RadicalAdditionASMEDA/data/DFT/TS_X_O/PyFrag_OLYP_TZ2P')
+    
+    res_C.set_coord(res_C.get_geometry(0, 1))
+    res_X.set_coord(res_X.get_geometry(1, 2))
+
+    res_C.sort_by(res_C.coord())
+    res_X.sort_by(res_X.coord())
+
+    plt.figure()
+    plt.plot(res_C.coord(), res_C.overlap('Methyl(SOMO)_A', 'Substrate(LUMO)_A'), label='C-addition')
+    plt.plot(res_X.coord(), res_X.overlap('Methyl(SOMO)_A', 'Substrate(LUMO)_A'), label='X-addition')
+    plt.ylabel(r'$\langle SOMO | LUMO \rangle$')
+    plt.legend()
     plt.xlim(3, 2.2)
+
+    plt.figure()
+    plt.plot(res_C.coord(), res_C.orbital_energy_gap('Methyl(SOMO)_A', 'Substrate(LUMO)_A'), label='C-addition')
+    plt.plot(res_X.coord(), res_X.orbital_energy_gap('Methyl(SOMO)_A', 'Substrate(LUMO)_A'), label='X-addition')
+    plt.ylabel(r'$|\epsilon_{SOMO} - \epsilon_{LUMO}|$')
+    plt.legend()
+    plt.xlim(3, 2.2)
+
+    plt.figure()
+    plt.plot(res_C.coord(), res_C.overlap('Methyl(LUMO)_B', 'Substrate(7A_B)_B'), label='C-addition')
+    plt.plot(res_X.coord(), res_X.overlap('Methyl(LUMO)_B', 'Substrate(7A_B)_B'), label='X-addition')
+    plt.ylabel(r'$\langle SUMO | HOMO \rangle$')
+    plt.legend()
+    plt.xlim(3, 2.2)
+
+    plt.figure()
+    plt.plot(res_C.coord(), res_C.orbital_energy_gap('Methyl(LUMO)_B', 'Substrate(7A_B)_B'), label='C-addition')
+    plt.plot(res_X.coord(), res_X.orbital_energy_gap('Methyl(LUMO)_B', 'Substrate(7A_B)_B'), label='X-addition')
+    plt.ylabel(r'$|\epsilon_{SUMO} - \epsilon_{HOMO}|$')
+    plt.legend()
+    plt.xlim(3, 2.2)
+
     plt.show()
