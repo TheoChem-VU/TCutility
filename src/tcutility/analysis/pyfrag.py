@@ -60,6 +60,11 @@ class PyFragResult:
     def set_mask(self, mask: list):
         self._mask = mask
 
+    def set_coord(self, coord: list):
+        self._coord = coord
+
+    def coord(self):
+        return self._coord[self._order][self._mask[self._order]]
     @property
     def ts_idx(self):
         energies = self.get_property('energy.bond', 'complex')
