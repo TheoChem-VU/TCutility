@@ -13,10 +13,10 @@ Entering the desired number into the CLI will select it for resizing. If you do 
 New images will be written to the folder postpended with _fixed.
     """
     subparser = parent_parser.add_parser('resize', help=desc, description=desc, formatter_class=argparse.RawTextHelpFormatter)
-    subparser.add_argument("folder",
+    subparser.add_argument("-f", "--folder",
                            type=str,
-                           nargs=1,
-                           help="A folder containing images containing molecules which will be resized.")
+                           help="A folder containing images containing molecules which will be resized.",
+                           default=None)
     subparser.add_argument("-p", "--padding",
                            help="""The amount of padding to add to the resized figures.
 If given an integer we use pixel padding. E.g. -p 50 will add a padding of 50 pixels.
