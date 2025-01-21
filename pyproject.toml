@@ -30,6 +30,7 @@ dependencies = [
   "platformdirs",
   "requests",
   "listfunc",
+  "opencv-python",
 ]
 # Current maintainers
 maintainers = [{ name = "TheoCheM group" }]
