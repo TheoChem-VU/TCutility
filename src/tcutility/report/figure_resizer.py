@@ -27,13 +27,8 @@ def _analyse_img(file, plot=False):
                                param1=60, param2=40, minRadius=0, maxRadius=200)
     circles = np.uint16(np.around(circles))[0]
     circles = circles[(-circles[:, 2]).argsort()]
-    x = np.arange(0, img.shape[1])
-    y = np.arange(0, img.shape[0])
-
-    # Draw the circles
-    colors = []
-    radii = []
-
+    
+    # Draw the circles if requested
     if plot:
         img_copy = cv2.cvtColor(img_copy, cv2.COLOR_BGR2RGB)
         for i, circle in enumerate(circles):
