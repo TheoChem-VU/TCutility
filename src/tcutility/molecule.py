@@ -37,7 +37,7 @@ def _parse_str(s: str):
         return s
 
     if "," in s:
-        return [parse_str(part.strip()) for part in s.split(",")]
+        return [_parse_str(part.strip()) for part in s.split(",")]
 
     # to parse the string we use try/except method
     try:
@@ -89,9 +89,9 @@ def load(path) -> plams.Molecule:
             # tags are given as loose keys
             if "=" in arg:
                 key, value = arg.split("=")
-                ret[key.strip()] = parse_str(value.strip())
+                ret[key.strip()] = _parse_str(value.strip())
             else:
-                ret.tags.add(parse_str(arg.strip()))
+                ret.tags.add(_parse_str(arg.strip()))
         return ret
 
     with open(path) as f:
@@ -120,7 +120,7 @@ def load(path) -> plams.Molecule:
 def from_string(s: str) -> plams.Molecule:
     mol = plams.Molecule()
     for line in s.splitlines():
-        parts = [parse_str(part) for part in line.split()]
+        parts = [_parse_str(part) for part in line.split()]
         if len(parts) < 4:
             continue
 
