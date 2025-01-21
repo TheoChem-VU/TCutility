@@ -196,3 +196,11 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
         return ret
 
     return results.Result(sorted(ret.items(), key=lambda d: d[1][sort_by]))
+
+
+def path_depth(path: str) -> int:
+    """
+    Calculate the depth of a given path.
+    """
+    return len(split_all(path))
+
