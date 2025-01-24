@@ -102,6 +102,82 @@ def get_calc_settings(info: Result) -> Result:
     return ret
 
 
+def get_level_of_theory(info: Result) -> Result:
+    """Function to get the level-of-theory from an input-file.
+
+    Args:
+        inp_path: Path to the input file. Can be a .run or .in file create for AMS
+
+    Returns:
+        :Dictionary containing information about the level-of-theory:
+
+            - **summary (str)** - a summary string that gives the level-of-theory in a human-readable format.
+            - **xc.functional (str)** - XC-functional used in the calculation.
+            - **xc.category (str)** - category the XC-functional belongs to. E.g. GGA, MetaHybrid, etc ...
+            - **xc.dispersion (str)** - the dispersion correction method used during the calculation.
+            - **xc.summary (str)** - a summary string that gives the XC-functional information in a human-readable format.
+            - **xc.empiricalScaling (str)** - which empirical scaling parameter was used. Useful for MP2 calculations.
+            - **basis.type (str)** - the size/type of the basis-set.
+            - **basis.core (str)** - the size of the frozen-core approximation.
+            - **quality (str)** - the numerical quality setting.
+    """
+    sett = info.input
+    ret = Result()
+    # print(json.dumps(sett, indent=4))
+    xc_categories = ["GGA", "LDA", "MetaGGA", "MetaHybrid", "Model", "LibXC", "DoubleHybrid", "Hybrid", "MP2", "HartreeFock"]
+    ret.xc.functional = "VWN"
+    ret.xc.category = "LDA"
+    for cat in xc_categories:
+        if cat.lower() in [key.lower() for key in sett.adf.xc]:
+            ret.xc.functional = sett.adf.xc[cat]
+            ret.xc.category = cat
+
+    ret.basis.type = sett.adf.basis.type
+    ret.basis.core = sett.adf.basis.core
+    ret.quality = sett.adf.NumericalQuality or "Normal"
+
+    ret.xc.dispersion = None
+    if "dispersion" in [key.lower() for key in sett.adf.xc]:
+        ret.xc.dispersion = " ".join(sett.adf.xc.dispersion.split())
+
+    # the empirical scaling value is used for MP2 calculations
+    ret.xc.empirical_scaling = None
+    if "empiricalscaling" in [key.lower() for key in sett.adf.xc]:
+        ret.xc.empiricalscaling = sett.adf.xc.empiricalscaling
+
+    # MP2 and HF are a little bit different from the usual xc categories. They are not key-value pairs but only the key
+    # we start building the ret.xc.summary string here already. This will contain the human-readable functional name
+    if ret.xc.category == "MP2":
+        ret.xc.summary = "MP2"
+        if ret.xc.empiricalscaling:
+            ret.xc.summary += f"-{ret.xc.empiricalscaling}"
+    elif ret.xc.category == "HartreeFock":
+        ret.xc.summary = "HF"
+    else:
+        ret.xc.summary = ret.xc.functional
+
+    # If dispersion was used, we want to add it to the ret.xc.summary
+    if ret.xc.dispersion:
+        if ret.xc.dispersion.lower() == "grimme3":
+            ret.xc.summary += "-D3"
+        if ret.xc.dispersion.lower() == "grimme3 bjdamp":
+            ret.xc.summary += "-D3(BJ)"
+        if ret.xc.dispersion.lower() == "grimme4":
+            ret.xc.summary += "-D4"
+        if ret.xc.dispersion.lower() == "ddsc":
+            ret.xc.summary += "-dDsC"
+        if ret.xc.dispersion.lower() == "uff":
+            ret.xc.summary += "-dUFF"
+        if ret.xc.dispersion.lower() == "mbd":
+            ret.xc.summary += "-MBD@rsSC"
+        if ret.xc.dispersion.lower() == "default":
+            ret.xc.summary += "-D"
+
+    # ret.summary is simply the ret.xc.summary plus the basis set type
+    ret.summary = f"{ret.xc.summary}/{ret.basis.type}"
+    return ret
+
+
 # ------------------------------------------------------------- #
 # ------------------------ Properties ------------------------- #
 # ------------------------------------------------------------- #
@@ -164,6 +240,7 @@ def _read_vibrations(reader: cache.TrackKFReader) -> Result:
         ret.modes.append(reader.read("Vibrations", f"NoWeightNormalMode({i+1})"))
     return ret
 
+# ----------------------- Misc ------------------------- #
 
 def get_properties(info: Result) -> Result:
     """Function to get properties from an ADF calculation.
@@ -270,6 +347,10 @@ def get_properties(info: Result) -> Result:
     if ("Vibrations", "nNormalModes") in reader_adf:
         ret.vibrations = _read_vibrations(reader_adf)
 
+    # vibrational information
+    if ("All Excitations", "nr excitations") in reader_adf:
+        ret.excitations = _read_excitations(reader_adf)
+
     # read the Voronoi Deformation Charges Deformation (VDD) before and after SCF convergence (being "inital" and "SCF")
     try:
         ret.vdd.charges = _read_vdd_charges(reader_adf)
@@ -303,78 +384,70 @@ def get_properties(info: Result) -> Result:
 
     return ret
 
+# ----------------------- Excitations ------------------------- #
 
-def get_level_of_theory(info: Result) -> Result:
-    """Function to get the level-of-theory from an input-file.
 
-    Args:
-        inp_path: Path to the input file. Can be a .run or .in file create for AMS
-
-    Returns:
-        :Dictionary containing information about the level-of-theory:
-
-            - **summary (str)** - a summary string that gives the level-of-theory in a human-readable format.
-            - **xc.functional (str)** - XC-functional used in the calculation.
-            - **xc.category (str)** - category the XC-functional belongs to. E.g. GGA, MetaHybrid, etc ...
-            - **xc.dispersion (str)** - the dispersion correction method used during the calculation.
-            - **xc.summary (str)** - a summary string that gives the XC-functional information in a human-readable format.
-            - **xc.empiricalScaling (str)** - which empirical scaling parameter was used. Useful for MP2 calculations.
-            - **basis.type (str)** - the size/type of the basis-set.
-            - **basis.core (str)** - the size of the frozen-core approximation.
-            - **quality (str)** - the numerical quality setting.
-    """
-    sett = info.input
+def _read_excitations(reader: cache.TrackKFReader) -> Result:
     ret = Result()
-    # print(json.dumps(sett, indent=4))
-    xc_categories = ["GGA", "LDA", "MetaGGA", "MetaHybrid", "Model", "LibXC", "DoubleHybrid", "Hybrid", "MP2", "HartreeFock"]
-    ret.xc.functional = "VWN"
-    ret.xc.category = "LDA"
-    for cat in xc_categories:
-        if cat.lower() in [key.lower() for key in sett.adf.xc]:
-            ret.xc.functional = sett.adf.xc[cat]
-            ret.xc.category = cat
+    excitation_types = []
+    symlab_exc = reader.read('Symmetry', 'symlab excitations').split()
+    for section, variable in reader:
+        if not section.startswith('Excitations'):
+            continue
 
-    ret.basis.type = sett.adf.basis.type
-    ret.basis.core = sett.adf.basis.core
-    ret.quality = sett.adf.NumericalQuality or "Normal"
+        _, exctyp, irrep = section.split()
+        if (exctyp, irrep) in excitation_types:
+            continue
 
-    ret.xc.dispersion = None
-    if "dispersion" in [key.lower() for key in sett.adf.xc]:
-        ret.xc.dispersion = " ".join(sett.adf.xc.dispersion.split())
+        excitation_types.append((exctyp, irrep))
 
-    # the empirical scaling value is used for MP2 calculations
-    ret.xc.empirical_scaling = None
-    if "empiricalscaling" in [key.lower() for key in sett.adf.xc]:
-        ret.xc.empiricalscaling = sett.adf.xc.empiricalscaling
+        ret[irrep][exctyp].number_of_excitations = reader.read(section, 'nr of excenergies')
+        ret[irrep][exctyp].energies = np.array(reader.read(section, 'excenergies'))  # in Ha
 
-    # MP2 and HF are a little bit different from the usual xc categories. They are not key-value pairs but only the key
-    # we start building the ret.xc.summary string here already. This will contain the human-readable functional name
-    if ret.xc.category == "MP2":
-        ret.xc.summary = "MP2"
-        if ret.xc.empiricalscaling:
-            ret.xc.summary += f"-{ret.xc.empiricalscaling}"
-    elif ret.xc.category == "HartreeFock":
-        ret.xc.summary = "HF"
-    else:
-        ret.xc.summary = ret.xc.functional
+        c = 299_792_458e9  # nm/s
+        h = 0.0367502 * 4.135_667_696e-15  # Ha s
+        ret[irrep][exctyp].wavelengths = (h * c) / ret[irrep][exctyp].energies # in nm
+        ret[irrep][exctyp].oscillator_strengths = np.array(reader.read(section, 'oscillator strengths'))  # in km mol
+        ret[irrep][exctyp].transition_dipole_moments = np.array(reader.read(section, 'transition dipole moments')).reshape(ret[irrep][exctyp].number_of_excitations, 3)
 
-    # If dispersion was used, we want to add it to the ret.xc.summary
-    if ret.xc.dispersion:
-        if ret.xc.dispersion.lower() == "grimme3":
-            ret.xc.summary += "-D3"
-        if ret.xc.dispersion.lower() == "grimme3 bjdamp":
-            ret.xc.summary += "-D3(BJ)"
-        if ret.xc.dispersion.lower() == "grimme4":
-            ret.xc.summary += "-D4"
-        if ret.xc.dispersion.lower() == "ddsc":
-            ret.xc.summary += "-dDsC"
-        if ret.xc.dispersion.lower() == "uff":
-            ret.xc.summary += "-dUFF"
-        if ret.xc.dispersion.lower() == "mbd":
-            ret.xc.summary += "-MBD@rsSC"
-        if ret.xc.dispersion.lower() == "default":
-            ret.xc.summary += "-D"
+        ret[irrep][exctyp].contributions = []
+        ret[irrep][exctyp].from_MO = []
+        ret[irrep][exctyp].to_MO = []
+        ret[irrep][exctyp].from_MO_idx = []
+        ret[irrep][exctyp].to_MO_idx = []
+        ret[irrep][exctyp].from_MO_spin = []
+        ret[irrep][exctyp].to_MO_spin = []
+        ret[irrep][exctyp].from_MO_irrep = []
+        ret[irrep][exctyp].to_MO_irrep = []
 
-    # ret.summary is simply the ret.xc.summary plus the basis set type
-    ret.summary = f"{ret.xc.summary}/{ret.basis.type}"
+        for exc_index in range(1, ret[irrep][exctyp].number_of_excitations + 1):
+            contr = reader.read(section, f'contr {exc_index}')
+            contr_idx = reader.read(section, f'contr index {exc_index}')
+            contr_spin = reader.read(section, f'contr spin {exc_index}')
+            contr_irrep = reader.read(section, f'contr irep index {exc_index}')
+            ncontr = len(contr_idx) // 2 
+
+            MO_names = []
+            for idx, spin, irrep_idx in zip(contr_idx, contr_spin, contr_irrep):
+                spin = {
+                    1: 'A',
+                    2: 'B'
+                }[spin]
+                MO_names.append(f'{idx}{symlab_exc[irrep_idx-1]}_{spin}')
+
+            ret[irrep][exctyp].contributions.append(contr)
+            ret[irrep][exctyp].from_MO.append(MO_names[:ncontr])
+            ret[irrep][exctyp].to_MO.append(MO_names[ncontr:])
+            ret[irrep][exctyp].from_MO_idx.append(contr_idx[:ncontr])
+            ret[irrep][exctyp].to_MO_idx.append(contr_idx[ncontr:])
+            ret[irrep][exctyp].from_MO_spin.append(contr_spin[:ncontr])
+            ret[irrep][exctyp].to_MO_spin.append(contr_spin[ncontr:])
+            ret[irrep][exctyp].from_MO_irrep.append(contr_irrep[:ncontr])
+            ret[irrep][exctyp].to_MO_irrep.append(contr_irrep[ncontr:])
+
     return ret
+
+
+if __name__ == '__main__':
+    reader = KFReader('/Users/yumanhordijk/Downloads/felixtest/adf.rkf')
+    _read_excitations(reader)
