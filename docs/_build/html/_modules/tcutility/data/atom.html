@@ -315,16 +315,22 @@
 
 <div class="viewcode-block" id="color">
 <a class="viewcode-back" href="../../../api/tcutility.data.html#tcutility.data.atom.color">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">color</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">color</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;rgb&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Args:</span>
 <span class="sd">        element: the symbol, name or atom number of the element. See :func:`parse_element`.</span>
+<span class="sd">        mode: the type of color to return. Can be `rgb` or `hex`.</span>
 
 <span class="sd">    Return:</span>
-<span class="sd">        The standard CPK colors of the elements, up to element 109.</span>
+<span class="sd">        The standard CPK colors of the elements, up to element 109. </span>
+<span class="sd">        If the mode is `rgb` returns a tuple of RGB values between `0` and `255`.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">num</span> <span class="o">=</span> <span class="n">parse_element</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_colors</span><span class="p">[</span><span class="n">num</span><span class="p">]</span></div>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">_colors</span><span class="p">[</span><span class="n">num</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;rgb&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">c</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;hex&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;#</span><span class="si">%02x%02x%02x</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
 
 
 

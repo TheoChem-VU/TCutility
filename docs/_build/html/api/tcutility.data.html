@@ -292,13 +292,17 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.data.atom.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/atom.html#color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.atom.color" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rgb'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/data/atom.html#color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.data.atom.color" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>element</strong> – the symbol, name or atom number of the element. See <a class="reference internal" href="#tcutility.data.atom.parse_element" title="tcutility.data.atom.parse_element"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_element()</span></code></a>.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>element</strong> – the symbol, name or atom number of the element. See <a class="reference internal" href="#tcutility.data.atom.parse_element" title="tcutility.data.atom.parse_element"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_element()</span></code></a>.</p></li>
+<li><p><strong>mode</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the type of color to return. Can be <cite>rgb</cite> or <cite>hex</cite>.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The standard CPK colors of the elements, up to element 109.</p>
+<dd class="field-even"><p>The standard CPK colors of the elements, up to element 109.
+If the mode is <cite>rgb</cite> returns a tuple of RGB values between <cite>0</cite> and <cite>255</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
