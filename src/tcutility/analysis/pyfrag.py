@@ -2,7 +2,6 @@ import tcutility
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-import pyfmo
 
 
 def read(path):
@@ -110,6 +109,11 @@ class PyFragResult:
 
     @tcutility.cache.cache
     def orbs(self, calc: str = 'complex'):
+        try:
+            import pyfmo
+        except ModuleNotFoundError:
+            raise ModuleNotFoundError('The pyfmo module could not be loaded. To gain access please contact the TCutility developers!')
+
         return [pyfmo.orbitals2.objects.Orbitals(res[calc].files['adf.rkf']) for res in self._step_results]
 
 
