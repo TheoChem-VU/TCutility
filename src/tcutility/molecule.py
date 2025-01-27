@@ -8,14 +8,24 @@ from tcutility.results import result
 from tcutility.data import atom
 
 
-def number_of_electrons(mol: plams.Molecule) -> int:
+def number_of_electrons(mol: plams.Molecule, charge: int = 0) -> int:
+    """
+    The number of electrons in a molecule.
+
+    Args:
+        mol: the molecule to count the number of electrons from.
+        charge: the charge of the molecule.
+
+    Returns:
+        The sum of the atomic numbers in the molecule minus the charge of the molecule.
+    """
     nel = 0
     for at in mol:
         nel += atom.atom_number(at.symbol)
-    return nel
+    return nel - charge
 
 
-def parse_str(s: str):
+def _parse_str(s: str):
     # checks if string should be an int, float, bool or string
 
     # sanitization first
@@ -27,7 +37,7 @@ def parse_str(s: str):
         return s
 
     if "," in s:
-        return [parse_str(part.strip()) for part in s.split(",")]
+        return [_parse_str(part.strip()) for part in s.split(",")]
 
     # to parse the string we use try/except method
     try:
@@ -79,9 +89,9 @@ def load(path) -> plams.Molecule:
             # tags are given as loose keys
             if "=" in arg:
                 key, value = arg.split("=")
-                ret[key.strip()] = parse_str(value.strip())
+                ret[key.strip()] = _parse_str(value.strip())
             else:
-                ret.tags.add(parse_str(arg.strip()))
+                ret.tags.add(_parse_str(arg.strip()))
         return ret
 
     with open(path) as f:
@@ -107,10 +117,22 @@ def load(path) -> plams.Molecule:
 
     return mol
 
-def from_string(s: str) -> plams.Molecule:
+
+def from_string(mol: str) -> plams.Molecule:
+    """
+    Load a molecule from a string. Currently only supports simple XYZ-files, 
+    e.g. not extended XYZ-files with flags.
+
+    Args:
+        mol: string containing the molecule to parse.
+            This function only reads the element, x, y and z coordinates on each line.
+
+    Returns:
+        A new molecule object with the elements and coordinates from the input.
+    """
     mol = plams.Molecule()
-    for line in s.splitlines():
-        parts = [parse_str(part) for part in line.split()]
+    for line in mol.splitlines():
+        parts = [_parse_str(part) for part in line.split()]
         if len(parts) < 4:
             continue
 
@@ -126,8 +148,6 @@ def from_string(s: str) -> plams.Molecule:
         mol.add_atom(atom)
 
     return mol
-
-
 
 
 def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
@@ -194,9 +214,11 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
 
     # first method, check if the fragments are defined as molecule flags
     fragment_flags = [flag for flag in mol.flags if flag.startswith("frag_")]
+
     if len(fragment_flags) > 0:
         # we split here to get of the frag_ prefix
         fragment_mols = {frag.split("_", 1)[1]: plams.Molecule() for frag in fragment_flags}
+
         for frag in fragment_flags:
             frag_name = frag.split("_", 1)[1]
             indices = []
@@ -258,7 +280,7 @@ def _xyz_format(mol: plams.Molecule, include_n_atoms: bool = True) -> str:
     return "\n".join([f"{at.symbol:6s}{at.x:16.8f}{at.y:16.8f}{at.z:16.8f}" for at in mol.atoms])
 
 
-def _amv_format(mol: plams.Molecule, step: int, energy: Union[float, None] = None) -> str:
+def _amv_format(mol: plams.Molecule, step: int, energy: Union[float, None] = None, name: Union[float, str] = None) -> str:
     """Returns a string representation of a molecule in the amv format, e.g.:
 
     Geometry 1, Energy: -0.5 Ha
@@ -269,15 +291,17 @@ def _amv_format(mol: plams.Molecule, step: int, energy: Union[float, None] = Non
     ...
 
     If no energy is provided, the energy is not included in the string representation"""
-    if energy is None:
-        return f"Geometry {step}\n" + "\n".join([f"{at.symbol:6s}{at.x:16.8f}{at.y:16.8f}{at.z:16.8f}" for at in mol.atoms])
-    return f"Geometry {step}, Energy: {energy} Ha\n" + "\n".join([f"{at.symbol:6s}{at.x:16.8f}{at.y:16.8f}{at.z:16.8f}" for at in mol.atoms])
+    header = f"Geometry {step}"
+    header += f", Name: {name}" if name is not None else ""
+    header += f", Energy: {energy} Ha" if energy is not None else ""
+
+    return header + "\n" + "\n".join([f"{at.symbol:6s}{at.x:16.8f}{at.y:16.8f}{at.z:16.8f}" for at in mol.atoms])
 
 
-def write_mol_to_xyz_file(mols: Union[List[plams.Molecule], plams.Molecule], filename: Union[str, pl.Path], include_n_atoms: bool = False) -> None:
+def write_mol_to_xyz_file(out_file: Union[str, pl.Path], mols: Union[List[plams.Molecule], plams.Molecule], include_n_atoms: bool = False) -> None:
     """Writes a list of molecules to a file in xyz format."""
     mols = mols if isinstance(mols, list) else [mols]
-    out_file = pl.Path(f"{filename}.xyz")
+    out_file = pl.Path(f"{out_file}.xyz")
 
     [mol.delete_all_bonds() for mol in mols]
     write_string = "\n\n".join([_xyz_format(mol, include_n_atoms) for mol in mols])
@@ -286,14 +310,19 @@ def write_mol_to_xyz_file(mols: Union[List[plams.Molecule], plams.Molecule], fil
     return None
 
 
-def write_mol_to_amv_file(mols: Union[List[plams.Molecule], plams.Molecule], energies: Union[List[float], None], filename: Union[str, pl.Path]) -> None:
+def write_mol_to_amv_file(out_file: Union[str, pl.Path], mols: Union[List[plams.Molecule], plams.Molecule], energies: Union[List[float], None], mol_names: Union[List[str], None] = None) -> None:
     """Writes a list of molecules to a file in amv format."""
+    out_file = pl.Path(out_file)
+
+    if out_file.suffix != ".amv":
+        out_file = out_file.with_suffix(".amv")
+
     mols = mols if isinstance(mols, list) else [mols]
-    out_file = pl.Path(f"{filename}.amv")
     energies = energies if energies is not None else [0.0 for _ in mols]
+    names = mol_names if mol_names is not None else [f"Molecule {i}" for i in range(1, len(mols) + 1)]
 
     [mol.delete_all_bonds() for mol in mols]
-    write_string = "\n\n".join([_amv_format(mol, step, energy) for step, (mol, energy) in enumerate(zip(mols, energies), 1)])
+    write_string = "\n\n".join([_amv_format(mol, step, energy, name) for step, (mol, energy, name) in enumerate(zip(mols, energies, names), 1)])
     out_file.write_text(write_string)
 
     return None

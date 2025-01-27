@@ -5,6 +5,7 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 import os
+from typing import Optional, Dict, Union
 
 
 def _analyse_img(file, plot=False):
@@ -27,12 +28,6 @@ def _analyse_img(file, plot=False):
                                param1=60, param2=40, minRadius=0, maxRadius=200)
     circles = np.uint16(np.around(circles))[0]
     circles = circles[(-circles[:, 2]).argsort()]
-    x = np.arange(0, img.shape[1])
-    y = np.arange(0, img.shape[0])
-
-    # Draw the circles
-    colors = []
-    radii = []
 
     if plot:
         img_copy = cv2.cvtColor(img_copy, cv2.COLOR_BGR2RGB)
@@ -62,18 +57,18 @@ def _remove_padding(img):
     return rect
 
 
-def resize(d, circle_numbers: dict = None, padding: str or int = 0):
+def resize(d, circle_numbers: Optional[Dict] = None, padding: Union[str, int, float] = 0):
     '''
-    The main function for this module. 
+    The main function for this module.
     Takes a directory `d` and selected circles and resizes and moves images in order to produce new aligned images.
 
     Args:
         d: the directory to take images from.
-        circle_numbers: a dictionary containing the image names as keys and circle indices as the values. 
+        circle_numbers: a dictionary containing the image names as keys and circle indices as the values.
             The new images will be aligned based on these selected circles.
         padding: the amount of padding to add to the new images.
             If given an integer, it adds `padding` number of pixels.
-            Alternatively a string consisting of a number and a `%` sign can be given to add relative padding. 
+            Alternatively a string consisting of a number and a `%` sign can be given to add relative padding.
             E.g. `padding='10%'` will add a 10% padding to the images.
     '''
     circles = {}

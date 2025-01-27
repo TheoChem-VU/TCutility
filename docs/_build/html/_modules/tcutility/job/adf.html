@@ -15,25 +15,28 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../_static/documentation_options.js?v=6d611d6e"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
@@ -46,6 +49,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -61,19 +65,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -81,7 +74,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -89,8 +81,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -133,15 +125,11 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
@@ -155,15 +143,11 @@
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -180,7 +164,8 @@
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -200,9 +185,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -220,8 +210,6 @@
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -236,7 +224,7 @@
     
     <li class="breadcrumb-item"><a href="../../tcutility.html" class="nav-link">tcutility</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">tcutility.job.adf</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tcutility.job.adf</span></li>
   </ul>
 </nav>
 </div>
@@ -254,22 +242,24 @@
                 <article class="bd-article">
                   
   <h1>Source code for tcutility.job.adf</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="kn">from</span> <span class="nn">scm</span> <span class="kn">import</span> <span class="n">plams</span>
-
-<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">data</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">spell_check</span>
-<span class="kn">from</span> <span class="nn">tcutility.errors</span> <span class="kn">import</span> <span class="n">TCCompDetailsError</span><span class="p">,</span> <span class="n">TCJobError</span>
-<span class="kn">from</span> <span class="nn">tcutility.job.ams</span> <span class="kn">import</span> <span class="n">AMSJob</span>
-<span class="kn">from</span> <span class="nn">tcutility.job.generic</span> <span class="kn">import</span> <span class="n">Job</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scm</span><span class="w"> </span><span class="kn">import</span> <span class="n">plams</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility</span><span class="w"> </span><span class="kn">import</span> <span class="n">data</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">spell_check</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">TCCompDetailsError</span><span class="p">,</span> <span class="n">TCJobError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job.ams</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMSJob</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Job</span>
 
 <span class="n">j</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
 
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyfmo</span>
 
 <div class="viewcode-block" id="ADFJob">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob">[docs]</a>
-<span class="k">class</span> <span class="nc">ADFJob</span><span class="p">(</span><span class="n">AMSJob</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ADFJob</span><span class="p">(</span><span class="n">AMSJob</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_functional</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_core</span> <span class="o">=</span> <span class="kc">None</span>
@@ -279,16 +269,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">SCF</span><span class="p">(</span><span class="n">thresh</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">single_point</span><span class="p">()</span>
 
-        <span class="c1"># by default print the fock matrix</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">print</span> <span class="o">=</span> <span class="s2">&quot;SFOSiteEnergies&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_task</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_functional</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_basis_set</span><span class="si">}</span><span class="s2">), running in </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">),</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="ADFJob.basis_set">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.basis_set">[docs]</a>
-    <span class="k">def</span> <span class="nf">basis_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;TZ2P&quot;</span><span class="p">,</span> <span class="n">core</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">basis_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typ</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;TZ2P&quot;</span><span class="p">,</span> <span class="n">core</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the basis-set type and frozen core approximation for this calculation.</span>
 
@@ -317,7 +305,7 @@
 
 <div class="viewcode-block" id="ADFJob.spin_polarization">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.spin_polarization">[docs]</a>
-    <span class="k">def</span> <span class="nf">spin_polarization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">spin_polarization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the spin-polarization of the system. If the value is not zero the calculation will also be unrestricted.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -328,7 +316,7 @@
 
 <div class="viewcode-block" id="ADFJob.multiplicity">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.multiplicity">[docs]</a>
-    <span class="k">def</span> <span class="nf">multiplicity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">multiplicity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the multiplicity of the system. If the value is not one the calculation will also be unrestricted.</span>
 <span class="sd">        We use the following values:</span>
@@ -347,7 +335,7 @@
 
 <div class="viewcode-block" id="ADFJob.unrestricted">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.unrestricted">[docs]</a>
-    <span class="k">def</span> <span class="nf">unrestricted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unrestricted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Whether the calculation should be unrestricted.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -356,7 +344,7 @@
 
 <div class="viewcode-block" id="ADFJob.occupations">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.occupations">[docs]</a>
-    <span class="k">def</span> <span class="nf">occupations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">occupations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the orbital filling strategy for ADF.</span>
 
@@ -371,7 +359,7 @@
 
 <div class="viewcode-block" id="ADFJob.quality">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.quality">[docs]</a>
-    <span class="k">def</span> <span class="nf">quality</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Good&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">quality</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Good&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the numerical quality of the calculation.</span>
 
@@ -387,7 +375,7 @@
 
 <div class="viewcode-block" id="ADFJob.SCF_convergence">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.SCF_convergence">[docs]</a>
-    <span class="k">def</span> <span class="nf">SCF_convergence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">SCF_convergence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the SCF convergence criteria for the job.</span>
 
@@ -403,7 +391,7 @@
 
 <div class="viewcode-block" id="ADFJob.SCF">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.SCF">[docs]</a>
-    <span class="k">def</span> <span class="nf">SCF</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">SCF</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the SCF settings for this calculations.</span>
 
@@ -424,7 +412,7 @@
 
 <div class="viewcode-block" id="ADFJob.functional">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.functional">[docs]</a>
-    <span class="k">def</span> <span class="nf">functional</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">funtional_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dispersion</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">functional</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">funtional_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dispersion</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the functional to be used by the calculation. This also sets the dispersion if it is specified in the functional name.</span>
 
@@ -463,7 +451,7 @@
 
 <div class="viewcode-block" id="ADFJob.relativity">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.relativity">[docs]</a>
-    <span class="k">def</span> <span class="nf">relativity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Scalar&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">relativity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Scalar&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the treatment of relativistic effects for this calculation.</span>
 
@@ -479,7 +467,7 @@
 
 <div class="viewcode-block" id="ADFJob.solvent">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.solvent">[docs]</a>
-    <span class="k">def</span> <span class="nf">solvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rad</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_klamt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">solvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rad</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_klamt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">radii</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Model solvation using COSMO for this calculation.</span>
 
@@ -488,6 +476,7 @@
 <span class="sd">            eps: the dielectric constant of your solvent. You can use this in place of the solvent name if you need more control over COSMO.</span>
 <span class="sd">            rad: the radius of the solvent molecules. You can use this in place of the solvent name if you need more control over COSMO.</span>
 <span class="sd">            use_klamt: whether to use the klamt atomic radii. This is usually used when you have charged species (?).</span>
+<span class="sd">            radii: the atomic radii to use for the COSMO calculation. A dictionary such as {Cl: 1.04} will be converted to Cl = 0.01 in the input script. This gets (partially) overwritten if use_klamt is enables.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            ValueError: if the solvent name is given, but incorrect.</span>
@@ -522,6 +511,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">Solvation</span><span class="o">.</span><span class="n">SCF</span> <span class="o">=</span> <span class="s2">&quot;VAR ALL&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">Solvation</span><span class="o">.</span><span class="n">CSMRSP</span> <span class="o">=</span> <span class="kc">None</span>
 
+        <span class="k">if</span> <span class="n">radii</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">solvation</span><span class="o">.</span><span class="n">radii</span> <span class="o">=</span> <span class="n">radii</span>
+
         <span class="k">if</span> <span class="n">use_klamt</span><span class="p">:</span>
             <span class="n">radii</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;H&quot;</span><span class="p">:</span> <span class="mf">1.30</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="mf">2.00</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="mf">1.83</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="mf">1.72</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mf">1.72</span><span class="p">,</span> <span class="s2">&quot;Si&quot;</span><span class="p">:</span> <span class="mf">2.48</span><span class="p">,</span> <span class="s2">&quot;P&quot;</span><span class="p">:</span> <span class="mf">2.13</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="mf">2.16</span><span class="p">,</span> <span class="s2">&quot;Cl&quot;</span><span class="p">:</span> <span class="mf">2.05</span><span class="p">,</span> <span class="s2">&quot;Br&quot;</span><span class="p">:</span> <span class="mf">2.16</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">:</span> <span class="mf">2.32</span><span class="p">}</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">solvation</span><span class="o">.</span><span class="n">radii</span> <span class="o">=</span> <span class="n">radii</span></div>
@@ -529,7 +521,7 @@
 
 <div class="viewcode-block" id="ADFJob.symmetry">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.symmetry">[docs]</a>
-    <span class="k">def</span> <span class="nf">symmetry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">symmetry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Specify the symmetry group to be used by ADF.</span>
 
@@ -539,7 +531,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">Symmetry</span> <span class="o">=</span> <span class="n">group</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_check_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># if we have spinpolarization we do not want to use DFTB to calculate the initial hessian</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">GeometryOptimization</span><span class="o">.</span><span class="n">InitialHessian</span><span class="o">.</span><span class="n">Type</span> <span class="o">==</span> <span class="s2">&quot;CalculateWithFastEngine&quot;</span><span class="p">:</span>
             <span class="c1"># we simply remove it from the geometryoptimization block</span>
@@ -549,17 +541,23 @@
 
 <div class="viewcode-block" id="ADFFragmentJob">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob">[docs]</a>
-<span class="k">class</span> <span class="nc">ADFFragmentJob</span><span class="p">(</span><span class="n">ADFJob</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ADFFragmentJob</span><span class="p">(</span><span class="n">ADFJob</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">decompose_elstat</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;decompose_elstat&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter_poise</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;counter_poise&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scf0_calculation</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;sfo0_calculation&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="c1"># self.child_jobs_no_electrons = {}</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;EDA&quot;</span>
 
+        <span class="c1"># by default print the fock matrix</span>
+        <span class="c1"># self.settings.input.adf.print = &quot;FmatSFO&quot;</span>
+
 <div class="viewcode-block" id="ADFFragmentJob.add_fragment">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob.add_fragment">[docs]</a>
-    <span class="k">def</span> <span class="nf">add_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">:</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">charge</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">spin_polarization</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">:</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">charge</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">spin_polarization</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a fragment to this job. Optionally give the name, charge and spin-polarization of the fragment as well.</span>
 
@@ -596,8 +594,10 @@
         <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;fragment</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ADFJob</span><span class="p">(</span><span class="n">test_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_mode</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">charge</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">spin_polarization</span><span class="p">(</span><span class="n">spin_polarization</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">charge</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">charge</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">spin_polarization</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">spin_polarization</span><span class="p">(</span><span class="n">spin_polarization</span><span class="p">)</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">add_frag_to_mol</span><span class="p">:</span>
@@ -614,7 +614,7 @@
 
 <div class="viewcode-block" id="ADFFragmentJob.guess_fragments">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob.guess_fragments">[docs]</a>
-    <span class="k">def</span> <span class="nf">guess_fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">guess_fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Guess what the fragments are based on data stored in the molecule provided for this job.</span>
 <span class="sd">        This will automatically set the correct fragment molecules, names, charges and spin-polarizations.</span>
@@ -641,7 +641,7 @@
 
 <div class="viewcode-block" id="ADFFragmentJob.remove_virtuals">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob.remove_virtuals">[docs]</a>
-    <span class="k">def</span> <span class="nf">remove_virtuals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subspecies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nremove</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_virtuals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subspecies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nremove</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove virtual orbitals from the fragments.</span>
 
@@ -679,9 +679,42 @@
 <span class="s2">        &quot;&quot;&quot;</span></div>
 
 
+<div class="viewcode-block" id="ADFFragmentJob.frag_occupations">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob.frag_occupations">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">frag_occupations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subspecies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the occupations of the fragments.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            frag: the fragment to set the occupations for.</span>
+<span class="sd">            subspecies: the symmetry subspecies to set the occupations for. If set to ``None`` we assume we have ``A`` subspecies.</span>
+<span class="sd">            alpha: the number of alpha electrons. If set to ``None`` we will guess the number of electrons based on the spin-polarization set.</span>
+<span class="sd">            beta: the number of beta electrons. If set to ``None`` we will guess the number of electrons based on the spin-polarization set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">child_job</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">frag</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">alpha</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">beta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">spinpol</span> <span class="o">=</span> <span class="n">child_job</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span> <span class="ow">or</span> <span class="mi">0</span>
+            <span class="n">charge</span> <span class="o">=</span> <span class="n">child_job</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">charge</span> <span class="ow">or</span> <span class="mi">0</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">child_job</span><span class="o">.</span><span class="n">_molecule</span><span class="p">)</span>
+            <span class="n">nelectrons</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">atnum</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">child_job</span><span class="o">.</span><span class="n">_molecule</span><span class="p">)</span> <span class="o">-</span> <span class="n">charge</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="n">nelectrons</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">spinpol</span>
+            <span class="n">beta</span>  <span class="o">=</span> <span class="n">nelectrons</span> <span class="o">//</span> <span class="mi">2</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;FragOccupations&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">FragOccupations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">FragOccupations</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; End&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">FragOccupations</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    </span><span class="si">{</span><span class="n">frag</span><span class="si">}</span>
+<span class="s2">      </span><span class="si">{</span><span class="n">subspecies</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;A&#39;</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s2"> // </span><span class="si">{</span><span class="n">beta</span><span class="si">}</span>
+<span class="s2">    SubEnd</span>
+<span class="s2">  End</span>
+<span class="s2">        &quot;&quot;&quot;</span></div>
+
+
 <div class="viewcode-block" id="ADFFragmentJob.run">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob.run">[docs]</a>
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run the ``ADFFragmentJob``. This involves setting up the calculations for each fragment as well as the parent job.</span>
 <span class="sd">        It will also submit a calculation with the SCF iterations set to 0 in order to facilitate investigation of the field effects using PyOrb.</span>
@@ -708,8 +741,9 @@
         <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unrestricted:      </span><span class="si">{</span><span class="n">unrestricted</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">])</span>
         <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Spin-Polarization: </span><span class="si">{</span><span class="n">spinpol</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">])</span>
         <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
+
         <span class="c1"># this job and all its children should have the same value for unrestricted</span>
-        <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">unrestricted</span><span class="p">(</span><span class="n">unrestricted</span><span class="p">)</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="c1"># [child.unrestricted(unrestricted) for child in self.child_jobs.values()]</span>
 
         <span class="c1"># propagate the post- and preambles to the child_jobs</span>
         <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">add_preamble</span><span class="p">(</span><span class="n">preamble</span><span class="p">)</span> <span class="k">for</span> <span class="n">preamble</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_preambles</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
@@ -724,89 +758,100 @@
         <span class="p">[</span><span class="n">child_sett</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sett</span><span class="p">)</span> <span class="k">for</span> <span class="n">child_sett</span> <span class="ow">in</span> <span class="n">child_setts</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
         <span class="p">[</span><span class="n">child_sett</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;RemoveFragOrbitals&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">child_sett</span> <span class="ow">in</span> <span class="n">child_setts</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
         <span class="p">[</span><span class="n">child_sett</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;RemoveAllFragVirtuals&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">child_sett</span> <span class="ow">in</span> <span class="n">child_setts</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="p">[</span><span class="n">child_sett</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;FragOccupations&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">child_sett</span> <span class="ow">in</span> <span class="n">child_setts</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
         <span class="c1"># same for sbatch settings</span>
         <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="p">)</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
-        <span class="c1"># now set the charge, spinpol, unrestricted for the parent </span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">charge</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spin_polarization</span><span class="p">(</span><span class="n">spinpol</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">unrestricted</span><span class="p">(</span><span class="n">unrestricted</span><span class="p">)</span>
+
+        <span class="c1"># now set the charge, spinpol, unrestricted for the parent</span>
+        <span class="k">if</span> <span class="n">charge</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">charge</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">spinpol</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spin_polarization</span><span class="p">(</span><span class="n">spinpol</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">unrestricted</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unrestricted</span><span class="p">(</span><span class="n">unrestricted</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">UnrestrictedFragments</span> <span class="o">=</span> <span class="s2">&quot;Yes&quot;</span>
 
         <span class="n">elstat_jobs</span> <span class="o">=</span> <span class="p">{}</span>
-        
+
         <span class="c1"># now we are going to run each child job</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">child_name</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
             <span class="c1"># the child name will be prepended with SP showing that it is the singlepoint calculation</span>
-            <span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;frag_</span><span class="si">{</span><span class="n">child_name</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;frag_</span><span class="si">{</span><span class="n">child_name</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="n">child</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
             <span class="c1"># # add the path to the child adf.rkf file as a dependency to the parent job</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="n">child_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s1">&#39;adf.rkf&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="n">child_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s2">&quot;adf.rkf&quot;</span><span class="p">)</span>
 
             <span class="c1"># recast the plams.Settings object into a Result object as that is what run expects</span>
             <span class="n">child</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">(</span><span class="n">child_setts</span><span class="p">[</span><span class="n">child_name</span><span class="p">])</span>
+
             <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Fragment (</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">)</span><span class="si">}</span><span class="s1">) </span><span class="si">{</span><span class="n">child_name</span><span class="si">}</span><span class="s1"> [</span><span class="si">{</span><span class="n">formula</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">_molecule</span><span class="p">)</span><span class="si">}</span><span class="s1">]&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">])</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Charge:            </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">charge</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Spin-Polarization: </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Charge:            </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">charge</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="mi">0</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Spin-Polarization: </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="mi">0</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
             <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Work dir:          </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
+
             <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">can_skip</span><span class="p">():</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">warning</span> <span class="o">+</span> <span class="s2">&quot; Already ran, skipping&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="s1">&#39; Submitting&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">])</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="s2">&quot; Submitting&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
+                <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;chdir&quot;</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="s2">&quot;job_name&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]]</span>
                 <span class="n">child</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">dependency</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SlurmID:  </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">])</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SlurmID:  </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;skip&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
-                
+
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">decompose_elstat</span><span class="p">:</span>
                 <span class="n">child_STOFIT</span> <span class="o">=</span> <span class="n">ADFJob</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
-                <span class="n">child_STOFIT</span><span class="o">.</span><span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;_STOFIT&#39;</span>
+                <span class="n">child_STOFIT</span><span class="o">.</span><span class="n">name</span> <span class="o">+=</span> <span class="s2">&quot;_STOFIT&quot;</span>
                 <span class="n">elstat_jobs</span><span class="p">[</span><span class="n">child_STOFIT</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">child_STOFIT</span>
-                <span class="n">child_STOFIT</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">STOFIT</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-                <span class="n">child_STOFIT</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">PRINT</span> <span class="o">=</span> <span class="s1">&#39;SFOSiteEnergies Elstat&#39;</span>
+                <span class="n">child_STOFIT</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">STOFIT</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="n">child_STOFIT</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">PRINT</span> <span class="o">+=</span> <span class="s2">&quot; Elstat&quot;</span>
                 <span class="n">child_STOFIT</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;NumericalQuality&quot;</span><span class="p">)</span>
                 <span class="n">child_STOFIT</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">BeckeGrid</span><span class="o">.</span><span class="n">Quality</span> <span class="o">=</span> <span class="s2">&quot;Excellent&quot;</span>
 
                 <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Fragment (</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">)</span><span class="si">}</span><span class="s1">) </span><span class="si">{</span><span class="n">child_name</span><span class="si">}</span><span class="s1"> [</span><span class="si">{</span><span class="n">formula</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">_molecule</span><span class="p">)</span><span class="si">}</span><span class="s1">] with STOFIT&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">])</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Charge:            </span><span class="si">{</span><span class="n">child_STOFIT</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">charge</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Spin-Polarization: </span><span class="si">{</span><span class="n">child_STOFIT</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Charge:            </span><span class="si">{</span><span class="n">child_STOFIT</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">charge</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="mi">0</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Spin-Polarization: </span><span class="si">{</span><span class="n">child_STOFIT</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="mi">0</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Work dir:          </span><span class="si">{</span><span class="n">child_STOFIT</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
 
                 <span class="k">if</span> <span class="n">child_STOFIT</span><span class="o">.</span><span class="n">can_skip</span><span class="p">():</span>
-                    <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">warning</span> <span class="o">+</span> <span class="s1">&#39; Already ran, skipping&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">])</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">warning</span> <span class="o">+</span> <span class="s2">&quot; Already ran, skipping&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
                     <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="s1">&#39; Submitting&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">])</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="s2">&quot; Submitting&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
+                    <span class="p">[</span><span class="n">child_STOFIT</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;chdir&quot;</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="s2">&quot;job_name&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]]</span>
                     <span class="n">child_STOFIT</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">dependency</span><span class="p">(</span><span class="n">child_STOFIT</span><span class="p">)</span>
-                    <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SlurmID:  </span><span class="si">{</span><span class="n">child_STOFIT</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">])</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SlurmID:  </span><span class="si">{</span><span class="n">child_STOFIT</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;skip&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
                     <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
 
                 <span class="n">child_NoElectrons</span> <span class="o">=</span> <span class="n">ADFJob</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
-                <span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;_NoElectrons&#39;</span>
+                <span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">name</span> <span class="o">+=</span> <span class="s2">&quot;_NoElectrons&quot;</span>
                 <span class="n">elstat_jobs</span><span class="p">[</span><span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">child_NoElectrons</span>
+
                 <span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">STOFIT</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-                <span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">PRINT</span> <span class="o">=</span> <span class="s1">&#39;SFOSiteEnergies Elstat&#39;</span>
+                <span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">PRINT</span> <span class="o">+=</span> <span class="s1">&#39; Elstat&#39;</span>
                 <span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">number_of_electrons</span><span class="p">(</span><span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">_molecule</span><span class="p">))</span>
                 <span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">spin_polarization</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
                 <span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;NumericalQuality&quot;</span><span class="p">)</span>
                 <span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">BeckeGrid</span><span class="o">.</span><span class="n">Quality</span> <span class="o">=</span> <span class="s2">&quot;Excellent&quot;</span>
 
+
                 <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Fragment (</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">)</span><span class="si">}</span><span class="s1">) </span><span class="si">{</span><span class="n">child_name</span><span class="si">}</span><span class="s1"> [</span><span class="si">{</span><span class="n">formula</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">_molecule</span><span class="p">)</span><span class="si">}</span><span class="s1">] without Electrons&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">])</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Charge:            </span><span class="si">{</span><span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">charge</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Spin-Polarization: </span><span class="si">{</span><span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Charge:            </span><span class="si">{</span><span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">charge</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="mi">0</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Spin-Polarization: </span><span class="si">{</span><span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="mi">0</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Work dir:          </span><span class="si">{</span><span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;straight&#39;</span><span class="p">])</span>
-                
+
                 <span class="k">if</span> <span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">can_skip</span><span class="p">():</span>
-                    <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">warning</span> <span class="o">+</span> <span class="s1">&#39; Already ran, skipping&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">])</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">warning</span> <span class="o">+</span> <span class="s2">&quot; Already ran, skipping&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
                     <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="s1">&#39; Submitting&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">])</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="s2">&quot; Submitting&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
+                    <span class="p">[</span><span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;chdir&quot;</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="s2">&quot;job_name&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]]</span>
                     <span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">dependency</span><span class="p">(</span><span class="n">child_NoElectrons</span><span class="p">)</span>
-                    <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SlurmID:  </span><span class="si">{</span><span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">])</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SlurmID:  </span><span class="si">{</span><span class="n">child_NoElectrons</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;skip&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
                     <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
 
         <span class="c1"># in the parent job the atoms should have the region and adf.f defined as options</span>
@@ -818,7 +863,7 @@
                     <span class="c1"># we check by looking at the symbol and coordinates of the atom</span>
                     <span class="k">if</span> <span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">childatom</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">childatom</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">childatom</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">childatom</span><span class="o">.</span><span class="n">z</span><span class="p">):</span>
                         <span class="c1"># now write the symbol and coords as a string with the correct suffix</span>
-                        <span class="n">atom_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\t\t</span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">y</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">z</span><span class="si">}</span><span class="s1"> region=</span><span class="si">{</span><span class="n">child_name</span><span class="si">}</span><span class="s1"> adf.f=</span><span class="si">{</span><span class="n">child_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                        <span class="n">atom_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">y</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">z</span><span class="si">}</span><span class="s2"> region=</span><span class="si">{</span><span class="n">child_name</span><span class="si">}</span><span class="s2"> adf.f=</span><span class="si">{</span><span class="n">child_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">old_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="c1"># write the atoms block as a string with new line characters</span>
@@ -827,24 +872,25 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># run this job</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">,</span> <span class="n">old_name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;complex&#39;</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="s1">&#39; Submitting parent job&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">])</span>
-      
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SlurmID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
-
-        <span class="c1"># also do the calculation with SCF cycles set to 1</span>
-        <span class="n">old_iters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SCF</span><span class="o">.</span><span class="n">Iterations</span> <span class="ow">or</span> <span class="mi">300</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">SCF</span><span class="p">(</span><span class="n">iterations</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="c1"># we must repopulate the sbatch settings for the new run</span>
-        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;chdir&quot;</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="s2">&quot;job_name&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;complex_SCF0&quot;</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="s2">&quot; Submitting extra job with 0 SCF iterations&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;split&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;complex&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="s2">&quot; Submitting parent job&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;split&quot;</span><span class="p">])</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
         <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SlurmID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
         <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
+
+        <span class="c1"># also do the calculation with SCF cycles set to 1 if desired</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scf0_calculation</span><span class="p">:</span>
+            <span class="n">old_iters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SCF</span><span class="o">.</span><span class="n">Iterations</span> <span class="ow">or</span> <span class="mi">300</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SCF</span><span class="p">(</span><span class="n">iterations</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># we must repopulate the sbatch settings for the new run</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;chdir&quot;</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="s2">&quot;job_name&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;complex_SCF0&quot;</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="s2">&quot; Submitting extra job with 0 SCF iterations&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;split&quot;</span><span class="p">])</span>
+
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SlurmID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
 
         <span class="c1"># also do the calculation with no electrons on the fragments if the user requested a elstat decomposition</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">decompose_elstat</span><span class="p">:</span>
@@ -853,27 +899,27 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">SCF</span><span class="p">(</span><span class="n">iterations</span><span class="o">=</span><span class="n">old_iters</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;NumericalQuality&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">BeckeGrid</span><span class="o">.</span><span class="n">Quality</span> <span class="o">=</span> <span class="s2">&quot;Excellent&quot;</span>
-            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;chdir&#39;</span><span class="p">,</span> <span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;job_name&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">]]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;complex_STOFIT&#39;</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;chdir&quot;</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="s2">&quot;job_name&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;complex_STOFIT&quot;</span>
 
             <span class="c1"># set the region and fragment files correctly</span>
             <span class="n">atom_lines_</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">atom_lines</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">frag_names</span><span class="p">:</span>
-                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">frag</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s1">_STOFIT&#39;</span><span class="p">)</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">frag</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s2">_STOFIT&quot;</span><span class="p">)</span>
                 <span class="n">atom_lines_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">atoms</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">atom_lines_</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">End&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">expandtabs</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">atoms</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">atom_lines_</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">End&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expandtabs</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
             <span class="c1"># set the fragment references correctly</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;fragments&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;fragments&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">frag_name</span> <span class="ow">in</span> <span class="n">frag_names</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="n">frag_name</span> <span class="o">+</span> <span class="s1">&#39;_STOFIT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span><span class="p">(</span><span class="n">elstat_jobs</span><span class="p">[</span><span class="s1">&#39;frag_&#39;</span> <span class="o">+</span> <span class="n">frag_name</span> <span class="o">+</span> <span class="s1">&#39;_STOFIT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s1">&#39;adf.rkf&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">STOFIT</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">PRINT</span> <span class="o">=</span> <span class="s1">&#39;SFOSiteEnergies Elstat&#39;</span>
-
-            <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="s1">&#39; Submitting complex with STOFIT&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="n">frag_name</span> <span class="o">+</span> <span class="s2">&quot;_STOFIT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span><span class="p">(</span><span class="n">elstat_jobs</span><span class="p">[</span><span class="s2">&quot;frag_&quot;</span> <span class="o">+</span> <span class="n">frag_name</span> <span class="o">+</span> <span class="s2">&quot;_STOFIT&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s2">&quot;adf.rkf&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">STOFIT</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">PRINT</span> <span class="o">+=</span> <span class="s2">&quot; Elstat&quot;</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;chdir&quot;</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="s2">&quot;job_name&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]]</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="s2">&quot; Submitting complex with STOFIT&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;split&quot;</span><span class="p">])</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SlurmID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">])</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SlurmID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
             <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
 
             <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">frag_names</span><span class="p">:</span>
@@ -881,34 +927,69 @@
                 <span class="n">other_frags</span> <span class="o">=</span> <span class="p">[</span><span class="n">frag_</span> <span class="k">for</span> <span class="n">frag_</span> <span class="ow">in</span> <span class="n">frag_names</span> <span class="k">if</span> <span class="n">frag_</span> <span class="o">!=</span> <span class="n">frag</span><span class="p">]</span>
 
                 <span class="c1"># we must repopulate the sbatch settings for the new run</span>
-                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;chdir&#39;</span><span class="p">,</span> <span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;job_name&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">]]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;complex_</span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s1">_NoElectrons&#39;</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;chdir&quot;</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="s2">&quot;job_name&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;complex_</span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s2">_NoElectrons&quot;</span>
 
                 <span class="c1"># set the region and fragment files correctly</span>
                 <span class="n">atom_lines_</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">atom_lines</span><span class="p">:</span>
-                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">frag</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s1">_NoElectrons&#39;</span><span class="p">)</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">frag</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s2">_NoElectrons&quot;</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">other_frag</span> <span class="ow">in</span> <span class="n">other_frags</span><span class="p">:</span>
-                        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">other_frag</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">other_frag</span><span class="si">}</span><span class="s1">_STOFIT&#39;</span><span class="p">)</span>
+                        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">other_frag</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">other_frag</span><span class="si">}</span><span class="s2">_STOFIT&quot;</span><span class="p">)</span>
                     <span class="n">atom_lines_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">atoms</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">atom_lines_</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">End&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">expandtabs</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">atoms</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">atom_lines_</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">End&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expandtabs</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 
                 <span class="c1"># set the fragment references correctly</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;fragments&#39;</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="n">frag</span> <span class="o">+</span> <span class="s1">&#39;_NoElectrons&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span><span class="p">(</span><span class="n">elstat_jobs</span><span class="p">[</span><span class="s1">&#39;frag_&#39;</span> <span class="o">+</span> <span class="n">frag</span> <span class="o">+</span> <span class="s1">&#39;_NoElectrons&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s1">&#39;adf.rkf&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;fragments&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="n">frag</span> <span class="o">+</span> <span class="s2">&quot;_NoElectrons&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span><span class="p">(</span><span class="n">elstat_jobs</span><span class="p">[</span><span class="s2">&quot;frag_&quot;</span> <span class="o">+</span> <span class="n">frag</span> <span class="o">+</span> <span class="s2">&quot;_NoElectrons&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s2">&quot;adf.rkf&quot;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">other_frag</span> <span class="ow">in</span> <span class="n">other_frags</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="n">other_frag</span> <span class="o">+</span> <span class="s1">&#39;_STOFIT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span><span class="p">(</span><span class="n">elstat_jobs</span><span class="p">[</span><span class="s1">&#39;frag_&#39;</span> <span class="o">+</span> <span class="n">other_frag</span> <span class="o">+</span> <span class="s1">&#39;_STOFIT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s1">&#39;adf.rkf&#39;</span><span class="p">)</span>
-            
-                <span class="n">other_charge</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">elstat_jobs</span><span class="p">[</span><span class="s1">&#39;frag_&#39;</span> <span class="o">+</span> <span class="n">other_frag</span> <span class="o">+</span> <span class="s1">&#39;_STOFIT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">charge</span> <span class="k">for</span> <span class="n">other_frag</span> <span class="ow">in</span> <span class="n">other_frags</span><span class="p">])</span>
-                <span class="n">total_charge</span> <span class="o">=</span> <span class="n">other_charge</span> <span class="o">+</span> <span class="p">(</span><span class="n">elstat_jobs</span><span class="p">[</span><span class="s1">&#39;frag_&#39;</span> <span class="o">+</span> <span class="n">frag</span> <span class="o">+</span> <span class="s1">&#39;_NoElectrons&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">charge</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">fragments</span><span class="p">[</span><span class="n">other_frag</span> <span class="o">+</span> <span class="s2">&quot;_STOFIT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span><span class="p">(</span><span class="n">elstat_jobs</span><span class="p">[</span><span class="s2">&quot;frag_&quot;</span> <span class="o">+</span> <span class="n">other_frag</span> <span class="o">+</span> <span class="s2">&quot;_STOFIT&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s2">&quot;adf.rkf&quot;</span><span class="p">)</span>
+
+                <span class="n">other_charge</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">elstat_jobs</span><span class="p">[</span><span class="s2">&quot;frag_&quot;</span> <span class="o">+</span> <span class="n">other_frag</span> <span class="o">+</span> <span class="s2">&quot;_STOFIT&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">charge</span> <span class="k">for</span> <span class="n">other_frag</span> <span class="ow">in</span> <span class="n">other_frags</span><span class="p">])</span>
+                <span class="n">total_charge</span> <span class="o">=</span> <span class="n">other_charge</span> <span class="o">+</span> <span class="p">(</span><span class="n">elstat_jobs</span><span class="p">[</span><span class="s2">&quot;frag_&quot;</span> <span class="o">+</span> <span class="n">frag</span> <span class="o">+</span> <span class="s2">&quot;_NoElectrons&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">charge</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">total_charge</span><span class="p">)</span>
 
-                <span class="n">other_spin_polarization</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">elstat_jobs</span><span class="p">[</span><span class="s1">&#39;frag_&#39;</span> <span class="o">+</span> <span class="n">other_frag</span> <span class="o">+</span> <span class="s1">&#39;_STOFIT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span> <span class="k">for</span> <span class="n">other_frag</span> <span class="ow">in</span> <span class="n">other_frags</span><span class="p">])</span>
-                <span class="n">total_spin_polarization</span> <span class="o">=</span> <span class="n">other_spin_polarization</span> <span class="o">+</span> <span class="p">(</span><span class="n">elstat_jobs</span><span class="p">[</span><span class="s1">&#39;frag_&#39;</span> <span class="o">+</span> <span class="n">frag</span> <span class="o">+</span> <span class="s1">&#39;_NoElectrons&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span><span class="p">)</span>
+                <span class="n">other_spin_polarization</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">elstat_jobs</span><span class="p">[</span><span class="s2">&quot;frag_&quot;</span> <span class="o">+</span> <span class="n">other_frag</span> <span class="o">+</span> <span class="s2">&quot;_STOFIT&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span> <span class="k">for</span> <span class="n">other_frag</span> <span class="ow">in</span> <span class="n">other_frags</span><span class="p">])</span>
+                <span class="n">total_spin_polarization</span> <span class="o">=</span> <span class="n">other_spin_polarization</span> <span class="o">+</span> <span class="p">(</span><span class="n">elstat_jobs</span><span class="p">[</span><span class="s2">&quot;frag_&quot;</span> <span class="o">+</span> <span class="n">frag</span> <span class="o">+</span> <span class="s2">&quot;_NoElectrons&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">spin_polarization</span><span class="p">(</span><span class="n">total_spin_polarization</span><span class="p">)</span>
 
-                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39; Submitting complex with 0 electrons in fragment </span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">])</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; Submitting complex with 0 electrons in fragment </span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;split&quot;</span><span class="p">])</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;chdir&quot;</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="s2">&quot;job_name&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]]</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SlurmID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter_poise</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SCF</span><span class="p">(</span><span class="n">iterations</span><span class="o">=</span><span class="n">old_iters</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">EngineDebugging</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;AlwaysClaimSuccess&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;fragments&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">frag</span><span class="p">,</span> <span class="n">frag_job</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">atoms</span> <span class="o">=</span> <span class="p">[</span><span class="n">atom</span> <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">job</span><span class="o">.</span><span class="n">_molecule</span><span class="p">]</span>
+
+                <span class="c1"># in the parent job the atoms should have the region and adf.f defined as options</span>
+                <span class="n">atom_lines</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="c1"># for each atom we check which child it came from</span>
+                <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">child_name</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="k">for</span> <span class="n">childatom</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">_molecule</span><span class="p">:</span>
+                            <span class="c1"># we check by looking at the symbol and coordinates of the atom</span>
+                            <span class="k">if</span> <span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">childatom</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">childatom</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">childatom</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">childatom</span><span class="o">.</span><span class="n">z</span><span class="p">):</span>
+                                <span class="c1"># now write the symbol and coords as a string with the correct suffix and ghost indicator</span>
+                                <span class="k">if</span> <span class="n">child_name</span> <span class="o">==</span> <span class="n">frag</span><span class="p">:</span>
+                                    <span class="n">atom_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\t\t</span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">y</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">z</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="n">atom_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\t\t</span><span class="s1">Gh.</span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">y</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">atom</span><span class="o">.</span><span class="n">z</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+                <span class="c1"># write the atoms block as a string with new line characters</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">atoms</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">atom_lines</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">End&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expandtabs</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">spin_polarization</span><span class="p">(</span><span class="n">frag_job</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">frag_job</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">charge</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">unrestricted</span><span class="p">((</span><span class="n">frag_job</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">Unrestricted</span> <span class="ow">or</span> <span class="s1">&#39;no&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span><span class="p">)</span>
+
+                <span class="c1"># we must repopulate the sbatch settings for the new run</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;complex_</span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s1">_Ghost&#39;</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">Emojis</span><span class="o">.</span><span class="n">good</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39; Submitting </span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s1"> with the basis-set of the complex&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">])</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;chdir&quot;</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="s2">&quot;job_name&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]]</span>
                 <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SlurmID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;straight&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">])</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
@@ -918,10 +999,11 @@
 
 
 
+
 <div class="viewcode-block" id="DensfJob">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob">[docs]</a>
-<span class="k">class</span> <span class="nc">DensfJob</span><span class="p">(</span><span class="n">Job</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DensfJob</span><span class="p">(</span><span class="n">Job</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="s2">&quot;tmp&quot;</span>
@@ -929,14 +1011,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gridsize</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mos</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_extras</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Densf(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="si">}</span><span class="s2">), running in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="DensfJob.gridsize">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob.gridsize">[docs]</a>
-    <span class="k">def</span> <span class="nf">gridsize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gridsize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the size of the grid to be used by Densf.</span>
 
@@ -947,13 +1030,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">size</span></div>
 
 
+<div class="viewcode-block" id="DensfJob.grid">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob.grid">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="DensfJob.orbital">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob.orbital">[docs]</a>
-    <span class="k">def</span> <span class="nf">orbital</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbital</span><span class="p">:</span> <span class="s2">&quot;pyfmo.orbitals.sfo.SFO&quot;</span> <span class="ow">or</span> <span class="s2">&quot;pyfmo.orbitals.mo.MO&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">orbital</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbital</span><span class="p">:</span> <span class="s2">&quot;pyfmo.orbitals.sfo.SFO&quot;</span> <span class="ow">or</span> <span class="s2">&quot;pyfmo.orbitals.mo.MO&quot;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a PyOrb orbital for Densf to calculate.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">pyfmo</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyfmo</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">orbital</span><span class="p">,</span> <span class="p">(</span><span class="n">pyfmo</span><span class="o">.</span><span class="n">orbitals</span><span class="o">.</span><span class="n">sfo</span><span class="o">.</span><span class="n">SFO</span><span class="p">,</span> <span class="n">pyfmo</span><span class="o">.</span><span class="n">orbitals2</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">SFO</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">orbital</span><span class="p">)</span>
@@ -970,29 +1059,63 @@
             <span class="k">raise</span> <span class="n">TCJobError</span><span class="p">(</span><span class="n">job_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.&quot;</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_setup_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="DensfJob.density">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob.density">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">density</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">:</span> <span class="s1">&#39;pyfmo.orbitals.Orbitals&#39;</span><span class="p">):</span>  <span class="c1"># noqa: F821</span>
+
+        <span class="c1"># check if the ADFFile is the same for all added orbitals</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span> <span class="o">=</span> <span class="n">orbitals</span><span class="o">.</span><span class="n">kfpath</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span> <span class="o">!=</span> <span class="n">orbitals</span><span class="o">.</span><span class="n">kfpath</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_extras</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Density SCF&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DensfJob.NCI">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob.NCI">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">NCI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">density</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">rhovdw</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">rdg</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Setup calculation of NCI values.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            density: the density to calculate for, either &quot;FIT&quot; or  &quot;BOTH&quot;, default is &quot;BOTH&quot;.</span>
+<span class="sd">            rhovdw: threshold of density for detection of weak interaction regions, default is `0.02`.</span>
+<span class="sd">            rdg: threshold of reduced density gradient, default is `0.5`.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_extras</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;NCI </span><span class="si">{</span><span class="n">density</span><span class="si">}</span><span class="s1"> RHOVDW=</span><span class="si">{</span><span class="n">rhovdw</span><span class="si">}</span><span class="s1"> RDG=</span><span class="si">{</span><span class="n">rdg</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># set up the input file. This should always contain calling of the densf program, as per the SCM documentation</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputfile_path</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inpf</span><span class="p">:</span>
             <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;$AMSBIN/densf &lt;&lt; eor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ADFFile </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ADFFile </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GRID </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;END</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Orbitals SCF</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">orb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mos</span><span class="p">:</span>
-                    <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">index_in_symlabel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;END</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">index_in_symlabel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;END</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Orbitals SFO</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">orb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span><span class="p">:</span>
                     <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;END</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extras</span><span class="p">:</span>
+                <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
             <span class="c1"># cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size</span>
-            <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CUBOUTPUT </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">outname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;coarse&#39;</span><span class="p">,</span> <span class="s1">&#39;medium&#39;</span><span class="p">,</span> <span class="s1">&#39;fine&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;custom_grid&#39;</span>
+            <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CUBOUTPUT </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">outname</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;eor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># the runfile should simply execute the input file.</span>
@@ -1005,26 +1128,44 @@
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">output_cub_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">output_cub_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The output cube file paths that will be/were calculated by this job.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">cuboutput</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">cuboutput</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span><span class="si">}</span><span class="s2">&quot;</span>
 
         <span class="k">for</span> <span class="n">mo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mos</span><span class="p">:</span>
-            <span class="n">spin_part</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">mo</span><span class="o">.</span><span class="n">spin</span> <span class="o">==</span> <span class="s1">&#39;AB&#39;</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;_</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">spin</span><span class="si">}</span><span class="s1">&#39;</span>
-            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SCF_</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}{</span><span class="n">spin_part</span><span class="si">}</span><span class="s1">%</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">index_in_symlabel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">.cub&#39;</span><span class="p">)</span>
+            <span class="n">spin_part</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">mo</span><span class="o">.</span><span class="n">spin</span> <span class="o">==</span> <span class="s2">&quot;AB&quot;</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">spin</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s2">%SCF_</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}{</span><span class="n">spin_part</span><span class="si">}</span><span class="s2">%</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">index_in_symlabel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">.cub&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">sfo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span><span class="p">:</span>
-            <span class="n">spin_part</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">sfo</span><span class="o">.</span><span class="n">spin</span> <span class="o">==</span> <span class="s1">&#39;AB&#39;</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;_</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">spin</span><span class="si">}</span><span class="s1">&#39;</span>
-            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SFO_</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}{</span><span class="n">spin_part</span><span class="si">}</span><span class="s1">%</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s1">.cub&#39;</span><span class="p">)</span>
+            <span class="n">spin_part</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">sfo</span><span class="o">.</span><span class="n">spin</span> <span class="o">==</span> <span class="s2">&quot;AB&quot;</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">spin</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s2">%SFO_</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}{</span><span class="n">spin_part</span><span class="si">}</span><span class="s2">%</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s2">.cub&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">extra</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extras</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">extra</span> <span class="o">==</span> <span class="s2">&quot;Density SCF&quot;</span><span class="p">:</span>
+                <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s2">%SCF%Density.cub&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">extra</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;NCI&#39;</span><span class="p">):</span>
+                <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SCF%FitDenSigned.cub&#39;</span><span class="p">)</span>
+                <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SCF%Fitdensity.cub&#39;</span><span class="p">)</span>
+                <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SCF%FitNCI.cub&#39;</span><span class="p">)</span>
+                <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SCF%FitRDG.cub&#39;</span><span class="p">)</span>
+                <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SCF%FitRDGforNCI.cub&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;both&#39;</span> <span class="ow">in</span> <span class="n">extra</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                    <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SCF%DenSigned.cub&#39;</span><span class="p">)</span>
+                    <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SCF%Density.cub&#39;</span><span class="p">)</span>
+                    <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SCF%NCI.cub&#39;</span><span class="p">)</span>
+                    <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SCF%RDG.cub&#39;</span><span class="p">)</span>
+                    <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s1">%SCF%RDGforNCI.cub&#39;</span><span class="p">)</span>
+
 
         <span class="k">return</span> <span class="n">paths</span>
 
 <div class="viewcode-block" id="DensfJob.can_skip">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob.can_skip">[docs]</a>
-    <span class="k">def</span> <span class="nf">can_skip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">can_skip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_cub_paths</span><span class="p">)</span></div>
 </div>
 
@@ -1068,8 +1209,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1102,7 +1243,8 @@
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

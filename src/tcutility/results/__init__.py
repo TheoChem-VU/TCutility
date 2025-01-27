@@ -107,7 +107,7 @@ def read(calc_dir: Union[str, pl.Path]) -> Result:
     elif ret.engine == "xtb":
         # ret.xtb = xtb.get_calc_settings(ret)
         ret.properties = xtb.get_properties(ret)
-        
+
     elif ret.engine == "orca":
         try:
             ret.orca = orca.get_calc_settings(ret)

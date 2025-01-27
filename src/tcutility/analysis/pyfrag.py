@@ -3,7 +3,6 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 def read(path):
     return PyFragResult(path)
 
@@ -76,6 +75,7 @@ class PyFragResult:
         energies = self.total_energy()
         highest = -float('inf')
         for i in range(len(self) - 2, 1, -1):
+
             if energies[i-1] < energies[i] and energies[i] < energies[i+1]:
                 return i + 1
 
@@ -113,6 +113,7 @@ class PyFragResult:
             import pyfmo
         except ModuleNotFoundError:
             raise ModuleNotFoundError('The pyfmo module could not be loaded. To gain access please contact the TCutility developers!')
+
 
         return [pyfmo.orbitals2.objects.Orbitals(res[calc].files['adf.rkf']) for res in self._step_results]
 
