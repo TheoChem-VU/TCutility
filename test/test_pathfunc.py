@@ -108,6 +108,23 @@ def test_split_all4():
     assert pathfunc.split_all(os.path.join("a", "b", "c")) == ["a", "b", "c"]
 
 
+def test_path_depth():
+    assert pathfunc.path_depth('a/b/c') == 3
+
+
+def test_path_depth2():
+    assert pathfunc.path_depth('a/One Drive/c') == 3
+    
+
+def test_path_depth3():
+    assert pathfunc.path_depth(r'a\One Drive\c') == 3
+
+
+def test_path_depth4():
+    assert pathfunc.path_depth('a') == 1
+    
+
+
 if __name__ == "__main__":
     import pytest
 
