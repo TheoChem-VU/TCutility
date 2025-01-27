@@ -593,11 +593,12 @@ class ADFFragmentJob(ADFJob):
             log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
             log.flow()
 
+            # reset the SCF iterations
+            self.SCF(iterations=old_iters)
+
         # also do the calculation with no electrons on the fragments if the user requested a elstat decomposition
         if self.decompose_elstat:
             frag_names = self.child_jobs.keys()
-            # reset the SCF iterations
-            self.SCF(iterations=old_iters)
             self.settings.input.adf.pop("NumericalQuality")
             self.settings.input.adf.BeckeGrid.Quality = "Excellent"
             [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
@@ -661,7 +662,6 @@ class ADFFragmentJob(ADFJob):
                 log.flow()
 
         if self.counter_poise:
-            self.SCF(iterations=old_iters)
             self.settings.input.ams.EngineDebugging.pop('AlwaysClaimSuccess', None)
             self.settings.input.adf.pop('fragments', None)
             for frag, frag_job in self.child_jobs.items():
