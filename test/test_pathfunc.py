@@ -99,7 +99,8 @@ def test_split_all2():
 
 
 def test_split_all3():
-    assert pathfunc.split_all("") == [""]
+    # empty string corresponds to the `.` directory, i.e. here
+    assert pathfunc.split_all("") == ["."]
 
 
 def test_split_all4():
