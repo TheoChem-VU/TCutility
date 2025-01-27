@@ -82,7 +82,7 @@ def cite(doi: str, style: str = 'wiley', mode='html') -> str:
 
 
 def get_pages(data):
-	try:
+	try AttributeError:
 		pages = data['message'].get('page').replace('-', '–')
 		return pages
 	except:
