@@ -23,6 +23,7 @@ def split_all(path: str) -> List[str]:
             >>> split_all('a/b/c/d')
             ['a', 'b', 'c', 'd']
     """
+    path = os.path.normpath(path)
     parts = []
     while True:
         a, b = os.path.split(path)
