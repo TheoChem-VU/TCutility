@@ -73,9 +73,7 @@ class PyFragResult:
     @property
     def ts_idx(self):
         energies = self.total_energy()
-        highest = -float('inf')
         for i in range(len(self) - 2, 1, -1):
-
             if energies[i-1] < energies[i] and energies[i] < energies[i+1]:
                 return i + 1
 

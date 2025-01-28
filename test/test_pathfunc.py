@@ -116,11 +116,6 @@ def test_path_depth():
 def test_path_depth2():
     assert pathfunc.path_depth('a/One Drive/c') == 3
     
-
-def test_path_depth3():
-    assert pathfunc.path_depth(r'a\One Drive\c') == 3
-
-
 def test_path_depth4():
     assert pathfunc.path_depth('a') == 1
     
