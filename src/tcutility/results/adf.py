@@ -272,13 +272,28 @@ def get_properties(info: Result) -> Result:
             - **vibrations.character (str)** – Character of the molecule based on the number of imaginary vibrational modes. Can be "minimum" or "transition state".
             - **vdd.charges (nparray[float] (1D))** - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges.
             - **vdd.charges.{symmetry label} (nparray[float] (1D))** - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons] per irrep.
-            - **s2** - expectation value of the :math:`S^2` operator.
-            - **s2_expected** - ideal expectation value of the :math:`S^2` operator. For restricted calculations this should always equal ``s2``.
-            - **spin_contamination** - the amount of spin-contamination observed in this calculation. It is equal to (s2 - s2_expected) / (s2_expected). Ideally this value should be below 0.1.
-            - **dipole_vector** - the dipole moment vector.
-            - **dipole_moment** - the magnitude of the dipole moment vector.
-            - **quadrupole_moment** - the quadrupole moment vector.
-            - **dens_at_atom** - the electron density at each atom.
+            - **s2 (float)** - expectation value of the :math:`S^2` operator.
+            - **s2_expected (float)** - ideal expectation value of the :math:`S^2` operator. For restricted calculations this should always equal ``s2``.
+            - **spin_contamination (float)** - the amount of spin-contamination observed in this calculation. It is equal to (s2 - s2_expected) / (s2_expected). Ideally this value should be below 0.1.
+            - **dipole_vector (nparray[float] (1D))** - the dipole moment vector.
+            - **dipole_moment (float)** - the magnitude of the dipole moment vector.
+            - **quadrupole_moment (nparray[float] (1D))** - the quadrupole moment vector.
+            - **dens_at_atom (nparray[float] (1D))** - the electron density at each atom.
+            - **excitations.{irrep}.{exctyp}.contributions (list[list[float]] (2D))** - the contribution of each transition to the excitations. 
+                E.g. element [2][4] is the contibution of the 5th strongest transition to excitation 3. 
+            - **excitations.{irrep}.{exctyp}.energies (nparray[float] (1D))** - photon energies associated with the excitations (Hartrees).
+            - **excitations.{irrep}.{exctyp}.wavelengths (nparray[float] (1D))** - wavelengths associated with the excitations (nm).
+            - **excitations.{irrep}.{exctyp}.from_MO (list[list[str]] (2D))** - MO names from which an electron is excited in each transition for each excitation.
+            - **excitations.{irrep}.{exctyp}.from_MO_idx (list[list[str]] (2D))** - MO index from which an electron is excited in each transition for each excitation.
+            - **excitations.{irrep}.{exctyp}.from_MO_irrep (list[list[str]] (2D))** - MO irrep from which an electron is excited in each transition for each excitation.
+            - **excitations.{irrep}.{exctyp}.from_MO_spin (list[list[str]] (2D))** - MO spin from which an electron is excited in each transition for each excitation.
+            - **excitations.{irrep}.{exctyp}.to_MO (list[list[str]] (2D))** - MO names to which an electron is excited in each transition for each excitation.
+            - **excitations.{irrep}.{exctyp}.to_MO_idx (list[list[str]] (2D))** - MO index to which an electron is excited in each transition for each excitation.
+            - **excitations.{irrep}.{exctyp}.to_MO_irrep (list[list[str]] (2D))** - MO irrep to which an electron is excited in each transition for each excitation.
+            - **excitations.{irrep}.{exctyp}.to_MO_spin (list[list[str]] (2D))** - MO spin to which an electron is excited in each transition for each excitation.
+            - **excitations.{irrep}.{exctyp}.number_of_excitations (int)** - number of excitations for this irrep and excitation type.
+            - **excitations.{irrep}.{exctyp}.oscillator_strengths (nparray[float] (1D))** - oscillator strengths associated with the excitations (km/mol).
+            - **excitations.{irrep}.{exctyp}.to_MO_spin (np.ndarray(float) (2D))** - transition dipoles for each excitation.
     """
 
     assert info.engine == "adf", f"This function reads ADF data, not {info.engine} data"
