@@ -419,6 +419,7 @@ def _read_excitations(reader: cache.TrackKFReader) -> Result:
         ret[irrep][exctyp].number_of_excitations = reader.read(section, 'nr of excenergies')
         ret[irrep][exctyp].energies = np.array(reader.read(section, 'excenergies'))  # in Ha
 
+        # values used to convert excitation photon energies to wavelengths
         c = 299_792_458e9  # nm/s
         h = 0.0367502 * 4.135_667_696e-15  # Ha s
         ret[irrep][exctyp].wavelengths = (h * c) / ret[irrep][exctyp].energies # in nm
