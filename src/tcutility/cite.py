@@ -110,7 +110,7 @@ def _format_article(data: dict, style: str) -> str:
 	title = data['message']['title'][0]
 	doi = data['message']['DOI']
 
-	accepted = is_accepted(data)
+	# accepted = is_accepted(data)  # not using this one yet
 
 	# Get the initials from the author given names
 	# also store the family names
