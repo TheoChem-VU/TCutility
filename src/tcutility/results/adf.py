@@ -347,8 +347,8 @@ def get_properties(info: Result) -> Result:
     if ("Vibrations", "nNormalModes") in reader_adf:
         ret.vibrations = _read_vibrations(reader_adf)
 
-    # vibrational information
-    if ("All Excitations", "nr excitations") in reader_adf:
+    # electronic excitation information
+    if ("All excitations", "nr excitations") in reader_adf:
         ret.excitations = _read_excitations(reader_adf)
 
     # read the Voronoi Deformation Charges Deformation (VDD) before and after SCF convergence (being "inital" and "SCF")
