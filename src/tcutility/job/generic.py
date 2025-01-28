@@ -256,7 +256,7 @@ class Job:
             return
 
         if hasattr(otherjob, "slurm_job_id"):
-            self.sbatch(dependency=f"afterok:{otherjob.slurm_job_id}")
+            self.sbatch(dependency=f"afterany:{otherjob.slurm_job_id}")
             self.sbatch(kill_on_invalid_dep="Yes")
 
     @property
