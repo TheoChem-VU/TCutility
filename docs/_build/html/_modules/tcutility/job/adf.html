@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.job.adf &#8212; TCutility v0.14.5 documentation</title>
+    <title>tcutility.job.adf &#8212; TCutility v0.15.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=6d611d6e"></script>
+    <script src="../../../_static/documentation_options.js?v=44bdc989"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -892,11 +892,12 @@
             <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SlurmID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;straight&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
             <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
 
+            <span class="c1"># reset the SCF iterations</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SCF</span><span class="p">(</span><span class="n">iterations</span><span class="o">=</span><span class="n">old_iters</span><span class="p">)</span>
+
         <span class="c1"># also do the calculation with no electrons on the fragments if the user requested a elstat decomposition</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">decompose_elstat</span><span class="p">:</span>
             <span class="n">frag_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-            <span class="c1"># reset the SCF iterations</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">SCF</span><span class="p">(</span><span class="n">iterations</span><span class="o">=</span><span class="n">old_iters</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;NumericalQuality&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">BeckeGrid</span><span class="o">.</span><span class="n">Quality</span> <span class="o">=</span> <span class="s2">&quot;Excellent&quot;</span>
             <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_sbatch</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;chdir&quot;</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="s2">&quot;job_name&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">]]</span>
@@ -960,7 +961,6 @@
                 <span class="n">log</span><span class="o">.</span><span class="n">flow</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter_poise</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">SCF</span><span class="p">(</span><span class="n">iterations</span><span class="o">=</span><span class="n">old_iters</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">EngineDebugging</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;AlwaysClaimSuccess&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;fragments&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">frag</span><span class="p">,</span> <span class="n">frag_job</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>

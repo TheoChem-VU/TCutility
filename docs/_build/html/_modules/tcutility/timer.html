@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.timer &#8212; TCutility v0.14.5 documentation</title>
+    <title>tcutility.timer &#8212; TCutility v0.15.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=6d611d6e"></script>
+    <script src="../../_static/documentation_options.js?v=44bdc989"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -298,6 +298,9 @@
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.timer.print_timings">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">print_timings</span><span class="p">():</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">enabled</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="s1">&#39;calls&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">times</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span>
 
     <span class="n">names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>

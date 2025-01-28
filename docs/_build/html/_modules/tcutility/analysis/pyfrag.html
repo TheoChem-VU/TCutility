@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.analysis.pyfrag &#8212; TCutility v0.14.5 documentation</title>
+    <title>tcutility.analysis.pyfrag &#8212; TCutility v0.15.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=6d611d6e"></script>
+    <script src="../../../_static/documentation_options.js?v=44bdc989"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -264,6 +264,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_step_results</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_order</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mask</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">()</span>
 
@@ -286,6 +287,8 @@
 <div class="viewcode-block" id="PyFragResult.get_property">
 <a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.analysis.pyfrag.PyFragResult.get_property">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">calc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;complex&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">]]</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">res</span><span class="p">[</span><span class="n">calc</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get_multi_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_results</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">p</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">]]</span></div>
 
@@ -319,12 +322,30 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_mask</span> <span class="o">=</span> <span class="n">mask</span></div>
 
 
+<div class="viewcode-block" id="PyFragResult.set_coord">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.analysis.pyfrag.PyFragResult.set_coord">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coord</span> <span class="o">=</span> <span class="n">coord</span></div>
+
+
+<div class="viewcode-block" id="PyFragResult.coord">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.analysis.pyfrag.PyFragResult.coord">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">coord</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coord</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="PyFragResult.set_property">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.analysis.pyfrag.PyFragResult.set_property">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vals</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span></div>
+
+
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">ts_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s1">&#39;energy.bond&#39;</span><span class="p">,</span> <span class="s1">&#39;complex&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_energy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">energies</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">energies</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">energies</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">energies</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]:</span>
-                <span class="k">return</span> <span class="n">i</span>
+                <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
 
 <div class="viewcode-block" id="PyFragResult.total_energy">
 <a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.analysis.pyfrag.PyFragResult.total_energy">[docs]</a>
@@ -352,10 +373,18 @@
 
 <div class="viewcode-block" id="PyFragResult.overlap">
 <a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.analysis.pyfrag.PyFragResult.overlap">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orb1</span><span class="p">,</span> <span class="n">orb2</span><span class="p">,</span> <span class="n">calc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;complex&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orb1</span><span class="p">,</span> <span class="n">orb2</span><span class="p">,</span> <span class="n">calc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;complex&#39;</span><span class="p">,</span> <span class="n">absolute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">orb</span><span class="o">.</span><span class="n">sfos</span><span class="p">[</span><span class="n">orb1</span><span class="p">]</span> <span class="o">@</span> <span class="n">orb</span><span class="o">.</span><span class="n">sfos</span><span class="p">[</span><span class="n">orb2</span><span class="p">]</span> <span class="k">for</span> <span class="n">orb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orbs</span><span class="p">(</span><span class="n">calc</span><span class="p">)])</span>
+        <span class="k">if</span> <span class="n">absolute</span><span class="p">:</span>
+            <span class="n">S</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">S</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">]]</span></div>
 
+
+<div class="viewcode-block" id="PyFragResult.orbital_energy_gap">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.analysis.pyfrag.PyFragResult.orbital_energy_gap">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">orbital_energy_gap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orb1</span><span class="p">,</span> <span class="n">orb2</span><span class="p">,</span> <span class="n">calc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;complex&#39;</span><span class="p">):</span>
+        <span class="n">dE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">orb</span><span class="o">.</span><span class="n">sfos</span><span class="p">[</span><span class="n">orb1</span><span class="p">]</span><span class="o">.</span><span class="n">energy</span> <span class="o">-</span> <span class="n">orb</span><span class="o">.</span><span class="n">sfos</span><span class="p">[</span><span class="n">orb2</span><span class="p">]</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span> <span class="k">for</span> <span class="n">orb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orbs</span><span class="p">(</span><span class="n">calc</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="n">dE</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">]]</span></div>
 
 <div class="viewcode-block" id="PyFragResult.sfo_coefficient">
 <a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.analysis.pyfrag.PyFragResult.sfo_coefficient">[docs]</a>
@@ -369,32 +398,54 @@
     <span class="nd">@tcutility</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">cache</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">orbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">calc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;complex&#39;</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span><span class="w"> </span><span class="nn">pyfmo.orbitals2.objects</span>
-        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s1">&#39;pyfmo is not installed. Please install it using `pip install pyfmo`&#39;</span><span class="p">)</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">pyfmo</span>
+        <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span><span class="s1">&#39;The pyfmo module could not be loaded. To gain access please contact the TCutility developers!&#39;</span><span class="p">)</span>
+
 
         <span class="k">return</span> <span class="p">[</span><span class="n">pyfmo</span><span class="o">.</span><span class="n">orbitals2</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">Orbitals</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="n">calc</span><span class="p">]</span><span class="o">.</span><span class="n">files</span><span class="p">[</span><span class="s1">&#39;adf.rkf&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_results</span><span class="p">]</span></div>
 </div>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="s1">&#39;/Users/yumanhordijk/PhD/Projects/RadicalAdditionASMEDA/data/DFT/TS_C_O/PyFrag_OLYP_TZ2P&#39;</span><span class="p">)</span>
-    <span class="n">res</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">res</span><span class="o">.</span><span class="n">set_mask</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">res</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="n">res</span><span class="o">.</span><span class="n">ts_idx</span><span class="p">])</span>
-    <span class="c1"># plt.plot(res.get_geometry(0, 1), res.total_energy())</span>
-    <span class="c1"># plt.plot(res.get_geometry(0, 1), res.interaction_energy())</span>
-    <span class="c1"># plt.plot(res.get_geometry(0, 1), res.strain_energy())</span>
-    <span class="c1"># plt.xlim(3, 2.2)</span>
-    <span class="c1"># plt.show()</span>
 
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="s1">&#39;Substrate(7A_A)&#39;</span><span class="p">,</span> <span class="s1">&#39;Methyl(5A_A)&#39;</span><span class="p">)))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="s1">&#39;Substrate(4A_A)&#39;</span><span class="p">,</span> <span class="s1">&#39;Methyl(5A_A)&#39;</span><span class="p">)))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="s1">&#39;Substrate(3A_A)&#39;</span><span class="p">,</span> <span class="s1">&#39;Methyl(5A_A)&#39;</span><span class="p">)))</span>
-    <span class="c1"># Px_coeff = res.sfo_coefficient(&#39;C(1P:x)&#39;, &#39;7A_A&#39;, calc=&#39;frag_Substrate&#39;)</span>
-    <span class="c1"># Py_coeff = res.sfo_coefficient(&#39;C(1P:y)&#39;, &#39;7A_A&#39;, calc=&#39;frag_Substrate&#39;)</span>
-    <span class="c1"># Pz_coeff = res.sfo_coefficient(&#39;C(1P:z)&#39;, &#39;7A_A&#39;, calc=&#39;frag_Substrate&#39;)</span>
-    <span class="c1"># plt.plot(res.get_geometry(0, 1), np.sqrt(Px_coeff**2 + Py_coeff**2 + Pz_coeff**2))</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">res_C</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="s1">&#39;/Users/yumanhordijk/PhD/Projects/RadicalAdditionASMEDA/data/DFT/TS_C_O/PyFrag_OLYP_TZ2P&#39;</span><span class="p">)</span>
+    <span class="n">res_X</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="s1">&#39;/Users/yumanhordijk/PhD/Projects/RadicalAdditionASMEDA/data/DFT/TS_X_O/PyFrag_OLYP_TZ2P&#39;</span><span class="p">)</span>
+    
+    <span class="n">res_C</span><span class="o">.</span><span class="n">set_coord</span><span class="p">(</span><span class="n">res_C</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">res_X</span><span class="o">.</span><span class="n">set_coord</span><span class="p">(</span><span class="n">res_X</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="n">res_C</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="n">res_C</span><span class="o">.</span><span class="n">coord</span><span class="p">())</span>
+    <span class="n">res_X</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="n">res_X</span><span class="o">.</span><span class="n">coord</span><span class="p">())</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_C</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_C</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="s1">&#39;Methyl(SOMO)_A&#39;</span><span class="p">,</span> <span class="s1">&#39;Substrate(LUMO)_A&#39;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;C-addition&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_X</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_X</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="s1">&#39;Methyl(SOMO)_A&#39;</span><span class="p">,</span> <span class="s1">&#39;Substrate(LUMO)_A&#39;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;X-addition&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\langle SOMO | LUMO \rangle$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_C</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_C</span><span class="o">.</span><span class="n">orbital_energy_gap</span><span class="p">(</span><span class="s1">&#39;Methyl(SOMO)_A&#39;</span><span class="p">,</span> <span class="s1">&#39;Substrate(LUMO)_A&#39;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;C-addition&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_X</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_X</span><span class="o">.</span><span class="n">orbital_energy_gap</span><span class="p">(</span><span class="s1">&#39;Methyl(SOMO)_A&#39;</span><span class="p">,</span> <span class="s1">&#39;Substrate(LUMO)_A&#39;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;X-addition&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$|\epsilon_</span><span class="si">{SOMO}</span><span class="s1"> - \epsilon_</span><span class="si">{LUMO}</span><span class="s1">|$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_C</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_C</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="s1">&#39;Methyl(LUMO)_B&#39;</span><span class="p">,</span> <span class="s1">&#39;Substrate(7A_B)_B&#39;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;C-addition&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_X</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_X</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="s1">&#39;Methyl(LUMO)_B&#39;</span><span class="p">,</span> <span class="s1">&#39;Substrate(7A_B)_B&#39;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;X-addition&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\langle SUMO | HOMO \rangle$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_C</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_C</span><span class="o">.</span><span class="n">orbital_energy_gap</span><span class="p">(</span><span class="s1">&#39;Methyl(LUMO)_B&#39;</span><span class="p">,</span> <span class="s1">&#39;Substrate(7A_B)_B&#39;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;C-addition&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_X</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_X</span><span class="o">.</span><span class="n">orbital_energy_gap</span><span class="p">(</span><span class="s1">&#39;Methyl(LUMO)_B&#39;</span><span class="p">,</span> <span class="s1">&#39;Substrate(7A_B)_B&#39;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;X-addition&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$|\epsilon_</span><span class="si">{SUMO}</span><span class="s1"> - \epsilon_</span><span class="si">{HOMO}</span><span class="s1">|$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">)</span>
+
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
