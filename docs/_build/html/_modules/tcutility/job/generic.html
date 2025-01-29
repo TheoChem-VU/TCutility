@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.job.generic &#8212; TCutility v0.15.1 documentation</title>
+    <title>tcutility.job.generic &#8212; TCutility v0.15.2 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=e0c54d90"></script>
+    <script src="../../../_static/documentation_options.js?v=d73dc7fa"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -525,7 +525,7 @@
             <span class="k">return</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">otherjob</span><span class="p">,</span> <span class="s2">&quot;slurm_job_id&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">dependency</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;afterok:</span><span class="si">{</span><span class="n">otherjob</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">dependency</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;afterany:</span><span class="si">{</span><span class="n">otherjob</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">kill_on_invalid_dep</span><span class="o">=</span><span class="s2">&quot;Yes&quot;</span><span class="p">)</span></div>
 
 
