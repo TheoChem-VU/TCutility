@@ -1,1 +1,1 @@
-from . import pyfrag, excitations  # noqa
+from . import pyfrag, eda_excitations  # noqa
