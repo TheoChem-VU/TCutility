@@ -24,8 +24,8 @@ def _analyse_img(file, plot=False):
     img_gray = cv2.cvtColor(img_gray, cv2.COLOR_BGRA2GRAY)
 
     # Apply Hough transform to greyscale image
-    circles = cv2.HoughCircles(img_gray, cv2.HOUGH_GRADIENT, 1, 100,
-                               param1=60, param2=40, minRadius=0, maxRadius=200)
+    circles = cv2.HoughCircles(img_gray, cv2.HOUGH_GRADIENT_ALT, 1.5, 100,
+                               param1=400, param2=0.8, minRadius=0, maxRadius=800)
     circles = np.uint16(np.around(circles))[0]
     circles = circles[(-circles[:, 2]).argsort()]
 
