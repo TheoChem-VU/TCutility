@@ -57,7 +57,7 @@ def _remove_padding(img):
     return rect
 
 
-def resize(d, circle_numbers: Optional[Dict] = None, padding: Union[str, int, float] = 0):
+def resize(img_paths, circle_numbers: Optional[Dict] = None, padding: Union[str, int, float] = 0):
     '''
     The main function for this module.
     Takes a directory `d` and selected circles and resizes and moves images in order to produce new aligned images.
@@ -73,12 +73,10 @@ def resize(d, circle_numbers: Optional[Dict] = None, padding: Union[str, int, fl
     '''
     circles = {}
     imgs = {}
-    for file in os.listdir(d):
-        if file == '.DS_Store':
-            continue
+    for file in img_paths:
         if file not in circle_numbers:
             continue
-        circles_, img_ = _analyse_img(os.path.join(d, file))
+        circles_, img_ = _analyse_img(file)
         circles[file] = circles_[circle_numbers[file]]
         imgs[file] = img_
 
@@ -109,7 +107,6 @@ def resize(d, circle_numbers: Optional[Dict] = None, padding: Union[str, int, fl
 
     pad = {file: [(0, pad_bottom[file]), (0, pad_right[file]), (0, 0)] for file in imgs}
     imgs = {file: np.pad(img, pad[file], constant_values=0) for file, img in imgs.items()}
-
     # add final padding
     if isinstance(padding, str) and padding.endswith('%'):
         padding = float(padding.removesuffix('%'))/100
@@ -120,11 +117,10 @@ def resize(d, circle_numbers: Optional[Dict] = None, padding: Union[str, int, fl
     pad = {file: [(padding[0], padding[0]), (padding[1], padding[1]), (0, 0)] for file in imgs}
     imgs = {file: np.pad(img, pad[file], constant_values=0) for file, img in imgs.items()}
 
-    os.makedirs(d + '_fixed', exist_ok=True)
+    ret = {}
     for file, img in imgs.items():
-        cv2.imwrite(os.path.join(d + '_fixed', file), img)
+        new_file = os.path.join(os.path.split(file)[0], 'resized_' + os.path.split(file)[1])
+        cv2.imwrite(new_file, img)
+        ret[file] = new_file
 
-    cv2.imwrite(os.path.join(d + '_fixed', 'empty.png'), np.zeros_like(img) + np.array([255, 255, 255, 0]))
-    ret = {file: os.path.join(d + '_fixed', file) for file in imgs}
-    ret['empty.png'] = os.path.join(d + '_fixed', 'empty.png')
     return ret
