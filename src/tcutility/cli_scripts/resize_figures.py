@@ -1,14 +1,8 @@
 """ Module containing CLI functionality for resizing pictures containing molecules """
 from tcutility import report
 import os
-import tkinter as tk
-from tkinter import filedialog
 import click
 from pathlib import Path
-
-
-root = tk.Tk()
-root.withdraw()
 
 
 @click.command()
@@ -24,10 +18,16 @@ def resize(folder: Path, padding: str):
     Entering the desired number into the CLI will select it for resizing. If you do not enter a number, the figure will be ignored for further processing.
     New images will be written to the folder postpended with _fixed.
     """
+
     circle_numbers = {}
     if folder is not None:
         img_paths = [os.path.join(folder, img_path) for img_path in os.listdir(folder)]
     else:
+        import tkinter as tk
+        from tkinter import filedialog
+        
+        root = tk.Tk()
+        root.withdraw()
         img_paths = filedialog.askopenfilenames()
 
     for img_path in img_paths:
@@ -38,4 +38,4 @@ def resize(folder: Path, padding: str):
 
         circle_numbers[img_path] = int(circle)
 
-    report.figure_resizer.resize(img_paths, circle_numbers, padding=padding)
+    report.figure_resizer.resize(img_paths, circle_numbers=circle_numbers, padding=padding)
