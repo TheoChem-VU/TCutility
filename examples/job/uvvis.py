@@ -17,11 +17,9 @@ with ADFFragmentJob() as job:
 	job.excitations()
 
 
-with ADFJob() as job:
+with ADFFragmentJob() as job:
 	job.rundir = 'uvvis'
-	job.name = 'unrestricted'
+	job.name = 'fragment_unrestricted'
 	job.molecule('NH3BH3.xyz')
 	job.excitations()
 	job.unrestricted(True)
-
-
