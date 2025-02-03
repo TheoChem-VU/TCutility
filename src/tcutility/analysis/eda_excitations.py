@@ -111,10 +111,9 @@ class EDAExcitations:
                     to_MO_names = exc_data.to_MO[exc_idx]
                     from_MO_spins = exc_data.from_MO_spin[exc_idx]
                     to_MO_spins = exc_data.to_MO_spin[exc_idx]
-
                     if has_pyfmo:
-                        from_orbs = [[mo for mo in self.orbs_complex.mos if mo.name.startswith(MO)] for MO in from_MO_names]
-                        to_orbs = [[mo for mo in self.orbs_complex.mos if mo.name.startswith(MO)] for MO in to_MO_names]
+                        from_orbs = [[mo for mo in self.orbs_complex.mos if mo.name.startswith(MO.split('_')[0]) and (mo.spin == 'AB' or mo.spin == MO.split('_')[1])] for MO in from_MO_names]
+                        to_orbs = [[mo for mo in self.orbs_complex.mos if mo.name.startswith(MO.split('_')[0]) and (mo.spin == 'AB' or mo.spin == MO.split('_')[1])] for MO in to_MO_names]
                     else:
                         from_orbs = None
                         to_orbs = None
@@ -138,5 +137,5 @@ class EDAExcitations:
 
 
 if __name__ == '__main__':
-    exc = EDAExcitations('/Users/yumanhordijk/PhD/Programs/TheoCheM/TCutility/examples/job/tmp/EDA')
+    exc = EDAExcitations('/Users/yumanhordijk/PhD/Programs/TheoCheM/TCutility/examples/job/uvvis/fragment_unrestricted')
     print(exc.excitations[0].fragment_characters)
