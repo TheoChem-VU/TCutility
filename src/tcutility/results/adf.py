@@ -440,6 +440,7 @@ def _read_excitations(reader: cache.TrackKFReader) -> Result:
             contr = reader.read(section, f'contr {exc_index}')
             contr_idx = reader.read(section, f'contr index {exc_index}')
             contr_spin = reader.read(section, f'contr spin {exc_index}')
+            is_unrestricted = 2 in contr_spin
             contr_irrep = reader.read(section, f'contr irep index {exc_index}')
             ncontr = len(contr_idx) // 2 
 
@@ -449,7 +450,10 @@ def _read_excitations(reader: cache.TrackKFReader) -> Result:
                     1: 'A',
                     2: 'B'
                 }[spin]
-                MO_names.append(f'{idx}{symlab_exc[irrep_idx-1]}_{spin}')
+                if is_unrestricted:
+                    MO_names.append(f'{idx}{symlab_exc[irrep_idx-1]}_{spin}')
+                else:
+                    MO_names.append(f'{idx}{symlab_exc[irrep_idx-1]}')
 
             ret[irrep][exctyp].contributions.append(contr)
             ret[irrep][exctyp].from_MO.append(MO_names[:ncontr])
@@ -465,5 +469,5 @@ def _read_excitations(reader: cache.TrackKFReader) -> Result:
 
 
 if __name__ == '__main__':
-    reader = KFReader('/Users/yumanhordijk/Downloads/felixtest/adf.rkf')
+    reader = KFReader('/Users/yumanhordijk/Downloads/felixtest/frag_uvvis_restricted/EDA.results/adf.rkf')
     _read_excitations(reader)
