@@ -21,8 +21,9 @@ class GeometricParameter(StrEnum):
 geometric_character_to_info_mapping: Dict[GeometricParameter, Tuple[str, str, int]] = {
     GeometricParameter.COORDINATE: ("Coordinate", "Å", 6),
     GeometricParameter.DISTANCE: ("Distance", " Å", 3),
-    GeometricParameter.COORDINATE: ("Angle", "°", 2),
+    GeometricParameter.ANGLE: ("Angle", "°", 2),
     GeometricParameter.DIHEDRAL: ("Dihedral", "°", 2),
+    GeometricParameter.PYRAMIDAL: ("Pyramidal", "°", 2),
     GeometricParameter.SUMOFANGLES: ("SumOfAngles", "°", 2),
 }
 
