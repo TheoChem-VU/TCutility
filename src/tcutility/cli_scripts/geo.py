@@ -40,6 +40,7 @@ def calculate_geometry_parameter(path: str, atom_indices: List[str], pyramidal: 
     PATH should be an XYZ-file or a calculation directory.
     
     \b
+    For 0 indices we return all coordinates of the molecule in PATH.
     For 1 index this program returns the cartesian coordinate for this atom.
     For 2 indices return bond length between atoms.
     For 3 indices return bond angle, with the second index being the central atom.
@@ -55,22 +56,31 @@ def calculate_geometry_parameter(path: str, atom_indices: List[str], pyramidal: 
         mol = molecule.load(path)
     except IsADirectoryError:
         mol = results.read(path).molecule.output
-    indices = [int(i) - 1 for i in atom_indices]
 
-    assert 1 <= len(indices) <= 4, f"Number of indices must be 1, 2, 3 or 4, not {len(indices)}"
+    assert 0 <= len(atom_indices) <= 4, f"Number of atom indices must be 1, 2, 3 or 4, not {len(atom_indices)}"
 
-    atoms = "-".join([f"{mol[i+1].symbol}{i+1}" for i in indices])
+    if len(atom_indices) == 0:
+        mol.delete_all_bonds()
+        print(mol)
+        return
 
-    param_value = geometry.parameter(mol, *indices, pyramidal=pyramidal, sum_of_angles=soa)
+    atom_indices = [int(i) - 1 for i in atom_indices]
 
-    if len(indices) == 1:
-        param_value = "  ".join([f"{x: .6f}" for x in mol[indices[0] + 1].coords])
-        param_type = GeometricParameter.COORDINATE
-    elif len(indices) == 2:
+    atoms = "-".join([f"{mol[i+1].symbol}{i+1}" for i in atom_indices])
+
+    param_value = geometry.parameter(mol, *atom_indices, pyramidal=pyramidal, sum_of_angles=soa)
+
+    if len(atom_indices) == 1:
+        param_type, unit, precision = geometric_character_to_info_mapping[GeometricParameter.COORDINATE]
+        param_value = "  ".join([f"{x: .{precision}f}" for x in mol[atom_indices[0] + 1].coords])
+        print(f"{param_type}({atoms}) = {param_value} {unit}")
+        return
+
+    elif len(atom_indices) == 2:
         param_type = GeometricParameter.DISTANCE
-    elif len(indices) == 3:
+    elif len(atom_indices) == 3:
         param_type = GeometricParameter.ANGLE
-    elif len(indices) == 4:
+    elif len(atom_indices) == 4:
         if pyramidal:
             param_type = GeometricParameter.PYRAMIDAL
         elif soa:
@@ -78,7 +88,7 @@ def calculate_geometry_parameter(path: str, atom_indices: List[str], pyramidal: 
         else:
             param_type = GeometricParameter.DIHEDRAL
     else:
-        raise ValueError("Invalid number of indices")
+        raise ValueError("Invalid number of atom indices")
 
     param_type, unit, precision = geometric_character_to_info_mapping[param_type]
     print(f"{param_type}({atoms}) = {param_value: .{precision}f}{unit}")
