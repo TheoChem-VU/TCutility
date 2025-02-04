@@ -519,7 +519,7 @@ class ADFFragmentJob(ADFJob):
         log.flow(f"ADFFragmentJob [{mol_str}]", ["start"])
         # obtain some system wide properties of the molecules
         charge = sum([child.settings.input.ams.System.charge or 0 for child in self.child_jobs.values()])
-        unrestricted = any([(child.settings.input.adf.Unrestricted or "no").lower() == "yes" for child in self.child_jobs.values()])
+        unrestricted = any([(child.settings.input.adf.Unrestricted or "no").lower() == "yes" for child in self.child_jobs.values()]) or (self.settings.input.adf.Unrestricted or "no").lower() == "yes"
         spinpol = sum([child.settings.input.adf.SpinPolarization or 0 for child in self.child_jobs.values()])
         log.flow(f"Level:             {self._functional}/{self._basis_set}")
         log.flow(f"Solvent:           {self._solvent}")
