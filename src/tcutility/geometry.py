@@ -643,7 +643,22 @@ def parameter(coordinates: np.typing.ArrayLike, *indices: Sequence[int], pyramid
 
         return np.arccos(a @ b) / np.pi * 180
 
-    if len(indices) == 4 and not pyramidal:
+    if len(indices) == 4:
+        if pyramidal:
+            ang1 = parameter(coordinates, indices[1], indices[0], indices[2])
+            ang2 = parameter(coordinates, indices[2], indices[0], indices[3])
+            ang3 = parameter(coordinates, indices[3], indices[0], indices[1])
+
+            return 360 - ang1 - ang2 - ang3
+
+        if sum_of_angles:
+            ang1 = parameter(coordinates, indices[1], indices[0], indices[2])
+            ang2 = parameter(coordinates, indices[2], indices[0], indices[3])
+            ang3 = parameter(coordinates, indices[3], indices[0], indices[1])
+
+            return ang1 + ang2 + ang3
+
+        # if we dont want pyramidal or sum of angles return the dihedral angle
         a = selected_coords[0] - selected_coords[1]
         b = selected_coords[2] - selected_coords[1]
 
@@ -656,11 +671,3 @@ def parameter(coordinates: np.typing.ArrayLike, *indices: Sequence[int], pyramid
         n2 = n2 / np.linalg.norm(n2)
 
         return np.arccos(n1 @ n2) / np.pi * 180
-
-
-    if len(indices) == 4 and pyramidal:
-        ang1 = parameter(coordinates, indices[1], indices[0], indices[2])
-        ang2 = parameter(coordinates, indices[2], indices[0], indices[3])
-        ang3 = parameter(coordinates, indices[3], indices[0], indices[1])
-
-        return 360 - ang1 - ang2 - ang3
