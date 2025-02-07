@@ -2,6 +2,7 @@ import paramiko
 import os
 from tcutility import log, results
 from datetime import datetime
+import subprocess as sp
 
 
 class Connection:
@@ -219,6 +220,11 @@ class Server(Connection):
         return f'{type(self).__name__}({self.username})'
 
 
+class Local(Server):
+    server = ''
+    sbatch_defaults = {}
+    preamble_defaults = []
+
 class Bazis(Server):
     '''
     Default set-up for a connection to the Bazis cluster. By default we use the ``tc`` partition.
@@ -227,6 +233,9 @@ class Bazis(Server):
     sbatch_defaults = {
         'p': 'tc',
     }
+    preamble_defaults = [
+        'export SCM_TMPDIR="/scratch/$SLURM_JOBID"'
+    ]
 
 
 class Snellius(Server):
@@ -238,3 +247,29 @@ class Snellius(Server):
         'p': 'rome',
         't': '120:00:00',
     }
+
+
+def get_current_location():
+    ifconfig = sp.check_output('ifconfig')
+    parts = ifconfig.decode().split()
+    adresses = []
+    for i, part in enumerate(parts):
+        if part == 'inet':
+            adresses.append(parts[i+1])
+
+    # print(ifconfig)
+    for cls in Server.__subclasses__():
+        if cls.__name__ == 'Local':
+            continue
+
+        ping = sp.check_output(['ping', cls.server, '-c', '1'])
+        for part in ping.decode().split():
+            if part.startswith('(') and part.endswith('):'):
+                ip_address = part[1:-2]
+                if ip_address in adresses:
+                    return cls
+    return Local
+
+
+if __name__ == '__main__':
+    print(get_current_location())
