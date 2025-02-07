@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.results package &#8212; TCutility v0.13.3 documentation</title>
+    <title>tcutility.results package &#8212; TCutility v0.15.3 documentation</title>
   
   
   
@@ -16,29 +16,31 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=8ccbf874"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/documentation_options.js?v=734543e3"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -47,10 +49,11 @@
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="tcutility.typing package" href="tcutility.typing.html" />
+    <link rel="next" title="tcutility.tc_typing package" href="tcutility.tc_typing.html" />
     <link rel="prev" title="tcutility.job.postscripts package" href="tcutility.job.postscripts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -66,19 +69,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -86,7 +78,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -94,8 +85,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -104,7 +95,7 @@
   
     <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -138,15 +129,11 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
@@ -160,20 +147,16 @@
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
   
-    <button class="sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -187,7 +170,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -217,13 +201,15 @@
 <li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html">tcutility.analysis.vibration package</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.cli_scripts.html">tcutility.cli_scripts package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tcutility.data.html">tcutility.data package</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.job.postscripts.html">tcutility.job.postscripts package</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.report.html">tcutility.report package</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">tcutility.results package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tcutility.typing.html">tcutility.typing package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.tc_typing.html">tcutility.tc_typing package</a></li>
 </ul>
 </details></li>
 </ul>
@@ -233,9 +219,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -253,8 +244,6 @@
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -269,7 +258,7 @@
     
     <li class="breadcrumb-item"><a href="tcutility.html" class="nav-link">tcutility package</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">tcutility.re...</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tcutility.results package</span></li>
   </ul>
 </nav>
 </div>
@@ -342,9 +331,13 @@
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>energy.bond (float)</strong> – bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.elstat (float)</strong> – total electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.orbint.total (float)</strong> – total orbital interaction energy containing contributions from each symmetry label (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
+<li><p><strong>energy.elstat.total (float)</strong> – total electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
+<li><p><strong>energy.elstat.Vee (float)</strong> – electron-electron repulsive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
+<li><p><strong>energy.elstat.Ven (float)</strong> – electron-nucleus attractive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
+<li><p><strong>energy.elstat.Vnn (float)</strong> – nucleus-nucleus repulsive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
+<li><p><strong>energy.orbint.total (float)</strong> – total orbital interaction energy containing contributions from each symmetry label and correction energy(<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
 <li><p><strong>energy.orbint.{symmetry label} (float)</strong> – orbital interaction energy from a specific symmetry label (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
+<li><p><strong>energy.orbint.correction (float)</strong> - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>)</p></li>
 <li><p><strong>energy.pauli.total (float)</strong> – total Pauli repulsion energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
 <li><p><strong>energy.dispersion (float)</strong> – total dispersion energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
 <li><p><strong>energy.gibbs (float)</strong> – Gibb’s free energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only populated if vibrational modes were calculated.</p></li>
@@ -361,6 +354,10 @@
 <li><p><strong>s2</strong> - expectation value of the <span class="math notranslate nohighlight">\(S^2\)</span> operator.</p></li>
 <li><p><strong>s2_expected</strong> - ideal expectation value of the <span class="math notranslate nohighlight">\(S^2\)</span> operator. For restricted calculations this should always equal <code class="docutils literal notranslate"><span class="pre">s2</span></code>.</p></li>
 <li><p><strong>spin_contamination</strong> - the amount of spin-contamination observed in this calculation. It is equal to (s2 - s2_expected) / (s2_expected). Ideally this value should be below 0.1.</p></li>
+<li><p><strong>dipole_vector</strong> - the dipole moment vector.</p></li>
+<li><p><strong>dipole_moment</strong> - the magnitude of the dipole moment vector.</p></li>
+<li><p><strong>quadrupole_moment</strong> - the quadrupole moment vector.</p></li>
+<li><p><strong>dens_at_atom</strong> - the electron density at each atom.</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -732,6 +729,157 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 </dd></dl>
 
 </section>
+<section id="module-tcutility.results.crest">
+<span id="tcutility-results-crest-module"></span><h2>tcutility.results.crest module<a class="headerlink" href="#module-tcutility.results.crest" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.crest.get_calc_files">
+<span class="sig-name descname"><span class="pre">get_calc_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/crest.html#get_calc_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.crest.get_calc_files" title="Link to this definition">#</a></dt>
+<dd><p>Function that returns files relevant to AMS calculations stored in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path pointing to the desired calculation</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Result object containing filenames and paths</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.crest.get_version">
+<span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/crest.html#get_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.crest.get_version" title="Link to this definition">#</a></dt>
+<dd><p>Function to get the CREST version used in the calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing CREST calculation settings.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing results about the CREST version:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>full (str)</strong> – the full version string as written by CREST.</p></li>
+<li><p><strong>major (str)</strong> – major CREST version.</p></li>
+<li><p><strong>minor (str)</strong> – minor CREST version.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.crest.get_input">
+<span class="sig-name descname"><span class="pre">get_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/crest.html#get_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.crest.get_input" title="Link to this definition">#</a></dt>
+<dd><p>Function that parses the input file for this CREST calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing CREST calculation settings.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing information about the calculation input:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>main (list[str])</strong> - the main inputs for the calculation. These are the lines that start with a “!”.</p></li>
+<li><p><strong>sections (Result)</strong> - extra settings added to the calculation. These are the lines that start with a “%” and optionally end with “END” clause.</p></li>
+<li><p><strong>system (Result)</strong> - settings related to the molecular system. This includes charge, multiplicity and the coordinates.</p></li>
+<li><p><strong>task (str)</strong> - the task that was performed by the calculation, e.g. “SinglePoint”, “TransitionStateSearch”.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.crest.get_calculation_status">
+<span class="sig-name descname"><span class="pre">get_calculation_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/crest.html#get_calculation_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.crest.get_calculation_status" title="Link to this definition">#</a></dt>
+<dd><p>Function that returns the status of the ORCA calculation described in reader. In case of non-succes it will also give possible reasons for the errors/warnings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA calculation information.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing information about the calculation status:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>fatal (bool)</strong> – True if calculation cannot be analysed correctly, False otherwise</p></li>
+<li><p><strong>reasons (list[str])</strong> – list of reasons to explain the status, they can be errors, warnings, etc.</p></li>
+<li><p><strong>name (str)</strong> – calculation status written as a string, one of (“SUCCESS”, “RUNNING”, “UNKNOWN”, “SUCCESS(W)”, “FAILED”)</p></li>
+<li><p><strong>code (str)</strong> – calculation status written as a single character, one of (“S”, “R”, “U”, “W” “F”)</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.crest.get_molecules">
+<span class="sig-name descname"><span class="pre">get_molecules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/crest.html#get_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.crest.get_molecules" title="Link to this definition">#</a></dt>
+<dd><p>Function that returns information about the molecules for this calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA calculation information.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing properties from the ORCA calculation:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>input (plams.Molecule)</strong> - the input molecule for this calculation.</p></li>
+<li><p><strong>output (plams.Molecule)</strong> - the output molecule for this calculation, for example the optimized structure after a geometry optimization.</p></li>
+<li><p><strong>number_of_atoms (int)</strong> - the number of atoms in the molecular system.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.crest.get_info">
+<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/crest.html#get_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.crest.get_info" title="Link to this definition">#</a></dt>
+<dd><p>Function to read useful info about the calculation in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>. Returned information will depend on the type of file that is provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path pointing to the desired calculation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Result object containing results about the calculation and AMS:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>version (Result)</strong> – information about the AMS version used, see <a class="reference internal" href="#tcutility.results.crest.get_version" title="tcutility.results.crest.get_version"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_version()</span></code></a>.</p></li>
+<li><p><strong>files (Result)</strong> - paths to files that are important for this calculation.</p></li>
+<li><p><strong>input (Result)</strong> - information about the input of this calculation, see <a class="reference internal" href="#tcutility.results.crest.get_input" title="tcutility.results.crest.get_input"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_input()</span></code></a>.</p></li>
+<li><p><strong>level (Result)</strong> - information about the level of theory used for this calculation, see <code class="xref py py-func docutils literal notranslate"><span class="pre">get_level_of_theory()</span></code>.</p></li>
+<li><p><strong>engine (str)</strong> – the engine that was used to perform the calculation, for example ‘adf’, ‘dftb’, …</p></li>
+<li><p><strong>status (Result)</strong> – information about calculation status, see <a class="reference internal" href="#tcutility.results.crest.get_calculation_status" title="tcutility.results.crest.get_calculation_status"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_calculation_status()</span></code></a>.</p></li>
+<li><p><strong>molecule (Result)</strong> – information about the input and output molecules and the molecular system in general, see <a class="reference internal" href="#tcutility.results.crest.get_molecules" title="tcutility.results.crest.get_molecules"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_molecules()</span></code></a>.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-tcutility.results.dftb">
 <span id="tcutility-results-dftb-module"></span><h2>tcutility.results.dftb module<a class="headerlink" href="#module-tcutility.results.dftb" title="Link to this heading">#</a></h2>
 <dl class="py function">
@@ -774,7 +922,7 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.orca.get_calc_files">
 <span class="sig-name descname"><span class="pre">get_calc_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_calc_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_calc_files" title="Link to this definition">#</a></dt>
-<dd><p>Function that returns files relevant to AMS calculations stored in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>.</p>
+<dd><p>Function that returns files relevant to ORCA calculations stored in <code class="docutils literal notranslate"><span class="pre">calc_dir</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – path pointing to the desired calculation</p>
@@ -1344,11 +1492,11 @@ This information is used in further analysis programs.</p>
       </div>
     </a>
     <a class="right-next"
-       href="tcutility.typing.html"
+       href="tcutility.tc_typing.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">tcutility.typing package</p>
+        <p class="prev-next-title">tcutility.tc_typing package</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1359,7 +1507,8 @@ This information is used in further analysis programs.</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1398,6 +1547,15 @@ This information is used in further analysis programs.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.cache.store"><code class="docutils literal notranslate"><span class="pre">store()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.cache.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.cache.unload"><code class="docutils literal notranslate"><span class="pre">unload()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.results.crest">tcutility.results.crest module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.crest.get_calc_files"><code class="docutils literal notranslate"><span class="pre">get_calc_files()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.crest.get_version"><code class="docutils literal notranslate"><span class="pre">get_version()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.crest.get_input"><code class="docutils literal notranslate"><span class="pre">get_input()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.crest.get_calculation_status"><code class="docutils literal notranslate"><span class="pre">get_calculation_status()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.crest.get_molecules"><code class="docutils literal notranslate"><span class="pre">get_molecules()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.crest.get_info"><code class="docutils literal notranslate"><span class="pre">get_info()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.results.dftb">tcutility.results.dftb module</a><ul class="nav section-nav flex-column">
@@ -1452,13 +1610,13 @@ This information is used in further analysis programs.</p>
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="../_sources/api/tcutility.results.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/tcutility.results.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -1473,8 +1631,8 @@ This information is used in further analysis programs.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1494,7 +1652,7 @@ This information is used in further analysis programs.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>
@@ -1507,7 +1665,8 @@ This information is used in further analysis programs.</p>
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.3.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

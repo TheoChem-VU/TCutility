@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.results.adf &#8212; TCutility v0.13.3 documentation</title>
+    <title>tcutility.results.adf &#8212; TCutility v0.15.3 documentation</title>
   
   
   
@@ -15,39 +15,41 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css?v=a5c4661c" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=8ccbf874"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/documentation_options.js?v=734543e3"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/tabs.js?v=3030b3cb"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tcutility/results/adf';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -63,19 +65,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -83,7 +74,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -91,8 +81,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -101,7 +91,7 @@
   
     <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -135,15 +125,11 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
@@ -157,15 +143,11 @@
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -182,7 +164,8 @@
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -202,9 +185,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -222,10 +210,6 @@
       
         <div class="header-article-item">
 
-
-
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -238,12 +222,12 @@
     <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
     
     
-    <li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
+    <li class="breadcrumb-item"><a href="../../tcutility.html" class="nav-link">tcutility</a></li>
     
     
     <li class="breadcrumb-item"><a href="../results.html" class="nav-link">tcutility.results</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">tcutility.re...</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tcutility.results.adf</span></li>
   </ul>
 </nav>
 </div>
@@ -261,14 +245,14 @@
                 <article class="bd-article">
                   
   <h1>Source code for tcutility.results.adf</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scm.plams</span> <span class="kn">import</span> <span class="n">KFReader</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scm.plams</span><span class="w"> </span><span class="kn">import</span> <span class="n">KFReader</span>
 
-<span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">ensure_list</span>
-<span class="kn">from</span> <span class="nn">tcutility.results</span> <span class="kn">import</span> <span class="n">Result</span><span class="p">,</span> <span class="n">cache</span>
-<span class="kn">from</span> <span class="nn">tcutility.typing</span> <span class="kn">import</span> <span class="n">arrays</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility</span><span class="w"> </span><span class="kn">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">ensure_list</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.results</span><span class="w"> </span><span class="kn">import</span> <span class="n">Result</span><span class="p">,</span> <span class="n">cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.tc_typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">arrays</span>
 
 <span class="c1"># ------------------------------------------------------------- #</span>
 <span class="c1"># ------------------- Calculation Settings -------------------- #</span>
@@ -277,7 +261,7 @@
 
 <div class="viewcode-block" id="get_calc_settings">
 <a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.adf.get_calc_settings">[docs]</a>
-<span class="k">def</span> <span class="nf">get_calc_settings</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">Result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_calc_settings</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">Result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to read calculation settings for an ADF calculation.</span>
 
 <span class="sd">    Args:</span>
@@ -376,7 +360,7 @@
 <span class="c1"># ----------------------- VDD charges ------------------------- #</span>
 
 
-<span class="k">def</span> <span class="nf">_read_vdd_charges</span><span class="p">(</span><span class="n">kf_reader</span><span class="p">:</span> <span class="n">KFReader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">arrays</span><span class="o">.</span><span class="n">Array1D</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_read_vdd_charges</span><span class="p">(</span><span class="n">kf_reader</span><span class="p">:</span> <span class="n">KFReader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">arrays</span><span class="o">.</span><span class="n">Array1D</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the VDD charges from the KFReader object.&quot;&quot;&quot;</span>
     <span class="n">vdd_scf</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">ensure_list</span><span class="p">(</span><span class="n">kf_reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Properties&quot;</span><span class="p">,</span> <span class="s2">&quot;AtomCharge_SCF Voronoi&quot;</span><span class="p">))</span>  <span class="c1"># type: ignore since plams does not include typing for KFReader. List[float] is returned</span>
     <span class="n">vdd_ini</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">ensure_list</span><span class="p">(</span><span class="n">kf_reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Properties&quot;</span><span class="p">,</span> <span class="s2">&quot;AtomCharge_initial Voronoi&quot;</span><span class="p">))</span>  <span class="c1"># type: ignore since plams does not include typing for KFReader. List[float] is returned</span>
@@ -385,7 +369,19 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">float</span><span class="p">((</span><span class="n">scf</span> <span class="o">-</span> <span class="n">ini</span><span class="p">))</span> <span class="k">for</span> <span class="n">scf</span><span class="p">,</span> <span class="n">ini</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vdd_scf</span><span class="p">,</span> <span class="n">vdd_ini</span><span class="p">)])</span>
 
 
-<span class="k">def</span> <span class="nf">_get_vdd_charges_per_irrep</span><span class="p">(</span><span class="n">results_type</span><span class="p">:</span> <span class="n">KFReader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">arrays</span><span class="o">.</span><span class="n">Array1D</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_read_vdd_charges_initial</span><span class="p">(</span><span class="n">kf_reader</span><span class="p">:</span> <span class="n">KFReader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">arrays</span><span class="o">.</span><span class="n">Array1D</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the initial VDD charges from the KFReader object.&quot;&quot;&quot;</span>
+    <span class="n">vdd_ini</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">ensure_list</span><span class="p">(</span><span class="n">kf_reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Properties&quot;</span><span class="p">,</span> <span class="s2">&quot;AtomCharge_initial Voronoi&quot;</span><span class="p">))</span>  <span class="c1"># type: ignore since plams does not include typing for KFReader. List[float] is returned</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vdd_ini</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_read_vdd_charges_SCF</span><span class="p">(</span><span class="n">kf_reader</span><span class="p">:</span> <span class="n">KFReader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">arrays</span><span class="o">.</span><span class="n">Array1D</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the SCF VDD charges from the KFReader object.&quot;&quot;&quot;</span>
+    <span class="n">vdd_scf</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">ensure_list</span><span class="p">(</span><span class="n">kf_reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Properties&quot;</span><span class="p">,</span> <span class="s2">&quot;AtomCharge_SCF Voronoi&quot;</span><span class="p">))</span>  <span class="c1"># type: ignore since plams does not include typing for KFReader. List[float] is returned</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vdd_scf</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_vdd_charges_per_irrep</span><span class="p">(</span><span class="n">results_type</span><span class="p">:</span> <span class="n">KFReader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">arrays</span><span class="o">.</span><span class="n">Array1D</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Extracts the Voronoi Deformation Density charges from the fragment calculation sorted per irrep.&quot;&quot;&quot;</span>
     <span class="n">symlabels</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">results_type</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Symmetry&quot;</span><span class="p">,</span> <span class="s2">&quot;symlab&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>  <span class="c1"># split on whitespace</span>
 
@@ -405,7 +401,7 @@
 <span class="c1"># ----------------------- Vibrations ------------------------- #</span>
 
 
-<span class="k">def</span> <span class="nf">_read_vibrations</span><span class="p">(</span><span class="n">reader</span><span class="p">:</span> <span class="n">cache</span><span class="o">.</span><span class="n">TrackKFReader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_read_vibrations</span><span class="p">(</span><span class="n">reader</span><span class="p">:</span> <span class="n">cache</span><span class="o">.</span><span class="n">TrackKFReader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">number_of_modes</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Vibrations&quot;</span><span class="p">,</span> <span class="s2">&quot;nNormalModes&quot;</span><span class="p">)</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">ensure_list</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Vibrations&quot;</span><span class="p">,</span> <span class="s2">&quot;Frequencies[cm-1]&quot;</span><span class="p">))</span>
@@ -421,7 +417,7 @@
 
 <div class="viewcode-block" id="get_properties">
 <a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.adf.get_properties">[docs]</a>
-<span class="k">def</span> <span class="nf">get_properties</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">Result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_properties</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">Result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to get properties from an ADF calculation.</span>
 
 <span class="sd">    Args:</span>
@@ -431,9 +427,13 @@
 <span class="sd">        :Result object containing properties from the ADF calculation:</span>
 
 <span class="sd">            - **energy.bond (float)** – bonding energy (|kcal/mol|).</span>
-<span class="sd">            - **energy.elstat (float)** – total electrostatic potential (|kcal/mol|).</span>
-<span class="sd">            - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label (|kcal/mol|).</span>
+<span class="sd">            - **energy.elstat.total (float)** – total electrostatic potential (|kcal/mol|).</span>
+<span class="sd">            - **energy.elstat.Vee (float)** – electron-electron repulsive term of the electrostatic potential (|kcal/mol|).</span>
+<span class="sd">            - **energy.elstat.Ven (float)** – electron-nucleus attractive term of the electrostatic potential (|kcal/mol|).</span>
+<span class="sd">            - **energy.elstat.Vnn (float)** – nucleus-nucleus repulsive term of the electrostatic potential (|kcal/mol|).</span>
+<span class="sd">            - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label and correction energy(|kcal/mol|).</span>
 <span class="sd">            - **energy.orbint.{symmetry label} (float)** – orbital interaction energy from a specific symmetry label (|kcal/mol|).</span>
+<span class="sd">            - **energy.orbint.correction (float)** - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (|kcal/mol|)</span>
 <span class="sd">            - **energy.pauli.total (float)** – total Pauli repulsion energy (|kcal/mol|).</span>
 <span class="sd">            - **energy.dispersion (float)** – total dispersion energy (|kcal/mol|).</span>
 <span class="sd">            - **energy.gibbs (float)** – Gibb&#39;s free energy (|kcal/mol|). Only populated if vibrational modes were calculated.</span>
@@ -450,6 +450,10 @@
 <span class="sd">            - **s2** - expectation value of the :math:`S^2` operator.</span>
 <span class="sd">            - **s2_expected** - ideal expectation value of the :math:`S^2` operator. For restricted calculations this should always equal ``s2``.</span>
 <span class="sd">            - **spin_contamination** - the amount of spin-contamination observed in this calculation. It is equal to (s2 - s2_expected) / (s2_expected). Ideally this value should be below 0.1.</span>
+<span class="sd">            - **dipole_vector** - the dipole moment vector.</span>
+<span class="sd">            - **dipole_moment** - the magnitude of the dipole moment vector.</span>
+<span class="sd">            - **quadrupole_moment** - the quadrupole moment vector.</span>
+<span class="sd">            - **dens_at_atom** - the electron density at each atom.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">assert</span> <span class="n">info</span><span class="o">.</span><span class="n">engine</span> <span class="o">==</span> <span class="s2">&quot;adf&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;This function reads ADF data, not </span><span class="si">{</span><span class="n">info</span><span class="o">.</span><span class="n">engine</span><span class="si">}</span><span class="s2"> data&quot;</span>
@@ -465,11 +469,47 @@
 
     <span class="c1"># read energies (given in Ha in rkf files)</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">bond</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Bond Energy&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
-    <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;elstat&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+
+    <span class="c1"># total electrostatic potential</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;elstat&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+
+    <span class="c1"># we can further decompose elstat if it was enabled</span>
+    <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">out</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">out</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+        <span class="n">skip_next</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;Electrostatic Interaction Energies&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">skip_next</span> <span class="o">=</span> <span class="mi">4</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">skip_next</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">Vee</span><span class="p">,</span> <span class="n">Ven</span><span class="p">,</span> <span class="n">Vnn</span><span class="p">,</span> <span class="n">total</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span><span class="o">.</span><span class="n">Vee</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Vee</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span><span class="o">.</span><span class="n">Ven</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Ven</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">elstat</span><span class="o">.</span><span class="n">Vnn</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Vnn</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+            <span class="n">skip_next</span> <span class="o">-=</span> <span class="mi">1</span>
+
+
+    <span class="c1"># print(info.files)</span>
+
+    <span class="c1"># read the total orbital interaction energy</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Orb.Int. Total&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+
+    <span class="c1"># to calculate the orbital interaction term:</span>
+    <span class="c1"># the difference between the total and the sum of the symmetrized interaction energies should be calculated</span>
+    <span class="c1"># therefore the correction is first set equal to the total orbital interaction.</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="o">.</span><span class="n">correction</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="o">.</span><span class="n">total</span>
+
+    <span class="c1"># looping over every symlabel, to get the energy per symmetry label</span>
     <span class="k">for</span> <span class="n">symlabel</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">symmetry</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
         <span class="n">symlabel</span> <span class="o">=</span> <span class="n">symlabel</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="p">[</span><span class="n">symlabel</span><span class="p">]</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Orb.Int. </span><span class="si">{</span><span class="n">symlabel</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
+
+        <span class="c1"># the energy per symmetry label is abstracted from the &quot;total orbital interaction&quot;</span>
+        <span class="c1"># obtaining the correction to the orbital interaction term</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="o">.</span><span class="n">correction</span> <span class="o">-=</span> <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">orbint</span><span class="p">[</span><span class="n">symlabel</span><span class="p">]</span>
+
     <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">pauli</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Pauli Total&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">dispersion</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Dispersion Energy&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
 
@@ -485,6 +525,8 @@
     <span class="c1"># read the Voronoi Deformation Charges Deformation (VDD) before and after SCF convergence (being &quot;inital&quot; and &quot;SCF&quot;)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">vdd</span><span class="o">.</span><span class="n">charges</span> <span class="o">=</span> <span class="n">_read_vdd_charges</span><span class="p">(</span><span class="n">reader_adf</span><span class="p">)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">vdd</span><span class="o">.</span><span class="n">charges_initial</span> <span class="o">=</span> <span class="n">_read_vdd_charges_initial</span><span class="p">(</span><span class="n">reader_adf</span><span class="p">)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">vdd</span><span class="o">.</span><span class="n">charges_SCF</span> <span class="o">=</span> <span class="n">_read_vdd_charges_SCF</span><span class="p">(</span><span class="n">reader_adf</span><span class="p">)</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">vdd</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_get_vdd_charges_per_irrep</span><span class="p">(</span><span class="n">reader_adf</span><span class="p">))</span>
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
         <span class="k">pass</span>
@@ -494,8 +536,8 @@
     <span class="n">S</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">spin_polarization</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">s2_expected</span> <span class="o">=</span> <span class="n">S</span> <span class="o">*</span> <span class="p">(</span><span class="n">S</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="c1"># this is the real expectation value</span>
-    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;Properties&#39;</span><span class="p">,</span> <span class="s1">&#39;S2calc&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">reader_adf</span><span class="p">:</span>
-        <span class="n">ret</span><span class="o">.</span><span class="n">s2</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Properties&#39;</span><span class="p">,</span> <span class="s1">&#39;S2calc&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;Properties&quot;</span><span class="p">,</span> <span class="s2">&quot;S2calc&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">reader_adf</span><span class="p">:</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">s2</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Properties&quot;</span><span class="p">,</span> <span class="s2">&quot;S2calc&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">s2</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -506,13 +548,18 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">spin_contamination</span> <span class="o">=</span> <span class="mi">0</span>
 
+    <span class="n">ret</span><span class="o">.</span><span class="n">dipole_vector</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Properties&quot;</span><span class="p">,</span> <span class="s2">&quot;Dipole&quot;</span><span class="p">)</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">dipole_moment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">dipole_vector</span><span class="p">)</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">quadrupole_moment</span> <span class="o">=</span> <span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Properties&quot;</span><span class="p">,</span> <span class="s2">&quot;Quadrupole&quot;</span><span class="p">)</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">dens_at_atom</span> <span class="o">=</span> <span class="n">ensure_list</span><span class="p">(</span><span class="n">reader_adf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Properties&quot;</span><span class="p">,</span> <span class="s2">&quot;Electron Density at Nuclei&quot;</span><span class="p">))</span>
+
     <span class="k">return</span> <span class="n">ret</span></div>
 
 
 
 <div class="viewcode-block" id="get_level_of_theory">
 <a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.adf.get_level_of_theory">[docs]</a>
-<span class="k">def</span> <span class="nf">get_level_of_theory</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">Result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_level_of_theory</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">Result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to get the level-of-theory from an input-file.</span>
 
 <span class="sd">    Args:</span>
@@ -616,8 +663,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -637,7 +684,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>
@@ -650,7 +697,8 @@
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.3.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

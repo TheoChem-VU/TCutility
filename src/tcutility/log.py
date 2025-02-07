@@ -1,14 +1,16 @@
-import sys
-import os
-from datetime import datetime
-from time import perf_counter
-import numpy as np
-import json
-from tcutility import ensure_2d
-from typing import Any, Iterable, List, Union
-from types import GeneratorType
 import inspect
+import json
+import os
+import sys
+from datetime import datetime
 from math import ceil
+from time import perf_counter
+from typing import Any, Generator, Iterable, List, Sequence, TypeVar, Union
+
+import numpy as np
+
+from tcutility import ensure_2d
+
 # from threading import Thread
 
 
@@ -101,7 +103,7 @@ def log(message: Any = "", level: int = 20, end: str = "\n"):
         ERROR    = 40
         CRITICAL = 50
 
-    
+
     Args:
         message: the message to send. Before printing we will use the ``message.__str__`` method to get the string representation. If the message is a ``dict`` we use the ``json`` module to format the message nicely.
         level: the level to print the message at. We compare the level against the module-wide ``log_level`` variable (by default ``log_level = 20``). If the level is below ``log_level`` we do not print it.
@@ -189,18 +191,18 @@ def table(rows: List[List[Any]], header: Union[List[str], None] = None, sep: str
     return return_str
 
 
-def rectangle_list(values: List, spaces_before: int = 0, level: int = 20):
-    '''
+def rectangle_list(values: Sequence, spaces_before: int = 0, level: int = 20):
+    """
     This function prints a list of strings in a rectangle to the output.
     This is similar to what the ls program does in unix.
-    '''
+    """
     n_shell_col = os.get_terminal_size().columns
     # we first have to determine the correct dimensions of our rectangle
     for ncol in range(1, n_shell_col):
         # the number of rows for the number of columns
         nrows = ceil(len(values) / ncol)
         # we then get what the rectangle would be
-        mat = [[str(x) for x in values[i * ncol: (i+1) * ncol]] for i in range(nrows)]
+        mat = [[str(x) for x in values[i * ncol : (i + 1) * ncol]] for i in range(nrows)]
         # and determine for each column the width
         col_lens = [max([len(row[i]) for row in mat if i < len(row)] + [0]) for i in range(ncol)]
         # then calculate the length of each row based on the column lengths
@@ -220,7 +222,10 @@ def rectangle_list(values: List, spaces_before: int = 0, level: int = 20):
         log(" " * spaces_before + "  ".join([x.ljust(col_len) for x, col_len in zip(row, prev_col_lens)]), level=level)
 
 
-def loadbar(sequence: Iterable, comment: str = "", Nsegments: int = 50, Nsteps: int = 10, level: int = 20) -> None:
+T = TypeVar("T")
+
+
+def loadbar(sequence: Union[Iterable[T], Sequence[T]], comment: str = "", Nsegments: int = 50, Nsteps: int = 10, level: int = 20) -> Generator[T, None, None]:
     """
     Return values from an iterable ``sequence`` and also print a progress bar for the iteration over this sequence.
 
@@ -230,7 +235,7 @@ def loadbar(sequence: Iterable, comment: str = "", Nsegments: int = 50, Nsteps: 
         Nsegments: length of the loading bar in characters.
         Nsteps: number of times to print the loading bar during iteration. If the output is a tty-type stream Nsteps will be set to the length of sequence.
     """
-    if isinstance(sequence, GeneratorType):
+    if not isinstance(sequence, Sequence):
         chars = ["⠀", "⠄", "⠆", "⠦", "⠧", "⠷", "⠿", "⠻", "⠛", "⠙", "⠉", "⠈", "⠀"]
         iteration = 0
         if not logfile.isatty() and comment:
@@ -239,12 +244,12 @@ def loadbar(sequence: Iterable, comment: str = "", Nsegments: int = 50, Nsteps: 
         starttime = perf_counter()
         for val in sequence:
             iteration += 1
-            elapsed_time = (perf_counter() - starttime)
+            elapsed_time = perf_counter() - starttime
             time_per_step = elapsed_time / iteration
             # every 0.1 seconds we change the character
             char_step = int(elapsed_time / 0.1) % len(chars)
             if logfile.isatty():
-                log(f'{chars[char_step]} {comment} [Steps: {iteration}, Elapsed: {elapsed_time:.1f}s]', end="\r", level=level)
+                log(f"{chars[char_step]} {comment} [Steps: {iteration}, Elapsed: {elapsed_time:.1f}s]", end="\r", level=level)
 
             yield val
 
@@ -306,7 +311,7 @@ def loadbar(sequence: Iterable, comment: str = "", Nsegments: int = 50, Nsteps: 
     log(level=level)
 
 
-def boxed(message: str, title: Union[str, None] = None, message_align: str = "left", title_align: str = "left", round_corners: bool = True, double_edge: bool = False, level: int = 20) -> str:
+def boxed(message: str, title: Union[str, None] = None, message_align: str = "left", title_align: str = "left", round_corners: bool = True, double_edge: bool = False, level: int = 20) -> None:
     r"""
     Print a message surrounded by a box with optional title.
 
@@ -473,11 +478,11 @@ if __name__ == "__main__":
     rows = np.vstack([x, x**2, x**3, x**4, x**5]).astype(int).T.tolist()
     table(rows, header=["X", "y=x^2", "y=x^3", "y=x^4", "y=x^5"], hline=[-1])
 
-    from tcutility import log
+    from tcutility import log as cli_log
 
     class TestClass:
         def test_method(self):
-            log.warn("I am testing the warning function")
+            cli_log.warn("I am testing the warning function")
 
     TestClass().test_method()
 

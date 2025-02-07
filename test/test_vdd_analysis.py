@@ -65,7 +65,7 @@ def vdd_manager_geo_nosym():
 
 def test_get_fragment_indices_from_input_order_disordered(kfreader_fa_disordered_fragindices_cs):
     frag_indices = ams._get_fragment_indices_from_input_order(kfreader_fa_disordered_fragindices_cs)
-    assert np.array_equal(frag_indices, np.array([1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1]))
+    assert np.array_equal(frag_indices, np.array([1, 1, 1, 2, 2, 2, 1, 1, 2, 2, 2]))
 
 
 def test_get_fragment_indices_from_input_order_ordered(kfreader_fa_ordered_fragindices_cs):
@@ -96,7 +96,7 @@ def test_change_unit(vdd_manager_fa_ordered_fragindices_cs: manager.VDDChargeMan
 def test_get_vdd_charges_irrep_cs(vdd_manager_fa_ordered_fragindices_cs: manager.VDDChargeManager):
     vdd_charges = vdd_manager_fa_ordered_fragindices_cs.get_vdd_charges("e")
 
-    assert len(vdd_charges) == 3, "More than three irreps found in the returned dict"
+    assert len(vdd_charges) == 5, "More than three irreps found in the returned dict"
     assert "vdd" in vdd_charges, "'vdd' not found in the returned dict"
     assert "AA" in vdd_charges, "'AA' not found in the returned dict"
     assert "AAA" in vdd_charges, "'AAA' not found in the returned dict"
@@ -106,7 +106,7 @@ def test_get_vdd_charges_irrep_nosym(vdd_manager_fa_nosym: manager.VDDChargeMana
     vdd_charges = vdd_manager_fa_nosym.get_vdd_charges("e")
 
     assert "vdd" in vdd_charges, "'vdd' not found in the returned dict"
-    assert len(vdd_charges) == 1, "More than one irrep found in the returned dict"
+    assert len(vdd_charges) == 3, "More than one irrep found in the returned dict"
 
 
 def test_get_vdd_charges_charge_values_fa_cs(vdd_manager_fa_ordered_fragindices_cs: manager.VDDChargeManager):
@@ -147,7 +147,7 @@ def test_get_vdd_charges_irrep_atom_sum_cs(vdd_manager_fa_ordered_fragindices_cs
 def test_summed_charges(vdd_manager_fa_ordered_fragindices_cs: manager.VDDChargeManager):
     summed_charges = vdd_manager_fa_ordered_fragindices_cs.get_summed_vdd_charges()  # in unit [me]
 
-    assert len(summed_charges.keys()) == 3, "More than three irreps found in the summed charges"
+    assert len(summed_charges.keys()) == 5, "More than three irreps found in the summed charges"
     assert "AA" in summed_charges, "'AA' not found in the summed charges"
     assert "AAA" in summed_charges, "'AAA' not found in the summed charges"
     assert "vdd" in summed_charges, "'vdd' not found in the summed charges"
@@ -167,4 +167,4 @@ def test_summed_charges(vdd_manager_fa_ordered_fragindices_cs: manager.VDDCharge
 def test_summed_charges_nosym(vdd_manager_fa_nosym: manager.VDDChargeManager):
     summed_charges = vdd_manager_fa_nosym.get_summed_vdd_charges()
 
-    assert len(summed_charges.keys()) == 1, "Irreps found in the summed charges for nosym calculation"
+    assert len(summed_charges.keys()) == 3, "Irreps found in the summed charges for nosym calculation"

@@ -1,3 +1,4 @@
+0, dummy
 1, hydrogen
 2, helium
 3, lithium

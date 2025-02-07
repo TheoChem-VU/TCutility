@@ -15,7 +15,7 @@ import os  # noqa: E402
 import pathlib as pl  # noqa: E402
 
 from .. import slurm  # noqa: E402
-from . import adf, ams, cache, dftb, orca, xtb  # noqa: E402
+from . import adf, ams, cache, dftb, orca, xtb, crest  # noqa: E402
 
 
 def get_info(calc_dir: str):
@@ -33,6 +33,12 @@ def get_info(calc_dir: str):
         return xtb.get_info(calc_dir)
     except:  # noqa
         pass
+
+    try:
+        return crest.get_info(calc_dir)
+    except:  # noqa
+        pass
+
 
     res = Result()
 
@@ -101,20 +107,17 @@ def read(calc_dir: Union[str, pl.Path]) -> Result:
     elif ret.engine == "xtb":
         # ret.xtb = xtb.get_calc_settings(ret)
         ret.properties = xtb.get_properties(ret)
-        
+
     elif ret.engine == "orca":
         try:
             ret.orca = orca.get_calc_settings(ret)
-        except:
+        except:  # noqa
             ret.orca = None
-            print('Error reading:', calc_dir)
-            raise
+
         try:
             ret.properties = orca.get_properties(ret)
-        except:
+        except:  # noqa
             ret.properties = None
-            print('Error reading:', calc_dir)
-            raise
 
     # unload cached KFReaders associated with this calc_dir
     to_delete = [key for key in cache._cache if key.startswith(os.path.abspath(calc_dir))]

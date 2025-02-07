@@ -1,0 +1,670 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tcutility.results.crest &#8212; TCutility v0.15.3 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=734543e3"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tcutility/results/crest';</script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item"><!-- _templates/logo.html -->
+<style>
+    .myDiv {
+      color: #323232;
+      font-size: 30px;
+      font-weight: 400;
+      line-height: : 33px;
+      text-decoration: none;
+    }
+</style>
+<div class="myDiv">
+    <a href="/index.html">
+        <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
+        TCutility
+    </a>
+</div></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><!-- _templates/star.html -->
+<a href=https://github.com/TheoChem-VU><i class="fa-brands fa-github"></i> TheoCheM</a></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><!-- _templates/star.html -->
+<a href=https://github.com/TheoChem-VU><i class="fa-brands fa-github"></i> TheoCheM</a></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../../tcutility.html" class="nav-link">tcutility</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../results.html" class="nav-link">tcutility.results</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tcutility.results.crest</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tcutility.results.crest</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility</span><span class="w"> </span><span class="kn">import</span> <span class="n">molecule</span><span class="p">,</span> <span class="n">pathfunc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.results</span><span class="w"> </span><span class="kn">import</span> <span class="n">Result</span>
+
+<span class="n">j</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
+
+
+<div class="viewcode-block" id="get_calc_files">
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.crest.get_calc_files">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_calc_files</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function that returns files relevant to AMS calculations stored in ``calc_dir``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        calc_dir: path pointing to the desired calculation</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Result object containing filenames and paths</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># collect all files in the current directory and subdirectories</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files_</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">):</span>
+        <span class="n">files</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">j</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files_</span><span class="p">])</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">pathfunc</span><span class="o">.</span><span class="n">path_depth</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># parse the filenames</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">extra</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.out&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;g98.out&quot;</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;xtbopt.xyz&quot;</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">opt_out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;xtbopt.log&quot;</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">opt_history</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;xtbscan.log&quot;</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">scan_out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;vibspectrum&quot;</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">vibspectrum</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;hessian&quot;</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">hessian</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;crest_conformers.xyz&#39;</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">conformers</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;crest_rotamers.xyz&#39;</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">rotamers</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;crest_best.xyz&#39;</span><span class="p">):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">best</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">extra</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+
+
+<div class="viewcode-block" id="get_version">
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.crest.get_version">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_version</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">Result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to get the CREST version used in the calculation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        info: Result object containing CREST calculation settings.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        :Result object containing results about the CREST version:</span>
+
+<span class="sd">            - **full (str)** – the full version string as written by CREST.</span>
+<span class="sd">            - **major (str)** – major CREST version.</span>
+<span class="sd">            - **minor (str)** – minor CREST version.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">out</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s2">&quot;Version&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">full</span> <span class="o">=</span> <span class="n">version</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">major</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">minor</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">micro</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">return</span> <span class="n">ret</span></div>
+
+
+
+<div class="viewcode-block" id="get_input">
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.crest.get_input">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_input</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">Result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function that parses the input file for this CREST calculation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        info: Result object containing CREST calculation settings.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        :Result object containing information about the calculation input:</span>
+
+<span class="sd">            - **main (list[str])** - the main inputs for the calculation. These are the lines that start with a &quot;!&quot;.</span>
+<span class="sd">            - **sections (Result)** - extra settings added to the calculation. These are the lines that start with a &quot;%&quot; and optionally end with &quot;END&quot; clause.</span>
+<span class="sd">            - **system (Result)** - settings related to the molecular system. This includes charge, multiplicity and the coordinates.</span>
+<span class="sd">            - **task (str)** - the task that was performed by the calculation, e.g. &quot;SinglePoint&quot;, &quot;TransitionStateSearch&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">out</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Command line input:&quot;</span><span class="p">):</span>
+                <span class="c1"># next line contains the call</span>
+                <span class="n">call</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+    <span class="n">ret</span><span class="o">.</span><span class="n">call</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
+    <span class="c1">### TASK</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">coord_file</span> <span class="o">=</span> <span class="n">call</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1">### CHARGE</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;--charge&quot;</span><span class="p">,</span> <span class="s2">&quot;-c&quot;</span><span class="p">]:</span>
+        <span class="c1"># check if we used the option in our call</span>
+        <span class="k">if</span> <span class="n">option</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">call</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="c1"># read the next position in the call</span>
+        <span class="n">option_idx</span> <span class="o">=</span> <span class="n">call</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">option</span><span class="p">)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">call</span><span class="p">[</span><span class="n">option_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1">### SPIN-POLARIZATION</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">spin_polarization</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;--uhf&quot;</span><span class="p">,</span> <span class="s2">&quot;-u&quot;</span><span class="p">]:</span>
+        <span class="c1"># check if we used the option in our call</span>
+        <span class="k">if</span> <span class="n">option</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">call</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="c1"># read the next position in the call</span>
+        <span class="n">option_idx</span> <span class="o">=</span> <span class="n">call</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">option</span><span class="p">)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">spin_polarization</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">call</span><span class="p">[</span><span class="n">option_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1">### SOLVATION</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">solvent</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">solvation_model</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="s2">&quot;--alpb&quot;</span> <span class="ow">in</span> <span class="n">call</span><span class="p">:</span>
+        <span class="n">option_idx</span> <span class="o">=</span> <span class="n">call</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;--alpb&quot;</span><span class="p">)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">solvent</span> <span class="o">=</span> <span class="n">call</span><span class="p">[</span><span class="n">option_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">solvation_model</span> <span class="o">=</span> <span class="s2">&quot;ALPB&quot;</span>
+
+    <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;-g&quot;</span><span class="p">,</span> <span class="s2">&quot;--gbsa&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">option</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">call</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">option_idx</span> <span class="o">=</span> <span class="n">call</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">option</span><span class="p">)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">solvent</span> <span class="o">=</span> <span class="n">call</span><span class="p">[</span><span class="n">option_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">solvation_model</span> <span class="o">=</span> <span class="s2">&quot;GBSA&quot;</span>
+
+    <span class="c1">### DETAILED INPUT</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">detailed</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;--input&quot;</span> <span class="ow">in</span> <span class="n">call</span><span class="p">:</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">detailed</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
+        <span class="n">option_idx</span> <span class="o">=</span> <span class="n">call</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;--input&quot;</span><span class="p">)</span>
+        <span class="n">inp_file</span> <span class="o">=</span> <span class="n">call</span><span class="p">[</span><span class="n">option_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">extra</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">inp_file</span><span class="p">):</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">detailed</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">file</span>
+                <span class="k">break</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">detailed</span><span class="o">.</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">infile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">content</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">):</span>
+                <span class="n">curr_section</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="s2">&quot;:&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">detailed</span><span class="p">[</span><span class="n">curr_section</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">[])</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">detailed</span><span class="p">[</span><span class="n">curr_section</span><span class="p">][</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+            <span class="k">elif</span> <span class="s2">&quot;=&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">detailed</span><span class="p">[</span><span class="n">curr_section</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="c1">### MODEL HAMILTONIAN</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;GFN2-xTB&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;--gfn&quot;</span> <span class="ow">in</span> <span class="n">call</span><span class="p">:</span>
+        <span class="n">option_idx</span> <span class="o">=</span> <span class="n">call</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;--gfn&quot;</span><span class="p">)</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="n">call</span><span class="p">[</span><span class="n">option_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;GFN</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">-xTB&quot;</span>
+
+    <span class="k">if</span> <span class="s2">&quot;--gfnff&quot;</span> <span class="ow">in</span> <span class="n">call</span><span class="p">:</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;GFNFF&quot;</span>
+
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+
+
+<div class="viewcode-block" id="get_calculation_status">
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.crest.get_calculation_status">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_calculation_status</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">Result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function that returns the status of the ORCA calculation described in reader. In case of non-succes it will also give possible reasons for the errors/warnings.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        info: Result object containing ORCA calculation information.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        :Result object containing information about the calculation status:</span>
+
+<span class="sd">            - **fatal (bool)** – True if calculation cannot be analysed correctly, False otherwise</span>
+<span class="sd">            - **reasons (list[str])** – list of reasons to explain the status, they can be errors, warnings, etc.</span>
+<span class="sd">            - **name (str)** – calculation status written as a string, one of (&quot;SUCCESS&quot;, &quot;RUNNING&quot;, &quot;UNKNOWN&quot;, &quot;SUCCESS(W)&quot;, &quot;FAILED&quot;)</span>
+<span class="sd">            - **code (str)** – calculation status written as a single character, one of (&quot;S&quot;, &quot;R&quot;, &quot;U&quot;, &quot;W&quot; &quot;F&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">fatal</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">reasons</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="s2">&quot;out&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Calculation status unknown&quot;</span><span class="p">)</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;UNKNOWN&quot;</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;U&quot;</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">out</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="s2">&quot;[WARNING] Runtime exception occurred&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">fatal</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;FAILED&quot;</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>
+
+            <span class="n">line_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="k">if</span> <span class="s2">&quot;[WARNING] Runtime exception occurred&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_index</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]:</span>
+                <span class="k">if</span> <span class="s2">&quot;##########&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">ret</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="s2">&quot;CREST terminated normally.&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]):</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">fatal</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;SUCCESS&quot;</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;S&quot;</span>
+            <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="n">ret</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;FAILED&quot;</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+
+
+<div class="viewcode-block" id="get_molecules">
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.crest.get_molecules">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_molecules</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">Result</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function that returns information about the molecules for this calculation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        info: Result object containing ORCA calculation information.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        :Result object containing properties from the ORCA calculation:</span>
+
+<span class="sd">            - **input (plams.Molecule)** - the input molecule for this calculation.</span>
+<span class="sd">            - **output (plams.Molecule)** - the output molecule for this calculation, for example the optimized structure after a geometry optimization.</span>
+<span class="sd">            - **number_of_atoms (int)** - the number of atoms in the molecular system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">extra</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">coord_file</span><span class="p">):</span>
+            <span class="n">coord_file</span> <span class="o">=</span> <span class="n">file</span>
+            <span class="k">break</span>
+
+    <span class="n">ret</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">coord_file</span><span class="p">)</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">number_of_atoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="s2">&quot;best&quot;</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">best</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;conformers&quot;</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">conformers</span><span class="p">)</span> <span class="k">as</span> <span class="n">ensemble</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">ensemble</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">number_of_mols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span><span class="o">//</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">number_of_atoms</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">mol_lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">number_of_atoms</span> <span class="o">+</span> <span class="mi">2</span><span class="p">):(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">number_of_atoms</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_mols</span><span class="p">)]</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">conformers</span> <span class="o">=</span> <span class="p">[</span><span class="n">molecule</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mol_lines_</span><span class="p">))</span> <span class="k">for</span> <span class="n">mol_lines_</span> <span class="ow">in</span> <span class="n">mol_lines</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s2">&quot;rotamers&quot;</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">rotamers</span><span class="p">)</span> <span class="k">as</span> <span class="n">ensemble</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">ensemble</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">number_of_mols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span><span class="o">//</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">number_of_atoms</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">mol_lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">number_of_atoms</span> <span class="o">+</span> <span class="mi">2</span><span class="p">):(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">number_of_atoms</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_mols</span><span class="p">)]</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">rotamers</span> <span class="o">=</span> <span class="p">[</span><span class="n">molecule</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mol_lines_</span><span class="p">))</span> <span class="k">for</span> <span class="n">mol_lines_</span> <span class="ow">in</span> <span class="n">mol_lines</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+
+
+<div class="viewcode-block" id="get_info">
+<a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.crest.get_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_info</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to read useful info about the calculation in ``calc_dir``. Returned information will depend on the type of file that is provided.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        calc_dir: path pointing to the desired calculation.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        :Result object containing results about the calculation and AMS:</span>
+
+<span class="sd">            - **version (Result)** – information about the AMS version used, see :func:`get_version`.</span>
+<span class="sd">            - **files (Result)** - paths to files that are important for this calculation.</span>
+<span class="sd">            - **input (Result)** - information about the input of this calculation, see :func:`get_input`.</span>
+<span class="sd">            - **level (Result)** - information about the level of theory used for this calculation, see :func:`get_level_of_theory`.</span>
+<span class="sd">            - **engine (str)** – the engine that was used to perform the calculation, for example &#39;adf&#39;, &#39;dftb&#39;, ...</span>
+<span class="sd">            - **status (Result)** – information about calculation status, see :func:`get_calculation_status`.</span>
+<span class="sd">            - **molecule (Result)** – information about the input and output molecules and the molecular system in general, see :func:`get_molecules`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
+
+    <span class="n">ret</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="s2">&quot;crest&quot;</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">files</span> <span class="o">=</span> <span class="n">get_calc_files</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
+
+    <span class="c1"># store the input of the calculation</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="n">get_input</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+
+    <span class="c1"># store information about the version of AMS</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">get_version</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+
+    <span class="c1"># # store the calculation status</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">get_calculation_status</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+
+    <span class="c1"># # read molecules</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">molecule</span> <span class="o">=</span> <span class="n">get_molecules</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">tcutility</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">get_info</span><span class="p">(</span><span class="s2">&quot;/Users/yumanhordijk/PhD/Projects/RadicalAdditionWorkflow/calculations/preparation/radicals/NMe2&quot;</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">files</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+
+    <span class="c1"># ret = get_info(&quot;/Users/yumanhordijk/PhD/ganesh_project/calculations/AlCl3_xtb/scan_1&quot;)</span>
+    <span class="c1"># print(ret)</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, TheoCheM VU Amsterdam.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

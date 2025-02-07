@@ -23,6 +23,7 @@ def split_all(path: str) -> List[str]:
             >>> split_all('a/b/c/d')
             ['a', 'b', 'c', 'd']
     """
+    path = os.path.normpath(path)
     parts = []
     while True:
         a, b = os.path.split(path)
@@ -101,7 +102,7 @@ def get_subdirectories(root: str, include_intermediates: bool = False) -> List[s
     return subdirs
 
 
-def match(root: str, pattern: str) -> Dict[str, dict]:
+def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
     """
     Find and return information about subdirectories of a root that match a given pattern.
 
@@ -112,10 +113,11 @@ def match(root: str, pattern: str) -> Dict[str, dict]:
             Inside curly braces you can put a variable name, which you can later extract from the results.
             Anything inside curly braces will be matched to word characters (``[a-zA-Z0-9_-]``) including dashes and underscores.
 
+        sort_by: the key to sort the results by. If not given, the results will be returned in the order they were found.
+
     Returns:
-        | A |Result| object containing the matched directories as keys and information (also |Result| object) about those matches as the values.
-        Each information dictionary contains the variables given in the pattern.
-        | E.g. using a pattern such as ``{a}/{b}/{c}`` will populate the ``info.a``, ``info.b`` and ``info.c`` keys of the info |Result| object.
+        A |Result| object containing the matched directories as keys and information (also |Result| object) about those matches as the values. Each information dictionary contains the variables given in the pattern.
+        E.g. using a pattern such as ``{a}/{b}/{c}`` will populate the ``info.a``, ``info.b`` and ``info.c`` keys of the info |Result| object.
 
     Example:
         Given a file-structure as follows:
@@ -166,7 +168,8 @@ def match(root: str, pattern: str) -> Dict[str, dict]:
             [2024/01/17 14:39:08] root/NH3-BH3/M06-2X_TZ2P   NH3-BH3   M06-2X       TZ2P
             [2024/01/17 14:39:08] root/SN2/BLYP_TZ2P         SN2       BLYP         TZ2P
             [2024/01/17 14:39:08] root/NH3-BH3/BLYP_QZ4P     NH3-BH3   BLYP         QZ4P
-    """
+
+"""
     # get the number and names of substitutions in the given pattern
     substitutions = re.findall(r"{(\w+[+*?]?)}", pattern)
     # the pattern should resolve to words and may contain - and _
@@ -192,4 +195,15 @@ def match(root: str, pattern: str) -> Dict[str, dict]:
         # get the group data and add it to the return dictionary. We skip the first group because it is the full directory path
         ret[p] = results.Result(directory=p, **{substitutions[i]: match.group(i + 1) for i in range(len(substitutions))})
 
-    return ret
+    if not sort_by:
+        return ret
+
+    return results.Result(sorted(ret.items(), key=lambda d: d[1][sort_by]))
+
+
+def path_depth(path: str) -> int:
+    """
+    Calculate the depth of a given path.
+    """
+    return len(split_all(path))
+
