@@ -225,6 +225,7 @@ class Local(Server):
     sbatch_defaults = {}
     preamble_defaults = []
 
+
 class Bazis(Server):
     '''
     Default set-up for a connection to the Bazis cluster. By default we use the ``tc`` partition.
@@ -255,7 +256,7 @@ def get_current_location():
     adresses = []
     for i, part in enumerate(parts):
         if part == 'inet':
-            adresses.append(parts[i+1])
+            adresses.append(parts[i+1].split('.')[:3])
 
     # print(ifconfig)
     for cls in Server.__subclasses__():
@@ -265,7 +266,7 @@ def get_current_location():
         ping = sp.check_output(['ping', cls.server, '-c', '1'])
         for part in ping.decode().split():
             if part.startswith('(') and part.endswith('):'):
-                ip_address = part[1:-2]
+                ip_address = part[1:-2].split('.')[:3]
                 if ip_address in adresses:
                     return cls
     return Local
