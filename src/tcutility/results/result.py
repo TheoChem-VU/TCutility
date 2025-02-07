@@ -1,11 +1,17 @@
-'''Module containing the TCutility.results.result.Result class.'''
-import dictfunc
+"""Module containing the TCutility.results.result.Result class."""
+
 import sys
+from typing import Optional, TypeVar
+
+import dictfunc
+
+T = TypeVar("T")
 
 
 class Result(dict):
-    '''Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary. 
-    The class works case-insensitively, but will retain the case of the key when it was first set.'''
+    """Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary.
+    The class works case-insensitively, but will retain the case of the key when it was first set."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -19,32 +25,33 @@ class Result(dict):
                 self[key] = value
 
     def __call__(self):
-        '''Calling of a dictionary subclass should not be possible, instead we raise an error with information about the key and method that were attempted to be called.'''
-        head, method = '.'.join(self.get_parent_tree().split('.')[:-1]), self.get_parent_tree().split('.')[-1]
+        """Calling of a dictionary subclass should not be possible, instead we raise an error with information about the key and method that were attempted to be called."""
+        head, method = ".".join(self.get_parent_tree().split(".")[:-1]), self.get_parent_tree().split(".")[-1]
         raise AttributeError(f'Tried to call method "{method}" from {head}, but {head} is empty')
 
     def __str__(self):
-        '''Override str method to prevent printing of hidden keys. You can still print them if you call repr instead of str.'''
-        return '{' + ', '.join([f'{key}: {str(val)}' for key, val in self.items()]) + '}'
+        """Override str method to prevent printing of hidden keys. You can still print them if you call repr instead of str."""
+        return "{" + ", ".join([f"{key}: {str(val)}" for key, val in self.items()]) + "}"
 
     def items(self):
-        '''We override the items method from dict in order to skip certain keys. We want to hide keys starting and ending
+        """We override the items method from dict in order to skip certain keys. We want to hide keys starting and ending
         with dunders, as they should not be exposed to the user.
-        '''
+        """
         return [(key, self[key]) for key in self.keys()]
 
     def keys(self):
         original_keys = super().keys()
-        return [key for key in original_keys if not (key.startswith('__') and key.endswith('__'))]
+        return [key for key in original_keys if not (key.startswith("__") and key.endswith("__"))]
 
     def multi_keys(self):
-        '''
+        """
         Return multi_keys for this Result object. These are unnested keys that can be used if you want a flattened Result object.
-        '''
+        """
+
         def dict_to_list(a):
-            '''
+            """
             Return a nested dictionary as a list of keys and values.
-            '''
+            """
             lst = []
             if not isinstance(a, dict):
                 return [[a]]
@@ -61,11 +68,11 @@ class Result(dict):
         # cast this object to a list of keys and values
         mks = dict_to_list(self)
         # write the multi-keys separated with dots
-        mks = ['.'.join(mk[:-1]) for mk in mks]
+        mks = [".".join(mk[:-1]) for mk in mks]
         return mks
 
     def __getitem__(self, key):
-        if key.startswith('__') and key.endswith('__'):
+        if key.startswith("__") and key.endswith("__"):
             return None
         self.__set_empty(key)
         val = super().__getitem__(self.__get_case(key))
@@ -88,45 +95,45 @@ class Result(dict):
         return key.lower() in [key_.lower() for key_ in self.keys()] and self[key]
 
     def __hash__(self):
-        '''Hashing of a dictionary subclass should not be possible, instead we should raise an error to let the user know
+        """Hashing of a dictionary subclass should not be possible, instead we should raise an error to let the user know
         that they made a mistake. Also give information of which key was being read.
-        '''
-        raise KeyError(f'Tried to hash {self.get_parent_tree()}, but it is empty')
+        """
+        raise KeyError(f"Tried to hash {self.get_parent_tree()}, but it is empty")
 
     def __reduce__(self):
-        return 'TCutility.results.result.Result'
+        return "TCutility.results.result.Result"
 
     def __bool__(self):
-        '''Make sure that keys starting and ending in "__" are skipped'''
-        return len([key for key in self.keys() if not (key.startswith('__') and key.endswith('__'))]) > 0
+        """Make sure that keys starting and ending in "__" are skipped"""
+        return len([key for key in self.keys() if not (key.startswith("__") and key.endswith("__"))]) > 0
 
     def __sizeof__(self):
-        '''
+        """
         Magic method used by `sys.getsizeof <https://docs.python.org/3/library/sys.html#sys.getsizeof>`_ to determine the memory footprint of this object.
-        '''
+        """
         s = super().__sizeof__()
         for key in self.multi_keys():
             s += sys.getsizeof(self.get_multi_key(key))
         return s
 
     def getsizeof(self):
-        '''
+        """
         Return the size of this object in bytes.
-        '''
+        """
         return self.__sizeof__()
 
     def get_parent_tree(self):
-        '''Method to get the path from this object to the parent object. The result is presented in a formatted string'''
+        """Method to get the path from this object to the parent object. The result is presented in a formatted string"""
         # every parent except the top-most parent has defined a __parent__ attribute
-        if '__parent__' not in self:
-            return 'Head'
+        if "__parent__" not in self:
+            return "Head"
         # iteratively build the tree using the __name__ attribute.
         parent_names = self.__parent__.get_parent_tree()
-        parent_names += '.' + self.__name__
+        parent_names += "." + self.__name__
         return parent_names
 
     def __set_empty(self, key):
-        # This function checks if the key has been set. 
+        # This function checks if the key has been set.
         # If it has not, we create a new Result object and set it at the desired key
         if self.__get_case(key) not in self.keys():
             val = Result()
@@ -144,8 +151,7 @@ class Result(dict):
         return key
 
     def prune(self):
-        '''Remove empty paths of this object.
-        '''
+        """Remove empty paths of this object."""
         items = list(self.items())
         for key, value in items:
             try:
@@ -156,22 +162,25 @@ class Result(dict):
             if not value:
                 del self[key]
 
-    def get_multi_key(self, key: str):
-        '''
-        Method that returns the value of a "multikey". The multikey is multiple keys joined by dots. 
+    def get_multi_key(self, key: str, default: Optional[T] = None) -> T:
+        """
+        Method that returns the value of a "multikey". The multikey is multiple keys joined by dots.
         E.g. res.properties.energy.bond can be gotten by calling res.get_multi_key("properties.energy.bond")
-        '''
+        """
         data = self
-        for keypart in key.split('.'):
+        for keypart in key.split("."):
             data = data[keypart]
+
+        if data is None:
+            return default
         return data
 
     def as_plams_settings(self):
-        '''
+        """
         Returns this Result object as a plams.Settings object.
-        '''
-        from scm import plams
+        """
         import dictfunc
+        from scm import plams
 
         clean_dict = dictfunc.list_to_dict(dictfunc.dict_to_list(self))
         return plams.Settings(clean_dict)
@@ -187,12 +196,12 @@ class Result(dict):
         return Result(dictfunc.list_to_dict(lsts))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ret = Result()
     # print(ret.adf)
     # print(dict(ret.adf))
     # print(bool(ret.adf))
-    ret.adf.x = {'a': 1, 'b': 2}
+    ret.adf.x = {"a": 1, "b": 2}
     # ret.adf.system.atoms = []
     # ret.adf.system.atoms.append('test 1 2 3')
 
