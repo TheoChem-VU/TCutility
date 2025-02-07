@@ -5,21 +5,11 @@ from tcutility.report.report import SI
 
 
 def write_xyz_SI():
-    # pwd = pl.Path(__file__).parent
-    # with SI("test.docx") as si:
-    #     si.add_heading("Test molecules:")
-    #     si.add_xyz(str(pwd.parent / "test" / "fixtures" / "level_of_theory" / "M06_2X"), "Cyclo-octatriene")
-    #     si.add_xyz(str(pwd.parent / "test" / "fixtures" / "ethanol"), formula.molecule("C2H5OH"))
-
-    pwd = pl.Path("/scistor/tc/sle337/Promotie/VS_Collab/conformers/calculations/geo/anion_binding_different_radii")
-    with SI(pwd / "test.docx", True) as si:
+    pwd = pl.Path(__file__).parent
+    with SI("test.docx") as si:
         si.add_heading("Test molecules:")
-        folders = pwd.glob("*")
-
-        for folder in folders:
-            print(f"Adding xyz of {folder.name} to the SI")
-            si.add_xyz(folder, folder.name)
-    print(f"Done writing SI to {pwd / 'test.docx'}")
+        si.add_xyz(str(pwd.parent / "test" / "fixtures" / "level_of_theory" / "M06_2X"), "Cyclo-octatriene")
+        si.add_xyz(str(pwd.parent / "test" / "fixtures" / "ethanol"), formula.molecule("C2H5OH"))
 
 
 def make_main_energy_table(table):
@@ -90,13 +80,15 @@ def write_table_SI():
         si_doc.add_page_break()
 
         # with main.add_figure() as figure:
-        #     figure.caption = f'a) ASM and b) EDA energy terms along the C=X stretching of the reaction of {formula.molecule("H2C=X + CH3•", "html")} (X={formula.molecule("CH2", "html")}, NH, O) via the <b>C</b>-addition pathway. Transition states are respresented as dots. The consistent C=X distance is shown as the vertical grey line.'
+        #     figure.caption = f'a) ASM and b) EDA energy terms along the C=X stretching of the reaction of {formula.molecule("H2C=X + CH3•", "html")} (X={formula.molecule("CH2", "html")}, NH, O) via the <b>C</b>-addition pathway.'
+        #     figure.caption += f'Transition states are respresented as dots. The consistent C=X distance is shown as the vertical grey line.'
         #     figure.add_image('../figs/ASM_CNO.png', 0, 0, label='a)')
         #     figure.add_image('../figs/EDA_CNO.png', 0, 1, label='b)')
         # main.add_page_break()
 
         # with si_doc.add_figure() as figure:
-        #     figure.caption = f"Activation strain model (top row) and energy decomposition analysis (bottom row) energy terms along the C=X stretching of the reaction of {formula.molecule('H2C=X + CH3•', 'html')} (X={formula.molecule('CH2', 'html')}, NH, O) via the <b>C</b>-addition pathway. The consistent C=X stretch (0.0235 Å) is shown as the vertical grey line."
+        #     figure.caption = f"Activation strain model (top row) and energy decomposition analysis (bottom row) energy terms along the C=X stretching of the reaction of {formula.molecule('H2C=X + CH3•', 'html')}"
+        #     figure.caption += f"(X={formula.molecule('CH2', 'html')}, NH, O) via the <b>C</b>-addition pathway. The consistent C=X stretch (0.0235 Å) is shown as the vertical grey line."
         #     figure.add_image("../figs/Multiplot_CNO_0.png", 0, 0)
         #     figure.add_image("../figs/Multiplot_CNO_1.png", 0, 1)
         #     figure.add_image("../figs/Multiplot_CNO_2.png", 0, 2)
