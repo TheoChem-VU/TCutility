@@ -250,7 +250,11 @@ class Snellius(Server):
     }
 
 
-def get_current_location():
+def get_current_server() -> Server:
+    '''
+    Return the `Server`-subclass of the server location of the current shell.
+    If the server location could not be detected returns `Local`.
+    '''
     ifconfig = sp.check_output('ifconfig')
     parts = ifconfig.decode().split()
     adresses = []
@@ -273,4 +277,4 @@ def get_current_location():
 
 
 if __name__ == '__main__':
-    print(get_current_location())
+    print(get_current_server())
