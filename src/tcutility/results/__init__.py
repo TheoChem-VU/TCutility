@@ -152,7 +152,7 @@ def quick_status(calc_dir: Union[str, pl.Path]) -> Result:
             status = engine.get_calculation_status(calc_dir)
             if status.name != 'UNKNOWN':
                 return status
-        except:
+        except Exception:
             pass
 
     # otherwise we check if the job is being managed by slurm
