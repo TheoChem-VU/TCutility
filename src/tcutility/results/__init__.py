@@ -168,7 +168,9 @@ def quick_status(calc_dir: Union[str, pl.Path]) -> Result:
         'R': 'RUNNING'
     }.get(state, 'UNKNOWN')
 
-    ret.fatal = False
-    ret.name = state_name
-    ret.code = state
-    ret.reasons = []
+    status.fatal = False
+    status.name = state_name
+    status.code = state
+    status.reasons = []
+
+    return status
