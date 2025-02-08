@@ -142,14 +142,22 @@ def quick_status(calc_dir: Union[str, pl.Path]) -> Result:
             - **code (str)** – calculation status written as one or two characters, one of ("S", "R", "U", "W" "F")
                 If the job is being managed by slurm it can also take values of ("CG", "CF", "PD").
     """
+    status = Result()
+    status.name = 'UNKNOWN'
+    status.reasons = []
+    status.fatal = True
+    status.code = 'U'
     for engine in [ams, orca, crest, xtb]:
-        status = engine.get_calculation_status(calc_dir)
-        if status != 'UNKNOWN':
-            return status
+        try:
+            status = engine.get_calculation_status(calc_dir)
+            if status.name != 'UNKNOWN':
+                return status
+        except:
+            pass
 
     # otherwise we check if the job is being managed by slurm
     if not slurm.workdir_info(calc_dir):
-        return ret
+        return status
 
     # get the statuscode from the workdir
     state = slurm.workdir_info(calc_dir).statuscode
