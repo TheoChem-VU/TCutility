@@ -239,7 +239,7 @@ def get_calc_settings(info: Result) -> Result:
     return ret
 
 
-def get_calculation_status(info: Result) -> Result:
+def get_calculation_status(calc_dir: str) -> Result:
     """Function that returns the status of the ORCA calculation described in reader. In case of non-succes it will also give possible reasons for the errors/warnings.
 
     Args:
@@ -259,15 +259,17 @@ def get_calculation_status(info: Result) -> Result:
     ret.code = None
     ret.reasons = []
 
+    files = get_calc_files(calc_dir)
+
     # if we do not have an output file the calculation failed
-    if "out" not in info.files.out:
+    if "out" not in files.out:
         ret.reasons.append("Calculation status unknown")
         ret.name = "UNKNOWN"
         ret.code = "U"
         return ret
 
     # try to read if the calculation succeeded
-    with open(info.files.out) as out:
+    with open(files.out) as out:
         lines = out.readlines()
         if any(["ORCA TERMINATED NORMALLY" in line for line in lines]):
             ret.fatal = False
@@ -280,11 +282,11 @@ def get_calculation_status(info: Result) -> Result:
     ret.code = "F"
 
     # otherwise we check if the job is being managed by slurm
-    if not slurm.workdir_info(os.path.abspath(info.files.root)):
+    if not slurm.workdir_info(os.path.abspath(files.root)):
         return ret
 
     # get the statuscode from the workdir
-    state = slurm.workdir_info(os.path.abspath(info.files.root)).statuscode
+    state = slurm.workdir_info(os.path.abspath(files.root)).statuscode
     state_name = {
         'CG': 'COMPLETING',
         'CF': 'CONFIGURING',
@@ -380,7 +382,7 @@ def get_info(calc_dir: str) -> Result:
     ret.version = get_version(ret)
 
     # store the calculation status
-    ret.status = get_calculation_status(ret)
+    ret.status = get_calculation_status(calc_dir)
 
     # read molecules
     ret.molecule = get_molecules(ret)
