@@ -1,7 +1,8 @@
 import os
+from typing import TYPE_CHECKING, Dict, Optional
 
 from scm import plams
-from typing import Dict, Optional, TYPE_CHECKING
+
 from tcutility import data, formula, log, molecule, results, spell_check
 from tcutility.errors import TCCompDetailsError, TCJobError
 from tcutility.job.ams import AMSJob
@@ -11,6 +12,7 @@ j = os.path.join
 
 if TYPE_CHECKING:
     import pyfmo
+
 
 class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
@@ -255,105 +257,103 @@ class ADFJob(AMSJob):
             # we simply remove it from the geometryoptimization block
             self.settings.input.ams.GeometryOptimization.pop("InitialHessian", None)
 
-    def excitations(self, excitation_number: int = 10, excitation_type: str = '', method: str = 'Davidson', use_TDA: bool = False):
+    def excitations(self, excitation_number: int = 10, excitation_type: str = "", method: str = "Davidson", use_TDA: bool = False):
         """
         Calculate the electronic excitations using TD-DFT.
 
         Args:
             excitation_number: the number of excitations to include. Defaults to ``10``.
-            excitation_type: the type of excitations to include. 
+            excitation_type: the type of excitations to include.
                 Defaults to an empty string, indicating the default value for ADF.
             method: the excitation methodology to use. Defaults to ``Davidson``.
                 If ``method`` is set to the ``None``-type object excitations are disabled.
             use_TDA: whether to enable the Tamm-Dancoff approximation. Defaults to ``False``.
         """
         # clean the input file first
-        [self.settings.input.adf.Excitations.pop(key, None) for key in ['davidson', 'exact', 'bse', 'singleorbtrans', 'stda', 'stddft', 'tda-dftb', 'td-dftb']]
-        [self.settings.input.adf.pop(key, None) for key in ['cvndft', 'tda']]
-        [self.settings.input.adf.Excitations.pop(key, None) for key in ['allowed', 'onlysing', 'onlytrip', 'sopert']]
+        [self.settings.input.adf.Excitations.pop(key, None) for key in ["davidson", "exact", "bse", "singleorbtrans", "stda", "stddft", "tda-dftb", "td-dftb"]]
+        [self.settings.input.adf.pop(key, None) for key in ["cvndft", "tda"]]
+        [self.settings.input.adf.Excitations.pop(key, None) for key in ["allowed", "onlysing", "onlytrip", "sopert"]]
 
         if method is None:
             return
 
         _allowed_methods = [
-            'Davidson',
-            'Exact',
-            'BSE',
-            'CV(n)-DFT',
-            'Delta Eps',
-            'sTDA',
-            'sTDDFT',
-            'TDA-DFT+TB',
-            'TD-DFT+TB',
-            ]
+            "Davidson",
+            "Exact",
+            "BSE",
+            "CV(n)-DFT",
+            "Delta Eps",
+            "sTDA",
+            "sTDDFT",
+            "TDA-DFT+TB",
+            "TD-DFT+TB",
+        ]
         spell_check.check(method, _allowed_methods, ignore_case=True)
 
-        if method.lower() == 'davidson':
-            self.settings.input.adf.Excitations.davidson = '\n    End'
-        elif method.lower() == 'exact':
-            self.settings.input.adf.Excitations.exact = '\n    End'
-        elif method.lower() == 'bse':
-            self.settings.input.adf.Excitations.bse = 'Yes'
-        elif method.lower() == 'cv(n)-dft':
-            self.settings.input.adf.Excitations.davidson = '\n    End'
-            self.settings.input.adf.CVnDFT.R_CV_DFT = '&'
-            self.settings.input.adf.CVnDFT.SubEnd = ''
-        elif method.lower() == 'delta eps':
-            self.settings.input.adf.Excitations.SingleOrbTrans = 'Yes'
-        elif method.lower() == 'stda':
-            self.settings.input.adf.Excitations.STDA = 'Yes'
-        elif method.lower() == 'stddft':
-            self.settings.input.adf.Excitations.STDDFT = 'Yes'
-        elif method.lower() == 'tda-dft+tb':
-            self.settings.input.adf.Excitations['TDA-DFTB'] = 'Yes'
-        elif method.lower() == 'td-dft+tb':
-            self.settings.input.adf.Excitations['TD-DFTB'] = 'Yes'
+        if method.lower() == "davidson":
+            self.settings.input.adf.Excitations.davidson = "\n    End"
+        elif method.lower() == "exact":
+            self.settings.input.adf.Excitations.exact = "\n    End"
+        elif method.lower() == "bse":
+            self.settings.input.adf.Excitations.bse = "Yes"
+        elif method.lower() == "cv(n)-dft":
+            self.settings.input.adf.Excitations.davidson = "\n    End"
+            self.settings.input.adf.CVnDFT.R_CV_DFT = "&"
+            self.settings.input.adf.CVnDFT.SubEnd = ""
+        elif method.lower() == "delta eps":
+            self.settings.input.adf.Excitations.SingleOrbTrans = "Yes"
+        elif method.lower() == "stda":
+            self.settings.input.adf.Excitations.STDA = "Yes"
+        elif method.lower() == "stddft":
+            self.settings.input.adf.Excitations.STDDFT = "Yes"
+        elif method.lower() == "tda-dft+tb":
+            self.settings.input.adf.Excitations["TDA-DFTB"] = "Yes"
+        elif method.lower() == "td-dft+tb":
+            self.settings.input.adf.Excitations["TD-DFTB"] = "Yes"
 
         _allowed_types = [
-            'None',
-            'AllowedOnly',
-            'SingletOnly',
-            'TripletOnly',
-            'SingletAndTriplet',
-            'Spin-Orbit (Perturbative)',
-            'Spin-Orbit (SCF)',
-            'Default',
-            '',
-            ]
+            "None",
+            "AllowedOnly",
+            "SingletOnly",
+            "TripletOnly",
+            "SingletAndTriplet",
+            "Spin-Orbit (Perturbative)",
+            "Spin-Orbit (SCF)",
+            "Default",
+            "",
+        ]
         spell_check.check(excitation_type, _allowed_types, ignore_case=True)
 
-        if excitation_type.lower() == 'allowedonly':
-            self.settings.input.adf.Excitations.Allowed = 'Yes'
-        elif excitation_type.lower() == 'singletonly':
-            self.settings.input.adf.Excitations.OnlySing = 'Yes'
-        elif excitation_type.lower() == 'tripletonly':
-            self.settings.input.adf.Excitations.OnlyTrip = 'Yes'
-        elif excitation_type.lower() == 'spin-orbit (perturbative)':
-            self.settings.input.adf.Excitations.SOPert = ''
+        if excitation_type.lower() == "allowedonly":
+            self.settings.input.adf.Excitations.Allowed = "Yes"
+        elif excitation_type.lower() == "singletonly":
+            self.settings.input.adf.Excitations.OnlySing = "Yes"
+        elif excitation_type.lower() == "tripletonly":
+            self.settings.input.adf.Excitations.OnlyTrip = "Yes"
+        elif excitation_type.lower() == "spin-orbit (perturbative)":
+            self.settings.input.adf.Excitations.SOPert = ""
         # these values all do not have specific keys in the Excitation block
-        elif excitation_type.lower() in ['singletandtriplet', 'default', '', 'spin-orbit (scf)']:
+        elif excitation_type.lower() in ["singletandtriplet", "default", "", "spin-orbit (scf)"]:
             pass
 
         self.settings.input.adf.Excitations.Lowest = excitation_number
 
         if use_TDA:
-            self.settings.input.adf.TDA = 'Yes'
-
+            self.settings.input.adf.TDA = "Yes"
 
 
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
-
-        self.decompose_elstat = kwargs.pop('decompose_elstat', False)
-        self.counter_poise = kwargs.pop('counter_poise', False)
-        self.scf0_calculation = kwargs.pop('sfo0_calculation', False)
+        self.decompose_elstat = kwargs.pop("decompose_elstat", False)
+        self.counter_poise = kwargs.pop("counter_poise", False)
+        self.scf0_calculation = kwargs.pop("sfo0_calculation", False)
         self.child_jobs = {}
         # self.child_jobs_no_electrons = {}
         super().__init__(*args, **kwargs)
         self.name = "EDA"
 
         # by default print the fock matrix
-        # self.settings.input.adf.print = "FmatSFO"
+        self.settings.input.adf.print = "FmatSFO"
 
     def add_fragment(self, mol: plams.Molecule, name: str = None, charge: int = 0, spin_polarization: int = 0):
         """
@@ -486,10 +486,9 @@ class ADFFragmentJob(ADFJob):
         if alpha is None and beta is None:
             spinpol = child_job.settings.input.adf.SpinPolarization or 0
             charge = child_job.settings.input.ams.system.charge or 0
-            print(child_job._molecule)
             nelectrons = sum(atom.atnum for atom in child_job._molecule) - charge
             alpha = nelectrons // 2 + spinpol
-            beta  = nelectrons // 2
+            beta = nelectrons // 2
 
         self.settings.input.adf.setdefault("FragOccupations", "")
         self.settings.input.adf.FragOccupations = self.settings.input.adf.FragOccupations.replace(" End", "")
@@ -574,10 +573,10 @@ class ADFFragmentJob(ADFJob):
             # recast the plams.Settings object into a Result object as that is what run expects
             child.settings = results.Result(child_setts[child_name])
 
-            log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}]', ['split'])
-            log.flow(f'Charge:            {child.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
-            log.flow(f'Spin-Polarization: {child.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
-            log.flow(f'Work dir:          {child.workdir}', ['straight', 'straight'])
+            log.flow(f"Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}]", ["split"])
+            log.flow(f"Charge:            {child.settings.input.ams.System.charge or 0}", ["straight", "straight"])
+            log.flow(f"Spin-Polarization: {child.settings.input.adf.SpinPolarization or 0}", ["straight", "straight"])
+            log.flow(f"Work dir:          {child.workdir}", ["straight", "straight"])
 
             if child.can_skip():
                 log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"])
@@ -599,10 +598,10 @@ class ADFFragmentJob(ADFJob):
                 child_STOFIT.settings.input.adf.pop("NumericalQuality")
                 child_STOFIT.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
-                log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] with STOFIT', ['split'])
-                log.flow(f'Charge:            {child_STOFIT.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
-                log.flow(f'Spin-Polarization: {child_STOFIT.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
-                log.flow(f'Work dir:          {child_STOFIT.workdir}', ['straight', 'straight'])
+                log.flow(f"Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] with STOFIT", ["split"])
+                log.flow(f"Charge:            {child_STOFIT.settings.input.ams.System.charge or 0}", ["straight", "straight"])
+                log.flow(f"Spin-Polarization: {child_STOFIT.settings.input.adf.SpinPolarization or 0}", ["straight", "straight"])
+                log.flow(f"Work dir:          {child_STOFIT.workdir}", ["straight", "straight"])
 
                 if child_STOFIT.can_skip():
                     log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"])
@@ -619,18 +618,17 @@ class ADFFragmentJob(ADFJob):
                 child_NoElectrons.name += "_NoElectrons"
                 elstat_jobs[child_NoElectrons.name] = child_NoElectrons
 
-                child_NoElectrons.settings.input.adf.STOFIT = ''
-                child_NoElectrons.settings.input.adf.PRINT += ' Elstat'
+                child_NoElectrons.settings.input.adf.STOFIT = ""
+                child_NoElectrons.settings.input.adf.PRINT += " Elstat"
                 child_NoElectrons.charge(molecule.number_of_electrons(child_NoElectrons._molecule))
                 child_NoElectrons.spin_polarization(0)
                 child_NoElectrons.settings.input.adf.pop("NumericalQuality")
                 child_NoElectrons.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
-
-                log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] without Electrons', ['split'])
-                log.flow(f'Charge:            {child_NoElectrons.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
-                log.flow(f'Spin-Polarization: {child_NoElectrons.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
-                log.flow(f'Work dir:          {child_NoElectrons.workdir}', ['straight', 'straight'])
+                log.flow(f"Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] without Electrons", ["split"])
+                log.flow(f"Charge:            {child_NoElectrons.settings.input.ams.System.charge or 0}", ["straight", "straight"])
+                log.flow(f"Spin-Polarization: {child_NoElectrons.settings.input.adf.SpinPolarization or 0}", ["straight", "straight"])
+                log.flow(f"Work dir:          {child_NoElectrons.workdir}", ["straight", "straight"])
 
                 if child_NoElectrons.can_skip():
                     log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"])
@@ -750,8 +748,8 @@ class ADFFragmentJob(ADFJob):
                 log.flow()
 
         if self.counter_poise:
-            self.settings.input.ams.EngineDebugging.pop('AlwaysClaimSuccess', None)
-            self.settings.input.adf.pop('fragments', None)
+            self.settings.input.ams.EngineDebugging.pop("AlwaysClaimSuccess", None)
+            self.settings.input.adf.pop("fragments", None)
             for frag, frag_job in self.child_jobs.items():
                 atoms = [atom for job in self.child_jobs.values() for atom in job._molecule]
 
@@ -765,26 +763,25 @@ class ADFFragmentJob(ADFJob):
                             if (atom.symbol, atom.x, atom.y, atom.z) == (childatom.symbol, childatom.x, childatom.y, childatom.z):
                                 # now write the symbol and coords as a string with the correct suffix and ghost indicator
                                 if child_name == frag:
-                                    atom_lines.append(f'\t\t{atom.symbol} {atom.x} {atom.y} {atom.z}')
+                                    atom_lines.append(f"\t\t{atom.symbol} {atom.x} {atom.y} {atom.z}")
                                 else:
-                                    atom_lines.append(f'\t\tGh.{atom.symbol} {atom.x} {atom.y} {atom.z}')
+                                    atom_lines.append(f"\t\tGh.{atom.symbol} {atom.x} {atom.y} {atom.z}")
 
                 # write the atoms block as a string with new line characters
                 self.settings.input.ams.system.atoms = ("\n" + "\n".join(atom_lines) + "\n\tEnd").expandtabs(4)
                 self.spin_polarization(frag_job.settings.input.adf.SpinPolarization or 0)
                 self.charge(frag_job.settings.input.ams.System.charge or 0)
-                self.unrestricted((frag_job.settings.input.adf.Unrestricted or 'no').lower() == 'yes')
+                self.unrestricted((frag_job.settings.input.adf.Unrestricted or "no").lower() == "yes")
 
                 # we must repopulate the sbatch settings for the new run
-                self.name = f'complex_{frag}_Ghost'
-                log.flow(log.Emojis.good + f' Submitting {frag} with the basis-set of the complex', ['split'])
+                self.name = f"complex_{frag}_Ghost"
+                log.flow(log.Emojis.good + f" Submitting {frag} with the basis-set of the complex", ["split"])
                 [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                 super().run()
-                log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
+                log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
                 log.flow()
 
-        log.flow(log.Emojis.finish + ' Done, bye!', ['startinv'])
-
+        log.flow(log.Emojis.finish + " Done, bye!", ["startinv"])
 
 
 class DensfJob(Job):
@@ -813,7 +810,7 @@ class DensfJob(Job):
         self.settings.grid = size
 
     def grid(self, args):
-        self.settings.grid = '\n' + '\n'.join(args)
+        self.settings.grid = "\n" + "\n".join(args)
 
     def orbital(self, orbital: "pyfmo.orbitals.sfo.SFO" or "pyfmo.orbitals.mo.MO"):  # noqa: F821
         """
@@ -835,9 +832,7 @@ class DensfJob(Job):
         elif self.settings.ADFFile != orbital.kfpath:
             raise TCJobError(job_class=self.__class__.__name__, message="RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
-
-    def density(self, orbitals: 'pyfmo.orbitals.Orbitals'):  # noqa: F821
-
+    def density(self, orbitals: "pyfmo.orbitals.Orbitals"):  # noqa: F821
         # check if the ADFFile is the same for all added orbitals
         if self.settings.ADFFile is None:
             self.settings.ADFFile = orbitals.kfpath
@@ -847,16 +842,16 @@ class DensfJob(Job):
 
         self._extras.append("Density SCF")
 
-    def NCI(self, density: str = 'both', rhovdw=0.02, rdg=0.5):
-        '''
+    def NCI(self, density: str = "both", rhovdw=0.02, rdg=0.5):
+        """
         Setup calculation of NCI values.
 
         Args:
             density: the density to calculate for, either "FIT" or  "BOTH", default is "BOTH".
             rhovdw: threshold of density for detection of weak interaction regions, default is `0.02`.
             rdg: threshold of reduced density gradient, default is `0.5`.
-        '''
-        self._extras.append(f'NCI {density} RHOVDW={rhovdw} RDG={rdg}')
+        """
+        self._extras.append(f"NCI {density} RHOVDW={rhovdw} RDG={rdg}")
 
     def _setup_job(self):
         os.makedirs(self.workdir, exist_ok=True)
@@ -884,7 +879,7 @@ class DensfJob(Job):
                 inpf.write(line + "\n")
 
             # cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size
-            outname = self.settings.grid if self.settings.grid.lower() in ['coarse', 'medium', 'fine'] else 'custom_grid'
+            outname = self.settings.grid if self.settings.grid.lower() in ["coarse", "medium", "fine"] else "custom_grid"
             inpf.write(f"CUBOUTPUT {os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}\n")
             inpf.write("eor\n")
 
@@ -917,19 +912,18 @@ class DensfJob(Job):
             if extra == "Density SCF":
                 paths.append(f"{cuboutput}%SCF%Density.cub")
 
-            if extra.startswith('NCI'):
-                paths.append(f'{cuboutput}%SCF%FitDenSigned.cub')
-                paths.append(f'{cuboutput}%SCF%Fitdensity.cub')
-                paths.append(f'{cuboutput}%SCF%FitNCI.cub')
-                paths.append(f'{cuboutput}%SCF%FitRDG.cub')
-                paths.append(f'{cuboutput}%SCF%FitRDGforNCI.cub')
-                if 'both' in extra.lower():
-                    paths.append(f'{cuboutput}%SCF%DenSigned.cub')
-                    paths.append(f'{cuboutput}%SCF%Density.cub')
-                    paths.append(f'{cuboutput}%SCF%NCI.cub')
-                    paths.append(f'{cuboutput}%SCF%RDG.cub')
-                    paths.append(f'{cuboutput}%SCF%RDGforNCI.cub')
-
+            if extra.startswith("NCI"):
+                paths.append(f"{cuboutput}%SCF%FitDenSigned.cub")
+                paths.append(f"{cuboutput}%SCF%Fitdensity.cub")
+                paths.append(f"{cuboutput}%SCF%FitNCI.cub")
+                paths.append(f"{cuboutput}%SCF%FitRDG.cub")
+                paths.append(f"{cuboutput}%SCF%FitRDGforNCI.cub")
+                if "both" in extra.lower():
+                    paths.append(f"{cuboutput}%SCF%DenSigned.cub")
+                    paths.append(f"{cuboutput}%SCF%Density.cub")
+                    paths.append(f"{cuboutput}%SCF%NCI.cub")
+                    paths.append(f"{cuboutput}%SCF%RDG.cub")
+                    paths.append(f"{cuboutput}%SCF%RDGforNCI.cub")
 
         return paths
 
