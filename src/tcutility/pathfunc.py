@@ -102,7 +102,7 @@ def get_subdirectories(root: str, include_intermediates: bool = False) -> List[s
     return subdirs
 
 
-def get_subdirectories2(root: str, include_intermediates: bool = False, _first_call: bool = True) -> List[str]:
+def get_subdirectories2(root: str, include_intermediates: bool = False, max_depth: int = None, _curent_depth: int = 0) -> List[str]:
     """
     Get all sub-directories of a root directory.
 
@@ -152,7 +152,7 @@ def get_subdirectories2(root: str, include_intermediates: bool = False, _first_c
                      'root/subdir_c']
     """
     contents = []
-    if _first_call and include_intermediates:
+    if _curent_depth == 0 and include_intermediates:
         contents.append(root)
 
     with os.scandir(root) as scanner:
@@ -160,12 +160,16 @@ def get_subdirectories2(root: str, include_intermediates: bool = False, _first_c
             if entry.is_file():
                 continue
 
-            sub_contents = list(get_subdirectories2(entry.path, _first_call=False))
-
-            if include_intermediates or len(sub_contents) == 0:
+            if _curent_depth + 1 == max_depth:
                 contents.append(entry.path)
 
-            contents.extend(sub_contents)
+            else:
+                sub_contents = list(get_subdirectories2(entry.path, _curent_depth=_curent_depth+1))
+
+                if include_intermediates or len(sub_contents) == 0:
+                    contents.append(entry.path)
+
+                contents.extend(sub_contents)
 
     return contents
 
@@ -355,7 +359,7 @@ def match2(root: str, pattern: str, sort_by: str = None, as_generator: bool = Fa
     # root dir can be any level deep. We should count how many directories are in root
     root_length = len(split_all(root))
     # get all subdirectories first, we can loop through them later
-    subdirs = get_subdirectories2(root, include_intermediates=True)
+    subdirs = get_subdirectories2(root, include_intermediates=True, max_depth=len(split_all(pattern)))
     # remove the root from the subdirectories. We cannot use str.removeprefix because it was added in python 3.9
     subdirs = [j(*split_all(subdir)[root_length:]) for subdir in subdirs if len(split_all(subdir)[root_length:]) > 0]
     for subdir in subdirs:
