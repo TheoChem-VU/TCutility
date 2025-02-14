@@ -194,7 +194,7 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
     # root dir can be any level deep. We should count how many directories are in root
     root_length = len(split_all(root))
     # get all subdirectories first, we can loop through them later
-    subdirs = get_subdirectories(root, include_intermediates=True, max_depth=len(split_all(pattern)))
+    subdirs = get_subdirectories(root, include_intermediates=False, max_depth=len(split_all(pattern))-1)
     # remove the root from the subdirectories. We cannot use str.removeprefix because it was added in python 3.9
     subdirs = [j(*split_all(subdir)[root_length:]) for subdir in subdirs if len(split_all(subdir)[root_length:]) > 0]
     for subdir in subdirs:
