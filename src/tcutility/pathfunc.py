@@ -165,6 +165,7 @@ def get_subdirectories2(root: str, include_intermediates: bool = False, max_dept
 
             else:
                 sub_contents = list(get_subdirectories2(entry.path, _curent_depth=_curent_depth+1))
+            sub_contents = list(get_subdirectories2(entry.path, include_intermediates=include_intermediates, _current_depth=_current_depth+1, max_depth=max_depth))
 
                 if include_intermediates or len(sub_contents) == 0:
                     contents.append(entry.path)
