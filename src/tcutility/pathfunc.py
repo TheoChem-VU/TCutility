@@ -160,17 +160,16 @@ def get_subdirectories2(root: str, include_intermediates: bool = False, max_dept
             if entry.is_file():
                 continue
 
-            if _curent_depth + 1 == max_depth:
+            if _current_depth == max_depth:
                 contents.append(entry.path)
+                break
 
-            else:
-                sub_contents = list(get_subdirectories2(entry.path, _curent_depth=_curent_depth+1))
             sub_contents = list(get_subdirectories2(entry.path, include_intermediates=include_intermediates, _current_depth=_current_depth+1, max_depth=max_depth))
 
-                if include_intermediates or len(sub_contents) == 0:
-                    contents.append(entry.path)
+            if include_intermediates or len(sub_contents) == 0:
+                contents.append(entry.path)
 
-                contents.extend(sub_contents)
+            contents.extend(sub_contents)
 
     return contents
 
