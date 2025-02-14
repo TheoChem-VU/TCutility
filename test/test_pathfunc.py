@@ -63,7 +63,7 @@ def test_get_subdirectories(temp_dir):
         f'{temp_dir}/subdir_b',
         f'{temp_dir}/subdir_c'
     }
-    assert pathfunc.get_subdirectories(temp_dir) == expected
+    assert sorted(pathfunc.get_subdirectories(temp_dir)) == sorted(expected)
 
 
 def test_get_subdirectories2(temp_dir):
@@ -75,7 +75,7 @@ def test_get_subdirectories2(temp_dir):
         f'{temp_dir}/subdir_b',
         f'{temp_dir}/subdir_c'
     }
-    assert pathfunc.get_subdirectories(temp_dir, include_intermediates=True) == expected
+    assert sorted(pathfunc.get_subdirectories(temp_dir, include_intermediates=True)) == sorted(expected)
 
 
 def test_match(temp_dir2):
