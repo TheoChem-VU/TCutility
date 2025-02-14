@@ -102,7 +102,7 @@ def get_subdirectories(root: str, include_intermediates: bool = False) -> List[s
     return subdirs
 
 
-def get_subdirectories2(root: str, include_intermediates: bool = False, max_depth: int = None, _curent_depth: int = 0) -> List[str]:
+def get_subdirectories2(root: str, include_intermediates: bool = False, max_depth: int = None, _current_depth: int = 0) -> List[str]:
     """
     Get all sub-directories of a root directory.
 
@@ -152,7 +152,7 @@ def get_subdirectories2(root: str, include_intermediates: bool = False, max_dept
                      'root/subdir_c']
     """
     contents = []
-    if _curent_depth == 0 and include_intermediates:
+    if _current_depth == 0 and include_intermediates:
         contents.append(root)
 
     with os.scandir(root) as scanner:
