@@ -96,7 +96,7 @@ def get_subdirectories(root: str, include_intermediates: bool = False, max_depth
 
             if _current_depth == max_depth:
                 contents.append(entry.path)
-                break
+                continue
 
             sub_contents = list(get_subdirectories(entry.path, include_intermediates=include_intermediates, _current_depth=_current_depth+1, max_depth=max_depth))
 
