@@ -1,6 +1,6 @@
 from scm import plams
 import tcutility
-from tcutility import log
+from tcutility import log, connect
 from tcutility.job.generic import Job
 import os
 import numpy as np
@@ -211,6 +211,10 @@ class AMSJob(Job):
         os.makedirs(self.workdir, exist_ok=True)
         with open(self.inputfile_path, 'w+') as inpf:
             inpf.write(job.get_input())
+
+        # add some preambles specific to the server and ams
+        for preamble in self.server.preamble_defaults.get('AMS', []):
+            self.add_preamble(preamble)
 
         with open(self.runfile_path, 'w+') as runf:
             runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
