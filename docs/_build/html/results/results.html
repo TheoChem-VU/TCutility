@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.results &#8212; TCutility v0.15.3 documentation</title>
+    <title>tcutility.results &#8212; TCutility v0.15.5 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=734543e3"></script>
+    <script src="../_static/documentation_options.js?v=1cb45737"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="tcutility.job" href="../tcutility.job.html" />
-    <link rel="prev" title="TCutility v0.15.3 documentation" href="../index.html" />
+    <link rel="prev" title="TCutility v0.15.5 documentation" href="../index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -254,14 +254,15 @@
 <h1>tcutility.results<a class="headerlink" href="#tcutility-results" title="Link to this heading">#</a></h1>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">tcutility.results</span></code> package allows you to easily retrieve information and results from a calculation performed using AMS, ORCA or CREST.
-This includes results and settings from AMS as well as the calculation engine used (e.g. ADF, BAND, DFTB, …).
-Recommended usage is to use the <a class="reference internal" href="../api/tcutility.results.html#tcutility.results.read" title="tcutility.results.read"><code class="xref py py-func docutils literal notranslate"><span class="pre">read</span></code></a> function to read the information.
+<p>The <code class="docutils literal notranslate"><span class="pre">tcutility.results</span></code> package allows you to easily retrieve information and results from a calculation performed using AMS, ORCA, CREST, etc.
+For AMS calculations this includes general results and settings from AMS as well as from the calculation engine used (e.g. ADF, BAND, DFTB, …).
+Recommended usage is to use the <a class="reference internal" href="../api/tcutility.results.html#tcutility.results.read" title="tcutility.results.read"><code class="xref py py-func docutils literal notranslate"><span class="pre">read</span></code></a> function to read all available information.
 One can also access specific information by calling one the functions in the submodules below.
+To only obtain the status of a calculation we recommend usage of the <cite>tcutility.results.quick_status</cite> function.
 Information will be given as <a class="reference internal" href="../api/tcutility.results.html#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> objects and can be used just like a <a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#dict">dict</a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">TCutility.results</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tcutility.results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">calc_dir</span> <span class="o">=</span> <span class="s1">&#39;../../test/fixtures/ethanol&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">TCutility</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">tcutility</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">engine</span>
 <span class="go">adf</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="o">.</span><span class="n">ams_version</span><span class="o">.</span><span class="n">full</span>
@@ -284,11 +285,11 @@ Below you can find a list of keys that are present in the <a class="reference in
 <section id="adf-calculation">
 <h3>ADF calculation<a class="headerlink" href="#adf-calculation" title="Link to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>files.root
+files.err
 files.log
 files.out
-files.err
-files.ams.rkf
 files.adf.rkf
+files.ams.rkf
 engine
 input.Task
 input.properties.NormalModes
@@ -399,7 +400,7 @@ level.summary
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">TCutility v0.15.3 documentation</p>
+        <p class="prev-next-title">TCutility v0.15.5 documentation</p>
       </div>
     </a>
     <a class="right-next"

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility package &#8212; TCutility v0.15.3 documentation</title>
+    <title>tcutility package &#8212; TCutility v0.15.5 documentation</title>
   
   
   
@@ -40,7 +40,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=734543e3"></script>
+    <script src="../_static/documentation_options.js?v=1cb45737"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -657,6 +657,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tcutility.results.html#module-tcutility.results">Module contents</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.results.html#tcutility.results.get_info"><code class="docutils literal notranslate"><span class="pre">get_info()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.results.html#tcutility.results.read"><code class="docutils literal notranslate"><span class="pre">read()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.results.html#tcutility.results.quick_status"><code class="docutils literal notranslate"><span class="pre">quick_status()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1819,13 +1820,15 @@ Molecule and atom flags can be provided as the “flags” parameter of the obje
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.pathfunc.get_subdirectories">
-<span class="sig-name descname"><span class="pre">get_subdirectories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_intermediates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#get_subdirectories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.get_subdirectories" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_subdirectories</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_intermediates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_current_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#get_subdirectories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.get_subdirectories" title="Link to this definition">#</a></dt>
 <dd><p>Get all sub-directories of a root directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>root</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the root directory.</p></li>
 <li><p><strong>include_intermediates</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – whether to include intermediate sub-directories instead of only the lowest levels.</p></li>
+<li><p><strong>max_depth</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – the maximum depth depth to look for subdirectories,
+e.g. setting it to <cite>1</cite> will return only the contents of the <cite>root</cite> path.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -1864,6 +1867,17 @@ Molecule and atom flags can be provided as the “flags” parameter of the obje
 </pre></div>
 </div>
 </div></div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.pathfunc.path_depth">
+<span class="sig-name descname"><span class="pre">path_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#path_depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.path_depth" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the depth of a given path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -1933,17 +1947,6 @@ E.g. using a pattern such as <code class="docutils literal notranslate"><span cl
 [2024/01/17 14:39:08] root/NH3-BH3/BLYP_QZ4P     NH3-BH3   BLYP         QZ4P
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tcutility.pathfunc.path_depth">
-<span class="sig-name descname"><span class="pre">path_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/pathfunc.html#path_depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.pathfunc.path_depth" title="Link to this definition">#</a></dt>
-<dd><p>Calculate the depth of a given path.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
-</dd>
-</dl>
 </dd></dl>
 
 </section>
@@ -2372,8 +2375,8 @@ If the lowest distance is <code class="docutils literal notranslate"><span class
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.pathfunc">tcutility.pathfunc module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.pathfunc.split_all"><code class="docutils literal notranslate"><span class="pre">split_all()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.pathfunc.get_subdirectories"><code class="docutils literal notranslate"><span class="pre">get_subdirectories()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.pathfunc.match"><code class="docutils literal notranslate"><span class="pre">match()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.pathfunc.path_depth"><code class="docutils literal notranslate"><span class="pre">path_depth()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.pathfunc.match"><code class="docutils literal notranslate"><span class="pre">match()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.report">tcutility.report module</a></li>

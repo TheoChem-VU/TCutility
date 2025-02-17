@@ -44,7 +44,6 @@ class Job:
         wait_for_finish: whether to wait for this job to finish running before continuing your runscript.
         delete_on_finish: whether to remove the workdir for this job after it is finished running.
     """
-
     def __init__(
         self, *base_jobs: List["Job"], test_mode: bool = None, overwrite: bool = None, wait_for_finish: bool = None, delete_on_finish: bool = None, delete_on_fail: bool = None, use_slurm: bool = True
     ):
@@ -100,7 +99,7 @@ class Job:
             yet for :class:`CRESTJob <tcutility.job.crest.CRESTJob>` and :class:`QCGJob <tcutility.job.crest.QCGJob>`. For the latter objects the job will always be rerun.
             This will be fixed in a later version of TCutility.
         """
-        res = results.read(self.workdir)
+        res = results.quick_status(self.workdir)
         return not res.status.fatal
 
     def in_queue(self):
@@ -108,7 +107,7 @@ class Job:
         Check whether the job is currently managed by slurm.
         We check this by loading the calculation and checking if the job status is 'RUNNING', 'COMPLETING', 'CONFIGURING' or 'PENDING'.
         """
-        res = results.read(self.workdir)
+        res = results.quick_status(self.workdir)
         return res.status.name in ["RUNNING", "COMPLETING", "CONFIGURING", "PENDING"]
 
     def __repr__(self):

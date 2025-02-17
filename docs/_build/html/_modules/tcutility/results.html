@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.results &#8212; TCutility v0.15.3 documentation</title>
+    <title>tcutility.results &#8212; TCutility v0.15.5 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=734543e3"></script>
+    <script src="../../_static/documentation_options.js?v=1cb45737"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -375,9 +375,58 @@
 
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="s2">&quot;/Users/yumanhordijk/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/RadicalAdditionBenchmark/data/abinitio/P_C2H2_NH2/OPT_pVTZ&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">molecule</span><span class="p">)</span>
+<div class="viewcode-block" id="quick_status">
+<a class="viewcode-back" href="../../api/tcutility.results.html#tcutility.results.quick_status">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">quick_status</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Quickly check the status of a calculation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        calc_dir: the directory of the calculation to check.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        :Dictionary containing information about the calculation status:</span>
+
+<span class="sd">            - **fatal (bool)** – `True` if calculation cannot be read correctly, `False` otherwise</span>
+<span class="sd">            - **reasons (list[str])** – list of reasons to explain the status, they can be errors, warnings, etc.</span>
+<span class="sd">            - **name (str)** – calculation status written as a string, one of (&quot;SUCCESS&quot;, &quot;RUNNING&quot;, &quot;UNKNOWN&quot;, &quot;SUCCESS(W)&quot;, &quot;FAILED&quot;).</span>
+<span class="sd">                If the job is being managed by slurm it can also take values of (&quot;COMPLETING&quot;, &quot;CONFIGURING&quot;, &quot;PENDING&quot;).</span>
+<span class="sd">            - **code (str)** – calculation status written as one or two characters, one of (&quot;S&quot;, &quot;R&quot;, &quot;U&quot;, &quot;W&quot; &quot;F&quot;)</span>
+<span class="sd">                If the job is being managed by slurm it can also take values of (&quot;CG&quot;, &quot;CF&quot;, &quot;PD&quot;).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
+    <span class="n">status</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;UNKNOWN&#39;</span>
+    <span class="n">status</span><span class="o">.</span><span class="n">reasons</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">status</span><span class="o">.</span><span class="n">fatal</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">status</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="s1">&#39;U&#39;</span>
+    <span class="k">for</span> <span class="n">engine</span> <span class="ow">in</span> <span class="p">[</span><span class="n">ams</span><span class="p">,</span> <span class="n">orca</span><span class="p">,</span> <span class="n">crest</span><span class="p">,</span> <span class="n">xtb</span><span class="p">]:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">get_calculation_status</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">status</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;UNKNOWN&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">status</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="c1"># otherwise we check if the job is being managed by slurm</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">slurm</span><span class="o">.</span><span class="n">workdir_info</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">status</span>
+
+    <span class="c1"># get the statuscode from the workdir</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">slurm</span><span class="o">.</span><span class="n">workdir_info</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span><span class="o">.</span><span class="n">statuscode</span>
+    <span class="n">state_name</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;CG&#39;</span><span class="p">:</span> <span class="s1">&#39;COMPLETING&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;CF&#39;</span><span class="p">:</span> <span class="s1">&#39;CONFIGURING&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;PD&#39;</span><span class="p">:</span> <span class="s1">&#39;PENDING&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="s1">&#39;RUNNING&#39;</span>
+    <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="s1">&#39;UNKNOWN&#39;</span><span class="p">)</span>
+
+    <span class="n">status</span><span class="o">.</span><span class="n">fatal</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">status</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">state_name</span>
+    <span class="n">status</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="n">status</span><span class="o">.</span><span class="n">reasons</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">return</span> <span class="n">status</span></div>
+
 </pre></div>
 
                 </article>
