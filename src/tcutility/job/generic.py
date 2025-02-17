@@ -7,7 +7,7 @@ from typing import List, Union
 import dictfunc
 from scm import plams
 
-from tcutility import log, molecule, results, slurm
+from tcutility import log, molecule, results, slurm, connect
 from tcutility.environment import OSName, get_os_name
 from tcutility.errors import TCJobError
 
@@ -74,6 +74,10 @@ class Job:
         self.delete_on_finish = self.delete_on_finish if delete_on_finish is None else delete_on_finish
         self.delete_on_fail = delete_on_fail if delete_on_fail is None else delete_on_fail
         self.use_slurm = self.use_slurm if use_slurm is None else use_slurm
+
+        self.server = connect.get_current_server()
+        if self.server != connect.Local:
+            self.sbatch(**self.server.sbatch_defaults)
 
     def __enter__(self):
         return self
