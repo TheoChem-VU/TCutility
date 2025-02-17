@@ -181,7 +181,6 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
             [2024/01/17 14:39:08] root/NH3-BH3/M06-2X_TZ2P   NH3-BH3   M06-2X       TZ2P
             [2024/01/17 14:39:08] root/SN2/BLYP_TZ2P         SN2       BLYP         TZ2P
             [2024/01/17 14:39:08] root/NH3-BH3/BLYP_QZ4P     NH3-BH3   BLYP         QZ4P
-
 """
     # get the number and names of substitutions in the given pattern
     substitutions = re.findall(r"{(\w+)}", pattern)
@@ -194,7 +193,7 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
         glob_pattern = glob_pattern.replace("{" + sub + "}", "*")
 
     # get all applicable subdirectories
-    subdirs = glob.glob(glob_pattern, root_dir=root)
+    subdirs = glob.glob(os.path.join(root, glob_pattern))
 
     # compile a regular expression pattern to match with later
     regex = re.compile(pattern)
@@ -202,6 +201,8 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
     # go through all applicable subdirectories and retrieve the information we want
     ret = results.Result()
     for subdir in subdirs:
+        # subdir = os.path.relpath(subdir, root)
+        subdir = subdir.removeprefix(f'{root}/')
         p = j(root, subdir)
         re_match = regex.fullmatch(subdir)
         ret[p] = results.Result(**{substitutions[i]: re_match.group(i + 1) for i in range(len(substitutions))})
