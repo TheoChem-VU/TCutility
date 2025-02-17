@@ -34,13 +34,15 @@ def split_all(path: str) -> List[str]:
         path = a
 
 
-def get_subdirectories(root: str, include_intermediates: bool = False) -> List[str]:
+def get_subdirectories(root: str, include_intermediates: bool = False, max_depth: int = None, _current_depth: int = 0) -> List[str]:
     """
     Get all sub-directories of a root directory.
 
     Args:
         root: the root directory.
         include_intermediates: whether to include intermediate sub-directories instead of only the lowest levels.
+        max_depth: the maximum depth depth to look for subdirectories, 
+            e.g. setting it to `1` will return only the contents of the `root` path.
 
     Returns:
         A list of sub-directories with ``root`` included in the paths.
@@ -83,23 +85,34 @@ def get_subdirectories(root: str, include_intermediates: bool = False) -> List[s
                      'root/subdir_b',
                      'root/subdir_c']
     """
-    dirs = [root]
-    subdirs = set()
+    contents = []
+    if _current_depth == 0 and include_intermediates:
+        contents.append(root)
 
-    while len(dirs) > 0:
-        _dirs = []
-        for cdir in dirs:
-            csubdirs = [j(cdir, d) for d in os.listdir(cdir) if os.path.isdir(j(cdir, d))]
-            if len(csubdirs) == 0:
-                subdirs.add(cdir)
-            else:
-                if include_intermediates:
-                    subdirs.add(cdir)
-                _dirs.extend(csubdirs)
+    with os.scandir(root) as scanner:
+        for entry in scanner:
+            if entry.is_file():
+                continue
 
-        dirs = _dirs
+            if _current_depth == max_depth:
+                contents.append(entry.path)
+                continue
 
-    return subdirs
+            sub_contents = list(get_subdirectories(entry.path, include_intermediates=include_intermediates, _current_depth=_current_depth+1, max_depth=max_depth))
+
+            if include_intermediates or len(sub_contents) == 0:
+                contents.append(entry.path)
+
+            contents.extend(sub_contents)
+
+    return contents
+
+
+def path_depth(path: str) -> int:
+    """
+    Calculate the depth of a given path.
+    """
+    return len(split_all(path))
 
 
 def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
@@ -112,7 +125,6 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
             It should look similar to a format string, without the ``f`` in front of the string.
             Inside curly braces you can put a variable name, which you can later extract from the results.
             Anything inside curly braces will be matched to word characters (``[a-zA-Z0-9_-]``) including dashes and underscores.
-
         sort_by: the key to sort the results by. If not given, the results will be returned in the order they were found.
 
     Returns:
@@ -182,7 +194,7 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
     # root dir can be any level deep. We should count how many directories are in root
     root_length = len(split_all(root))
     # get all subdirectories first, we can loop through them later
-    subdirs = get_subdirectories(root, include_intermediates=True)
+    subdirs = get_subdirectories(root, include_intermediates=False, max_depth=len(split_all(pattern))-1)
     # remove the root from the subdirectories. We cannot use str.removeprefix because it was added in python 3.9
     subdirs = [j(*split_all(subdir)[root_length:]) for subdir in subdirs if len(split_all(subdir)[root_length:]) > 0]
     for subdir in subdirs:
@@ -197,13 +209,6 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
 
     if not sort_by:
         return ret
-
+    # sort the return object by whichever key was given
     return results.Result(sorted(ret.items(), key=lambda d: d[1][sort_by]))
-
-
-def path_depth(path: str) -> int:
-    """
-    Calculate the depth of a given path.
-    """
-    return len(split_all(path))
 
