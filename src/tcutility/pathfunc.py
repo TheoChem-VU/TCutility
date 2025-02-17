@@ -202,7 +202,7 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
     ret = results.Result()
     for subdir in subdirs:
         # subdir = os.path.relpath(subdir, root)
-        subdir = subdir.removeprefix(f'{root}/')
+        subdir = subdir[len(f'{root}/'):]
         p = j(root, subdir)
         re_match = regex.fullmatch(subdir)
         ret[p] = results.Result(**{substitutions[i]: re_match.group(i + 1) for i in range(len(substitutions))})
