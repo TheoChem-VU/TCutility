@@ -1,6 +1,6 @@
 import paramiko
 import os
-from tcutility import log, results
+from tcutility import log, results, cache
 from datetime import datetime
 import subprocess as sp
 
@@ -212,6 +212,8 @@ class Server(Connection):
     '''
     server = None
     sbatch_defaults = {}
+    preamble_defaults = {}
+    program_modules = {}
 
     def __init__(self, username):
         super().__init__(self.server, username)
@@ -222,8 +224,6 @@ class Server(Connection):
 
 class Local(Server):
     server = ''
-    sbatch_defaults = {}
-    preamble_defaults = []
 
 
 class Bazis(Server):
@@ -234,9 +234,23 @@ class Bazis(Server):
     sbatch_defaults = {
         'p': 'tc',
     }
-    preamble_defaults = [
-        'export SCM_TMPDIR="/scratch/$SLURM_JOBID"'
-    ]
+    preamble_defaults = {
+        'AMS': [
+            'export SCM_TMPDIR="/scratch/$SLURM_JOBID"'
+        ]
+    }
+    program_modules = {
+        'AMS': {
+            '2021-zen': 'module load shared ams/2021.102-zen',
+            '2021': 'module load shared ams/2021.102',
+            '2022-zen': 'module load shared ams/2022.103-zen',
+            '2022': 'module load shared ams/2022.103',
+            '2023-zen': 'module load shared ams/2023.101-zen',
+            '2023': 'module load shared ams/2023.101',
+            '2024-zen': 'module load shared ams/2024.102-zen',
+            '2024': 'module load shared ams/2024.102',
+        }
+    }
 
 
 class Snellius(Server):
@@ -247,9 +261,17 @@ class Snellius(Server):
     sbatch_defaults = {
         'p': 'rome',
         't': '120:00:00',
+        'n': 16
+    }
+    program_modules = {
+        'AMS': {
+            '2023': 'module load 2023 AMS/2023.104-intelmpi',
+            '2024': 'module load 2024 AMS/2024.104-intelmpi-aocl',
+        }
     }
 
 
+@cache.cache
 def get_current_server() -> Server:
     '''
     Return the `Server`-subclass of the server location of the current shell.
