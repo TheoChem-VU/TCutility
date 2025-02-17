@@ -233,6 +233,7 @@ class Bazis(Server):
     server = 'bazis.labs.vu.nl'
     sbatch_defaults = {
         'p': 'tc',
+        'n': 16,
     }
     preamble_defaults = {
         'AMS': [
@@ -249,6 +250,7 @@ class Bazis(Server):
             '2023': 'module load shared ams/2023.101',
             '2024-zen': 'module load shared ams/2024.102-zen',
             '2024': 'module load shared ams/2024.102',
+            'latest': 'module load shared ams/2024.102',
         }
     }
 
@@ -267,6 +269,7 @@ class Snellius(Server):
         'AMS': {
             '2023': 'module load 2023 AMS/2023.104-intelmpi',
             '2024': 'module load 2024 AMS/2024.104-intelmpi-aocl',
+            'latest': 'module load 2024 AMS/2024.104-intelmpi-aocl',
         }
     }
 
