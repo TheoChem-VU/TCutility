@@ -1,6 +1,7 @@
 import os
 import re
 from typing import Dict, List
+import glob
 
 from tcutility import results
 
@@ -182,39 +183,6 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
             [2024/01/17 14:39:08] root/NH3-BH3/BLYP_QZ4P     NH3-BH3   BLYP         QZ4P
 
 """
-    # get the number and names of substitutions in the given pattern
-    substitutions = re.findall(r"{(\w+[+*?]?)}", pattern)
-    # the pattern should resolve to words and may contain - and _
-    # replace them here
-    for sub in substitutions:
-        quantifier = sub[-1] if sub[-1] in "+*?" else "+"
-        pattern = pattern.replace("{" + sub + "}", f"([a-zA-Z0-9_-]{quantifier})")
-
-    ret = results.Result()
-    # root dir can be any level deep. We should count how many directories are in root
-    root_length = len(split_all(root))
-    # get all subdirectories first, we can loop through them later
-    subdirs = get_subdirectories(root, include_intermediates=False, max_depth=len(split_all(pattern))-1)
-    # remove the root from the subdirectories. We cannot use str.removeprefix because it was added in python 3.9
-    subdirs = [j(*split_all(subdir)[root_length:]) for subdir in subdirs if len(split_all(subdir)[root_length:]) > 0]
-    for subdir in subdirs:
-        # check if we get a match with our pattern
-        match = re.fullmatch(pattern, subdir)
-        if not match:
-            continue
-
-        p = j(root, subdir)
-        # get the group data and add it to the return dictionary. We skip the first group because it is the full directory path
-        ret[p] = results.Result(directory=p, **{substitutions[i]: match.group(i + 1) for i in range(len(substitutions))})
-
-    if not sort_by:
-        return ret
-    # sort the return object by whichever key was given
-    return results.Result(sorted(ret.items(), key=lambda d: d[1][sort_by]))
-
-
-import glob
-def match2(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
     # get the number and names of substitutions in the given pattern
     substitutions = re.findall(r"{(\w+)}", pattern)
     # the pattern should resolve to words and may contain - and _
