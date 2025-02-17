@@ -233,3 +233,23 @@ class AMSJob(Job):
         The default file path for output molecules when running ADF calculations. It will not be created for singlepoint calculations.
         '''
         return j(self.workdir, 'output.xyz')
+
+    def use_version(self, version='latest'):
+        '''
+        Set the version of AMS to use for the calculation.
+        Which versions are available depends on the location you are currently in.
+        We currently support the following versions:
+            On Snellius: ``2023`` and ``2024``.
+            On Bazis: ``2021``, ``2022``, ``2023`` and ``2024``.
+        '''
+        server = connect.get_current_server()
+        if server == connect.Local:
+            log.warn('Cannot set AMS version for a local calculation.')
+            return
+
+        else:
+            preamble = server.program_modules['AMS'].get(version, None)
+            if preamble is None:
+                log.warn(f'Could not set the AMS version to {version} on {server}.')
+                return
+            self.add_preamble(preamble)
