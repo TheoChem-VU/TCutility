@@ -159,10 +159,10 @@ class Connection:
         Run the ``pwd`` command.
 
         .. note::
-            Due to limitations with some servers (e.g. Snellius) we do not actually run the ``cd`` command, 
+            Due to limitations with some servers (e.g. Snellius) we do not actually run the ``pwd`` command, 
             instead we return the internal ``Connection.currdir`` attribute. See the :func:`Connection.cd` method for more details.
         '''
-        log.debug(f'{self}[{self.currdir}]: cd {path}')
+        log.debug(f'{self}[{self.currdir}]: pwd')
         return self.currdir
 
     def download(self, server_path: str, local_path: str):
