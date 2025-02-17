@@ -33,6 +33,7 @@ dependencies = [
   "strenum>=0.4",
   "click>=8.1",
   "opencv-python",
+  "paramiko", 
 ]
 # Current maintainers
 maintainers = [{ name = "TheoCheM group" }]

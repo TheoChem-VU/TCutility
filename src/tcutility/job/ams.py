@@ -1,6 +1,6 @@
 from scm import plams
 import tcutility
-from tcutility import log
+from tcutility import log, connect
 from tcutility.job.generic import Job
 import os
 import numpy as np
@@ -212,6 +212,10 @@ class AMSJob(Job):
         with open(self.inputfile_path, 'w+') as inpf:
             inpf.write(job.get_input())
 
+        # add some preambles specific to the server and ams
+        for preamble in self.server.preamble_defaults.get('AMS', []):
+            self.add_preamble(preamble)
+
         with open(self.runfile_path, 'w+') as runf:
             runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
             runf.write('\n'.join(self._preambles) + '\n\n')
@@ -233,3 +237,23 @@ class AMSJob(Job):
         The default file path for output molecules when running ADF calculations. It will not be created for singlepoint calculations.
         '''
         return j(self.workdir, 'output.xyz')
+
+    def use_version(self, version='latest'):
+        '''
+        Set the version of AMS to use for the calculation.
+        Which versions are available depends on the location you are currently in.
+        We currently support the following versions:
+            On Snellius: ``2023`` and ``2024``.
+            On Bazis: ``2021``, ``2022``, ``2023`` and ``2024``.
+        '''
+        server = connect.get_current_server()
+        if server == connect.Local:
+            log.warn('Cannot set AMS version for a local calculation.')
+            return
+
+        else:
+            preamble = server.program_modules['AMS'].get(version, None)
+            if preamble is None:
+                log.warn(f'Could not set the AMS version to {version} on {server}.')
+                return
+            self.add_preamble(preamble)
