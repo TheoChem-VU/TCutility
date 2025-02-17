@@ -330,23 +330,23 @@
 <dd class="field-odd"><p><p>Result object containing properties from the ADF calculation:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>energy.bond (float)</strong> – bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.elstat.total (float)</strong> – total electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.elstat.Vee (float)</strong> – electron-electron repulsive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.elstat.Ven (float)</strong> – electron-nucleus attractive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.elstat.Vnn (float)</strong> – nucleus-nucleus repulsive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.orbint.total (float)</strong> – total orbital interaction energy containing contributions from each symmetry label and correction energy(<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.orbint.{symmetry label} (float)</strong> – orbital interaction energy from a specific symmetry label (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.orbint.correction (float)</strong> - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>)</p></li>
-<li><p><strong>energy.pauli.total (float)</strong> – total Pauli repulsion energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.dispersion (float)</strong> – total dispersion energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.gibbs (float)</strong> – Gibb’s free energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only populated if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.enthalpy (float)</strong> – enthalpy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only populated if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.nuclear_internal (float)</strong> – nuclear internal energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only populated if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.bond (float)</strong> – bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.elstat.total (float)</strong> – total electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.elstat.Vee (float)</strong> – electron-electron repulsive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.elstat.Ven (float)</strong> – electron-nucleus attractive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.elstat.Vnn (float)</strong> – nucleus-nucleus repulsive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.orbint.total (float)</strong> – total orbital interaction energy containing contributions from each symmetry label and correction energy(<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.orbint.{symmetry label} (float)</strong> – orbital interaction energy from a specific symmetry label (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.orbint.correction (float)</strong> - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>)</p></li>
+<li><p><strong>energy.pauli.total (float)</strong> – total Pauli repulsion energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.dispersion (float)</strong> – total dispersion energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.gibbs (float)</strong> – Gibb’s free energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only populated if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.enthalpy (float)</strong> – enthalpy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only populated if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.nuclear_internal (float)</strong> – nuclear internal energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only populated if vibrational modes were calculated.</p></li>
 <li><p><strong>vibrations.number_of_modes (int)</strong> – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.</p></li>
 <li><p><strong>vibrations.number_of_imag_modes (int)</strong> – number of imaginary vibrational modes for this molecule.</p></li>
-<li><p><strong>vibrations.frequencies (float)</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-1\)</span>).</p></li>
-<li><p><strong>vibrations.intensities (float)</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-1\)</span>).</p></li>
+<li><p><strong>vibrations.frequencies (float)</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-^1\)</span>).</p></li>
+<li><p><strong>vibrations.intensities (float)</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-^1\)</span>).</p></li>
 <li><p><strong>vibrations.modes (list[float])</strong> – list of vibrational modes sorted from low frequency to high frequency.</p></li>
 <li><p><strong>vibrations.character (str)</strong> – Character of the molecule based on the number of imaginary vibrational modes. Can be “minimum” or “transition state”.</p></li>
 <li><p><strong>vdd.charges (nparray[float] (1D))</strong> - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges.</p></li>
@@ -908,7 +908,7 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <dd class="field-odd"><p><p>Result object containing properties from the DFTB calculation:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>energy.bond (float)</strong> – bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
+<li><p><strong>energy.bond (float)</strong> – bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -1136,8 +1136,8 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <div><ul class="simple">
 <li><p><strong>number_of_modes (int)</strong> – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.</p></li>
 <li><p><strong>number_of_imaginary_modes (int)</strong> – number of imaginary vibrational modes for this molecule.</p></li>
-<li><p><strong>frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-1\)</span>).</p></li>
-<li><p><strong>intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
+<li><p><strong>frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-^1\)</span>).</p></li>
+<li><p><strong>intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-^1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
 <li><p><strong>modes (list[float])</strong> – list of vibrational modes sorted from low frequency to high frequency.</p></li>
 <li><p><strong>character (str)</strong> – the PES character of the molecular system. Either “minimum”, “transitionstate” or “saddlepoint(n_imag)”, for 0, 1, n_imag number of imaginary frequencies.</p></li>
 </ul>
@@ -1162,16 +1162,16 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <dd class="field-odd"><p><p>Result object containing properties from the ORCA calculation:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>energy.bond (float)</strong> – total bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.enthalpy (float)</strong> – enthalpy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.entropy (float)</strong> – entropy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.gibbs (float)</strong> – Gibb’s free energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.[method] (float)</strong> - total energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>) at a certain level (HF, MP2, CCSD, …). This is the sum of energy.HF and energy.[method]_corr.</p></li>
-<li><p><strong>energy.[method]_corr (float)</strong> - electron correlation energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>) at a certain level (HF, MP2, CCSD, …).</p></li>
+<li><p><strong>energy.bond (float)</strong> – total bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.enthalpy (float)</strong> – enthalpy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.entropy (float)</strong> – entropy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.gibbs (float)</strong> – Gibb’s free energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.[method] (float)</strong> - total energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>) at a certain level (HF, MP2, CCSD, …). This is the sum of energy.HF and energy.[method]_corr.</p></li>
+<li><p><strong>energy.[method]_corr (float)</strong> - electron correlation energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>) at a certain level (HF, MP2, CCSD, …).</p></li>
 <li><p><strong>vibrations.number_of_modes (int)</strong> – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.</p></li>
 <li><p><strong>vibrations.number_of_imaginary_modes (int)</strong> – number of imaginary vibrational modes for this molecule.</p></li>
-<li><p><strong>vibrations.frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-1\)</span>).</p></li>
-<li><p><strong>vibrations.intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
+<li><p><strong>vibrations.frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-^1\)</span>).</p></li>
+<li><p><strong>vibrations.intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-^1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
 <li><p><strong>vibrations.modes (list[float])</strong> – list of vibrational modes sorted from low frequency to high frequency.</p></li>
 <li><p><strong>vibrations.character (str)</strong> – the PES character of the molecular system. Either “minimum”, “transitionstate” or “saddlepoint(n_imag)”, for 0, 1, n_imag number of imaginary frequencies.</p></li>
 <li><p><strong>t1</strong> - T1 diagnostic for the highest level of correlation chosen. Used to check the validity of the reference wavefunction.</p></li>
@@ -1418,16 +1418,16 @@ E.g. res.properties.energy.bond can be gotten by calling res.get_multi_key(“pr
 <dd class="field-odd"><p><p>Result object containing properties from the ORCA calculation:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>energy.bond (float)</strong> – total bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.enthalpy (float)</strong> – enthalpy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.entropy (float)</strong> – entropy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.gibbs (float)</strong> – Gibb’s free energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.[method] (float)</strong> - total energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>) at a certain level (HF, MP2, CCSD, …). This is the sum of energy.HF and energy.[method]_corr.</p></li>
-<li><p><strong>energy.[method]_corr (float)</strong> - electron correlation energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>) at a certain level (HF, MP2, CCSD, …).</p></li>
+<li><p><strong>energy.bond (float)</strong> – total bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.enthalpy (float)</strong> – enthalpy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.entropy (float)</strong> – entropy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.gibbs (float)</strong> – Gibb’s free energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.[method] (float)</strong> - total energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>) at a certain level (HF, MP2, CCSD, …). This is the sum of energy.HF and energy.[method]_corr.</p></li>
+<li><p><strong>energy.[method]_corr (float)</strong> - electron correlation energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>) at a certain level (HF, MP2, CCSD, …).</p></li>
 <li><p><strong>vibrations.number_of_modes (int)</strong> – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.</p></li>
 <li><p><strong>vibrations.number_of_imaginary_modes (int)</strong> – number of imaginary vibrational modes for this molecule.</p></li>
-<li><p><strong>vibrations.frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-1\)</span>).</p></li>
-<li><p><strong>vibrations.intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
+<li><p><strong>vibrations.frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-^1\)</span>).</p></li>
+<li><p><strong>vibrations.intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-^1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
 <li><p><strong>vibrations.modes (list[float])</strong> – list of vibrational modes sorted from low frequency to high frequency.</p></li>
 <li><p><strong>vibrations.character (str)</strong> – the PES character of the molecular system. Either “minimum”, “transitionstate” or “saddlepoint(n_imag)”, for 0, 1, n_imag number of imaginary frequencies.</p></li>
 <li><p><strong>t1</strong> - T1 diagnostic for the highest level of correlation chosen. Used to check the validity of the reference wavefunction.</p></li>

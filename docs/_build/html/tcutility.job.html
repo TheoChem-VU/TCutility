@@ -257,7 +257,7 @@
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This module offers you the tools to efficiently and easily build computational workflows with various engines.
-The module defines usefull classes that do all the heavy lifting (input and runscript preparation) in the background, while ensuring correctness of the generated inputs</p>
+The module defines usefull classes that do all the heavy lifting (input and runscript preparation, job submission, etc.) in the background, while ensuring correctness of the generated inputs.</p>
 <section id="job-classes">
 <h3>Job classes<a class="headerlink" href="#job-classes" title="Link to this heading">#</a></h3>
 <p>Jobs are run using subclasses of the <a class="reference internal" href="api/tcutility.job.html#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a> class. The base <a class="reference internal" href="api/tcutility.job.html#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a> class handles setting up directories and running the calculations.</p>
@@ -270,7 +270,7 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <span class="linenos"> 6</span><span class="k">with</span> <span class="n">ADFJob</span><span class="p">()</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
 <span class="linenos"> 7</span>    <span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;example.xyz&#39;</span><span class="p">)</span>
 <span class="linenos"> 8</span>
-<span class="linenos"> 9</span><span class="c1"># you can also not use the context-manager</span>
+<span class="linenos"> 9</span><span class="c1"># you can also run without the use of context-managers</span>
 <span class="linenos">10</span><span class="c1"># in that case, don&#39;t forget to run the job</span>
 <span class="linenos">11</span><span class="n">job</span> <span class="o">=</span> <span class="n">ADFJob</span><span class="p">()</span>
 <span class="linenos">12</span><span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;example.xyz&#39;</span><span class="p">)</span>
@@ -302,10 +302,11 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <span class="linenos">7</span>    <span class="n">job</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="s1">&#39;tc&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Furthermore, the <a class="reference internal" href="api/tcutility.job.html#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a> class detects which platform you are running on (e.g. Bazis or Snellius) and sets default sbatch and module loading settings accordingly.</p>
 </section>
 <section id="job-dependencies">
 <h3>Job dependencies<a class="headerlink" href="#job-dependencies" title="Link to this heading">#</a></h3>
-<p>It is possible to setup dependencies between jobs. This allows you to use the results of one calculation as input for a different calculation.</p>
+<p>It is possible to set up dependencies between jobs. This allows you to use the results of one calculation as input for a different calculation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job</span><span class="w"> </span><span class="kn">import</span> <span class="n">ADFJob</span><span class="p">,</span> <span class="n">CRESTJob</span>
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="c1"># submit and run a CREST calculation</span>
@@ -377,6 +378,8 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.adf.ADFJob" title="tcutility.job.adf.ADFJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADFJob</span></code></a>, regular ADF calculations</p></li>
 <li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob" title="tcutility.job.adf.ADFFragmentJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code></a>, fragment based calculations</p></li>
 <li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.nmr.NMRJob" title="tcutility.job.nmr.NMRJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">NMRJob</span></code></a>, Nuclear Magnetic Resonance (NMR) calculations using ADF</p></li>
+<li><p>BANDJob, coming soon …</p></li>
+<li><p>BANDFragmentJob, coming soon …</p></li>
 </ul>
 </li>
 <li><p><a class="reference external" href="https://www.scm.com/product/dftb/">Density Functional with Tight Binding (DFTB)</a></p>
@@ -395,6 +398,11 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.crest.QCGJob" title="tcutility.job.crest.QCGJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">QCGJob</span></code></a>, QCG explicit solvation search</p></li>
 </ul>
 </li>
+<li><p><a class="reference external" href="https://github.com/grimme-lab/xtb">Extended tight binding (xTB)</a></p>
+<ul>
+<li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.xtb.XTBJob" title="tcutility.job.xtb.XTBJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">XTBJob</span></code></a>, extended tight binding calculations</p></li>
+</ul>
+</li>
 </ul>
 <p>See the <a class="reference external" href="./api/tcutility.job.html">API Documentation</a> for an overview of the Job classes offered by tcutility.job module.</p>
 <div class="admonition note">
@@ -406,7 +414,7 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
 <p>To run calculations related to the Amsterdam Modelling Suite (AMS) you will require a license.</p>
-<p>For ORCA calculations you will need to add the ORCA executable to your PATH.</p>
+<p>For ORCA calculations you will need to add the ORCA executable to your PATH environmental variable.</p>
 </section>
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
