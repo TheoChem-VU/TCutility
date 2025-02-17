@@ -148,7 +148,6 @@ class Connection:
         '''
         log.debug(f'{self}[{self.currdir}]: cd {path}')
         path = path.replace('~', self.home)
-        old_dir = self.currdir
         if path.startswith('/'):
             self.currdir = path
         else:
