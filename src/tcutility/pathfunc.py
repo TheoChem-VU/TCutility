@@ -212,3 +212,34 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
     # sort the return object by whichever key was given
     return results.Result(sorted(ret.items(), key=lambda d: d[1][sort_by]))
 
+
+import glob
+def match2(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
+    # get the number and names of substitutions in the given pattern
+    substitutions = re.findall(r"{(\w+)}", pattern)
+    # the pattern should resolve to words and may contain - and _
+
+    # given the substitutions we build a regex pattern and a glob pattern
+    glob_pattern = pattern
+    for sub in substitutions:
+        pattern = pattern.replace("{" + sub + "}", f"([a-zA-Z0-9_-]+)")
+        glob_pattern = glob_pattern.replace("{" + sub + "}", "*")
+
+    # get all applicable subdirectories
+    subdirs = glob.glob(glob_pattern, root_dir=root)
+
+    # compile a regular expression pattern to match with later
+    regex = re.compile(pattern)
+
+    # go through all applicable subdirectories and retrieve the information we want
+    ret = results.Result()
+    for subdir in subdirs:
+        p = j(root, subdir)
+        re_match = regex.fullmatch(subdir)
+        ret[p] = results.Result(**{substitutions[i]: re_match.group(i + 1) for i in range(len(substitutions))})
+
+    if not sort_by:
+        return ret
+
+    # if requested we sort the results before returning them
+    return results.Result(sorted(ret.items(), key=lambda d: d[1][sort_by]))
