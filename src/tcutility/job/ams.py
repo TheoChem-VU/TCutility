@@ -179,19 +179,20 @@ class AMSJob(Job):
         '''
         Set up the calculation. This will create the working directory and write the runscript and input file for ADF to use.
         '''
-        os.makedirs(self.rundir, exist_ok=True)
+        server = self._select_server()
+        server.mkdir(self.rundir)
 
-        if os.path.exists(self.workdir):
-            for file in os.listdir(self.workdir):
+        if server.path_exists(self.workdir):
+            for file in server.ls(self.workdir):
                 p = os.path.join(self.workdir, file)
                 if p.endswith('.rkf'):
-                    os.remove(p)
+                    server.rm(p)
                 if 'ams.kid' in p:
-                    os.remove(p)
+                    server.rm(p)
                 if p.startswith('t21.'):
-                    os.remove(p)
+                    server.rm(p)
                 if p.startswith('t12.'):
-                    os.remove(p)
+                    server.rm(p)
 
         if not self._molecule and not self._molecule_path and 'atoms' not in self.settings.input.ams.system:
             log.error(f'You did not supply a molecule for this job. Call the {self.__class__.__name__}.molecule method to add one.')
@@ -208,23 +209,23 @@ class AMSJob(Job):
         sett = self.settings.as_plams_settings()
         job = plams.AMSJob(name=self.name, molecule=self._molecule, settings=sett)
 
-        os.makedirs(self.workdir, exist_ok=True)
-        with open(self.inputfile_path, 'w+') as inpf:
+        server.mkdir(self.workdir)
+        with server.open_file(self.inputfile_path) as inpf:
             inpf.write(job.get_input())
 
         # add some preambles specific to the server and ams
-        for preamble in self.server.preamble_defaults.get('AMS', []):
+        for preamble in server.preamble_defaults.get('AMS', []):
             self.add_preamble(preamble)
 
-        with open(self.runfile_path, 'w+') as runf:
+        with server.open_file(self.runfile_path) as runf:
             runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
             runf.write('\n'.join(self._preambles) + '\n\n')
             runf.write(job.get_runscript())
             runf.write('\n'.join(self._postambles))
 
         # in case we are rerunning a calculation we need to remove ams.log
-        if os.path.exists(j(self.workdir, 'ams.log')):
-            os.remove(j(self.workdir, 'ams.log'))
+        if server.path_exists(j(self.workdir, 'ams.log')):
+            server.rm(j(self.workdir, 'ams.log'))
 
         return True
 
@@ -246,11 +247,10 @@ class AMSJob(Job):
             On Snellius: ``2023`` and ``2024``.
             On Bazis: ``2021``, ``2022``, ``2023`` and ``2024``.
         '''
-        server = connect.get_current_server()
-        if server == connect.Local:
+        server = self._select_server()
+        if isinstance(server, connect.Local):
             log.warn('Cannot set AMS version for a local calculation.')
             return
-
         else:
             preamble = server.program_modules['AMS'].get(version, None)
             if preamble is None:
