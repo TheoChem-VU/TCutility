@@ -13,7 +13,7 @@ class Connection:
 
     Args:
         server: the adress of the server you want to connect to. You can prepend the server adress with your username separated from the adress with a ``@`` character.
-            For example: ``Connection('yhk800@bazis.labs.vu.nl')`` is the same as ``Connection('bazis.labs.vu.nl', 'yhk800')``.
+            For example: ``Connection('username@server.address.nl')`` is the same as ``Connection('server.address.nl', 'username')``.
         username: the username used to log in to the remote server.
         key_filename: if you cannot log in using only the ``ssh`` command you can try to give the 
             filename of the private key that matches a public key on the server.
@@ -25,10 +25,10 @@ class Connection:
         .. codeblock::
             from tcutility.connect import Connection
             
-            with Connection('yhordijk@snellius.surf.nl') as snellius:
-                print(snellius.pwd())  # this will print the home-directory of the logged in user
-                snellius.cd('example/path/to/some/data')
-                print(snellius.pwd())  # ~/example/path/to/some/data
+            with Connection('username@server.address.nl') as server:
+                print(server.pwd())  # this will print the home-directory of the logged-in user
+                server.cd('example/path/to/some/data')
+                print(server.pwd())  # ~/example/path/to/some/data
 
     
     .. warning::
