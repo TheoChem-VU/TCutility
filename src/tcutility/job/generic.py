@@ -3,29 +3,29 @@ import shutil
 import stat
 import subprocess as sp
 from typing import List, Union
+import numpy as np
 
 import dictfunc
 from scm import plams
 
-from tcutility import log, molecule, results, slurm, connect
+from tcutility import log, molecule, results, slurm, connect, cache
 from tcutility.environment import OSName, get_os_name
 from tcutility.errors import TCJobError
 
 j = os.path.join
 
-
-def _python_path():
+@cache.cache
+def _python_path(server: connect.Server = connect.Local()):
     """
     Sometimes it is necessary to have the Python path as some environments don't have its path.
     This function attempts to find the Python path and returns it.
     """
-    python = sp.run("which python", shell=True, capture_output=True).stdout.decode().strip()
-
-    if python == "" or not os.path.exists(python):
-        python = sp.run("which python3", shell=True, capture_output=True).stdout.decode().strip()
+    python = server.execute("which python")
+    if python == "" or not server.path_exists(python):
+        python = server.execute("which python3")
 
     # we default to the python executable
-    if python == "" or not os.path.exists(python):
+    if python == "" or not server.path_exists(python):
         python = "python"
 
     return python
@@ -56,6 +56,9 @@ class Job:
         self._preambles = []
         self._postambles = []
         self._postscripts = []
+        self._servers = [connect.Local()]
+        self._server_weights = [1]
+        self._selected_server = None
 
         self.test_mode = test_mode
         self.overwrite = overwrite
@@ -74,9 +77,9 @@ class Job:
         self.delete_on_fail = delete_on_fail if delete_on_fail is None else delete_on_fail
         self.use_slurm = self.use_slurm if use_slurm is None else use_slurm
 
-        self.server = connect.get_current_server()
-        if self.server != connect.Local:
-            self.sbatch(**self.server.sbatch_defaults)
+        # self.server = connect.get_current_server()
+        # if self.server != connect.Local:
+        #     self.sbatch(**self.server.sbatch_defaults)
 
     def __enter__(self):
         return self
@@ -87,6 +90,18 @@ class Job:
             log.error(f'Job set-up failed with exception: {exc_type.__name__}({exc_value}) in File "{fname}", line {exc_tb.tb_lineno}.')
             return True
         self.run()
+
+    def _select_server(self) -> connect.Server:
+        """
+        Select a server to run on based on the currently selected servers and their weights, 
+        this will only choose a server once.
+        """
+        if self._selected_server is None:
+            p = np.array(self._server_weights) / sum(self._server_weights)
+            self._selected_server = np.random.choice(self._servers, p=p)
+            for k, v in self._selected_server.sbatch_defaults.items():
+                self._sbatch.setdefault(k, v)
+        return self._selected_server
 
     def can_skip(self):
         """
@@ -99,8 +114,19 @@ class Job:
             yet for :class:`CRESTJob <tcutility.job.crest.CRESTJob>` and :class:`QCGJob <tcutility.job.crest.QCGJob>`. For the latter objects the job will always be rerun.
             This will be fixed in a later version of TCutility.
         """
-        res = results.quick_status(self.workdir)
-        return not res.status.fatal
+        for server in self._servers:
+            if isinstance(server, connect.Local):
+                res = results.quick_status(self.workdir)
+                if not res.fatal:
+                    return True
+
+            res = server.execute(f'tc read -s {j(server.pwd(), self.rundir, self.name)}')
+            if res in ['SUCCESS', 'SUCCESS(W)', 'COMPLETING', 'CONFIGURING', 'PENDING', 'RUNNING']:
+                return True
+
+        return False
+        # res = results.quick_status(self.workdir)
+        # return not res.fatal
 
     def in_queue(self):
         """
@@ -155,13 +181,14 @@ class Job:
         """
         Run this job. We detect if we are using slurm. If we are we submit this job using sbatch. Otherwise, we will run the job locally.
         """
-        if self.overwrite:
-            shutil.rmtree(self.workdir) if os.path.exists(self.workdir) else None
-            os.makedirs(self.workdir, exist_ok=True)
-
         if self.can_skip():
             log.info(f"Skipping calculation {j(self.rundir, self.name)}, it is already finished or currently pending or running.")
             return
+
+        server = self._select_server()
+        if self.overwrite:
+            server.rmtree(self.workdir)
+            server.mkdir(self.workdir)
 
         # write the post-script calls to the post-ambles:
         if self.delete_on_finish:
@@ -172,7 +199,7 @@ class Job:
             self.add_postamble(f"if [[ `tc read -s {self.workdir}` = FAILED || `tc read -s {self.workdir}` = UNKNOWN ]]; then rm -r {self.workdir}; fi;")
 
         for postscript in self._postscripts:
-            self._postambles.append(f'{_python_path()} {postscript[0]} {" ".join(postscript[1])}')
+            self._postambles.append(f'{_python_path(server)} {postscript[0]} {" ".join(postscript[1])}')
 
         # setup the job and check if it was successfull
         setup_success = self._setup_job()
@@ -180,7 +207,7 @@ class Job:
         if self.test_mode or not setup_success:
             return
 
-        if slurm.has_slurm() and self.use_slurm:
+        if slurm.has_slurm(server) and self.use_slurm:
             # set some default sbatch settings
             if any(option not in self._sbatch for option in ["D", "chdir"]):
                 self._sbatch.setdefault("D", self.workdir)
@@ -191,19 +218,19 @@ class Job:
             self._sbatch.prune()
 
             # submit the job with sbatch
-            sbatch_result = slurm.sbatch(os.path.split(self.runfile_path)[1], **self._sbatch)
+            sbatch_result = slurm.sbatch(os.path.split(self.runfile_path)[1], server=server, **self._sbatch)
 
             # store the slurm job ID
             self.slurm_job_id = sbatch_result.id
             # and write the command to a file so we can rerun it later
-            with open(j(self.workdir, "submit.sh"), "w+") as cmd_file:
+            with server.open_file(j(self.workdir, "submit.sh")) as cmd_file:
                 cmd_file.write(sbatch_result.command)
             # make the submit command executable
-            os.chmod(j(self.workdir, "submit.sh"), stat.S_IRWXU)
+            server.chmod(744, j(self.workdir, "submit.sh"))
 
             # if we requested the job to hold we will wait for the slurm job to finish
             if self.wait_for_finish:
-                slurm.wait_for_job(self.slurm_job_id)
+                slurm.wait_for_job(self.slurm_job_id, server=server)
         else:
             os_name = get_os_name()
 
@@ -267,7 +294,7 @@ class Job:
         """
         The working directory of this job. All important files are written here, for example the input file and runscript.
         """
-        return j(os.path.abspath(self.rundir), self.name)
+        return j(self._select_server().pwd(), self.rundir, self.name)
 
     @property
     def runfile_path(self):
@@ -329,3 +356,13 @@ class Job:
         # and return a new result object
         cp.__dict__.update(results.Result(dictfunc.list_to_dict(lsts)))
         return cp
+
+    def add_server(self, server: connect.Server, weight: float = 1):
+        '''
+        '''
+        if any(isinstance(server, connect.Local) for server in self._servers):
+            self._servers = []
+            self._server_weights = []
+
+        self._servers.append(server)
+        self._server_weights.append(weight)
