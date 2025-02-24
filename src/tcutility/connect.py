@@ -5,6 +5,7 @@ from datetime import datetime
 import subprocess as sp
 import shutil
 import atexit
+import uuid
 
 
 _open_connections = []
@@ -34,7 +35,6 @@ class Connection:
                 server.cd('example/path/to/some/data')
                 print(server.pwd())  # ~/example/path/to/some/data
 
-    
     .. warning::
         Currently we only support logging in using SSH keys. Make sure that you can log in to the remote with SSH keys. 
         There might be server specific instructions on how to enable this authentication method.
@@ -195,6 +195,7 @@ class Connection:
 
     def rmtree(self, dirname):
         self.execute(f'rm -r {dirname}')
+
     def download(self, server_path: str, local_path: str):
         '''
         Download a file from the server and store it on your local machine.
@@ -235,9 +236,29 @@ class Connection:
         test = self.execute(f'test -e {path}; echo $?')
         return test == "0"
 
+    def open_file(self, file_path: str):
+        return ServerFile(file_path, self)
 
     def chmod(self, rights: int, file_path: str):
         self.execute(f'chmod {rights} {file_path}')
+
+
+class ServerFile:
+    def __init__(self, file_path: str, server: Connection):
+        self.server = server
+        self.file_path = file_path
+        self.tmp_path = str(uuid.uuid4())
+        self.file = open(self.tmp_path, mode='w+')
+
+    def __enter__(self):
+        return self.file
+
+    def __exit__(self, *args):
+        self.file.close()
+        self.server.upload(self.tmp_path, self.file_path)
+        os.remove(self.tmp_path)
+
+
 
 class Server(Connection):
     '''
