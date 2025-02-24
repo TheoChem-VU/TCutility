@@ -3,7 +3,10 @@ import os
 from tcutility import log, results, cache
 from datetime import datetime
 import subprocess as sp
+import atexit
 
+
+_open_connections = []
 
 class Connection:
     '''
@@ -61,11 +64,14 @@ class Connection:
         # store the home directory so we can use it later to get absolute paths
         self.home = self.client.exec_command('pwd')[1].read().decode().strip()
         self.currdir = self.home
+        _open_connections.append(self)
         return self
 
     def close(self):
         self.__exit__()
+
     def __exit__(self, *args, **kwargs):
+        _open_connections.remove(self)
         self.client.close()
         log.debug(f'{self}: connection closed.')
 
@@ -304,6 +310,12 @@ def get_current_server() -> Server:
                     return cls
     return Local
 
+
+def _close_all_connections():
+    for conn in _open_connections:
+        conn.__exit__()
+
+atexit.register(_close_all_connections)
 
 if __name__ == '__main__':
     print(get_current_server())
