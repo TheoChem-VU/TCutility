@@ -23,117 +23,117 @@ tcutility.cache module
 
 .. automodule:: tcutility.cache
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.cite module
 ---------------------
 
 .. automodule:: tcutility.cite
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.constants module
 --------------------------
 
 .. automodule:: tcutility.constants
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.environment module
 ----------------------------
 
 .. automodule:: tcutility.environment
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.errors module
 -----------------------
 
 .. automodule:: tcutility.errors
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.formula module
 ------------------------
 
 .. automodule:: tcutility.formula
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.geometry module
 -------------------------
 
 .. automodule:: tcutility.geometry
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.log module
 --------------------
 
 .. automodule:: tcutility.log
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.molecule module
 -------------------------
 
 .. automodule:: tcutility.molecule
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.pathfunc module
 -------------------------
 
 .. automodule:: tcutility.pathfunc
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.report module
 -----------------------
 
 .. automodule:: tcutility.report
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.slurm module
 ----------------------
 
 .. automodule:: tcutility.slurm
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.spell\_check module
 -----------------------------
 
 .. automodule:: tcutility.spell_check
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.timer module
 ----------------------
 
 .. automodule:: tcutility.timer
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Module contents
 ---------------
 
 .. automodule:: tcutility
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
