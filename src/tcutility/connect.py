@@ -130,7 +130,7 @@ class Connection:
                 - **is_hidden (bool)** - whether the path is hidden.
                 - **permissions (str)** - the permissions given to the path.
         '''
-        out = self.execute(f'TZ="UTC" ls -lAFp --full-time{path}')
+        out = self.execute(f'TZ="UTC" ls -lAFp --full-time {path}')
         lines = out.splitlines()
         ret = results.Result()
         for line in lines[1:]:  # first line is a total count
