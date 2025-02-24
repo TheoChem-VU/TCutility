@@ -225,15 +225,59 @@ class Server(Connection):
     preamble_defaults = {}
     program_modules = {}
 
-    def __init__(self, username):
-        super().__init__(self.server, username)
+    def __init__(self, username=None):
+        super().__init__(self.server, username=username)
 
     def __repr__(self):
         return f'{type(self).__name__}({self.username})'
 
 
-class Local(Server):
-    server = ''
+class Local:
+    server = None
+    sbatch_defaults = {}
+    preamble_defaults = {}
+    program_modules = {}
+
+    def __init__(self):
+        self.currdir = os.getcwd()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        ...
+
+    def execute(self, command) -> str:
+        command = command.split()
+
+        with open(os.devnull, "wb") as devnull:
+            output = sp.check_output(command, stderr=devnull).decode()
+
+        return output
+
+    def mkdir(self, dirname):
+        os.makedirs(os.path.join(self.currdir, dirname), exist_ok=True)
+
+    def rm(self, file_path):
+        os.remove(file_path) if os.path.exists(file_path) else ...
+
+    def rmtree(self, dirname):
+        shutil.rmtree(dirname) if os.path.exists(dirname) else ...
+
+    def download(self, server_path: str, local_path: str):
+        shutil.copy2(os.path.join(self.currdir, server_path), os.path.join(self.currdir, local_path))
+
+    def upload(self, local_path: str, server_path: str = None):
+        shutil.copy2(os.path.join(self.currdir, local_path), os.path.join(self.currdir, server_path))
+
+    def path_exists(self, path: str) -> bool:
+        return os.path.exists(os.path.join(self.currdir, path))
+
+    def open_file(self, file_path: str):
+        return open(file_path, mode='w+')
+
+    def chmod(self, rights: int, path: str):
+        os.chmod(os.path.join(self.currdir, path), int(str(rights), base=8))
 
 
 class Bazis(Server):
@@ -299,9 +343,6 @@ def get_current_server() -> Server:
 
     # print(ifconfig)
     for cls in Server.__subclasses__():
-        if cls.__name__ == 'Local':
-            continue
-
         ping = sp.check_output(['ping', cls.server, '-c', '1'])
         for part in ping.decode().split():
             if part.startswith('(') and part.endswith('):'):
