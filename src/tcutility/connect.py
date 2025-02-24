@@ -3,6 +3,7 @@ import os
 from tcutility import log, results, cache
 from datetime import datetime
 import subprocess as sp
+import shutil
 import atexit
 
 
@@ -175,6 +176,20 @@ class Connection:
         log.debug(f'{self}[{self.currdir}]: pwd')
         return self.currdir
 
+    def mkdir(self, dirname):
+        '''
+        Run the ``mkdir`` command.
+
+        Args:
+            dirname: the name of the directory to make. This is relative to the current directory.
+        '''
+        self.execute(f'mkdir -p {dirname}')
+
+    def rm(self, file_path):
+        self.execute(f'rm {file_path}')
+
+    def rmtree(self, dirname):
+        self.execute(f'rm -r {dirname}')
     def download(self, server_path: str, local_path: str):
         '''
         Download a file from the server and store it on your local machine.
@@ -183,9 +198,7 @@ class Connection:
             server_path: the path on the server to the file to download. The path is relative to the current directory.
             local_path: the path on the local machine where the file is stored.
         '''
-        if not server_path.startswith('/'):
-            server_path = os.path.join(self.currdir, server_path)
-        server_path = os.path.normpath(server_path)
+        server_path = os.path.normpath(self.full_path(server_path))
 
         log.debug(f'{self}: download {server_path} {local_path}')
         with self.client.open_sftp() as sftp:
@@ -213,6 +226,13 @@ class Connection:
             sftp.put(local_path, server_path)
         log.debug(f'{self}: upload completed!')
 
+    def path_exists(self, path: str):
+        test = self.execute(f'test -e {path}; echo $?')
+        return test == "0"
+
+
+    def chmod(self, rights: int, file_path: str):
+        self.execute(f'chmod {rights} {file_path}')
 
 class Server(Connection):
     '''
