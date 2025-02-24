@@ -325,6 +325,12 @@ class Local:
     def chmod(self, rights: int, path: str):
         os.chmod(os.path.join(self.currdir, path), int(str(rights), base=8))
 
+    def pwd(self):
+        return os.getcwd()
+
+    def ls(self, dirname):
+        return os.listdir(dirname)
+
 
 class Bazis(Server):
     '''
