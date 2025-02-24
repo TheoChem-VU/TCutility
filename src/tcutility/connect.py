@@ -49,6 +49,9 @@ class Connection:
         if isinstance(key_filename, str):
             self.key_filename = os.path.abspath(os.path.expanduser(key_filename))
 
+    def open(self):
+        self.__enter__()
+
     def __enter__(self):
         log.debug(f'{self}: opening connection ...')
         self.client = paramiko.SSHClient()
@@ -60,6 +63,8 @@ class Connection:
         self.currdir = self.home
         return self
 
+    def close(self):
+        self.__exit__()
     def __exit__(self, *args, **kwargs):
         self.client.close()
         log.debug(f'{self}: connection closed.')
