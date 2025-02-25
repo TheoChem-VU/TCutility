@@ -19,8 +19,8 @@ def has_slurm(server: connect.Server = connect.Local()) -> bool:
         command = "which sbatch" if platform.system() != "Windows" else "where sbatch"
 
         # we do not want this function to print anything when it does not find sbatch
-        with open(os.devnull, "wb") as devnull:
-            output = server.execute(command)
+        with open(os.devnull, "wb"):
+            server.execute(command)
 
         # if it runs without error, we have access to slurm
         return True

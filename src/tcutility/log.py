@@ -374,7 +374,7 @@ def debug(message: str, level: int = 10, caller_level: int = 2):
     if add_caller_name:
         log(f"[DEBUG]({caller_name(caller_level)}): " + message, level=level)
     else:
-        log(f"[DEBUG] " + message, level=level)
+        log("[DEBUG] " + message, level=level)
 
 
 def info(message: str, level: int = 20, caller_level: int = 2):
@@ -384,7 +384,7 @@ def info(message: str, level: int = 20, caller_level: int = 2):
     if add_caller_name:
         log(f"[INFO]({caller_name(caller_level)}): " + message, level=level)
     else:
-        log(f"[INFO] " + message, level=level)
+        log("[INFO] " + message, level=level)
 
 
 def warn(message: str, level: int = 30, caller_level: int = 2):
@@ -394,7 +394,7 @@ def warn(message: str, level: int = 30, caller_level: int = 2):
     if add_caller_name:
         log(f"[WARNING]({caller_name(caller_level)}): " + message, level=level)
     else:
-        log(f"[WARNING] " + message, level=level)
+        log("[WARNING] " + message, level=level)
 
 
 
@@ -405,7 +405,7 @@ def error(message: str, level: int = 40, caller_level: int = 2):
     if add_caller_name:
         log(f"[ERROR]({caller_name(caller_level)}): " + message, level=level)
     else:
-        log(f"[ERROR] " + message, level=level)
+        log("[ERROR] " + message, level=level)
 
 
 
@@ -416,7 +416,7 @@ def critical(message: str, level: int = 50, caller_level: int = 2):
     if add_caller_name:
         log(f"[CRITICAL]({caller_name(caller_level)}): " + message, level=level)
     else:
-        log(f"[CRITICAL] " + message, level=level)
+        log("[CRITICAL] " + message, level=level)
 
 
 

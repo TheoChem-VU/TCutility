@@ -1,5 +1,4 @@
 import os
-import shutil
 import stat
 import subprocess as sp
 from typing import List, Union
