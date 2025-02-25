@@ -79,7 +79,7 @@ class Connection:
     def __repr__(self):
         return f'Connection({self.username}@{self.server})'
 
-    def full_path(path: str) -> str:
+    def full_path(self, path: str) -> str:
         if path.startswith('/'):
             return path
         return os.path.join(self.currdir, path)
