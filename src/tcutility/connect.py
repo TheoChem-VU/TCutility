@@ -341,24 +341,28 @@ class Bazis(Server):
         'p': 'tc',
         'n_tasks_per_node': 16,
         'N': 1,
+        'mem': 250000,
     }
     preamble_defaults = {
         'AMS': [
-            'export SCM_TMPDIR="/scratch/$SLURM_JOBID"'
+            'export SCM_TMPDIR="/scratch/$SLURM_JOBID"',
+            "srun mkdir -p $SCM_TMPDIR",
+            "chmod 700 $SCM_TMPDIR",
         ]
     }
     program_modules = {
         'AMS': {
-            '2021-zen': 'module load shared ams/2021.102-zen',
             '2021': 'module load shared ams/2021.102',
-            '2022-zen': 'module load shared ams/2022.103-zen',
             '2022': 'module load shared ams/2022.103',
-            '2023-zen': 'module load shared ams/2023.101-zen',
             '2023': 'module load shared ams/2023.101',
-            '2024-zen': 'module load shared ams/2024.102-zen',
             '2024': 'module load shared ams/2024.102',
             'latest': 'module load shared ams/2024.102',
         }
+    }
+    postamble_defaults = {
+        'AMS': [
+            "srun rm -rf $SCM_TMPDIR",
+        ]
     }
 
 
