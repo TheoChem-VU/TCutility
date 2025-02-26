@@ -217,6 +217,10 @@ class AMSJob(Job):
         for preamble in server.preamble_defaults.get('AMS', []):
             self.add_preamble(preamble)
 
+        # add some postambles specific to the server and ams
+        for postamble in server.postamble_defaults.get('AMS', []):
+            self.add_postamble(postamble)
+
         with server.open_file(self.runfile_path) as runf:
             runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
             runf.write('\n'.join(self._preambles) + '\n\n')
