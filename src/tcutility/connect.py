@@ -374,7 +374,8 @@ class Snellius(Server):
     sbatch_defaults = {
         'p': 'rome',
         't': '120:00:00',
-        'n': 16
+        'n_tasks_per_node': 16,
+        'N': 1,
     }
     program_modules = {
         'AMS': {
