@@ -339,7 +339,8 @@ class Bazis(Server):
     server = 'bazis.labs.vu.nl'
     sbatch_defaults = {
         'p': 'tc',
-        'n': 16,
+        'n_tasks_per_node': 16,
+        'N': 1,
     }
     preamble_defaults = {
         'AMS': [
