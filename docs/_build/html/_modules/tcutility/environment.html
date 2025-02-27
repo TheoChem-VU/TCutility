@@ -244,6 +244,7 @@
   <h1>Source code for tcutility.environment</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">auto</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility</span><span class="w"> </span><span class="kn">import</span> <span class="n">connect</span>
 
 
 <div class="viewcode-block" id="OSName">
@@ -261,10 +262,14 @@
 
 <div class="viewcode-block" id="get_os_name">
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.environment.get_os_name">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_os_name</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">OSName</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_os_name</span><span class="p">(</span><span class="n">server</span><span class="p">:</span> <span class="n">connect</span><span class="o">.</span><span class="n">Server</span> <span class="o">=</span> <span class="n">connect</span><span class="o">.</span><span class="n">Local</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="n">OSName</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the name of the operating system. Returns a value from the :class:`OSName &lt;tcutility.environment.OSName&gt;` enumeration.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># if we are connected to a server we are on linux</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">connect</span><span class="o">.</span><span class="n">Local</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OSName</span><span class="o">.</span><span class="n">LINUX</span>
+
     <span class="n">os_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span>
     <span class="k">if</span> <span class="n">os_name</span> <span class="o">==</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">OSName</span><span class="o">.</span><span class="n">WINDOWS</span>

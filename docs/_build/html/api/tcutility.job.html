@@ -796,6 +796,18 @@ Use this option when you experience a lot of numerical noise.</p></li>
 <dd><p>The default file path for output molecules when running ADF calculations. It will not be created for singlepoint calculations.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.ams.AMSJob.use_version">
+<span class="sig-name descname"><span class="pre">use_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'latest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob.use_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob.use_version" title="Link to this definition">#</a></dt>
+<dd><p>Set the version of AMS to use for the calculation.
+Which versions are available depends on the location you are currently in.
+We currently support the following versions:</p>
+<blockquote>
+<div><p>On Snellius: <code class="docutils literal notranslate"><span class="pre">2023</span></code> and <code class="docutils literal notranslate"><span class="pre">2024</span></code>.
+On Bazis: <code class="docutils literal notranslate"><span class="pre">2021</span></code>, <code class="docutils literal notranslate"><span class="pre">2022</span></code>, <code class="docutils literal notranslate"><span class="pre">2023</span></code> and <code class="docutils literal notranslate"><span class="pre">2024</span></code>.</p>
+</div></blockquote>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -1134,6 +1146,11 @@ E.g. for ADF it will be output.xyz in the workdir for optimization jobs.</p>
 <span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/generic.html#Job.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.generic.Job.copy" title="Link to this definition">#</a></dt>
 <dd><p>Make and return a copy of this object.</p>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.generic.Job.add_server">
+<span class="sig-name descname"><span class="pre">add_server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/generic.html#Job.add_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.generic.Job.add_server" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1491,6 +1508,7 @@ E.g. for ADF it will be output.xyz in the workdir for optimization jobs.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.charge"><code class="docutils literal notranslate"><span class="pre">AMSJob.charge()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.electric_field"><code class="docutils literal notranslate"><span class="pre">AMSJob.electric_field()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">AMSJob.output_mol_path</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.use_version"><code class="docutils literal notranslate"><span class="pre">AMSJob.use_version()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1547,6 +1565,7 @@ E.g. for ADF it will be output.xyz in the workdir for optimization jobs.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.output_mol_path"><code class="docutils literal notranslate"><span class="pre">Job.output_mol_path</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.molecule"><code class="docutils literal notranslate"><span class="pre">Job.molecule()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.copy"><code class="docutils literal notranslate"><span class="pre">Job.copy()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.generic.Job.add_server"><code class="docutils literal notranslate"><span class="pre">Job.add_server()</span></code></a></li>
 </ul>
 </li>
 </ul>

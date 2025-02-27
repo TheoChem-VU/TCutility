@@ -34,6 +34,14 @@ tcutility.cite module
    :show-inheritance:
    :undoc-members:
 
+tcutility.connect module
+------------------------
+
+.. automodule:: tcutility.connect
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 tcutility.constants module
 --------------------------
 
