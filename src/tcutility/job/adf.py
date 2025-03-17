@@ -877,6 +877,9 @@ class DensfJob(Job):
             if len(self._sfos) > 0:
                 inpf.write("Orbitals SFO\n")
                 for orb in self._sfos:
+                    if orb.spin in ['A', 'B']:
+                        spin = {'A': 'alpha', 'B': 'beta'}[orb.spin]
+                        inpf.write(f"    {spin}\n")
                     inpf.write(f"    {orb.symmetry} {orb.index}\n")
                 inpf.write("END\n")
 
