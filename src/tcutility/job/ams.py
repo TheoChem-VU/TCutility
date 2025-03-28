@@ -248,8 +248,9 @@ class AMSJob(Job):
         Set the version of AMS to use for the calculation.
         Which versions are available depends on the location you are currently in.
         We currently support the following versions:
-            On Snellius: ``2023`` and ``2024``.
-            On Bazis: ``2021``, ``2022``, ``2023`` and ``2024``.
+
+            -    On Snellius: ``2023`` and ``2024``.
+            -    On Bazis: ``2021``, ``2022``, ``2023`` and ``2024``.
         '''
         server = self._select_server()
         if isinstance(server, connect.Local):

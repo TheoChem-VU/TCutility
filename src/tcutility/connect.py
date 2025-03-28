@@ -27,7 +27,8 @@ class Connection:
         This class is a context manager and the ``with``-syntax should be used to open and automatically close connections.
         For example, to open a connection to the Snellius supercomputer we use the following code:
 
-        .. codeblock::
+        .. code-block::
+        
             from tcutility.connect import Connection
             
             with Connection('username@server.address.nl') as server:
