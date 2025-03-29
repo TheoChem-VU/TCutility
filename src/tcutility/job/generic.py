@@ -320,9 +320,79 @@ class Job:
     def molecule(self, mol: Union[str, plams.Molecule, plams.Atom, List[plams.Atom]]):
         """
         Add a molecule to this calculation in various formats.
+        If the molecule has a populated ``{mol}.flags.charge``, ``{mol}.flags.spin_polarization``
+        or ``{mol}.flags.solvent`` object. This method will automatically try to apply them to this
+        job.
 
         Args:
-            mol: the molecule to read, can be a path (str). If the path exists already we read it. If it does not exist yet, it will be read in later. mol can also be a plams.Molecule object or a single or a list of plams.Atom objects.
+            mol: the molecule to read, can be a path (str). 
+                If the path exists already we read it. If it does not exist yet, 
+                it will be read in later. mol can also be a ``plams.Molecule`` object 
+                or a single ``plams.Atom`` object or a list of ``plams.Atom`` objects.
+
+        Examples:
+            
+            .. tabs::
+
+                .. group-tab:: Job script
+
+                    .. code-block::
+
+                        import tcutility
+
+                        with tcutility.jobs.ADFJob() as job:
+                            job.molecule('example.xyz')
+                            job.charge(1)
+                            job.spin_polarization(-1)
+                            job.solvent('water')
+
+                .. group-tab:: example.xyz
+
+                    .. code-block::
+
+                        8
+
+                        N       0.00000000       0.00000000      -0.81474153
+                        B      -0.00000000      -0.00000000       0.83567034
+                        H       0.47608351      -0.82460084      -1.14410295
+                        H       0.47608351       0.82460084      -1.14410295
+                        H      -0.95216703       0.00000000      -1.14410295
+                        H      -0.58149793       1.00718395       1.13712667
+                        H      -0.58149793      -1.00718395       1.13712667
+                        H       1.16299585      -0.00000000       1.13712667
+
+            This is equivalent to 
+
+            .. tabs::
+
+                .. group-tab:: Job script
+
+                    .. code-block::
+
+                        import tcutility
+
+                        with tcutility.jobs.ADFJob() as job:
+                            job.molecule('example2.xyz')
+
+
+                .. group-tab:: example2.xyz
+
+                    .. code-block::
+
+                        8
+
+                        N       0.00000000       0.00000000      -0.81474153
+                        B      -0.00000000      -0.00000000       0.83567034
+                        H       0.47608351      -0.82460084      -1.14410295
+                        H       0.47608351       0.82460084      -1.14410295
+                        H      -0.95216703       0.00000000      -1.14410295
+                        H      -0.58149793       1.00718395       1.13712667
+                        H      -0.58149793      -1.00718395       1.13712667
+                        H       1.16299585      -0.00000000       1.13712667
+
+                        charge = 1
+                        spin_polarization = -1
+                        solvent = water
         """
         if isinstance(mol, plams.Molecule):
             self._molecule = mol
@@ -341,6 +411,21 @@ class Job:
             self._molecule = plams.Molecule()
             self._molecule.add_atom(mol)
 
+        # check for settings in the molecule
+        if isinstance(mol, plams.Molecule):
+            if not hasattr(mol, 'flags'):
+                return
+            if mol.flags.charge:
+                if callable(getattr(self, 'charge', None)):
+                    self.charge(mol.flags.charge)
+            if mol.flags.spin_polarization:
+                if callable(getattr(self, 'spin_polarization', None)):
+                    self.spin_polarization(mol.flags.charge)
+            if mol.flags.solvent:
+                if callable(getattr(self, 'solvent', None)):
+                    self.charge(mol.flags.solvent)
+
+
     def copy(self):
         """
         Make and return a copy of this object.
@@ -357,8 +442,14 @@ class Job:
         return cp
 
     def add_server(self, server: connect.Server, weight: float = 1):
-        '''
-        '''
+        """
+        Add a server to connect to and run the calculation on.
+        Job statuses will also be checked on the server.
+
+        Args:
+            server: the server to connect to.
+            weight: how much weight is given to selecting this server.
+        """
         if any(isinstance(server, connect.Local) for server in self._servers):
             self._servers = []
             self._server_weights = []
