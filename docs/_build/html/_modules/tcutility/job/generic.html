@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.job.generic &#8212; TCutility v0.15.5 documentation</title>
+    <title>tcutility.job.generic &#8212; TCutility v0.16.0 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=1cb45737"></script>
+    <script src="../../../_static/documentation_options.js?v=d6c21762"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -592,9 +592,79 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">molecule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mol</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">]]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a molecule to this calculation in various formats.</span>
+<span class="sd">        If the molecule has a populated ``{mol}.flags.charge``, ``{mol}.flags.spin_polarization``</span>
+<span class="sd">        or ``{mol}.flags.solvent`` object. This method will automatically try to apply them to this</span>
+<span class="sd">        job.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            mol: the molecule to read, can be a path (str). If the path exists already we read it. If it does not exist yet, it will be read in later. mol can also be a plams.Molecule object or a single or a list of plams.Atom objects.</span>
+<span class="sd">            mol: the molecule to read, can be a path (str). </span>
+<span class="sd">                If the path exists already we read it. If it does not exist yet, </span>
+<span class="sd">                it will be read in later. mol can also be a ``plams.Molecule`` object </span>
+<span class="sd">                or a single ``plams.Atom`` object or a list of ``plams.Atom`` objects.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            </span>
+<span class="sd">            .. tabs::</span>
+
+<span class="sd">                .. group-tab:: Job script</span>
+
+<span class="sd">                    .. code-block::</span>
+
+<span class="sd">                        import tcutility</span>
+
+<span class="sd">                        with tcutility.jobs.ADFJob() as job:</span>
+<span class="sd">                            job.molecule(&#39;example.xyz&#39;)</span>
+<span class="sd">                            job.charge(1)</span>
+<span class="sd">                            job.spin_polarization(-1)</span>
+<span class="sd">                            job.solvent(&#39;water&#39;)</span>
+
+<span class="sd">                .. group-tab:: example.xyz</span>
+
+<span class="sd">                    .. code-block::</span>
+
+<span class="sd">                        8</span>
+
+<span class="sd">                        N       0.00000000       0.00000000      -0.81474153</span>
+<span class="sd">                        B      -0.00000000      -0.00000000       0.83567034</span>
+<span class="sd">                        H       0.47608351      -0.82460084      -1.14410295</span>
+<span class="sd">                        H       0.47608351       0.82460084      -1.14410295</span>
+<span class="sd">                        H      -0.95216703       0.00000000      -1.14410295</span>
+<span class="sd">                        H      -0.58149793       1.00718395       1.13712667</span>
+<span class="sd">                        H      -0.58149793      -1.00718395       1.13712667</span>
+<span class="sd">                        H       1.16299585      -0.00000000       1.13712667</span>
+
+<span class="sd">            This is equivalent to </span>
+
+<span class="sd">            .. tabs::</span>
+
+<span class="sd">                .. group-tab:: Job script</span>
+
+<span class="sd">                    .. code-block::</span>
+
+<span class="sd">                        import tcutility</span>
+
+<span class="sd">                        with tcutility.jobs.ADFJob() as job:</span>
+<span class="sd">                            job.molecule(&#39;example2.xyz&#39;)</span>
+
+
+<span class="sd">                .. group-tab:: example2.xyz</span>
+
+<span class="sd">                    .. code-block::</span>
+
+<span class="sd">                        8</span>
+
+<span class="sd">                        N       0.00000000       0.00000000      -0.81474153</span>
+<span class="sd">                        B      -0.00000000      -0.00000000       0.83567034</span>
+<span class="sd">                        H       0.47608351      -0.82460084      -1.14410295</span>
+<span class="sd">                        H       0.47608351       0.82460084      -1.14410295</span>
+<span class="sd">                        H      -0.95216703       0.00000000      -1.14410295</span>
+<span class="sd">                        H      -0.58149793       1.00718395       1.13712667</span>
+<span class="sd">                        H      -0.58149793      -1.00718395       1.13712667</span>
+<span class="sd">                        H       1.16299585      -0.00000000       1.13712667</span>
+
+<span class="sd">                        charge = 1</span>
+<span class="sd">                        spin_polarization = -1</span>
+<span class="sd">                        solvent = water</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="n">mol</span>
@@ -611,7 +681,22 @@
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+
+        <span class="c1"># check for settings in the molecule</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="s1">&#39;flags&#39;</span><span class="p">):</span>
+                <span class="k">return</span>
+            <span class="k">if</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">charge</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;charge&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">charge</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">spin_polarization</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;spin_polarization&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">spin_polarization</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">charge</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">solvent</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;solvent&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">solvent</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="Job.copy">
@@ -635,8 +720,14 @@
 <div class="viewcode-block" id="Job.add_server">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.generic.Job.add_server">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_server</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">:</span> <span class="n">connect</span><span class="o">.</span><span class="n">Server</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a server to connect to and run the calculation on.</span>
+<span class="sd">        Job statuses will also be checked on the server.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            server: the server to connect to.</span>
+<span class="sd">            weight: how much weight is given to selecting this server.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">connect</span><span class="o">.</span><span class="n">Local</span><span class="p">)</span> <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_servers</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_servers</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_server_weights</span> <span class="o">=</span> <span class="p">[]</span>
