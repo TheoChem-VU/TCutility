@@ -193,7 +193,7 @@ class Job:
 
         if self.delete_on_fail:
             self.add_postamble("# this will delete the calculation if it failed")
-            self.add_postamble(f"if [[ `tc read -s {self.workdir}` = FAILED || `tc read -s {self.workdir}` = UNKNOWN ]]; then rm -r {self.workdir}; fi;")
+            self.add_postamble(f"if [[ `tcutility read -s {self.workdir}` = FAILED || `tcutility read -s {self.workdir}` = UNKNOWN ]]; then rm -r {self.workdir}; fi;")
 
         for postscript in self._postscripts:
             self._postambles.append(f'{_python_path(server)} {postscript[0]} {" ".join(postscript[1])}')
