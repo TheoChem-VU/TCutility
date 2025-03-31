@@ -1,5 +1,6 @@
 from tcutility import geometry
 import numpy as np
+from scm import plams
 
 
 def test_rotation_matrix():
@@ -97,6 +98,40 @@ def test_transform2():
 
     # check if applying the transformation matrix to X yields Y
     assert np.isclose(Tkabsch(X), Y).all()
+
+
+def test_transform_mol():
+    inp = """H       0.00000000       0.00000000       0.38278869
+             H       0.00000000       0.00000000      -0.38278869"""
+
+    mol = plams.Molecule()
+    for line in inp.splitlines():
+        symbol, x, y, z = line.strip().split()
+        mol.add_atom(plams.Atom(symbol=symbol, coords=[x, y, z]))
+
+    # translate the molecule
+    T = geometry.Transform()
+    T.translate([0, 0, 0.38278869])
+
+    # check if the second atom is centered on the origin
+    assert T(mol).atoms[1].coords == (0.0, 0.0, 0.0)
+
+
+def test_transform_mol2():
+    inp = """H       0.00000000       0.00000000       0.38278869
+             H       0.00000000       0.00000000      -0.38278869"""
+
+    mol = plams.Molecule()
+    for line in inp.splitlines():
+        symbol, x, y, z = line.strip().split()
+        mol.add_atom(plams.Atom(symbol=symbol, coords=[x, y, z]))
+
+    # reflect the molecule on the yz-plane
+    T = geometry.Transform()
+    T.reflect([0, 0, 1])
+    # check if the second atom is not in the first atoms position
+    assert T(mol).atoms[1].coords == (0.0, 0.0, 0.38278869)
+
 
 
 if __name__ == "__main__":

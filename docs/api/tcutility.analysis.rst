@@ -10,10 +10,21 @@ Subpackages
    tcutility.analysis.vdd
    tcutility.analysis.vibration
 
+Submodules
+----------
+
+tcutility.analysis.pyfrag module
+--------------------------------
+
+.. automodule:: tcutility.analysis.pyfrag
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 Module contents
 ---------------
 
 .. automodule:: tcutility.analysis
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

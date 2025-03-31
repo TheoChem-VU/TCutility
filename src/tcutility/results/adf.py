@@ -5,7 +5,7 @@ from scm.plams import KFReader
 
 from tcutility import constants, ensure_list
 from tcutility.results import Result, cache
-from tcutility.typing import arrays
+from tcutility.tc_typing import arrays
 
 # ------------------------------------------------------------- #
 # ------------------- Calculation Settings -------------------- #
@@ -119,6 +119,18 @@ def _read_vdd_charges(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
     return np.array([float((scf - ini)) for scf, ini in zip(vdd_scf, vdd_ini)])
 
 
+def _read_vdd_charges_initial(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
+    """Returns the initial VDD charges from the KFReader object."""
+    vdd_ini: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_initial Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
+    return np.array(vdd_ini)
+
+
+def _read_vdd_charges_SCF(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
+    """Returns the SCF VDD charges from the KFReader object."""
+    vdd_scf: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_SCF Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
+    return np.array(vdd_scf)
+
+
 def _get_vdd_charges_per_irrep(results_type: KFReader) -> Dict[str, arrays.Array1D[np.float64]]:
     """Extracts the Voronoi Deformation Density charges from the fragment calculation sorted per irrep."""
     symlabels = str(results_type.read("Symmetry", "symlab")).split()  # split on whitespace
@@ -163,9 +175,13 @@ def get_properties(info: Result) -> Result:
         :Result object containing properties from the ADF calculation:
 
             - **energy.bond (float)** – bonding energy (|kcal/mol|).
-            - **energy.elstat (float)** – total electrostatic potential (|kcal/mol|).
-            - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label (|kcal/mol|).
+            - **energy.elstat.total (float)** – total electrostatic potential (|kcal/mol|).
+            - **energy.elstat.Vee (float)** – electron-electron repulsive term of the electrostatic potential (|kcal/mol|).
+            - **energy.elstat.Ven (float)** – electron-nucleus attractive term of the electrostatic potential (|kcal/mol|).
+            - **energy.elstat.Vnn (float)** – nucleus-nucleus repulsive term of the electrostatic potential (|kcal/mol|).
+            - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label and correction energy(|kcal/mol|).
             - **energy.orbint.{symmetry label} (float)** – orbital interaction energy from a specific symmetry label (|kcal/mol|).
+            - **energy.orbint.correction (float)** - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (|kcal/mol|)
             - **energy.pauli.total (float)** – total Pauli repulsion energy (|kcal/mol|).
             - **energy.dispersion (float)** – total dispersion energy (|kcal/mol|).
             - **energy.gibbs (float)** – Gibb's free energy (|kcal/mol|). Only populated if vibrational modes were calculated.
@@ -182,6 +198,10 @@ def get_properties(info: Result) -> Result:
             - **s2** - expectation value of the :math:`S^2` operator.
             - **s2_expected** - ideal expectation value of the :math:`S^2` operator. For restricted calculations this should always equal ``s2``.
             - **spin_contamination** - the amount of spin-contamination observed in this calculation. It is equal to (s2 - s2_expected) / (s2_expected). Ideally this value should be below 0.1.
+            - **dipole_vector** - the dipole moment vector.
+            - **dipole_moment** - the magnitude of the dipole moment vector.
+            - **quadrupole_moment** - the quadrupole moment vector.
+            - **dens_at_atom** - the electron density at each atom.
     """
 
     assert info.engine == "adf", f"This function reads ADF data, not {info.engine} data"
@@ -197,11 +217,47 @@ def get_properties(info: Result) -> Result:
 
     # read energies (given in Ha in rkf files)
     ret.energy.bond = reader_adf.read("Energy", "Bond Energy") * constants.HA2KCALMOL
-    ret.energy.elstat = reader_adf.read("Energy", "elstat") * constants.HA2KCALMOL
+
+    # total electrostatic potential
+    ret.energy.elstat.total = reader_adf.read("Energy", "elstat") * constants.HA2KCALMOL
+
+    # we can further decompose elstat if it was enabled
+    if info.files.out:
+        with open(info.files.out) as output:
+            lines = output.readlines()
+
+        skip_next = -1
+        for line in lines:
+            if "Electrostatic Interaction Energies" in line:
+                skip_next = 4
+                continue
+            if skip_next == 0:
+                f1, f2, Vee, Ven, Vnn, total = line.strip().split()
+                ret.energy.elstat.Vee = float(Vee) * constants.HA2KCALMOL
+                ret.energy.elstat.Ven = float(Ven) * constants.HA2KCALMOL
+                ret.energy.elstat.Vnn = float(Vnn) * constants.HA2KCALMOL
+            skip_next -= 1
+
+
+    # print(info.files)
+
+    # read the total orbital interaction energy
     ret.energy.orbint.total = reader_adf.read("Energy", "Orb.Int. Total") * constants.HA2KCALMOL
+
+    # to calculate the orbital interaction term:
+    # the difference between the total and the sum of the symmetrized interaction energies should be calculated
+    # therefore the correction is first set equal to the total orbital interaction.
+    ret.energy.orbint.correction = ret.energy.orbint.total
+
+    # looping over every symlabel, to get the energy per symmetry label
     for symlabel in info.adf.symmetry.labels:
         symlabel = symlabel.split(":")[0]
         ret.energy.orbint[symlabel] = reader_adf.read("Energy", f"Orb.Int. {symlabel}") * constants.HA2KCALMOL
+
+        # the energy per symmetry label is abstracted from the "total orbital interaction"
+        # obtaining the correction to the orbital interaction term
+        ret.energy.orbint.correction -= ret.energy.orbint[symlabel]
+
     ret.energy.pauli.total = reader_adf.read("Energy", "Pauli Total") * constants.HA2KCALMOL
     ret.energy.dispersion = reader_adf.read("Energy", "Dispersion Energy") * constants.HA2KCALMOL
 
@@ -217,6 +273,8 @@ def get_properties(info: Result) -> Result:
     # read the Voronoi Deformation Charges Deformation (VDD) before and after SCF convergence (being "inital" and "SCF")
     try:
         ret.vdd.charges = _read_vdd_charges(reader_adf)
+        ret.vdd.charges_initial = _read_vdd_charges_initial(reader_adf)
+        ret.vdd.charges_SCF = _read_vdd_charges_SCF(reader_adf)
         ret.vdd.update(_get_vdd_charges_per_irrep(reader_adf))
     except KeyError:
         pass
@@ -226,8 +284,8 @@ def get_properties(info: Result) -> Result:
     S = info.adf.spin_polarization * 1 / 2
     ret.s2_expected = S * (S + 1)
     # this is the real expectation value
-    if ('Properties', 'S2calc') in reader_adf:
-        ret.s2 = reader_adf.read('Properties', 'S2calc')
+    if ("Properties", "S2calc") in reader_adf:
+        ret.s2 = reader_adf.read("Properties", "S2calc")
     else:
         ret.s2 = 0
 
@@ -237,6 +295,11 @@ def get_properties(info: Result) -> Result:
         ret.spin_contamination = (ret.s2 - ret.s2_expected) / (ret.s2_expected)
     else:
         ret.spin_contamination = 0
+
+    ret.dipole_vector = reader_adf.read("Properties", "Dipole")
+    ret.dipole_moment = np.linalg.norm(ret.dipole_vector)
+    ret.quadrupole_moment = reader_adf.read("Properties", "Quadrupole")
+    ret.dens_at_atom = ensure_list(reader_adf.read("Properties", "Electron Density at Nuclei"))
 
     return ret
 

@@ -45,10 +45,10 @@ def parse_element(val):
     # if it is not an int it should be a string
     if val.lower() in _element_order:
         # first try to get it in the element name list
-        return _element_order.index(val.lower()) + 1
+        return _element_order.index(val.lower())
     if val in _symbol_order:
         # alternatively try to get it in the symbol list
-        return _symbol_order.index(val) + 1
+        return _symbol_order.index(val)
     raise KeyError(f'Element "{val}" not parsable.')
 
 
@@ -63,16 +63,22 @@ def radius(element):
     return _radii.get(num)
 
 
-def color(element):
+def color(element, mode: str = 'rgb'):
     '''
     Args:
         element: the symbol, name or atom number of the element. See :func:`parse_element`.
+        mode: the type of color to return. Can be `rgb` or `hex`.
 
     Return:
-        The standard CPK colors of the elements, up to element 109.
+        The standard CPK colors of the elements, up to element 109. 
+        If the mode is `rgb` returns a tuple of RGB values between `0` and `255`.
     '''
     num = parse_element(element)
-    return _colors[num]
+    c = _colors[num]
+    if mode == 'rgb':
+        return c
+    if mode == 'hex':
+        return '#%02x%02x%02x' % tuple(c)
 
 
 def atom_number(element):
@@ -81,13 +87,13 @@ def atom_number(element):
 
 def symbol(element):
     num = parse_element(element)
-    return _symbol_order[num - 1]
+    return _symbol_order[num]
 
 
 def element(element):
     num = parse_element(element)
-    return _element_order[num - 1]
+    return _element_order[num]
 
 
 if __name__ == "__main__":
-    print(symbol(2))
+    print(symbol(0))

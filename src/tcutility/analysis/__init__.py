@@ -1,1 +1,1 @@
-﻿
+from . import pyfrag  # noqa

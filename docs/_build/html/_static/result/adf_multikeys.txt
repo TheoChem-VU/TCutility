@@ -1,4 +1,5 @@
 files.root
+files.out
 files.err
 files.log
 files.adf.rkf
@@ -56,8 +57,9 @@ adf.charge
 adf.spin_polarization
 adf.multiplicity
 properties.energy.bond
-properties.energy.elstat
+properties.energy.elstat.total
 properties.energy.orbint.total
+properties.energy.orbint.correction
 properties.energy.orbint.AA
 properties.energy.orbint.AAA
 properties.energy.pauli.total
@@ -72,9 +74,15 @@ properties.vibrations.number_of_imag_modes
 properties.vibrations.character
 properties.vibrations.modes
 properties.vdd.charges
+properties.vdd.charges_initial
+properties.vdd.charges_SCF
 properties.s2_expected
 properties.s2
 properties.spin_contamination
+properties.dipole_vector
+properties.dipole_moment
+properties.quadrupole_moment
+properties.dens_at_atom
 level.xc.functional
 level.xc.category
 level.xc.dispersion

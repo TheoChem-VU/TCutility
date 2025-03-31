@@ -22,7 +22,7 @@ In addition, the VDD manager module needs to be loaded which is the interface to
 
     For this example we use calculations found in the `VDD test directory`_ of the tcutility package.
     We assume that the you place the VDD test directory in the same directory as this script.
-    See the `example python script <../../../../examples/vdd_analysis.py>`_ for a direct implementation
+    See the `example python script <https://github.com/TheoChem-VU/TCutility/blob/main/examples/vdd_analysis.py>`_ for a direct implementation
 
 .. code-block:: python
 
@@ -99,7 +99,7 @@ To visualize the VDD charges further, the charge for each atom can be plotted in
     # Plot the VDD charges per atom in a bar graph
     vdd_manager.plot_vdd_charges_per_atom(output_dir)
 
-.. image:: ../_static/analysis/VDD/VDD_charges_per_atom.png
+.. image:: ../_static/analysis/VDD/vdd_charges_per_atom.png
     :align: center
 
 
@@ -113,7 +113,7 @@ Finally, multiple |VDDmanager| objects can be made and written to a single .txt 
     vdd_managers = [manager.create_vdd_charge_manager(name=calc_dir.name, results=res) for calc_dir, res in zip(calc_dirs, calc_res)]
     manager.VDDChargeManager.write_to_txt(output_dir, vdd_managers)
 
-.. literalinclude:: ../_static/analysis/VDD/VDD_charges_per_atom.txt
+.. literalinclude:: ../_static/analysis/VDD/vdd_charges_per_atom.txt
     :language: python
     :lines: 1-
 
@@ -125,4 +125,4 @@ Here is the implementation of the |VDDmanager| and |VDDcharge| classes. The cent
 A |VDDcharge| does not only contain the charge itself, but also to which atom and frag index it belongs.
 
 
-.. _VDD test directory: https://github.com/TheoChem-VU/TCutility/tree/VDD-charge-implementation-and-pathlib-rewrite/test/fixtures/VDD
+.. _VDD test directory: https://github.com/TheoChem-VU/TCutility/tree/main/test/fixtures/VDD

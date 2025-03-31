@@ -1,4 +1,4 @@
-﻿import attrs
+import attrs
 
 
 @attrs.define

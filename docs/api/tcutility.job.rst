@@ -17,69 +17,69 @@ tcutility.job.adf module
 
 .. automodule:: tcutility.job.adf
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.job.ams module
 ------------------------
 
 .. automodule:: tcutility.job.ams
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.job.crest module
 --------------------------
 
 .. automodule:: tcutility.job.crest
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.job.dftb module
 -------------------------
 
 .. automodule:: tcutility.job.dftb
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.job.generic module
 ----------------------------
 
 .. automodule:: tcutility.job.generic
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.job.nmr module
 ------------------------
 
 .. automodule:: tcutility.job.nmr
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.job.orca module
 -------------------------
 
 .. automodule:: tcutility.job.orca
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.job.xtb module
 ------------------------
 
 .. automodule:: tcutility.job.xtb
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Module contents
 ---------------
 
 .. automodule:: tcutility.job
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

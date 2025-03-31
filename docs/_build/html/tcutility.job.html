@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.job &#8212; TCutility v0.13.3 documentation</title>
+    <title>tcutility.job &#8212; TCutility v0.16.0 documentation</title>
   
   
   
@@ -16,34 +16,36 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=a5c4661c" />
   
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=8ccbf874"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/documentation_options.js?v=d6c21762"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/tabs.js?v=3030b3cb"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tcutility.job';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -52,6 +54,7 @@
     <link rel="prev" title="tcutility.results" href="results/results.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -67,19 +70,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -87,7 +79,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -95,8 +86,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -105,7 +96,7 @@
   
     <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -139,15 +130,11 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
@@ -161,20 +148,16 @@
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
   
-    <button class="sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -188,7 +171,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -217,9 +201,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -237,8 +226,6 @@
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -247,7 +234,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">tcutility.job</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tcutility.job</span></li>
   </ul>
 </nav>
 </div>
@@ -269,12 +256,12 @@
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This module offers you the tools to efficiently and easily build computational workflows with various engines.
-The module defines usefull classes that do all the heavy lifting (input and runscript preparation) in the background, while ensuring correctness of the generated inputs</p>
+The module defines usefull classes that do all the heavy lifting (input and runscript preparation, job submission, etc.) in the background, while ensuring correctness of the generated inputs.</p>
 <section id="job-classes">
 <h3>Job classes<a class="headerlink" href="#job-classes" title="Link to this heading">#</a></h3>
 <p>Jobs are run using subclasses of the <a class="reference internal" href="api/tcutility.job.html#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a> class. The base <a class="reference internal" href="api/tcutility.job.html#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a> class handles setting up directories and running the calculations.</p>
 <p>The <a class="reference internal" href="api/tcutility.job.html#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a> subclasses are also context-managers, which results in cleaner and more error-proof code:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">tcutility.job</span> <span class="kn">import</span> <span class="n">ADFJob</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job</span><span class="w"> </span><span class="kn">import</span> <span class="n">ADFJob</span>
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="c1"># job classes are also context-managers</span>
 <span class="linenos"> 4</span><span class="c1"># when exiting the context-manager the job will automatically be run</span>
@@ -282,7 +269,7 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <span class="linenos"> 6</span><span class="k">with</span> <span class="n">ADFJob</span><span class="p">()</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
 <span class="linenos"> 7</span>    <span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;example.xyz&#39;</span><span class="p">)</span>
 <span class="linenos"> 8</span>
-<span class="linenos"> 9</span><span class="c1"># you can also not use the context-manager</span>
+<span class="linenos"> 9</span><span class="c1"># you can also run without the use of context-managers</span>
 <span class="linenos">10</span><span class="c1"># in that case, don&#39;t forget to run the job</span>
 <span class="linenos">11</span><span class="n">job</span> <span class="o">=</span> <span class="n">ADFJob</span><span class="p">()</span>
 <span class="linenos">12</span><span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;example.xyz&#39;</span><span class="p">)</span>
@@ -290,7 +277,7 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 </pre></div>
 </div>
 <p>You can control where a calculation is run by changing the <code class="docutils literal notranslate"><span class="pre">job.name</span></code> and <code class="docutils literal notranslate"><span class="pre">job.rundir</span></code> properties.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span> <span class="nn">tcutility.job</span> <span class="kn">import</span> <span class="n">ADFJob</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job</span><span class="w"> </span><span class="kn">import</span> <span class="n">ADFJob</span>
 <span class="linenos">2</span>
 <span class="linenos">3</span><span class="k">with</span> <span class="n">ADFJob</span><span class="p">()</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
 <span class="linenos">4</span>    <span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;example.xyz&#39;</span><span class="p">)</span>
@@ -305,7 +292,7 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <section id="slurm-support">
 <h3>Slurm support<a class="headerlink" href="#slurm-support" title="Link to this heading">#</a></h3>
 <p>One usefull feature is that the <a class="reference internal" href="api/tcutility.job.html#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a> class detects if slurm is able to be used on the platform the script is running on. If slurm is available, jobs will be submitted using <code class="docutils literal notranslate"><span class="pre">sbatch</span></code> instead of ran locally. It is possible to set any <code class="docutils literal notranslate"><span class="pre">sbatch</span></code> option you would like.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span> <span class="nn">tcutility.job</span> <span class="kn">import</span> <span class="n">ADFJob</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job</span><span class="w"> </span><span class="kn">import</span> <span class="n">ADFJob</span>
 <span class="linenos">2</span>
 <span class="linenos">3</span><span class="k">with</span> <span class="n">ADFJob</span><span class="p">()</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
 <span class="linenos">4</span>    <span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;example.xyz&#39;</span><span class="p">)</span>
@@ -314,11 +301,12 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <span class="linenos">7</span>    <span class="n">job</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="s1">&#39;tc&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Furthermore, the <a class="reference internal" href="api/tcutility.job.html#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a> class detects which platform you are running on (e.g. Bazis or Snellius) and sets default sbatch and module loading settings accordingly.</p>
 </section>
 <section id="job-dependencies">
 <h3>Job dependencies<a class="headerlink" href="#job-dependencies" title="Link to this heading">#</a></h3>
-<p>It is possible to setup dependencies between jobs. This allows you to use the results of one calculation as input for a different calculation.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">tcutility.job</span> <span class="kn">import</span> <span class="n">ADFJob</span><span class="p">,</span> <span class="n">CRESTJob</span>
+<p>It is possible to set up dependencies between jobs. This allows you to use the results of one calculation as input for a different calculation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job</span><span class="w"> </span><span class="kn">import</span> <span class="n">ADFJob</span><span class="p">,</span> <span class="n">CRESTJob</span>
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="c1"># submit and run a CREST calculation</span>
 <span class="linenos"> 4</span><span class="k">with</span> <span class="n">CRESTJob</span><span class="p">()</span> <span class="k">as</span> <span class="n">crest_job</span><span class="p">:</span>
@@ -355,8 +343,8 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <h3>Rerun prevention<a class="headerlink" href="#rerun-prevention" title="Link to this heading">#</a></h3>
 <p>Before submitting a calculation <a class="reference internal" href="api/tcutility.job.html#module-tcutility.job" title="tcutility.job"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tcutility.job</span></code></a> will check if the calculation has already been run or is currently being managed by slurm. This way you can be sure that you are not wasting time rerunning your calculation when you run a script you have run before.</p>
 <p>For example, we can write a script that performs optimizations using <a class="reference internal" href="api/tcutility.job.html#tcutility.job.adf.ADFJob" title="tcutility.job.adf.ADFJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADFJob</span></code></a> on structures stored in a directory:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">tcutility.job</span> <span class="kn">import</span> <span class="n">ADFJob</span>
-<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job</span><span class="w"> </span><span class="kn">import</span> <span class="n">ADFJob</span>
+<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="linenos"> 3</span>
 <span class="linenos"> 4</span>
 <span class="linenos"> 5</span><span class="n">input_xyz_directory</span> <span class="o">=</span> <span class="s1">&#39;molecules&#39;</span>
@@ -389,6 +377,8 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.adf.ADFJob" title="tcutility.job.adf.ADFJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADFJob</span></code></a>, regular ADF calculations</p></li>
 <li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob" title="tcutility.job.adf.ADFFragmentJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code></a>, fragment based calculations</p></li>
 <li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.nmr.NMRJob" title="tcutility.job.nmr.NMRJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">NMRJob</span></code></a>, Nuclear Magnetic Resonance (NMR) calculations using ADF</p></li>
+<li><p>BANDJob, coming soon …</p></li>
+<li><p>BANDFragmentJob, coming soon …</p></li>
 </ul>
 </li>
 <li><p><a class="reference external" href="https://www.scm.com/product/dftb/">Density Functional with Tight Binding (DFTB)</a></p>
@@ -407,6 +397,11 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.crest.QCGJob" title="tcutility.job.crest.QCGJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">QCGJob</span></code></a>, QCG explicit solvation search</p></li>
 </ul>
 </li>
+<li><p><a class="reference external" href="https://github.com/grimme-lab/xtb">Extended tight binding (xTB)</a></p>
+<ul>
+<li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.xtb.XTBJob" title="tcutility.job.xtb.XTBJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">XTBJob</span></code></a>, extended tight binding calculations</p></li>
+</ul>
+</li>
 </ul>
 <p>See the <a class="reference external" href="./api/tcutility.job.html">API Documentation</a> for an overview of the Job classes offered by tcutility.job module.</p>
 <div class="admonition note">
@@ -418,7 +413,7 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
 <p>To run calculations related to the Amsterdam Modelling Suite (AMS) you will require a license.</p>
-<p>For ORCA calculations you will need to add the ORCA executable to your PATH.</p>
+<p>For ORCA calculations you will need to add the ORCA executable to your PATH environmental variable.</p>
 </section>
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
@@ -431,25 +426,55 @@ For example, if we want to run a simple geometry optimization using ADF we can u
 To handle the ADF settings you can refer to the GUI. For example, to use a specific functional simply enter the name of the functional as it appears in the ADF GUI. The same applies to pretty much all settings. The <a class="reference internal" href="api/tcutility.job.html#tcutility.job.adf.ADFJob" title="tcutility.job.adf.ADFJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADFJob</span></code></a> class will handle everything in the background for you.</p>
 <p>The job will be run in the <code class="docutils literal notranslate"><span class="pre">./calculations/GO_water_dimer</span></code> directory. The <a class="reference internal" href="api/tcutility.job.html#module-tcutility.job" title="tcutility.job"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tcutility.job</span></code></a> package will handle running of the calculation as well. It will detect if your platform supports slurm and if it does, will use <code class="docutils literal notranslate"><span class="pre">sbatch</span></code> to run your calculations. Otherwise, it will simply run the calculation locally.</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" name="UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" role="tab" tabindex="0">Runscript (<a class="reference download internal" download="" href="_downloads/d1984d07233b61c9fa5986aed5cd64fb/GO_water_dimer.py"><code class="xref download docutils literal notranslate"><span class="pre">󠀠download</span></code></a>)</button><button aria-controls="panel-0-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" name="WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" role="tab" tabindex="-1">XYZ-file (<a class="reference download internal" download="" href="_downloads/1a62c028c9da69253548783ae8a76070/water_dimer.xyz"><code class="xref download docutils literal notranslate"><span class="pre">󠀠download</span></code></a>)</button></div><div aria-labelledby="tab-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" class="sphinx-tabs-panel group-tab" id="panel-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" name="UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">tcutility.job</span> <span class="kn">import</span> <span class="n">ADFJob</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" name="UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" role="tab" tabindex="0">Runscript (<a class="reference download internal" download="" href="_downloads/d1984d07233b61c9fa5986aed5cd64fb/GO_water_dimer.py"><code class="xref download docutils literal notranslate"><span class="pre">󠀠download</span></code></a>)</button><button aria-controls="panel-0-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" name="WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" role="tab" tabindex="-1">XYZ-file (<a class="reference download internal" download="" href="_downloads/1a62c028c9da69253548783ae8a76070/water_dimer.xyz"><code class="xref download docutils literal notranslate"><span class="pre">󠀠download</span></code></a>)</button></div><div aria-labelledby="tab-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" class="sphinx-tabs-panel group-tab" id="panel-0-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" name="UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL0dPX3dhdGVyX2RpbWVyLnB5PmAp" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
 <span class="linenos"> 2</span>
-<span class="linenos"> 3</span><span class="c1"># define a new job using the Job context-manager</span>
-<span class="linenos"> 4</span><span class="k">with</span> <span class="n">ADFJob</span><span class="p">()</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
-<span class="linenos"> 5</span>	<span class="c1"># add the molecule</span>
-<span class="linenos"> 6</span>	<span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;water_dimer.xyz&#39;</span><span class="p">)</span>
-<span class="linenos"> 7</span>
-<span class="linenos"> 8</span>	<span class="c1"># set the rundir and name of the job, they will </span>
-<span class="linenos"> 9</span>	<span class="c1"># determine where the job will run</span>
-<span class="linenos">10</span>	<span class="n">job</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="s1">&#39;calculations&#39;</span>
-<span class="linenos">11</span>	<span class="n">job</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;GO_water_dimer&#39;</span>
-<span class="linenos">12</span>	
-<span class="linenos">13</span>	<span class="c1"># set the ADF settings</span>
-<span class="linenos">14</span>	<span class="n">job</span><span class="o">.</span><span class="n">functional</span><span class="p">(</span><span class="s1">&#39;BP86-D3(BJ)&#39;</span><span class="p">)</span>
-<span class="linenos">15</span>	<span class="n">job</span><span class="o">.</span><span class="n">basis_set</span><span class="p">(</span><span class="s1">&#39;TZ2P&#39;</span><span class="p">)</span>
-<span class="linenos">16</span>	<span class="n">job</span><span class="o">.</span><span class="n">quality</span><span class="p">(</span><span class="s1">&#39;Good&#39;</span><span class="p">)</span>
-<span class="linenos">17</span>
-<span class="linenos">18</span>	<span class="c1"># set the job task</span>
-<span class="linenos">19</span>	<span class="n">job</span><span class="o">.</span><span class="n">optimization</span><span class="p">()</span>
+<span class="linenos"> 3</span><span class="kn">from</span><span class="w"> </span><span class="nn">scm.plams</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMSJob</span><span class="p">,</span> <span class="n">Molecule</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">finish</span><span class="p">,</span> <span class="n">init</span>
+<span class="linenos"> 4</span><span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job</span><span class="w"> </span><span class="kn">import</span> <span class="n">ADFJob</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="n">current_file_path</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+<span class="linenos"> 7</span><span class="n">mol_path</span> <span class="o">=</span> <span class="n">current_file_path</span> <span class="o">/</span> <span class="s2">&quot;water_dimer.xyz&quot;</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="k">def</span><span class="w"> </span><span class="nf">try_plams_job</span><span class="p">(</span><span class="n">mol</span><span class="p">:</span> <span class="n">Molecule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="linenos">11</span>    <span class="c1"># Test case with plams for checking if plams works solely on Windows</span>
+<span class="linenos">12</span>    <span class="n">run_set</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
+<span class="linenos">13</span>    <span class="n">run_set</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">Task</span> <span class="o">=</span> <span class="s2">&quot;GeometryOptimization&quot;</span>
+<span class="linenos">14</span>    <span class="n">run_set</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">Basis</span><span class="o">.</span><span class="n">Type</span> <span class="o">=</span> <span class="s2">&quot;DZP&quot;</span>
+<span class="linenos">15</span>    <span class="n">run_set</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">XC</span><span class="o">.</span><span class="n">GGA</span> <span class="o">=</span> <span class="s2">&quot;BP86&quot;</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="n">config</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="linenos">18</span>    <span class="n">config</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>    <span class="n">init</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">current_file_path</span><span class="p">),</span> <span class="n">folder</span><span class="o">=</span><span class="s2">&quot;GO_water_dimer&quot;</span><span class="p">,</span> <span class="n">config_settings</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<span class="linenos">21</span>    <span class="n">AMSJob</span><span class="p">(</span><span class="n">molecule</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;water_dimer&quot;</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">run_set</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="linenos">22</span>    <span class="n">finish</span><span class="p">()</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span><span class="k">def</span><span class="w"> </span><span class="nf">try_tcutility_job</span><span class="p">(</span><span class="n">mol</span><span class="p">:</span> <span class="n">Molecule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="linenos">26</span>    <span class="c1"># Test case with tcutility for checking if tcutility works solely on Windows</span>
+<span class="linenos">27</span>    <span class="k">with</span> <span class="n">ADFJob</span><span class="p">(</span><span class="n">use_slurm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
+<span class="linenos">28</span>        <span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+<span class="linenos">29</span>        <span class="n">job</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_file_path</span> <span class="o">/</span> <span class="s2">&quot;calculations&quot;</span><span class="p">)</span>
+<span class="linenos">30</span>        <span class="n">job</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;GO_water_dimer&quot;</span>
+<span class="linenos">31</span>        <span class="n">job</span><span class="o">.</span><span class="n">functional</span><span class="p">(</span><span class="s2">&quot;BP86-D3(BJ)&quot;</span><span class="p">)</span>
+<span class="linenos">32</span>        <span class="n">job</span><span class="o">.</span><span class="n">basis_set</span><span class="p">(</span><span class="s2">&quot;TZ2P&quot;</span><span class="p">)</span>
+<span class="linenos">33</span>        <span class="n">job</span><span class="o">.</span><span class="n">quality</span><span class="p">(</span><span class="s2">&quot;Good&quot;</span><span class="p">)</span>
+<span class="linenos">34</span>        <span class="n">job</span><span class="o">.</span><span class="n">optimization</span><span class="p">()</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="linenos">38</span>    <span class="n">current_file_path</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+<span class="linenos">39</span>    <span class="n">mol_path</span> <span class="o">=</span> <span class="n">current_file_path</span> <span class="o">/</span> <span class="s2">&quot;water_dimer.xyz&quot;</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span>    <span class="n">mol</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">mol_path</span><span class="p">))</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span>    <span class="c1"># Use these functions to test if a plams and tcutility job can be run on Windows, Mac, and Linux. Both do not use slurm.</span>
+<span class="linenos">44</span>    <span class="n">try_plams_job</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+<span class="linenos">45</span>    <span class="n">try_tcutility_job</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+<span class="linenos">46</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="linenos">49</span>    <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-0-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" name="WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2Ivd2F0ZXJfZGltZXIueHl6PmAp" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">6</span>
@@ -469,8 +494,8 @@ To handle the ADF settings you can refer to the GUI. For example, to use a speci
 <p>Another common usage of ADF is running a fragment calculation. This calculation requires setting up three different ADF jobs. Using the <a class="reference internal" href="api/tcutility.job.html#module-tcutility.job" title="tcutility.job"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tcutility.job</span></code></a> package allows you to set up and run these kinds of calculations in as little as 8 lines of code.</p>
 <p>In this case we make use of a special xyz file format (see <a class="reference internal" href="api/tcutility.html#tcutility.molecule.guess_fragments" title="tcutility.molecule.guess_fragments"><code class="xref py py-func docutils literal notranslate"><span class="pre">tcutility.molecule.guess_fragments()</span></code></a>) which specifies the fragments. This saves us some work in setting up the calculations.</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL2ZyYWdfTkgzQkgzLnB5PmAp" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL2ZyYWdfTkgzQkgzLnB5PmAp" name="UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL2ZyYWdfTkgzQkgzLnB5PmAp" role="tab" tabindex="0">Runscript (<a class="reference download internal" download="" href="_downloads/2a505c3581f7da7bf9082296ef7cb96f/frag_NH3BH3.py"><code class="xref download docutils literal notranslate"><span class="pre">󠀠download</span></code></a>)</button><button aria-controls="panel-1-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2IvTkgzQkgzLnh5ej5gKQ==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2IvTkgzQkgzLnh5ej5gKQ==" name="WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2IvTkgzQkgzLnh5ej5gKQ==" role="tab" tabindex="-1">XYZ-file (<a class="reference download internal" download="" href="_downloads/4d6b7e579d62ed9e5d25258a67fecb73/NH3BH3.xyz"><code class="xref download docutils literal notranslate"><span class="pre">󠀠download</span></code></a>)</button></div><div aria-labelledby="tab-1-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL2ZyYWdfTkgzQkgzLnB5PmAp" class="sphinx-tabs-panel group-tab" id="panel-1-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL2ZyYWdfTkgzQkgzLnB5PmAp" name="UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL2ZyYWdfTkgzQkgzLnB5PmAp" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">tcutility.job</span> <span class="kn">import</span> <span class="n">ADFFragmentJob</span>
-<span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">tcutility</span> <span class="kn">import</span> <span class="n">molecule</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL2ZyYWdfTkgzQkgzLnB5PmAp" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL2ZyYWdfTkgzQkgzLnB5PmAp" name="UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL2ZyYWdfTkgzQkgzLnB5PmAp" role="tab" tabindex="0">Runscript (<a class="reference download internal" download="" href="_downloads/2a505c3581f7da7bf9082296ef7cb96f/frag_NH3BH3.py"><code class="xref download docutils literal notranslate"><span class="pre">󠀠download</span></code></a>)</button><button aria-controls="panel-1-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2IvTkgzQkgzLnh5ej5gKQ==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2IvTkgzQkgzLnh5ej5gKQ==" name="WFlaLWZpbGUgKDpkb3dubG9hZDpg86CAoGRvd25sb2FkIDwuLi9leGFtcGxlcy9qb2IvTkgzQkgzLnh5ej5gKQ==" role="tab" tabindex="-1">XYZ-file (<a class="reference download internal" download="" href="_downloads/4d6b7e579d62ed9e5d25258a67fecb73/NH3BH3.xyz"><code class="xref download docutils literal notranslate"><span class="pre">󠀠download</span></code></a>)</button></div><div aria-labelledby="tab-1-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL2ZyYWdfTkgzQkgzLnB5PmAp" class="sphinx-tabs-panel group-tab" id="panel-1-UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL2ZyYWdfTkgzQkgzLnB5PmAp" name="UnVuc2NyaXB0ICg6ZG93bmxvYWQ6YPOggKBkb3dubG9hZCA8Li4vZXhhbXBsZXMvam9iL2ZyYWdfTkgzQkgzLnB5PmAp" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job</span><span class="w"> </span><span class="kn">import</span> <span class="n">ADFFragmentJob</span>
+<span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">tcutility</span><span class="w"> </span><span class="kn">import</span> <span class="n">molecule</span>
 <span class="linenos"> 3</span>
 <span class="linenos"> 4</span><span class="c1"># load a molecule</span>
 <span class="linenos"> 5</span><span class="n">mol</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;NH3BH3.xyz&#39;</span><span class="p">)</span>
@@ -536,7 +561,8 @@ To handle the ADF settings you can refer to the GUI. For example, to use a speci
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -565,13 +591,13 @@ To handle the ADF settings you can refer to the GUI. For example, to use a speci
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="_sources/tcutility.job.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/tcutility.job.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -586,8 +612,8 @@ To handle the ADF settings you can refer to the GUI. For example, to use a speci
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -607,7 +633,7 @@ To handle the ADF settings you can refer to the GUI. For example, to use a speci
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     <br/>
   </p>
 </div>
@@ -620,7 +646,8 @@ To handle the ADF settings you can refer to the GUI. For example, to use a speci
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.3.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

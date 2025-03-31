@@ -49,8 +49,9 @@ extensions = [
     "sphinx_copybutton",
     # 'sphinx.ext.autosummary',
     "sphinx_autodoc_typehints",
-    "sphinxarg.ext",
+    "sphinx_click",
 ]
+
 napoleon_use_param = True
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
@@ -86,9 +87,9 @@ rst_epilog = f"""
 .. |VDDcharge| replace:: :class:`VDDCharge <tcutility.analysis.vdd.charge.VDDCharge>`
 .. |change_unit| replace:: :func:`change_unit <tcutility.analysis.vdd.manager.VDDChargeManager.change_unit>`
 .. |ProjectVersion| replace:: {release}
-.. |cm-1| replace:: :math:`\\text{{cm}}^{-1}`
-.. |kcal/mol| replace:: :math:`\\text{{kcal mol}}^{-1}`
-.. |km/mol| replace:: :math:`\\text{{km mol}}^{-1}`
+.. |cm-1| replace:: :math:`\\text{{cm}}^-^1`
+.. |kcal/mol| replace:: :math:`\\text{{kcal mol}}^-^1`
+.. |km/mol| replace:: :math:`\\text{{km mol}}^-^1`
 .. |angstrom| replace:: :math:`\\AA`
 .. |Result| replace:: :class:`Result <tcutility.results.result.Result>`
 .. |Job| replace:: :class:`Job <tcutility.job.generic.Job>`
@@ -99,4 +100,5 @@ rst_epilog = f"""
 .. |ORCAJob| replace:: :class:`ORCAJob <tcutility.job.orca.ORCAJob>`
 .. |CRESTJob| replace:: :class:`CRESTJob <tcutility.job.crest.CRESTJob>`
 .. |QCGJob| replace:: :class:`QCGJob <tcutility.job.crest.QCGJob>`
+.. |XTBJob| replace:: :class:`XTBJob <tcutility.job.xtb.XTBJob>`
 """

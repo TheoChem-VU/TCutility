@@ -51,6 +51,9 @@ def print_timings():
     if not enabled:
         return
 
+    if sum(time['calls'] for time in times.values()) == 0:
+        return
+
     names = list(times.keys())
     names = sorted(names)
     names_splits = [name.split('.') for name in names]
@@ -95,17 +98,18 @@ def print_timings():
     for name, parent, level in zip(names, parents, parent_levels):
         line = []
         line.append(name.replace(parent, ' > ' * level))  # function name
-        mean = np.mean(times_[name]["timings"])
-        total = np.sum(times_[name]["timings"])
         calls = times_[name].get("calls", 0)
         if calls == 0:
             line.append('')
             line.append('')
+            line.append('')
         else:
+            mean = np.mean(times_[name]["timings"])
+            total = np.sum(times_[name]["timings"])
             line.append(str(calls))
             line.append(f'{mean:.3f}')
+            line.append(f'{total:.3f}')
 
-        line.append(f'{total:.3f}')
         try:
             rel = sum(times_[name]["timings"])/sum(parent_times[parent]["timings"])*100
             rel_total = sum(times_[name]["timings"])/sum(parent_times["TOTAL"]["timings"])*100
