@@ -270,6 +270,7 @@ class Server(Connection):
     server = None
     sbatch_defaults = {}
     preamble_defaults = {}
+    postamble_defaults = {}
     program_modules = {}
 
     def __init__(self, username=None):
@@ -283,6 +284,7 @@ class Local:
     server = None
     sbatch_defaults = {}
     preamble_defaults = {}
+    postamble_defaults = {}
     program_modules = {}
 
     def __init__(self):
