@@ -9,14 +9,14 @@ from tcutility.cli_scripts.resize_figures import resize
 
 
 @click.group()
-def tc():
+def tcutility():
     """TCutility command line interface."""
     pass
 
 
-tc.add_command(read_results, name="read")
-tc.add_command(optimize_geometry, name="optimize")
-tc.add_command(generate_citations, name="cite")
-tc.add_command(calculate_geometry_parameter, name="geo")
-tc.add_command(concatenate_irc_paths, name="concat-irc")
-tc.add_command(resize, name="resize")
+tcutility.add_command(read_results, name="read")
+tcutility.add_command(optimize_geometry, name="optimize")
+tcutility.add_command(generate_citations, name="cite")
+tcutility.add_command(calculate_geometry_parameter, name="geo")
+tcutility.add_command(concatenate_irc_paths, name="concat-irc")
+tcutility.add_command(resize, name="resize")

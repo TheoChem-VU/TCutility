@@ -119,13 +119,11 @@ class Job:
                 if not res.fatal:
                     return True
 
-            res = server.execute(f'tc read -s {j(server.pwd(), self.rundir, self.name)}')
+            res = server.execute(f'tcutility read -s {j(server.pwd(), self.rundir, self.name)}')
             if res in ['SUCCESS', 'SUCCESS(W)', 'COMPLETING', 'CONFIGURING', 'PENDING', 'RUNNING']:
                 return True
 
         return False
-        # res = results.quick_status(self.workdir)
-        # return not res.fatal
 
     def in_queue(self):
         """
