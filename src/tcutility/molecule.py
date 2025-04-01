@@ -94,7 +94,8 @@ def load(path) -> plams.Molecule:
                 ret.tags.add(_parse_str(arg.strip()))
         return ret
 
-    lines = [line.strip() for line in inp.splitlines()]
+    with open(path) as f:
+        lines = [line.strip() for line in f.readlines()]
 
     mol = plams.Molecule()
 
