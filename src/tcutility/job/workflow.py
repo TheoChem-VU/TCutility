@@ -38,8 +38,8 @@ class WorkFlow(SkipContext):
 
     def __exit__(self, type, value, traceback):
         self.set_script(traceback.tb_frame)
-        # if slurm.has_slurm():
-        #   self.write_script()
+        if slurm.has_slurm():
+          self.write_script()
         return True
 
     def set_script(self, frame):
