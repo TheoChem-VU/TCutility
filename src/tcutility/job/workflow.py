@@ -62,13 +62,20 @@ class WorkFlow(SkipContext):
         self.locals = frame.f_locals
         self.globals = frame.f_globals
 
-    def execute(self, **inp):
+    def execute(self,sbatch: dict=None, rundir=None, **inp):
+        self.rundir = rundir or f'{self.name}_{self.version}'
         self.input = results.Result(inp)
-        exec(self.script, self.globals, self.locals)
+        if sbatch is None:
+            sbatch = {}
+        # Use slurm.sbatch here with runscript
+        if slurm.has_slurm():
+            slurm.sbatch(self.script_name,**sbatch)
+        else:
+            exec(self.script, self.globals, self.locals)
+            
         return self.output
 
-    def __call__(self, rundir=None,  **inp):
-        self.rundir = rundir or f'{self.name}_{self.version}'
+    def __call__(self,sbatch: dict=None, rundir=None, **inp):
         # os.makedirs(os.path.join(rundir, name), exist_ok=True)
         # os.copy()
         # if slurm.has_slurm():
@@ -90,6 +97,8 @@ class WorkFlow(SkipContext):
             dill.dump(d, dill_file)
 
         with open(f'{file_name}.py', 'w+') as script:
+            self.script_name = f'{file_name}.py'
+            script.write('#! python\n')
             script.write('import dill\n')
             script.write('import sys\n\n\n')
 
@@ -102,6 +111,7 @@ class WorkFlow(SkipContext):
 
             script.write('###### the actual script ######\n')
             script.write(self.script)
+
 
 
 # from tcutility import molecule, results
