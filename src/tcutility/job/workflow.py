@@ -28,6 +28,10 @@ class WorkFlow(SkipContext):
         self.name = name
         self.version = version
         self.output = results.Result()
+        self.batch_ambles = []
+
+    def add_batch_amble(self, amble:str):
+        self.batch_ambles.append(amble)
 
     def __str__(self):
         return f'WorkFlow(name="{self.name}", version="{self.version}")'
@@ -61,6 +65,16 @@ class WorkFlow(SkipContext):
         self.script = ''.join(code_lines)
         self.locals = frame.f_locals
         self.globals = frame.f_globals
+    
+    def write_batch(self):
+        self.batch_name = f'{self.name}.sh'
+        with open(self.batch_name, 'w') as file:
+            file.write('#!/bin/bash\n\n')
+
+            for line in self.batch_ambles:
+                file.write(line+'\n')
+
+            file.write(f'python {self.script_name}')
 
     def execute(self,sbatch: dict=None, rundir=None, **inp):
         self.rundir = rundir or f'{self.name}_{self.version}'
@@ -69,7 +83,8 @@ class WorkFlow(SkipContext):
             sbatch = {}
         # Use slurm.sbatch here with runscript
         if slurm.has_slurm():
-            slurm.sbatch(self.script_name,**sbatch)
+            slurm.sbatch(self.batch_name,**sbatch)
+            # slurm.sbatch(self.script_name,**sbatch)
         else:
             exec(self.script, self.globals, self.locals)
             
