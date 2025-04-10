@@ -8,7 +8,7 @@ import jsonpickle
 import os
 from math import pi
 from types import ModuleType
-
+import uuid
 
 class SkipContext:
     def __enter__(self):
@@ -67,10 +67,6 @@ class WorkFlow(SkipContext):
         self.globals = frame.f_globals
     
 
-
-
-            
-
     def execute(self,sbatch: dict=None, rundir=None, **inp):
         self.rundir = rundir or f'{self.name}_{self.version}'
         self.input = results.Result(inp)
@@ -79,7 +75,7 @@ class WorkFlow(SkipContext):
         # Use slurm.sbatch here with runscript
         if slurm.has_slurm():
             self.write_script()
-            print(slurm.sbatch(self.batch_name,**sbatch).command)
+            slurm.sbatch(self.batch_name,**sbatch)
             # slurm.sbatch(self.script_name,**sbatch)
         else:
             exec(self.script, self.globals, self.locals)
@@ -92,14 +88,11 @@ class WorkFlow(SkipContext):
         # if slurm.has_slurm():
         return self.execute(sbatch=sbatch, rundir=rundir, **inp)
 
-    def write_script(self, file_name=None, **kwargs):
-        if file_name is None:
-            if self.name is not None:
-                file_name = self.name
-            else:
-                raise ValueError('Supply write_script with the file_name argument')
+    def write_script(self, **kwargs):
+        unique_id = uuid.uuid4()
+        file_name = '.' + self.name + '_' + unique_id
 
-        dill_path = f'{file_name}_objects.json'
+        dill_path = f'{file_name}.json'
         d = {'globals': self.globals, 'locals': self.locals}
         with open(dill_path, 'w+') as dill_file:
             dill_file.write(jsonpickle.encode(d))
@@ -119,7 +112,7 @@ class WorkFlow(SkipContext):
             script.write('###### the actual script ######\n')
             script.write(self.script)
 
-        self.batch_name = f'{self.name}.sh'
+        self.batch_name = f'{file_name}.sh'
         with open(self.batch_name, 'w') as file:
             file.write('#!/bin/bash\n\n')
 
