@@ -90,7 +90,7 @@ class WorkFlow(SkipContext):
         # os.makedirs(os.path.join(rundir, name), exist_ok=True)
         # os.copy()
         # if slurm.has_slurm():
-        return self.execute(**inp)
+        return self.execute(sbatch=sbatch, rundir=rundir, **inp)
 
     def write_script(self, file_name=None, **kwargs):
         if file_name is None:
