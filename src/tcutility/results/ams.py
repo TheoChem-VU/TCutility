@@ -5,6 +5,7 @@ from typing import List
 
 import numpy as np
 from scm import plams
+import scipy.interpolate
 
 from tcutility import constants, ensure_list
 from tcutility.results import Result, cache
@@ -391,6 +392,7 @@ def get_pes(calc_dir: str) -> Result:
     ret.scan_coord = [np.linspace(reader_ams.read("PESScan", f"RangeStart({i+1})"), reader_ams.read("PESScan", f"RangeEnd({i+1})"), ret.npoints[i]) * constants.BOHR2ANG for i in range(ret.nscan_coords)]
     if ("PESScan", "PES") in reader_ams:
         ret.energies = np.array(reader_ams.read("PESScan", "PES")).reshape(*ret.npoints) * constants.HA2KCALMOL
+        ret.interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, ret.energies)
 
     if ret.nscan_coords == 1:
         ret.scan_coord_name = ret.scan_coord_name[0]
