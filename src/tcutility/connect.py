@@ -300,9 +300,11 @@ class Local:
         command = command.split()
 
         with open(os.devnull, "wb") as devnull:
-            # try:
+            try:
                 output = sp.check_output(command).decode()
-            # except:
+            except sp.CalledProcessError:
+                print('COMMAND: ', command)
+                print('OUTPUT: ', output)
 
         return output
 
