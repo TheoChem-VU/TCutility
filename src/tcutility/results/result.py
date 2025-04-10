@@ -186,8 +186,14 @@ class Result(dict):
         # and return a new result object
         return Result(dictfunc.list_to_dict(lsts))
 
-    # def flatten(self):
-    #     ...
+    @property
+    def __dict__(self):
+        import copy
+        lsts = dictfunc.dict_to_list(self)
+        # copy everthing in the lists
+        lsts = [[copy.copy(x) for x in lst] for lst in lsts]
+        # and return a new result object
+        return dictfunc.list_to_dict(lsts)
 
 
 if __name__ == '__main__':
