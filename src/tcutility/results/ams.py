@@ -388,7 +388,7 @@ def get_pes(calc_dir: str) -> Result:
     ret.nscan_coords = reader_ams.read("PESScan", "nScanCoord")
     ret.scan_coord_name = [reader_ams.read("PESScan", f"ScanCoord({i+1})").strip() for i in range(ret.nscan_coords)]
     ret.npoints = [reader_ams.read("PESScan", f"nPoints({i+1})") for i in range(ret.nscan_coords)]
-    ret.scan_coord = [np.linspace(reader_ams.read("PESScan", f"RangeStart({i+1})"), reader_ams.read("PESScan", f"RangeEnd({i+1})"), ret.npoints[i]) for i in range(ret.nscan_coords)]
+    ret.scan_coord = [np.linspace(reader_ams.read("PESScan", f"RangeStart({i+1})"), reader_ams.read("PESScan", f"RangeEnd({i+1})"), ret.npoints[i]) * constants.BOHR2ANG for i in range(ret.nscan_coords)]
     if ("PESScan", "PES") in reader_ams:
         ret.energies = np.array(reader_ams.read("PESScan", "PES")).reshape(*ret.npoints) * constants.HA2KCALMOL
 
@@ -458,7 +458,7 @@ def get_history(calc_dir: str) -> Result:
                 # Molecule are special, because we will convert them to plams.Molecule objects first
                 if item == "Molecule":
                     mol = plams.Molecule()
-                    coords = np.array(reader_ams.read("History", f"Coords({i+1})")).reshape(natoms, 3) * 0.529177
+                    coords = np.array(reader_ams.read("History", f"Coords({i+1})")).reshape(natoms, 3) * constants.BOHR2ANG
                     for atnum, coord in zip(atnums, coords):
                         mol.add_atom(plams.Atom(atnum=atnum, coords=coord))
                     mol.guess_bonds()
