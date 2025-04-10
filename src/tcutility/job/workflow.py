@@ -67,14 +67,14 @@ class WorkFlow(SkipContext):
         self.globals = frame.f_globals
     
 
-    def execute(self,sbatch: dict=None, rundir=None, **inp):
+    def execute(self,delete=True,sbatch: dict=None, rundir=None, **inp):
         self.rundir = rundir or f'{self.name}_{self.version}'
         self.input = results.Result(inp)
         if sbatch is None:
             sbatch = {}
         # Use slurm.sbatch here with runscript
         if slurm.has_slurm():
-            self.write_script()
+            self.write_script(delete)
             slurm.sbatch(self.batch_name,**sbatch)
             # slurm.sbatch(self.script_name,**sbatch)
         else:
@@ -82,13 +82,13 @@ class WorkFlow(SkipContext):
             
         return self.output
 
-    def __call__(self,sbatch: dict=None, rundir=None, **inp):
+    def __call__(self,delete=True,sbatch: dict=None, rundir=None, **inp):
         # os.makedirs(os.path.join(rundir, name), exist_ok=True)
         # os.copy()
         # if slurm.has_slurm():
-        return self.execute(sbatch=sbatch, rundir=rundir, **inp)
+        return self.execute(sbatch=sbatch,delete=delete, rundir=rundir, **inp)
 
-    def write_script(self, **kwargs):
+    def write_script(self, delete, **kwargs):
         unique_id = uuid.uuid4()
         file_name = '.' + self.name + '_' + str(unique_id)
 
@@ -124,9 +124,10 @@ class WorkFlow(SkipContext):
             for line in self.postambles:
                 file.write(line+'\n')
 
-            file.write(f'rm {self.script_name}\n')
-            file.write(f'rm {dill_path}\n')
-            file.write(f'rm {self.batch_name}\n')
+            if delete:
+                file.write(f'rm {self.script_name}\n')
+                file.write(f'rm {dill_path}\n')
+                file.write(f'rm {self.batch_name}\n')
 
 
 # from tcutility import molecule, results
