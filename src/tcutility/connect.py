@@ -297,14 +297,11 @@ class Local:
         ...
 
     def execute(self, command) -> str:
-        command = command.split()
-
         with open(os.devnull, "wb") as devnull:
             try:
-                output = sp.check_output(command).decode()
+                output = sp.check_output(command, shell=True).decode()
             except sp.CalledProcessError:
                 print('COMMAND: ', command)
-                print('OUTPUT: ', output)
 
         return output
 
