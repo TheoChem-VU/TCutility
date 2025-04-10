@@ -40,8 +40,6 @@ class WorkFlow(SkipContext):
 
     def __exit__(self, type, value, traceback):
         self.set_script(traceback.tb_frame)
-        if slurm.has_slurm():
-          self.write_script()
         return True
 
     def set_script(self, frame):
@@ -81,6 +79,7 @@ class WorkFlow(SkipContext):
             sbatch = {}
         # Use slurm.sbatch here with runscript
         if slurm.has_slurm():
+            self.write_script()
             self.write_batch()
             slurm.sbatch(self.batch_name,**sbatch)
             # slurm.sbatch(self.script_name,**sbatch)
