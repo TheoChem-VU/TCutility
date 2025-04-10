@@ -90,7 +90,7 @@ class WorkFlow(SkipContext):
 
     def write_script(self, **kwargs):
         unique_id = uuid.uuid4()
-        file_name = '.' + self.name + '_' + unique_id
+        file_name = '.' + self.name + '_' + str(unique_id)
 
         dill_path = f'{file_name}.json'
         d = {'globals': self.globals, 'locals': self.locals}
