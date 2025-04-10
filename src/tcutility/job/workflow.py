@@ -61,8 +61,8 @@ class WorkFlow(SkipContext):
                 break
 
         self.script = ''.join(code_lines)
-        self.locals = locals().copy()
-        self.globals = globals().copy()
+        self.locals = frame.f_locals
+        self.globals = frame.f_globals
     
     def write_batch(self):
         self.batch_name = f'{self.name}.sh'
@@ -103,9 +103,8 @@ class WorkFlow(SkipContext):
                 raise ValueError('Supply write_script with the file_name argument')
 
         dill_path = f'{file_name}_objects.json'
+        d = {'globals': self.globals, 'locals': self.locals}
         with open(dill_path, 'w+') as dill_file:
-            d = self.locals
-            d.update(self.globals)
             dill_file.write(jsonpickle.encode(d))
 
         with open(f'{file_name}.py', 'w+') as script:
@@ -117,9 +116,8 @@ class WorkFlow(SkipContext):
             script.write('###### unpickling all necessary variables ######\n')
             script.write(f'with open("{os.path.abspath(dill_path)}", "rb") as dill_file:\n')
             script.write('    objs = jsonpickle.decode(dill_file.read())\n')
-            script.write('    thismodule = sys.modules[__name__]\n')
-            script.write('    for k, v in objs.items():\n')
-            script.write('        setattr(thismodule, k, v)\n\n\n')
+            script.write('    locals().update(objs["locals"])\n')
+            script.write('    globals().update(objs["globals"])\n\n\n')
 
             script.write('###### the actual script ######\n')
             script.write(self.script)
