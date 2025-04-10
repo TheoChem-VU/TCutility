@@ -61,8 +61,8 @@ class WorkFlow(SkipContext):
                 break
 
         self.script = ''.join(code_lines)
-        self.locals = frame.f_locals
-        self.globals = frame.f_globals
+        self.locals = locals().copy()
+        self.globals = globals().copy()
     
     def write_batch(self):
         self.batch_name = f'{self.name}.sh'
@@ -104,7 +104,7 @@ class WorkFlow(SkipContext):
 
         dill_path = f'{file_name}_objects.json'
         with open(dill_path, 'w+') as dill_file:
-            d = self.locals.copy()
+            d = self.locals
             d.update(self.globals)
             dill_file.write(jsonpickle.encode(d))
 
