@@ -10,6 +10,10 @@ from math import pi
 from types import ModuleType
 import uuid
 
+import jsonpickle.ext.numpy as jsonpickle_numpy
+jsonpickle_numpy.register_handlers()
+
+
 class SkipContext:
     def __enter__(self):
         sys.settrace(lambda *args, **keys: None)
