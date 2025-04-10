@@ -61,7 +61,7 @@ def squeue(server: connect.Server = connect.Local()) -> results.Result:
         ret[col] = []
 
     # run the squeue command with the formatting options
-    output = server.execute("squeue --me --format " + " ".join(options))
+    output = server.execute("squeue --me --format " + "'" + " ".join(options) + "'")
     output = [line for line in output.splitlines()[1:] if line.strip()]
 
     # then add the data to the return object's lists

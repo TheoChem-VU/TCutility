@@ -28,6 +28,10 @@ class WorkFlow(SkipContext):
         self.name = name
         self.version = version
         self.output = results.Result()
+        self.batch_ambles = []
+
+    def add_batch_amble(self, amble:str):
+        self.batch_ambles.append(amble)
 
     def __str__(self):
         return f'WorkFlow(name="{self.name}", version="{self.version}")'
@@ -38,8 +42,8 @@ class WorkFlow(SkipContext):
 
     def __exit__(self, type, value, traceback):
         self.set_script(traceback.tb_frame)
-        # if slurm.has_slurm():
-        #   self.write_script()
+        if slurm.has_slurm():
+          self.write_script()
         return True
 
     def set_script(self, frame):
@@ -61,14 +65,33 @@ class WorkFlow(SkipContext):
         self.script = ''.join(code_lines)
         self.locals = frame.f_locals
         self.globals = frame.f_globals
+    
+    def write_batch(self):
+        self.batch_name = f'{self.name}.sh'
+        with open(self.batch_name, 'w') as file:
+            file.write('#!/bin/bash\n\n')
 
-    def execute(self, **inp):
+            for line in self.batch_ambles:
+                file.write(line+'\n')
+
+            file.write(f'python {self.script_name}')
+
+    def execute(self,sbatch: dict=None, rundir=None, **inp):
+        self.rundir = rundir or f'{self.name}_{self.version}'
         self.input = results.Result(inp)
-        exec(self.script, self.globals, self.locals)
+        if sbatch is None:
+            sbatch = {}
+        # Use slurm.sbatch here with runscript
+        if slurm.has_slurm():
+            self.write_batch()
+            slurm.sbatch(self.batch_name,**sbatch)
+            # slurm.sbatch(self.script_name,**sbatch)
+        else:
+            exec(self.script, self.globals, self.locals)
+            
         return self.output
 
-    def __call__(self, rundir=None,  **inp):
-        self.rundir = rundir or f'{self.name}_{self.version}'
+    def __call__(self,sbatch: dict=None, rundir=None, **inp):
         # os.makedirs(os.path.join(rundir, name), exist_ok=True)
         # os.copy()
         # if slurm.has_slurm():
@@ -90,6 +113,8 @@ class WorkFlow(SkipContext):
             dill.dump(d, dill_file)
 
         with open(f'{file_name}.py', 'w+') as script:
+            self.script_name = f'{file_name}.py'
+            script.write('#! python\n')
             script.write('import dill\n')
             script.write('import sys\n\n\n')
 
@@ -102,6 +127,7 @@ class WorkFlow(SkipContext):
 
             script.write('###### the actual script ######\n')
             script.write(self.script)
+
 
 
 # from tcutility import molecule, results
