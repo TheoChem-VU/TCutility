@@ -8,8 +8,6 @@ import jsonpickle
 import os
 from math import pi
 from types import ModuleType
-import dill
-dill.settings['recurse'] = True
 
 
 class SkipContext:
@@ -104,23 +102,21 @@ class WorkFlow(SkipContext):
             else:
                 raise ValueError('Supply write_script with the file_name argument')
 
-        dill_path = f'{file_name}_objects.dill'
-        with open(dill_path, 'wb+') as dill_file:
-            # dill.write(jsondill.encode({"locals": self.locals, "globals": self.globals}))
-            print(self.globals)
+        dill_path = f'{file_name}_objects.json'
+        with open(dill_path, 'w+') as dill_file:
             d = self.locals.copy()
             d.update(self.globals)
-            dill.dump(d, dill_file)
+            dill_file.write(jsonpickle.encode(d))
 
         with open(f'{file_name}.py', 'w+') as script:
             self.script_name = f'{file_name}.py'
             script.write('#! python\n')
-            script.write('import dill\n')
+            script.write('import jsonpickle\n')
             script.write('import sys\n\n\n')
 
             script.write('###### unpickling all necessary variables ######\n')
             script.write(f'with open("{os.path.abspath(dill_path)}", "rb") as dill_file:\n')
-            script.write('    objs = dill.load(dill_file)\n')
+            script.write('    objs = jsonpickle.decode(dill_file.read())\n')
             script.write('    thismodule = sys.modules[__name__]\n')
             script.write('    for k, v in objs.items():\n')
             script.write('        setattr(thismodule, k, v)\n\n\n')
