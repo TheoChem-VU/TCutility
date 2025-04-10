@@ -26,10 +26,14 @@ class WorkFlow(SkipContext):
         self.name = name
         self.version = version
         self.output = results.Result()
-        self.batch_ambles = []
+        self.preambles = []
+        self.postambles = []
 
-    def add_batch_amble(self, amble:str):
-        self.batch_ambles.append(amble)
+    def add_preamble(self, amble:str):
+        self.preambles.append(amble)
+
+    def add_postamble(self, amble:str):
+        self.postambles.append(amble)
 
     def __str__(self):
         return f'WorkFlow(name="{self.name}", version="{self.version}")'
@@ -62,15 +66,10 @@ class WorkFlow(SkipContext):
         self.locals = frame.f_locals
         self.globals = frame.f_globals
     
-    def write_batch(self):
-        self.batch_name = f'{self.name}.sh'
-        with open(self.batch_name, 'w') as file:
-            file.write('#!/bin/bash\n\n')
 
-            for line in self.batch_ambles:
-                file.write(line+'\n')
 
-            file.write(f'python {self.script_name}')
+
+            
 
     def execute(self,sbatch: dict=None, rundir=None, **inp):
         self.rundir = rundir or f'{self.name}_{self.version}'
@@ -121,6 +120,21 @@ class WorkFlow(SkipContext):
             script.write('###### the actual script ######\n')
             script.write(self.script)
 
+        self.batch_name = f'{self.name}.sh'
+        with open(self.batch_name, 'w') as file:
+            file.write('#!/bin/bash\n\n')
+
+            for line in self.preambles:
+                file.write(line+'\n')
+
+            file.write(f'python {self.script_name}\n')
+
+            for line in self.postambles:
+                file.write(line+'\n')
+
+            file.write(f'rm {self.script_name}\n')
+            file.write(f'rm {dill_path}\n')
+            file.write(f'rm {self.batch_name}\n')
 
 
 # from tcutility import molecule, results
