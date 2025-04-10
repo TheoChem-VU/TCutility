@@ -79,7 +79,6 @@ class WorkFlow(SkipContext):
         # Use slurm.sbatch here with runscript
         if slurm.has_slurm():
             self.write_script()
-            self.write_batch()
             slurm.sbatch(self.batch_name,**sbatch)
             # slurm.sbatch(self.script_name,**sbatch)
         else:
