@@ -114,6 +114,7 @@ def load(path) -> plams.Molecule:
     flag_lines = lines[natoms + 2 :]
     flag_lines = [line.strip() for line in flag_lines if line.strip()]
     mol.flags = parse_flags(flag_lines)
+    mol.properties.name = path.replace('/',' ').split()[-1][:-4]
 
     return mol
 
