@@ -62,6 +62,7 @@ class WorkFlow(SkipContext):
         for line in lines[1:]:
             if line.strip() != '':
                 first_not_empty_line = line
+                print(first_not_empty_line)
                 break
 
         for line in lines[1:]:
