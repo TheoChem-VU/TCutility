@@ -58,10 +58,16 @@ class WorkFlow(SkipContext):
         leading_space = lambda line: len(line) - len(line.lstrip())
 
         code_lines = []
+
+        for line in lines[1:]:
+            if line.strip() != '':
+                first_not_empty_line = line
+                break
+
         for line in lines[1:]:
             if len(line.strip()) == 0:
                 code_lines.append('\n')
-            elif leading_space(line) > leading_space(lines[0]):
+            elif leading_space(line) > leading_space(first_not_empty_line):
                 code_lines.append(line[leading_space(lines[1]):])
             else:
                 break
