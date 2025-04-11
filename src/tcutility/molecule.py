@@ -37,7 +37,7 @@ def _parse_str(s: str):
         return s
 
     if "," in s:
-        s.strip('()[]{}')
+        s = s.strip('()[]{}')
         return [_parse_str(part.strip()) for part in s.split(",")]
 
     # to parse the string we use try/except method
