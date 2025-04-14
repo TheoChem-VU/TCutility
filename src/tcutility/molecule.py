@@ -244,8 +244,11 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
     fragment_names = set(at.flags.get("frag") for at in mol)
     if len(fragment_names) > 0:
         fragment_mols = {name: plams.Molecule() for name in fragment_names}
-        for at in mol:
+        cmol = mol.copy()
+        cmol.flags = result.Result(cmol.flags)
+        for at in mol.copy():
             # get the fragment the atom belongs to and add it to the list
+            at.flags = result.Result(at.flags)
             fragment_mols[at.flags.get("frag")].add_atom(at)
 
         for frag in fragment_names:
