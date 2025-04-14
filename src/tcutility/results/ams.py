@@ -393,6 +393,7 @@ def get_pes(calc_dir: str) -> Result:
     if ("PESScan", "PES") in reader_ams:
         ret.energies = np.array(reader_ams.read("PESScan", "PES")).reshape(*ret.npoints) * constants.HA2KCALMOL
         ret.interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, ret.energies)
+        ret.energy_interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, ret.energies)
 
     if ret.nscan_coords == 1:
         ret.scan_coord_name = ret.scan_coord_name[0]
