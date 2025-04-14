@@ -271,14 +271,9 @@ class AMSJob(Job):
         self._constraints.append(line)
         self._write_constraints()
 
-
     def _write_constraints(self):
-        s = '\n'
+        s = '\nConstraints\n'
         for line in self._constraints:
-            s += '    ScanCoordinate\n'
-            s += f'        nPoints {val["nPoints"]}\n'
-            for line in val['lines']:
-                s+= f'        {line}\n'
-            s += '    End\n'
+            s+= f'   {line}\n'
         s += 'End\n'
         self.settings.input.ams.Constraints = s
