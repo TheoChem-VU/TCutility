@@ -246,13 +246,13 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         fragment_mols = {name: plams.Molecule() for name in fragment_names}
         cmol = mol.copy()
         cmol.flags = result.Result(cmol.flags)
-        for at in mol.copy():
+        for at in cmol:
             # get the fragment the atom belongs to and add it to the list
             at.flags = result.Result(at.flags)
             fragment_mols[at.flags.get("frag")].add_atom(at)
 
         for frag in fragment_names:
-            fragment_mols[frag].flags = {"tags": set()}
+            fragment_mols[frag].flags = result.Result({"tags": set()})
             if f"charge_{frag}" in mol.flags:
                 fragment_mols[frag].flags["charge"] = mol.flags[f"charge_{frag}"]
             if f"spinpol_{frag}" in mol.flags:
