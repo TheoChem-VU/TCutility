@@ -37,7 +37,7 @@ def get_info(calc_dir: str):
     try:
         return crest.get_info(calc_dir)
     except:  # noqa
-        pass
+        raise ValueError('Did not find engine')
 
 
     res = Result()
