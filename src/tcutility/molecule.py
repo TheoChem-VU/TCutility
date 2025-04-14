@@ -120,7 +120,7 @@ def load(path) -> plams.Molecule:
     return mol
 
 
-def from_string(mol: str) -> plams.Molecule:
+def from_string(lines: str) -> plams.Molecule:
     """
     Load a molecule from a string. Currently only supports simple XYZ-files, 
     e.g. not extended XYZ-files with flags.
@@ -133,7 +133,7 @@ def from_string(mol: str) -> plams.Molecule:
         A new molecule object with the elements and coordinates from the input.
     """
     mol = plams.Molecule()
-    for line in mol.splitlines():
+    for line in lines.splitlines():
         parts = [_parse_str(part) for part in line.split()]
         if len(parts) < 4:
             continue
