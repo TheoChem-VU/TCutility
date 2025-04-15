@@ -121,7 +121,6 @@ class Job:
                     return True
 
             res = server.execute(f'tcutility read -s {j(server.pwd(), self.rundir, self.name)}')
-            print(res)
             if res in ['SUCCESS', 'SUCCESS(W)', 'COMPLETING', 'CONFIGURING', 'PENDING', 'RUNNING']:
                 return True
 
@@ -180,6 +179,7 @@ class Job:
         """
         Run this job. We detect if we are using slurm. If we are we submit this job using sbatch. Otherwise, we will run the job locally.
         """
+        print(self.can_skip())
         if self.can_skip():
             log.info(f"Skipping calculation {j(self.rundir, self.name)}, it is already finished or currently pending or running.")
             return
