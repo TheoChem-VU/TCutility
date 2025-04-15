@@ -211,6 +211,9 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         Atoms that were not included by either method will be placed in the molecule object with key ``None``.
 
     """
+    # we have to copy the molecule (this also creates new atom objects)
+    # and then remove them from the copied molecule. This is because PLAMS
+    # does not allow atoms to belong to multiple molecule objects
     mol = mol.copy()
     atoms = list(mol.atoms)
     for at in atoms:
