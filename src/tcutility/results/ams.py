@@ -386,6 +386,18 @@ def get_pes(calc_dir: str) -> Result:
 
     ret = Result()
 
+    history_indices = reader_ams.read('PESScan', 'HistoryIndices')
+    atnums = ensure_list(reader_ams.read("InputMolecule", "AtomicNumbers"))  # type: ignore plams does not include type hints. Returns list[int]
+    ret.molecules = []
+    for i in history_indices:
+        mol = plams.Molecule()
+        coords = np.array(reader_ams.read("History", f"Coords({i})")).reshape(-1, 3) * constants.BOHR2ANG
+        for atnum, coord in zip(atnums, coords):
+            mol.add_atom(plams.Atom(atnum=atnum, coords=coord))
+        mol.guess_bonds()
+        ret.molecules.append(mol)
+
+    # read general info
     ret.nscan_coords = reader_ams.read("PESScan", "nScanCoord")
     ret.scan_coord_name = [reader_ams.read("PESScan", f"ScanCoord({i+1})").strip() for i in range(ret.nscan_coords)]
     ret.npoints = [reader_ams.read("PESScan", f"nPoints({i+1})") for i in range(ret.nscan_coords)]
@@ -393,6 +405,25 @@ def get_pes(calc_dir: str) -> Result:
     if ("PESScan", "PES") in reader_ams:
         ret.energies = np.array(reader_ams.read("PESScan", "PES")).reshape(*ret.npoints) * constants.HA2KCALMOL
         ret.energy_interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, ret.energies)
+        _coords = np.array([np.array(mol) for mol in ret.molecules]).reshape(*ret.npoints, 3, 3)
+        _coordinate_interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, _coords)
+        # print(ret.energies.shape, _coords.shape)
+        def molecule_interpolator(xi: np.ndarray) -> np.ndarray:
+            xi = np.atleast_2d(xi)
+            # print(xi.shape)
+            yi = _coordinate_interpolator(xi)
+            # print(yi)
+            mols = []
+            for y in yi:
+                mol = plams.Molecule()
+                for atnum, coord in zip(atnums, y):
+                    mol.add_atom(plams.Atom(atnum=atnum, coords=coord))
+                mols.append(mol)
+                
+            return mols
+
+        ret.molecule_interpolator = molecule_interpolator
+
 
     if ret.nscan_coords == 1:
         ret.scan_coord_name = ret.scan_coord_name[0]
