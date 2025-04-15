@@ -146,8 +146,8 @@ def from_string(lines: str) -> plams.Molecule:
         if not all(isinstance(part, (float, int)) for part in parts[1:4]):
             continue
 
-        atom = plams.Atom(symbol=parts[0], coords=parts[1:4])
-        mol.add_atom(atom)
+        at = plams.Atom(symbol=parts[0], coords=parts[1:4])
+        mol.add_atom(at)
 
     return mol
 
@@ -213,6 +213,14 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         Atoms that were not included by either method will be placed in the molecule object with key ``None``.
 
     """
+    # we have to copy the molecule (this also creates new atom objects)
+    # and then remove them from the copied molecule. This is because PLAMS
+    # does not allow atoms to belong to multiple molecule objects
+    mol = mol.copy()
+    atoms = list(mol.atoms)
+    for at in atoms:
+        at.flags = result.Result(at.flags)
+        mol.delete_atom(at)
 
     # first method, check if the fragments are defined as molecule flags
     fragment_flags = [flag for flag in mol.flags if flag.startswith("frag_")]
@@ -233,7 +241,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
                 else:
                     raise ValueError(f"Fragment index {indx} could not be parsed.")
 
-            [fragment_mols[frag_name].add_atom(mol[i]) for i in indices]
+            [fragment_mols[frag_name].add_atom(atoms[i-1]) for i in indices]
             fragment_mols[frag_name].flags = {"tags": set()}
             if f"charge_{frag_name}" in mol.flags:
                 fragment_mols[frag_name].flags["charge"] = mol.flags[f"charge_{frag_name}"]
@@ -243,15 +251,15 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         return result.Result(fragment_mols)
 
     # second method, check if the atoms have a frag= flag defined
-    fragment_names = set(at.flags.get("frag") for at in mol)
+    fragment_names = set(at.flags.get("frag") for at in atoms)
     if len(fragment_names) > 0:
         fragment_mols = {name: plams.Molecule() for name in fragment_names}
-        for at in mol:
+        for at in atoms:
             # get the fragment the atom belongs to and add it to the list
             fragment_mols[at.flags.get("frag")].add_atom(at)
 
         for frag in fragment_names:
-            fragment_mols[frag].flags = {"tags": set()}
+            fragment_mols[frag].flags = result.Result({"tags": set()})
             if f"charge_{frag}" in mol.flags:
                 fragment_mols[frag].flags["charge"] = mol.flags[f"charge_{frag}"]
             if f"spinpol_{frag}" in mol.flags:
