@@ -486,7 +486,7 @@ class ADFFragmentJob(ADFJob):
         if alpha is None and beta is None:
             spinpol = child_job.settings.input.adf.SpinPolarization or 0
             charge = child_job.settings.input.ams.system.charge or 0
-            print(child_job._molecule)
+            # print(child_job._molecule)
             nelectrons = sum(atom.atnum for atom in child_job._molecule) - charge
             alpha = nelectrons // 2 + spinpol
             beta  = nelectrons // 2
