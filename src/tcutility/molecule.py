@@ -211,6 +211,11 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         Atoms that were not included by either method will be placed in the molecule object with key ``None``.
 
     """
+    mol = mol.copy()
+    atoms = list(mol.atoms)
+    for atom in atoms:
+        atom.flags = result.Result(atom.flags)
+        mol.delete_atom(atom)
 
     # first method, check if the fragments are defined as molecule flags
     fragment_flags = [flag for flag in mol.flags if flag.startswith("frag_")]
@@ -231,7 +236,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
                 else:
                     raise ValueError(f"Fragment index {indx} could not be parsed.")
 
-            [fragment_mols[frag_name].add_atom(mol[i]) for i in indices]
+            [fragment_mols[frag_name].add_atom(atoms[i-1]) for i in indices]
             fragment_mols[frag_name].flags = {"tags": set()}
             if f"charge_{frag_name}" in mol.flags:
                 fragment_mols[frag_name].flags["charge"] = mol.flags[f"charge_{frag_name}"]
@@ -241,15 +246,12 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         return result.Result(fragment_mols)
 
     # second method, check if the atoms have a frag= flag defined
-    fragment_names = set(at.flags.get("frag") for at in mol)
+    fragment_names = set(at.flags.get("frag") for at in atoms)
     if len(fragment_names) > 0:
         fragment_mols = {name: plams.Molecule() for name in fragment_names}
-        cmol = mol.copy()
-        cmol.flags = result.Result(cmol.flags)
-        for at in cmol:
+        for atom in atoms:
             # get the fragment the atom belongs to and add it to the list
-            at.flags = result.Result(at.flags)
-            fragment_mols[at.flags.get("frag")].add_atom(at)
+            fragment_mols[atom.flags.get("frag")].add_atom(atom)
 
         for frag in fragment_names:
             fragment_mols[frag].flags = result.Result({"tags": set()})
