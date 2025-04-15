@@ -144,8 +144,8 @@ def from_string(lines: str) -> plams.Molecule:
         if not all(isinstance(part, (float, int)) for part in parts[1:4]):
             continue
 
-        atom = plams.Atom(symbol=parts[0], coords=parts[1:4])
-        mol.add_atom(atom)
+        at = plams.Atom(symbol=parts[0], coords=parts[1:4])
+        mol.add_atom(at)
 
     return mol
 
@@ -213,9 +213,9 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
     """
     mol = mol.copy()
     atoms = list(mol.atoms)
-    for atom in atoms:
-        atom.flags = result.Result(atom.flags)
-        mol.delete_atom(atom)
+    for at in atoms:
+        at.flags = result.Result(at.flags)
+        mol.delete_atom(at)
 
     # first method, check if the fragments are defined as molecule flags
     fragment_flags = [flag for flag in mol.flags if flag.startswith("frag_")]
@@ -249,9 +249,9 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
     fragment_names = set(at.flags.get("frag") for at in atoms)
     if len(fragment_names) > 0:
         fragment_mols = {name: plams.Molecule() for name in fragment_names}
-        for atom in atoms:
+        for at in atoms:
             # get the fragment the atom belongs to and add it to the list
-            fragment_mols[atom.flags.get("frag")].add_atom(atom)
+            fragment_mols[at.flags.get("frag")].add_atom(at)
 
         for frag in fragment_names:
             fragment_mols[frag].flags = result.Result({"tags": set()})
