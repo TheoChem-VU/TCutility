@@ -121,6 +121,7 @@ class Job:
                     return True
 
             res = server.execute(f'tcutility read -s {self.workdir}')
+            print(res)
             if res in ['SUCCESS', 'SUCCESS(W)', 'COMPLETING', 'CONFIGURING', 'PENDING', 'RUNNING']:
                 return True
 
