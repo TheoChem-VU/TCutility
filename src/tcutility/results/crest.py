@@ -215,7 +215,7 @@ def get_calculation_status(calc_dir: str) -> Result:
 
     info = get_info(calc_dir)
 
-    if hasattr(info, 'files.out') and info.files.out is not None:
+    if not hasattr(info, 'files.out') and info.files.out is not None:
         ret.reasons.append("Calculation status unknown")
         ret.name = "UNKNOWN"
         ret.code = "U"
