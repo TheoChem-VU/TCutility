@@ -119,11 +119,10 @@ class Job:
                 res = results.quick_status(self.workdir)
                 if not res.fatal:
                     return True
-
-            res = server.execute(f'tcutility read -s {self.workdir}')
-            print(res)
-            if res in ['SUCCESS', 'SUCCESS(W)', 'COMPLETING', 'CONFIGURING', 'PENDING', 'RUNNING']:
-                return True
+            else:
+                res = server.execute(f'tcutility read -s {self.workdir}')
+                if res in ['SUCCESS', 'SUCCESS(W)', 'COMPLETING', 'CONFIGURING', 'PENDING', 'RUNNING']:
+                    return True
 
         return False
 
