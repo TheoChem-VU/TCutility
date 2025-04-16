@@ -118,6 +118,7 @@ class Job:
             if isinstance(server, connect.Local):
                 res = results.quick_status(self.workdir)
                 if not res.fatal:
+                    print('Not res.fatal')
                     return True
 
             res = server.execute(f'tcutility read -s {self.workdir}')
