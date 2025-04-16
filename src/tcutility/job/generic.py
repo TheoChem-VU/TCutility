@@ -182,7 +182,7 @@ class Job:
         # print(results.quick_status(self.workdir))
         # print(self._servers)
         print(f'workdir: {self.workdir}, rundir: {self.rundir}')
-        # print(self.can_skip())
+        print(self.can_skip())
         for server in self._servers:
             print(server.execute(f'tcutility read -s {self.workdir}'))
         if self.can_skip():
