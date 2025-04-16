@@ -226,7 +226,6 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
     if len(fragment_flags) > 0:
         # we split here to get of the frag_ prefix
         fragment_mols = {frag.split("_", 1)[1]: plams.Molecule() for frag in fragment_flags}
-
         for frag in fragment_flags:
             frag_name = frag.split("_", 1)[1]
             indices = []
@@ -240,11 +239,11 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
                     raise ValueError(f"Fragment index {indx} could not be parsed.")
 
             [fragment_mols[frag_name].add_atom(atoms[i-1]) for i in indices]
-            fragment_mols[frag_name].flags = {"tags": set()}
+            fragment_mols[frag_name].flags = result.Result({"tags": set()})
             if f"charge_{frag_name}" in mol.flags:
-                fragment_mols[frag_name].flags["charge"] = mol.flags[f"charge_{frag_name}"]
+                fragment_mols[frag_name].flags.charge = mol.flags[f"charge_{frag_name}"]
             if f"spinpol_{frag_name}" in mol.flags:
-                fragment_mols[frag_name].flags["spinpol"] = mol.flags[f"spinpol_{frag_name}"]
+                fragment_mols[frag_name].flags.spinpol = mol.flags[f"spinpol_{frag_name}"]
 
         return result.Result(fragment_mols)
 
