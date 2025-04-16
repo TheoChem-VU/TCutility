@@ -124,7 +124,7 @@ class CRESTJob(Job):
             number: the number of files to return, defaults to 10. If the directory already exists, for example if the job was already run, we will return up to `number` files.
         '''
         if os.path.exists(self.rotamer_directory):
-            return [j(self.rotamer_directory, file) for i, file in enumerate(os.listdir(self.rotamer_directory))]
+            return [j(self.rotamer_directory, file) for file in os.listdir(self.rotamer_directory)]
 
         for i in range(number or 10):
             yield j(self.rotamer_directory, f'{str(i).zfill(5)}.xyz')
