@@ -297,12 +297,11 @@ class Local:
         ...
 
     def execute(self, command) -> str:
-        with open(os.devnull, "wb") as devnull:
-            try:
-                output = sp.check_output(command, shell=True).decode()
-            except sp.CalledProcessError:
-                print('COMMAND: ', command)
-
+        try:
+            output = sp.check_output(command, shell=True).decode()
+        except sp.CalledProcessError:
+            print('COMMAND: ', command)
+            raise
         return output
 
     def mkdir(self, dirname):

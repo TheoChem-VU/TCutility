@@ -15,6 +15,7 @@ class AMSJob(Job):
     It holds all methods related to changing the settings at the AMS level. It also handles preparing the jobs, e.g. writing runfiles and inputs.
     '''
     def __init__(self, *args, **kwargs):
+        self._pesscan_coordinates = {}
         self._constraints = []
         super().__init__(*args, **kwargs)
 
@@ -89,7 +90,7 @@ class AMSJob(Job):
         self.add_postscript(tcutility.job.postscripts.clean_workdir)
         self.add_postscript(tcutility.job.postscripts.write_converged_geoms)
 
-    def PESScan(self, distances: list = None, angles: list = None, dihedrals: list = None, sumdists: list = None, difdists: list = None, npoints: int = 10):
+    def PESScan(self, index: int = 0, distances: list = None, angles: list = None, dihedrals: list = None, sumdists: list = None, difdists: list = None, npoints: int = 10):
         '''
         Set the task of the job to potential energy surface scan (PESScan).
 
@@ -112,20 +113,34 @@ class AMSJob(Job):
         '''
         self._task = 'PESScan'
         self.settings.input.ams.task = 'PESScan'
-        self.settings.input.ams.PESScan.ScanCoordinate.nPoints = npoints
+
+        self._pesscan_coordinates.setdefault(index, {'nPoints': npoints, 'lines': []})
+
         if distances is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.Distance = [" ".join([str(x) for x in dist]) for dist in distances]
+            [self._pesscan_coordinates[index]['lines'].append('Distance ' + " ".join([str(x) for x in dist])) for dist in distances]
         if angles is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.Angle = [" ".join([str(x) for x in ang]) for ang in angles]
+            [self._pesscan_coordinates[index]['lines'].append('Angle ' + " ".join([str(x) for x in ang])) for ang in angles]
         if dihedrals is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.Dihedral = [" ".join([str(x) for x in dihedral]) for dihedral in dihedrals]
+            [self._pesscan_coordinates[index]['lines'].append('Dihedral ' + " ".join([str(x) for x in dihedral])) for dihedral in dihedrals]
         if sumdists is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.SumDist = [" ".join([str(x) for x in dist]) for dist in sumdists]
+            [self._pesscan_coordinates[index]['lines'].append('SumDist ' + " ".join([str(x) for x in dist])) for dist in sumdists]
         if difdists is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.DifDist = [" ".join([str(x) for x in dist]) for dist in difdists]
+            [self._pesscan_coordinates[index]['lines'].append('DifDist ' + " ".join([str(x) for x in dist])) for dist in difdists]
 
         self.add_postscript(tcutility.job.postscripts.clean_workdir)
         self.add_postscript(tcutility.job.postscripts.write_converged_geoms)
+        self._write_PESScan()
+
+    def _write_PESScan(self):
+        s = '\n'
+        for val in self._pesscan_coordinates.values():
+            s += '    ScanCoordinate\n'
+            s += f'        nPoints {val["nPoints"]}\n'
+            for line in val['lines']:
+                s+= f'        {line}\n'
+            s += '    End\n'
+        s += 'End\n'
+        self.settings.input.ams.PESScan = s
 
     def vibrations(self, enable: bool = True, NegativeFrequenciesTolerance: float = 0.0):
         '''
