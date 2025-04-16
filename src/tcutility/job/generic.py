@@ -118,7 +118,6 @@ class Job:
             if isinstance(server, connect.Local):
                 res = results.quick_status(self.workdir)
                 if not res.fatal:
-                    print('Not res.fatal')
                     return True
 
             res = server.execute(f'tcutility read -s {self.workdir}').strip()
@@ -180,12 +179,6 @@ class Job:
         """
         Run this job. We detect if we are using slurm. If we are we submit this job using sbatch. Otherwise, we will run the job locally.
         """
-        # print(results.quick_status(self.workdir))
-        # print(self._servers)
-        print(f'workdir: {self.workdir}, rundir: {self.rundir}')
-        for server in self._servers:
-            print(server.execute(f'tcutility read -s {self.workdir}'), type(server.execute(f'tcutility read -s {self.workdir}')))
-        print(self.can_skip())
         if self.can_skip():
             log.info(f"Skipping calculation {j(self.rundir, self.name)}, it is already finished or currently pending or running.")
             return
