@@ -147,12 +147,8 @@ def quick_status(calc_dir: Union[str, pl.Path]) -> Result:
     status.fatal = True
     status.code = 'U'
     for engine in [ams, orca, crest, xtb]:
-        if engine == crest or xtb:
-            input = read(calc_dir)
-        else:
-            input = calc_dir
         try:
-            status = engine.get_calculation_status(input)
+            status = engine.get_calculation_status(calc_dir)
             if status.name != 'UNKNOWN':
                 return status
         except Exception:
