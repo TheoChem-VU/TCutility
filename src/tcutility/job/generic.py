@@ -121,7 +121,7 @@ class Job:
                     print('Not res.fatal')
                     return True
 
-            res = server.execute(f'tcutility read -s {self.workdir}')
+            res = server.execute(f'tcutility read -s {self.workdir}').strip()
             for result in ['SUCCESS', 'SUCCESS(W)', 'COMPLETING', 'CONFIGURING', 'PENDING', 'RUNNING']:
                 if res == result:
                     return True
