@@ -16,6 +16,7 @@ class AMSJob(Job):
     '''
     def __init__(self, *args, **kwargs):
         self._pesscan_coordinates = {}
+        self._constraints = []
         super().__init__(*args, **kwargs)
 
     def __str__(self):
@@ -279,4 +280,15 @@ class AMSJob(Job):
             if preamble is None:
                 log.warn(f'Could not set the AMS version to {version} on {server}.')
                 return
-            self.add_preamble(preamble)
+            self.add_preamble(preamble) 
+
+    def constraint(self, line: str):
+        self._constraints.append(line)
+        self._write_constraints()
+
+    def _write_constraints(self):
+        s = '\nConstraints\n'
+        for line in self._constraints:
+            s+= f'   {line}\n'
+        s += 'End\n'
+        self.settings.input.ams.Constraints = s

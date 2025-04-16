@@ -5,6 +5,11 @@ from tcutility.results import Result
 
 j = os.path.join
 
+def convert(st):
+    try:
+        return int(st)
+    except ValueError: #If you get a ValueError
+        return float(st)
 
 def get_calc_files(calc_dir: str) -> Result:
     """Function that returns files relevant to AMS calculations stored in ``calc_dir``.
@@ -106,8 +111,7 @@ def get_input(info: Result) -> Result:
             line = line.strip()
             if line.startswith("Command line input:"):
                 # next line contains the call
-                call = lines[i+1].strip().removeprefix('>').strip().split()
-
+                call = lines[i+1].strip('$> ').split()
     ret.call = " ".join(call)
     ### TASK
     ret.coord_file = call[1]
@@ -119,7 +123,7 @@ def get_input(info: Result) -> Result:
             continue
         # read the next position in the call
         option_idx = call.index(option)
-        ret.charge = int(call[option_idx + 1])
+        ret.charge = convert(call[option_idx + 1])
 
     ### SPIN-POLARIZATION
     ret.spin_polarization = 0
@@ -129,7 +133,7 @@ def get_input(info: Result) -> Result:
             continue
         # read the next position in the call
         option_idx = call.index(option)
-        ret.spin_polarization = int(call[option_idx + 1])
+        ret.spin_polarization = convert(call[option_idx + 1])
 
     ### SOLVATION
     ret.solvent = None
@@ -146,7 +150,7 @@ def get_input(info: Result) -> Result:
         option_idx = call.index(option)
         ret.solvent = call[option_idx + 1]
         ret.solvation_model = "GBSA"
-
+    
     ### DETAILED INPUT
     ret.detailed = None
     if "--input" in call:

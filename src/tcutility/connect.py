@@ -302,7 +302,6 @@ class Local:
         except sp.CalledProcessError:
             print('COMMAND: ', command)
             raise
-        
         return output
 
     def mkdir(self, dirname):

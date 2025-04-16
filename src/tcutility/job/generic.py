@@ -71,7 +71,8 @@ class Job:
         self.overwrite = overwrite
         self.wait_for_finish = wait_for_finish
         self.delete_on_finish = delete_on_finish
-        self.use_slurm = use_slurm
+        self.delete_on_fail = delete_on_fail
+        self.use_slurm = use_slurm if use_slurm is not None else True
 
         # update this job with base_jobs
         for base_job in base_jobs:
@@ -127,7 +128,7 @@ class Job:
                 if not res.fatal:
                     return True
 
-            res = server.execute(f'tcutility read -s {j(server.pwd(), self.rundir, self.name)}')
+            res = server.execute(f'tcutility read -s {self.workdir}').strip()
             if res in ['SUCCESS', 'SUCCESS(W)', 'COMPLETING', 'CONFIGURING', 'PENDING', 'RUNNING']:
                 return True
 
