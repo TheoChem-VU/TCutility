@@ -179,10 +179,12 @@ class Job:
         """
         Run this job. We detect if we are using slurm. If we are we submit this job using sbatch. Otherwise, we will run the job locally.
         """
-        print(results.quick_status(self.workdir))
-        print(self._servers)
+        # print(results.quick_status(self.workdir))
+        # print(self._servers)
         print(f'workdir: {self.workdir}, rundir: {self.rundir}')
-        print(self.can_skip())
+        # print(self.can_skip())
+        for server in self._servers:
+            print(server.execute(f'tcutility read -s {j(server.pwd(), self.rundir, self.name)}'))
         if self.can_skip():
             log.info(f"Skipping calculation {j(self.rundir, self.name)}, it is already finished or currently pending or running.")
             return
