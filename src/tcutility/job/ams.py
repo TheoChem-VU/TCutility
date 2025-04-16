@@ -113,7 +113,7 @@ class AMSJob(Job):
         '''
         self._task = 'PESScan'
         self.settings.input.ams.task = 'PESScan'
-
+        index = str(index)
         self._pesscan_coordinates.setdefault(index, {'nPoints': npoints, 'lines': []})
 
         if distances is not None:
