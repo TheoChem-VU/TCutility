@@ -148,20 +148,15 @@ def quick_status(calc_dir: Union[str, pl.Path]) -> Result:
     status.code = 'U'
     for engine in [ams, orca, crest, xtb]:
         if engine == crest or xtb:
-            info = read(calc_dir)
-            try:
-                status = engine.get_calculation_status(info)
-                if status.name != 'UNKNOWN':
-                    return status
-            except Exception:
-                pass
+            input = read(calc_dir)
         else:
-            try:
-                status = engine.get_calculation_status(calc_dir)
-                if status.name != 'UNKNOWN':
-                    return status
-            except Exception:
-                pass
+            input = calc_dir
+        try:
+            status = engine.get_calculation_status(input)
+            if status.name != 'UNKNOWN':
+                return status
+        except Exception:
+            pass
 
     # otherwise we check if the job is being managed by slurm
     if not slurm.workdir_info(calc_dir):
