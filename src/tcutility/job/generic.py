@@ -115,10 +115,10 @@ class Job:
             This will be fixed in a later version of TCutility.
         """
         for server in self._servers:
-            if isinstance(server, connect.Local):
-                res = results.quick_status(self.workdir)
-                if not res.fatal:
-                    return True
+            # if isinstance(server, connect.Local):
+            #     res = results.quick_status(self.workdir)
+            #     if not res.fatal:
+            #         return True
 
             res = server.execute(f'tcutility read -s {self.workdir}')
             if res in ['SUCCESS', 'SUCCESS(W)', 'COMPLETING', 'CONFIGURING', 'PENDING', 'RUNNING']:
