@@ -184,7 +184,7 @@ class Job:
         print(f'workdir: {self.workdir}, rundir: {self.rundir}')
         # print(self.can_skip())
         for server in self._servers:
-            print(server.execute(f'tcutility read -s {j(server.pwd(), self.rundir, self.name)}'))
+            print(server.execute(f'tcutility read -s {self.workdir}'))
         if self.can_skip():
             log.info(f"Skipping calculation {j(self.rundir, self.name)}, it is already finished or currently pending or running.")
             return
