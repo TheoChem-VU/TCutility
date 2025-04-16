@@ -182,9 +182,9 @@ class Job:
         # print(results.quick_status(self.workdir))
         # print(self._servers)
         print(f'workdir: {self.workdir}, rundir: {self.rundir}')
-        print(self.can_skip())
         for server in self._servers:
             print(server.execute(f'tcutility read -s {self.workdir}'))
+        print(self.can_skip())
         if self.can_skip():
             log.info(f"Skipping calculation {j(self.rundir, self.name)}, it is already finished or currently pending or running.")
             return
