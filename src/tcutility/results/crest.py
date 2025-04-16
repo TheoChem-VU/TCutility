@@ -193,7 +193,7 @@ def get_input(info: Result) -> Result:
     return ret
 
 
-def get_calculation_status(calc_dir: str) -> Result:
+def get_calculation_status(info: Result) -> Result:
     """Function that returns the status of the ORCA calculation described in reader. In case of non-succes it will also give possible reasons for the errors/warnings.
 
     Args:
@@ -213,9 +213,7 @@ def get_calculation_status(calc_dir: str) -> Result:
     ret.code = None
     ret.reasons = []
 
-    info = get_info(calc_dir)
-
-    if not hasattr(info, 'files.out') and info.files.out is not None:
+    if "out" not in info.files:
         ret.reasons.append("Calculation status unknown")
         ret.name = "UNKNOWN"
         ret.code = "U"
