@@ -179,6 +179,7 @@ class Job:
         """
         Run this job. We detect if we are using slurm. If we are we submit this job using sbatch. Otherwise, we will run the job locally.
         """
+        print(self._servers)
         print(f'workdir: {self.workdir}, rundir: {self.rundir}')
         print(self.can_skip())
         if self.can_skip():
