@@ -42,7 +42,7 @@ class WorkFlow(SkipContext):
     
     def add_dependency(self, slurm_id: str):
         if self.dependency is not None: 
-            self.dependency += f',{slurm_id}'
+            self.dependency += f':{slurm_id}'
         else:
             self.dependency = f'afterok:{slurm_id}'
 
@@ -90,7 +90,7 @@ class WorkFlow(SkipContext):
         if sbatch is None:
             sbatch = {}
         if self.dependency is not None:
-            sbatch["dependency"] = self.dependency
+            sbatch["d"] = self.dependency
         # Use slurm.sbatch here with runscript
         if slurm.has_slurm():
             self.write_script(delete)
