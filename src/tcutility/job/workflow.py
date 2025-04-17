@@ -44,7 +44,7 @@ class WorkFlow(SkipContext):
         if self.dependency is not None: 
             self.dependency += f',{slurm_id}'
         else:
-            self.dependency += f'afterok:{slurmid}'
+            self.dependency += f'afterok:{slurm_id}'
 
     def __str__(self):
         return f'WorkFlow(name="{self.name}", version="{self.version}")'
