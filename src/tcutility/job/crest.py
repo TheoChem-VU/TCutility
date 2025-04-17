@@ -115,7 +115,7 @@ class CRESTJob(Job):
         if number == None:
             number = len(os.listdir(self.conformer_directory))
         
-        return [j(self.conformer_directory, f'{str(i).zfill(5)}.xyz') for i in range(number-1)]
+        return [j(self.conformer_directory, f'{str(i).zfill(5)}.xyz') for i in range(number)]
 
     def get_rotamer_xyz(self, number: int = None):
         '''
