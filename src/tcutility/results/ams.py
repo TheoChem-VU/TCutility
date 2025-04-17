@@ -405,7 +405,7 @@ def get_pes(calc_dir: str) -> Result:
     if ("PESScan", "PES") in reader_ams:
         ret.energies = np.array(reader_ams.read("PESScan", "PES")).reshape(*ret.npoints) * constants.HA2KCALMOL
         ret.energy_interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, ret.energies)
-        _coords = np.array([np.array(mol) for mol in ret.molecules]).reshape(*ret.npoints, 3, 3)
+        _coords = np.array([np.array(mol) for mol in ret.molecules]).reshape(*ret.npoints, -1, 3)
         _coordinate_interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, _coords)
         # print(ret.energies.shape, _coords.shape)
         def molecule_interpolator(xi: np.ndarray) -> np.ndarray:
