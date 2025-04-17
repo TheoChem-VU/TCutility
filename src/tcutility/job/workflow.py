@@ -32,12 +32,19 @@ class WorkFlow(SkipContext):
         self.output = results.Result()
         self.preambles = []
         self.postambles = []
+        self.dependency = None
 
     def add_preamble(self, amble:str):
         self.preambles.append(amble)
 
     def add_postamble(self, amble:str):
         self.postambles.append(amble)
+    
+    def add_dependency(self, slurm_id: str):
+        if self.dependency is not None: 
+            self.dependency += f',{slurm_id}'
+        else:
+            self.dependency += f'afterok:{slurmid}'
 
     def __str__(self):
         return f'WorkFlow(name="{self.name}", version="{self.version}")'
@@ -82,6 +89,8 @@ class WorkFlow(SkipContext):
         self.input = results.Result(inp)
         if sbatch is None:
             sbatch = {}
+        if self.dependency is not None:
+            sbatch["dependency"] = self.dependency
         # Use slurm.sbatch here with runscript
         if slurm.has_slurm():
             self.write_script(delete)
