@@ -390,7 +390,7 @@ class ADFFragmentJob(ADFJob):
                 raise TCJobError(job_class=self.__class__.__name__, message="The atoms in the new fragment are already present in the other fragments.")
 
         name = name or f"fragment{len(self.child_jobs) + 1}"
-        self.child_jobs[name] = ADFJob(test_mode=self.test_mode)
+        self.child_jobs[name] = ADFJob(use_slurm=self.use_slurm,test_mode=self.test_mode)
         self.child_jobs[name].molecule(mol)
         if charge:
             self.child_jobs[name].charge(charge)

@@ -401,6 +401,7 @@ class Job:
                         spin_polarization = -1
                         solvent = water
         """
+        print(type(mol))
         if isinstance(mol, plams.Molecule):
             self._molecule = mol
 
