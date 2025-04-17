@@ -287,7 +287,7 @@ class AMSJob(Job):
         self._write_constraints()
 
     def _write_constraints(self):
-        s = '\nConstraints\n'
+        s = '\n'
         for line in self._constraints:
             s+= f'   {line}\n'
         s += 'End\n'
