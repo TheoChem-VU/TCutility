@@ -130,20 +130,24 @@ def from_string(lines: str) -> plams.Molecule:
     Returns:
         A new molecule object with the elements and coordinates from the input.
     """
+    # molecule object to populate
     mol = plams.Molecule()
     for line in lines.splitlines():
+        # we split each line into its parts and parse each part
         parts = [_parse_str(part) for part in line.split()]
         if len(parts) < 4:
             continue
 
         # check if first part is the symbol of the molecule
+        # i.e. if there are more than 2 characters it is not a symbol
         if not isinstance(parts[0], str) and len(parts[0]) > 2:
             continue
 
-        # check if
+        # check if the next 3 parts are floats or ints, i.e. coordinates
         if not all(isinstance(part, (float, int)) for part in parts[1:4]):
             continue
 
+        # if all checks pass we make a new atom
         at = plams.Atom(symbol=parts[0], coords=parts[1:4])
         mol.add_atom(at)
 
