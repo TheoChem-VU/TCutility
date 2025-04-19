@@ -34,7 +34,6 @@ dependencies = [
   "click>=8.1",
   "opencv-python",
   "paramiko", 
-  "jsonpickle",
 ]
 # Current maintainers
 maintainers = [{ name = "TheoCheM group" }]
