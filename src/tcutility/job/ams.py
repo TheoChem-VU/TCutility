@@ -1,6 +1,6 @@
 from scm import plams
 import tcutility
-from tcutility import log
+from tcutility import log, connect
 from tcutility.job.generic import Job
 import os
 import numpy as np
@@ -14,6 +14,11 @@ class AMSJob(Job):
     This is the AMS base job which will serve as the parent class for ADFJob, DFTBJob and the future BANDJob.
     It holds all methods related to changing the settings at the AMS level. It also handles preparing the jobs, e.g. writing runfiles and inputs.
     '''
+    def __init__(self, *args, **kwargs):
+        self._pesscan_coordinates = {}
+        self._constraints = []
+        super().__init__(*args, **kwargs)
+
     def __str__(self):
         return f'{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}'
 
@@ -85,7 +90,7 @@ class AMSJob(Job):
         self.add_postscript(tcutility.job.postscripts.clean_workdir)
         self.add_postscript(tcutility.job.postscripts.write_converged_geoms)
 
-    def PESScan(self, distances: list = None, angles: list = None, dihedrals: list = None, sumdists: list = None, difdists: list = None, npoints: int = 10):
+    def PESScan(self, index: int = 0, distances: list = None, angles: list = None, dihedrals: list = None, sumdists: list = None, difdists: list = None, npoints: int = 10):
         '''
         Set the task of the job to potential energy surface scan (PESScan).
 
@@ -108,20 +113,34 @@ class AMSJob(Job):
         '''
         self._task = 'PESScan'
         self.settings.input.ams.task = 'PESScan'
-        self.settings.input.ams.PESScan.ScanCoordinate.nPoints = npoints
+        index = str(index)
+        self._pesscan_coordinates.setdefault(index, {'nPoints': npoints, 'lines': []})
+
         if distances is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.Distance = [" ".join([str(x) for x in dist]) for dist in distances]
+            [self._pesscan_coordinates[index]['lines'].append('Distance ' + " ".join([str(x) for x in dist])) for dist in distances]
         if angles is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.Angle = [" ".join([str(x) for x in ang]) for ang in angles]
+            [self._pesscan_coordinates[index]['lines'].append('Angle ' + " ".join([str(x) for x in ang])) for ang in angles]
         if dihedrals is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.Dihedral = [" ".join([str(x) for x in dihedral]) for dihedral in dihedrals]
+            [self._pesscan_coordinates[index]['lines'].append('Dihedral ' + " ".join([str(x) for x in dihedral])) for dihedral in dihedrals]
         if sumdists is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.SumDist = [" ".join([str(x) for x in dist]) for dist in sumdists]
+            [self._pesscan_coordinates[index]['lines'].append('SumDist ' + " ".join([str(x) for x in dist])) for dist in sumdists]
         if difdists is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.DifDist = [" ".join([str(x) for x in dist]) for dist in difdists]
+            [self._pesscan_coordinates[index]['lines'].append('DifDist ' + " ".join([str(x) for x in dist])) for dist in difdists]
 
         self.add_postscript(tcutility.job.postscripts.clean_workdir)
         self.add_postscript(tcutility.job.postscripts.write_converged_geoms)
+        self._write_PESScan()
+
+    def _write_PESScan(self):
+        s = '\n'
+        for val in self._pesscan_coordinates.values():
+            s += '    ScanCoordinate\n'
+            s += f'        nPoints {val["nPoints"]}\n'
+            for line in val['lines']:
+                s+= f'        {line}\n'
+            s += '    End\n'
+        s += 'End\n'
+        self.settings.input.ams.PESScan = s
 
     def vibrations(self, enable: bool = True, NegativeFrequenciesTolerance: float = 0.0):
         '''
@@ -179,19 +198,20 @@ class AMSJob(Job):
         '''
         Set up the calculation. This will create the working directory and write the runscript and input file for ADF to use.
         '''
-        os.makedirs(self.rundir, exist_ok=True)
+        server = self._select_server()
+        server.mkdir(self.rundir)
 
-        if os.path.exists(self.workdir):
-            for file in os.listdir(self.workdir):
+        if server.path_exists(self.workdir):
+            for file in server.ls(self.workdir):
                 p = os.path.join(self.workdir, file)
                 if p.endswith('.rkf'):
-                    os.remove(p)
+                    server.rm(p)
                 if 'ams.kid' in p:
-                    os.remove(p)
+                    server.rm(p)
                 if p.startswith('t21.'):
-                    os.remove(p)
+                    server.rm(p)
                 if p.startswith('t12.'):
-                    os.remove(p)
+                    server.rm(p)
 
         if not self._molecule and not self._molecule_path and 'atoms' not in self.settings.input.ams.system:
             log.error(f'You did not supply a molecule for this job. Call the {self.__class__.__name__}.molecule method to add one.')
@@ -208,19 +228,27 @@ class AMSJob(Job):
         sett = self.settings.as_plams_settings()
         job = plams.AMSJob(name=self.name, molecule=self._molecule, settings=sett)
 
-        os.makedirs(self.workdir, exist_ok=True)
-        with open(self.inputfile_path, 'w+') as inpf:
+        server.mkdir(self.workdir)
+        with server.open_file(self.inputfile_path) as inpf:
             inpf.write(job.get_input())
 
-        with open(self.runfile_path, 'w+') as runf:
+        # add some preambles specific to the server and ams
+        for preamble in server.preamble_defaults.get('AMS', []):
+            self.add_preamble(preamble)
+
+        # add some postambles specific to the server and ams
+        for postamble in server.postamble_defaults.get('AMS', []):
+            self.add_postamble(postamble)
+
+        with server.open_file(self.runfile_path) as runf:
             runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
             runf.write('\n'.join(self._preambles) + '\n\n')
             runf.write(job.get_runscript())
             runf.write('\n'.join(self._postambles))
 
         # in case we are rerunning a calculation we need to remove ams.log
-        if os.path.exists(j(self.workdir, 'ams.log')):
-            os.remove(j(self.workdir, 'ams.log'))
+        if server.path_exists(j(self.workdir, 'ams.log')):
+            server.rm(j(self.workdir, 'ams.log'))
 
         return True
 
@@ -233,3 +261,34 @@ class AMSJob(Job):
         The default file path for output molecules when running ADF calculations. It will not be created for singlepoint calculations.
         '''
         return j(self.workdir, 'output.xyz')
+
+    def use_version(self, version='latest'):
+        '''
+        Set the version of AMS to use for the calculation.
+        Which versions are available depends on the location you are currently in.
+        We currently support the following versions:
+
+            -    On Snellius: ``2023`` and ``2024``.
+            -    On Bazis: ``2021``, ``2022``, ``2023`` and ``2024``.
+        '''
+        server = self._select_server()
+        if isinstance(server, connect.Local):
+            log.warn('Cannot set AMS version for a local calculation.')
+            return
+        else:
+            preamble = server.program_modules['AMS'].get(version, None)
+            if preamble is None:
+                log.warn(f'Could not set the AMS version to {version} on {server}.')
+                return
+            self.add_preamble(preamble) 
+
+    def constraint(self, line: str):
+        self._constraints.append(line)
+        self._write_constraints()
+
+    def _write_constraints(self):
+        s = '\n'
+        for line in self._constraints:
+            s+= f'   {line}\n'
+        s += 'End\n'
+        self.settings.input.ams.Constraints = s

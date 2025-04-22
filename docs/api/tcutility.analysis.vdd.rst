@@ -9,21 +9,21 @@ tcutility.analysis.vdd.charge module
 
 .. automodule:: tcutility.analysis.vdd.charge
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 tcutility.analysis.vdd.manager module
 -------------------------------------
 
 .. automodule:: tcutility.analysis.vdd.manager
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Module contents
 ---------------
 
 .. automodule:: tcutility.analysis.vdd
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

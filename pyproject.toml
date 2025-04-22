@@ -33,6 +33,8 @@ dependencies = [
   "strenum>=0.4",
   "click>=8.1",
   "opencv-python",
+  "paramiko", 
+  "jsonpickle",
 ]
 # Current maintainers
 maintainers = [{ name = "TheoCheM group" }]
@@ -69,7 +71,7 @@ exclude = [
 namespaces = false # to disable scanning PEP 420 namespaces (true by default)
 
 [project.scripts]
-tc = "tcutility.cli_scripts.tcparser:tc"
+tcutility = "tcutility.cli_scripts.tcparser:tcutility"
 
 [project.optional-dependencies]
 docs = [

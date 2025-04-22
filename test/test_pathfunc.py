@@ -63,7 +63,7 @@ def test_get_subdirectories(temp_dir):
         f'{temp_dir}/subdir_b',
         f'{temp_dir}/subdir_c'
     }
-    assert pathfunc.get_subdirectories(temp_dir) == expected
+    assert sorted(pathfunc.get_subdirectories(temp_dir)) == sorted(expected)
 
 
 def test_get_subdirectories2(temp_dir):
@@ -75,7 +75,7 @@ def test_get_subdirectories2(temp_dir):
         f'{temp_dir}/subdir_b',
         f'{temp_dir}/subdir_c'
     }
-    assert pathfunc.get_subdirectories(temp_dir, include_intermediates=True) == expected
+    assert sorted(pathfunc.get_subdirectories(temp_dir, include_intermediates=True)) == sorted(expected)
 
 
 def test_match(temp_dir2):
@@ -99,13 +99,26 @@ def test_split_all2():
 
 
 def test_split_all3():
-    assert pathfunc.split_all("") == [""]
+    # empty string corresponds to the `.` directory, i.e. here
+    assert pathfunc.split_all("") == ["."]
 
 
 def test_split_all4():
     import os
 
     assert pathfunc.split_all(os.path.join("a", "b", "c")) == ["a", "b", "c"]
+
+
+def test_path_depth():
+    assert pathfunc.path_depth('a/b/c') == 3
+
+
+def test_path_depth2():
+    assert pathfunc.path_depth('a/One Drive/c') == 3
+    
+def test_path_depth4():
+    assert pathfunc.path_depth('a') == 1
+    
 
 
 if __name__ == "__main__":

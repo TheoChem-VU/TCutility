@@ -17,7 +17,7 @@ for out_dir, candidate in zip(out_dirs, candidates):
 		nmols = len(lines)//(natoms + 2)
 		mol_lines = [lines[(natoms+2)*i:(natoms+2)*(i+1)] for i in range(nmols)]
 
-	[[print(line.strip()) for line in lines] for lines in mol_lines]
+	# [[print(line.strip()) for line in lines] for lines in mol_lines]
 
 
 # [print(x) for x in geometry.get_rotmat.__globals__]
