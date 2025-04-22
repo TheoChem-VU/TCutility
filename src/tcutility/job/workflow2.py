@@ -96,6 +96,7 @@ class workflow:
         for param_name, arg in zip(self.parameters, args):
             _args[param_name] = arg
         _args.update(kwargs)
+        print(inspect.getclosurevars(self.func))
         self._write_files(_args)
         # tcutility.connect.
 
@@ -162,14 +163,20 @@ def extract_func_code(func: callable) -> str:
     return '\n'.join(code_lines)
 
 
+def test():
+    ...
+
+
 @workflow()
 def sn2(molecule: 'path' = (1, 2, 3), 
         sbatch: dict = None) -> None:
-    import tcutility
+    test()
 
     with tcutility.job.DFTBJob(test_mode=True) as job:
         job.molecule(molecule)
 
+
+# print(inspect.getclosurevars(sn2.func))
 # print(workflow)
-print(sn2)
+# print(sn2)
 sn2({'molecule': 'abc.xyz', 'sbatch': {'p': 'tc', 'n': 32}})
