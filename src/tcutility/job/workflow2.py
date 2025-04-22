@@ -12,11 +12,19 @@ def _python_path(server: tcutility.connect.Server = tcutility.connect.Local()):
     Sometimes it is necessary to have the Python path as some environments don't have its path.
     This function attempts to find the Python path and returns it.
     """
-    python = server.execute("which python")
-    if python == "" or not server.path_exists(python):
-        python = server.execute("which python3")
+    python = ""
+    try:
+        python = server.execute("which python").strip()
+    except sp.CalledProcessError:
+        python == ""
 
-    # we default to the python executable
+    if python == "" or not server.path_exists(python):
+        try:
+            python = server.execute("which python3").strip()
+        except sp.CalledProcessError:
+            python == ""
+
+    # we default to the python executable   
     if python == "" or not server.path_exists(python):
         python = "python"
 
@@ -110,6 +118,7 @@ class workflow:
 
             if self.delete_files:
                 file.write(f'rm {self.py_path}\n')
+                file.write(f'rm {self.out_path}\n')
                 file.write(f'rm {self.sh_path}\n')
 
 
@@ -229,7 +238,10 @@ def ruff_check_script(path: str, ignored_codes=None) -> bool:
     return True
 
 
-@workflow(sbatch={'p': 'tc', 'n': 32})
+@workflow(
+    sbatch={'p': 'tc', 'n': 32},
+    delete_files=True,
+    )
 def sn2(molecule: 'path' = (1, 2, 3)) -> None:
     import tcutility
 
