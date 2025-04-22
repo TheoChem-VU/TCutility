@@ -136,7 +136,15 @@ class workflow:
             raise Exception('Python script will fail!')
 
         if tcutility.slurm.has_slurm():
-            tcutility.slurm.sbatch(self.sh_path, self.sbatch)
+            # set some default sbatch settings
+            # if any(option not in self.sbatch for option in ["D", "chdir"]):
+            #     self.sbatch.setdefault("D", self.workdir)
+            # if any(option not in self.sbatch for option in ["J", "job_name"]):
+            #     self.sbatch.setdefault("J", f"{self.rundir}/{self.name}")
+            if any(option not in self.sbatch for option in ["o", "output"]):
+                self.sbatch.setdefault("o", self.out_path)
+
+            tcutility.slurm.sbatch(self.sh_path, self.server, **self.sbatch)
         else:
             runfile_dir, runscript = os.path.split(self.sh_path)
             if runfile_dir == '':
@@ -239,7 +247,7 @@ def ruff_check_script(path: str, ignored_codes=None) -> bool:
 
 
 @workflow(
-    sbatch={'p': 'tc', 'n': 32},
+    sbatch={'p': 'rom', 'n': 32, 't': '120:00:00'},
     delete_files=True,
     )
 def sn2(molecule: 'path' = (1, 2, 3)) -> None:
