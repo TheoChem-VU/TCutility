@@ -323,7 +323,6 @@ class Local:
         return os.path.exists(os.path.join(self.currdir, path))
 
     def open_file(self, file_path: str, mode:str = 'w+'):
-        print(file_path, mode)
         return open(file_path, mode=mode)
 
     def chmod(self, rights: int, path: str):
