@@ -4,6 +4,23 @@ import subprocess as sp
 import dill
 import tcutility
 import jsonpickle
+import os
+
+@tcutility.cache.cache
+def _python_path(server: tcutility.connect.Server = tcutility.connect.Local()):
+    """
+    Sometimes it is necessary to have the Python path as some environments don't have its path.
+    This function attempts to find the Python path and returns it.
+    """
+    python = server.execute("which python")
+    if python == "" or not server.path_exists(python):
+        python = server.execute("which python3")
+
+    # we default to the python executable
+    if python == "" or not server.path_exists(python):
+        python = "python"
+
+    return python
 
 
 class workflow:
@@ -54,16 +71,12 @@ class workflow:
 
         self.sh_path = f'{file_name}.sh'
         self.py_path = f'{file_name}.py'
-        # self.pkl_path = f'{file_name}.pkl'
-
-        # with self.server.open_file(self.pkl_path, 'wb+') as pkl:
-        #     dill.dump_module(pkl)
+        self.out_path = f'{file_name}.out'
 
         with self.server.open_file(self.py_path, 'w+') as script:
             script.write('#====== LOAD STATE ========#\n')
             script.write('import dill\n')
             script.write('import jsonpickle\n\n')
-            # script.write(f'dill.load_module("{file_name}.pkl")\n\n')
 
             for arg_name, arg_val in args.items():
                 if arg_name in self.parameters:
@@ -90,29 +103,40 @@ class workflow:
             for line in self.preambles:
                 file.write(line + '\n')
 
-            file.write(f'python {self.py_path}\n')
+            file.write(f'{_python_path(self.server)} {self.py_path}\n')
 
             for line in self.postambles:
                 file.write(line + '\n')
 
             if self.delete_files:
                 file.write(f'rm {self.py_path}\n')
-                # file.write(f'rm {self.pkl_path}\n')
                 file.write(f'rm {self.sh_path}\n')
 
 
     def execute(self, *args, **kwargs):
-        print(args, kwargs)
         _args = {}
         for param_name, arg in zip(self.parameters, args):
             _args[param_name] = arg
         _args.update(kwargs)
-        print(args)
+
         for glob_name, glob in inspect.getclosurevars(self.func).globals.items():
             _args[glob_name] = glob
 
         self._write_files(_args)
-        ruff_check_script(self.py_path)
+        if not ruff_check_script(self.py_path, ignored_codes=['E402', 'F811']):
+            raise Exception('Python script will fail!')
+
+        if tcutility.slurm.has_slurm():
+            tcutility.slurm.sbatch(self.sh_path, self.sbatch)
+        else:
+            runfile_dir, runscript = os.path.split(self.sh_path)
+            if runfile_dir == '':
+                runfile_dir = '.'
+            command = ["./" + runscript] if os.name == "posix" else ["sh", runscript]
+            self.server.chmod(744, self.sh_path)
+            with open(self.out_path, "w+") as out:
+                sp.run(command, cwd=runfile_dir, stdout=out, shell=True)
+
 
 
 def extract_func_code(func: callable) -> str:
@@ -177,31 +201,37 @@ def extract_func_code(func: callable) -> str:
     return '\n'.join(code_lines)
 
 
-def ruff_check_script(path: str) -> bool:
+def ruff_check_script(path: str, ignored_codes=None) -> bool:
     '''
     Check if a python script in `path` will run according to Ruff.
 
     Args:
         path: a path to the python script to check.
+        ignored_codes: the Ruff warning and error codes to ignore.
 
     Returns:
         A boolean specifying if the return code is 0 or not.
     '''
-    out = sp.run(f'ruff check {path}', shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
+    if ignored_codes is None:
+        ignored_codes = []
+
+    out = sp.run(f'ruff check {path} --ignore {",".join(ignored_codes)}', shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
+    # if the ruff check failed we get a non-zero exit
     if out.returncode != 0:
+        # simply print the output if we failed
         tcutility.log.log('Found issue when parsing code with Ruff:')
         tcutility.log.boxed(out.stdout.decode())
+        # and the code itself
         tcutility.log.log(f'Code ({path}):')
         with open(path) as file:
             tcutility.log.boxed(file.read())
         return False
-
     return True
 
 
 @workflow(sbatch={'p': 'tc', 'n': 32})
 def sn2(molecule: 'path' = (1, 2, 3)) -> None:
-    test()
+    import tcutility
 
     with tcutility.job.DFTBJob(use_slurm=False) as job:
         job.molecule(molecule)
