@@ -247,12 +247,13 @@ def ruff_check_script(path: str, ignored_codes=None) -> bool:
 
 
 @workflow(
-    sbatch={'p': 'rom', 'n': 32, 't': '120:00:00'},
-    delete_files=True,
+    sbatch={'p': 'rome', 'n': 32, 't': '120:00:00'},
+    delete_files=False,
     )
 def sn2(molecule: 'path' = (1, 2, 3)) -> None:
     import tcutility
-
+    print('Test')
+    
     with tcutility.job.DFTBJob(use_slurm=False) as job:
         job.molecule(molecule)
 
