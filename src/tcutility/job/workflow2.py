@@ -1,8 +1,9 @@
 import inspect
 import uuid
-import subprocess
+import subprocess as sp
 import dill
 import tcutility
+import jsonpickle
 
 
 class workflow:
@@ -14,7 +15,7 @@ class workflow:
         self.server = server or tcutility.connect.Local()
 
     def __call__(self, *args, **kwargs):
-        return self._call_method(*args)
+        return self._call_method(*args, **kwargs)
 
     def _call_method(*args, **kwargs):
         self, func = args[:2]
@@ -53,24 +54,32 @@ class workflow:
 
         self.sh_path = f'{file_name}.sh'
         self.py_path = f'{file_name}.py'
-        self.pkl_path = f'{file_name}.pkl'
+        # self.pkl_path = f'{file_name}.pkl'
 
-        with self.server.open_file(self.pkl_path, 'wb+') as pkl:
-            dill.dump_module(pkl)
+        # with self.server.open_file(self.pkl_path, 'wb+') as pkl:
+        #     dill.dump_module(pkl)
 
         with self.server.open_file(self.py_path, 'w+') as script:
             script.write('#====== LOAD STATE ========#\n')
             script.write('import dill\n')
-            script.write(f'dill.load_module("{file_name}.pkl")\n\n')
+            script.write('import jsonpickle\n\n')
+            # script.write(f'dill.load_module("{file_name}.pkl")\n\n')
 
             for arg_name, arg_val in args.items():
-                annotation = self.parameters[arg_name].annotation
-                if isinstance(annotation, str):
-                    annotation = '"' + annotation + '"'
+                if arg_name in self.parameters:
+                    annotation = self.parameters[arg_name].annotation
+                    if isinstance(annotation, str):
+                        annotation = '"' + annotation + '"'
+                    else:
+                        annotation = annotation.__name__
+                    script.write(f'# type: {annotation}\n')
                 else:
-                    annotation = annotation.__name__
-                script.write(f'# type: {annotation}\n')
-                script.write(f'{arg_name} = dill.loads({dill.dumps(arg_val)})\n\n')
+                    script.write(f'# type: {type(arg_val).__name__}\n')
+
+                try:
+                    script.write(f'{arg_name} = dill.loads({dill.dumps(arg_val)})\n\n')
+                except:
+                    script.write(f'{arg_name} = jsonpickle.decode(\'{jsonpickle.encode(arg_val, unpicklable=True)}\')\n\n')
 
             script.write('#========= SCRIPT =========#\n')
             script.write(extract_func_code(self.func))
@@ -88,17 +97,22 @@ class workflow:
 
             if self.delete_files:
                 file.write(f'rm {self.py_path}\n')
-                file.write(f'rm {self.pkl_path}\n')
+                # file.write(f'rm {self.pkl_path}\n')
                 file.write(f'rm {self.sh_path}\n')
 
+
     def execute(self, *args, **kwargs):
+        print(args, kwargs)
         _args = {}
         for param_name, arg in zip(self.parameters, args):
             _args[param_name] = arg
         _args.update(kwargs)
-        print(inspect.getclosurevars(self.func))
+        print(args)
+        for glob_name, glob in inspect.getclosurevars(self.func).globals.items():
+            _args[glob_name] = glob
+
         self._write_files(_args)
-        # tcutility.connect.
+        ruff_check_script(self.py_path)
 
 
 def extract_func_code(func: callable) -> str:
@@ -163,20 +177,34 @@ def extract_func_code(func: callable) -> str:
     return '\n'.join(code_lines)
 
 
-def test():
-    ...
+def ruff_check_script(path: str) -> bool:
+    '''
+    Check if a python script in `path` will run according to Ruff.
+
+    Args:
+        path: a path to the python script to check.
+
+    Returns:
+        A boolean specifying if the return code is 0 or not.
+    '''
+    out = sp.run(f'ruff check {path}', shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
+    if out.returncode != 0:
+        tcutility.log.log('Found issue when parsing code with Ruff:')
+        tcutility.log.boxed(out.stdout.decode())
+        tcutility.log.log(f'Code ({path}):')
+        with open(path) as file:
+            tcutility.log.boxed(file.read())
+        return False
+
+    return True
 
 
-@workflow()
-def sn2(molecule: 'path' = (1, 2, 3), 
-        sbatch: dict = None) -> None:
+@workflow(sbatch={'p': 'tc', 'n': 32})
+def sn2(molecule: 'path' = (1, 2, 3)) -> None:
     test()
 
-    with tcutility.job.DFTBJob(test_mode=True) as job:
+    with tcutility.job.DFTBJob(use_slurm=False) as job:
         job.molecule(molecule)
 
 
-# print(inspect.getclosurevars(sn2.func))
-# print(workflow)
-# print(sn2)
-sn2({'molecule': 'abc.xyz', 'sbatch': {'p': 'tc', 'n': 32}})
+sn2(molecule='abc.xyz')
