@@ -52,7 +52,7 @@ class workflow:
 
     def __str__(self):
         s = f'WorkFlow({self.name}):\n'
-        s += f'  Parameters:\n'
+        s += '  Parameters:\n'
 
         param_names = []
         for param in self.parameters.values():
@@ -132,15 +132,10 @@ class workflow:
             _args[glob_name] = glob
 
         self._write_files(_args)
-        if not ruff_check_script(self.py_path, ignored_codes=['E402', 'F811']):
+        if not ruff_check_script(self.py_path, ignored_codes=['E402', 'F811', 'F401']):
             raise Exception('Python script will fail!')
 
         if tcutility.slurm.has_slurm():
-            # set some default sbatch settings
-            # if any(option not in self.sbatch for option in ["D", "chdir"]):
-            #     self.sbatch.setdefault("D", self.workdir)
-            # if any(option not in self.sbatch for option in ["J", "job_name"]):
-            #     self.sbatch.setdefault("J", f"{self.rundir}/{self.name}")
             if any(option not in self.sbatch for option in ["o", "output"]):
                 self.sbatch.setdefault("o", self.out_path)
 
@@ -246,16 +241,17 @@ def ruff_check_script(path: str, ignored_codes=None) -> bool:
     return True
 
 
-# @workflow(
-#     sbatch={'p': 'rome', 'n': 32, 't': '120:00:00'},
-#     delete_files=False,
-#     )
-# def sn2(molecule: 'path' = (1, 2, 3)) -> None:
-#     import tcutility
-#     print('Test')
-    
-#     with tcutility.job.DFTBJob(use_slurm=False) as job:
-#         job.molecule(molecule)
+if __name__ == '__main__':
+    @workflow(
+        sbatch={'p': 'rome', 'n': 32, 't': '120:00:00'},
+        delete_files=False,
+        )
+    def sn2(molecule: 'path' = (1, 2, 3)) -> None:
+        import tcutility
+        print('Test')
+        
+        with tcutility.job.DFTBJob(use_slurm=False) as job:
+            job.molecule(molecule)
 
 
-# sn2(molecule='abc.xyz')
+    sn2(molecule='abc.xyz')
