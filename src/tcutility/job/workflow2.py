@@ -87,7 +87,7 @@ class workflow:
             script.write('import jsonpickle\n\n')
 
             for arg_name, arg_val in args.items():
-                if arg_name in self.parameters:
+                if arg_name in self.parameters and self.parameters[arg_name].annotation != inspect._empty:
                     annotation = self.parameters[arg_name].annotation
                     if isinstance(annotation, str):
                         annotation = '"' + annotation + '"'
