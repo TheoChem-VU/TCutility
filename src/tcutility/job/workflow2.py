@@ -99,7 +99,7 @@ class workflow:
 
                 try:
                     script.write(f'{arg_name} = dill.loads({dill.dumps(arg_val)})\n\n')
-                except:
+                except dill.PickleError:
                     script.write(f'{arg_name} = jsonpickle.decode(\'{jsonpickle.encode(arg_val, unpicklable=True)}\')\n\n')
 
             script.write('#========= SCRIPT =========#\n')
