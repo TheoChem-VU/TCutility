@@ -246,7 +246,7 @@ if __name__ == '__main__':
         sbatch={'p': 'rome', 'n': 32, 't': '120:00:00'},
         delete_files=False,
         )
-    def sn2(molecule: 'path' = (1, 2, 3)) -> None:
+    def sn2(molecule) -> None:
         import tcutility
         print('Test')
         
