@@ -18,10 +18,10 @@ class Result(dict):
             else:
                 self[key] = value
 
-    def __call__(self):
-        '''Calling of a dictionary subclass should not be possible, instead we raise an error with information about the key and method that were attempted to be called.'''
-        head, method = '.'.join(self.get_parent_tree().split('.')[:-1]), self.get_parent_tree().split('.')[-1]
-        raise AttributeError(f'Tried to call method "{method}" from {head}, but {head} is empty')
+    # def __call__(self):
+    #     '''Calling of a dictionary subclass should not be possible, instead we raise an error with information about the key and method that were attempted to be called.'''
+    #     head, method = '.'.join(self.get_parent_tree().split('.')[:-1]), self.get_parent_tree().split('.')[-1]
+    #     raise AttributeError(f'Tried to call method "{method}" from {head}, but {head} is empty')
 
     def __str__(self):
         '''Override str method to prevent printing of hidden keys. You can still print them if you call repr instead of str.'''
