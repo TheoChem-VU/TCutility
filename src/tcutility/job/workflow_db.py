@@ -57,7 +57,7 @@ def set_status(hsh, status, **kwargs):
 	'''
 	s = f'{hsh}, {status}'
 	for k, v in kwargs.items():
-		s += ', {k}={v}'
+		s += f', {k}={v}'
 
 	with open(DBPATH, 'a') as db:
 		fcntl.flock(db.fileno(), fcntl.LOCK_EX)
