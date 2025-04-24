@@ -132,7 +132,6 @@ class workflow:
         if 'dependency' in _args.keys():
             self.sbatch["d"] = f'afterok:{_args['dependency']}'
 
-        print(_args,type(_args))
         for glob_name, glob in inspect.getclosurevars(self.func).globals.items():
             _args[glob_name] = glob
 
