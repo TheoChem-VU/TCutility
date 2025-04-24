@@ -130,7 +130,8 @@ class workflow:
 
         # If multiple dependencies, string should be formatted like 'id1:id2:....'
         if 'dependency' in _args.keys():
-            self.sbatch["d"] = f'afterok:{_args['dependency']}'
+            d_id = _args['dependency']
+            self.sbatch["d"] = f'afterok:{d_id}'
 
         for glob_name, glob in inspect.getclosurevars(self.func).globals.items():
             _args[glob_name] = glob
