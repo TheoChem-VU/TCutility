@@ -39,6 +39,7 @@ def get_info(calc_dir: str):
     except:  # noqa
         pass
 
+
     res = Result()
 
     # if we cannot correctly read the info, we return some generic result object

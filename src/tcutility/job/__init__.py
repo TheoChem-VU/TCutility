@@ -7,4 +7,3 @@ from .crest import CRESTJob, QCGJob  # noqa: F401
 from .xtb import XTBJob  # noqa: F401
 from .orca import ORCAJob  # noqa: F401
 from .nmr import NMRJob  # noqa: F401
-from .workflow import WorkFlow  # noqa: F401

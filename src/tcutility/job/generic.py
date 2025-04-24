@@ -19,17 +19,9 @@ def _python_path(server: connect.Server = connect.Local()):
     Sometimes it is necessary to have the Python path as some environments don't have its path.
     This function attempts to find the Python path and returns it.
     """
-    python = ""
-    try:
-        python = server.execute("which python")
-    except sp.CalledProcessError:
-        python == ""
-
+    python = server.execute("which python")
     if python == "" or not server.path_exists(python):
-        try:
-            python = server.execute("which python3")
-        except sp.CalledProcessError:
-            python == ""
+        python = server.execute("which python3")
 
     # we default to the python executable
     if python == "" or not server.path_exists(python):
@@ -71,8 +63,7 @@ class Job:
         self.overwrite = overwrite
         self.wait_for_finish = wait_for_finish
         self.delete_on_finish = delete_on_finish
-        self.delete_on_fail = delete_on_fail
-        self.use_slurm = use_slurm if use_slurm is not None else True
+        self.use_slurm = use_slurm
 
         # update this job with base_jobs
         for base_job in base_jobs:
@@ -95,7 +86,7 @@ class Job:
     def __exit__(self, exc_type, exc_value, exc_tb):
         if exc_type:
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            log.error(f'Job set-up failed with exception: {exc_type.__name__}({exc_value}) in File "{fname}", line {exc_tb.tb_lineno}.') 
+            log.error(f'Job set-up failed with exception: {exc_type.__name__}({exc_value}) in File "{fname}", line {exc_tb.tb_lineno}.')
             return True
         self.run()
 
@@ -128,7 +119,7 @@ class Job:
                 if not res.fatal:
                     return True
 
-            res = server.execute(f'tcutility read -s {self.workdir}').strip()
+            res = server.execute(f'tcutility read -s {j(server.pwd(), self.rundir, self.name)}')
             if res in ['SUCCESS', 'SUCCESS(W)', 'COMPLETING', 'CONFIGURING', 'PENDING', 'RUNNING']:
                 return True
 
@@ -401,7 +392,6 @@ class Job:
                         spin_polarization = -1
                         solvent = water
         """
-        print(type(mol))
         if isinstance(mol, plams.Molecule):
             self._molecule = mol
 
