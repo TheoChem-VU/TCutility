@@ -153,13 +153,14 @@ def on_exception():
         if dependency is None:
             dependency = []
 
-        if any(option not in self.sbatch for option in ['d', 'dependency']):
-            self.sbatch.setdefault('dependency', 'afterany')
+        if len(dependency) > 0:
+            if any(option not in self.sbatch for option in ['d', 'dependency']):
+                self.sbatch.setdefault('dependency', 'afterany')
 
-        for dep in dependency:
-            if not hasattr(dep, 'slurm_job_id'):
-                continue
-            self.sbatch['dependency'] = self.sbatch['dependency'] + f':{dep.slurm_job_id}'
+            for dep in dependency:
+                if not hasattr(dep, 'slurm_job_id'):
+                    continue
+                self.sbatch['dependency'] = self.sbatch['dependency'] + f':{dep.slurm_job_id}'
 
         if tcutility.job.workflow_db.can_skip(self.hash):
             if tcutility.job.workflow_db.get_status(self.hash) == 'RUNNING':
