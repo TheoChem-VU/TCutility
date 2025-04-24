@@ -390,7 +390,7 @@ class ADFFragmentJob(ADFJob):
                 raise TCJobError(job_class=self.__class__.__name__, message="The atoms in the new fragment are already present in the other fragments.")
 
         name = name or f"fragment{len(self.child_jobs) + 1}"
-        self.child_jobs[name] = ADFJob(test_mode=self.test_mode)
+        self.child_jobs[name] = ADFJob(use_slurm=self.use_slurm,test_mode=self.test_mode)
         self.child_jobs[name].molecule(mol)
         if charge:
             self.child_jobs[name].charge(charge)
@@ -486,7 +486,7 @@ class ADFFragmentJob(ADFJob):
         if alpha is None and beta is None:
             spinpol = child_job.settings.input.adf.SpinPolarization or 0
             charge = child_job.settings.input.ams.system.charge or 0
-            print(child_job._molecule)
+            # print(child_job._molecule)
             nelectrons = sum(atom.atnum for atom in child_job._molecule) - charge
             alpha = nelectrons // 2 + spinpol
             beta  = nelectrons // 2

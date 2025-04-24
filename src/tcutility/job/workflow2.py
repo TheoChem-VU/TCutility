@@ -143,7 +143,7 @@ def on_exception():
 
             if self.delete_files:
                 file.write(f'rm {self.py_path}\n')
-                file.write(f'rm {self.out_path}\n')
+                # file.write(f'rm {self.out_path}\n')
                 file.write(f'rm {self.sh_path}\n')
 
 
@@ -175,8 +175,14 @@ def on_exception():
             _args[param_name] = arg
         _args.update(kwargs)
 
+
         for param_name, param in self.parameters.items():
             print(param_name, param)
+
+        # If multiple dependencies, string should be formatted like 'id1:id2:....'
+        if 'dependency' in _args.keys():
+            d_id = _args['dependency']
+            self.sbatch["d"] = f'afterok:{d_id}'
 
         for glob_name, glob in inspect.getclosurevars(self.func).globals.items():
             _args[glob_name] = glob
@@ -189,7 +195,9 @@ def on_exception():
             if any(option not in self.sbatch for option in ["o", "output"]):
                 self.sbatch.setdefault("o", self.out_path)
 
-            tcutility.slurm.sbatch(self.sh_path, self.server, **self.sbatch)
+            ret = tcutility.slurm.sbatch(self.sh_path, self.server, **self.sbatch)
+            return ret.id
+
         else:
             runfile_dir, runscript = os.path.split(self.sh_path)
             if runfile_dir == '':

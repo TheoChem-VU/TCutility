@@ -110,11 +110,14 @@ class CRESTJob(Job):
         Args:
             number: the number of files to return, defaults to 10. If the directory already exists, for example if the job was already run, we will return up to `number` files.
         '''
-        if os.path.exists(self.conformer_directory):
-            return [j(self.conformer_directory, file) for i, file in enumerate(sorted(os.listdir(self.conformer_directory)))]
-
-        for i in range(number or 10):
-            yield j(self.conformer_directory, f'{str(i).zfill(5)}.xyz')
+        size = len(os.listdir(self.conformer_directory))
+        if number == None:
+            number = size
+        else:
+            if number > size:
+                number = size
+        
+        return [j(self.conformer_directory, f'{str(i).zfill(5)}.xyz') for i in range(number)]
 
     def get_rotamer_xyz(self, number: int = None):
         '''
@@ -123,11 +126,14 @@ class CRESTJob(Job):
         Args:
             number: the number of files to return, defaults to 10. If the directory already exists, for example if the job was already run, we will return up to `number` files.
         '''
-        if os.path.exists(self.rotamer_directory):
-            return [j(self.rotamer_directory, file) for i, file in enumerate(os.listdir(self.rotamer_directory))]
-
-        for i in range(number or 10):
-            yield j(self.rotamer_directory, f'{str(i).zfill(5)}.xyz')
+        size = len(os.listdir(self.rotamer_directory))
+        if number == None:
+            number = size
+        else:
+            if number > size:
+                number = size
+        
+        return [j(self.rotamer_directory, f'{str(i).zfill(5)}.xyz') for i in range(number)]
 
 
 class QCGJob(CRESTJob):
