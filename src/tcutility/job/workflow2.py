@@ -127,7 +127,7 @@ class workflow:
         for param_name, arg in zip(self.parameters, args):
             _args[param_name] = arg
         _args.update(kwargs)
-        print(self.parameters,type(self.parameters))
+        print(_args,type(_args))
         for glob_name, glob in inspect.getclosurevars(self.func).globals.items():
             _args[glob_name] = glob
 
