@@ -127,6 +127,11 @@ class workflow:
         for param_name, arg in zip(self.parameters, args):
             _args[param_name] = arg
         _args.update(kwargs)
+
+        # If multiple dependencies, string should be formatted like 'id1:id2:....'
+        if 'dependency' in _args.keys():
+            self.sbatch["d"] = f'afterok:{_args['dependency']}'
+
         print(_args,type(_args))
         for glob_name, glob in inspect.getclosurevars(self.func).globals.items():
             _args[glob_name] = glob
@@ -139,7 +144,9 @@ class workflow:
             if any(option not in self.sbatch for option in ["o", "output"]):
                 self.sbatch.setdefault("o", self.out_path)
 
-            tcutility.slurm.sbatch(self.sh_path, self.server, **self.sbatch)
+            ret = tcutility.slurm.sbatch(self.sh_path, self.server, **self.sbatch)
+            return ret.id
+
         else:
             runfile_dir, runscript = os.path.split(self.sh_path)
             if runfile_dir == '':
