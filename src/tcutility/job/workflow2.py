@@ -180,15 +180,14 @@ def on_exception():
             tcutility.log.boxed(box)
             return
 
-        tcutility.job.workflow_db.set_running(self.hash)
-
         _args = {}
         for param_name, arg in zip(self.parameters, args):
             _args[param_name] = arg
         _args.update(kwargs)
 
         for param_name, param in self.parameters.items():
-            print(param_name, param)
+            if param.default != param.empty:
+                _args.setdefault(param_name, param.default)
 
         for glob_name, glob in inspect.getclosurevars(self.func).globals.items():
             _args[glob_name] = glob
@@ -202,6 +201,7 @@ def on_exception():
                 self.sbatch.setdefault("o", self.out_path)
             sbatch_result = tcutility.slurm.sbatch(self.sh_path, self.server, **self.sbatch)
             self.slurm_job_id = sbatch_result.id
+            tcutility.job.workflow_db.set_running(self.hash, slurm_job_id=self.slurm_job_id)
         else:
             runfile_dir, runscript = os.path.split(self.sh_path)
             if runfile_dir == '':
@@ -210,7 +210,6 @@ def on_exception():
             self.server.chmod(744, self.sh_path)
             with open(self.out_path, "w+") as out:
                 sp.run(command, cwd=runfile_dir, stdout=out, shell=True)
-
         return self
 
 
