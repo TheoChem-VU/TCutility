@@ -47,7 +47,6 @@ class workflow:
         self.func = func
         self.name = func.__name__
         self.parameters = inspect.signature(func).parameters
-        print(self.parameters,type(self.parameters))
         self._call_method = self.execute
         return self
 
@@ -128,7 +127,7 @@ class workflow:
         for param_name, arg in zip(self.parameters, args):
             _args[param_name] = arg
         _args.update(kwargs)
-
+        print(self.parameters,type(self.parameters))
         for glob_name, glob in inspect.getclosurevars(self.func).globals.items():
             _args[glob_name] = glob
 
