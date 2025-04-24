@@ -54,7 +54,7 @@ class workflow:
     def __init__(self, server = None, delete_files: bool = True, preambles: list[str] = None, postambles: list[str] = None, sbatch: dict = None):
         self.preambles = preambles or []
         self.postambles = postambles or []
-        self.sbatch = sbatch or {}
+        self.sbatch = sbatch.copy() or {}
         self.delete_files = delete_files
         self.server = server or tcutility.connect.Local()
 
