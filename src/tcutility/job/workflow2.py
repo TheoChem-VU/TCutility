@@ -47,6 +47,7 @@ class workflow:
         self.func = func
         self.name = func.__name__
         self.parameters = inspect.signature(func).parameters
+        print(self.parameters,type(self.parameters))
         self._call_method = self.execute
         return self
 
