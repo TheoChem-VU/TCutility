@@ -3,7 +3,7 @@ import platform
 import subprocess as sp
 import time
 
-from tcutility import cache, log, results
+from tcutility import cache, log, results, connect
 
 
 @cache.cache
