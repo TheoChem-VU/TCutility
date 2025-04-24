@@ -3,11 +3,30 @@ import uuid
 import subprocess as sp
 import dill
 import tcutility
+from tcutility import cache, connect
 import jsonpickle
 import os
+import hashlib
+import json
 
-@tcutility.cache.cache
-def _python_path(server: tcutility.connect.Server = tcutility.connect.Local()):
+
+def hash(obj):
+    '''
+    Hash any python object using SHA-256. If the object is a dictionary use JSON to
+    put it in a standard format. If there are non-picklable objects
+    use jsonpickle to pickle them anyway.
+    '''
+    if isinstance(obj, dict):
+        try:
+            obj = json.dumps(obj, sort_keys=True, indent=4)
+        except:
+            obj = jsonpickle.encode(obj)
+
+    return hashlib.sha256(obj.encode('utf-8')).hexdigest()
+
+
+@cache.cache
+def _python_path(server: connect.Server = connect.Local()):
     """
     Sometimes it is necessary to have the Python path as some environments don't have its path.
     This function attempts to find the Python path and returns it.
@@ -103,7 +122,13 @@ class workflow:
                     script.write(f'{arg_name} = jsonpickle.decode(\'{jsonpickle.encode(arg_val, unpicklable=True)}\')\n\n')
 
             script.write('#========= SCRIPT =========#\n')
+            script.write('import tcutility\nimport atexit\n\n\n')
+            script.write(f'''@atexit.register
+def on_exception():
+    if tcutility.job.workflow_db.get_status("{self.hsh}") == "RUNNING":
+        tcutility.job.workflow_db.set_failed("{self.hsh}")\n\n\n''')
             script.write(extract_func_code(self.func))
+            script.write(f'\n\n\n# indicate to the db that this wf has finished:\ntcutility.job.workflow_db.set_finished("{self.hsh}")\n')
 
         with self.server.open_file(self.sh_path, 'w') as file:
             file.write('#!/bin/bash\n\n')
@@ -123,10 +148,36 @@ class workflow:
 
 
     def execute(self, *args, **kwargs):
+        self.hsh = hash({'wf': self.func, 'args': args, 'kwargs': kwargs})
+
+        if tcutility.job.workflow_db.can_skip(self.hsh):
+            if tcutility.job.workflow_db.get_status(self.hsh) == 'RUNNING':
+                tcutility.log.info('Workflow is currently running.')
+            elif tcutility.job.workflow_db.get_status(self.hsh) == 'SUCCESS':
+                tcutility.log.info('Workflow run has already been completed!')
+            elif tcutility.job.workflow_db.get_status(self.hsh) == 'FAILED':
+                tcutility.log.info('Workflow was run but failed')
+
+            box = f'WorkFlow({self.name}):\n    args = (\n'
+            for arg in args:
+                box += f'        {repr(arg)},\n'
+            box += '    )\n    kwargs = {\n'
+            for k, v in kwargs.items():
+                box += f'        {k}: {repr(v)},\n'
+            box += '    }'
+            tcutility.log.boxed(box)
+            return
+
+        tcutility.job.workflow_db.set_running(self.hsh)
+
         _args = {}
         for param_name, arg in zip(self.parameters, args):
             _args[param_name] = arg
         _args.update(kwargs)
+
+
+        for param_name, param in self.parameters.items():
+            print(param_name, param)
 
         # If multiple dependencies, string should be formatted like 'id1:id2:....'
         if 'dependency' in _args.keys():

@@ -1,4 +1,4 @@
-from . import postscripts  # noqa: F401
+from . import postscripts, workflow2, workflow_db  # noqa: F401
 from .generic import Job  # noqa: F401
 from .ams import AMSJob  # noqa: F401
 from .adf import ADFJob, ADFFragmentJob, DensfJob  # noqa: F401
