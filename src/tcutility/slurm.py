@@ -7,13 +7,16 @@ from tcutility import cache, log, results, connect
 
 
 @cache.cache
-def has_slurm(server: connect.Server = connect.Local()) -> bool:
+def has_slurm(server: "connect.Server" = None) -> bool:
     """
     Function to check if the current platform uses slurm.
 
     Returns:
         Whether slurm is available on this platform.
     """
+    if server is None:
+        server = connect.Local()
+
     try:
         # Determine the appropriate command based on the OS
         command = "which sbatch" if platform.system() != "Windows" else "where sbatch"
@@ -31,7 +34,7 @@ def has_slurm(server: connect.Server = connect.Local()) -> bool:
 
 
 @cache.timed_cache(3)
-def squeue(server: connect.Server = connect.Local()) -> results.Result:
+def squeue(server: "connect.Server" = None) -> results.Result:
     """
     Get information about jobs managed by slurm using squeue.
 
@@ -47,6 +50,9 @@ def squeue(server: connect.Server = connect.Local()) -> results.Result:
 
         By default this function uses a timed cache (see :func:`timed_cache <tcutility.cache.timed_cache>`) with a 3 second delay to lessen the load on HPC systems.
     """
+    if server is None:
+        server = connect.Local()
+
     ret = results.Result()
 
     if not has_slurm(server=server):
@@ -71,7 +77,7 @@ def squeue(server: connect.Server = connect.Local()) -> results.Result:
     return ret
 
 
-def sbatch(runfile: str, server: connect.Server = connect.Local(), **options: dict) -> results.Result:
+def sbatch(runfile: str, server: "connect.Server" = None, **options: dict) -> results.Result:
     """
     Submit a job to slurm using sbatch.
 
@@ -85,6 +91,9 @@ def sbatch(runfile: str, server: connect.Server = connect.Local(), **options: di
             - ``id`` **(str)** - the ID for the submitted slurm job.
             - ``command`` **(str)** - the command used to submit the job.
     """
+    if server is None:
+        server = connect.Local()
+
     cmd = "sbatch "
     for key, val in options.items():
         key = key.replace("_", "-")
@@ -117,13 +126,16 @@ def sbatch(runfile: str, server: connect.Server = connect.Local(), **options: di
     return ret
 
 
-def workdir_info(workdir: str, server: connect.Server = connect.Local()) -> results.Result:
+def workdir_info(workdir: str, server: "connect.Server" = None) -> results.Result:
     """
     Function that gets squeue information given a working directory. This will return None if the directory is not being actively referenced by slurm.
 
     Returns:
         :Result object containing information about the calculation status, see :func:`squeue`.
     """
+    if server is None:
+        server = connect.Local()
+
     if not has_slurm(server=server):
         return None
 
@@ -139,7 +151,7 @@ def workdir_info(workdir: str, server: connect.Server = connect.Local()) -> resu
     return ret
 
 
-def wait_for_job(slurmid: int, check_every: int = 60, server: connect.Server = connect.Local()):
+def wait_for_job(slurmid: int, check_every: int = 60, server: "connect.Server" = None):
     """
     Wait for a slurm job to finish. We check every `check_every` seconds if the slurm job id is still present in squeue.
 
@@ -148,6 +160,9 @@ def wait_for_job(slurmid: int, check_every: int = 60, server: connect.Server = c
         check_every: the amount of seconds to wait before checking squeue again. 
             Don't put this too low, or you will anger the cluster people.
     """
+    if server is None:
+        server = connect.Local()
+
     while slurmid in squeue(server=server).id:
         time.sleep(check_every)
 
