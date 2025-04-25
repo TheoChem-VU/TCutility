@@ -128,7 +128,7 @@ def on_exception():
     if tcutility.job.workflow_db.get_status("{self.hash}") == "RUNNING":
         tcutility.job.workflow_db.set_failed("{self.hash}")\n\n\n''')
             script.write(extract_func_code(self.func))
-            script.write(f'\n\n\n# indicate to the db that this wf has finished:\ntcutility.job.workflow_db.set_finished("{self.hash}")\n')
+            script.write(f'\n\n\n# indicate to the db that this wf has finished:\ntcutility.job.workflow_db.set_finished("{self.hash}, slurm_job_id={self.slurm_job_id}")\n')
 
         with self.server.open_file(self.sh_path, 'w') as file:
             file.write('#!/bin/bash\n\n')
