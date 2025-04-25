@@ -77,6 +77,7 @@ def set_finished(hsh, **kwargs):
 	Checks if a workflow with specific args and kwargs has finished.
 	'''
 	data = get_data(hsh)
+	print(data)
 	kwargs["slurm_job_id"]=data["slurm_job_id"]
 	set_status(hsh, 'SUCCESS', **kwargs)
 
