@@ -102,6 +102,208 @@ def get_calc_settings(info: Result) -> Result:
     return ret
 
 
+# ------------------------------------------------------------- #
+# ------------------------ Properties ------------------------- #
+# ------------------------------------------------------------- #
+
+
+# ----------------------- VDD charges ------------------------- #
+
+
+def _read_vdd_charges(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
+    """Returns the VDD charges from the KFReader object."""
+    vdd_scf: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_SCF Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
+    vdd_ini: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_initial Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
+
+    # VDD charges are scf - initial charges. Note, these are in units of electrons while most often these are denoted in mili-electrons
+    return np.array([float((scf - ini)) for scf, ini in zip(vdd_scf, vdd_ini)])
+
+
+def _read_vdd_charges_initial(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
+    """Returns the initial VDD charges from the KFReader object."""
+    vdd_ini: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_initial Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
+    return np.array(vdd_ini)
+
+
+def _read_vdd_charges_SCF(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
+    """Returns the SCF VDD charges from the KFReader object."""
+    vdd_scf: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_SCF Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
+    return np.array(vdd_scf)
+
+
+def _get_vdd_charges_per_irrep(results_type: KFReader) -> Dict[str, arrays.Array1D[np.float64]]:
+    """Extracts the Voronoi Deformation Density charges from the fragment calculation sorted per irrep."""
+    symlabels = str(results_type.read("Symmetry", "symlab")).split()  # split on whitespace
+
+    # If there is only one irrep, there is no irrep decomposition
+    if len(symlabels) == 1:
+        return {}
+
+    vdd_irrep = np.array(results_type.read("Properties", "Voronoi chrg per irrep"))
+    n_atoms = int(results_type.read("Molecule", "nAtoms"))  # type: ignore since no static typing. Returns an int
+
+    # NOTE: apparently, the irrep charges are minus the total VDD charges. That's why the minus sign in the second line below
+    vdd_irrep = vdd_irrep[-len(symlabels) * n_atoms :]  # vdd_irrep = vdd_irrep.reshape((n_headers, len(symlabels), n_atoms)) # NOQA E203
+    vdd_per_irrep = {irrep: -vdd_irrep[i * n_atoms : (i + 1) * n_atoms] for i, irrep in enumerate(symlabels)}  # NOQA E203
+    return vdd_per_irrep
+
+
+# ----------------------- Vibrations ------------------------- #
+
+
+def _read_vibrations(reader: cache.TrackKFReader) -> Result:
+    ret = Result()
+    ret.number_of_modes = reader.read("Vibrations", "nNormalModes")
+    ret.frequencies = ensure_list(reader.read("Vibrations", "Frequencies[cm-1]"))
+    if ("Vibrations", "Intensities[km/mol]") in reader:
+        ret.intensities = ensure_list(reader.read("Vibrations", "Intensities[km/mol]"))
+    ret.number_of_imag_modes = len([freq for freq in ret.frequencies if freq < 0])
+    ret.character = "minimum" if ret.number_of_imag_modes == 0 else "transitionstate"
+    ret.modes = []
+    for i in range(ret.number_of_modes):
+        ret.modes.append(reader.read("Vibrations", f"NoWeightNormalMode({i+1})"))
+    return ret
+
+
+def get_properties(info: Result) -> Result:
+    """Function to get properties from an ADF calculation.
+
+    Args:
+        info: Result object containing ADF properties.
+
+    Returns:
+        :Result object containing properties from the ADF calculation:
+
+            - **energy.bond (float)** – bonding energy (|kcal/mol|).
+            - **energy.elstat.total (float)** – total electrostatic potential (|kcal/mol|).
+            - **energy.elstat.Vee (float)** – electron-electron repulsive term of the electrostatic potential (|kcal/mol|).
+            - **energy.elstat.Ven (float)** – electron-nucleus attractive term of the electrostatic potential (|kcal/mol|).
+            - **energy.elstat.Vnn (float)** – nucleus-nucleus repulsive term of the electrostatic potential (|kcal/mol|).
+            - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label and correction energy(|kcal/mol|).
+            - **energy.orbint.{symmetry label} (float)** – orbital interaction energy from a specific symmetry label (|kcal/mol|).
+            - **energy.orbint.correction (float)** - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (|kcal/mol|)
+            - **energy.pauli.total (float)** – total Pauli repulsion energy (|kcal/mol|).
+            - **energy.dispersion (float)** – total dispersion energy (|kcal/mol|).
+            - **energy.gibbs (float)** – Gibb's free energy (|kcal/mol|). Only populated if vibrational modes were calculated.
+            - **energy.enthalpy (float)** – enthalpy (|kcal/mol|). Only populated if vibrational modes were calculated.
+            - **energy.nuclear_internal (float)** – nuclear internal energy (|kcal/mol|). Only populated if vibrational modes were calculated.
+            - **vibrations.number_of_modes (int)** – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.
+            - **vibrations.number_of_imag_modes (int)** – number of imaginary vibrational modes for this molecule.
+            - **vibrations.frequencies (float)** – vibrational frequencies associated with the vibrational modes, sorted from low to high (|cm-1|).
+            - **vibrations.intensities (float)** – vibrational intensities associated with the vibrational modes (|km/mol|).
+            - **vibrations.modes (list[float])** – list of vibrational modes sorted from low frequency to high frequency.
+            - **vibrations.character (str)** – Character of the molecule based on the number of imaginary vibrational modes. Can be "minimum" or "transition state".
+            - **vdd.charges (nparray[float] (1D))** - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges.
+            - **vdd.charges.{symmetry label} (nparray[float] (1D))** - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons] per irrep.
+            - **s2** - expectation value of the :math:`S^2` operator.
+            - **s2_expected** - ideal expectation value of the :math:`S^2` operator. For restricted calculations this should always equal ``s2``.
+            - **spin_contamination** - the amount of spin-contamination observed in this calculation. It is equal to (s2 - s2_expected) / (s2_expected). Ideally this value should be below 0.1.
+            - **dipole_vector** - the dipole moment vector.
+            - **dipole_moment** - the magnitude of the dipole moment vector.
+            - **quadrupole_moment** - the quadrupole moment vector.
+            - **dens_at_atom** - the electron density at each atom.
+    """
+
+    assert info.engine == "adf", f"This function reads ADF data, not {info.engine} data"
+
+    ret = Result()
+
+    if info.adf.task.lower() == "vibrationalanalysis":
+        reader_ams = cache.get(info.files["ams.rkf"])
+        ret.vibrations = _read_vibrations(reader_ams)
+        return ret
+
+    reader_adf = cache.get(info.files["adf.rkf"])
+
+    # read energies (given in Ha in rkf files)
+    ret.energy.bond = reader_adf.read("Energy", "Bond Energy") * constants.HA2KCALMOL
+
+    # total electrostatic potential
+    ret.energy.elstat.total = reader_adf.read("Energy", "elstat") * constants.HA2KCALMOL
+
+    # we can further decompose elstat if it was enabled
+    if info.files.out:
+        with open(info.files.out) as output:
+            lines = output.readlines()
+
+        skip_next = -1
+        for line in lines:
+            if "Electrostatic Interaction Energies" in line:
+                skip_next = 4
+                continue
+            if skip_next == 0:
+                f1, f2, Vee, Ven, Vnn, total = line.strip().split()
+                ret.energy.elstat.Vee = float(Vee) * constants.HA2KCALMOL
+                ret.energy.elstat.Ven = float(Ven) * constants.HA2KCALMOL
+                ret.energy.elstat.Vnn = float(Vnn) * constants.HA2KCALMOL
+            skip_next -= 1
+
+
+    # print(info.files)
+
+    # read the total orbital interaction energy
+    ret.energy.orbint.total = reader_adf.read("Energy", "Orb.Int. Total") * constants.HA2KCALMOL
+
+    # to calculate the orbital interaction term:
+    # the difference between the total and the sum of the symmetrized interaction energies should be calculated
+    # therefore the correction is first set equal to the total orbital interaction.
+    ret.energy.orbint.correction = ret.energy.orbint.total
+
+    # looping over every symlabel, to get the energy per symmetry label
+    for symlabel in info.adf.symmetry.labels:
+        symlabel = symlabel.split(":")[0]
+        ret.energy.orbint[symlabel] = reader_adf.read("Energy", f"Orb.Int. {symlabel}") * constants.HA2KCALMOL
+
+        # the energy per symmetry label is abstracted from the "total orbital interaction"
+        # obtaining the correction to the orbital interaction term
+        ret.energy.orbint.correction -= ret.energy.orbint[symlabel]
+
+    ret.energy.pauli.total = reader_adf.read("Energy", "Pauli Total") * constants.HA2KCALMOL
+    ret.energy.dispersion = reader_adf.read("Energy", "Dispersion Energy") * constants.HA2KCALMOL
+
+    if ("Thermodynamics", "Gibbs free Energy") in reader_adf:
+        ret.energy.gibbs = reader_adf.read("Thermodynamics", "Gibbs free Energy") * constants.HA2KCALMOL
+        ret.energy.enthalpy = reader_adf.read("Thermodynamics", "Enthalpy") * constants.HA2KCALMOL
+        ret.energy.nuclear_internal = reader_adf.read("Thermodynamics", "Internal Energy total") * constants.HA2KCALMOL
+
+    # vibrational information
+    if ("Vibrations", "nNormalModes") in reader_adf:
+        ret.vibrations = _read_vibrations(reader_adf)
+
+    # read the Voronoi Deformation Charges Deformation (VDD) before and after SCF convergence (being "inital" and "SCF")
+    try:
+        ret.vdd.charges = _read_vdd_charges(reader_adf)
+        ret.vdd.charges_initial = _read_vdd_charges_initial(reader_adf)
+        ret.vdd.charges_SCF = _read_vdd_charges_SCF(reader_adf)
+        ret.vdd.update(_get_vdd_charges_per_irrep(reader_adf))
+    except KeyError:
+        pass
+
+    # read spin-squared operator info
+    # the total spin
+    S = info.adf.spin_polarization * 1 / 2
+    ret.s2_expected = S * (S + 1)
+    # this is the real expectation value
+    if ("Properties", "S2calc") in reader_adf:
+        ret.s2 = reader_adf.read("Properties", "S2calc")
+    else:
+        ret.s2 = 0
+
+    # calculate the contamination
+    # if S is 0 then we will get a divide by zero error, but spin-contamination should be 0
+    if S != 0:
+        ret.spin_contamination = (ret.s2 - ret.s2_expected) / (ret.s2_expected)
+    else:
+        ret.spin_contamination = 0
+
+    ret.dipole_vector = reader_adf.read("Properties", "Dipole")
+    ret.dipole_moment = np.linalg.norm(ret.dipole_vector)
+    ret.quadrupole_moment = reader_adf.read("Properties", "Quadrupole")
+    ret.dens_at_atom = ensure_list(reader_adf.read("Properties", "Electron Density at Nuclei"))
+
+    return ret
+
+
 def get_level_of_theory(info: Result) -> Result:
     """Function to get the level-of-theory from an input-file.
 
@@ -176,298 +378,3 @@ def get_level_of_theory(info: Result) -> Result:
     # ret.summary is simply the ret.xc.summary plus the basis set type
     ret.summary = f"{ret.xc.summary}/{ret.basis.type}"
     return ret
-
-
-# ------------------------------------------------------------- #
-# ------------------------ Properties ------------------------- #
-# ------------------------------------------------------------- #
-
-
-# ----------------------- VDD charges ------------------------- #
-
-
-def _read_vdd_charges(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
-    """Returns the VDD charges from the KFReader object."""
-    vdd_scf: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_SCF Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
-    vdd_ini: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_initial Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
-
-    # VDD charges are scf - initial charges. Note, these are in units of electrons while most often these are denoted in mili-electrons
-    return np.array([float((scf - ini)) for scf, ini in zip(vdd_scf, vdd_ini)])
-
-
-def _read_vdd_charges_initial(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
-    """Returns the initial VDD charges from the KFReader object."""
-    vdd_ini: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_initial Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
-    return np.array(vdd_ini)
-
-
-def _read_vdd_charges_SCF(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
-    """Returns the SCF VDD charges from the KFReader object."""
-    vdd_scf: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_SCF Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
-    return np.array(vdd_scf)
-
-
-def _get_vdd_charges_per_irrep(results_type: KFReader) -> Dict[str, arrays.Array1D[np.float64]]:
-    """Extracts the Voronoi Deformation Density charges from the fragment calculation sorted per irrep."""
-    symlabels = str(results_type.read("Symmetry", "symlab")).split()  # split on whitespace
-
-    # If there is only one irrep, there is no irrep decomposition
-    if len(symlabels) == 1:
-        return {}
-
-    vdd_irrep = np.array(results_type.read("Properties", "Voronoi chrg per irrep"))
-    n_atoms = int(results_type.read("Molecule", "nAtoms"))  # type: ignore since no static typing. Returns an int
-
-    # NOTE: apparently, the irrep charges are minus the total VDD charges. That's why the minus sign in the second line below
-    vdd_irrep = vdd_irrep[-len(symlabels) * n_atoms :]  # vdd_irrep = vdd_irrep.reshape((n_headers, len(symlabels), n_atoms)) # NOQA E203
-    vdd_per_irrep = {irrep: -vdd_irrep[i * n_atoms : (i + 1) * n_atoms] for i, irrep in enumerate(symlabels)}  # NOQA E203
-    return vdd_per_irrep
-
-
-# ----------------------- Vibrations ------------------------- #
-
-
-def _read_vibrations(reader: cache.TrackKFReader) -> Result:
-    ret = Result()
-    ret.number_of_modes = reader.read("Vibrations", "nNormalModes")
-    ret.frequencies = ensure_list(reader.read("Vibrations", "Frequencies[cm-1]"))
-    if ("Vibrations", "Intensities[km/mol]") in reader:
-        ret.intensities = ensure_list(reader.read("Vibrations", "Intensities[km/mol]"))
-    ret.number_of_imag_modes = len([freq for freq in ret.frequencies if freq < 0])
-    ret.character = "minimum" if ret.number_of_imag_modes == 0 else "transitionstate"
-    ret.modes = []
-    for i in range(ret.number_of_modes):
-        ret.modes.append(reader.read("Vibrations", f"NoWeightNormalMode({i+1})"))
-    return ret
-
-# ----------------------- Misc ------------------------- #
-
-def get_properties(info: Result) -> Result:
-    """Function to get properties from an ADF calculation.
-
-    Args:
-        info: Result object containing ADF properties.
-
-    Returns:
-        :Result object containing properties from the ADF calculation:
-
-            - **energy.bond (float)** – bonding energy (|kcal/mol|).
-            - **energy.elstat.total (float)** – total electrostatic potential (|kcal/mol|).
-            - **energy.elstat.Vee (float)** – electron-electron repulsive term of the electrostatic potential (|kcal/mol|).
-            - **energy.elstat.Ven (float)** – electron-nucleus attractive term of the electrostatic potential (|kcal/mol|).
-            - **energy.elstat.Vnn (float)** – nucleus-nucleus repulsive term of the electrostatic potential (|kcal/mol|).
-            - **energy.orbint.total (float)** – total orbital interaction energy containing contributions from each symmetry label and correction energy(|kcal/mol|).
-            - **energy.orbint.{symmetry label} (float)** – orbital interaction energy from a specific symmetry label (|kcal/mol|).
-            - **energy.orbint.correction (float)** - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (|kcal/mol|)
-            - **energy.pauli.total (float)** – total Pauli repulsion energy (|kcal/mol|).
-            - **energy.dispersion (float)** – total dispersion energy (|kcal/mol|).
-            - **energy.gibbs (float)** – Gibb's free energy (|kcal/mol|). Only populated if vibrational modes were calculated.
-            - **energy.enthalpy (float)** – enthalpy (|kcal/mol|). Only populated if vibrational modes were calculated.
-            - **energy.nuclear_internal (float)** – nuclear internal energy (|kcal/mol|). Only populated if vibrational modes were calculated.
-            - **vibrations.number_of_modes (int)** – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.
-            - **vibrations.number_of_imag_modes (int)** – number of imaginary vibrational modes for this molecule.
-            - **vibrations.frequencies (float)** – vibrational frequencies associated with the vibrational modes, sorted from low to high (|cm-1|).
-            - **vibrations.intensities (float)** – vibrational intensities associated with the vibrational modes (|km/mol|).
-            - **vibrations.modes (list[float])** – list of vibrational modes sorted from low frequency to high frequency.
-            - **vibrations.character (str)** – Character of the molecule based on the number of imaginary vibrational modes. Can be "minimum" or "transition state".
-            - **vdd.charges (nparray[float] (1D))** - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges.
-            - **vdd.charges.{symmetry label} (nparray[float] (1D))** - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons] per irrep.
-            - **s2 (float)** - expectation value of the :math:`S^2` operator.
-            - **s2_expected (float)** - ideal expectation value of the :math:`S^2` operator. For restricted calculations this should always equal ``s2``.
-            - **spin_contamination (float)** - the amount of spin-contamination observed in this calculation. It is equal to (s2 - s2_expected) / (s2_expected). Ideally this value should be below 0.1.
-            - **dipole_vector (nparray[float] (1D))** - the dipole moment vector.
-            - **dipole_moment (float)** - the magnitude of the dipole moment vector.
-            - **quadrupole_moment (nparray[float] (1D))** - the quadrupole moment vector.
-            - **dens_at_atom (nparray[float] (1D))** - the electron density at each atom.
-            - **excitations.{irrep}.{exctyp}.contributions (list[list[float]] (2D))** - the contribution of each transition to the excitations. 
-                E.g. element [2][4] is the contibution of the 5th strongest transition to excitation 3. 
-            - **excitations.{irrep}.{exctyp}.energies (nparray[float] (1D))** - photon energies associated with the excitations (Hartrees).
-            - **excitations.{irrep}.{exctyp}.wavelengths (nparray[float] (1D))** - wavelengths associated with the excitations (nm).
-            - **excitations.{irrep}.{exctyp}.from_MO (list[list[str]] (2D))** - MO names from which an electron is excited in each transition for each excitation.
-            - **excitations.{irrep}.{exctyp}.from_MO_idx (list[list[str]] (2D))** - MO index from which an electron is excited in each transition for each excitation.
-            - **excitations.{irrep}.{exctyp}.from_MO_irrep (list[list[str]] (2D))** - MO irrep from which an electron is excited in each transition for each excitation.
-            - **excitations.{irrep}.{exctyp}.from_MO_spin (list[list[str]] (2D))** - MO spin from which an electron is excited in each transition for each excitation.
-            - **excitations.{irrep}.{exctyp}.to_MO (list[list[str]] (2D))** - MO names to which an electron is excited in each transition for each excitation.
-            - **excitations.{irrep}.{exctyp}.to_MO_idx (list[list[str]] (2D))** - MO index to which an electron is excited in each transition for each excitation.
-            - **excitations.{irrep}.{exctyp}.to_MO_irrep (list[list[str]] (2D))** - MO irrep to which an electron is excited in each transition for each excitation.
-            - **excitations.{irrep}.{exctyp}.to_MO_spin (list[list[str]] (2D))** - MO spin to which an electron is excited in each transition for each excitation.
-            - **excitations.{irrep}.{exctyp}.number_of_excitations (int)** - number of excitations for this irrep and excitation type.
-            - **excitations.{irrep}.{exctyp}.oscillator_strengths (nparray[float] (1D))** - oscillator strengths associated with the excitations (km/mol).
-            - **excitations.{irrep}.{exctyp}.to_MO_spin (np.ndarray(float) (2D))** - transition dipoles for each excitation.
-    """
-
-    assert info.engine == "adf", f"This function reads ADF data, not {info.engine} data"
-
-    ret = Result()
-
-    if info.adf.task.lower() == "vibrationalanalysis":
-        reader_ams = cache.get(info.files["ams.rkf"])
-        ret.vibrations = _read_vibrations(reader_ams)
-        return ret
-
-    reader_adf = cache.get(info.files["adf.rkf"])
-
-    # read energies (given in Ha in rkf files)
-    ret.energy.bond = reader_adf.read("Energy", "Bond Energy") * constants.HA2KCALMOL
-
-    # total electrostatic potential
-    ret.energy.elstat.total = reader_adf.read("Energy", "elstat") * constants.HA2KCALMOL
-
-    # we can further decompose elstat if it was enabled
-    if info.files.out:
-        with open(info.files.out) as output:
-            lines = output.readlines()
-
-        skip_next = -1
-        for line in lines:
-            if "Electrostatic Interaction Energies" in line:
-                skip_next = 4
-                continue
-            if skip_next == 0:
-                f1, f2, Vee, Ven, Vnn, total = line.strip().split()
-                ret.energy.elstat.Vee = float(Vee) * constants.HA2KCALMOL
-                ret.energy.elstat.Ven = float(Ven) * constants.HA2KCALMOL
-                ret.energy.elstat.Vnn = float(Vnn) * constants.HA2KCALMOL
-            skip_next -= 1
-
-
-    # print(info.files)
-
-    # read the total orbital interaction energy
-    ret.energy.orbint.total = reader_adf.read("Energy", "Orb.Int. Total") * constants.HA2KCALMOL
-
-    # to calculate the orbital interaction term:
-    # the difference between the total and the sum of the symmetrized interaction energies should be calculated
-    # therefore the correction is first set equal to the total orbital interaction.
-    ret.energy.orbint.correction = ret.energy.orbint.total
-
-    # looping over every symlabel, to get the energy per symmetry label
-    for symlabel in info.adf.symmetry.labels:
-        symlabel = symlabel.split(":")[0]
-        ret.energy.orbint[symlabel] = reader_adf.read("Energy", f"Orb.Int. {symlabel}") * constants.HA2KCALMOL
-
-        # the energy per symmetry label is abstracted from the "total orbital interaction"
-        # obtaining the correction to the orbital interaction term
-        ret.energy.orbint.correction -= ret.energy.orbint[symlabel]
-
-    ret.energy.pauli.total = reader_adf.read("Energy", "Pauli Total") * constants.HA2KCALMOL
-    ret.energy.dispersion = reader_adf.read("Energy", "Dispersion Energy") * constants.HA2KCALMOL
-
-    if ("Thermodynamics", "Gibbs free Energy") in reader_adf:
-        ret.energy.gibbs = reader_adf.read("Thermodynamics", "Gibbs free Energy") * constants.HA2KCALMOL
-        ret.energy.enthalpy = reader_adf.read("Thermodynamics", "Enthalpy") * constants.HA2KCALMOL
-        ret.energy.nuclear_internal = reader_adf.read("Thermodynamics", "Internal Energy total") * constants.HA2KCALMOL
-
-    # vibrational information
-    if ("Vibrations", "nNormalModes") in reader_adf:
-        ret.vibrations = _read_vibrations(reader_adf)
-
-    # electronic excitation information
-    if ("All excitations", "nr excitations") in reader_adf:
-        ret.excitations = _read_excitations(reader_adf)
-
-    # read the Voronoi Deformation Charges Deformation (VDD) before and after SCF convergence (being "inital" and "SCF")
-    try:
-        ret.vdd.charges = _read_vdd_charges(reader_adf)
-        ret.vdd.charges_initial = _read_vdd_charges_initial(reader_adf)
-        ret.vdd.charges_SCF = _read_vdd_charges_SCF(reader_adf)
-        ret.vdd.update(_get_vdd_charges_per_irrep(reader_adf))
-    except KeyError:
-        pass
-
-    # read spin-squared operator info
-    # the total spin
-    S = info.adf.spin_polarization * 1 / 2
-    ret.s2_expected = S * (S + 1)
-    # this is the real expectation value
-    if ("Properties", "S2calc") in reader_adf:
-        ret.s2 = reader_adf.read("Properties", "S2calc")
-    else:
-        ret.s2 = 0
-
-    # calculate the contamination
-    # if S is 0 then we will get a divide by zero error, but spin-contamination should be 0
-    if S != 0:
-        ret.spin_contamination = (ret.s2 - ret.s2_expected) / (ret.s2_expected)
-    else:
-        ret.spin_contamination = 0
-
-    ret.dipole_vector = reader_adf.read("Properties", "Dipole")
-    ret.dipole_moment = np.linalg.norm(ret.dipole_vector)
-    ret.quadrupole_moment = reader_adf.read("Properties", "Quadrupole")
-    ret.dens_at_atom = ensure_list(reader_adf.read("Properties", "Electron Density at Nuclei"))
-
-    return ret
-
-# ----------------------- Excitations ------------------------- #
-
-
-def _read_excitations(reader: cache.TrackKFReader) -> Result:
-    ret = Result()
-    excitation_types = []
-    symlab_exc = reader.read('Symmetry', 'symlab excitations').split()
-    for section, variable in reader:
-        if not section.startswith('Excitations'):
-            continue
-
-        _, exctyp, irrep = section.split()
-        if (exctyp, irrep) in excitation_types:
-            continue
-
-        excitation_types.append((exctyp, irrep))
-
-        ret[irrep][exctyp].number_of_excitations = reader.read(section, 'nr of excenergies')
-        ret[irrep][exctyp].energies = np.array(reader.read(section, 'excenergies'))  # in Ha
-
-        # values used to convert excitation photon energies to wavelengths
-        c = 299_792_458e9  # nm/s
-        h = 0.0367502 * 4.135_667_696e-15  # Ha s
-        ret[irrep][exctyp].wavelengths = (h * c) / ret[irrep][exctyp].energies # in nm
-        ret[irrep][exctyp].oscillator_strengths = np.array(reader.read(section, 'oscillator strengths'))  # in km mol
-        ret[irrep][exctyp].transition_dipole_moments = np.array(reader.read(section, 'transition dipole moments')).reshape(ret[irrep][exctyp].number_of_excitations, 3)
-
-        ret[irrep][exctyp].contributions = []
-        ret[irrep][exctyp].from_MO = []
-        ret[irrep][exctyp].to_MO = []
-        ret[irrep][exctyp].from_MO_idx = []
-        ret[irrep][exctyp].to_MO_idx = []
-        ret[irrep][exctyp].from_MO_spin = []
-        ret[irrep][exctyp].to_MO_spin = []
-        ret[irrep][exctyp].from_MO_irrep = []
-        ret[irrep][exctyp].to_MO_irrep = []
-
-        for exc_index in range(1, ret[irrep][exctyp].number_of_excitations + 1):
-            contr = reader.read(section, f'contr {exc_index}')
-            contr_idx = reader.read(section, f'contr index {exc_index}')
-            contr_spin = reader.read(section, f'contr spin {exc_index}')
-            is_unrestricted = 2 in contr_spin
-            contr_irrep = reader.read(section, f'contr irep index {exc_index}')
-            ncontr = len(contr_idx) // 2 
-
-            MO_names = []
-            for idx, spin, irrep_idx in zip(contr_idx, contr_spin, contr_irrep):
-                spin = {
-                    1: 'A',
-                    2: 'B'
-                }[spin]
-                if is_unrestricted:
-                    MO_names.append(f'{idx}{symlab_exc[irrep_idx-1]}_{spin}')
-                else:
-                    MO_names.append(f'{idx}{symlab_exc[irrep_idx-1]}')
-
-            ret[irrep][exctyp].contributions.append(contr)
-            ret[irrep][exctyp].from_MO.append(MO_names[:ncontr])
-            ret[irrep][exctyp].to_MO.append(MO_names[ncontr:])
-            ret[irrep][exctyp].from_MO_idx.append(contr_idx[:ncontr])
-            ret[irrep][exctyp].to_MO_idx.append(contr_idx[ncontr:])
-            ret[irrep][exctyp].from_MO_spin.append(contr_spin[:ncontr])
-            ret[irrep][exctyp].to_MO_spin.append(contr_spin[ncontr:])
-            ret[irrep][exctyp].from_MO_irrep.append(contr_irrep[:ncontr])
-            ret[irrep][exctyp].to_MO_irrep.append(contr_irrep[ncontr:])
-
-    return ret
-
-
-if __name__ == '__main__':
-    reader = KFReader('/Users/yumanhordijk/Downloads/felixtest/frag_uvvis_restricted/EDA.results/adf.rkf')
-    _read_excitations(reader)
