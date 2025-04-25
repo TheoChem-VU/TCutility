@@ -78,7 +78,10 @@ def set_finished(hsh, **kwargs):
 	'''
 	data = get_data(hsh)
 	print(data)
-	kwargs["slurm_job_id"]=data["slurm_job_id"]
+	job_id = data["slurm_job_id"]
+	if job_id.endswith("\n"):
+		job_id=job_id[:-2]
+	kwargs["slurm_job_id"]=job_id
 	set_status(hsh, 'SUCCESS', **kwargs)
 
 
