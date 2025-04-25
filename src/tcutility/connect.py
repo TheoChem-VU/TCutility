@@ -245,11 +245,11 @@ class Connection:
 
 
 class ServerFile:
-    def __init__(self, file_path: str, server: Connection):
+    def __init__(self, file_path: str, server: Connection, mode: str = 'w+'):
         self.server = server
         self.file_path = file_path
         self.tmp_path = str(uuid.uuid4())
-        self.file = open(self.tmp_path, mode='w+')
+        self.file = open(self.tmp_path, mode=mode)
 
     def __enter__(self):
         return self.file
@@ -297,11 +297,11 @@ class Local:
         ...
 
     def execute(self, command) -> str:
-        command = command.split()
-
-        with open(os.devnull, "wb") as devnull:
-            output = sp.check_output(command, stderr=devnull).decode()
-
+        try:
+            output = sp.check_output(command, shell=True).decode()
+        except sp.CalledProcessError:
+            print('COMMAND: ', command)
+            raise
         return output
 
     def mkdir(self, dirname):
@@ -322,8 +322,8 @@ class Local:
     def path_exists(self, path: str) -> bool:
         return os.path.exists(os.path.join(self.currdir, path))
 
-    def open_file(self, file_path: str):
-        return open(file_path, mode='w+')
+    def open_file(self, file_path: str, mode:str = 'w+'):
+        return open(file_path, mode=mode)
 
     def chmod(self, rights: int, path: str):
         os.chmod(os.path.join(self.currdir, path), int(str(rights), base=8))
