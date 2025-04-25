@@ -32,7 +32,7 @@ def get_data(hsh):
 		data['status'] = status.strip()
 		for part in parts[2:]:
 			k, v = part.split('=')
-			data[k] = v
+			data[k.split(' ')] = v
 
 	return data
 
