@@ -54,7 +54,7 @@ class workflow:
     def __init__(self, server = None, delete_files: bool = True, preambles: list[str] = None, postambles: list[str] = None, sbatch: dict = None):
         self.preambles = preambles or []
         self.postambles = postambles or []
-        self.sbatch = sbatch or {}
+        self.sbatch = sbatch.copy() or {}
         self.delete_files = delete_files
         self.server = server or tcutility.connect.Local()
 
@@ -125,10 +125,10 @@ class workflow:
             script.write('import tcutility\nimport atexit\n\n\n')
             script.write(f'''@atexit.register
 def on_exception():
-    if tcutility.job.workflow_db.get_status("{self.hsh}") == "RUNNING":
-        tcutility.job.workflow_db.set_failed("{self.hsh}")\n\n\n''')
+    if tcutility.job.workflow_db.get_status("{self.hash}") == "RUNNING":
+        tcutility.job.workflow_db.set_failed("{self.hash}")\n\n\n''')
             script.write(extract_func_code(self.func))
-            script.write(f'\n\n\n# indicate to the db that this wf has finished:\ntcutility.job.workflow_db.set_finished("{self.hsh}")\n')
+            script.write(f'\n\n\n# indicate to the db that this wf has finished:\ntcutility.job.workflow_db.set_finished("{self.hash}")\n')
 
         with self.server.open_file(self.sh_path, 'w') as file:
             file.write('#!/bin/bash\n\n')
@@ -143,19 +143,31 @@ def on_exception():
 
             if self.delete_files:
                 file.write(f'rm {self.py_path}\n')
-                # file.write(f'rm {self.out_path}\n')
+                file.write(f'rm {self.out_path}\n')
                 file.write(f'rm {self.sh_path}\n')
 
 
-    def execute(self, *args, **kwargs):
-        self.hsh = hash({'wf': self.func, 'args': args, 'kwargs': kwargs})
+    def execute(self, dependency=None, *args, **kwargs):
+        self.hash = hash({'wf': self.func, 'args': args, 'kwargs': kwargs})
 
-        if tcutility.job.workflow_db.can_skip(self.hsh):
-            if tcutility.job.workflow_db.get_status(self.hsh) == 'RUNNING':
+        if dependency is None:
+            dependency = []
+
+        if len(dependency) > 0:
+            if any(option not in self.sbatch for option in ['d', 'dependency']):
+                self.sbatch.setdefault('dependency', 'afterany')
+
+            for dep in dependency:
+                if not hasattr(dep, 'slurm_job_id'):
+                    continue
+                self.sbatch['dependency'] = self.sbatch['dependency'] + f':{dep.slurm_job_id}'
+
+        if tcutility.job.workflow_db.can_skip(self.hash):
+            if tcutility.job.workflow_db.get_status(self.hash) == 'RUNNING':
                 tcutility.log.info('Workflow is currently running.')
-            elif tcutility.job.workflow_db.get_status(self.hsh) == 'SUCCESS':
+            elif tcutility.job.workflow_db.get_status(self.hash) == 'SUCCESS':
                 tcutility.log.info('Workflow run has already been completed!')
-            elif tcutility.job.workflow_db.get_status(self.hsh) == 'FAILED':
+            elif tcutility.job.workflow_db.get_status(self.hash) == 'FAILED':
                 tcutility.log.info('Workflow was run but failed')
 
             box = f'WorkFlow({self.name}):\n    args = (\n'
@@ -164,25 +176,19 @@ def on_exception():
             box += '    )\n    kwargs = {\n'
             for k, v in kwargs.items():
                 box += f'        {k}: {repr(v)},\n'
-            box += '    }'
+            box += '    }\n'
+            box += f'    hash = {self.hash}'
             tcutility.log.boxed(box)
             return
-
-        tcutility.job.workflow_db.set_running(self.hsh)
 
         _args = {}
         for param_name, arg in zip(self.parameters, args):
             _args[param_name] = arg
         _args.update(kwargs)
 
-
         for param_name, param in self.parameters.items():
-            print(param_name, param)
-
-        # If multiple dependencies, string should be formatted like 'id1:id2:....'
-        if 'dependency' in _args.keys():
-            d_id = _args['dependency']
-            self.sbatch["d"] = f'afterok:{d_id}'
+            if param.default != param.empty:
+                _args.setdefault(param_name, param.default)
 
         for glob_name, glob in inspect.getclosurevars(self.func).globals.items():
             _args[glob_name] = glob
@@ -194,10 +200,9 @@ def on_exception():
         if tcutility.slurm.has_slurm():
             if any(option not in self.sbatch for option in ["o", "output"]):
                 self.sbatch.setdefault("o", self.out_path)
-
-            ret = tcutility.slurm.sbatch(self.sh_path, self.server, **self.sbatch)
-            return ret.id
-
+            sbatch_result = tcutility.slurm.sbatch(self.sh_path, self.server, **self.sbatch)
+            self.slurm_job_id = sbatch_result.id
+            tcutility.job.workflow_db.set_running(self.hash, slurm_job_id=self.slurm_job_id)
         else:
             runfile_dir, runscript = os.path.split(self.sh_path)
             if runfile_dir == '':
@@ -206,7 +211,7 @@ def on_exception():
             self.server.chmod(744, self.sh_path)
             with open(self.out_path, "w+") as out:
                 sp.run(command, cwd=runfile_dir, stdout=out, shell=True)
-
+        return self
 
 
 def extract_func_code(func: callable) -> str:

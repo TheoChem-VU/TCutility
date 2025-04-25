@@ -16,17 +16,32 @@ def db_readlines():
 	return lines
 
 
-def get_status(hsh):
+def get_data(hsh):
 	'''
 	Get the status of a workflow with specific args and kwargs.
 	'''
 	lines = db_readlines()
 	data = {}
 	for line in lines:
-		_hsh, status = line.split(',')
-		data[_hsh.strip()] = status.strip()
+		parts = line.split(',')
+		_hsh, status = parts[0], parts[1]
 
-	return data.get(hsh, 'UNKNOWN')
+		if _hsh != hsh:
+			continue
+
+		data['status'] = status.strip()
+		for part in parts[2:]:
+			k, v = part.split('=')
+			data[k.strip()] = v
+
+	return data
+
+
+def get_status(hsh):
+	'''
+	Get the status of a workflow with specific args and kwargs.
+	'''
+	return get_data(hsh).get('status', 'UNKNOWN')
 
 
 def can_skip(hsh):
@@ -36,34 +51,41 @@ def can_skip(hsh):
 	return get_status(hsh) in ['SUCCESS', 'RUNNING', 'FAILED']
 
 
-def set_status(hsh, status):
+def set_status(hsh, status, **kwargs):
 	'''
 	Checks if a workflow with specific args and kwargs has finished.
 	'''
+	s = f'{hsh}, {status}'
+	for k, v in kwargs.items():
+		s += f', {k}={v}'
+
 	with open(DBPATH, 'a') as db:
 		fcntl.flock(db.fileno(), fcntl.LOCK_EX)
-		
-		db.write(f'{hsh}, {status}\n')
-
+		db.write(f'{s}\n')
 		fcntl.flock(db.fileno(), fcntl.LOCK_UN)
 
 
-def set_running(hsh):
+def set_running(hsh, **kwargs):
 	'''
 	Checks if a workflow with specific args and kwargs has finished.
 	'''
-	set_status(hsh, 'RUNNING')
+	set_status(hsh, 'RUNNING', **kwargs)
 
 
-def set_finished(hsh):
+def set_finished(hsh, **kwargs):
 	'''
 	Checks if a workflow with specific args and kwargs has finished.
 	'''
-	set_status(hsh, 'SUCCESS')
+	data = get_data(hsh)
+	for k, v in data.items():
+		if v.endswith("\n"):
+			v=v.strip('\n')
+	kwargs[k]=v
+	set_status(hsh, 'SUCCESS', **kwargs)
 
 
-def set_failed(hsh):
+def set_failed(hsh, **kwargs):
 	'''
 	Checks if a workflow with specific args and kwargs has finished.
 	'''
-	set_status(hsh, 'FAILED')
+	set_status(hsh, 'FAILED', **kwargs)
