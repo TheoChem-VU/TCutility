@@ -23,7 +23,7 @@ def get_data(hsh):
 	lines = db_readlines()
 	data = {}
 	for line in lines:
-		parts = line.split(',')
+		parts = line.split(' ,')
 		_hsh, status = parts[0], parts[1]
 
 		if _hsh != hsh:
