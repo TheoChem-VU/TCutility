@@ -143,7 +143,7 @@ def on_exception():
 
             if self.delete_files:
                 file.write(f'rm {self.py_path}\n')
-                file.write(f'rm {self.out_path}\n')
+                # file.write(f'rm {self.out_path}\n')
                 file.write(f'rm {self.sh_path}\n')
 
 
