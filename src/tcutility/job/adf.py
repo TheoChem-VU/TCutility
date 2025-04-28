@@ -568,6 +568,9 @@ class ADFFragmentJob(ADFJob):
             child.name = f"frag_{child_name}"
             child.rundir = j(self.rundir, self.name)
 
+            if os.path.exists(child.rundir) == False:
+                os.mkdir(child.rundir)
+
             # # add the path to the child adf.rkf file as a dependency to the parent job
             self.settings.input.adf.fragments[child_name] = j(child.workdir, "adf.rkf")
 
