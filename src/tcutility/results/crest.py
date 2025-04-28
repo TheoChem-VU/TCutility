@@ -5,6 +5,12 @@ from tcutility.results import Result
 
 j = os.path.join
 
+def convert(str):
+    try:
+        return int(str)
+    except ValueError: #If you get value error (string contains a float)
+        return float(str)
+
 
 def get_calc_files(calc_dir: str) -> Result:
     """Function that returns files relevant to AMS calculations stored in ``calc_dir``.
@@ -106,7 +112,7 @@ def get_input(info: Result) -> Result:
             line = line.strip()
             if line.startswith("Command line input:"):
                 # next line contains the call
-                call = lines[i+1].strip().removeprefix('>').strip().split()
+                call = lines[i+1].strip('$> ').split()
 
     ret.call = " ".join(call)
     ### TASK
@@ -119,7 +125,7 @@ def get_input(info: Result) -> Result:
             continue
         # read the next position in the call
         option_idx = call.index(option)
-        ret.charge = int(call[option_idx + 1])
+        ret.charge = convert(call[option_idx + 1])
 
     ### SPIN-POLARIZATION
     ret.spin_polarization = 0
@@ -129,7 +135,7 @@ def get_input(info: Result) -> Result:
             continue
         # read the next position in the call
         option_idx = call.index(option)
-        ret.spin_polarization = int(call[option_idx + 1])
+        ret.spin_polarization = convert(call[option_idx + 1])
 
     ### SOLVATION
     ret.solvent = None

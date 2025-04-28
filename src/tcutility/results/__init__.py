@@ -34,10 +34,12 @@ def get_info(calc_dir: str):
     except:  # noqa
         pass
 
-    try:
-        return crest.get_info(calc_dir)
-    except:  # noqa
-        pass
+    # try:
+    #     return crest.get_info(calc_dir)
+    # except:  # noqa
+    #     pass
+
+    return crest.get_info(calc_dir)
 
 
     res = Result()
