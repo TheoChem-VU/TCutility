@@ -119,7 +119,7 @@ class Job:
                 if not res.fatal:
                     return True
 
-            res = server.execute(f'tcutility read -s {j(server.pwd(), self.rundir, self.name)}')
+            res = server.execute(f'tcutility read -s {j(server.pwd(), self.rundir, self.name)}').strip()
             if res in ['SUCCESS', 'SUCCESS(W)', 'COMPLETING', 'CONFIGURING', 'PENDING', 'RUNNING']:
                 return True
 
