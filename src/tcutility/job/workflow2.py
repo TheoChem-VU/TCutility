@@ -172,7 +172,7 @@ def on_exception():
 
             # Add slurm_job_id to self if it is skippable
             temp_data = tcutility.job.workflow_db.get_data(self.hash)
-            print(temp_data)
+
             if 'slurm_job_id' in temp_data:
                 self.slurm_job_id = temp_data["slurm_job_id"]
 
