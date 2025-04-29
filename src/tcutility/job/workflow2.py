@@ -193,6 +193,9 @@ def on_exception():
             _args[param_name] = arg
         _args.update(kwargs)
 
+        if 'job_name' in _args:
+            self.sbatch['J'] = _args['job_name']
+
         for param_name, param in self.parameters.items():
             if param.default != param.empty:
                 _args.setdefault(param_name, param.default)
