@@ -169,12 +169,12 @@ def on_exception():
                 tcutility.log.info('Workflow run has already been completed!')
             elif tcutility.job.workflow_db.get_status(self.hash) == 'FAILED':
                 tcutility.log.info('Workflow was run but failed')
-                
-            # Add slurm_job_id to self if it is skippable
-            temp_data = tcutility.job.workflow_db.get_data(self.hash)
 
-            if 'slurm_job_id' in temp_data:
-                self.slurm_job_id = temp_data["slurm_job_id"]
+            # # Add slurm_job_id to self if it is skippable
+            # temp_data = tcutility.job.workflow_db.get_data(self.hash)
+
+            # if 'slurm_job_id' in temp_data:
+            #     self.slurm_job_id = temp_data["slurm_job_id"]
 
             box = f'WorkFlow({self.name}):\n    args = (\n'
             for arg in args:
@@ -186,7 +186,7 @@ def on_exception():
             box += f'    hash = {self.hash}'
 
             tcutility.log.boxed(box)
-            return
+            return self
 
         _args = {}
         for param_name, arg in zip(self.parameters, args):
