@@ -1,5 +1,4 @@
 from tcutility import results
-import numpy as np
 import os
 
 try:
