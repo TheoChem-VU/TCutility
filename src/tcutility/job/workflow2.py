@@ -147,7 +147,7 @@ def on_exception():
                 file.write(f'rm {self.sh_path}\n')
 
 
-    def execute(self, dependency=None, *args, **kwargs):
+    def execute(self, sbatch=None, dependency=None, *args, **kwargs):
         self.hash = hash({'wf': self.func, 'args': args, 'kwargs': kwargs})
 
         if dependency is None:
@@ -193,8 +193,9 @@ def on_exception():
             _args[param_name] = arg
         _args.update(kwargs)
 
-        if 'job_name' in _args:
-            self.sbatch['J'] = _args['job_name']
+        # This update does not check for double entries!
+        if sbatch is not None:
+            self.sbatch.update(sbatch)
 
         for param_name, param in self.parameters.items():
             if param.default != param.empty:
