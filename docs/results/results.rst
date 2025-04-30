@@ -4,18 +4,17 @@ tcutility.results
 Overview
 --------
 
-The ``tcutility.results`` package allows you to easily retrieve information and results from a calculation performed using AMS, ORCA, CREST, etc.
-For AMS calculations this includes general results and settings from AMS as well as from the calculation engine used (e.g. ADF, BAND, DFTB, ...).
-Recommended usage is to use the |read| function to read all available information.
+The ``tcutility.results`` package allows you to easily retrieve information and results from a calculation performed using AMS, ORCA or CREST.
+This includes results and settings from AMS as well as the calculation engine used (e.g. ADF, BAND, DFTB, ...).
+Recommended usage is to use the |read| function to read the information.
 One can also access specific information by calling one the functions in the submodules below.
-To only obtain the status of a calculation we recommend usage of the `tcutility.results.quick_status` function.
 Information will be given as |result| objects and can be used just like a `dict`_.
 
 .. code-block:: python
 
-    >>> import tcutility.results
+    >>> import TCutility.results
     >>> calc_dir = '../../test/fixtures/ethanol'
-    >>> info = tcutility.results.read(calc_dir)
+    >>> info = TCutility.results.read(calc_dir)
     >>> info.engine
     adf
     >>> info.ams_version.full

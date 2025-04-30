@@ -18,13 +18,13 @@ tcutility.analysis.pyfrag module
 
 .. automodule:: tcutility.analysis.pyfrag
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------
 
 .. automodule:: tcutility.analysis
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:

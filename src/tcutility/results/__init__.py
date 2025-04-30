@@ -39,6 +39,7 @@ def get_info(calc_dir: str):
     except:  # noqa
         pass
 
+
     res = Result()
 
     # if we cannot correctly read the info, we return some generic result object
@@ -124,52 +125,6 @@ def read(calc_dir: Union[str, pl.Path]) -> Result:
     return ret
 
 
-def quick_status(calc_dir: Union[str, pl.Path]) -> Result:
-    """
-    Quickly check the status of a calculation.
-
-    Args:
-        calc_dir: the directory of the calculation to check.
-    
-    Returns:
-        :Dictionary containing information about the calculation status:
-
-            - **fatal (bool)** – `True` if calculation cannot be read correctly, `False` otherwise
-            - **reasons (list[str])** – list of reasons to explain the status, they can be errors, warnings, etc.
-            - **name (str)** – calculation status written as a string, one of ("SUCCESS", "RUNNING", "UNKNOWN", "SUCCESS(W)", "FAILED").
-                If the job is being managed by slurm it can also take values of ("COMPLETING", "CONFIGURING", "PENDING").
-            - **code (str)** – calculation status written as one or two characters, one of ("S", "R", "U", "W" "F")
-                If the job is being managed by slurm it can also take values of ("CG", "CF", "PD").
-    """
-    status = Result()
-    status.name = 'UNKNOWN'
-    status.reasons = []
-    status.fatal = True
-    status.code = 'U'
-    for engine in [ams, orca, crest, xtb]:
-        try:
-            status = engine.get_calculation_status(calc_dir)
-            if status.name != 'UNKNOWN':
-                return status
-        except Exception:
-            pass
-
-    # otherwise we check if the job is being managed by slurm
-    if not slurm.workdir_info(calc_dir):
-        return status
-
-    # get the statuscode from the workdir
-    state = slurm.workdir_info(calc_dir).statuscode
-    state_name = {
-        'CG': 'COMPLETING',
-        'CF': 'CONFIGURING',
-        'PD': 'PENDING',
-        'R': 'RUNNING'
-    }.get(state, 'UNKNOWN')
-
-    status.fatal = False
-    status.name = state_name
-    status.code = state
-    status.reasons = []
-
-    return status
+if __name__ == "__main__":
+    res = read("/Users/yumanhordijk/Library/CloudStorage/OneDrive-VrijeUniversiteitAmsterdam/RadicalAdditionBenchmark/data/abinitio/P_C2H2_NH2/OPT_pVTZ")
+    print(res.molecule)

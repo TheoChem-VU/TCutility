@@ -609,20 +609,9 @@ def random_points_on_spheroid(coordinates: np.ndarray, Nsamples: int = 1, margin
     return transform(p)
 
 
-def parameter(coordinates: np.typing.ArrayLike, *indices: Sequence[int], pyramidal: bool = False, sum_of_angles: bool = False):
+def parameter(coordinates, *indices, pyramidal=False):
     '''
-    Return geometry information about a set of coordinates given 1 to 4 indices.
-    If 1 index is given we return the coordinate at that index.
-    If 2 indices are given we return the distance between the coordinates at the indices.
-    If 3 indices are given we return the angle between the vector from index 1 to 2 and the vector from index 2 to 3.
-    If 4 indices are given we return the dihedral angle or the pyramidalization angle (if `pyramidal` is set to `True`) or the sum-of-angles (if `sum_of_angles` is set to `True`).
-    
-    Args:
-        coordinates: set of coordinates to calculate parameters for.
-        indices: 1 to 4 integers specifying the indices to use in the coordinates set.
-        pyramidal: if 4 indices are given return the pyramidalization angle in degrees.
-        sum_of_angles: if 4 indices are given return the sum of the angles between the first index and the rest in degrees.
-
+    Return geometry information about a set of coordinates given indices.
     '''
     assert 1 <= len(indices) <= 4, "Number of indices must be between 1, 2, 3 or 4"
 
@@ -643,22 +632,7 @@ def parameter(coordinates: np.typing.ArrayLike, *indices: Sequence[int], pyramid
 
         return np.arccos(a @ b) / np.pi * 180
 
-    if len(indices) == 4:
-        if pyramidal:
-            ang1 = parameter(coordinates, indices[1], indices[0], indices[2])
-            ang2 = parameter(coordinates, indices[2], indices[0], indices[3])
-            ang3 = parameter(coordinates, indices[3], indices[0], indices[1])
-
-            return 360 - ang1 - ang2 - ang3
-
-        if sum_of_angles:
-            ang1 = parameter(coordinates, indices[1], indices[0], indices[2])
-            ang2 = parameter(coordinates, indices[2], indices[0], indices[3])
-            ang3 = parameter(coordinates, indices[3], indices[0], indices[1])
-
-            return ang1 + ang2 + ang3
-
-        # if we dont want pyramidal or sum of angles return the dihedral angle
+    if len(indices) == 4 and not pyramidal:
         a = selected_coords[0] - selected_coords[1]
         b = selected_coords[2] - selected_coords[1]
 
@@ -671,3 +645,11 @@ def parameter(coordinates: np.typing.ArrayLike, *indices: Sequence[int], pyramid
         n2 = n2 / np.linalg.norm(n2)
 
         return np.arccos(n1 @ n2) / np.pi * 180
+
+
+    if len(indices) == 4 and pyramidal:
+        ang1 = parameter(coordinates, indices[1], indices[0], indices[2])
+        ang2 = parameter(coordinates, indices[2], indices[0], indices[3])
+        ang3 = parameter(coordinates, indices[3], indices[0], indices[1])
+
+        return 360 - ang1 - ang2 - ang3

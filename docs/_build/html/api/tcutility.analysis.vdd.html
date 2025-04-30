@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.analysis.vdd package &#8212; TCutility v0.16.1 documentation</title>
+    <title>tcutility.analysis.vdd package &#8212; TCutility v0.14.5 documentation</title>
   
   
   
@@ -39,11 +39,12 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=72ba937b"></script>
+    <script src="../_static/documentation_options.js?v=6d611d6e"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/tcutility.analysis.vdd';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -286,7 +287,7 @@
 <span id="tcutility-analysis-vdd-charge-module"></span><h2>tcutility.analysis.vdd.charge module<a class="headerlink" href="#module-tcutility.analysis.vdd.charge" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="tcutility.analysis.vdd.charge.VDDCharge">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VDDCharge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frag_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/charge.html#VDDCharge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.charge.VDDCharge" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VDDCharge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frag_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/charge.html#VDDCharge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.charge.VDDCharge" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tcutility.analysis.vdd.charge.VDDCharge.atom_index">
@@ -336,7 +337,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VDDChargeManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vdd_charges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_fragment_calculation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_charge</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VDDChargeManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vdd_charges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_fragment_calculation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_charge</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class to manage the VDD charges. It can be used to print the VDD charges in a nice table and write them to a text file or excel file.</p>
 <dl class="py attribute">
@@ -462,7 +463,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.write_to_txt">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_to_txt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">managers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'me'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.write_to_txt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.write_to_txt" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_to_txt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">managers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'me'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.write_to_txt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.write_to_txt" title="Link to this definition">#</a></dt>
 <dd><p>Write the VDD charges to a text file. It is a static method because multiple managers can be written to the same file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -633,7 +634,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>

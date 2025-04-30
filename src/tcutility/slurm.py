@@ -3,11 +3,11 @@ import platform
 import subprocess as sp
 import time
 
-from tcutility import cache, log, results, connect
+from tcutility import cache, log, results
 
 
 @cache.cache
-def has_slurm(server: connect.Server = connect.Local()) -> bool:
+def has_slurm() -> bool:
     """
     Function to check if the current platform uses slurm.
 
@@ -16,22 +16,20 @@ def has_slurm(server: connect.Server = connect.Local()) -> bool:
     """
     try:
         # Determine the appropriate command based on the OS
-        command = "which sbatch" if platform.system() != "Windows" else "where sbatch"
+        command = ["which", "sbatch"] if platform.system() != "Windows" else ["where", "sbatch"]
 
         # we do not want this function to print anything when it does not find sbatch
-        with open(os.devnull, "wb"):
-            server.execute(command)
-
+        with open(os.devnull, "wb") as devnull:
+            sp.check_output(command, stderr=devnull).decode()
         # if it runs without error, we have access to slurm
         return True
-
     # if an error is raised we do not have slurm
-    except (RuntimeError, FileNotFoundError, sp.CalledProcessError):
+    except (sp.CalledProcessError, FileNotFoundError):
         return False
 
 
 @cache.timed_cache(3)
-def squeue(server: connect.Server = connect.Local()) -> results.Result:
+def squeue() -> results.Result:
     """
     Get information about jobs managed by slurm using squeue.
 
@@ -49,7 +47,7 @@ def squeue(server: connect.Server = connect.Local()) -> results.Result:
     """
     ret = results.Result()
 
-    if not has_slurm(server=server):
+    if not has_slurm():
         return ret
 
     # specify the columns to get here
@@ -61,7 +59,7 @@ def squeue(server: connect.Server = connect.Local()) -> results.Result:
         ret[col] = []
 
     # run the squeue command with the formatting options
-    output = server.execute("squeue --me --format " + '"' + " ".join(options) + '"')
+    output = sp.check_output(["squeue", "--me", "--format", "" + " ".join(options) + ""]).decode()
     output = [line for line in output.splitlines()[1:] if line.strip()]
 
     # then add the data to the return object's lists
@@ -71,7 +69,7 @@ def squeue(server: connect.Server = connect.Local()) -> results.Result:
     return ret
 
 
-def sbatch(runfile: str, server: connect.Server = connect.Local(), **options: dict) -> results.Result:
+def sbatch(runfile: str, **options: dict) -> results.Result:
     """
     Submit a job to slurm using sbatch.
 
@@ -106,7 +104,7 @@ def sbatch(runfile: str, server: connect.Server = connect.Local(), **options: di
     ret.command = cmd
 
     # run the job
-    sbatch_out = server.execute(cmd)
+    sbatch_out = sp.check_output(cmd.split(), stderr=sp.STDOUT).decode()
     # get the slurm job id from the output
     for line in sbatch_out.splitlines():
         if "Submitted batch job" in line:
@@ -117,17 +115,17 @@ def sbatch(runfile: str, server: connect.Server = connect.Local(), **options: di
     return ret
 
 
-def workdir_info(workdir: str, server: connect.Server = connect.Local()) -> results.Result:
+def workdir_info(workdir: str) -> results.Result:
     """
     Function that gets squeue information given a working directory. This will return None if the directory is not being actively referenced by slurm.
 
     Returns:
         :Result object containing information about the calculation status, see :func:`squeue`.
     """
-    if not has_slurm(server=server):
+    if not has_slurm():
         return None
 
-    sq = squeue(server=server)
+    sq = squeue()
     if workdir not in sq.directory:
         return None
 
@@ -139,16 +137,15 @@ def workdir_info(workdir: str, server: connect.Server = connect.Local()) -> resu
     return ret
 
 
-def wait_for_job(slurmid: int, check_every: int = 60, server: connect.Server = connect.Local()):
+def wait_for_job(slurmid: int, check_every: int = 3):
     """
     Wait for a slurm job to finish. We check every `check_every` seconds if the slurm job id is still present in squeue.
 
     Args:
         slurmid: the ID of the slurm job we are waiting for.
-        check_every: the amount of seconds to wait before checking squeue again. 
-            Don't put this too low, or you will anger the cluster people.
+        check_every: the amount of seconds to wait before checking squeue again. Don't put this too high, or you will anger the cluster people.
     """
-    while slurmid in squeue(server=server).id:
+    while slurmid in squeue().id:
         time.sleep(check_every)
 
 

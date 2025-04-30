@@ -8,24 +8,14 @@ from tcutility.results import result
 from tcutility.data import atom
 
 
-def number_of_electrons(mol: plams.Molecule, charge: int = 0) -> int:
-    """
-    The number of electrons in a molecule.
-
-    Args:
-        mol: the molecule to count the number of electrons from.
-        charge: the charge of the molecule.
-
-    Returns:
-        The sum of the atomic numbers in the molecule minus the charge of the molecule.
-    """
+def number_of_electrons(mol: plams.Molecule) -> int:
     nel = 0
     for at in mol:
         nel += atom.atom_number(at.symbol)
-    return nel - charge
+    return nel
 
 
-def _parse_str(s: str):
+def parse_str(s: str):
     # checks if string should be an int, float, bool or string
 
     # sanitization first
@@ -37,8 +27,7 @@ def _parse_str(s: str):
         return s
 
     if "," in s:
-        s = s.strip('()[]{}')
-        return [_parse_str(part.strip()) for part in s.split(",")]
+        return [parse_str(part.strip()) for part in s.split(",")]
 
     # to parse the string we use try/except method
     try:
@@ -90,9 +79,9 @@ def load(path) -> plams.Molecule:
             # tags are given as loose keys
             if "=" in arg:
                 key, value = arg.split("=")
-                ret[key.strip()] = _parse_str(value.strip())
+                ret[key.strip()] = parse_str(value.strip())
             else:
-                ret.tags.add(_parse_str(arg.strip()))
+                ret.tags.add(parse_str(arg.strip()))
         return ret
 
     with open(path) as f:
@@ -115,26 +104,13 @@ def load(path) -> plams.Molecule:
     flag_lines = lines[natoms + 2 :]
     flag_lines = [line.strip() for line in flag_lines if line.strip()]
     mol.flags = parse_flags(flag_lines)
-    mol.properties.name = path.replace('/',' ').split()[-1][:-4]
 
     return mol
 
-
-def from_string(lines: str) -> plams.Molecule:
-    """
-    Load a molecule from a string. Currently only supports simple XYZ-files, 
-    e.g. not extended XYZ-files with flags.
-
-    Args:
-        mol: string containing the molecule to parse.
-            This function only reads the element, x, y and z coordinates on each line.
-
-    Returns:
-        A new molecule object with the elements and coordinates from the input.
-    """
+def from_string(s: str) -> plams.Molecule:
     mol = plams.Molecule()
-    for line in lines.splitlines():
-        parts = [_parse_str(part) for part in line.split()]
+    for line in s.splitlines():
+        parts = [parse_str(part) for part in line.split()]
         if len(parts) < 4:
             continue
 
@@ -146,10 +122,12 @@ def from_string(lines: str) -> plams.Molecule:
         if not all(isinstance(part, (float, int)) for part in parts[1:4]):
             continue
 
-        at = plams.Atom(symbol=parts[0], coords=parts[1:4])
-        mol.add_atom(at)
+        atom = plams.Atom(symbol=parts[0], coords=parts[1:4])
+        mol.add_atom(atom)
 
     return mol
+
+
 
 
 def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
@@ -213,14 +191,6 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         Atoms that were not included by either method will be placed in the molecule object with key ``None``.
 
     """
-    # we have to copy the molecule (this also creates new atom objects)
-    # and then remove them from the copied molecule. This is because PLAMS
-    # does not allow atoms to belong to multiple molecule objects
-    mol = mol.copy()
-    atoms = list(mol.atoms)
-    for at in atoms:
-        at.flags = result.Result(at.flags)
-        mol.delete_atom(at)
 
     # first method, check if the fragments are defined as molecule flags
     fragment_flags = [flag for flag in mol.flags if flag.startswith("frag_")]
@@ -241,7 +211,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
                 else:
                     raise ValueError(f"Fragment index {indx} could not be parsed.")
 
-            [fragment_mols[frag_name].add_atom(atoms[i-1]) for i in indices]
+            [fragment_mols[frag_name].add_atom(mol[i]) for i in indices]
             fragment_mols[frag_name].flags = {"tags": set()}
             if f"charge_{frag_name}" in mol.flags:
                 fragment_mols[frag_name].flags["charge"] = mol.flags[f"charge_{frag_name}"]
@@ -251,15 +221,15 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         return result.Result(fragment_mols)
 
     # second method, check if the atoms have a frag= flag defined
-    fragment_names = set(at.flags.get("frag") for at in atoms)
+    fragment_names = set(at.flags.get("frag") for at in mol)
     if len(fragment_names) > 0:
         fragment_mols = {name: plams.Molecule() for name in fragment_names}
-        for at in atoms:
+        for at in mol:
             # get the fragment the atom belongs to and add it to the list
             fragment_mols[at.flags.get("frag")].add_atom(at)
 
         for frag in fragment_names:
-            fragment_mols[frag].flags = result.Result({"tags": set()})
+            fragment_mols[frag].flags = {"tags": set()}
             if f"charge_{frag}" in mol.flags:
                 fragment_mols[frag].flags["charge"] = mol.flags[f"charge_{frag}"]
             if f"spinpol_{frag}" in mol.flags:

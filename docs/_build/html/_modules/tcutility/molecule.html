@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.molecule &#8212; TCutility v0.16.1 documentation</title>
+    <title>tcutility.molecule &#8212; TCutility v0.14.5 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=72ba937b"></script>
+    <script src="../../_static/documentation_options.js?v=6d611d6e"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -254,25 +254,17 @@
 
 <div class="viewcode-block" id="number_of_electrons">
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.molecule.number_of_electrons">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">number_of_electrons</span><span class="p">(</span><span class="n">mol</span><span class="p">:</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span> <span class="n">charge</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The number of electrons in a molecule.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        mol: the molecule to count the number of electrons from.</span>
-<span class="sd">        charge: the charge of the molecule.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        The sum of the atomic numbers in the molecule minus the charge of the molecule.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">number_of_electrons</span><span class="p">(</span><span class="n">mol</span><span class="p">:</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="n">nel</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">mol</span><span class="p">:</span>
         <span class="n">nel</span> <span class="o">+=</span> <span class="n">atom</span><span class="o">.</span><span class="n">atom_number</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">symbol</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">nel</span> <span class="o">-</span> <span class="n">charge</span></div>
+    <span class="k">return</span> <span class="n">nel</span></div>
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_parse_str</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="parse_str">
+<a class="viewcode-back" href="../../api/tcutility.html#tcutility.molecule.parse_str">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_str</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="c1"># checks if string should be an int, float, bool or string</span>
 
     <span class="c1"># sanitization first</span>
@@ -284,7 +276,7 @@
         <span class="k">return</span> <span class="n">s</span>
 
     <span class="k">if</span> <span class="s2">&quot;,&quot;</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">_parse_str</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">parse_str</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
 
     <span class="c1"># to parse the string we use try/except method</span>
     <span class="k">try</span><span class="p">:</span>
@@ -301,7 +293,8 @@
     <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">]:</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">s</span>
+    <span class="k">return</span> <span class="n">s</span></div>
+
 
 
 <div class="viewcode-block" id="load">
@@ -338,9 +331,9 @@
             <span class="c1"># tags are given as loose keys</span>
             <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
                 <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
-                <span class="n">ret</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">_parse_str</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">ret</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">parse_str</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">ret</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">_parse_str</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">parse_str</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
         <span class="k">return</span> <span class="n">ret</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -367,24 +360,12 @@
     <span class="k">return</span> <span class="n">mol</span></div>
 
 
-
 <div class="viewcode-block" id="from_string">
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.molecule.from_string">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">from_string</span><span class="p">(</span><span class="n">mol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Load a molecule from a string. Currently only supports simple XYZ-files, </span>
-<span class="sd">    e.g. not extended XYZ-files with flags.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        mol: string containing the molecule to parse.</span>
-<span class="sd">            This function only reads the element, x, y and z coordinates on each line.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        A new molecule object with the elements and coordinates from the input.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">from_string</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
-        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">_parse_str</span><span class="p">(</span><span class="n">part</span><span class="p">)</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">parse_str</span><span class="p">(</span><span class="n">part</span><span class="p">)</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
             <span class="k">continue</span>
 
@@ -400,6 +381,8 @@
         <span class="n">mol</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">mol</span></div>
+
+
 
 
 
@@ -466,14 +449,12 @@
 <span class="sd">        Atoms that were not included by either method will be placed in the molecule object with key ``None``.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">HAS_FLAGS</span> <span class="o">=</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="s2">&quot;flags&quot;</span><span class="p">)</span>
 
     <span class="c1"># first method, check if the fragments are defined as molecule flags</span>
-    <span class="n">fragment_flags</span> <span class="o">=</span> <span class="p">[</span><span class="n">flag</span> <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span> <span class="k">if</span> <span class="n">flag</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;frag_&quot;</span><span class="p">)]</span>
-
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragment_flags</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">HAS_FLAGS</span><span class="p">:</span>
         <span class="c1"># we split here to get of the frag_ prefix</span>
         <span class="n">fragment_mols</span> <span class="o">=</span> <span class="p">{</span><span class="n">frag</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span> <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">fragment_flags</span><span class="p">}</span>
-
         <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">fragment_flags</span><span class="p">:</span>
             <span class="n">frag_name</span> <span class="o">=</span> <span class="n">frag</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
@@ -679,7 +660,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>
