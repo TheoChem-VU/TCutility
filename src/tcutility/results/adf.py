@@ -203,11 +203,11 @@ def _read_excitations(reader: cache.TrackKFReader) -> Result:
         ret[irrep][exctyp].to_MO_irrep = []
 
         for exc_index in range(1, ret[irrep][exctyp].number_of_excitations + 1):
-            contr = reader.read(section, f'contr {exc_index}')
-            contr_idx = reader.read(section, f'contr index {exc_index}')
-            contr_spin = reader.read(section, f'contr spin {exc_index}')
+            contr = ensure_list(reader.read(section, f'contr {exc_index}'))
+            contr_idx = ensure_list(reader.read(section, f'contr index {exc_index}'))
+            contr_spin = ensure_list(reader.read(section, f'contr spin {exc_index}'))
             is_unrestricted = 2 in contr_spin
-            contr_irrep = reader.read(section, f'contr irep index {exc_index}')
+            contr_irrep = ensure_list(reader.read(section, f'contr irep index {exc_index}'))
             ncontr = len(contr_idx) // 2 
 
             MO_names = []
