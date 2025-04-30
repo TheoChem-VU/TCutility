@@ -102,7 +102,7 @@ def get_ams_version(calc_dir: str) -> Result:
     ret.major = ret.full.split(".")[0]
     ret.minor = ret.full.split()[0].split(".")[1]
     ret.micro = ret.full.split()[1]
-    ret.date = datetime.strptime(ret.full.split('(')[-1].split(')')[0], "%Y-%m-%d")
+    ret.date = datetime.strptime(ret.full.split()[-1][1:-1], "%Y-%m-%d")
 
     return ret
 

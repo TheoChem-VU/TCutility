@@ -51,9 +51,6 @@ def print_timings():
     if not enabled:
         return
 
-    if sum(time['calls'] for time in times.values()) == 0:
-        return
-
     names = list(times.keys())
     names = sorted(names)
     names_splits = [name.split('.') for name in names]

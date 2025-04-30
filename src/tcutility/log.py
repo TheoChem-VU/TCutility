@@ -22,7 +22,7 @@ tab_level = 0  # number of tabs to add before a logged message. This is useful t
 max_width = 0  # maximum width of printed messages. Default 0 means unbounded
 print_date = True  # print time stamp before a logged message
 log_level = 20  # the level of verbosity. Messages with a log_level >= this number will be sent to logfile
-add_caller_name = False  # whether to include the caller name in the message
+
 
 class Emojis:
     """
@@ -371,53 +371,35 @@ def debug(message: str, level: int = 10, caller_level: int = 2):
     """
     Print a debug message.
     """
-    if add_caller_name:
-        log(f"[DEBUG]({caller_name(caller_level)}): " + message, level=level)
-    else:
-        log("[DEBUG] " + message, level=level)
+    log(f"[DEBUG]({caller_name(caller_level)}): " + message, level=level)
 
 
 def info(message: str, level: int = 20, caller_level: int = 2):
     """
     Print an informative message.
     """
-    if add_caller_name:
-        log(f"[INFO]({caller_name(caller_level)}): " + message, level=level)
-    else:
-        log("[INFO] " + message, level=level)
+    log(f"[INFO]({caller_name(caller_level)}): " + message, level=level)
 
 
 def warn(message: str, level: int = 30, caller_level: int = 2):
     """
     Print a warning message.
     """
-    if add_caller_name:
-        log(f"[WARNING]({caller_name(caller_level)}): " + message, level=level)
-    else:
-        log("[WARNING] " + message, level=level)
-
+    log(f"[WARNING]({caller_name(caller_level)}): " + message, level=level)
 
 
 def error(message: str, level: int = 40, caller_level: int = 2):
     """
     Print an error message.
     """
-    if add_caller_name:
-        log(f"[ERROR]({caller_name(caller_level)}): " + message, level=level)
-    else:
-        log("[ERROR] " + message, level=level)
-
+    log(f"[ERROR]({caller_name(caller_level)}): " + message, level=level)
 
 
 def critical(message: str, level: int = 50, caller_level: int = 2):
     """
     Print a critical message.
     """
-    if add_caller_name:
-        log(f"[CRITICAL]({caller_name(caller_level)}): " + message, level=level)
-    else:
-        log("[CRITICAL] " + message, level=level)
-
+    log(f"[CRITICAL]({caller_name(caller_level)}): " + message, level=level)
 
 
 def caller_name(level: int = 1) -> str:

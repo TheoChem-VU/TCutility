@@ -7,7 +7,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<<<<<< HEAD
     <title>tcutility.pathfunc &#8212; TCutility v0.16.2 documentation</title>
+=======
+    <title>tcutility.pathfunc &#8212; TCutility v0.14.5 documentation</title>
+>>>>>>> parent of 03385c82 (Merge branch '398-add-slurm-submit-to-workflows' into 353-add-reading-of-excitation-data)
   
   
   
@@ -38,7 +42,11 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
+<<<<<<< HEAD
     <script src="../../_static/documentation_options.js?v=45421911"></script>
+=======
+    <script src="../../_static/documentation_options.js?v=6d611d6e"></script>
+>>>>>>> parent of 03385c82 (Merge branch '398-add-slurm-submit-to-workflows' into 353-add-reading-of-excitation-data)
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -245,7 +253,6 @@
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">tcutility</span><span class="w"> </span><span class="kn">import</span> <span class="n">results</span>
 
@@ -270,7 +277,6 @@
 <span class="sd">            &gt;&gt;&gt; split_all(&#39;a/b/c/d&#39;)</span>
 <span class="sd">            [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
@@ -284,15 +290,13 @@
 
 <div class="viewcode-block" id="get_subdirectories">
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.pathfunc.get_subdirectories">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_subdirectories</span><span class="p">(</span><span class="n">root</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">include_intermediates</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_current_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_subdirectories</span><span class="p">(</span><span class="n">root</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">include_intermediates</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get all sub-directories of a root directory.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        root: the root directory.</span>
 <span class="sd">        include_intermediates: whether to include intermediate sub-directories instead of only the lowest levels.</span>
-<span class="sd">        max_depth: the maximum depth depth to look for subdirectories, </span>
-<span class="sd">            e.g. setting it to `1` will return only the contents of the `root` path.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A list of sub-directories with ``root`` included in the paths.</span>
@@ -335,37 +339,23 @@
 <span class="sd">                     &#39;root/subdir_b&#39;,</span>
 <span class="sd">                     &#39;root/subdir_c&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">contents</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">if</span> <span class="n">_current_depth</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">include_intermediates</span><span class="p">:</span>
-        <span class="n">contents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+    <span class="n">dirs</span> <span class="o">=</span> <span class="p">[</span><span class="n">root</span><span class="p">]</span>
+    <span class="n">subdirs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
-    <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">scandir</span><span class="p">(</span><span class="n">root</span><span class="p">)</span> <span class="k">as</span> <span class="n">scanner</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">scanner</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-                <span class="k">continue</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">dirs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">_dirs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">cdir</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">:</span>
+            <span class="n">csubdirs</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span><span class="p">(</span><span class="n">cdir</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">cdir</span><span class="p">)</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">j</span><span class="p">(</span><span class="n">cdir</span><span class="p">,</span> <span class="n">d</span><span class="p">))]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">csubdirs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">subdirs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cdir</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">include_intermediates</span><span class="p">:</span>
+                    <span class="n">subdirs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cdir</span><span class="p">)</span>
+                <span class="n">_dirs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">csubdirs</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">_current_depth</span> <span class="o">==</span> <span class="n">max_depth</span><span class="p">:</span>
-                <span class="n">contents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-                <span class="k">continue</span>
+        <span class="n">dirs</span> <span class="o">=</span> <span class="n">_dirs</span>
 
-            <span class="n">sub_contents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">get_subdirectories</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">include_intermediates</span><span class="o">=</span><span class="n">include_intermediates</span><span class="p">,</span> <span class="n">_current_depth</span><span class="o">=</span><span class="n">_current_depth</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="n">max_depth</span><span class="p">))</span>
-
-            <span class="k">if</span> <span class="n">include_intermediates</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">sub_contents</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">contents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-
-            <span class="n">contents</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sub_contents</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">contents</span></div>
-
-
-
-<div class="viewcode-block" id="path_depth">
-<a class="viewcode-back" href="../../api/tcutility.html#tcutility.pathfunc.path_depth">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">path_depth</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the depth of a given path.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_all</span><span class="p">(</span><span class="n">path</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">subdirs</span></div>
 
 
 
@@ -381,6 +371,7 @@
 <span class="sd">            It should look similar to a format string, without the ``f`` in front of the string.</span>
 <span class="sd">            Inside curly braces you can put a variable name, which you can later extract from the results.</span>
 <span class="sd">            Anything inside curly braces will be matched to word characters (``[a-zA-Z0-9_-]``) including dashes and underscores.</span>
+
 <span class="sd">        sort_by: the key to sort the results by. If not given, the results will be returned in the order they were found.</span>
 
 <span class="sd">    Returns:</span>
@@ -436,36 +427,36 @@
 <span class="sd">            [2024/01/17 14:39:08] root/NH3-BH3/M06-2X_TZ2P   NH3-BH3   M06-2X       TZ2P</span>
 <span class="sd">            [2024/01/17 14:39:08] root/SN2/BLYP_TZ2P         SN2       BLYP         TZ2P</span>
 <span class="sd">            [2024/01/17 14:39:08] root/NH3-BH3/BLYP_QZ4P     NH3-BH3   BLYP         QZ4P</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
     <span class="c1"># get the number and names of substitutions in the given pattern</span>
-    <span class="n">substitutions</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{(\w+)}&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+    <span class="n">substitutions</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;{(\w+[+*?]?)}&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
     <span class="c1"># the pattern should resolve to words and may contain - and _</span>
-
-    <span class="c1"># given the substitutions we build a regex pattern and a glob pattern</span>
-    <span class="n">glob_pattern</span> <span class="o">=</span> <span class="n">pattern</span>
+    <span class="c1"># replace them here</span>
     <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">substitutions</span><span class="p">:</span>
-        <span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="n">sub</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span><span class="p">,</span> <span class="s2">&quot;([a-zA-Z0-9_-]+)&quot;</span><span class="p">)</span>
-        <span class="n">glob_pattern</span> <span class="o">=</span> <span class="n">glob_pattern</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="n">sub</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span>
+        <span class="n">quantifier</span> <span class="o">=</span> <span class="n">sub</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">sub</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="s2">&quot;+*?&quot;</span> <span class="k">else</span> <span class="s2">&quot;+&quot;</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="n">sub</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;([a-zA-Z0-9_-]</span><span class="si">{</span><span class="n">quantifier</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 
-    <span class="c1"># get all applicable subdirectories</span>
-    <span class="n">subdirs</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">glob_pattern</span><span class="p">))</span>
-
-    <span class="c1"># compile a regular expression pattern to match with later</span>
-    <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
-
-    <span class="c1"># go through all applicable subdirectories and retrieve the information we want</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">()</span>
+    <span class="c1"># root dir can be any level deep. We should count how many directories are in root</span>
+    <span class="n">root_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_all</span><span class="p">(</span><span class="n">root</span><span class="p">))</span>
+    <span class="c1"># get all subdirectories first, we can loop through them later</span>
+    <span class="n">subdirs</span> <span class="o">=</span> <span class="n">get_subdirectories</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">include_intermediates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># remove the root from the subdirectories. We cannot use str.removeprefix because it was added in python 3.9</span>
+    <span class="n">subdirs</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span><span class="p">(</span><span class="o">*</span><span class="n">split_all</span><span class="p">(</span><span class="n">subdir</span><span class="p">)[</span><span class="n">root_length</span><span class="p">:])</span> <span class="k">for</span> <span class="n">subdir</span> <span class="ow">in</span> <span class="n">subdirs</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_all</span><span class="p">(</span><span class="n">subdir</span><span class="p">)[</span><span class="n">root_length</span><span class="p">:])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">subdir</span> <span class="ow">in</span> <span class="n">subdirs</span><span class="p">:</span>
-        <span class="c1"># subdir = os.path.relpath(subdir, root)</span>
-        <span class="n">subdir</span> <span class="o">=</span> <span class="n">subdir</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">root</span><span class="si">}</span><span class="s1">/&#39;</span><span class="p">):]</span>
+        <span class="c1"># check if we get a match with our pattern</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">subdir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
+            <span class="k">continue</span>
+
         <span class="n">p</span> <span class="o">=</span> <span class="n">j</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">subdir</span><span class="p">)</span>
-        <span class="n">re_match</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">subdir</span><span class="p">)</span>
-        <span class="n">ret</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">substitutions</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="n">re_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">substitutions</span><span class="p">))})</span>
+        <span class="c1"># get the group data and add it to the return dictionary. We skip the first group because it is the full directory path</span>
+        <span class="n">ret</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">substitutions</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">substitutions</span><span class="p">))})</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">sort_by</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">ret</span>
 
-    <span class="c1"># if requested we sort the results before returning them</span>
     <span class="k">return</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">sort_by</span><span class="p">]))</span></div>
 
 </pre></div>
@@ -518,7 +509,7 @@
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>

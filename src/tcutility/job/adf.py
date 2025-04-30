@@ -255,91 +255,6 @@ class ADFJob(AMSJob):
             # we simply remove it from the geometryoptimization block
             self.settings.input.ams.GeometryOptimization.pop("InitialHessian", None)
 
-    def excitations(self, excitation_number: int = 10, excitation_type: str = '', method: str = 'Davidson', use_TDA: bool = False):
-        """
-        Calculate the electronic excitations using TD-DFT.
-
-        Args:
-            excitation_number: the number of excitations to include. Defaults to ``10``.
-            excitation_type: the type of excitations to include. 
-                Defaults to an empty string, indicating the default value for ADF.
-            method: the excitation methodology to use. Defaults to ``Davidson``.
-                If ``method`` is set to the ``None``-type object excitations are disabled.
-            use_TDA: whether to enable the Tamm-Dancoff approximation. Defaults to ``False``.
-        """
-        # clean the input file first
-        [self.settings.input.adf.Excitations.pop(key, None) for key in ['davidson', 'exact', 'bse', 'singleorbtrans', 'stda', 'stddft', 'tda-dftb', 'td-dftb']]
-        [self.settings.input.adf.pop(key, None) for key in ['cvndft', 'tda']]
-        [self.settings.input.adf.Excitations.pop(key, None) for key in ['allowed', 'onlysing', 'onlytrip', 'sopert']]
-
-        if method is None:
-            return
-
-        _allowed_methods = [
-            'Davidson',
-            'Exact',
-            'BSE',
-            'CV(n)-DFT',
-            'Delta Eps',
-            'sTDA',
-            'sTDDFT',
-            'TDA-DFT+TB',
-            'TD-DFT+TB',
-            ]
-        spell_check.check(method, _allowed_methods, ignore_case=True)
-
-        if method.lower() == 'davidson':
-            self.settings.input.adf.Excitations.davidson = '\n    End'
-        elif method.lower() == 'exact':
-            self.settings.input.adf.Excitations.exact = '\n    End'
-        elif method.lower() == 'bse':
-            self.settings.input.adf.Excitations.bse = 'Yes'
-        elif method.lower() == 'cv(n)-dft':
-            self.settings.input.adf.Excitations.davidson = '\n    End'
-            self.settings.input.adf.CVnDFT.R_CV_DFT = '&'
-            self.settings.input.adf.CVnDFT.SubEnd = ''
-        elif method.lower() == 'delta eps':
-            self.settings.input.adf.Excitations.SingleOrbTrans = 'Yes'
-        elif method.lower() == 'stda':
-            self.settings.input.adf.Excitations.STDA = 'Yes'
-        elif method.lower() == 'stddft':
-            self.settings.input.adf.Excitations.STDDFT = 'Yes'
-        elif method.lower() == 'tda-dft+tb':
-            self.settings.input.adf.Excitations['TDA-DFTB'] = 'Yes'
-        elif method.lower() == 'td-dft+tb':
-            self.settings.input.adf.Excitations['TD-DFTB'] = 'Yes'
-
-        _allowed_types = [
-            'None',
-            'AllowedOnly',
-            'SingletOnly',
-            'TripletOnly',
-            'SingletAndTriplet',
-            'Spin-Orbit (Perturbative)',
-            'Spin-Orbit (SCF)',
-            'Default',
-            '',
-            ]
-        spell_check.check(excitation_type, _allowed_types, ignore_case=True)
-
-        if excitation_type.lower() == 'allowedonly':
-            self.settings.input.adf.Excitations.Allowed = 'Yes'
-        elif excitation_type.lower() == 'singletonly':
-            self.settings.input.adf.Excitations.OnlySing = 'Yes'
-        elif excitation_type.lower() == 'tripletonly':
-            self.settings.input.adf.Excitations.OnlyTrip = 'Yes'
-        elif excitation_type.lower() == 'spin-orbit (perturbative)':
-            self.settings.input.adf.Excitations.SOPert = ''
-        # these values all do not have specific keys in the Excitation block
-        elif excitation_type.lower() in ['singletandtriplet', 'default', '', 'spin-orbit (scf)']:
-            pass
-
-        self.settings.input.adf.Excitations.Lowest = excitation_number
-
-        if use_TDA:
-            self.settings.input.adf.TDA = 'Yes'
-
-
 
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
@@ -519,7 +434,7 @@ class ADFFragmentJob(ADFJob):
         log.flow(f"ADFFragmentJob [{mol_str}]", ["start"])
         # obtain some system wide properties of the molecules
         charge = sum([child.settings.input.ams.System.charge or 0 for child in self.child_jobs.values()])
-        unrestricted = any([(child.settings.input.adf.Unrestricted or "no").lower() == "yes" for child in self.child_jobs.values()]) or (self.settings.input.adf.Unrestricted or "no").lower() == "yes"
+        unrestricted = any([(child.settings.input.adf.Unrestricted or "no").lower() == "yes" for child in self.child_jobs.values()])
         spinpol = sum([child.settings.input.adf.SpinPolarization or 0 for child in self.child_jobs.values()])
         log.flow(f"Level:             {self._functional}/{self._basis_set}")
         log.flow(f"Solvent:           {self._solvent}")
@@ -545,9 +460,6 @@ class ADFFragmentJob(ADFJob):
         [child_sett.input.adf.pop("RemoveFragOrbitals", None) for child_sett in child_setts.values()]
         [child_sett.input.adf.pop("RemoveAllFragVirtuals", None) for child_sett in child_setts.values()]
         [child_sett.input.adf.pop("FragOccupations", None) for child_sett in child_setts.values()]
-        # remove settings related to electronic excitations
-        [child_sett.input.adf.pop("Excitations", None) for child_sett in child_setts.values()]
-        [child_sett.input.adf.pop("TDA", None) for child_sett in child_setts.values()]
         # same for sbatch settings
         [child.sbatch(**self._sbatch) for child in self.child_jobs.values()]
 
@@ -681,12 +593,11 @@ class ADFFragmentJob(ADFJob):
             log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
             log.flow()
 
-            # reset the SCF iterations
-            self.SCF(iterations=old_iters)
-
         # also do the calculation with no electrons on the fragments if the user requested a elstat decomposition
         if self.decompose_elstat:
             frag_names = self.child_jobs.keys()
+            # reset the SCF iterations
+            self.SCF(iterations=old_iters)
             self.settings.input.adf.pop("NumericalQuality")
             self.settings.input.adf.BeckeGrid.Quality = "Excellent"
             [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
@@ -750,6 +661,7 @@ class ADFFragmentJob(ADFJob):
                 log.flow()
 
         if self.counter_poise:
+            self.SCF(iterations=old_iters)
             self.settings.input.ams.EngineDebugging.pop('AlwaysClaimSuccess', None)
             self.settings.input.adf.pop('fragments', None)
             for frag, frag_job in self.child_jobs.items():
@@ -877,9 +789,6 @@ class DensfJob(Job):
             if len(self._sfos) > 0:
                 inpf.write("Orbitals SFO\n")
                 for orb in self._sfos:
-                    if orb.spin in ['A', 'B']:
-                        spin = {'A': 'alpha', 'B': 'beta'}[orb.spin]
-                        inpf.write(f"    {spin}\n")
                     inpf.write(f"    {orb.symmetry} {orb.index}\n")
                 inpf.write("END\n")
 

@@ -1,6 +1,6 @@
 from scm import plams
 import tcutility
-from tcutility import log, connect
+from tcutility import log
 from tcutility.job.generic import Job
 import os
 import numpy as np
@@ -179,20 +179,19 @@ class AMSJob(Job):
         '''
         Set up the calculation. This will create the working directory and write the runscript and input file for ADF to use.
         '''
-        server = self._select_server()
-        server.mkdir(self.rundir)
+        os.makedirs(self.rundir, exist_ok=True)
 
-        if server.path_exists(self.workdir):
-            for file in server.ls(self.workdir):
+        if os.path.exists(self.workdir):
+            for file in os.listdir(self.workdir):
                 p = os.path.join(self.workdir, file)
                 if p.endswith('.rkf'):
-                    server.rm(p)
+                    os.remove(p)
                 if 'ams.kid' in p:
-                    server.rm(p)
+                    os.remove(p)
                 if p.startswith('t21.'):
-                    server.rm(p)
+                    os.remove(p)
                 if p.startswith('t12.'):
-                    server.rm(p)
+                    os.remove(p)
 
         if not self._molecule and not self._molecule_path and 'atoms' not in self.settings.input.ams.system:
             log.error(f'You did not supply a molecule for this job. Call the {self.__class__.__name__}.molecule method to add one.')
@@ -209,27 +208,19 @@ class AMSJob(Job):
         sett = self.settings.as_plams_settings()
         job = plams.AMSJob(name=self.name, molecule=self._molecule, settings=sett)
 
-        server.mkdir(self.workdir)
-        with server.open_file(self.inputfile_path) as inpf:
+        os.makedirs(self.workdir, exist_ok=True)
+        with open(self.inputfile_path, 'w+') as inpf:
             inpf.write(job.get_input())
 
-        # add some preambles specific to the server and ams
-        for preamble in server.preamble_defaults.get('AMS', []):
-            self.add_preamble(preamble)
-
-        # add some postambles specific to the server and ams
-        for postamble in server.postamble_defaults.get('AMS', []):
-            self.add_postamble(postamble)
-
-        with server.open_file(self.runfile_path) as runf:
+        with open(self.runfile_path, 'w+') as runf:
             runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
             runf.write('\n'.join(self._preambles) + '\n\n')
             runf.write(job.get_runscript())
             runf.write('\n'.join(self._postambles))
 
         # in case we are rerunning a calculation we need to remove ams.log
-        if server.path_exists(j(self.workdir, 'ams.log')):
-            server.rm(j(self.workdir, 'ams.log'))
+        if os.path.exists(j(self.workdir, 'ams.log')):
+            os.remove(j(self.workdir, 'ams.log'))
 
         return True
 
@@ -242,23 +233,3 @@ class AMSJob(Job):
         The default file path for output molecules when running ADF calculations. It will not be created for singlepoint calculations.
         '''
         return j(self.workdir, 'output.xyz')
-
-    def use_version(self, version='latest'):
-        '''
-        Set the version of AMS to use for the calculation.
-        Which versions are available depends on the location you are currently in.
-        We currently support the following versions:
-
-            -    On Snellius: ``2023`` and ``2024``.
-            -    On Bazis: ``2021``, ``2022``, ``2023`` and ``2024``.
-        '''
-        server = self._select_server()
-        if isinstance(server, connect.Local):
-            log.warn('Cannot set AMS version for a local calculation.')
-            return
-        else:
-            preamble = server.program_modules['AMS'].get(version, None)
-            if preamble is None:
-                log.warn(f'Could not set the AMS version to {version} on {server}.')
-                return
-            self.add_preamble(preamble)

@@ -5,7 +5,7 @@ Overview
 --------
 
 This module offers you the tools to efficiently and easily build computational workflows with various engines. 
-The module defines usefull classes that do all the heavy lifting (input and runscript preparation, job submission, etc.) in the background, while ensuring correctness of the generated inputs.
+The module defines usefull classes that do all the heavy lifting (input and runscript preparation) in the background, while ensuring correctness of the generated inputs
 
 Job classes
 ***********
@@ -25,7 +25,7 @@ The |Job| subclasses are also context-managers, which results in cleaner and mor
    with ADFJob() as job:
        job.molecule('example.xyz')
 
-   # you can also run without the use of context-managers
+   # you can also not use the context-manager
    # in that case, don't forget to run the job
    job = ADFJob()
    job.molecule('example.xyz')
@@ -64,13 +64,10 @@ One usefull feature is that the |Job| class detects if slurm is able to be used 
        # in this case, we set the partition to 'tc' and the number of cores to 32
        job.sbatch(p='tc', n=32)
 
-Furthermore, the |Job| class detects which platform you are running on (e.g. Bazis or Snellius) and sets default sbatch and module loading settings accordingly.
-
-
 Job dependencies
 ****************
 
-It is possible to set up dependencies between jobs. This allows you to use the results of one calculation as input for a different calculation.
+It is possible to setup dependencies between jobs. This allows you to use the results of one calculation as input for a different calculation.
 
 .. code-block:: python
     :linenos:
@@ -154,8 +151,6 @@ We currently support the following engines and job classes:
   * |ADFJob|, regular ADF calculations
   * |ADFFragmentJob|, fragment based calculations
   * |NMRJob|, Nuclear Magnetic Resonance (NMR) calculations using ADF
-  * BANDJob, coming soon ...
-  * BANDFragmentJob, coming soon ...
 
 
 * `Density Functional with Tight Binding (DFTB) <https://www.scm.com/product/dftb/>`_
@@ -171,10 +166,6 @@ We currently support the following engines and job classes:
   * |CRESTJob|, CREST conformational search
   * |QCGJob|, QCG explicit solvation search
 
-* `Extended tight binding (xTB) <https://github.com/grimme-lab/xtb>`_
-
-  * |XTBJob|, extended tight binding calculations
-
 See the `API Documentation <./api/tcutility.job.html>`_ for an overview of the Job classes offered by tcutility.job module.
 
 .. note::
@@ -186,7 +177,7 @@ Requirements
 
 To run calculations related to the Amsterdam Modelling Suite (AMS) you will require a license.
 
-For ORCA calculations you will need to add the ORCA executable to your PATH environmental variable.
+For ORCA calculations you will need to add the ORCA executable to your PATH.
 
 
 Examples

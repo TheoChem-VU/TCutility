@@ -9,13 +9,13 @@ tcutility.tc\_typing.arrays module
 
 .. automodule:: tcutility.tc_typing.arrays
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------
 
 .. automodule:: tcutility.tc_typing
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:

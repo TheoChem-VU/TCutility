@@ -8,24 +8,14 @@ from tcutility.results import result
 from tcutility.data import atom
 
 
-def number_of_electrons(mol: plams.Molecule, charge: int = 0) -> int:
-    """
-    The number of electrons in a molecule.
-
-    Args:
-        mol: the molecule to count the number of electrons from.
-        charge: the charge of the molecule.
-
-    Returns:
-        The sum of the atomic numbers in the molecule minus the charge of the molecule.
-    """
+def number_of_electrons(mol: plams.Molecule) -> int:
     nel = 0
     for at in mol:
         nel += atom.atom_number(at.symbol)
-    return nel - charge
+    return nel
 
 
-def _parse_str(s: str):
+def parse_str(s: str):
     # checks if string should be an int, float, bool or string
 
     # sanitization first
@@ -37,7 +27,7 @@ def _parse_str(s: str):
         return s
 
     if "," in s:
-        return [_parse_str(part.strip()) for part in s.split(",")]
+        return [parse_str(part.strip()) for part in s.split(",")]
 
     # to parse the string we use try/except method
     try:
@@ -89,9 +79,9 @@ def load(path) -> plams.Molecule:
             # tags are given as loose keys
             if "=" in arg:
                 key, value = arg.split("=")
-                ret[key.strip()] = _parse_str(value.strip())
+                ret[key.strip()] = parse_str(value.strip())
             else:
-                ret.tags.add(_parse_str(arg.strip()))
+                ret.tags.add(parse_str(arg.strip()))
         return ret
 
     with open(path) as f:
@@ -117,22 +107,10 @@ def load(path) -> plams.Molecule:
 
     return mol
 
-
-def from_string(mol: str) -> plams.Molecule:
-    """
-    Load a molecule from a string. Currently only supports simple XYZ-files, 
-    e.g. not extended XYZ-files with flags.
-
-    Args:
-        mol: string containing the molecule to parse.
-            This function only reads the element, x, y and z coordinates on each line.
-
-    Returns:
-        A new molecule object with the elements and coordinates from the input.
-    """
+def from_string(s: str) -> plams.Molecule:
     mol = plams.Molecule()
-    for line in mol.splitlines():
-        parts = [_parse_str(part) for part in line.split()]
+    for line in s.splitlines():
+        parts = [parse_str(part) for part in line.split()]
         if len(parts) < 4:
             continue
 
@@ -148,6 +126,8 @@ def from_string(mol: str) -> plams.Molecule:
         mol.add_atom(atom)
 
     return mol
+
+
 
 
 def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:

@@ -2,6 +2,13 @@ files.root
 files.log
 files.err
 files.out
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 03385c82 (Merge branch '398-add-slurm-submit-to-workflows' into 353-add-reading-of-excitation-data)
+files.adf.rkf
+=======
+>>>>>>> main
 files.ams.rkf
 files.adf.rkf
 engine
@@ -74,15 +81,9 @@ properties.vibrations.number_of_imag_modes
 properties.vibrations.character
 properties.vibrations.modes
 properties.vdd.charges
-properties.vdd.charges_initial
-properties.vdd.charges_SCF
 properties.s2_expected
 properties.s2
 properties.spin_contamination
-properties.dipole_vector
-properties.dipole_moment
-properties.quadrupole_moment
-properties.dens_at_atom
 level.xc.functional
 level.xc.category
 level.xc.dispersion
