@@ -10,9 +10,9 @@ if not os.path.exists(DBPATH):
 
 def db_readlines():
 	with open(DBPATH) as db:
-		fcntl.flock(db.fileno(), fcntl.LOCK_EX)
+		# fcntl.flock(db.fileno(), fcntl.LOCK_EX)
 		lines = db.readlines()
-		fcntl.flock(db.fileno(), fcntl.LOCK_UN)
+		# fcntl.flock(db.fileno(), fcntl.LOCK_UN)
 	return lines
 
 
@@ -60,9 +60,9 @@ def set_status(hsh, status, **kwargs):
 		s += f', {k}={v}'
 
 	with open(DBPATH, 'a') as db:
-		fcntl.flock(db.fileno(), fcntl.LOCK_EX)
+		# fcntl.flock(db.fileno(), fcntl.LOCK_EX)
 		db.write(f'{s}\n')
-		fcntl.flock(db.fileno(), fcntl.LOCK_UN)
+		# fcntl.flock(db.fileno(), fcntl.LOCK_UN)
 
 
 def set_running(hsh, **kwargs):
