@@ -301,7 +301,7 @@ def ruff_check_script(path: str, ignored_codes=None) -> bool:
     if ignored_codes is None:
         ignored_codes = []
 
-    out = sp.run(f'ruff check {path} --ignore {",".join(ignored_codes)}', shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
+    out = sp.run(f'python -m ruff check {path} --ignore {",".join(ignored_codes)}', shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
     # if the ruff check failed we get a non-zero exit
     if out.returncode != 0:
         # simply print the output if we failed
