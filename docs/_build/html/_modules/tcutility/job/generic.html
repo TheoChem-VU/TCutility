@@ -555,13 +555,17 @@
 <span class="sd">        Set a dependency between this job and otherjob.</span>
 <span class="sd">        This means that this job will run after the other job is finished running succesfully.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">otherjob</span><span class="o">.</span><span class="n">can_skip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">otherjob</span><span class="o">.</span><span class="n">in_queue</span><span class="p">():</span>
-            <span class="k">return</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">otherjob</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">can_skip</span><span class="p">(),</span> <span class="n">otherjob</span><span class="o">.</span><span class="n">in_queue</span><span class="p">(),</span> <span class="n">otherjob</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">()</span>
+        <span class="c1"># if otherjob.can_skip() and not otherjob.in_queue():</span>
+        <span class="c1">#     return</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">otherjob</span><span class="p">,</span> <span class="s2">&quot;slurm_job_id&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">dependency</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;afterany:</span><span class="si">{</span><span class="n">otherjob</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">kill_on_invalid_dep</span><span class="o">=</span><span class="s2">&quot;Yes&quot;</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">dependency</span><span class="o">=</span><span class="n">otherjob</span><span class="o">.</span><span class="n">slurm_job_id</span><span class="p">)</span></div>
 
+            <span class="c1"># self.sbatch(kill_on_invalid_dep=&quot;Yes&quot;)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">workdir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
