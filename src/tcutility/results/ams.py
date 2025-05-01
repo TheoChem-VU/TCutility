@@ -374,6 +374,11 @@ def get_pes(calc_dir: str) -> Result:
                 If there is more than one scan-coordinates it will be a list of arrays, otherwise it will be a single array.
             - ``npoints`` **list[int] | int** – number of scan points for the scan-coordinates.
                 If there is more than one scan-coordinates it will be a list of integers, otherwise it will be a single integer.
+            - ``energies`` **np.ndarray** - array containing energies with shape ``npoints``.
+            - ``energy_interpolator`` **scipy.interpolate.RegularGridInterpolator** - interpolator 
+                object used for obtaining energies at any point on the PES. Cannot be used for extrapolation.
+            - ``molecule_interpolator`` **fuction** - interpolator used to obtain molecular coordinates at
+                any point on the PES. Cannot be used for extrapolation.
     """
     # read history mols
     files = get_calc_files(calc_dir)
@@ -403,16 +408,22 @@ def get_pes(calc_dir: str) -> Result:
     ret.npoints = [reader_ams.read("PESScan", f"nPoints({i+1})") for i in range(ret.nscan_coords)]
     ret.scan_coord = [np.linspace(reader_ams.read("PESScan", f"RangeStart({i+1})"), reader_ams.read("PESScan", f"RangeEnd({i+1})"), ret.npoints[i]) * constants.BOHR2ANG for i in range(ret.nscan_coords)]
     if ("PESScan", "PES") in reader_ams:
+        # if we have the PES we can get the energies and coordinates
         ret.energies = np.array(reader_ams.read("PESScan", "PES")).reshape(*ret.npoints) * constants.HA2KCALMOL
+        # return an interpolator for the energies
         ret.energy_interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, ret.energies)
-        _coords = np.array([np.array(mol) for mol in ret.molecules]).reshape(*ret.npoints, 3, 3)
+
+        # generate the coordinate arrays to be able to interpolate
+        _coords = np.array([np.array(mol) for mol in ret.molecules]).reshape(*ret.npoints, len(ret.molecules[0]), 3)
+        # this interpolator is a temporary one, it will be used to get the coordinates only, not the 
+        # whole molecule including atomic number, data, etc.
         _coordinate_interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, _coords)
-        # print(ret.energies.shape, _coords.shape)
+
+        # this function replaces the interpolator and uses the interpolator to generate molecules 
+        # at specific PES coordinates
         def molecule_interpolator(xi: np.ndarray) -> np.ndarray:
             xi = np.atleast_2d(xi)
-            # print(xi.shape)
             yi = _coordinate_interpolator(xi)
-            # print(yi)
             mols = []
             for y in yi:
                 mol = plams.Molecule()
@@ -424,7 +435,7 @@ def get_pes(calc_dir: str) -> Result:
 
         ret.molecule_interpolator = molecule_interpolator
 
-
+    # if only one coord is given, flatten some parameters
     if ret.nscan_coords == 1:
         ret.scan_coord_name = ret.scan_coord_name[0]
         ret.scan_coord = ret.scan_coord[0]
