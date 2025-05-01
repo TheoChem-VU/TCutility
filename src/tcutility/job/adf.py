@@ -343,17 +343,13 @@ class ADFJob(AMSJob):
 
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
-
         self.decompose_elstat = kwargs.pop('decompose_elstat', False)
         self.counter_poise = kwargs.pop('counter_poise', False)
         self.scf0_calculation = kwargs.pop('sfo0_calculation', False)
         self.child_jobs = {}
-        # self.child_jobs_no_electrons = {}
         super().__init__(*args, **kwargs)
         self.name = "EDA"
 
-        # by default print the fock matrix
-        # self.settings.input.adf.print = "FmatSFO"
 
     def add_fragment(self, mol: plams.Molecule, name: str = None, charge: int = 0, spin_polarization: int = 0):
         """
@@ -486,7 +482,6 @@ class ADFFragmentJob(ADFJob):
         if alpha is None and beta is None:
             spinpol = child_job.settings.input.adf.SpinPolarization or 0
             charge = child_job.settings.input.ams.system.charge or 0
-            print(child_job._molecule)
             nelectrons = sum(atom.atnum for atom in child_job._molecule) - charge
             alpha = nelectrons // 2 + spinpol
             beta  = nelectrons // 2
