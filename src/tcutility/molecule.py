@@ -135,11 +135,11 @@ def from_string(s: str) -> plams.Molecule:
         
         .. code-block::
 
-            s = """
+            s = \"""
                 O      -0.77012509       2.82058313      -0.00000000
                 H      -0.77488739       2.61994920      -0.93878823
                 H      -0.75583818       2.00242615       0.50201099
-                """
+                \"""
             mol = from_string(s)
     """
     # molecule object to populate
