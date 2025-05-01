@@ -246,7 +246,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         for frag_name, frag_mol in fragment_mols.items():
             # obtain atom indices that belong to the fragment
             indices = []
-            index_line = ensure_list(mol.flags[frag_name])
+            index_line = ensure_list(mol.flags['frag_' + frag_name])
             # indices are given as lists of integers or strings
             # string indices would be given as ``N-M``
             # so we need to treat those specially
