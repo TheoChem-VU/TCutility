@@ -296,13 +296,21 @@ class Local:
     def __exit__(self, *args):
         ...
 
-    def execute(self, command) -> str:
-        command = command.split()
+    def execute(self, command: str) -> str:
+        """
+        Execute a command on the local machine.
+    
+        Args:
+            command: the command to run.
 
-        with open(os.devnull, "wb") as devnull:
-            output = sp.check_output(command, stderr=devnull).decode()
-
-        return output
+        .. note::
+            We use ``subprocess.check_output`` with the ``shell=True`` argument enabled.
+        """
+        try:
+            output = sp.check_output(command, shell=True).decode()
+        except sp.CalledProcessError:
+            print('COMMAND: ', command)
+            raise
 
     def mkdir(self, dirname):
         os.makedirs(os.path.join(self.currdir, dirname), exist_ok=True)
