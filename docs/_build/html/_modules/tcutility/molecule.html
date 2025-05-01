@@ -370,34 +370,50 @@
 
 <div class="viewcode-block" id="from_string">
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.molecule.from_string">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">from_string</span><span class="p">(</span><span class="n">mol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">from_string</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load a molecule from a string. Currently only supports simple XYZ-files, </span>
 <span class="sd">    e.g. not extended XYZ-files with flags.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        mol: string containing the molecule to parse.</span>
+<span class="sd">        s: string containing the molecule to parse.</span>
 <span class="sd">            This function only reads the element, x, y and z coordinates on each line.</span>
+<span class="sd">            Other lines will not be read.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A new molecule object with the elements and coordinates from the input.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        </span>
+<span class="sd">        .. code-block::</span>
+
+<span class="sd">            s = \&quot;&quot;&quot;</span>
+                <span class="n">O</span>      <span class="o">-</span><span class="mf">0.77012509</span>       <span class="mf">2.82058313</span>      <span class="o">-</span><span class="mf">0.00000000</span>
+                <span class="n">H</span>      <span class="o">-</span><span class="mf">0.77488739</span>       <span class="mf">2.61994920</span>      <span class="o">-</span><span class="mf">0.93878823</span>
+                <span class="n">H</span>      <span class="o">-</span><span class="mf">0.75583818</span>       <span class="mf">2.00242615</span>       <span class="mf">0.50201099</span>
+                \<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            mol = from_string(s)</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="c1"># molecule object to populate</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+        <span class="c1"># we split each line into its parts and parse each part</span>
         <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">_parse_str</span><span class="p">(</span><span class="n">part</span><span class="p">)</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
             <span class="k">continue</span>
 
         <span class="c1"># check if first part is the symbol of the molecule</span>
+        <span class="c1"># i.e. if there are more than 2 characters it is not a symbol</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">continue</span>
 
-        <span class="c1"># check if</span>
+        <span class="c1"># check if the next 3 parts are floats or ints, i.e. coordinates</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]):</span>
             <span class="k">continue</span>
 
-        <span class="n">atom</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coords</span><span class="o">=</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
-        <span class="n">mol</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
+        <span class="c1"># if all checks pass we make a new atom</span>
+        <span class="n">at</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coords</span><span class="o">=</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">mol</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">at</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">mol</span></div>
 
@@ -410,7 +426,6 @@
 <span class="sd">    Guess fragments based on data from the xyz file. Two methods are currently supported, see the tabs below.</span>
 <span class="sd">    We also support reading of charges and spin-polarizations for the fragments.</span>
 <span class="sd">    They should be given as ``charge_{fragment_name}`` and ``spinpol_{fragment_name}`` respectively.</span>
-
 
 <span class="sd">    .. tabs::</span>
 
@@ -466,18 +481,30 @@
 <span class="sd">        Atoms that were not included by either method will be placed in the molecule object with key ``None``.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># we have to copy the molecule (this also creates new atom objects)</span>
+    <span class="c1"># and then remove them from the copied molecule. This is because PLAMS</span>
+    <span class="c1"># does not allow atoms to belong to multiple molecule objects</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">atoms</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
+        <span class="n">at</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">Result</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">flags</span><span class="p">)</span>
+        <span class="n">mol</span><span class="o">.</span><span class="n">delete_atom</span><span class="p">(</span><span class="n">at</span><span class="p">)</span>
 
     <span class="c1"># first method, check if the fragments are defined as molecule flags</span>
     <span class="n">fragment_flags</span> <span class="o">=</span> <span class="p">[</span><span class="n">flag</span> <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span> <span class="k">if</span> <span class="n">flag</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;frag_&quot;</span><span class="p">)]</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragment_flags</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="c1"># we split here to get of the frag_ prefix</span>
+        <span class="c1"># and give each fragment an empty molecule</span>
         <span class="n">fragment_mols</span> <span class="o">=</span> <span class="p">{</span><span class="n">frag</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span> <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">fragment_flags</span><span class="p">}</span>
 
-        <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">fragment_flags</span><span class="p">:</span>
-            <span class="n">frag_name</span> <span class="o">=</span> <span class="n">frag</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">frag_name</span><span class="p">,</span> <span class="n">frag_mol</span> <span class="ow">in</span> <span class="n">fragment_mols</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># obtain atom indices that belong to the fragment</span>
             <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">index_line</span> <span class="o">=</span> <span class="n">ensure_list</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="n">frag</span><span class="p">])</span>
+            <span class="n">index_line</span> <span class="o">=</span> <span class="n">ensure_list</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s1">&#39;frag_&#39;</span> <span class="o">+</span> <span class="n">frag_name</span><span class="p">])</span>
+            <span class="c1"># indices are given as lists of integers or strings</span>
+            <span class="c1"># string indices would be given as ``N-M``</span>
+            <span class="c1"># so we need to treat those specially</span>
             <span class="k">for</span> <span class="n">indx</span> <span class="ow">in</span> <span class="n">index_line</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indx</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                     <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indx</span><span class="p">)</span>
@@ -485,30 +512,36 @@
                     <span class="n">indices</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">indx</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">indx</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fragment index </span><span class="si">{</span><span class="n">indx</span><span class="si">}</span><span class="s2"> could not be parsed.&quot;</span><span class="p">)</span>
+            <span class="c1"># add atoms to the fragment molecule</span>
+            <span class="p">[</span><span class="n">frag_mol</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">atoms</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">]</span>
+            <span class="c1"># and initialize the flags</span>
+            <span class="n">frag_mol</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">Result</span><span class="p">({</span><span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="nb">set</span><span class="p">()})</span>
 
-            <span class="p">[</span><span class="n">fragment_mols</span><span class="p">[</span><span class="n">frag_name</span><span class="p">]</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">mol</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">]</span>
-            <span class="n">fragment_mols</span><span class="p">[</span><span class="n">frag_name</span><span class="p">]</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="nb">set</span><span class="p">()}</span>
+            <span class="c1"># obtain charge and spinpol flags if they were given</span>
             <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;charge_</span><span class="si">{</span><span class="n">frag_name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">:</span>
-                <span class="n">fragment_mols</span><span class="p">[</span><span class="n">frag_name</span><span class="p">]</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;charge&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;charge_</span><span class="si">{</span><span class="n">frag_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+                <span class="n">frag_mol</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;charge_</span><span class="si">{</span><span class="n">frag_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;spinpol_</span><span class="si">{</span><span class="n">frag_name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">:</span>
-                <span class="n">fragment_mols</span><span class="p">[</span><span class="n">frag_name</span><span class="p">]</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;spinpol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;spinpol_</span><span class="si">{</span><span class="n">frag_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+                <span class="n">frag_mol</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">spinpol</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;spinpol_</span><span class="si">{</span><span class="n">frag_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">Result</span><span class="p">(</span><span class="n">fragment_mols</span><span class="p">)</span>
 
     <span class="c1"># second method, check if the atoms have a frag= flag defined</span>
-    <span class="n">fragment_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;frag&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">mol</span><span class="p">)</span>
+    <span class="n">fragment_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;frag&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragment_names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># initialize some empty molecules to hold the fragments</span>
         <span class="n">fragment_mols</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">fragment_names</span><span class="p">}</span>
-        <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">mol</span><span class="p">:</span>
+        <span class="c1"># go trough atoms, if they have a ``frag`` tag behind them </span>
+        <span class="c1"># add them to the corresponding molecule</span>
+        <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
             <span class="c1"># get the fragment the atom belongs to and add it to the list</span>
             <span class="n">fragment_mols</span><span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;frag&quot;</span><span class="p">)]</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">at</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="n">fragment_names</span><span class="p">:</span>
-            <span class="n">fragment_mols</span><span class="p">[</span><span class="n">frag</span><span class="p">]</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="nb">set</span><span class="p">()}</span>
-            <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;charge_</span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">:</span>
-                <span class="n">fragment_mols</span><span class="p">[</span><span class="n">frag</span><span class="p">]</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;charge&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;charge_</span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;spinpol_</span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">:</span>
-                <span class="n">fragment_mols</span><span class="p">[</span><span class="n">frag</span><span class="p">]</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;spinpol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;spinpol_</span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">frag_name</span><span class="p">,</span> <span class="n">frag_mol</span> <span class="ow">in</span> <span class="n">fragment_mols</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">frag_mol</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">Result</span><span class="p">({</span><span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="nb">set</span><span class="p">()})</span>
+            <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;charge_</span><span class="si">{</span><span class="n">frag_name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">:</span>
+                <span class="n">frag_mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;charge&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;charge_</span><span class="si">{</span><span class="n">frag_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="sa">f</span><span class="s2">&quot;spinpol_</span><span class="si">{</span><span class="n">frag_name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">:</span>
+                <span class="n">frag_mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;spinpol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;spinpol_</span><span class="si">{</span><span class="n">frag_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">Result</span><span class="p">(</span><span class="n">fragment_mols</span><span class="p">)</span></div>
 

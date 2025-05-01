@@ -631,17 +631,13 @@
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ADFFragmentJob</span><span class="p">(</span><span class="n">ADFJob</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">decompose_elstat</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;decompose_elstat&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">counter_poise</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;counter_poise&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scf0_calculation</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;sfo0_calculation&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1"># self.child_jobs_no_electrons = {}</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;EDA&quot;</span>
 
-        <span class="c1"># by default print the fock matrix</span>
-        <span class="c1"># self.settings.input.adf.print = &quot;FmatSFO&quot;</span>
 
 <div class="viewcode-block" id="ADFFragmentJob.add_fragment">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob.add_fragment">[docs]</a>
@@ -785,7 +781,6 @@
         <span class="k">if</span> <span class="n">alpha</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">beta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">spinpol</span> <span class="o">=</span> <span class="n">child_job</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span> <span class="ow">or</span> <span class="mi">0</span>
             <span class="n">charge</span> <span class="o">=</span> <span class="n">child_job</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">charge</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">child_job</span><span class="o">.</span><span class="n">_molecule</span><span class="p">)</span>
             <span class="n">nelectrons</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">atnum</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">child_job</span><span class="o">.</span><span class="n">_molecule</span><span class="p">)</span> <span class="o">-</span> <span class="n">charge</span>
             <span class="n">alpha</span> <span class="o">=</span> <span class="n">nelectrons</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">spinpol</span>
             <span class="n">beta</span>  <span class="o">=</span> <span class="n">nelectrons</span> <span class="o">//</span> <span class="mi">2</span>
