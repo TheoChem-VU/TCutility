@@ -661,7 +661,7 @@ This will be fixed in a later version of TCutility.</p>
 <span id="tcutility-job-ams-module"></span><h2>tcutility.job.ams module<a class="headerlink" href="#module-tcutility.job.ams" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="tcutility.job.ams.AMSJob">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AMSJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">base_jobs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_for_finish</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_on_finish</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_on_fail</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_slurm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AMSJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a></p>
 <p>This is the AMS base job which will serve as the parent class for ADFJob, DFTBJob and the future BANDJob.
 It holds all methods related to changing the settings at the AMS level. It also handles preparing the jobs, e.g. writing runfiles and inputs.</p>
@@ -811,6 +811,11 @@ We currently support the following versions:</p>
 </ul>
 </div></blockquote>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.ams.AMSJob.constraint">
+<span class="sig-name descname"><span class="pre">constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob.constraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob.constraint" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1578,6 +1583,7 @@ E.g. for ADF it will be output.xyz in the workdir for optimization jobs.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.electric_field"><code class="docutils literal notranslate"><span class="pre">AMSJob.electric_field()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">AMSJob.output_mol_path</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.use_version"><code class="docutils literal notranslate"><span class="pre">AMSJob.use_version()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.ams.AMSJob.constraint"><code class="docutils literal notranslate"><span class="pre">AMSJob.constraint()</span></code></a></li>
 </ul>
 </li>
 </ul>
