@@ -118,21 +118,33 @@ def load(path) -> plams.Molecule:
     return mol
 
 
-def from_string(lines: str) -> plams.Molecule:
+def from_string(s: str) -> plams.Molecule:
     """
     Load a molecule from a string. Currently only supports simple XYZ-files, 
     e.g. not extended XYZ-files with flags.
 
     Args:
-        mol: string containing the molecule to parse.
+        s: string containing the molecule to parse.
             This function only reads the element, x, y and z coordinates on each line.
+            Other lines will not be read.
 
     Returns:
         A new molecule object with the elements and coordinates from the input.
+
+    Example:
+        
+        .. code-block::
+
+            s = """
+                O      -0.77012509       2.82058313      -0.00000000
+                H      -0.77488739       2.61994920      -0.93878823
+                H      -0.75583818       2.00242615       0.50201099
+                """
+            mol = from_string(s)
     """
     # molecule object to populate
     mol = plams.Molecule()
-    for line in lines.splitlines():
+    for line in s.splitlines():
         # we split each line into its parts and parse each part
         parts = [_parse_str(part) for part in line.split()]
         if len(parts) < 4:
@@ -159,7 +171,6 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
     Guess fragments based on data from the xyz file. Two methods are currently supported, see the tabs below.
     We also support reading of charges and spin-polarizations for the fragments.
     They should be given as ``charge_{fragment_name}`` and ``spinpol_{fragment_name}`` respectively.
-
 
     .. tabs::
 
@@ -229,11 +240,16 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
 
     if len(fragment_flags) > 0:
         # we split here to get of the frag_ prefix
+        # and give each fragment an empty molecule
         fragment_mols = {frag.split("_", 1)[1]: plams.Molecule() for frag in fragment_flags}
-        for frag in fragment_flags:
-            frag_name = frag.split("_", 1)[1]
+
+        for frag_name, frag_mol in fragment_mols.items():
+            # obtain atom indices that belong to the fragment
             indices = []
             index_line = ensure_list(mol.flags[frag])
+            # indices are given as lists of integers or strings
+            # string indices would be given as ``N-M``
+            # so we need to treat those specially
             for indx in index_line:
                 if isinstance(indx, int):
                     indices.append(indx)
@@ -241,30 +257,36 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
                     indices.extend(range(int(indx.split("-")[0]), int(indx.split("-")[1]) + 1))
                 else:
                     raise ValueError(f"Fragment index {indx} could not be parsed.")
+            # add atoms to the fragment molecule
+            [frag_mol.add_atom(atoms[i-1]) for i in indices]
+            # and initialize the flags
+            frag_mol.flags = result.Result({"tags": set()})
 
-            [fragment_mols[frag_name].add_atom(atoms[i-1]) for i in indices]
-            fragment_mols[frag_name].flags = result.Result({"tags": set()})
+            # obtain charge and spinpol flags if they were given
             if f"charge_{frag_name}" in mol.flags:
-                fragment_mols[frag_name].flags.charge = mol.flags[f"charge_{frag_name}"]
+                frag_mol.flags.charge = mol.flags[f"charge_{frag_name}"]
             if f"spinpol_{frag_name}" in mol.flags:
-                fragment_mols[frag_name].flags.spinpol = mol.flags[f"spinpol_{frag_name}"]
+                frag_mol.flags.spinpol = mol.flags[f"spinpol_{frag_name}"]
 
         return result.Result(fragment_mols)
 
     # second method, check if the atoms have a frag= flag defined
     fragment_names = set(at.flags.get("frag") for at in atoms)
     if len(fragment_names) > 0:
+        # initialize some empty molecules to hold the fragments
         fragment_mols = {name: plams.Molecule() for name in fragment_names}
+        # go trough atoms, if they have a ``frag`` tag behind them 
+        # add them to the corresponding molecule
         for at in atoms:
             # get the fragment the atom belongs to and add it to the list
             fragment_mols[at.flags.get("frag")].add_atom(at)
 
-        for frag in fragment_names:
-            fragment_mols[frag].flags = result.Result({"tags": set()})
-            if f"charge_{frag}" in mol.flags:
-                fragment_mols[frag].flags["charge"] = mol.flags[f"charge_{frag}"]
-            if f"spinpol_{frag}" in mol.flags:
-                fragment_mols[frag].flags["spinpol"] = mol.flags[f"spinpol_{frag}"]
+        for frag_name, frag_mol in fragment_mols.items():
+            frag_mol.flags = result.Result({"tags": set()})
+            if f"charge_{frag_name}" in mol.flags:
+                frag_mol.flags["charge"] = mol.flags[f"charge_{frag_name}"]
+            if f"spinpol_{frag_name}" in mol.flags:
+                frag_mol.flags["spinpol"] = mol.flags[f"spinpol_{frag_name}"]
 
         return result.Result(fragment_mols)
 
