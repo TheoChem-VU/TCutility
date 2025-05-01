@@ -132,20 +132,24 @@ def from_string(lines: str) -> plams.Molecule:
     Returns:
         A new molecule object with the elements and coordinates from the input.
     """
+    # molecule object to populate
     mol = plams.Molecule()
     for line in lines.splitlines():
+        # we split each line into its parts and parse each part
         parts = [_parse_str(part) for part in line.split()]
         if len(parts) < 4:
             continue
 
         # check if first part is the symbol of the molecule
+        # i.e. if there are more than 2 characters it is not a symbol
         if not isinstance(parts[0], str) and len(parts[0]) > 2:
             continue
 
-        # check if
+        # check if the next 3 parts are floats or ints, i.e. coordinates
         if not all(isinstance(part, (float, int)) for part in parts[1:4]):
             continue
 
+        # if all checks pass we make a new atom
         at = plams.Atom(symbol=parts[0], coords=parts[1:4])
         mol.add_atom(at)
 
@@ -228,7 +232,6 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
     if len(fragment_flags) > 0:
         # we split here to get of the frag_ prefix
         fragment_mols = {frag.split("_", 1)[1]: plams.Molecule() for frag in fragment_flags}
-
         for frag in fragment_flags:
             frag_name = frag.split("_", 1)[1]
             indices = []
@@ -242,11 +245,11 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
                     raise ValueError(f"Fragment index {indx} could not be parsed.")
 
             [fragment_mols[frag_name].add_atom(atoms[i-1]) for i in indices]
-            fragment_mols[frag_name].flags = {"tags": set()}
+            fragment_mols[frag_name].flags = result.Result({"tags": set()})
             if f"charge_{frag_name}" in mol.flags:
-                fragment_mols[frag_name].flags["charge"] = mol.flags[f"charge_{frag_name}"]
+                fragment_mols[frag_name].flags.charge = mol.flags[f"charge_{frag_name}"]
             if f"spinpol_{frag_name}" in mol.flags:
-                fragment_mols[frag_name].flags["spinpol"] = mol.flags[f"spinpol_{frag_name}"]
+                fragment_mols[frag_name].flags.spinpol = mol.flags[f"spinpol_{frag_name}"]
 
         return result.Result(fragment_mols)
 
