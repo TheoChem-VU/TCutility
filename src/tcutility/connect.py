@@ -298,7 +298,7 @@ class Local:
 
     def execute(self, command: str) -> str:
         """
-        Execute a command on the local machine.
+        Execute a command on the local machine and return the output.
     
         Args:
             command: the command to run.
@@ -308,6 +308,7 @@ class Local:
         """
         try:
             output = sp.check_output(command, shell=True).decode()
+            return output
         except sp.CalledProcessError:
             print('COMMAND: ', command)
             raise
