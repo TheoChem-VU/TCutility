@@ -263,9 +263,16 @@
 <span class="sd">    Sometimes it is necessary to have the Python path as some environments don&#39;t have its path.</span>
 <span class="sd">    This function attempts to find the Python path and returns it.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">python</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;which python&quot;</span><span class="p">)</span>
+    <span class="n">python</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">python</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;which python&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">sp</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
+        <span class="n">python</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span>
     <span class="k">if</span> <span class="n">python</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">server</span><span class="o">.</span><span class="n">path_exists</span><span class="p">(</span><span class="n">python</span><span class="p">):</span>
-        <span class="n">python</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;which python3&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">python</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;which python3&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">sp</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
+            <span class="n">python</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span>
 
     <span class="c1"># we default to the python executable</span>
     <span class="k">if</span> <span class="n">python</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">server</span><span class="o">.</span><span class="n">path_exists</span><span class="p">(</span><span class="n">python</span><span class="p">):</span>
