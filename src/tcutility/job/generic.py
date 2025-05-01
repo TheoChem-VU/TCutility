@@ -288,7 +288,7 @@ class Job:
         """
         print(self)
         print(otherjob)
-        print(other.can_skip(), otherjob.in_queue(), otherjob.slurm_job_id)
+        print(otherjob.can_skip(), otherjob.in_queue(), otherjob.slurm_job_id)
         print()
         # if otherjob.can_skip() and not otherjob.in_queue():
         #     return
