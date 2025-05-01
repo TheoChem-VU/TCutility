@@ -19,9 +19,16 @@ def _python_path(server: connect.Server = connect.Local()):
     Sometimes it is necessary to have the Python path as some environments don't have its path.
     This function attempts to find the Python path and returns it.
     """
-    python = server.execute("which python")
+    python = ""
+    try:
+        python = server.execute("which python")
+    except sp.CalledProcessError:
+        python == ""
     if python == "" or not server.path_exists(python):
-        python = server.execute("which python3")
+        try:
+            python = server.execute("which python3")
+        except sp.CalledProcessError:
+            python == ""
 
     # we default to the python executable
     if python == "" or not server.path_exists(python):
