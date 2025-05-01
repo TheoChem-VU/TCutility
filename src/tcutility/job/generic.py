@@ -286,12 +286,16 @@ class Job:
         Set a dependency between this job and otherjob.
         This means that this job will run after the other job is finished running succesfully.
         """
-        if otherjob.can_skip() and not otherjob.in_queue():
-            return
+        print(self)
+        print(otherjob)
+        print(other.can_skip(), otherjob.in_queue(), otherjob.slurm_job_id)
+        print()
+        # if otherjob.can_skip() and not otherjob.in_queue():
+        #     return
 
         if hasattr(otherjob, "slurm_job_id"):
-            self.sbatch(dependency=f"afterany:{otherjob.slurm_job_id}")
-            self.sbatch(kill_on_invalid_dep="Yes")
+            self.sbatch(dependency=otherjob.slurm_job_id)
+            # self.sbatch(kill_on_invalid_dep="Yes")
 
     @property
     def workdir(self):
