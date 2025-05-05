@@ -4,7 +4,6 @@ import numpy as np
 from scm.plams import KFReader
 
 from tcutility import constants, ensure_list
-from tcutility.analysis import eda_excitations
 from tcutility.results import Result, cache
 from tcutility.tc_typing import arrays
 
