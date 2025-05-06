@@ -344,14 +344,15 @@ class Local:
         return os.listdir(dirname)
 
 
-class Bazis(Server):
+
+class Ada(Server):
     '''
-    Default set-up for a connection to the Bazis cluster. By default we use the ``tc`` partition.
+    Default set-up for a connection to the Ada cluster. By default we use the ``tc`` partition.
     '''
-    server = 'bazis.labs.vu.nl'
+    server = 'ada.labs.vu.nl'
     sbatch_defaults = {
         'p': 'tc',
-        'n_tasks_per_node': 16,
+        'ntasks_per_node': 16,
         'N': 1,
         'mem': 250000,
     }
@@ -386,7 +387,7 @@ class Snellius(Server):
     sbatch_defaults = {
         'p': 'rome',
         't': '120:00:00',
-        'n_tasks_per_node': 16,
+        'ntasks_per_node': 16,
         'N': 1,
     }
     program_modules = {
