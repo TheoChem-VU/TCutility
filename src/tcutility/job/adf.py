@@ -783,7 +783,7 @@ class ADFFragmentJob(ADFJob):
 
 
 class DensfJob(Job):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, overwrite: bool = False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.settings = results.Result()
         self.rundir = "tmp"
