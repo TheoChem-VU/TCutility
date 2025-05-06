@@ -24,6 +24,7 @@ def _python_path(server: connect.Server = connect.Local()):
         python = server.execute("which python")
     except sp.CalledProcessError:
         python == ""
+        
     if python == "" or not server.path_exists(python):
         try:
             python = server.execute("which python3")
