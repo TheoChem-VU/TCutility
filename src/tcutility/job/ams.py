@@ -14,6 +14,10 @@ class AMSJob(Job):
     This is the AMS base job which will serve as the parent class for ADFJob, DFTBJob and the future BANDJob.
     It holds all methods related to changing the settings at the AMS level. It also handles preparing the jobs, e.g. writing runfiles and inputs.
     '''
+    def __init__(self, *args, **kwargs):
+        self._constraints = []
+        super().__init__(*args, **kwargs)
+
     def __str__(self):
         return f'{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}'
 
@@ -261,4 +265,15 @@ class AMSJob(Job):
             if preamble is None:
                 log.warn(f'Could not set the AMS version to {version} on {server}.')
                 return
-            self.add_preamble(preamble)
+            self.add_preamble(preamble) 
+
+    def constraint(self, line: str):
+        self._constraints.append(line)
+        self._write_constraints()
+
+    def _write_constraints(self):
+        s = '\nConstraints\n'
+        for line in self._constraints:
+            s+= f'   {line}\n'
+        s += 'End\n'
+        self.settings.input.ams.Constraints = s
