@@ -340,6 +340,10 @@ class ADFJob(AMSJob):
             self.settings.input.adf.TDA = 'Yes'
 
 
+def copy_atom(atom):
+    s, c = atom.symbol, atom.coords
+    return plams.Atom(symbol=s, coords=c)
+
 
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
@@ -375,7 +379,8 @@ class ADFFragmentJob(ADFJob):
                 log.error(f"Trying to add fragment based on atom indices, but main job does not have a molecule yet. Call the {self.__class__.__name__}.molecule method to add one.")
                 return
             mol_ = plams.Molecule()
-            [mol_.add_atom(self._molecule[i]) for i in mol]
+
+            [mol_.add_atom(copy_atom(self._molecule[i])) for i in mol]
             mol = mol_.copy()
             add_frag_to_mol = False
 
