@@ -2,6 +2,7 @@ from scm import plams
 from tcutility.data import molecules
 from tcutility.job.generic import Job
 from tcutility import log
+from tcutility import spell_check
 import os
 
 
