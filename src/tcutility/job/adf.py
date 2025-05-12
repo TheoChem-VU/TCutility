@@ -12,6 +12,7 @@ j = os.path.join
 if TYPE_CHECKING:
     import pyfmo
 
+
 class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
         self.settings = results.Result()
@@ -95,6 +96,16 @@ class ADFJob(AMSJob):
             The SCM documentation can be found at https://www.scm.com/doc/ADF/Input/Electronic_Configuration.html#aufbau-smearing-freezing
         """
         self.settings.input.adf.Occupations = strategy
+
+    def irrep_occupations(self, irrep: str, orbital_numbers: str):
+        """
+        Set the orbital occupations per irrep.
+
+        Args:
+            irrep: the irrep to set occupations for.
+            orbital_numbers: the orbital occupation numbers as you would write in an input file.s
+        """
+        self.settings.input.adf.IrrepOccupations[irrep] = orbital_numbers
 
     def quality(self, val: str = "Good"):
         """
@@ -942,5 +953,9 @@ if __name__ == "__main__":
     # with DensfJob() as job:
     #     job.orbital(orbs.sfos['frag1(HOMO)'])
 
-    with ADFFragmentJob() as job:
-        ...
+    # with ADFFragmentJob() as job:
+    #     ...
+
+    with ADFJob(test_mode=True) as job:
+        job.irrep_occupations('A', '28 // 26')
+        job.molecule('exammple.xyz')
