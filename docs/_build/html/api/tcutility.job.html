@@ -370,6 +370,20 @@ We use the following values:</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.adf.ADFJob.irrep_occupations">
+<span class="sig-name descname"><span class="pre">irrep_occupations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irrep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbital_numbers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFJob.irrep_occupations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFJob.irrep_occupations" title="Link to this definition">#</a></dt>
+<dd><p>Set the orbital occupations per irrep.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>irrep</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the irrep to set occupations for.</p></li>
+<li><p><strong>orbital_numbers</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the orbital occupation numbers as you would write in an input file.s</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.adf.ADFJob.quality">
 <span class="sig-name descname"><span class="pre">quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Good'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFJob.quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFJob.quality" title="Link to this definition">#</a></dt>
 <dd><p>Set the numerical quality of the calculation.</p>
@@ -1540,6 +1554,7 @@ E.g. for ADF it will be output.xyz in the workdir for optimization jobs.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.multiplicity"><code class="docutils literal notranslate"><span class="pre">ADFJob.multiplicity()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.unrestricted"><code class="docutils literal notranslate"><span class="pre">ADFJob.unrestricted()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.occupations"><code class="docutils literal notranslate"><span class="pre">ADFJob.occupations()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.irrep_occupations"><code class="docutils literal notranslate"><span class="pre">ADFJob.irrep_occupations()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.quality"><code class="docutils literal notranslate"><span class="pre">ADFJob.quality()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.SCF_convergence"><code class="docutils literal notranslate"><span class="pre">ADFJob.SCF_convergence()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.SCF"><code class="docutils literal notranslate"><span class="pre">ADFJob.SCF()</span></code></a></li>
