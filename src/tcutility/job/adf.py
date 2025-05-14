@@ -370,7 +370,7 @@ class ADFFragmentJob(ADFJob):
         # we can be given a list of atoms
         if isinstance(mol, list) and isinstance(mol[0], plams.Atom):
             mol_ = plams.Molecule()
-            [mol_.add_atom(atom) for atom in mol]
+            [mol_.add_atom(copy_atom(atom)) for atom in mol]
             mol = mol_
 
         # or a list of integers
