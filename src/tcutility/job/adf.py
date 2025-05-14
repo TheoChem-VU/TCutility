@@ -485,7 +485,7 @@ class ADFFragmentJob(ADFJob):
         """
 
     def _write_frag_occupations(self):
-        self.settings.input.adf.FragOccupations = ""
+        self.settings.input.adf.FragOccupations = "\n"
         for frag, occs in self._frag_occupations.items():
             self.settings.input.adf.FragOccupations += f'    {frag}\n'
             for symm, occ in occs.items():
