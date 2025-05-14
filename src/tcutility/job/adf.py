@@ -361,6 +361,7 @@ class ADFFragmentJob(ADFJob):
         self.decompose_elstat = kwargs.pop('decompose_elstat', False)
         self.counter_poise = kwargs.pop('counter_poise', False)
         self.scf0_calculation = kwargs.pop('sfo0_calculation', False)
+        self._frag_occupations = {}
         self.child_jobs = {}
         super().__init__(*args, **kwargs)
         self.name = "EDA"
@@ -483,6 +484,14 @@ class ADFFragmentJob(ADFJob):
   End
         """
 
+    def _write_frag_occupations(self):
+        self.settings.input.adf.FragOccupations = ""
+        for frag, occs in self._frag_occupations.items():
+            self.settings.input.adf.FragOccupations += f'    {frag}\n'
+            for symm, occ in occs.items():
+                self.settings.input.adf.FragOccupations += f'        {symm} {occ}\n'
+            self.settings.input.adf.FragOccupations += f'    SubEnd\nEnd\n'
+
     def frag_occupations(self, frag=None, subspecies=None, alpha=None, beta=None):
         """
         Set the occupations of the fragments.
@@ -503,14 +512,9 @@ class ADFFragmentJob(ADFJob):
             alpha = nelectrons // 2 + spinpol
             beta  = nelectrons // 2
 
-        self.settings.input.adf.setdefault("FragOccupations", "")
-        self.settings.input.adf.FragOccupations = self.settings.input.adf.FragOccupations.replace(" End", "")
-        self.settings.input.adf.FragOccupations += f"""
-    {frag}
-      {subspecies or 'A'} {alpha} // {beta}
-    SubEnd
-  End
-        """
+        self._frag_occupations.setdefault(frag, {})
+        self._frag_occupations[frag][subspecies] = f'{alpha} // {beta}'
+        self._write_frag_occupations()
 
     def run(self):
         """
