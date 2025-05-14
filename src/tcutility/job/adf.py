@@ -414,12 +414,13 @@ class ADFFragmentJob(ADFJob):
             return
 
         if self._molecule is None:
-            self._molecule = self.child_jobs[name]._molecule.copy()
+            self._molecule = plams.Molecule()
+            [self._molecule.add_atom(copy_atom(atom)) for atom in self.child_jobs[name]._molecule]
         else:
-            for atom in self.child_jobs[name]._molecule.copy():
+            for atom in self.child_jobs[name]._molecule:
                 if any((atom.symbol, atom.coords) == (myatom.symbol, myatom.coords) for myatom in self._molecule):
                     continue
-                self._molecule.add_atom(atom)
+                self._molecule.add_atom(copy_atom(atom))
 
     def guess_fragments(self):
         """
