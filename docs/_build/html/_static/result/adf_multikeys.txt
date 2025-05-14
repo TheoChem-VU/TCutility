@@ -1,7 +1,7 @@
 files.root
 files.out
-files.log
 files.err
+files.log
 files.ams.rkf
 files.adf.rkf
 engine
