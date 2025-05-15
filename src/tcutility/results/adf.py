@@ -164,6 +164,72 @@ def _read_vibrations(reader: cache.TrackKFReader) -> Result:
         ret.modes.append(reader.read("Vibrations", f"NoWeightNormalMode({i+1})"))
     return ret
 
+# def _read_excitations(info: Result):
+    
+def _read_excitations(reader: cache.TrackKFReader) -> Result:
+    ret = Result()
+    excitation_types = []
+    symlab_exc = reader.read('Symmetry', 'symlab excitations').split()
+    for section, variable in reader:
+        if not section.startswith('Excitations'):
+            continue
+
+        _, exctyp, irrep = section.split()
+        if (exctyp, irrep) in excitation_types:
+            continue
+
+        excitation_types.append((exctyp, irrep))
+
+        ret[irrep][exctyp].number_of_excitations = reader.read(section, 'nr of excenergies')
+        ret[irrep][exctyp].energies = np.array(reader.read(section, 'excenergies'))  # in Ha
+
+        # values used to convert excitation photon energies to wavelengths
+        c = 299_792_458e9  # nm/s
+        h = 0.0367502 * 4.135_667_696e-15  # Ha s
+        ret[irrep][exctyp].wavelengths = (h * c) / ret[irrep][exctyp].energies # in nm
+        ret[irrep][exctyp].oscillator_strengths = np.array(reader.read(section, 'oscillator strengths'))  # in km mol
+        ret[irrep][exctyp].transition_dipole_moments = np.array(reader.read(section, 'transition dipole moments')).reshape(ret[irrep][exctyp].number_of_excitations, 3)
+
+        ret[irrep][exctyp].contributions = []
+        ret[irrep][exctyp].from_MO = []
+        ret[irrep][exctyp].to_MO = []
+        ret[irrep][exctyp].from_MO_idx = []
+        ret[irrep][exctyp].to_MO_idx = []
+        ret[irrep][exctyp].from_MO_spin = []
+        ret[irrep][exctyp].to_MO_spin = []
+        ret[irrep][exctyp].from_MO_irrep = []
+        ret[irrep][exctyp].to_MO_irrep = []
+
+        for exc_index in range(1, ret[irrep][exctyp].number_of_excitations + 1):
+            contr = ensure_list(reader.read(section, f'contr {exc_index}'))
+            contr_idx = ensure_list(reader.read(section, f'contr index {exc_index}'))
+            contr_spin = ensure_list(reader.read(section, f'contr spin {exc_index}'))
+            is_unrestricted = 2 in contr_spin
+            contr_irrep = ensure_list(reader.read(section, f'contr irep index {exc_index}'))
+            ncontr = len(contr_idx) // 2 
+
+            MO_names = []
+            for idx, spin, irrep_idx in zip(contr_idx, contr_spin, contr_irrep):
+                spin = {
+                    1: 'A',
+                    2: 'B'
+                }[spin]
+                if is_unrestricted:
+                    MO_names.append(f'{idx}{symlab_exc[irrep_idx-1]}_{spin}')
+                else:
+                    MO_names.append(f'{idx}{symlab_exc[irrep_idx-1]}')
+
+            ret[irrep][exctyp].contributions.append(contr)
+            ret[irrep][exctyp].from_MO.append(MO_names[:ncontr])
+            ret[irrep][exctyp].to_MO.append(MO_names[ncontr:])
+            ret[irrep][exctyp].from_MO_idx.append(contr_idx[:ncontr])
+            ret[irrep][exctyp].to_MO_idx.append(contr_idx[ncontr:])
+            ret[irrep][exctyp].from_MO_spin.append(contr_spin[:ncontr])
+            ret[irrep][exctyp].to_MO_spin.append(contr_spin[ncontr:])
+            ret[irrep][exctyp].from_MO_irrep.append(contr_irrep[:ncontr])
+            ret[irrep][exctyp].to_MO_irrep.append(contr_irrep[ncontr:])
+
+    return ret
 
 def get_properties(info: Result) -> Result:
     """Function to get properties from an ADF calculation.
@@ -214,6 +280,10 @@ def get_properties(info: Result) -> Result:
         return ret
 
     reader_adf = cache.get(info.files["adf.rkf"])
+
+    # electronic excitation information
+    if ("All excitations", "nr excitations") in reader_adf:
+        ret.excitations = _read_excitations(reader_adf)
 
     # read energies (given in Ha in rkf files)
     ret.energy.bond = reader_adf.read("Energy", "Bond Energy") * constants.HA2KCALMOL
