@@ -800,7 +800,7 @@ class ADFFragmentJob(ADFJob):
 
 
 class DensfJob(Job):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, overwrite: bool = False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.settings = results.Result()
         self.rundir = "tmp"
@@ -810,6 +810,7 @@ class DensfJob(Job):
         self._sfos = []
         self._extras = []
         self.settings.ADFFile = None
+        self.overwrite = overwrite
 
     def __str__(self):
         return f"Densf({self.target}), running in {self.workdir}"
@@ -949,6 +950,9 @@ class DensfJob(Job):
         return paths
 
     def can_skip(self):
+        if self.overwrite:
+            return False
+            
         return all(os.path.exists(path) for path in self.output_cub_paths)
 
 
