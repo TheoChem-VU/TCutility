@@ -266,7 +266,7 @@ class ADFJob(AMSJob):
             # we simply remove it from the geometryoptimization block
             self.settings.input.ams.GeometryOptimization.pop("InitialHessian", None)
 
-    def excitations(self, excitation_number: int = 10, excitation_type: str = '', method: str = 'Davidson', use_TDA: bool = False):
+    def excitations(self, excitation_number: int = 10, excitation_type: str = '', method: str = 'Davidson', use_TDA: bool = False, energy_gap: list = None):
         """
         Calculate the electronic excitations using TD-DFT.
 
@@ -277,6 +277,7 @@ class ADFJob(AMSJob):
             method: the excitation methodology to use. Defaults to ``Davidson``.
                 If ``method`` is set to the ``None``-type object excitations are disabled.
             use_TDA: whether to enable the Tamm-Dancoff approximation. Defaults to ``False``.
+            energy_gap: list with two variables from which to limit excitations calculated i.e. (0,0.3) defaults None
         """
         # clean the input file first
         [self.settings.input.adf.Excitations.pop(key, None) for key in ['davidson', 'exact', 'bse', 'singleorbtrans', 'stda', 'stddft', 'tda-dftb', 'td-dftb']]
@@ -349,6 +350,11 @@ class ADFJob(AMSJob):
 
         if use_TDA:
             self.settings.input.adf.TDA = 'Yes'
+
+        if energy_gap is not None:
+            self.settings.input.adf.MODIFYEXCITATION.UseOccVirtRange = f'{energy_gap[0]} {energy_gap[1]}'
+            if self.settings.input.adf.relativity.level.lower() == 'scalar'  or 'spin-orbit':
+                self.settings.input.adf.MODIFYEXCITATION.UseScaledZORA = ' '
 
 
 def copy_atom(atom):
