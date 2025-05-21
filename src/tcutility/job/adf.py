@@ -7,6 +7,7 @@ from tcutility.errors import TCCompDetailsError, TCJobError
 from tcutility.job.ams import AMSJob
 from tcutility.job.generic import Job
 import numpy as np
+from typing import List
 
 j = os.path.join
 
@@ -267,7 +268,7 @@ class ADFJob(AMSJob):
             # we simply remove it from the geometryoptimization block
             self.settings.input.ams.GeometryOptimization.pop("InitialHessian", None)
 
-    def excitations(self, excitation_number: int = 10, excitation_type: str = '', method: str = 'Davidson', use_TDA: bool = False, energy_gap: list = None):
+    def excitations(self, excitation_number: int = 10, excitation_type: str = '', method: str = 'Davidson', use_TDA: bool = False, energy_gap: List[float] = None):
         """
         Calculate the electronic excitations using TD-DFT.
 
