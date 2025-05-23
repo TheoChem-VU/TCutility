@@ -279,7 +279,7 @@ class ADFJob(AMSJob):
             method: the excitation methodology to use. Defaults to ``Davidson``.
                 If ``method`` is set to the ``None``-type object excitations are disabled.
             use_TDA: whether to enable the Tamm-Dancoff approximation. Defaults to ``False``.
-            energy_gap: list with two variables from which to limit excitations calculated i.e. (0,0.3) defaults None
+            energy_gap: list with two variables from which to limit excitations calculated i.e. (0,0.3) in Hartree defaults None
         """
         # clean the input file first
         [self.settings.input.adf.Excitations.pop(key, None) for key in ['davidson', 'exact', 'bse', 'singleorbtrans', 'stda', 'stddft', 'tda-dftb', 'td-dftb']]
