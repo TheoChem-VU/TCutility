@@ -14,6 +14,11 @@ class AMSJob(Job):
     This is the AMS base job which will serve as the parent class for ADFJob, DFTBJob and the future BANDJob.
     It holds all methods related to changing the settings at the AMS level. It also handles preparing the jobs, e.g. writing runfiles and inputs.
     '''
+    def __init__(self, *args, **kwargs):
+        self._constraints = []
+        self._pesscan_coordinates = {}
+        super().__init__(*args, **kwargs)
+
     def __str__(self):
         return f'{self._task}({self._functional}/{self._basis_set}), running in {os.path.join(os.path.abspath(self.rundir), self.name)}'
 
@@ -85,7 +90,7 @@ class AMSJob(Job):
         self.add_postscript(tcutility.job.postscripts.clean_workdir)
         self.add_postscript(tcutility.job.postscripts.write_converged_geoms)
 
-    def PESScan(self, distances: list = None, angles: list = None, dihedrals: list = None, sumdists: list = None, difdists: list = None, npoints: int = 10):
+    def PESScan(self, index: int = 0, distances: list = None, angles: list = None, dihedrals: list = None, sumdists: list = None, difdists: list = None, npoints: int = 10):
         '''
         Set the task of the job to potential energy surface scan (PESScan).
 
@@ -108,20 +113,34 @@ class AMSJob(Job):
         '''
         self._task = 'PESScan'
         self.settings.input.ams.task = 'PESScan'
-        self.settings.input.ams.PESScan.ScanCoordinate.nPoints = npoints
+
+        self._pesscan_coordinates.setdefault(index, {'nPoints': npoints, 'lines': []})
+
         if distances is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.Distance = [" ".join([str(x) for x in dist]) for dist in distances]
+            [self._pesscan_coordinates[index]['lines'].append('Distance ' + " ".join([str(x) for x in dist])) for dist in distances]
         if angles is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.Angle = [" ".join([str(x) for x in ang]) for ang in angles]
+            [self._pesscan_coordinates[index]['lines'].append('Angle ' + " ".join([str(x) for x in ang])) for ang in angles]
         if dihedrals is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.Dihedral = [" ".join([str(x) for x in dihedral]) for dihedral in dihedrals]
+            [self._pesscan_coordinates[index]['lines'].append('Dihedral ' + " ".join([str(x) for x in dihedral])) for dihedral in dihedrals]
         if sumdists is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.SumDist = [" ".join([str(x) for x in dist]) for dist in sumdists]
+            [self._pesscan_coordinates[index]['lines'].append('SumDist ' + " ".join([str(x) for x in dist])) for dist in sumdists]
         if difdists is not None:
-            self.settings.input.ams.PESScan.ScanCoordinate.DifDist = [" ".join([str(x) for x in dist]) for dist in difdists]
+            [self._pesscan_coordinates[index]['lines'].append('DifDist ' + " ".join([str(x) for x in dist])) for dist in difdists]
 
         self.add_postscript(tcutility.job.postscripts.clean_workdir)
         self.add_postscript(tcutility.job.postscripts.write_converged_geoms)
+        self._write_PESScan()
+
+    def _write_PESScan(self):
+        s = '\n'
+        for val in self._pesscan_coordinates.values():
+            s += '    ScanCoordinate\n'
+            s += f'        nPoints {val["nPoints"]}\n'
+            for line in val['lines']:
+                s+= f'        {line}\n'
+            s += '    End\n'
+        s += 'End\n'
+        self.settings.input.ams.PESScan = s
 
     def vibrations(self, enable: bool = True, NegativeFrequenciesTolerance: float = 0.0):
         '''
@@ -261,4 +280,15 @@ class AMSJob(Job):
             if preamble is None:
                 log.warn(f'Could not set the AMS version to {version} on {server}.')
                 return
-            self.add_preamble(preamble)
+            self.add_preamble(preamble) 
+
+    def constraint(self, line: str):
+        self._constraints.append(line)
+        self._write_constraints()
+
+    def _write_constraints(self):
+        s = '\nConstraints\n'
+        for line in self._constraints:
+            s+= f'   {line}\n'
+        s += 'End\n'
+        self.settings.input.ams.Constraints = s

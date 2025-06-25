@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.job.adf &#8212; TCutility v0.16.2 documentation</title>
+    <title>tcutility.job.adf &#8212; TCutility v0.16.6 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=45421911"></script>
+    <script src="../../../_static/documentation_options.js?v=b93303b6"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -256,6 +256,7 @@
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">pyfmo</span>
 
+
 <div class="viewcode-block" id="ADFJob">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ADFJob</span><span class="p">(</span><span class="n">AMSJob</span><span class="p">):</span>
@@ -355,6 +356,19 @@
 <span class="sd">            The SCM documentation can be found at https://www.scm.com/doc/ADF/Input/Electronic_Configuration.html#aufbau-smearing-freezing</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">Occupations</span> <span class="o">=</span> <span class="n">strategy</span></div>
+
+
+<div class="viewcode-block" id="ADFJob.irrep_occupations">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.irrep_occupations">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">irrep_occupations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">irrep</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">orbital_numbers</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the orbital occupations per irrep.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            irrep: the irrep to set occupations for.</span>
+<span class="sd">            orbital_numbers: the orbital occupation numbers as you would write in an input file.s</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">IrrepOccupations</span><span class="p">[</span><span class="n">irrep</span><span class="p">]</span> <span class="o">=</span> <span class="n">orbital_numbers</span></div>
 
 
 <div class="viewcode-block" id="ADFJob.quality">
@@ -626,22 +640,25 @@
 
 
 
+<div class="viewcode-block" id="copy_atom">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.copy_atom">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">copy_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">):</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">coords</span>
+    <span class="k">return</span> <span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">c</span><span class="p">)</span></div>
+
+
 
 <div class="viewcode-block" id="ADFFragmentJob">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ADFFragmentJob</span><span class="p">(</span><span class="n">ADFJob</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">decompose_elstat</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;decompose_elstat&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">counter_poise</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;counter_poise&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scf0_calculation</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;sfo0_calculation&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1"># self.child_jobs_no_electrons = {}</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;EDA&quot;</span>
 
-        <span class="c1"># by default print the fock matrix</span>
-        <span class="c1"># self.settings.input.adf.print = &quot;FmatSFO&quot;</span>
 
 <div class="viewcode-block" id="ADFFragmentJob.add_fragment">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob.add_fragment">[docs]</a>
@@ -660,7 +677,7 @@
         <span class="c1"># we can be given a list of atoms</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">):</span>
             <span class="n">mol_</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
-            <span class="p">[</span><span class="n">mol_</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="p">]</span>
+            <span class="p">[</span><span class="n">mol_</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">copy_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="p">]</span>
             <span class="n">mol</span> <span class="o">=</span> <span class="n">mol_</span>
 
         <span class="c1"># or a list of integers</span>
@@ -669,7 +686,8 @@
                 <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trying to add fragment based on atom indices, but main job does not have a molecule yet. Call the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.molecule method to add one.&quot;</span><span class="p">)</span>
                 <span class="k">return</span>
             <span class="n">mol_</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
-            <span class="p">[</span><span class="n">mol_</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mol</span><span class="p">]</span>
+
+            <span class="p">[</span><span class="n">mol_</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">copy_atom</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mol</span><span class="p">]</span>
             <span class="n">mol</span> <span class="o">=</span> <span class="n">mol_</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="n">add_frag_to_mol</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -692,12 +710,13 @@
             <span class="k">return</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">copy_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">_molecule</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">_molecule</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">any</span><span class="p">((</span><span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">myatom</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">myatom</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span> <span class="k">for</span> <span class="n">myatom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="p">):</span>
                     <span class="k">continue</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">copy_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="ADFFragmentJob.guess_fragments">
@@ -785,7 +804,6 @@
         <span class="k">if</span> <span class="n">alpha</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">beta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">spinpol</span> <span class="o">=</span> <span class="n">child_job</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span> <span class="ow">or</span> <span class="mi">0</span>
             <span class="n">charge</span> <span class="o">=</span> <span class="n">child_job</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">charge</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">child_job</span><span class="o">.</span><span class="n">_molecule</span><span class="p">)</span>
             <span class="n">nelectrons</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">atnum</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">child_job</span><span class="o">.</span><span class="n">_molecule</span><span class="p">)</span> <span class="o">-</span> <span class="n">charge</span>
             <span class="n">alpha</span> <span class="o">=</span> <span class="n">nelectrons</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">spinpol</span>
             <span class="n">beta</span>  <span class="o">=</span> <span class="n">nelectrons</span> <span class="o">//</span> <span class="mi">2</span>
@@ -1272,8 +1290,12 @@
     <span class="c1"># with DensfJob() as job:</span>
     <span class="c1">#     job.orbital(orbs.sfos[&#39;frag1(HOMO)&#39;])</span>
 
-    <span class="k">with</span> <span class="n">ADFFragmentJob</span><span class="p">()</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
-        <span class="o">...</span>
+    <span class="c1"># with ADFFragmentJob() as job:</span>
+    <span class="c1">#     ...</span>
+
+    <span class="k">with</span> <span class="n">ADFJob</span><span class="p">(</span><span class="n">test_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">irrep_occupations</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;28 // 26&#39;</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;exammple.xyz&#39;</span><span class="p">)</span>
 </pre></div>
 
                 </article>

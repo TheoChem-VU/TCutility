@@ -12,6 +12,7 @@ j = os.path.join
 if TYPE_CHECKING:
     import pyfmo
 
+
 class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
         self.settings = results.Result()
@@ -95,6 +96,16 @@ class ADFJob(AMSJob):
             The SCM documentation can be found at https://www.scm.com/doc/ADF/Input/Electronic_Configuration.html#aufbau-smearing-freezing
         """
         self.settings.input.adf.Occupations = strategy
+
+    def irrep_occupations(self, irrep: str, orbital_numbers: str):
+        """
+        Set the orbital occupations per irrep.
+
+        Args:
+            irrep: the irrep to set occupations for.
+            orbital_numbers: the orbital occupation numbers as you would write in an input file.s
+        """
+        self.settings.input.adf.IrrepOccupations[irrep] = orbital_numbers
 
     def quality(self, val: str = "Good"):
         """
@@ -340,20 +351,20 @@ class ADFJob(AMSJob):
             self.settings.input.adf.TDA = 'Yes'
 
 
+def copy_atom(atom):
+    s, c = atom.symbol, atom.coords
+    return plams.Atom(symbol=s, coords=c)
+
 
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
-
         self.decompose_elstat = kwargs.pop('decompose_elstat', False)
         self.counter_poise = kwargs.pop('counter_poise', False)
         self.scf0_calculation = kwargs.pop('sfo0_calculation', False)
         self.child_jobs = {}
-        # self.child_jobs_no_electrons = {}
         super().__init__(*args, **kwargs)
         self.name = "EDA"
 
-        # by default print the fock matrix
-        # self.settings.input.adf.print = "FmatSFO"
 
     def add_fragment(self, mol: plams.Molecule, name: str = None, charge: int = 0, spin_polarization: int = 0):
         """
@@ -370,7 +381,7 @@ class ADFFragmentJob(ADFJob):
         # we can be given a list of atoms
         if isinstance(mol, list) and isinstance(mol[0], plams.Atom):
             mol_ = plams.Molecule()
-            [mol_.add_atom(atom) for atom in mol]
+            [mol_.add_atom(copy_atom(atom)) for atom in mol]
             mol = mol_
 
         # or a list of integers
@@ -379,7 +390,8 @@ class ADFFragmentJob(ADFJob):
                 log.error(f"Trying to add fragment based on atom indices, but main job does not have a molecule yet. Call the {self.__class__.__name__}.molecule method to add one.")
                 return
             mol_ = plams.Molecule()
-            [mol_.add_atom(self._molecule[i]) for i in mol]
+
+            [mol_.add_atom(copy_atom(self._molecule[i])) for i in mol]
             mol = mol_.copy()
             add_frag_to_mol = False
 
@@ -402,12 +414,13 @@ class ADFFragmentJob(ADFJob):
             return
 
         if self._molecule is None:
-            self._molecule = self.child_jobs[name]._molecule.copy()
+            self._molecule = plams.Molecule()
+            [self._molecule.add_atom(copy_atom(atom)) for atom in self.child_jobs[name]._molecule]
         else:
-            for atom in self.child_jobs[name]._molecule.copy():
+            for atom in self.child_jobs[name]._molecule:
                 if any((atom.symbol, atom.coords) == (myatom.symbol, myatom.coords) for myatom in self._molecule):
                     continue
-                self._molecule.add_atom(atom)
+                self._molecule.add_atom(copy_atom(atom))
 
     def guess_fragments(self):
         """
@@ -486,7 +499,6 @@ class ADFFragmentJob(ADFJob):
         if alpha is None and beta is None:
             spinpol = child_job.settings.input.adf.SpinPolarization or 0
             charge = child_job.settings.input.ams.system.charge or 0
-            print(child_job._molecule)
             nelectrons = sum(atom.atnum for atom in child_job._molecule) - charge
             alpha = nelectrons // 2 + spinpol
             beta  = nelectrons // 2
@@ -788,7 +800,7 @@ class ADFFragmentJob(ADFJob):
 
 
 class DensfJob(Job):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, overwrite: bool = False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.settings = results.Result()
         self.rundir = "tmp"
@@ -798,6 +810,7 @@ class DensfJob(Job):
         self._sfos = []
         self._extras = []
         self.settings.ADFFile = None
+        self.overwrite = overwrite
 
     def __str__(self):
         return f"Densf({self.target}), running in {self.workdir}"
@@ -871,7 +884,7 @@ class DensfJob(Job):
             if len(self._mos) > 0:
                 inpf.write("Orbitals SCF\n")
                 for orb in self._mos:
-                    inpf.write(f"    {orb.symmetry} {orb.index_in_symlabel + 1}\n")
+                    inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
                 inpf.write("END\n")
 
             if len(self._sfos) > 0:
@@ -880,8 +893,9 @@ class DensfJob(Job):
                     if orb.spin in ['A', 'B']:
                         spin = {'A': 'alpha', 'B': 'beta'}[orb.spin]
                         inpf.write(f"    {spin}\n")
-                    inpf.write(f"    {orb.symmetry} {orb.index}\n")
+                    inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
                 inpf.write("END\n")
+                print(inpf.read())
 
             for line in self._extras:
                 inpf.write(line + "\n")
@@ -910,11 +924,11 @@ class DensfJob(Job):
 
         for mo in self._mos:
             spin_part = "" if mo.spin == "AB" else f"_{mo.spin}"
-            paths.append(f"{cuboutput}%SCF_{mo.symmetry.replace(':', '_')}{spin_part}%{mo.index_in_symlabel + 1}.cub")
+            paths.append(f"{cuboutput}%SCF_{mo.symmetry.replace(':', '_')}{spin_part}%{mo.symmetry_index}.cub")
 
         for sfo in self._sfos:
             spin_part = "" if sfo.spin == "AB" else f"_{sfo.spin}"
-            paths.append(f"{cuboutput}%SFO_{sfo.symmetry.replace(':', '_')}{spin_part}%{sfo.index}.cub")
+            paths.append(f"{cuboutput}%SFO_{sfo.symmetry.replace(':', '_')}{spin_part}%{sfo.symmetry_index}.cub")
 
         for extra in self._extras:
             if extra == "Density SCF":
@@ -937,6 +951,9 @@ class DensfJob(Job):
         return paths
 
     def can_skip(self):
+        if self.overwrite:
+            return False
+            
         return all(os.path.exists(path) for path in self.output_cub_paths)
 
 
@@ -947,5 +964,9 @@ if __name__ == "__main__":
     # with DensfJob() as job:
     #     job.orbital(orbs.sfos['frag1(HOMO)'])
 
-    with ADFFragmentJob() as job:
-        ...
+    # with ADFFragmentJob() as job:
+    #     ...
+
+    with ADFJob(test_mode=True) as job:
+        job.irrep_occupations('A', '28 // 26')
+        job.molecule('exammple.xyz')

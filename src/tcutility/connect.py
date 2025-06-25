@@ -296,13 +296,22 @@ class Local:
     def __exit__(self, *args):
         ...
 
-    def execute(self, command) -> str:
-        command = command.split()
+    def execute(self, command: str) -> str:
+        """
+        Execute a command on the local machine and return the output.
+    
+        Args:
+            command: the command to run.
 
-        with open(os.devnull, "wb") as devnull:
-            output = sp.check_output(command, stderr=devnull).decode()
-
-        return output
+        .. note::
+            We use ``subprocess.check_output`` with the ``shell=True`` argument enabled.
+        """
+        try:
+            output = sp.check_output(command, shell=True).decode()
+            return output
+        except sp.CalledProcessError:
+            print('COMMAND: ', command)
+            raise
 
     def mkdir(self, dirname):
         os.makedirs(os.path.join(self.currdir, dirname), exist_ok=True)
@@ -335,14 +344,15 @@ class Local:
         return os.listdir(dirname)
 
 
-class Bazis(Server):
+
+class Ada(Server):
     '''
-    Default set-up for a connection to the Bazis cluster. By default we use the ``tc`` partition.
+    Default set-up for a connection to the Ada cluster. By default we use the ``tc`` partition.
     '''
-    server = 'bazis.labs.vu.nl'
+    server = 'ada.labs.vu.nl'
     sbatch_defaults = {
         'p': 'tc',
-        'n_tasks_per_node': 16,
+        'ntasks_per_node': 16,
         'N': 1,
         'mem': 250000,
     }
@@ -377,7 +387,7 @@ class Snellius(Server):
     sbatch_defaults = {
         'p': 'rome',
         't': '120:00:00',
-        'n_tasks_per_node': 16,
+        'ntasks_per_node': 16,
         'N': 1,
     }
     program_modules = {

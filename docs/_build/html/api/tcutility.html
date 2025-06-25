@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility package &#8212; TCutility v0.16.2 documentation</title>
+    <title>tcutility package &#8212; TCutility v0.16.6 documentation</title>
   
   
   
@@ -40,7 +40,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=45421911"></script>
+    <script src="../_static/documentation_options.js?v=b93303b6"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -406,6 +406,7 @@
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.multiplicity"><code class="docutils literal notranslate"><span class="pre">ADFJob.multiplicity()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.unrestricted"><code class="docutils literal notranslate"><span class="pre">ADFJob.unrestricted()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.occupations"><code class="docutils literal notranslate"><span class="pre">ADFJob.occupations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.irrep_occupations"><code class="docutils literal notranslate"><span class="pre">ADFJob.irrep_occupations()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.quality"><code class="docutils literal notranslate"><span class="pre">ADFJob.quality()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.SCF_convergence"><code class="docutils literal notranslate"><span class="pre">ADFJob.SCF_convergence()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.SCF"><code class="docutils literal notranslate"><span class="pre">ADFJob.SCF()</span></code></a></li>
@@ -416,6 +417,7 @@
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFJob.excitations"><code class="docutils literal notranslate"><span class="pre">ADFJob.excitations()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.copy_atom"><code class="docutils literal notranslate"><span class="pre">copy_atom()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob.add_fragment"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.add_fragment()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.adf.ADFFragmentJob.guess_fragments"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.guess_fragments()</span></code></a></li>
@@ -449,6 +451,7 @@
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.electric_field"><code class="docutils literal notranslate"><span class="pre">AMSJob.electric_field()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">AMSJob.output_mol_path</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.use_version"><code class="docutils literal notranslate"><span class="pre">AMSJob.use_version()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#tcutility.job.ams.AMSJob.constraint"><code class="docutils literal notranslate"><span class="pre">AMSJob.constraint()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1029,11 +1032,19 @@ default settings for <code class="docutils literal notranslate"><span class="pre
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.connect.Local.execute">
 <span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/connect.html#Local.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.connect.Local.execute" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+<dd><p>Execute a command on the local machine and return the output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>command</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the command to run.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
 </dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We use <code class="docutils literal notranslate"><span class="pre">subprocess.check_output</span></code> with the <code class="docutils literal notranslate"><span class="pre">shell=True</span></code> argument enabled.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -2105,13 +2116,14 @@ Similarly for the atoms, the flags and tags are given as <code class="docutils l
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.molecule.from_string">
-<span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#from_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.from_string" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/molecule.html#from_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.molecule.from_string" title="Link to this definition">#</a></dt>
 <dd><p>Load a molecule from a string. Currently only supports simple XYZ-files,
 e.g. not extended XYZ-files with flags.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mol</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – string containing the molecule to parse.
-This function only reads the element, x, y and z coordinates on each line.</p>
+<dd class="field-odd"><p><strong>s</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – string containing the molecule to parse.
+This function only reads the element, x, y and z coordinates on each line.
+Other lines will not be read.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code></span></p>
@@ -2120,6 +2132,15 @@ This function only reads the element, x, y and z coordinates on each line.</p>
 <dd class="field-odd"><p>A new molecule object with the elements and coordinates from the input.</p>
 </dd>
 </dl>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    O      -0.77012509       2.82058313      -0.00000000</span>
+<span class="s2">    H      -0.77488739       2.61994920      -0.93878823</span>
+<span class="s2">    H      -0.75583818       2.00242615       0.50201099</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">from_string</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">

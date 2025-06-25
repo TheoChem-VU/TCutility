@@ -5,6 +5,7 @@ from typing import List
 
 import numpy as np
 from scm import plams
+import scipy.interpolate
 
 from tcutility import constants, ensure_list
 from tcutility.results import Result, cache
@@ -373,6 +374,11 @@ def get_pes(calc_dir: str) -> Result:
                 If there is more than one scan-coordinates it will be a list of arrays, otherwise it will be a single array.
             - ``npoints`` **list[int] | int** – number of scan points for the scan-coordinates.
                 If there is more than one scan-coordinates it will be a list of integers, otherwise it will be a single integer.
+            - ``energies`` **np.ndarray** - array containing energies with shape ``npoints``.
+            - ``energy_interpolator`` **scipy.interpolate.RegularGridInterpolator** - interpolator 
+                object used for obtaining energies at any point on the PES. Cannot be used for extrapolation.
+            - ``molecule_interpolator`` **fuction** - interpolator used to obtain molecular coordinates at
+                any point on the PES. Cannot be used for extrapolation.
     """
     # read history mols
     files = get_calc_files(calc_dir)
@@ -385,13 +391,51 @@ def get_pes(calc_dir: str) -> Result:
 
     ret = Result()
 
+    history_indices = reader_ams.read('PESScan', 'HistoryIndices')
+    atnums = ensure_list(reader_ams.read("InputMolecule", "AtomicNumbers"))  # type: ignore plams does not include type hints. Returns list[int]
+    ret.molecules = []
+    for i in history_indices:
+        mol = plams.Molecule()
+        coords = np.array(reader_ams.read("History", f"Coords({i})")).reshape(-1, 3) * constants.BOHR2ANG
+        for atnum, coord in zip(atnums, coords):
+            mol.add_atom(plams.Atom(atnum=atnum, coords=coord))
+        mol.guess_bonds()
+        ret.molecules.append(mol)
+
+    # read general info
     ret.nscan_coords = reader_ams.read("PESScan", "nScanCoord")
     ret.scan_coord_name = [reader_ams.read("PESScan", f"ScanCoord({i+1})").strip() for i in range(ret.nscan_coords)]
     ret.npoints = [reader_ams.read("PESScan", f"nPoints({i+1})") for i in range(ret.nscan_coords)]
-    ret.scan_coord = [np.linspace(reader_ams.read("PESScan", f"RangeStart({i+1})"), reader_ams.read("PESScan", f"RangeEnd({i+1})"), ret.npoints[i]) for i in range(ret.nscan_coords)]
+    ret.scan_coord = [np.linspace(reader_ams.read("PESScan", f"RangeStart({i+1})"), reader_ams.read("PESScan", f"RangeEnd({i+1})"), ret.npoints[i]) * constants.BOHR2ANG for i in range(ret.nscan_coords)]
     if ("PESScan", "PES") in reader_ams:
+        # if we have the PES we can get the energies and coordinates
         ret.energies = np.array(reader_ams.read("PESScan", "PES")).reshape(*ret.npoints) * constants.HA2KCALMOL
+        # return an interpolator for the energies
+        ret.energy_interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, ret.energies)
 
+        # generate the coordinate arrays to be able to interpolate
+        _coords = np.array([np.array(mol) for mol in ret.molecules]).reshape(*ret.npoints, len(ret.molecules[0]), 3)
+        # this interpolator is a temporary one, it will be used to get the coordinates only, not the 
+        # whole molecule including atomic number, data, etc.
+        _coordinate_interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, _coords)
+
+        # this function replaces the interpolator and uses the interpolator to generate molecules 
+        # at specific PES coordinates
+        def molecule_interpolator(xi: np.ndarray) -> np.ndarray:
+            xi = np.atleast_2d(xi)
+            yi = _coordinate_interpolator(xi)
+            mols = []
+            for y in yi:
+                mol = plams.Molecule()
+                for atnum, coord in zip(atnums, y):
+                    mol.add_atom(plams.Atom(atnum=atnum, coords=coord))
+                mols.append(mol)
+                
+            return mols
+
+        ret.molecule_interpolator = molecule_interpolator
+
+    # if only one coord is given, flatten some parameters
     if ret.nscan_coords == 1:
         ret.scan_coord_name = ret.scan_coord_name[0]
         ret.scan_coord = ret.scan_coord[0]
@@ -458,7 +502,7 @@ def get_history(calc_dir: str) -> Result:
                 # Molecule are special, because we will convert them to plams.Molecule objects first
                 if item == "Molecule":
                     mol = plams.Molecule()
-                    coords = np.array(reader_ams.read("History", f"Coords({i+1})")).reshape(natoms, 3) * 0.529177
+                    coords = np.array(reader_ams.read("History", f"Coords({i+1})")).reshape(natoms, 3) * constants.BOHR2ANG
                     for atnum, coord in zip(atnums, coords):
                         mol.add_atom(plams.Atom(atnum=atnum, coords=coord))
                     mol.guess_bonds()
