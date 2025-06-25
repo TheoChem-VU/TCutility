@@ -884,7 +884,7 @@ class DensfJob(Job):
             if len(self._mos) > 0:
                 inpf.write("Orbitals SCF\n")
                 for orb in self._mos:
-                    inpf.write(f"    {orb.symmetry} {orb.index_in_symlabel + 1}\n")
+                    inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
                 inpf.write("END\n")
 
             if len(self._sfos) > 0:
@@ -893,8 +893,9 @@ class DensfJob(Job):
                     if orb.spin in ['A', 'B']:
                         spin = {'A': 'alpha', 'B': 'beta'}[orb.spin]
                         inpf.write(f"    {spin}\n")
-                    inpf.write(f"    {orb.symmetry} {orb.index}\n")
+                    inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
                 inpf.write("END\n")
+                print(inpf.read())
 
             for line in self._extras:
                 inpf.write(line + "\n")
@@ -923,11 +924,11 @@ class DensfJob(Job):
 
         for mo in self._mos:
             spin_part = "" if mo.spin == "AB" else f"_{mo.spin}"
-            paths.append(f"{cuboutput}%SCF_{mo.symmetry.replace(':', '_')}{spin_part}%{mo.index_in_symlabel + 1}.cub")
+            paths.append(f"{cuboutput}%SCF_{mo.symmetry.replace(':', '_')}{spin_part}%{mo.symmetry_index}.cub")
 
         for sfo in self._sfos:
             spin_part = "" if sfo.spin == "AB" else f"_{sfo.spin}"
-            paths.append(f"{cuboutput}%SFO_{sfo.symmetry.replace(':', '_')}{spin_part}%{sfo.index}.cub")
+            paths.append(f"{cuboutput}%SFO_{sfo.symmetry.replace(':', '_')}{spin_part}%{sfo.symmetry_index}.cub")
 
         for extra in self._extras:
             if extra == "Density SCF":
