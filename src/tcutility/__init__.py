@@ -14,4 +14,4 @@ def ensure_2d(x, transposed=False):
     return x
 
 
-from tcutility import *  # noqa: F401, E402
+from tcutility import *  # noqa: F403
