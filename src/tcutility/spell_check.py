@@ -1,5 +1,5 @@
 import numpy as np
-from tcutility import log
+from tcutility import log, timer
 from typing import List
 
 
@@ -158,7 +158,7 @@ def make_suggestion(a: str, others: List[str], **kwargs):
     # write a warning message
     log.warn(f'Could not find "{a}". Did you mean {closest_string}?', caller_level=3)
 
-
+@timer.timer
 def check(a: str, others: List[str], caller_level=2, **kwargs):
     closest = get_closest(a, others, **kwargs)
     if len(closest) == 0:
