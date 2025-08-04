@@ -1,5 +1,5 @@
 import numpy as np
-from tcutility import log, timer
+from tcutility import log
 from typing import List
 
 
@@ -117,6 +117,7 @@ def get_closest(a: str, others: List[str], compare_func=wagner_fischer, ignore_c
         a = a.lower()
         others = [other.lower() for other in others]
 
+    # check if a is simply a member of others
     if a in others:
         return []
 
@@ -160,7 +161,6 @@ def make_suggestion(a: str, others: List[str], **kwargs):
     log.warn(f'Could not find "{a}". Did you mean {closest_string}?', caller_level=3)
 
 
-@timer.timer
 def check(a: str, others: List[str], caller_level=2, **kwargs):
     closest = get_closest(a, others, **kwargs)
     if len(closest) == 0:

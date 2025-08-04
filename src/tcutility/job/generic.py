@@ -7,7 +7,7 @@ import numpy as np
 import dictfunc
 from scm import plams
 
-from tcutility import log, molecule, results, slurm, connect, cache, timer
+from tcutility import log, molecule, results, slurm, connect, cache
 from tcutility.environment import OSName, get_os_name
 from tcutility.errors import TCJobError
 
@@ -110,7 +110,6 @@ class Job:
                 self._sbatch.setdefault(k, v)
         return self._selected_server
 
-    @timer.timer
     def can_skip(self):
         """
         Check whether the job can be skipped. We check this by loading the calculation and checking if the job status was fatal.

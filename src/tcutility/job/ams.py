@@ -1,6 +1,6 @@
 from scm import plams
 import tcutility
-from tcutility import log, connect, timer
+from tcutility import log, connect
 from tcutility.job.generic import Job
 import os
 import numpy as np
@@ -194,7 +194,6 @@ class AMSJob(Job):
         ex, ey, ez = tuple(direction)
         self.settings.input.ams.System.ElectrostaticEmbedding.ElectricField = f'{ex} {ey} {ez}'
 
-    @timer.timer
     def _setup_job(self):
         '''
         Set up the calculation. This will create the working directory and write the runscript and input file for ADF to use.

@@ -2,7 +2,7 @@ import os
 
 from scm import plams
 from typing import Dict, Optional, TYPE_CHECKING
-from tcutility import data, formula, log, molecule, results, spell_check, timer
+from tcutility import data, formula, log, molecule, results, spell_check
 from tcutility.errors import TCCompDetailsError, TCJobError
 from tcutility.job.ams import AMSJob
 from tcutility.job.generic import Job
@@ -519,7 +519,6 @@ class ADFFragmentJob(ADFJob):
   End
         """
 
-    @timer.timer
     def run(self):
         """
         Run the ``ADFFragmentJob``. This involves setting up the calculations for each fragment as well as the parent job.
