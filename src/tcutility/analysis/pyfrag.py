@@ -2,13 +2,16 @@ import tcutility
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+from typing import List
+from scm import plams
+
 
 def read(path):
     return PyFragResult(path)
 
 
 class PyFragResult:
-    def __init__(self, path):
+    def __init__(self, path, step_prefix: str = 'Step.'):
         self.path = path
 
         self._frag_results = {}
@@ -17,13 +20,14 @@ class PyFragResult:
         self._mask = []
         self._properties = {}
 
+        self.step_prefix = step_prefix
+
         self._load()
 
     def _load(self):
         for frag_path, info in tcutility.pathfunc.match(self.path, 'frag_{frag}').items():
             self._frag_results[info.frag] = tcutility.results.read(frag_path)
-
-        for step_path, info in tcutility.pathfunc.match(self.path, 'Step.{step}', sort_by='step').items():
+        for step_path, info in tcutility.pathfunc.match(self.path, self.step_prefix + '{step}', sort_by='step').items():
             self._step_results.append({})
             for dir_name in os.listdir(step_path):
                 p = os.path.join(step_path, dir_name)
@@ -52,6 +56,11 @@ class PyFragResult:
         calc = kwargs.pop('calc', 'complex')
         g = np.array([tcutility.geometry.parameter(res[calc].molecule.input, *args, **kwargs) for res in self._step_results])
         return g[self._order][self._mask[self._order]]
+
+    def get_molecules(self, calc: str = 'complex') -> List[plams.Molecule]:
+        mols = [res[calc].molecule.input for res in self._step_results]
+        return mols
+        return [mols[int(i)] for i in np.array(self._order)[self._mask[self._order]]]
 
     def sort_by(self, val: str or list, calc: str = 'complex'):
         if isinstance(val, str):
@@ -112,8 +121,7 @@ class PyFragResult:
         except ModuleNotFoundError:
             raise ModuleNotFoundError('The pyfmo module could not be loaded. To gain access please contact the TCutility developers!')
 
-
-        return [pyfmo.orbitals2.objects.Orbitals(res[calc].files['adf.rkf']) for res in self._step_results]
+        return [pyfmo.Orbitals(res[calc].files['adf.rkf']) for res in self._step_results]
 
 
 if __name__ == '__main__':

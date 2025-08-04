@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>VDD Charge Analysis module &#8212; TCutility v0.16.6 documentation</title>
+    <title>VDD Charge Analysis module &#8212; TCutility v0.16.10 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=b93303b6"></script>
+    <script src="../_static/documentation_options.js?v=bc9b5a7a"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -284,7 +284,7 @@ See the <a class="reference external" href="https://github.com/TheoChem-VU/TCuti
 </pre></div>
 </div>
 <p>Now, the calculation directory needs to be specified and the calculation results can be loaded via the <a class="reference internal" href="../api/tcutility.results.html#tcutility.results.read" title="tcutility.results.read"><code class="xref py py-func docutils literal notranslate"><span class="pre">read</span></code></a> function.
-The next step is to create a <a class="reference internal" href="../api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager" title="tcutility.analysis.vdd.manager.VDDChargeManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">VDDManager</span></code></a> object which is the interface to performing VDD analyses.</p>
+The next step is to create a <code class="xref py py-class docutils literal notranslate"><span class="pre">VDDManager</span></code> object which is the interface to performing VDD analyses.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DIRS</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;fa_acid_amide_cs&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;fa_squaramide_se_cs&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;fa_donor_acceptor_nosym&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;geo_nosym&quot;</span><span class="p">}</span>
 
 <span class="c1"># Specify the calculation directory</span>
@@ -296,9 +296,9 @@ The next step is to create a <a class="reference internal" href="../api/tcutilit
 <span class="n">vdd_manager</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">create_vdd_charge_manager</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">calc_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">results</span><span class="o">=</span><span class="n">calc_res</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <a class="reference internal" href="../api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager" title="tcutility.analysis.vdd.manager.VDDChargeManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">VDDManager</span></code></a> object contains the total VDD charges, as well as the VDD charges for each irreducible representation.
-To see the contents of the <a class="reference internal" href="../api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager" title="tcutility.analysis.vdd.manager.VDDChargeManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">VDDManager</span></code></a>, simply print it. The charges are formatted as a table in the unit of milli electrons [me].
-You can always change the unit of the charges by using the <a class="reference internal" href="../api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager.change_unit" title="tcutility.analysis.vdd.manager.VDDChargeManager.change_unit"><code class="xref py py-func docutils literal notranslate"><span class="pre">change_unit</span></code></a> method.</p>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">VDDManager</span></code> object contains the total VDD charges, as well as the VDD charges for each irreducible representation.
+To see the contents of the <code class="xref py py-class docutils literal notranslate"><span class="pre">VDDManager</span></code>, simply print it. The charges are formatted as a table in the unit of milli electrons [me].
+You can always change the unit of the charges by using the <code class="xref py py-func docutils literal notranslate"><span class="pre">change_unit</span></code> method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vdd_manager</span><span class="o">.</span><span class="n">change_unit</span><span class="p">(</span><span class="s2">&quot;me&quot;</span><span class="p">)</span>  <span class="c1"># Change the unit to electrons &quot;e&quot; (electrons) or &quot;me&quot; (milli electrons)</span>
 
 <span class="c1"># Print the VDD charges to standard output</span>
@@ -344,7 +344,7 @@ It is possible to print the charges to both a text file (.txt) as well as a Exce
 </pre></div>
 </div>
 <img alt="../_images/vdd_charges_per_atom.png" class="align-center" src="../_images/vdd_charges_per_atom.png" />
-<p>Finally, multiple <a class="reference internal" href="../api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager" title="tcutility.analysis.vdd.manager.VDDChargeManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">VDDManager</span></code></a> objects can be made and written to a single .txt file. This is useful when comparing multiple calculations.</p>
+<p>Finally, multiple <code class="xref py py-class docutils literal notranslate"><span class="pre">VDDManager</span></code> objects can be made and written to a single .txt file. This is useful when comparing multiple calculations.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multiple calculations can be combined into a single file</span>
 <span class="n">calc_dirs</span> <span class="o">=</span> <span class="p">[</span><span class="n">base_dir</span> <span class="o">/</span> <span class="n">calc</span> <span class="k">for</span> <span class="n">calc</span> <span class="ow">in</span> <span class="n">DIRS</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
 <span class="n">calc_res</span> <span class="o">=</span> <span class="p">[</span><span class="n">results</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span> <span class="k">for</span> <span class="n">calc_dir</span> <span class="ow">in</span> <span class="n">calc_dirs</span><span class="p">]</span>
@@ -436,8 +436,8 @@ It is possible to print the charges to both a text file (.txt) as well as a Exce
 </section>
 <section id="vdd-analysis-api">
 <h2>VDD analysis API<a class="headerlink" href="#vdd-analysis-api" title="Link to this heading">#</a></h2>
-<p>Here is the implementation of the <a class="reference internal" href="../api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager" title="tcutility.analysis.vdd.manager.VDDChargeManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">VDDManager</span></code></a> and <a class="reference internal" href="../api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.charge.VDDCharge" title="tcutility.analysis.vdd.charge.VDDCharge"><code class="xref py py-class docutils literal notranslate"><span class="pre">VDDCharge</span></code></a> classes. The central information contained in the <a class="reference internal" href="../api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.manager.VDDChargeManager" title="tcutility.analysis.vdd.manager.VDDChargeManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">VDDManager</span></code></a> is a dictionary containing the total charge, and irreps (if present) as keys and the a list of <a class="reference internal" href="../api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.charge.VDDCharge" title="tcutility.analysis.vdd.charge.VDDCharge"><code class="xref py py-class docutils literal notranslate"><span class="pre">VDDCharge</span></code></a> as value.
-A <a class="reference internal" href="../api/tcutility.analysis.vdd.html#tcutility.analysis.vdd.charge.VDDCharge" title="tcutility.analysis.vdd.charge.VDDCharge"><code class="xref py py-class docutils literal notranslate"><span class="pre">VDDCharge</span></code></a> does not only contain the charge itself, but also to which atom and frag index it belongs.</p>
+<p>Here is the implementation of the <code class="xref py py-class docutils literal notranslate"><span class="pre">VDDManager</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">VDDCharge</span></code> classes. The central information contained in the <code class="xref py py-class docutils literal notranslate"><span class="pre">VDDManager</span></code> is a dictionary containing the total charge, and irreps (if present) as keys and the a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">VDDCharge</span></code> as value.
+A <code class="xref py py-class docutils literal notranslate"><span class="pre">VDDCharge</span></code> does not only contain the charge itself, but also to which atom and frag index it belongs.</p>
 </section>
 </section>
 

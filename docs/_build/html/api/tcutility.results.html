@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.results package &#8212; TCutility v0.16.6 documentation</title>
+    <title>tcutility.results package &#8212; TCutility v0.16.10 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=b93303b6"></script>
+    <script src="../_static/documentation_options.js?v=bc9b5a7a"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -582,6 +582,17 @@ It will also add bonds to the molecule if they are given in the rkf file, else i
 </li>
 <li><dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">npoints</span></code> <strong>list[int] | int</strong> – number of scan points for the scan-coordinates.</dt><dd><p>If there is more than one scan-coordinates it will be a list of integers, otherwise it will be a single integer.</p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">energies</span></code> <strong>np.ndarray</strong> - array containing energies with shape <code class="docutils literal notranslate"><span class="pre">npoints</span></code>.</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">energy_interpolator</span></code> <strong>scipy.interpolate.RegularGridInterpolator</strong> - interpolator</dt><dd><p>object used for obtaining energies at any point on the PES. Cannot be used for extrapolation.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">molecule_interpolator</span></code> <strong>fuction</strong> - interpolator used to obtain molecular coordinates at</dt><dd><p>any point on the PES. Cannot be used for extrapolation.</p>
 </dd>
 </dl>
 </li>
