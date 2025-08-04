@@ -96,10 +96,11 @@ class CRESTJob(Job):
     def solvent(self, name: str = None, model: str = 'alpb'):
         '''
         Model solvation using the ALPB or GBSA model.
+        For available solvents see the `XTB documentation <https://xtb-docs.readthedocs.io/en/latest/gbsa.html#parameterized-solvents>`_.
 
         Args:
-            name: the name of the solvent you want to use. Must be ``None``, ``Acetone``, ``Acetonitrile``, ``CHCl3``, ``CS2``, ``DMSO``, ``Ether``, ``H2O``, ``Methanol``, ``THF`` or ``Toluene``.
-            model: the name of the model to use. Must be ``alpb`` or ``gbsa``.
+            name: the name of the solvent you want to use. If ``None`` turns off solvation.
+            model: the name of the model to use. Must be ``alpb`` or ``gbsa``. Defaults to ``alpb``.
         '''
         spell_check.check(model, ['alpb', 'gbsa'], ignore_case=True)
 
