@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.job.adf &#8212; TCutility v0.16.3 documentation</title>
+    <title>tcutility.job.adf &#8212; TCutility v0.16.10 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=e13a9d08"></script>
+    <script src="../../../_static/documentation_options.js?v=bc9b5a7a"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -250,11 +250,13 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">TCCompDetailsError</span><span class="p">,</span> <span class="n">TCJobError</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job.ams</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMSJob</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Job</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
 
 <span class="n">j</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">pyfmo</span>
+
 
 <div class="viewcode-block" id="ADFJob">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob">[docs]</a>
@@ -355,6 +357,19 @@
 <span class="sd">            The SCM documentation can be found at https://www.scm.com/doc/ADF/Input/Electronic_Configuration.html#aufbau-smearing-freezing</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">Occupations</span> <span class="o">=</span> <span class="n">strategy</span></div>
+
+
+<div class="viewcode-block" id="ADFJob.irrep_occupations">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.irrep_occupations">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">irrep_occupations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">irrep</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">orbital_numbers</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the orbital occupations per irrep.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            irrep: the irrep to set occupations for.</span>
+<span class="sd">            orbital_numbers: the orbital occupation numbers as you would write in an input file.s</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">IrrepOccupations</span><span class="p">[</span><span class="n">irrep</span><span class="p">]</span> <span class="o">=</span> <span class="n">orbital_numbers</span></div>
 
 
 <div class="viewcode-block" id="ADFJob.quality">
@@ -539,7 +554,7 @@
 
 <div class="viewcode-block" id="ADFJob.excitations">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFJob.excitations">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">excitations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">excitation_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">excitation_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Davidson&#39;</span><span class="p">,</span> <span class="n">use_TDA</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">excitations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">excitation_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">excitation_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Davidson&#39;</span><span class="p">,</span> <span class="n">use_TDA</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">energy_gap</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the electronic excitations using TD-DFT.</span>
 
@@ -548,10 +563,11 @@
 <span class="sd">            excitation_type: the type of excitations to include. </span>
 <span class="sd">                Defaults to an empty string, indicating the default value for ADF.</span>
 <span class="sd">            method: the excitation methodology to use. Defaults to ``Davidson``.</span>
-<span class="sd">                If ``method`` is set to the ``None``-type object excitations are disabled.</span>
+<span class="sd">                If set to the ``None``, the excitations are disabled.</span>
 <span class="sd">            use_TDA: whether to enable the Tamm-Dancoff approximation. Defaults to ``False``.</span>
+<span class="sd">            energy_gap: list with two variables from which to limit excitations calculated i.e. ``(0, 0.3)`` in Hartrees. Defaults to ``None``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># clean the input file first</span>
+        <span class="c1"># clean the input first</span>
         <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">Excitations</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;davidson&#39;</span><span class="p">,</span> <span class="s1">&#39;exact&#39;</span><span class="p">,</span> <span class="s1">&#39;bse&#39;</span><span class="p">,</span> <span class="s1">&#39;singleorbtrans&#39;</span><span class="p">,</span> <span class="s1">&#39;stda&#39;</span><span class="p">,</span> <span class="s1">&#39;stddft&#39;</span><span class="p">,</span> <span class="s1">&#39;tda-dftb&#39;</span><span class="p">,</span> <span class="s1">&#39;td-dftb&#39;</span><span class="p">]]</span>
         <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;cvndft&#39;</span><span class="p">,</span> <span class="s1">&#39;tda&#39;</span><span class="p">]]</span>
         <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">Excitations</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;allowed&#39;</span><span class="p">,</span> <span class="s1">&#39;onlysing&#39;</span><span class="p">,</span> <span class="s1">&#39;onlytrip&#39;</span><span class="p">,</span> <span class="s1">&#39;sopert&#39;</span><span class="p">]]</span>
@@ -621,9 +637,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">Excitations</span><span class="o">.</span><span class="n">Lowest</span> <span class="o">=</span> <span class="n">excitation_number</span>
 
         <span class="k">if</span> <span class="n">use_TDA</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">TDA</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">TDA</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span>
+
+        <span class="k">if</span> <span class="n">energy_gap</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">MODIFYEXCITATION</span><span class="o">.</span><span class="n">UseOccVirtRange</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">energy_gap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">energy_gap</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">relativity</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;scalar&#39;</span>  <span class="ow">or</span> <span class="s1">&#39;spin-orbit&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">MODIFYEXCITATION</span><span class="o">.</span><span class="n">UseScaledZORA</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span></div>
 </div>
 
+
+
+<div class="viewcode-block" id="copy_atom">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.copy_atom">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">copy_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">):</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">coords</span>
+    <span class="k">return</span> <span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">c</span><span class="p">)</span></div>
 
 
 
@@ -656,7 +684,7 @@
         <span class="c1"># we can be given a list of atoms</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">):</span>
             <span class="n">mol_</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
-            <span class="p">[</span><span class="n">mol_</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="p">]</span>
+            <span class="p">[</span><span class="n">mol_</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">copy_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="p">]</span>
             <span class="n">mol</span> <span class="o">=</span> <span class="n">mol_</span>
 
         <span class="c1"># or a list of integers</span>
@@ -665,7 +693,8 @@
                 <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trying to add fragment based on atom indices, but main job does not have a molecule yet. Call the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.molecule method to add one.&quot;</span><span class="p">)</span>
                 <span class="k">return</span>
             <span class="n">mol_</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
-            <span class="p">[</span><span class="n">mol_</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mol</span><span class="p">]</span>
+
+            <span class="p">[</span><span class="n">mol_</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">copy_atom</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mol</span><span class="p">]</span>
             <span class="n">mol</span> <span class="o">=</span> <span class="n">mol_</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="n">add_frag_to_mol</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -688,12 +717,13 @@
             <span class="k">return</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">copy_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">_molecule</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">_molecule</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">any</span><span class="p">((</span><span class="n">atom</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">myatom</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">myatom</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span> <span class="k">for</span> <span class="n">myatom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="p">):</span>
                     <span class="k">continue</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">copy_atom</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="ADFFragmentJob.guess_fragments">
@@ -1089,7 +1119,7 @@
 <div class="viewcode-block" id="DensfJob">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DensfJob</span><span class="p">(</span><span class="n">Job</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">Result</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="s2">&quot;tmp&quot;</span>
@@ -1099,13 +1129,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_extras</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="n">overwrite</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Densf(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="si">}</span><span class="s2">), running in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="DensfJob.gridsize">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob.gridsize">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">gridsize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gridsize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="n">grid_extend</span><span class="o">=</span><span class="mf">7.5</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the size of the grid to be used by Densf.</span>
 
@@ -1113,13 +1144,14 @@
 <span class="sd">            size: either &quot;coarse&quot;, &quot;medium&quot;, &quot;fine&quot;. Defaults to &quot;medium&quot;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;coarse&quot;</span><span class="p">,</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;fine&quot;</span><span class="p">],</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">size</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid_extend</span> <span class="o">=</span> <span class="n">grid_extend</span></div>
 
 
 <div class="viewcode-block" id="DensfJob.grid">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob.grid">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;EXTEND 7.5</span><span class="se">\n</span><span class="s1">&#39;</span></div>
 
 
 <div class="viewcode-block" id="DensfJob.orbital">
@@ -1183,11 +1215,16 @@
             <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ADFFile </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">ADFFile</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GRID </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;END</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid_extend</span><span class="p">:</span>
+                <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EXTEND </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">grid_extend</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Orbitals SCF</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">orb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mos</span><span class="p">:</span>
-                    <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">index_in_symlabel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">orb</span><span class="o">.</span><span class="n">spin</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]:</span>
+                        <span class="n">spin</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="s1">&#39;beta&#39;</span><span class="p">}[</span><span class="n">orb</span><span class="o">.</span><span class="n">spin</span><span class="p">]</span>
+                        <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">spin</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">symmetry_index</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;END</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -1196,8 +1233,9 @@
                     <span class="k">if</span> <span class="n">orb</span><span class="o">.</span><span class="n">spin</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]:</span>
                         <span class="n">spin</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="s1">&#39;beta&#39;</span><span class="p">}[</span><span class="n">orb</span><span class="o">.</span><span class="n">spin</span><span class="p">]</span>
                         <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">spin</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-                    <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">symmetry</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">orb</span><span class="o">.</span><span class="n">symmetry_index</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;END</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">inpf</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 
             <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extras</span><span class="p">:</span>
                 <span class="n">inpf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1226,11 +1264,11 @@
 
         <span class="k">for</span> <span class="n">mo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mos</span><span class="p">:</span>
             <span class="n">spin_part</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">mo</span><span class="o">.</span><span class="n">spin</span> <span class="o">==</span> <span class="s2">&quot;AB&quot;</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">spin</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s2">%SCF_</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">symmetry</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="si">}{</span><span class="n">spin_part</span><span class="si">}</span><span class="s2">%</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">index_in_symlabel</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">.cub&quot;</span><span class="p">)</span>
+            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s2">%SCF_</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">symmetry</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="si">}{</span><span class="n">spin_part</span><span class="si">}</span><span class="s2">%</span><span class="si">{</span><span class="n">mo</span><span class="o">.</span><span class="n">symmetry_index</span><span class="si">}</span><span class="s2">.cub&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">sfo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sfos</span><span class="p">:</span>
             <span class="n">spin_part</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">sfo</span><span class="o">.</span><span class="n">spin</span> <span class="o">==</span> <span class="s2">&quot;AB&quot;</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">spin</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s2">%SFO_</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">symmetry</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="si">}{</span><span class="n">spin_part</span><span class="si">}</span><span class="s2">%</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s2">.cub&quot;</span><span class="p">)</span>
+            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cuboutput</span><span class="si">}</span><span class="s2">%SFO_</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">symmetry</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="si">}{</span><span class="n">spin_part</span><span class="si">}</span><span class="s2">%</span><span class="si">{</span><span class="n">sfo</span><span class="o">.</span><span class="n">symmetry_index</span><span class="si">}</span><span class="s2">.cub&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">extra</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extras</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">extra</span> <span class="o">==</span> <span class="s2">&quot;Density SCF&quot;</span><span class="p">:</span>
@@ -1255,6 +1293,9 @@
 <div class="viewcode-block" id="DensfJob.can_skip">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.DensfJob.can_skip">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">can_skip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+            
         <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_cub_paths</span><span class="p">)</span></div>
 </div>
 
@@ -1267,8 +1308,12 @@
     <span class="c1"># with DensfJob() as job:</span>
     <span class="c1">#     job.orbital(orbs.sfos[&#39;frag1(HOMO)&#39;])</span>
 
-    <span class="k">with</span> <span class="n">ADFFragmentJob</span><span class="p">()</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
-        <span class="o">...</span>
+    <span class="c1"># with ADFFragmentJob() as job:</span>
+    <span class="c1">#     ...</span>
+
+    <span class="k">with</span> <span class="n">ADFJob</span><span class="p">(</span><span class="n">test_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">irrep_occupations</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;28 // 26&#39;</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;exammple.xyz&#39;</span><span class="p">)</span>
 </pre></div>
 
                 </article>

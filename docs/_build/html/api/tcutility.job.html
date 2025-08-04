@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.job package &#8212; TCutility v0.16.3 documentation</title>
+    <title>tcutility.job package &#8212; TCutility v0.16.10 documentation</title>
   
   
   
@@ -40,7 +40,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=e13a9d08"></script>
+    <script src="../_static/documentation_options.js?v=bc9b5a7a"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -370,6 +370,20 @@ We use the following values:</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tcutility.job.adf.ADFJob.irrep_occupations">
+<span class="sig-name descname"><span class="pre">irrep_occupations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irrep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbital_numbers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFJob.irrep_occupations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFJob.irrep_occupations" title="Link to this definition">#</a></dt>
+<dd><p>Set the orbital occupations per irrep.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>irrep</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the irrep to set occupations for.</p></li>
+<li><p><strong>orbital_numbers</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the orbital occupation numbers as you would write in an input file.s</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.adf.ADFJob.quality">
 <span class="sig-name descname"><span class="pre">quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Good'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFJob.quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFJob.quality" title="Link to this definition">#</a></dt>
 <dd><p>Set the numerical quality of the calculation.</p>
@@ -492,7 +506,7 @@ This is to prevent the job from being flagged as a failure when reading it using
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.adf.ADFJob.excitations">
-<span class="sig-name descname"><span class="pre">excitations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">excitation_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excitation_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Davidson'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_TDA</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFJob.excitations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFJob.excitations" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">excitations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">excitation_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excitation_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Davidson'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_TDA</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_gap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#ADFJob.excitations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.ADFJob.excitations" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the electronic excitations using TD-DFT.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -501,14 +515,20 @@ This is to prevent the job from being flagged as a failure when reading it using
 <li><p><strong>excitation_type</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the type of excitations to include.
 Defaults to an empty string, indicating the default value for ADF.</p></li>
 <li><p><strong>method</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – the excitation methodology to use. Defaults to <code class="docutils literal notranslate"><span class="pre">Davidson</span></code>.
-If <code class="docutils literal notranslate"><span class="pre">method</span></code> is set to the <code class="docutils literal notranslate"><span class="pre">None</span></code>-type object excitations are disabled.</p></li>
+If set to the <code class="docutils literal notranslate"><span class="pre">None</span></code>, the excitations are disabled.</p></li>
 <li><p><strong>use_TDA</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – whether to enable the Tamm-Dancoff approximation. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>energy_gap</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</span>) – list with two variables from which to limit excitations calculated i.e. <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0.3)</span></code> in Hartrees. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.job.adf.copy_atom">
+<span class="sig-name descname"><span class="pre">copy_atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#copy_atom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.copy_atom" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tcutility.job.adf.ADFFragmentJob">
@@ -590,11 +610,11 @@ It will also submit a calculation with the SCF iterations set to 0 in order to f
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tcutility.job.adf.DensfJob">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DensfJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#DensfJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.DensfJob" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DensfJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#DensfJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.DensfJob" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.adf.DensfJob.gridsize">
-<span class="sig-name descname"><span class="pre">gridsize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#DensfJob.gridsize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.DensfJob.gridsize" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">gridsize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_extend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/adf.html#DensfJob.gridsize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.adf.DensfJob.gridsize" title="Link to this definition">#</a></dt>
 <dd><p>Set the size of the grid to be used by Densf.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -714,7 +734,7 @@ If set to <code class="docutils literal notranslate"><span class="pre">None</spa
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tcutility.job.ams.AMSJob.PESScan">
-<span class="sig-name descname"><span class="pre">PESScan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distances</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dihedrals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sumdists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">difdists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob.PESScan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob.PESScan" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">PESScan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distances</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dihedrals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sumdists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">difdists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/job/ams.html#AMSJob.PESScan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.job.ams.AMSJob.PESScan" title="Link to this definition">#</a></dt>
 <dd><p>Set the task of the job to potential energy surface scan (PESScan).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1219,7 +1239,7 @@ Job statuses will also be checked on the server.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>server</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="tcutility.html#tcutility.connect.Server" title="tcutility.connect.Server"><code class="xref py py-class docutils literal notranslate"><span class="pre">Server</span></code></a></span>) – the server to connect to.</p></li>
+<li><p><strong>server</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Server</span></code></span>) – the server to connect to.</p></li>
 <li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – how much weight is given to selecting this server.</p></li>
 </ul>
 </dd>
@@ -1540,6 +1560,7 @@ E.g. for ADF it will be output.xyz in the workdir for optimization jobs.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.multiplicity"><code class="docutils literal notranslate"><span class="pre">ADFJob.multiplicity()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.unrestricted"><code class="docutils literal notranslate"><span class="pre">ADFJob.unrestricted()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.occupations"><code class="docutils literal notranslate"><span class="pre">ADFJob.occupations()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.irrep_occupations"><code class="docutils literal notranslate"><span class="pre">ADFJob.irrep_occupations()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.quality"><code class="docutils literal notranslate"><span class="pre">ADFJob.quality()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.SCF_convergence"><code class="docutils literal notranslate"><span class="pre">ADFJob.SCF_convergence()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.SCF"><code class="docutils literal notranslate"><span class="pre">ADFJob.SCF()</span></code></a></li>
@@ -1550,6 +1571,7 @@ E.g. for ADF it will be output.xyz in the workdir for optimization jobs.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFJob.excitations"><code class="docutils literal notranslate"><span class="pre">ADFJob.excitations()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.copy_atom"><code class="docutils literal notranslate"><span class="pre">copy_atom()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.add_fragment"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.add_fragment()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.job.adf.ADFFragmentJob.guess_fragments"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.guess_fragments()</span></code></a></li>
