@@ -54,6 +54,11 @@ class PyFragResult:
         g = np.array([tcutility.geometry.parameter(res[calc].molecule.input, *args, **kwargs) for res in self._step_results])
         return g[self._order][self._mask[self._order]]
 
+    def get_molecules(self):
+        mols = [res[calc].molecule.input for res in self._step_results]
+        return mols
+        return [mols[int(i)] for i in np.array(self._order)[self._mask[self._order]]]
+
     def sort_by(self, val: str or list, calc: str = 'complex'):
         if isinstance(val, str):
             val = self.get_property(val, calc=calc)
