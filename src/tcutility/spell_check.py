@@ -118,7 +118,7 @@ def get_closest(a: str, others: List[str], compare_func=wagner_fischer, ignore_c
         others = [other.lower() for other in others]
 
     if a in others:
-        return [a]
+        return []
 
     for char in ignore_chars:
         a = a.replace(char, '')
@@ -158,6 +158,7 @@ def make_suggestion(a: str, others: List[str], **kwargs):
 
     # write a warning message
     log.warn(f'Could not find "{a}". Did you mean {closest_string}?', caller_level=3)
+
 
 @timer.timer
 def check(a: str, others: List[str], caller_level=2, **kwargs):
