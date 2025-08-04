@@ -14,7 +14,7 @@ Result = result.Result
 import os  # noqa: E402
 import pathlib as pl  # noqa: E402
 
-from .. import slurm, timer  # noqa: E402
+from .. import slurm  # noqa: E402
 from . import adf, ams, cache, dftb, orca, xtb, crest  # noqa: E402
 
 
@@ -125,7 +125,6 @@ def read(calc_dir: Union[str, pl.Path]) -> Result:
     return ret
 
 
-@timer.timer
 def quick_status(calc_dir: Union[str, pl.Path]) -> Result:
     """
     Quickly check the status of a calculation.
