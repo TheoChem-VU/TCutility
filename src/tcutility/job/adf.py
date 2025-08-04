@@ -807,10 +807,11 @@ class ADFFragmentJob(ADFJob):
 
 
 class DensfJob(Job):
-    def __init__(self, overwrite: bool = False, *args, **kwargs):
+    def __init__(self, overwrite: bool = False, cube_file_prefix: str = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.settings = results.Result()
         self.rundir = "tmp"
+        self.cube_file_prefix = cube_file_prefix
         self.name = "densf"
         self.gridsize()
         self._mos = []
@@ -908,14 +909,16 @@ class DensfJob(Job):
                         inpf.write(f"    {spin}\n")
                     inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
                 inpf.write("END\n")
-                print(inpf.read())
 
             for line in self._extras:
                 inpf.write(line + "\n")
 
             # cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size
             outname = self.settings.grid if self.settings.grid.lower() in ['coarse', 'medium', 'fine'] else 'custom_grid'
-            inpf.write(f"CUBOUTPUT {os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}\n")
+            if self.cube_file_prefix is None:
+                inpf.write(f"CUBOUTPUT {os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}\n")
+            else:
+                inpf.write(f"CUBOUTPUT {self.cube_file_prefix}{outname}\n")
             inpf.write("eor\n")
 
         # the runfile should simply execute the input file.
@@ -933,7 +936,10 @@ class DensfJob(Job):
         The output cube file paths that will be/were calculated by this job.
         """
         paths = []
-        cuboutput = f"{os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{self.settings.grid}"
+        if self.cube_file_prefix is None:
+            cuboutput = f"{os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{self.settings.grid}"
+        else:
+            cuboutput = f"{self.cube_file_prefix}{self.settings.grid}"
 
         for mo in self._mos:
             spin_part = "" if mo.spin == "AB" else f"_{mo.spin}"
