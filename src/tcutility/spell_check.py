@@ -115,15 +115,16 @@ def get_closest(a: str, others: List[str], compare_func=wagner_fischer, ignore_c
     '''
     if ignore_case:
         a = a.lower()
+        others = [other.lower() for other in others]
+
+    if a in others:
+        return a
 
     for char in ignore_chars:
         a = a.replace(char, '')
 
     dists = []
     for other in others:
-        if ignore_case:
-            other = other.lower()
-
         for char in ignore_chars:
             other = other.replace(char, '')
 
