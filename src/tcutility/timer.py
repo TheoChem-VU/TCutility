@@ -4,6 +4,7 @@ from tcutility import log
 from types import FunctionType
 import listfunc
 import atexit
+import functools
 '''
 Implements a decorator and context manager that records and stores the number of times a function
 has been called and also the amount of time taken in total/per call
@@ -13,16 +14,26 @@ exec_start = perf_counter()
 
 enabled: bool = True
 
+timer_level: int = 10
+
 
 class timer:
     '''
     The main timer class. It acts both as a context-manager and decorator.
     '''
-    def __init__(self, name=None):
+    def __init__(self, name: str = None, level: int = 20):
+        '''
+        Args:
+            name: a custom name to give to the function.
+            level: the level at which to record timings.
+        '''
+        self.level = level
         if isinstance(name, FunctionType):
+            if self.level < timer_level:
+                return name
             self.function = name
             times.setdefault(name.__qualname__, {'calls': 0, 'timings': []})
-        else:
+        elif name is not None:
             self.name = name
             times.setdefault(self.name, {'calls': 0, 'timings': []})
 
@@ -35,6 +46,13 @@ class timer:
         times[self.name]['timings'].append(perf_counter() - self.start)
 
     def __call__(self, *args, **kwargs):
+        if not hasattr(self, 'function') and isinstance(args[0], FunctionType):
+            if self.level < timer_level:
+                return args[0]
+            self.function = args[0]
+            times.setdefault(self.function.__qualname__, {'calls': 0, 'timings': []})
+            return self
+
         times.setdefault(self.function.__qualname__, {'calls': 0, 'timings': []})
 
         if enabled and __debug__:
@@ -45,6 +63,9 @@ class timer:
             return ret
         else:
             return self.function(*args, **kwargs)
+
+    def __get__(self, obj, objtype):
+        return functools.partial(self.__call__, obj)
 
 
 def print_timings():
@@ -129,3 +150,34 @@ def print_timings():
 
 # this makes sure that the timings are printed when Python quits running
 atexit.register(print_timings)
+
+
+if __name__ == '__main__':
+    import time
+
+    @timer
+    def a(b):
+        time.sleep(b)
+        return b
+
+    @timer(level=10)
+    def b(b):
+        time.sleep(b)
+        return b
+
+    class A:
+        @timer
+        def a(self):
+            ...
+
+    print(a)
+    print(b)
+
+    a(.3)
+    a(.3)
+    b(.2)
+    b(.2)
+    b(.2)
+
+    a = A()
+    a.a()

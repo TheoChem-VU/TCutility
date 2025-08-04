@@ -2,7 +2,7 @@ import os
 
 from scm import plams
 from typing import Dict, Optional, TYPE_CHECKING
-from tcutility import data, formula, log, molecule, results, spell_check
+from tcutility import data, formula, log, molecule, results, spell_check, timer
 from tcutility.errors import TCCompDetailsError, TCJobError
 from tcutility.job.ams import AMSJob
 from tcutility.job.generic import Job
@@ -805,7 +805,6 @@ class ADFFragmentJob(ADFJob):
         log.flow(log.Emojis.finish + ' Done, bye!', ['startinv'])
 
 
-
 class DensfJob(Job):
     def __init__(self, overwrite: bool = False, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -980,6 +979,13 @@ if __name__ == "__main__":
     # with ADFFragmentJob() as job:
     #     ...
 
+    # timer.timer_level = 40
+
     with ADFJob(test_mode=True) as job:
         job.irrep_occupations('A', '28 // 26')
         job.molecule('exammple.xyz')
+
+
+    # with ADFFragmentJob(test_mode=True) as job:
+    #     job.frag_occupations('A', '28 // 26')
+    #     job.molecule('exammple.xyz')
