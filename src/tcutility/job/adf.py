@@ -600,14 +600,14 @@ class ADFFragmentJob(ADFJob):
 
             if child.can_skip():
                 log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"], level=10)
-                log.flow(, level=10)
+                log.flow(level=10)
             else:
                 log.flow(log.Emojis.good + " Submitting", ["straight", "end"], level=10)
                 [child._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                 child.run()
                 self.dependency(child)
                 log.flow(f"SlurmID:  {child.slurm_job_id}", ["straight", "skip", "end"], level=10)
-                log.flow(, level=10)
+                log.flow(level=10)
 
             if self.decompose_elstat:
                 child_STOFIT = ADFJob(child)
@@ -625,14 +625,14 @@ class ADFFragmentJob(ADFJob):
 
                 if child_STOFIT.can_skip():
                     log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"], level=10)
-                    log.flow(, level=10)
+                    log.flow(level=10)
                 else:
                     log.flow(log.Emojis.good + " Submitting", ["straight", "end"], level=10)
                     [child_STOFIT._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                     child_STOFIT.run()
                     self.dependency(child_STOFIT)
                     log.flow(f"SlurmID:  {child_STOFIT.slurm_job_id}", ["straight", "skip", "end"], level=10)
-                    log.flow(, level=10)
+                    log.flow(level=10)
 
                 child_NoElectrons = ADFJob(child)
                 child_NoElectrons.name += "_NoElectrons"
@@ -653,14 +653,14 @@ class ADFFragmentJob(ADFJob):
 
                 if child_NoElectrons.can_skip():
                     log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"], level=10)
-                    log.flow(, level=10)
+                    log.flow(level=10)
                 else:
                     log.flow(log.Emojis.good + " Submitting", ["straight", "end"], level=10)
                     [child_NoElectrons._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                     child_NoElectrons.run()
                     self.dependency(child_NoElectrons)
                     log.flow(f"SlurmID:  {child_NoElectrons.slurm_job_id}", ["straight", "skip", "end"], level=10)
-                    log.flow(, level=10)
+                    log.flow(level=10)
 
         # in the parent job the atoms should have the region and adf.f defined as options
         atom_lines = []
@@ -685,7 +685,7 @@ class ADFFragmentJob(ADFJob):
 
         super().run()
         log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"], level=10)
-        log.flow(, level=10)
+        log.flow(level=10)
 
         # also do the calculation with SCF cycles set to 1 if desired
         if self.scf0_calculation:
@@ -698,7 +698,7 @@ class ADFFragmentJob(ADFJob):
 
             super().run()
             log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"], level=10)
-            log.flow(, level=10)
+            log.flow(level=10)
 
             # reset the SCF iterations
             self.SCF(iterations=old_iters)
@@ -729,7 +729,7 @@ class ADFFragmentJob(ADFJob):
             log.flow(log.Emojis.good + " Submitting complex with STOFIT", ["split"], level=10)
             super().run()
             log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"], level=10)
-            log.flow(, level=10)
+            log.flow(level=10)
 
             for frag in frag_names:
                 # other_frags stores fragment names for fragments that keep their electrons
@@ -766,7 +766,7 @@ class ADFFragmentJob(ADFJob):
                 [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                 super().run()
                 log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"], level=10)
-                log.flow(, level=10)
+                log.flow(level=10)
 
         if self.counter_poise:
             self.settings.input.ams.EngineDebugging.pop('AlwaysClaimSuccess', None)
@@ -800,7 +800,7 @@ class ADFFragmentJob(ADFJob):
                 [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                 super().run()
                 log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'], level=10)
-                log.flow(, level=10)
+                log.flow(level=10)
 
         log.flow(log.Emojis.finish + ' Done, bye!', ['startinv'], level=10)
 
