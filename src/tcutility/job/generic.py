@@ -123,12 +123,13 @@ class Job:
             This will be fixed in a later version of TCutility.
         """
         for server in self._servers:
+            # see if we can use quick_status, otherwise use the slow method
             try:
                 res = results.quick_status(self.workdir)
                 if not res.fatal:
                     return True
                 continue
-            except:
+            except Exception:
                 pass
 
             res = server.execute(f'tcutility read -s {j(server.pwd(), self.rundir, self.name)}')
