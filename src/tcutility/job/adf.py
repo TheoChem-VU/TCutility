@@ -354,9 +354,6 @@ class ADFJob(AMSJob):
             self.settings.input.adf.TDA = 'Yes'
 
         if energy_gap is not None:
-            if not isinstance(energy_gap, (list, np.ndarray)) or not len(energy_gap) == 2:
-                raise ValueError('energy_gap is not a list with 2 numbers')
-            
             self.settings.input.adf.MODIFYEXCITATION.UseOccVirtRange = f'{energy_gap[0]} {energy_gap[1]}'
             if self.settings.input.adf.relativity.level.lower() == 'scalar'  or 'spin-orbit':
                 self.settings.input.adf.MODIFYEXCITATION.UseScaledZORA = ' '
