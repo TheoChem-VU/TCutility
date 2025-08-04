@@ -208,7 +208,6 @@ def get_calculation_status(calc_dir: str) -> Result:
             - **code (str)** – calculation status written as a single character, one of ("S", "R", "U", "W" "F")
     """
     files = get_calc_files(calc_dir)
-    reader_ams = cache.get(files["ams.rkf"])
 
     ret = Result()
     ret.fatal = True
@@ -216,17 +215,26 @@ def get_calculation_status(calc_dir: str) -> Result:
     ret.code = None
     ret.reasons = []
 
-    termination_status = str(reader_ams.read("General", "termination status")).strip()
 
     # parse the logfile to find errors and warnings
     if "log" in files:
         with open(files["log"]) as logfile:
-            for line in logfile.readlines():
+            lines = logfile.readlines()
+            for line in lines:
                 # the first 25 characters include the timestamp and two spaces
                 line_ = line.strip()[25:]
                 # errors and warnings have a predictable format
                 if line_.lower().startswith("error:") or line_.lower().startswith("warning: "):
                     ret.reasons.append(line_)
+                if "NORMAL TERMINATION" in line:
+                    ret.fatal = False
+                    ret.name = "SUCCESS"
+                    ret.code = "S"
+                    return ret
+
+
+    reader_ams = cache.get(files["ams.rkf"])
+    termination_status = str(reader_ams.read("General", "termination status")).strip()
 
     if termination_status == "NORMAL TERMINATION":
         ret.fatal = False
