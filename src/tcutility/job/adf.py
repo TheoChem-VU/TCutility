@@ -7,6 +7,7 @@ from tcutility.errors import TCCompDetailsError, TCJobError
 from tcutility.job.ams import AMSJob
 from tcutility.job.generic import Job
 from typing import List
+import math
 
 j = os.path.join
 
