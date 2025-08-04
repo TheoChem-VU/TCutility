@@ -490,8 +490,8 @@ class ADFFragmentJob(ADFJob):
             self.settings.input.adf.FragOccupations += f'    {frag}\n'
             for symm, occ in occs.items():
                 self.settings.input.adf.FragOccupations += f'        {symm} {occ}\n'
-            self.settings.input.adf.FragOccupations += f'    SubEnd\n'
-        self.settings.input.adf.FragOccupations += f'  End\n'
+            self.settings.input.adf.FragOccupations += '    SubEnd\n'
+        self.settings.input.adf.FragOccupations += '  End\n'
 
     def frag_occupations(self, frag=None, subspecies=None, alpha=None, beta=None):
         """
