@@ -519,6 +519,7 @@ class ADFFragmentJob(ADFJob):
   End
         """
 
+    @timer.timer
     def run(self):
         """
         Run the ``ADFFragmentJob``. This involves setting up the calculations for each fragment as well as the parent job.
