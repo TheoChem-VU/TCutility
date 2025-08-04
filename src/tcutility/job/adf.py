@@ -822,7 +822,7 @@ class DensfJob(Job):
     def __str__(self):
         return f"Densf({self.target}), running in {self.workdir}"
 
-    def gridsize(self, size="medium"):
+    def gridsize(self, size="medium", grid_extend=7.5):
         """
         Set the size of the grid to be used by Densf.
 
@@ -831,9 +831,10 @@ class DensfJob(Job):
         """
         spell_check.check(size, ["coarse", "medium", "fine"], ignore_case=True)
         self.settings.grid = size
+        self.settings.grid_extend = grid_extend
 
     def grid(self, args):
-        self.settings.grid = '\n' + '\n'.join(args)
+        self.settings.grid = '\n' + '\n'.join(args) + 'EXTEND 7.5\n'
 
     def orbital(self, orbital: "pyfmo.orbitals.sfo.SFO" or "pyfmo.orbitals.mo.MO"):  # noqa: F821
         """
@@ -887,10 +888,15 @@ class DensfJob(Job):
             inpf.write(f"ADFFile {os.path.abspath(self.settings.ADFFile)}\n")
             inpf.write(f"GRID {self.settings.grid}\n")
             inpf.write("END\n")
+            if self.settings.grid_extend:
+                inpf.write(f"EXTEND {self.settings.grid_extend}\n")
 
             if len(self._mos) > 0:
                 inpf.write("Orbitals SCF\n")
                 for orb in self._mos:
+                    if orb.spin in ['A', 'B']:
+                        spin = {'A': 'alpha', 'B': 'beta'}[orb.spin]
+                        inpf.write(f"    {spin}\n")
                     inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
                 inpf.write("END\n")
 
