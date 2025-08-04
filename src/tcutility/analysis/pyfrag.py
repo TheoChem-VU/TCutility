@@ -2,6 +2,9 @@ import tcutility
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+from typing import List
+from scm import plams
+
 
 def read(path):
     return PyFragResult(path)
@@ -54,7 +57,7 @@ class PyFragResult:
         g = np.array([tcutility.geometry.parameter(res[calc].molecule.input, *args, **kwargs) for res in self._step_results])
         return g[self._order][self._mask[self._order]]
 
-    def get_molecules(self):
+    def get_molecules(self, calc: str = 'complex') -> List[plams.Molecule]:
         mols = [res[calc].molecule.input for res in self._step_results]
         return mols
         return [mols[int(i)] for i in np.array(self._order)[self._mask[self._order]]]
