@@ -49,7 +49,7 @@ class ADFJob(AMSJob):
         spell_check.check(typ, data.basis_sets.available_basis_sets["ADF"], ignore_case=True)
         spell_check.check(core, ["None", "Small", "Large"], ignore_case=True)
         if self._functional == "r2SCAN-3c" and typ != "mTZ2P":
-            log.warn(f"Basis set {typ} is not allowed with r2SCAN-3c, switching to mTZ2P.")
+            log.debug(f"Basis set {typ} is not allowed with r2SCAN-3c, switching to mTZ2P.")
             typ = "mTZ2P"
         self._basis_set = typ
         self._core = core
@@ -527,7 +527,7 @@ class ADFFragmentJob(ADFJob):
         # check if the user defined fragments for this job
 
         if len(self.child_jobs) == 0:
-            log.warn("Fragments were not specified yet, trying to read them from the xyz file ...")
+            log.debug("Fragments were not specified yet, trying to read them from the xyz file ...")
 
             # if they did not define the fragments, try to guess them using the xyz-file
             if not self.guess_fragments():
