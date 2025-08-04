@@ -117,6 +117,7 @@ def get_closest(a: str, others: List[str], compare_func=wagner_fischer, ignore_c
         a = a.lower()
         others = [other.lower() for other in others]
 
+    print(a, others)
     if a in others:
         return a
 
