@@ -220,13 +220,14 @@ def get_calculation_status(calc_dir: str) -> Result:
     if "log" in files:
         with open(files["log"]) as logfile:
             lines = logfile.readlines()
-            for line in lines:
+            for line in lines[::-1]:
                 # the first 25 characters include the timestamp and two spaces
-                line_ = line.strip()[25:]
+                line_ = line.strip()[25:].lower()
                 # errors and warnings have a predictable format
                 if line_.lower().startswith("error:") or line_.lower().startswith("warning: "):
                     ret.reasons.append(line_)
-                if "NORMAL TERMINATION" in line:
+
+                if "normal termination" in line_:
                     ret.fatal = False
                     ret.name = "SUCCESS"
                     ret.code = "S"
