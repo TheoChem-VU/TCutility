@@ -118,8 +118,7 @@ class PyFragResult:
         except ModuleNotFoundError:
             raise ModuleNotFoundError('The pyfmo module could not be loaded. To gain access please contact the TCutility developers!')
 
-
-        return [pyfmo.orbitals2.objects.Orbitals(res[calc].files['adf.rkf']) for res in self._step_results]
+        return [pyfmo.Orbitals(res[calc].files['adf.rkf']) for res in self._step_results]
 
 
 if __name__ == '__main__':
