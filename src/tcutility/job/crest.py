@@ -102,6 +102,11 @@ class CRESTJob(Job):
             name: the name of the solvent you want to use. If ``None`` turns off solvation.
             model: the name of the model to use. Must be ``alpb`` or ``gbsa``. Defaults to ``alpb``.
         '''
+        if name is None:
+            self.options.pop('-g', None)
+            self.options.pop('-alpb', None)
+            return
+
         spell_check.check(model, ['alpb', 'gbsa'], ignore_case=True)
 
         if model.lower() == 'alpb':
