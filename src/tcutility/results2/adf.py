@@ -1,5 +1,4 @@
 from tcutility.results2 import result, adf_rkf
-import numpy as np
 
 
 def read_adfrkf(path: str, ret: result.NestedDict = None):
