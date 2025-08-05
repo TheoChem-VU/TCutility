@@ -1,7 +1,5 @@
 from scm import plams
 import os
-import warnings
-import tcutility
 
 
 def _is_unicode_file(path: str) -> bool:

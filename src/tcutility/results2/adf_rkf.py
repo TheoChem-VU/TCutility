@@ -102,7 +102,7 @@ def _read_excitations(path: str) -> result.NestedDict:
     ret = result.NestedDict()
 
     # check if there are excitations
-    if not ('Symmetry', 'symlab excitations') in reader:
+    if ('Symmetry', 'symlab excitations') not in reader:
         return ret
 
     excitation_types = []
