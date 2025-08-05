@@ -1,6 +1,6 @@
 
 
-from . import result, detect_filetype, adf, adf_rkf
+from . import *
 
 
 def read(path: str) -> result.NestedDict:
