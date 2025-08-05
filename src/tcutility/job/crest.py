@@ -109,13 +109,57 @@ class CRESTJob(Job):
 
         spell_check.check(model, ['alpb', 'gbsa'], ignore_case=True)
 
+        _alpb_solvents = [
+            'acetone',
+            'acetonitrile',
+            'aniline',
+            'benzaldehyde',
+            'benzene',
+            'ch2cl2',
+            'chcl3',
+            'cs2',
+            'dioxane',
+            'dmf',
+            'dmso',
+            'ether',
+            'ethylacetate',
+            'furane',
+            'hexandecane',
+            'hexane',
+            'methanol',
+            'nitromethane',
+            'octanol',
+            'woctanol',
+            'phenol',
+            'toluene',
+            'thf',
+            'water'
+        ]
+
+        _gbsa_solvents = [
+            'acetone',
+            'acetonitrile',
+            'CH2Cl2',
+            'CHCl3',
+            'CS2',
+            'DMF',
+            'DMSO',
+            'ether',
+            'H2O',
+            'methanol',
+            'n-hexane',
+            'THF',
+            'toluene',
+        ]
+
         if model.lower() == 'alpb':
+            spell_check.check(name, _alpb_solvents, ignore_case=True)
             self.options.pop('-g', None)
             self.options['-alpb'] = name
         else:
+            spell_check.check(name, _gbsa_solvents, ignore_case=True)
             self.options.pop('-alpb', None)
             self.options['-g'] = name
-
 
     @property
     def best_conformer_path(self):
