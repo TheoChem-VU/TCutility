@@ -1,12 +1,13 @@
-from tcutility.results2 import result, detect_filetype
-from tcutility import cache, ensure_list
+from tcutility.results2 import result, detect_filetype, ams_input_parser
+from tcutility import cache, ensure_list, timer
 import numpy as np
 from scm import plams
+import os
 
 
-
+@timer.timer
 @cache.cache
-def get_adf_reader(path: str) -> plams.KFReader:
+def _get_adf_reader(path: str) -> plams.KFReader:
     '''
     Get the KFReader associated with the path.
     This function is expected to be slow so we cache it.
@@ -16,6 +17,14 @@ def get_adf_reader(path: str) -> plams.KFReader:
         return reader
 
 
+@timer.timer
+def _read_jobid(path: str) -> str:
+    reader = _get_adf_reader(path)
+    return reader.read('General', 'jobid')
+
+
+@timer.timer
+@cache.cache
 def _read_settings(path: str) -> result.NestedDict:
     """Function to read calculation settings for an ADF calculation.
 
@@ -37,7 +46,7 @@ def _read_settings(path: str) -> result.NestedDict:
             - **spin_polarization (int)** - the spin-polarization of the system.
             - **multiplicity (int)** - the multiplicity of the system. This is equal to 2|S|+1 for spin-polarization S.
     """
-    reader = get_adf_reader(path)
+    reader = _get_adf_reader(path)
     ret = result.NestedDict()
 
     # set the calculation task at a higher level
@@ -61,7 +70,7 @@ def _read_settings(path: str) -> result.NestedDict:
     # determine if calculation used relativistic corrections
     # if it did, variable 'escale' will be present in 'SFOs'
     # if it didnt, only variable 'energy' will be present
-    ret.set('relativistic_type', ("SFOs", "escale") in reader)
+    ret.set('relativistic', ("SFOs", "escale") in reader)
     ret.set('relativistic_type', relativistic_type_map[reader.read("General", "ioprel")])
 
     # determine if MOs are unrestricted or not
@@ -97,8 +106,27 @@ def _read_settings(path: str) -> result.NestedDict:
     return ret
 
 
+@timer.timer
+def _read_status(path: str) -> result.NestedDict:
+    reader = _get_adf_reader(path)
+    ret = result.NestedDict()
+    ret.set('fatal', True)
+    ret.set('name', "UNKNOWN")
+    ret.set('code', "U")
+    ret.set('reasons', [])
+
+    status = reader.read('General', 'termination status')
+    if status == 'NORMAL TERMINATION':
+        ret['fatal'] = False
+        ret['name'] = 'SUCCESS'
+        ret['code'] = 'S'
+
+        return ret
+
+
+@timer.timer
 def _read_excitations(path: str) -> result.NestedDict:
-    reader = get_adf_reader(path)
+    reader = _get_adf_reader(path)
     ret = result.NestedDict()
 
     # check if there are excitations
@@ -169,8 +197,9 @@ def _read_excitations(path: str) -> result.NestedDict:
     return ret
 
 
+@timer.timer
 def _read_vibrations(path: str) -> result.NestedDict:
-    reader = get_adf_reader(path)
+    reader = _get_adf_reader(path)
     ret = result.NestedDict()
 
     # check if we have vibrations
@@ -187,3 +216,90 @@ def _read_vibrations(path: str) -> result.NestedDict:
     for i in range(ret.get('number_of_modes')):
         ret.get('modes').append(reader.read("Vibrations", f"NoWeightNormalMode({i+1})"))
     return ret
+
+
+@cache.cache
+@timer.timer
+def _read_adf_input(path: str) -> result.NestedDict:
+    reader = _get_adf_reader(path)
+    inp = reader.read('General', 'engine input')
+    return ams_input_parser._parse_input(inp, ["ams", 'engine ADF'])['adf']
+
+
+@timer.timer
+def _read_level_of_theory(path: str) -> result.NestedDict:
+    """Function to get the level-of-theory from an input-file.
+
+    Args:
+        inp_path: Path to the input file. Can be a .run or .in file create for AMS
+
+    Returns:
+        :Dictionary containing information about the level-of-theory:
+
+            - **summary (str)** - a summary string that gives the level-of-theory in a human-readable format.
+            - **xc.functional (str)** - XC-functional used in the calculation.
+            - **xc.category (str)** - category the XC-functional belongs to. E.g. GGA, MetaHybrid, etc ...
+            - **xc.dispersion (str)** - the dispersion correction method used during the calculation.
+            - **xc.summary (str)** - a summary string that gives the XC-functional information in a human-readable format.
+            - **xc.empiricalScaling (str)** - which empirical scaling parameter was used. Useful for MP2 calculations.
+            - **basis.type (str)** - the size/type of the basis-set.
+            - **basis.core (str)** - the size of the frozen-core approximation.
+            - **quality (str)** - the numerical quality setting.
+    """
+    ret = result.NestedDict()
+    sett = _read_adf_input(path)
+
+    xc_categories = ["GGA", "LDA", "MetaGGA", "MetaHybrid", "Model", "LibXC", "DoubleHybrid", "Hybrid", "MP2", "HartreeFock"]
+    ret.set('xc', 'functional', "VWN")
+    ret.set('xc', 'category', "LDA")
+    ret.set('xc', 'dispersion', None)
+    ret.set('xc', 'empirical_scaling', None)
+    if 'xc' in sett:
+        for cat in xc_categories:
+            if cat.lower() in [key.lower() for key in sett['xc']]:
+                ret.set('xc', 'functional', sett['xc'][cat])
+                ret.set('xc', 'category', cat)
+        if "dispersion" in sett['xc']:
+            ret.set('xc', 'dispersion', " ".join(sett['xc']['dispersion'].split()))
+
+        if "empiricalscaling" in sett['xc']:
+            ret.set('xc', 'empirical_scaling', sett['xc']['empiricalscaling'])
+
+
+    ret.set('basis', 'type', sett['basis']['type'])
+    ret.set('basis', 'core', sett['basis']['core'])
+    ret.set('quality',sett['NumericalQuality'] or "Normal")
+
+    # the empirical scaling value is used for MP2 calculations
+    # MP2 and HF are a little bit different from the usual xc categories. They are not key-value pairs but only the key
+    # we start building the ret.set('xc'.summary string here already. This will contain the human-readable functional name
+    if ret['xc']['category'] == "MP2":
+        ret.set('xc', 'summary', "MP2")
+        if ret['xc']['empirical_scaling']:
+            ret['xc']['summary'] += f"-{ret['xc']['empiricalscaling']}"
+    elif ret['xc']['category'] == "HartreeFock":
+        ret.set('xc', 'summary', "HF")
+    else:
+        ret.set('xc', 'summary', ret['xc']['functional'])
+
+    # If dispersion was used, we want to add it to the ret.set('xc'.summary
+    if ret['xc']['dispersion']:
+        if ret['xc']['dispersion'].lower() == "grimme3":
+            ret.set('xc', 'summary', "-D3")
+        if ret['xc']['dispersion'].lower() == "grimme3 bjdamp":
+            ret.set('xc', 'summary', "-D3(BJ)")
+        if ret['xc']['dispersion'].lower() == "grimme4":
+            ret.set('xc', 'summary', "-D4")
+        if ret['xc']['dispersion'].lower() == "ddsc":
+            ret.set('xc', 'summary', "-dDsC")
+        if ret['xc']['dispersion'].lower() == "uff":
+            ret.set('xc', 'summary', "-dUFF")
+        if ret['xc']['dispersion'].lower() == "mbd":
+            ret.set('xc', 'summary', "-MBD@rsSC")
+        if ret['xc']['dispersion'].lower() == "default":
+            ret.set('xc', 'summary', "-D")
+
+    # ret.summary is simply the ret.set('xc'.summary plus the basis set type
+    ret['summary'] = f"{ret['xc']['summary']}/{ret['basis']['type']}"
+    return ret
+
