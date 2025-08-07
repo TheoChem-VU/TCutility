@@ -50,7 +50,7 @@ class ADFJob(AMSJob):
         spell_check.check(typ, data.basis_sets.available_basis_sets["ADF"], ignore_case=True)
         spell_check.check(core, ["None", "Small", "Large"], ignore_case=True)
         if self._functional == "r2SCAN-3c" and typ != "mTZ2P":
-            log.warn(f"Basis set {typ} is not allowed with r2SCAN-3c, switching to mTZ2P.")
+            log.debug(f"Basis set {typ} is not allowed with r2SCAN-3c, switching to mTZ2P.")
             typ = "mTZ2P"
         self._basis_set = typ
         self._core = core
@@ -177,7 +177,7 @@ class ADFJob(AMSJob):
         self._functional = functional
 
         if functional == "r2SCAN-3c" and self._basis_set != "mTZ2P":
-            log.info(f"Switching basis set from {self._basis_set} to mTZ2P for r2SCAN-3c.")
+            log.debug(f"Switching basis set from {self._basis_set} to mTZ2P for r2SCAN-3c.")
             self.basis_set("mTZ2P")
 
         if functional == "SSB-D":
@@ -554,7 +554,7 @@ class ADFFragmentJob(ADFJob):
         # check if the user defined fragments for this job
 
         if len(self.child_jobs) == 0:
-            log.warn("Fragments were not specified yet, trying to read them from the xyz file ...")
+            log.debug("Fragments were not specified yet, trying to read them from the xyz file ...")
 
             # if they did not define the fragments, try to guess them using the xyz-file
             if not self.guess_fragments():
@@ -562,17 +562,17 @@ class ADFFragmentJob(ADFJob):
                 raise
 
         mol_str = " + ".join([formula.molecule(child._molecule) for child in self.child_jobs.values()])
-        log.flow(f"ADFFragmentJob [{mol_str}]", ["start"])
+        log.flow(f"ADFFragmentJob [{mol_str}]", ["start"], level=10)
         # obtain some system wide properties of the molecules
         charge = sum([child.settings.input.ams.System.charge or 0 for child in self.child_jobs.values()])
         unrestricted = any([(child.settings.input.adf.Unrestricted or "no").lower() == "yes" for child in self.child_jobs.values()]) or (self.settings.input.adf.Unrestricted or "no").lower() == "yes"
         spinpol = sum([child.settings.input.adf.SpinPolarization or 0 for child in self.child_jobs.values()])
-        log.flow(f"Level:             {self._functional}/{self._basis_set}")
-        log.flow(f"Solvent:           {self._solvent}")
-        log.flow(f"Charge:            {charge}", ["straight"])
-        log.flow(f"Unrestricted:      {unrestricted}", ["straight"])
-        log.flow(f"Spin-Polarization: {spinpol}", ["straight"])
-        log.flow()
+        log.flow(f"Level:             {self._functional}/{self._basis_set}", level=10)
+        log.flow(f"Solvent:           {self._solvent}", level=10)
+        log.flow(f"Charge:            {charge}", ["straight"], level=10)
+        log.flow(f"Unrestricted:      {unrestricted}", ["straight"], level=10)
+        log.flow(f"Spin-Polarization: {spinpol}", ["straight"], level=10)
+        log.flow(level=10)
 
         # this job and all its children should have the same value for unrestricted
         # [child.unrestricted(unrestricted) for child in self.child_jobs.values()]
@@ -620,21 +620,21 @@ class ADFFragmentJob(ADFJob):
             # recast the plams.Settings object into a Result object as that is what run expects
             child.settings = results.Result(child_setts[child_name])
 
-            log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}]', ['split'])
-            log.flow(f'Charge:            {child.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
-            log.flow(f'Spin-Polarization: {child.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
-            log.flow(f'Work dir:          {child.workdir}', ['straight', 'straight'])
+            log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}]', ['split'], level=10)
+            log.flow(f'Charge:            {child.settings.input.ams.System.charge or 0}', ['straight', 'straight'], level=10)
+            log.flow(f'Spin-Polarization: {child.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'], level=10)
+            log.flow(f'Work dir:          {child.workdir}', ['straight', 'straight'], level=10)
 
             if child.can_skip():
-                log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"])
-                log.flow()
+                log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"], level=10)
+                log.flow(level=10)
             else:
-                log.flow(log.Emojis.good + " Submitting", ["straight", "end"])
+                log.flow(log.Emojis.good + " Submitting", ["straight", "end"], level=10)
                 [child._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                 child.run()
                 self.dependency(child)
-                log.flow(f"SlurmID:  {child.slurm_job_id}", ["straight", "skip", "end"])
-                log.flow()
+                log.flow(f"SlurmID:  {child.slurm_job_id}", ["straight", "skip", "end"], level=10)
+                log.flow(level=10)
 
             if self.decompose_elstat:
                 child_STOFIT = ADFJob(child)
@@ -645,21 +645,21 @@ class ADFFragmentJob(ADFJob):
                 child_STOFIT.settings.input.adf.pop("NumericalQuality")
                 child_STOFIT.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
-                log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] with STOFIT', ['split'])
-                log.flow(f'Charge:            {child_STOFIT.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
-                log.flow(f'Spin-Polarization: {child_STOFIT.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
-                log.flow(f'Work dir:          {child_STOFIT.workdir}', ['straight', 'straight'])
+                log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] with STOFIT', ['split'], level=10)
+                log.flow(f'Charge:            {child_STOFIT.settings.input.ams.System.charge or 0}', ['straight', 'straight'], level=10)
+                log.flow(f'Spin-Polarization: {child_STOFIT.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'], level=10)
+                log.flow(f'Work dir:          {child_STOFIT.workdir}', ['straight', 'straight'], level=10)
 
                 if child_STOFIT.can_skip():
-                    log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"])
-                    log.flow()
+                    log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"], level=10)
+                    log.flow(level=10)
                 else:
-                    log.flow(log.Emojis.good + " Submitting", ["straight", "end"])
+                    log.flow(log.Emojis.good + " Submitting", ["straight", "end"], level=10)
                     [child_STOFIT._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                     child_STOFIT.run()
                     self.dependency(child_STOFIT)
-                    log.flow(f"SlurmID:  {child_STOFIT.slurm_job_id}", ["straight", "skip", "end"])
-                    log.flow()
+                    log.flow(f"SlurmID:  {child_STOFIT.slurm_job_id}", ["straight", "skip", "end"], level=10)
+                    log.flow(level=10)
 
                 child_NoElectrons = ADFJob(child)
                 child_NoElectrons.name += "_NoElectrons"
@@ -673,21 +673,21 @@ class ADFFragmentJob(ADFJob):
                 child_NoElectrons.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
 
-                log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] without Electrons', ['split'])
-                log.flow(f'Charge:            {child_NoElectrons.settings.input.ams.System.charge or 0}', ['straight', 'straight'])
-                log.flow(f'Spin-Polarization: {child_NoElectrons.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'])
-                log.flow(f'Work dir:          {child_NoElectrons.workdir}', ['straight', 'straight'])
+                log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] without Electrons', ['split'], level=10)
+                log.flow(f'Charge:            {child_NoElectrons.settings.input.ams.System.charge or 0}', ['straight', 'straight'], level=10)
+                log.flow(f'Spin-Polarization: {child_NoElectrons.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'], level=10)
+                log.flow(f'Work dir:          {child_NoElectrons.workdir}', ['straight', 'straight'], level=10)
 
                 if child_NoElectrons.can_skip():
-                    log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"])
-                    log.flow()
+                    log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"], level=10)
+                    log.flow(level=10)
                 else:
-                    log.flow(log.Emojis.good + " Submitting", ["straight", "end"])
+                    log.flow(log.Emojis.good + " Submitting", ["straight", "end"], level=10)
                     [child_NoElectrons._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                     child_NoElectrons.run()
                     self.dependency(child_NoElectrons)
-                    log.flow(f"SlurmID:  {child_NoElectrons.slurm_job_id}", ["straight", "skip", "end"])
-                    log.flow()
+                    log.flow(f"SlurmID:  {child_NoElectrons.slurm_job_id}", ["straight", "skip", "end"], level=10)
+                    log.flow(level=10)
 
         # in the parent job the atoms should have the region and adf.f defined as options
         atom_lines = []
@@ -708,11 +708,11 @@ class ADFFragmentJob(ADFJob):
         # run this job
         self.rundir = j(self.rundir, old_name)
         self.name = "complex"
-        log.flow(log.Emojis.good + " Submitting parent job", ["split"])
+        log.flow(log.Emojis.good + " Submitting parent job", ["split"], level=10)
 
         super().run()
-        log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
-        log.flow()
+        log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"], level=10)
+        log.flow(level=10)
 
         # also do the calculation with SCF cycles set to 1 if desired
         if self.scf0_calculation:
@@ -721,11 +721,11 @@ class ADFFragmentJob(ADFJob):
             # we must repopulate the sbatch settings for the new run
             [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
             self.name = "complex_SCF0"
-            log.flow(log.Emojis.good + " Submitting extra job with 0 SCF iterations", ["split"])
+            log.flow(log.Emojis.good + " Submitting extra job with 0 SCF iterations", ["split"], level=10)
 
             super().run()
-            log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
-            log.flow()
+            log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"], level=10)
+            log.flow(level=10)
 
             # reset the SCF iterations
             self.SCF(iterations=old_iters)
@@ -753,10 +753,10 @@ class ADFFragmentJob(ADFJob):
             self.settings.input.adf.STOFIT = ""
             self.settings.input.adf.PRINT += " Elstat"
             [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
-            log.flow(log.Emojis.good + " Submitting complex with STOFIT", ["split"])
+            log.flow(log.Emojis.good + " Submitting complex with STOFIT", ["split"], level=10)
             super().run()
-            log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
-            log.flow()
+            log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"], level=10)
+            log.flow(level=10)
 
             for frag in frag_names:
                 # other_frags stores fragment names for fragments that keep their electrons
@@ -789,11 +789,11 @@ class ADFFragmentJob(ADFJob):
                 total_spin_polarization = other_spin_polarization + (elstat_jobs["frag_" + frag + "_NoElectrons"].settings.input.adf.SpinPolarization)
                 self.spin_polarization(total_spin_polarization)
 
-                log.flow(log.Emojis.good + f" Submitting complex with 0 electrons in fragment {frag}", ["split"])
+                log.flow(log.Emojis.good + f" Submitting complex with 0 electrons in fragment {frag}", ["split"], level=10)
                 [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                 super().run()
-                log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"])
-                log.flow()
+                log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"], level=10)
+                log.flow(level=10)
 
         if self.counter_poise:
             self.settings.input.ams.EngineDebugging.pop('AlwaysClaimSuccess', None)
@@ -823,21 +823,21 @@ class ADFFragmentJob(ADFJob):
 
                 # we must repopulate the sbatch settings for the new run
                 self.name = f'complex_{frag}_Ghost'
-                log.flow(log.Emojis.good + f' Submitting {frag} with the basis-set of the complex', ['split'])
+                log.flow(log.Emojis.good + f' Submitting {frag} with the basis-set of the complex', ['split'], level=10)
                 [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                 super().run()
-                log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'])
-                log.flow()
+                log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'], level=10)
+                log.flow(level=10)
 
-        log.flow(log.Emojis.finish + ' Done, bye!', ['startinv'])
-
+        log.flow(log.Emojis.finish + ' Done, bye!', ['startinv'], level=10)
 
 
 class DensfJob(Job):
-    def __init__(self, overwrite: bool = False, *args, **kwargs):
+    def __init__(self, overwrite: bool = False, cube_file_prefix: str = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.settings = results.Result()
         self.rundir = "tmp"
+        self.cube_file_prefix = cube_file_prefix
         self.name = "densf"
         self.gridsize()
         self._mos = []
@@ -935,14 +935,16 @@ class DensfJob(Job):
                         inpf.write(f"    {spin}\n")
                     inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
                 inpf.write("END\n")
-                print(inpf.read())
 
             for line in self._extras:
                 inpf.write(line + "\n")
 
             # cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size
             outname = self.settings.grid if self.settings.grid.lower() in ['coarse', 'medium', 'fine'] else 'custom_grid'
-            inpf.write(f"CUBOUTPUT {os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}\n")
+            if self.cube_file_prefix is None:
+                inpf.write(f"CUBOUTPUT {os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}\n")
+            else:
+                inpf.write(f"CUBOUTPUT {self.cube_file_prefix}{outname}\n")
             inpf.write("eor\n")
 
         # the runfile should simply execute the input file.
@@ -960,7 +962,10 @@ class DensfJob(Job):
         The output cube file paths that will be/were calculated by this job.
         """
         paths = []
-        cuboutput = f"{os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{self.settings.grid}"
+        if self.cube_file_prefix is None:
+            cuboutput = f"{os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{self.settings.grid}"
+        else:
+            cuboutput = f"{self.cube_file_prefix}{self.settings.grid}"
 
         for mo in self._mos:
             spin_part = "" if mo.spin == "AB" else f"_{mo.spin}"
@@ -1007,6 +1012,9 @@ if __name__ == "__main__":
     # with ADFFragmentJob() as job:
     #     ...
 
+    # timer.timer_level = 40
+
     with ADFJob(test_mode=True) as job:
         job.irrep_occupations('A', '28 // 26')
         job.molecule('exammple.xyz')
+

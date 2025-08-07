@@ -1,7 +1,7 @@
 from scm import plams
 from tcutility.data import molecules
 from tcutility.job.generic import Job
-from tcutility import log
+from tcutility import log, spell_check
 import os
 
 
@@ -11,12 +11,16 @@ j = os.path.join
 class CRESTJob(Job):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._crest_path = 'crest'
+        self.options = {}
+        self._set_default_options()
+
+    def _set_default_options(self):
+        self.charge(0)
+        self.spin_polarization(0)
+        self.md_temperature(400)
+        self.md_length(1)
         self.crest_path = 'crest'
-        self.xtb_path = 'xtb'
-        self._charge = 0
-        self._spinpol = 0
-        self._temp = 400
-        self._mdlen = 'x1'
 
     def _setup_job(self):
         self.add_postamble('mkdir rotamers')
@@ -33,31 +37,32 @@ class CRESTJob(Job):
 
         self._molecule.write(j(self.workdir, 'coords.xyz'))
 
-        options = [
-            'coords.xyz',
-            f'-xnam "{self.xtb_path}"',
-            '--noreftopo',
-            f'-c {self._charge}',
-            f'-u {self._spinpol}',
-            f'-tnmd {self._temp}',
-            f'-mdlen {self._mdlen}',
-        ]
-
-        options = ' '.join(options)
+        options = ' '.join([f'{k} {v}' for k, v in self.options.items()])
+        options += ' --noreftopo'
 
         with open(self.runfile_path, 'w+') as runf:
-            runf.write('#!/bin/sh\n\n')  # the shebang is not written by default by ADF
+            runf.write('#!/bin/sh\n\n')
             runf.write('\n'.join(self._preambles) + '\n\n')
-            runf.write(f'{self.crest_path} {options}\n')
+            runf.write(f'{self._crest_path} coords.xyz {options}\n')
             runf.write('\n'.join(self._postambles))
 
         return True
+
+
+    @property
+    def crest_path(self) -> str:
+        return self._crest_path
+
+    @crest_path.setter
+    def crest_path(self, val: str):
+        self._crest_path = val
+
 
     def spin_polarization(self, val: int):
         '''
         Set the spin-polarization of the system.
         '''
-        self._spinpol = val
+        self.options['-uhf'] = val
 
     def multiplicity(self, val: int):
         '''
@@ -71,25 +76,93 @@ class CRESTJob(Job):
 
         The multiplicity is equal to 2*S+1 for spin-polarization of S.
         '''
-        self._spinpol = (val - 1)//2
+        self.options['-uhf'] = (val - 1)//2
 
     def charge(self, val: int):
         '''
         Set the charge of the system.
         '''
-        self._charge = val
+        self.options['-chrg'] = val
 
     def md_temperature(self, val: float):
         '''
         Set the temperature of the molecular dynamics steps. Defaults to 400K.
         '''
-        self._temp = val
+        self.options['-tnmd'] = val
 
     def md_length(self, val: float):
         '''
         Set the length of the molecular dynamics steps. The default length will be multiplied by this value, e.g. the default value is 1.
         '''
-        self._mdlen = f'x{val}'
+        self.options['-mdlen'] = f'x{val}'
+
+    def solvent(self, name: str = None, model: str = 'alpb'):
+        '''
+        Model solvation using the ALPB or GBSA model.
+        For available solvents see the `XTB documentation <https://xtb-docs.readthedocs.io/en/latest/gbsa.html#parameterized-solvents>`_.
+
+        Args:
+            name: the name of the solvent you want to use. If ``None`` turns off solvation.
+            model: the name of the model to use. Must be ``alpb`` or ``gbsa``. Defaults to ``alpb``.
+        '''
+        if name is None:
+            self.options.pop('-g', None)
+            self.options.pop('-alpb', None)
+            return
+
+        spell_check.check(model, ['alpb', 'gbsa'], ignore_case=True)
+
+        _alpb_solvents = [
+            'acetone',
+            'acetonitrile',
+            'aniline',
+            'benzaldehyde',
+            'benzene',
+            'ch2cl2',
+            'chcl3',
+            'cs2',
+            'dioxane',
+            'dmf',
+            'dmso',
+            'ether',
+            'ethylacetate',
+            'furane',
+            'hexandecane',
+            'hexane',
+            'methanol',
+            'nitromethane',
+            'octanol',
+            'woctanol',
+            'phenol',
+            'toluene',
+            'thf',
+            'water'
+        ]
+
+        _gbsa_solvents = [
+            'acetone',
+            'acetonitrile',
+            'CH2Cl2',
+            'CHCl3',
+            'CS2',
+            'DMF',
+            'DMSO',
+            'ether',
+            'H2O',
+            'methanol',
+            'n-hexane',
+            'THF',
+            'toluene',
+        ]
+
+        if model.lower() == 'alpb':
+            spell_check.check(name, _alpb_solvents, ignore_case=True)
+            self.options.pop('-g', None)
+            self.options['-alpb'] = name
+        else:
+            spell_check.check(name, _gbsa_solvents, ignore_case=True)
+            self.options.pop('-alpb', None)
+            self.options['-g'] = name
 
     @property
     def best_conformer_path(self):
@@ -133,7 +206,6 @@ class CRESTJob(Job):
 class QCGJob(CRESTJob):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.crest_path = 'crest'
         self._nsolv = 10
         self._fix_solute = False
         self._ensemble_generation_mode = 'NCI-MTD'
@@ -225,7 +297,7 @@ class QCGJob(CRESTJob):
         with open(self.runfile_path, 'w+') as runf:
             runf.write('#!/bin/sh\n\n')
             runf.write('\n'.join(self._preambles) + '\n\n')
-            runf.write(f'{self.crest_path} {options}\n')
+            runf.write(f'{self._crest_path} {options}\n')
             runf.write('\n'.join(self._postambles))
 
         return True
@@ -253,19 +325,21 @@ class QCGJob(CRESTJob):
 
 
 if __name__ == '__main__':
-    # with CRESTJob() as job:
-    #     job.rundir = 'tmp/SN2'
-    #     job.name = 'CREST'
-    #     job.molecule('../../../test/fixtures/xyz/transitionstate_radical_addition.xyz')
-    #     job.sbatch(p='tc', ntasks_per_node=32)
+    with CRESTJob(test_mode=True) as job:
+        job.rundir = 'tmp/SN2'
+        job.name = 'CREST'
+        # job.molecule('../../../test/fixtures/xyz/transitionstate_radical_addition.xyz')
+        # job.solvent('water')
+        job.crest_path = 'crest'
+        # job.sbatch(p='tc', ntasks_per_node=32)
 
-    with QCGJob(test_mode=True) as job:
-        job.rundir = 'calculations/Ammonia'
-        job.name = 'QCG'
-        job.molecule('ammonia.xyz')
-        job.solvent('water', 10)
-        print(job._solvent)
-        job.sbatch(p='tc', n=32)
+    # with QCGJob(test_mode=True) as job:
+    #     job.rundir = 'calculations/Ammonia'
+    #     job.name = 'QCG'
+    #     job.molecule('ammonia.xyz')
+    #     job.solvent('water', 10)
+    #     print(job._solvent)
+    #     job.sbatch(p='tc', n=32)
 
     # for i in range(40):
     #     with CRESTJob(test_mode=False, overwrite=True) as job:

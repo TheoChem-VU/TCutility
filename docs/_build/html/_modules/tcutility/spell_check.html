@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.spell_check &#8212; TCutility v0.16.10 documentation</title>
+    <title>tcutility.spell_check &#8212; TCutility v0.16.11 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=bc9b5a7a"></script>
+    <script src="../../_static/documentation_options.js?v=18e3de63"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -367,15 +367,17 @@
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="n">ignore_case</span><span class="p">:</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">others</span> <span class="o">=</span> <span class="p">[</span><span class="n">other</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">other</span> <span class="ow">in</span> <span class="n">others</span><span class="p">]</span>
+
+    <span class="c1"># check if a is simply a member of others</span>
+    <span class="k">if</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">others</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">ignore_chars</span><span class="p">:</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 
     <span class="n">dists</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">other</span> <span class="ow">in</span> <span class="n">others</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">ignore_case</span><span class="p">:</span>
-            <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-
         <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">ignore_chars</span><span class="p">:</span>
             <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 

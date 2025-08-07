@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.timer &#8212; TCutility v0.16.10 documentation</title>
+    <title>tcutility.timer &#8212; TCutility v0.16.11 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=bc9b5a7a"></script>
+    <script src="../../_static/documentation_options.js?v=18e3de63"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -248,6 +248,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionType</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">listfunc</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">atexit</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">Implements a decorator and context manager that records and stores the number of times a function</span>
 <span class="sd">has been called and also the amount of time taken in total/per call</span>
@@ -257,6 +258,8 @@
 
 <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 
+<span class="n">timer_level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+
 
 <div class="viewcode-block" id="timer">
 <a class="viewcode-back" href="../../api/tcutility.html#tcutility.timer.timer">[docs]</a>
@@ -264,11 +267,19 @@
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    The main timer class. It acts both as a context-manager and decorator.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            name: a custom name to give to the function.</span>
+<span class="sd">            level: the level at which to record timings.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">level</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">FunctionType</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">&lt;</span> <span class="n">timer_level</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">name</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="n">name</span>
             <span class="n">times</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;calls&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;timings&#39;</span><span class="p">:</span> <span class="p">[]})</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
             <span class="n">times</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;calls&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;timings&#39;</span><span class="p">:</span> <span class="p">[]})</span>
 
@@ -281,6 +292,13 @@
         <span class="n">times</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;timings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">FunctionType</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">&lt;</span> <span class="n">timer_level</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">times</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;calls&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;timings&#39;</span><span class="p">:</span> <span class="p">[]})</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
         <span class="n">times</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;calls&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;timings&#39;</span><span class="p">:</span> <span class="p">[]})</span>
 
         <span class="k">if</span> <span class="n">enabled</span> <span class="ow">and</span> <span class="n">__debug__</span><span class="p">:</span>
@@ -290,7 +308,10 @@
             <span class="n">times</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">][</span><span class="s1">&#39;timings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">ret</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">objtype</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></div>
 
 
 
@@ -379,6 +400,37 @@
 
 <span class="c1"># this makes sure that the timings are printed when Python quits running</span>
 <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">print_timings</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+    <span class="nd">@timer</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">a</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">b</span>
+
+    <span class="nd">@timer</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">b</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">b</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">A</span><span class="p">:</span>
+        <span class="nd">@timer</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="o">...</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+    <span class="n">a</span><span class="p">(</span><span class="mf">.3</span><span class="p">)</span>
+    <span class="n">a</span><span class="p">(</span><span class="mf">.3</span><span class="p">)</span>
+    <span class="n">b</span><span class="p">(</span><span class="mf">.2</span><span class="p">)</span>
+    <span class="n">b</span><span class="p">(</span><span class="mf">.2</span><span class="p">)</span>
+    <span class="n">b</span><span class="p">(</span><span class="mf">.2</span><span class="p">)</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">a</span><span class="p">()</span>
 </pre></div>
 
                 </article>
