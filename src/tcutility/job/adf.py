@@ -472,10 +472,10 @@ class ADFFragmentJob(ADFJob):
         if nremove is None:
             # guess the virtual numbers only works for non-frozen-core calculations
             if self._core.lower() != "none":
-                raise TCCompDetailsError(job_class=self.__class__.__name__, message="Cannot guess number of virtual orbitals for calculations with a frozen core.")
+                raise TCJobError(job_class=self.__class__.__name__, message="Cannot guess number of virtual orbitals for calculations with a frozen core.")
             # the basis-set has to be present in the prepared data
             if self._basis_set.lower() not in [bs.lower() for bs in data.basis_sets._number_of_orbitals.keys()]:
-                raise TCCompDetailsError(job_class=self.__class__.__name__, message=f"Cannot guess number of virtual orbitals for calculations with the {self._basis_set} basis-set.")
+                raise TCJobError(job_class=self.__class__.__name__, message=f"Cannot guess number of virtual orbitals for calculations with the {self._basis_set} basis-set.")
 
             # sum up the number of virtuals per atom in the fragment
             nremove = 0
@@ -522,13 +522,13 @@ class ADFFragmentJob(ADFJob):
             b -= math.floor(spin_pol / 2)
 
             if total_elec % 2 != spin_pol % 2:
-                raise TCJobError(f'Got an {("even", "odd")[total_elec%2]} number of electrons ({total_elec}), but an {("even", "odd")[spin_pol%2]} spin-polarization ({spin_pol}), which is incompatible.')
+                raise TCJobError(job_class=self.__class__.__name__, message=f'Got an {("even", "odd")[total_elec%2]} number of electrons ({total_elec}), but an {("even", "odd")[spin_pol%2]} spin-polarization ({spin_pol}), which is incompatible.')
 
             if a + b != total_elec:
-                raise TCJobError(f'Got alpha={a} and beta={b} for a total of {a+b}, but we need {total_elec}. Check your base electron count ({n_elec}), charge ({charge}) and spin-polarization ({spin_pol}).')
+                raise TCJobError(job_class=self.__class__.__name__, message=f'Got alpha={a} and beta={b} for a total of {a+b}, but we need {total_elec}. Check your base electron count ({n_elec}), charge ({charge}) and spin-polarization ({spin_pol}).')
 
             if a < 0 or b < 0:
-                raise TCJobError(f'Got negative electrons for {total_elec} electrons with {spin_pol} spin polarization.')
+                raise TCJobError(job_class=self.__class__.__name__, message=f'Got negative electrons for {total_elec} electrons with {spin_pol} spin polarization.')
 
             return a, b
 
