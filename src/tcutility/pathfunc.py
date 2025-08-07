@@ -1,6 +1,7 @@
 import os
 import re
 from typing import Dict, List
+import glob
 
 from tcutility import results
 
@@ -34,13 +35,15 @@ def split_all(path: str) -> List[str]:
         path = a
 
 
-def get_subdirectories(root: str, include_intermediates: bool = False) -> List[str]:
+def get_subdirectories(root: str, include_intermediates: bool = False, max_depth: int = None, _current_depth: int = 0) -> List[str]:
     """
     Get all sub-directories of a root directory.
 
     Args:
         root: the root directory.
         include_intermediates: whether to include intermediate sub-directories instead of only the lowest levels.
+        max_depth: the maximum depth depth to look for subdirectories, 
+            e.g. setting it to `1` will return only the contents of the `root` path.
 
     Returns:
         A list of sub-directories with ``root`` included in the paths.
@@ -83,23 +86,34 @@ def get_subdirectories(root: str, include_intermediates: bool = False) -> List[s
                      'root/subdir_b',
                      'root/subdir_c']
     """
-    dirs = [root]
-    subdirs = set()
+    contents = []
+    if _current_depth == 0 and include_intermediates:
+        contents.append(root)
 
-    while len(dirs) > 0:
-        _dirs = []
-        for cdir in dirs:
-            csubdirs = [j(cdir, d) for d in os.listdir(cdir) if os.path.isdir(j(cdir, d))]
-            if len(csubdirs) == 0:
-                subdirs.add(cdir)
-            else:
-                if include_intermediates:
-                    subdirs.add(cdir)
-                _dirs.extend(csubdirs)
+    with os.scandir(root) as scanner:
+        for entry in scanner:
+            if entry.is_file():
+                continue
 
-        dirs = _dirs
+            if _current_depth == max_depth:
+                contents.append(entry.path)
+                continue
 
-    return subdirs
+            sub_contents = list(get_subdirectories(entry.path, include_intermediates=include_intermediates, _current_depth=_current_depth+1, max_depth=max_depth))
+
+            if include_intermediates or len(sub_contents) == 0:
+                contents.append(entry.path)
+
+            contents.extend(sub_contents)
+
+    return contents
+
+
+def path_depth(path: str) -> int:
+    """
+    Calculate the depth of a given path.
+    """
+    return len(split_all(path))
 
 
 def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
@@ -112,7 +126,6 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
             It should look similar to a format string, without the ``f`` in front of the string.
             Inside curly braces you can put a variable name, which you can later extract from the results.
             Anything inside curly braces will be matched to word characters (``[a-zA-Z0-9_-]``) including dashes and underscores.
-
         sort_by: the key to sort the results by. If not given, the results will be returned in the order they were found.
 
     Returns:
@@ -168,42 +181,34 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
             [2024/01/17 14:39:08] root/NH3-BH3/M06-2X_TZ2P   NH3-BH3   M06-2X       TZ2P
             [2024/01/17 14:39:08] root/SN2/BLYP_TZ2P         SN2       BLYP         TZ2P
             [2024/01/17 14:39:08] root/NH3-BH3/BLYP_QZ4P     NH3-BH3   BLYP         QZ4P
-
 """
     # get the number and names of substitutions in the given pattern
-    substitutions = re.findall(r"{(\w+[+*?]?)}", pattern)
+    substitutions = re.findall(r"{(\w+)}", pattern)
     # the pattern should resolve to words and may contain - and _
-    # replace them here
+
+    # given the substitutions we build a regex pattern and a glob pattern
+    glob_pattern = pattern
     for sub in substitutions:
-        quantifier = sub[-1] if sub[-1] in "+*?" else "+"
-        pattern = pattern.replace("{" + sub + "}", f"([a-zA-Z0-9_-]{quantifier})")
+        pattern = pattern.replace("{" + sub + "}", "([a-zA-Z0-9_-]+)")
+        glob_pattern = glob_pattern.replace("{" + sub + "}", "*")
 
+    # get all applicable subdirectories
+    subdirs = glob.glob(os.path.join(root, glob_pattern))
+
+    # compile a regular expression pattern to match with later
+    regex = re.compile(pattern)
+
+    # go through all applicable subdirectories and retrieve the information we want
     ret = results.Result()
-    # root dir can be any level deep. We should count how many directories are in root
-    root_length = len(split_all(root))
-    # get all subdirectories first, we can loop through them later
-    subdirs = get_subdirectories(root, include_intermediates=True)
-    # remove the root from the subdirectories. We cannot use str.removeprefix because it was added in python 3.9
-    subdirs = [j(*split_all(subdir)[root_length:]) for subdir in subdirs if len(split_all(subdir)[root_length:]) > 0]
     for subdir in subdirs:
-        # check if we get a match with our pattern
-        match = re.fullmatch(pattern, subdir)
-        if not match:
-            continue
-
+        # subdir = os.path.relpath(subdir, root)
+        subdir = subdir[len(f'{root}/'):]
         p = j(root, subdir)
-        # get the group data and add it to the return dictionary. We skip the first group because it is the full directory path
-        ret[p] = results.Result(directory=p, **{substitutions[i]: match.group(i + 1) for i in range(len(substitutions))})
+        re_match = regex.fullmatch(subdir)
+        ret[p] = results.Result(**{substitutions[i]: re_match.group(i + 1) for i in range(len(substitutions))})
 
     if not sort_by:
         return ret
 
+    # if requested we sort the results before returning them
     return results.Result(sorted(ret.items(), key=lambda d: d[1][sort_by]))
-
-
-def path_depth(path: str) -> int:
-    """
-    Calculate the depth of a given path.
-    """
-    return len(split_all(path))
-

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.results package &#8212; TCutility v0.15.3 documentation</title>
+    <title>tcutility.results package &#8212; TCutility v0.16.10 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=734543e3"></script>
+    <script src="../_static/documentation_options.js?v=bc9b5a7a"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -330,23 +330,23 @@
 <dd class="field-odd"><p><p>Result object containing properties from the ADF calculation:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>energy.bond (float)</strong> – bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.elstat.total (float)</strong> – total electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.elstat.Vee (float)</strong> – electron-electron repulsive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.elstat.Ven (float)</strong> – electron-nucleus attractive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.elstat.Vnn (float)</strong> – nucleus-nucleus repulsive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.orbint.total (float)</strong> – total orbital interaction energy containing contributions from each symmetry label and correction energy(<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.orbint.{symmetry label} (float)</strong> – orbital interaction energy from a specific symmetry label (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.orbint.correction (float)</strong> - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>)</p></li>
-<li><p><strong>energy.pauli.total (float)</strong> – total Pauli repulsion energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.dispersion (float)</strong> – total dispersion energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.gibbs (float)</strong> – Gibb’s free energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only populated if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.enthalpy (float)</strong> – enthalpy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only populated if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.nuclear_internal (float)</strong> – nuclear internal energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only populated if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.bond (float)</strong> – bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.elstat.total (float)</strong> – total electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.elstat.Vee (float)</strong> – electron-electron repulsive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.elstat.Ven (float)</strong> – electron-nucleus attractive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.elstat.Vnn (float)</strong> – nucleus-nucleus repulsive term of the electrostatic potential (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.orbint.total (float)</strong> – total orbital interaction energy containing contributions from each symmetry label and correction energy(<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.orbint.{symmetry label} (float)</strong> – orbital interaction energy from a specific symmetry label (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.orbint.correction (float)</strong> - orbital interaction correction energy, the difference between the total and the sum of the symmetrized interaction energies (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>)</p></li>
+<li><p><strong>energy.pauli.total (float)</strong> – total Pauli repulsion energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.dispersion (float)</strong> – total dispersion energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.gibbs (float)</strong> – Gibb’s free energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only populated if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.enthalpy (float)</strong> – enthalpy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only populated if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.nuclear_internal (float)</strong> – nuclear internal energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only populated if vibrational modes were calculated.</p></li>
 <li><p><strong>vibrations.number_of_modes (int)</strong> – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.</p></li>
 <li><p><strong>vibrations.number_of_imag_modes (int)</strong> – number of imaginary vibrational modes for this molecule.</p></li>
-<li><p><strong>vibrations.frequencies (float)</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-1\)</span>).</p></li>
-<li><p><strong>vibrations.intensities (float)</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-1\)</span>).</p></li>
+<li><p><strong>vibrations.frequencies (float)</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-^1\)</span>).</p></li>
+<li><p><strong>vibrations.intensities (float)</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-^1\)</span>).</p></li>
 <li><p><strong>vibrations.modes (list[float])</strong> – list of vibrational modes sorted from low frequency to high frequency.</p></li>
 <li><p><strong>vibrations.character (str)</strong> – Character of the molecule based on the number of imaginary vibrational modes. Can be “minimum” or “transition state”.</p></li>
 <li><p><strong>vdd.charges (nparray[float] (1D))</strong> - 1D array of Voronoi Deformation Denisty (VDD) charges in [electrons], being the difference between the final (SCF) and initial VDD charges.</p></li>
@@ -585,6 +585,17 @@ It will also add bonds to the molecule if they are given in the rkf file, else i
 </dd>
 </dl>
 </li>
+<li><p><code class="docutils literal notranslate"><span class="pre">energies</span></code> <strong>np.ndarray</strong> - array containing energies with shape <code class="docutils literal notranslate"><span class="pre">npoints</span></code>.</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">energy_interpolator</span></code> <strong>scipy.interpolate.RegularGridInterpolator</strong> - interpolator</dt><dd><p>object used for obtaining energies at any point on the PES. Cannot be used for extrapolation.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">molecule_interpolator</span></code> <strong>fuction</strong> - interpolator used to obtain molecular coordinates at</dt><dd><p>any point on the PES. Cannot be used for extrapolation.</p>
+</dd>
+</dl>
+</li>
 </ul>
 </div></blockquote>
 </p>
@@ -660,7 +671,7 @@ These blocks are special in that they can contain multiple of the same entry</p>
 rkf files take a long time to open (especially {engine}.rkf), so it is better to open them once and cache them for later use</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tcutility.results.cache.TrackKFReader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TrackKFReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/cache.html#TrackKFReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.cache.TrackKFReader" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TrackKFReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/cache.html#TrackKFReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.cache.TrackKFReader" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">KFReader</span></code></p>
 <p>Subclass of plams.KFReader that also tracks the variables that were read. This class can be useful to figure out which variables are important.
 For example, we can then trim rkf files to reduce their filesizes.</p>
@@ -908,7 +919,7 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <dd class="field-odd"><p><p>Result object containing properties from the DFTB calculation:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>energy.bond (float)</strong> – bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
+<li><p><strong>energy.bond (float)</strong> – bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
 </ul>
 </div></blockquote>
 </p>
@@ -1044,11 +1055,11 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tcutility.results.orca.get_calculation_status">
-<span class="sig-name descname"><span class="pre">get_calculation_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_calculation_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_calculation_status" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_calculation_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/orca.html#get_calculation_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.orca.get_calculation_status" title="Link to this definition">#</a></dt>
 <dd><p>Function that returns the status of the ORCA calculation described in reader. In case of non-succes it will also give possible reasons for the errors/warnings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>info</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span>) – Result object containing ORCA calculation information.</p>
+<dd class="field-odd"><p><strong>info</strong> – Result object containing ORCA calculation information.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
@@ -1136,8 +1147,8 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <div><ul class="simple">
 <li><p><strong>number_of_modes (int)</strong> – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.</p></li>
 <li><p><strong>number_of_imaginary_modes (int)</strong> – number of imaginary vibrational modes for this molecule.</p></li>
-<li><p><strong>frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-1\)</span>).</p></li>
-<li><p><strong>intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
+<li><p><strong>frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-^1\)</span>).</p></li>
+<li><p><strong>intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-^1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
 <li><p><strong>modes (list[float])</strong> – list of vibrational modes sorted from low frequency to high frequency.</p></li>
 <li><p><strong>character (str)</strong> – the PES character of the molecular system. Either “minimum”, “transitionstate” or “saddlepoint(n_imag)”, for 0, 1, n_imag number of imaginary frequencies.</p></li>
 </ul>
@@ -1162,16 +1173,16 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <dd class="field-odd"><p><p>Result object containing properties from the ORCA calculation:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>energy.bond (float)</strong> – total bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.enthalpy (float)</strong> – enthalpy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.entropy (float)</strong> – entropy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.gibbs (float)</strong> – Gibb’s free energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.[method] (float)</strong> - total energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>) at a certain level (HF, MP2, CCSD, …). This is the sum of energy.HF and energy.[method]_corr.</p></li>
-<li><p><strong>energy.[method]_corr (float)</strong> - electron correlation energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>) at a certain level (HF, MP2, CCSD, …).</p></li>
+<li><p><strong>energy.bond (float)</strong> – total bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.enthalpy (float)</strong> – enthalpy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.entropy (float)</strong> – entropy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.gibbs (float)</strong> – Gibb’s free energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.[method] (float)</strong> - total energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>) at a certain level (HF, MP2, CCSD, …). This is the sum of energy.HF and energy.[method]_corr.</p></li>
+<li><p><strong>energy.[method]_corr (float)</strong> - electron correlation energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>) at a certain level (HF, MP2, CCSD, …).</p></li>
 <li><p><strong>vibrations.number_of_modes (int)</strong> – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.</p></li>
 <li><p><strong>vibrations.number_of_imaginary_modes (int)</strong> – number of imaginary vibrational modes for this molecule.</p></li>
-<li><p><strong>vibrations.frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-1\)</span>).</p></li>
-<li><p><strong>vibrations.intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
+<li><p><strong>vibrations.frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-^1\)</span>).</p></li>
+<li><p><strong>vibrations.intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-^1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
 <li><p><strong>vibrations.modes (list[float])</strong> – list of vibrational modes sorted from low frequency to high frequency.</p></li>
 <li><p><strong>vibrations.character (str)</strong> – the PES character of the molecular system. Either “minimum”, “transitionstate” or “saddlepoint(n_imag)”, for 0, 1, n_imag number of imaginary frequencies.</p></li>
 <li><p><strong>t1</strong> - T1 diagnostic for the highest level of correlation chosen. Used to check the validity of the reference wavefunction.</p></li>
@@ -1191,7 +1202,7 @@ For example, we can then trim rkf files to reduce their filesizes.</p>
 <p>Module containing the TCutility.results.result.Result class.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tcutility.results.result.Result">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results/result.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.result.Result" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 <p>Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary.
 The class works case-insensitively, but will retain the case of the key when it was first set.</p>
@@ -1418,16 +1429,16 @@ E.g. res.properties.energy.bond can be gotten by calling res.get_multi_key(“pr
 <dd class="field-odd"><p><p>Result object containing properties from the ORCA calculation:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>energy.bond (float)</strong> – total bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>).</p></li>
-<li><p><strong>energy.enthalpy (float)</strong> – enthalpy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.entropy (float)</strong> – entropy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.gibbs (float)</strong> – Gibb’s free energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
-<li><p><strong>energy.[method] (float)</strong> - total energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>) at a certain level (HF, MP2, CCSD, …). This is the sum of energy.HF and energy.[method]_corr.</p></li>
-<li><p><strong>energy.[method]_corr (float)</strong> - electron correlation energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-1\)</span>) at a certain level (HF, MP2, CCSD, …).</p></li>
+<li><p><strong>energy.bond (float)</strong> – total bonding energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>).</p></li>
+<li><p><strong>energy.enthalpy (float)</strong> – enthalpy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.entropy (float)</strong> – entropy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.gibbs (float)</strong> – Gibb’s free energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>). Only obtained if vibrational modes were calculated.</p></li>
+<li><p><strong>energy.[method] (float)</strong> - total energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>) at a certain level (HF, MP2, CCSD, …). This is the sum of energy.HF and energy.[method]_corr.</p></li>
+<li><p><strong>energy.[method]_corr (float)</strong> - electron correlation energy (<span class="math notranslate nohighlight">\(\text{kcal mol}^-^1\)</span>) at a certain level (HF, MP2, CCSD, …).</p></li>
 <li><p><strong>vibrations.number_of_modes (int)</strong> – number of vibrational modes for this molecule, 3N-5 for non-linear molecules and 3N-6 for linear molecules, where N is the number of atoms.</p></li>
 <li><p><strong>vibrations.number_of_imaginary_modes (int)</strong> – number of imaginary vibrational modes for this molecule.</p></li>
-<li><p><strong>vibrations.frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-1\)</span>).</p></li>
-<li><p><strong>vibrations.intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
+<li><p><strong>vibrations.frequencies (list[float])</strong> – vibrational frequencies associated with the vibrational modes, sorted from low to high (<span class="math notranslate nohighlight">\(\text{cm}^-^1\)</span>).</p></li>
+<li><p><strong>vibrations.intensities (list[float])</strong> – vibrational intensities associated with the vibrational modes (<span class="math notranslate nohighlight">\(\text{km mol}^-^1\)</span>). In ORCA, intensities of imaginary modes are set to 0.</p></li>
 <li><p><strong>vibrations.modes (list[float])</strong> – list of vibrational modes sorted from low frequency to high frequency.</p></li>
 <li><p><strong>vibrations.character (str)</strong> – the PES character of the molecular system. Either “minimum”, “transitionstate” or “saddlepoint(n_imag)”, for 0, 1, n_imag number of imaginary frequencies.</p></li>
 <li><p><strong>t1</strong> - T1 diagnostic for the highest level of correlation chosen. Used to check the validity of the reference wavefunction.</p></li>
@@ -1465,6 +1476,40 @@ This information is used in further analysis programs.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dictionary containing information about the calculation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.results.quick_status">
+<span class="sig-name descname"><span class="pre">quick_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/results.html#quick_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.results.quick_status" title="Link to this definition">#</a></dt>
+<dd><p>Quickly check the status of a calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>calc_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>]</span>) – the directory of the calculation to check.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.results.result.Result" title="tcutility.results.result.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Dictionary containing information about the calculation status:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>fatal (bool)</strong> – <cite>True</cite> if calculation cannot be read correctly, <cite>False</cite> otherwise</p></li>
+<li><p><strong>reasons (list[str])</strong> – list of reasons to explain the status, they can be errors, warnings, etc.</p></li>
+<li><dl class="simple">
+<dt><strong>name (str)</strong> – calculation status written as a string, one of (“SUCCESS”, “RUNNING”, “UNKNOWN”, “SUCCESS(W)”, “FAILED”).</dt><dd><p>If the job is being managed by slurm it can also take values of (“COMPLETING”, “CONFIGURING”, “PENDING”).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>code (str)</strong> – calculation status written as one or two characters, one of (“S”, “R”, “U”, “W” “F”)</dt><dd><p>If the job is being managed by slurm it can also take values of (“CG”, “CF”, “PD”).</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1604,6 +1649,7 @@ This information is used in further analysis programs.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.results">Module contents</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.get_info"><code class="docutils literal notranslate"><span class="pre">get_info()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.read"><code class="docutils literal notranslate"><span class="pre">read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.results.quick_status"><code class="docutils literal notranslate"><span class="pre">quick_status()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1652,7 +1698,7 @@ This information is used in further analysis programs.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     <br/>
   </p>
 </div>

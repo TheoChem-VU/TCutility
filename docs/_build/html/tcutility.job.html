@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tcutility.job &#8212; TCutility v0.15.3 documentation</title>
+    <title>tcutility.job &#8212; TCutility v0.16.10 documentation</title>
   
   
   
@@ -40,12 +40,11 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=734543e3"></script>
+    <script src="_static/documentation_options.js?v=bc9b5a7a"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/tabs.js?v=3030b3cb"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tcutility.job';</script>
     <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
@@ -257,7 +256,7 @@
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This module offers you the tools to efficiently and easily build computational workflows with various engines.
-The module defines usefull classes that do all the heavy lifting (input and runscript preparation) in the background, while ensuring correctness of the generated inputs</p>
+The module defines usefull classes that do all the heavy lifting (input and runscript preparation, job submission, etc.) in the background, while ensuring correctness of the generated inputs.</p>
 <section id="job-classes">
 <h3>Job classes<a class="headerlink" href="#job-classes" title="Link to this heading">#</a></h3>
 <p>Jobs are run using subclasses of the <a class="reference internal" href="api/tcutility.job.html#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a> class. The base <a class="reference internal" href="api/tcutility.job.html#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a> class handles setting up directories and running the calculations.</p>
@@ -270,7 +269,7 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <span class="linenos"> 6</span><span class="k">with</span> <span class="n">ADFJob</span><span class="p">()</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
 <span class="linenos"> 7</span>    <span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;example.xyz&#39;</span><span class="p">)</span>
 <span class="linenos"> 8</span>
-<span class="linenos"> 9</span><span class="c1"># you can also not use the context-manager</span>
+<span class="linenos"> 9</span><span class="c1"># you can also run without the use of context-managers</span>
 <span class="linenos">10</span><span class="c1"># in that case, don&#39;t forget to run the job</span>
 <span class="linenos">11</span><span class="n">job</span> <span class="o">=</span> <span class="n">ADFJob</span><span class="p">()</span>
 <span class="linenos">12</span><span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;example.xyz&#39;</span><span class="p">)</span>
@@ -302,10 +301,11 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <span class="linenos">7</span>    <span class="n">job</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="s1">&#39;tc&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Furthermore, the <a class="reference internal" href="api/tcutility.job.html#tcutility.job.generic.Job" title="tcutility.job.generic.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">Job</span></code></a> class detects which platform you are running on (e.g. Bazis or Snellius) and sets default sbatch and module loading settings accordingly.</p>
 </section>
 <section id="job-dependencies">
 <h3>Job dependencies<a class="headerlink" href="#job-dependencies" title="Link to this heading">#</a></h3>
-<p>It is possible to setup dependencies between jobs. This allows you to use the results of one calculation as input for a different calculation.</p>
+<p>It is possible to set up dependencies between jobs. This allows you to use the results of one calculation as input for a different calculation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job</span><span class="w"> </span><span class="kn">import</span> <span class="n">ADFJob</span><span class="p">,</span> <span class="n">CRESTJob</span>
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="c1"># submit and run a CREST calculation</span>
@@ -377,6 +377,8 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.adf.ADFJob" title="tcutility.job.adf.ADFJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADFJob</span></code></a>, regular ADF calculations</p></li>
 <li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob" title="tcutility.job.adf.ADFFragmentJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code></a>, fragment based calculations</p></li>
 <li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.nmr.NMRJob" title="tcutility.job.nmr.NMRJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">NMRJob</span></code></a>, Nuclear Magnetic Resonance (NMR) calculations using ADF</p></li>
+<li><p>BANDJob, coming soon …</p></li>
+<li><p>BANDFragmentJob, coming soon …</p></li>
 </ul>
 </li>
 <li><p><a class="reference external" href="https://www.scm.com/product/dftb/">Density Functional with Tight Binding (DFTB)</a></p>
@@ -395,6 +397,11 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.crest.QCGJob" title="tcutility.job.crest.QCGJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">QCGJob</span></code></a>, QCG explicit solvation search</p></li>
 </ul>
 </li>
+<li><p><a class="reference external" href="https://github.com/grimme-lab/xtb">Extended tight binding (xTB)</a></p>
+<ul>
+<li><p><a class="reference internal" href="api/tcutility.job.html#tcutility.job.xtb.XTBJob" title="tcutility.job.xtb.XTBJob"><code class="xref py py-class docutils literal notranslate"><span class="pre">XTBJob</span></code></a>, extended tight binding calculations</p></li>
+</ul>
+</li>
 </ul>
 <p>See the <a class="reference external" href="./api/tcutility.job.html">API Documentation</a> for an overview of the Job classes offered by tcutility.job module.</p>
 <div class="admonition note">
@@ -406,7 +413,7 @@ The module defines usefull classes that do all the heavy lifting (input and runs
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
 <p>To run calculations related to the Amsterdam Modelling Suite (AMS) you will require a license.</p>
-<p>For ORCA calculations you will need to add the ORCA executable to your PATH.</p>
+<p>For ORCA calculations you will need to add the ORCA executable to your PATH environmental variable.</p>
 </section>
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
@@ -626,7 +633,7 @@ To handle the ADF settings you can refer to the GUI. For example, to use a speci
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     <br/>
   </p>
 </div>

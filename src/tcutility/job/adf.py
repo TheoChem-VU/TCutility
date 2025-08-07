@@ -7,6 +7,7 @@ from tcutility import data, formula, log, molecule, results, spell_check
 from tcutility.errors import TCCompDetailsError, TCJobError
 from tcutility.job.ams import AMSJob
 from tcutility.job.generic import Job
+from typing import List
 
 j = os.path.join
 
@@ -97,6 +98,16 @@ class ADFJob(AMSJob):
             The SCM documentation can be found at https://www.scm.com/doc/ADF/Input/Electronic_Configuration.html#aufbau-smearing-freezing
         """
         self.settings.input.adf.Occupations = strategy
+
+    def irrep_occupations(self, irrep: str, orbital_numbers: str):
+        """
+        Set the orbital occupations per irrep.
+
+        Args:
+            irrep: the irrep to set occupations for.
+            orbital_numbers: the orbital occupation numbers as you would write in an input file.s
+        """
+        self.settings.input.adf.IrrepOccupations[irrep] = orbital_numbers
 
     def quality(self, val: str = "Good"):
         """
@@ -257,7 +268,7 @@ class ADFJob(AMSJob):
             # we simply remove it from the geometryoptimization block
             self.settings.input.ams.GeometryOptimization.pop("InitialHessian", None)
 
-    def excitations(self, excitation_number: int = 10, excitation_type: str = "", method: str = "Davidson", use_TDA: bool = False):
+    def excitations(self, excitation_number: int = 10, excitation_type: str = '', method: str = 'Davidson', use_TDA: bool = False, energy_gap: List[float] = None):
         """
         Calculate the electronic excitations using TD-DFT.
 
@@ -266,13 +277,14 @@ class ADFJob(AMSJob):
             excitation_type: the type of excitations to include.
                 Defaults to an empty string, indicating the default value for ADF.
             method: the excitation methodology to use. Defaults to ``Davidson``.
-                If ``method`` is set to the ``None``-type object excitations are disabled.
+                If set to the ``None``, the excitations are disabled.
             use_TDA: whether to enable the Tamm-Dancoff approximation. Defaults to ``False``.
+            energy_gap: list with two variables from which to limit excitations calculated i.e. ``(0, 0.3)`` in Hartrees. Defaults to ``None``.
         """
-        # clean the input file first
-        [self.settings.input.adf.Excitations.pop(key, None) for key in ["davidson", "exact", "bse", "singleorbtrans", "stda", "stddft", "tda-dftb", "td-dftb"]]
-        [self.settings.input.adf.pop(key, None) for key in ["cvndft", "tda"]]
-        [self.settings.input.adf.Excitations.pop(key, None) for key in ["allowed", "onlysing", "onlytrip", "sopert"]]
+        # clean the input first
+        [self.settings.input.adf.Excitations.pop(key, None) for key in ['davidson', 'exact', 'bse', 'singleorbtrans', 'stda', 'stddft', 'tda-dftb', 'td-dftb']]
+        [self.settings.input.adf.pop(key, None) for key in ['cvndft', 'tda']]
+        [self.settings.input.adf.Excitations.pop(key, None) for key in ['allowed', 'onlysing', 'onlytrip', 'sopert']]
 
         if method is None:
             return
@@ -339,21 +351,29 @@ class ADFJob(AMSJob):
         self.settings.input.adf.Excitations.Lowest = excitation_number
 
         if use_TDA:
-            self.settings.input.adf.TDA = "Yes"
+            self.settings.input.adf.TDA = 'Yes'
+
+        if energy_gap is not None:
+            self.settings.input.adf.MODIFYEXCITATION.UseOccVirtRange = f'{energy_gap[0]} {energy_gap[1]}'
+            if self.settings.input.adf.relativity.level.lower() == 'scalar'  or 'spin-orbit':
+                self.settings.input.adf.MODIFYEXCITATION.UseScaledZORA = ' '
+
+
+def copy_atom(atom):
+    s, c = atom.symbol, atom.coords
+    return plams.Atom(symbol=s, coords=c)
+
 
 
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
-        self.decompose_elstat = kwargs.pop("decompose_elstat", False)
-        self.counter_poise = kwargs.pop("counter_poise", False)
-        self.scf0_calculation = kwargs.pop("sfo0_calculation", False)
+        self.decompose_elstat = kwargs.pop('decompose_elstat', False)
+        self.counter_poise = kwargs.pop('counter_poise', False)
+        self.scf0_calculation = kwargs.pop('sfo0_calculation', False)
+
         self.child_jobs = {}
-        # self.child_jobs_no_electrons = {}
         super().__init__(*args, **kwargs)
         self.name = "EDA"
-
-        # by default print the fock matrix
-        self.settings.input.adf.print = "FmatSFO"
 
     def add_fragment(self, mol: plams.Molecule, name: str = None, charge: int = 0, spin_polarization: int = 0):
         """
@@ -370,7 +390,7 @@ class ADFFragmentJob(ADFJob):
         # we can be given a list of atoms
         if isinstance(mol, list) and isinstance(mol[0], plams.Atom):
             mol_ = plams.Molecule()
-            [mol_.add_atom(atom) for atom in mol]
+            [mol_.add_atom(copy_atom(atom)) for atom in mol]
             mol = mol_
 
         # or a list of integers
@@ -379,7 +399,8 @@ class ADFFragmentJob(ADFJob):
                 log.error(f"Trying to add fragment based on atom indices, but main job does not have a molecule yet. Call the {self.__class__.__name__}.molecule method to add one.")
                 return
             mol_ = plams.Molecule()
-            [mol_.add_atom(self._molecule[i]) for i in mol]
+
+            [mol_.add_atom(copy_atom(self._molecule[i])) for i in mol]
             mol = mol_.copy()
             add_frag_to_mol = False
 
@@ -402,12 +423,13 @@ class ADFFragmentJob(ADFJob):
             return
 
         if self._molecule is None:
-            self._molecule = self.child_jobs[name]._molecule.copy()
+            self._molecule = plams.Molecule()
+            [self._molecule.add_atom(copy_atom(atom)) for atom in self.child_jobs[name]._molecule]
         else:
-            for atom in self.child_jobs[name]._molecule.copy():
+            for atom in self.child_jobs[name]._molecule:
                 if any((atom.symbol, atom.coords) == (myatom.symbol, myatom.coords) for myatom in self._molecule):
                     continue
-                self._molecule.add_atom(atom)
+                self._molecule.add_atom(copy_atom(atom))
 
     def guess_fragments(self):
         """
@@ -785,7 +807,7 @@ class ADFFragmentJob(ADFJob):
 
 
 class DensfJob(Job):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, overwrite: bool = False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.settings = results.Result()
         self.rundir = "tmp"
@@ -795,11 +817,12 @@ class DensfJob(Job):
         self._sfos = []
         self._extras = []
         self.settings.ADFFile = None
+        self.overwrite = overwrite
 
     def __str__(self):
         return f"Densf({self.target}), running in {self.workdir}"
 
-    def gridsize(self, size="medium"):
+    def gridsize(self, size="medium", grid_extend=7.5):
         """
         Set the size of the grid to be used by Densf.
 
@@ -808,9 +831,10 @@ class DensfJob(Job):
         """
         spell_check.check(size, ["coarse", "medium", "fine"], ignore_case=True)
         self.settings.grid = size
+        self.settings.grid_extend = grid_extend
 
     def grid(self, args):
-        self.settings.grid = "\n" + "\n".join(args)
+        self.settings.grid = '\n' + '\n'.join(args) + 'EXTEND 7.5\n'
 
     def orbital(self, orbital: "pyfmo.orbitals.sfo.SFO" or "pyfmo.orbitals.mo.MO"):  # noqa: F821
         """
@@ -862,18 +886,27 @@ class DensfJob(Job):
             inpf.write(f"ADFFile {os.path.abspath(self.settings.ADFFile)}\n")
             inpf.write(f"GRID {self.settings.grid}\n")
             inpf.write("END\n")
+            if self.settings.grid_extend:
+                inpf.write(f"EXTEND {self.settings.grid_extend}\n")
 
             if len(self._mos) > 0:
                 inpf.write("Orbitals SCF\n")
                 for orb in self._mos:
-                    inpf.write(f"    {orb.symmetry} {orb.index_in_symlabel + 1}\n")
+                    if orb.spin in ['A', 'B']:
+                        spin = {'A': 'alpha', 'B': 'beta'}[orb.spin]
+                        inpf.write(f"    {spin}\n")
+                    inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
                 inpf.write("END\n")
 
             if len(self._sfos) > 0:
                 inpf.write("Orbitals SFO\n")
                 for orb in self._sfos:
-                    inpf.write(f"    {orb.symmetry} {orb.index}\n")
+                    if orb.spin in ['A', 'B']:
+                        spin = {'A': 'alpha', 'B': 'beta'}[orb.spin]
+                        inpf.write(f"    {spin}\n")
+                    inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
                 inpf.write("END\n")
+                print(inpf.read())
 
             for line in self._extras:
                 inpf.write(line + "\n")
@@ -902,11 +935,11 @@ class DensfJob(Job):
 
         for mo in self._mos:
             spin_part = "" if mo.spin == "AB" else f"_{mo.spin}"
-            paths.append(f"{cuboutput}%SCF_{mo.symmetry}{spin_part}%{mo.index_in_symlabel + 1}.cub")
+            paths.append(f"{cuboutput}%SCF_{mo.symmetry.replace(':', '_')}{spin_part}%{mo.symmetry_index}.cub")
 
         for sfo in self._sfos:
             spin_part = "" if sfo.spin == "AB" else f"_{sfo.spin}"
-            paths.append(f"{cuboutput}%SFO_{sfo.symmetry}{spin_part}%{sfo.index}.cub")
+            paths.append(f"{cuboutput}%SFO_{sfo.symmetry.replace(':', '_')}{spin_part}%{sfo.symmetry_index}.cub")
 
         for extra in self._extras:
             if extra == "Density SCF":
@@ -928,6 +961,9 @@ class DensfJob(Job):
         return paths
 
     def can_skip(self):
+        if self.overwrite:
+            return False
+            
         return all(os.path.exists(path) for path in self.output_cub_paths)
 
 
@@ -938,5 +974,9 @@ if __name__ == "__main__":
     # with DensfJob() as job:
     #     job.orbital(orbs.sfos['frag1(HOMO)'])
 
-    with ADFFragmentJob() as job:
-        ...
+    # with ADFFragmentJob() as job:
+    #     ...
+
+    with ADFJob(test_mode=True) as job:
+        job.irrep_occupations('A', '28 // 26')
+        job.molecule('exammple.xyz')
