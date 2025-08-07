@@ -369,12 +369,14 @@
 <span class="sd">            yet for :class:`CRESTJob &lt;tcutility.job.crest.CRESTJob&gt;` and :class:`QCGJob &lt;tcutility.job.crest.QCGJob&gt;`. For the latter objects the job will always be rerun.</span>
 <span class="sd">            This will be fixed in a later version of TCutility.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># see if we can use quick_status</span>
         <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_servers</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">connect</span><span class="o">.</span><span class="n">Local</span><span class="p">):</span>
-                <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">quick_status</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">res</span><span class="o">.</span><span class="n">fatal</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="kc">True</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">quick_status</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">res</span><span class="o">.</span><span class="n">fatal</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
+        <span class="c1"># otherwise use the slow method</span>
+        <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_servers</span><span class="p">:</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;tcutility read -s </span><span class="si">{</span><span class="n">j</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">pwd</span><span class="p">(),</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">res</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;SUCCESS&#39;</span><span class="p">,</span> <span class="s1">&#39;SUCCESS(W)&#39;</span><span class="p">,</span> <span class="s1">&#39;COMPLETING&#39;</span><span class="p">,</span> <span class="s1">&#39;CONFIGURING&#39;</span><span class="p">,</span> <span class="s1">&#39;PENDING&#39;</span><span class="p">,</span> <span class="s1">&#39;RUNNING&#39;</span><span class="p">]:</span>
                 <span class="k">return</span> <span class="kc">True</span>
@@ -444,7 +446,7 @@
 <span class="sd">        Run this job. We detect if we are using slurm. If we are we submit this job using sbatch. Otherwise, we will run the job locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_skip</span><span class="p">():</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skipping calculation </span><span class="si">{</span><span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">, it is already finished or currently pending or running.&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skipping calculation </span><span class="si">{</span><span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rundir</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">, it is already finished or currently pending or running.&quot;</span><span class="p">)</span>
             <span class="k">return</span>
 
         <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_server</span><span class="p">()</span>
