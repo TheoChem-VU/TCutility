@@ -522,13 +522,16 @@ class ADFFragmentJob(ADFJob):
             b -= math.floor(spin_pol / 2)
 
             if total_elec % 2 != spin_pol % 2:
-                raise TCJobError(job_class=self.__class__.__name__, message=f'Got an {("even", "odd")[total_elec%2]} number of electrons ({total_elec}), but an {("even", "odd")[spin_pol%2]} spin-polarization ({spin_pol}), which is incompatible.')
+                raise TCJobError(job_class=self.__class__.__name__, 
+                    message=f'Got an {("even", "odd")[total_elec%2]} number of electrons ({total_elec}), but an {("even", "odd")[spin_pol%2]} spin-polarization ({spin_pol}), which is incompatible.')
 
             if a + b != total_elec:
-                raise TCJobError(job_class=self.__class__.__name__, message=f'Got alpha={a} and beta={b} for a total of {a+b}, but we need {total_elec}. Check your base electron count ({n_elec}), charge ({charge}) and spin-polarization ({spin_pol}).')
+                raise TCJobError(job_class=self.__class__.__name__, 
+                    message=f'Got alpha={a} and beta={b} for a total of {a+b}, but we need {total_elec}. Check your base electron count ({n_elec}), charge ({charge}) and spin-polarization ({spin_pol}).')
 
             if a < 0 or b < 0:
-                raise TCJobError(job_class=self.__class__.__name__, message=f'Got negative electrons for {total_elec} electrons with {spin_pol} spin polarization.')
+                raise TCJobError(job_class=self.__class__.__name__, 
+                    message=f'Got negative electrons for {total_elec} electrons with {spin_pol} spin polarization.')
 
             return a, b
 
