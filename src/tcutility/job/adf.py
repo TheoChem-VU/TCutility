@@ -472,10 +472,10 @@ class ADFFragmentJob(ADFJob):
         if nremove is None:
             # guess the virtual numbers only works for non-frozen-core calculations
             if self._core.lower() != "none":
-                raise TCJobError(job_class=self.__class__.__name__, message="Cannot guess number of virtual orbitals for calculations with a frozen core.")
+                raise TCCompDetailsError(job_class=self.__class__.__name__, message="Cannot guess number of virtual orbitals for calculations with a frozen core.")
             # the basis-set has to be present in the prepared data
             if self._basis_set.lower() not in [bs.lower() for bs in data.basis_sets._number_of_orbitals.keys()]:
-                raise TCJobError(job_class=self.__class__.__name__, message=f"Cannot guess number of virtual orbitals for calculations with the {self._basis_set} basis-set.")
+                raise TCCompDetailsError(job_class=self.__class__.__name__, message=f"Cannot guess number of virtual orbitals for calculations with the {self._basis_set} basis-set.")
 
             # sum up the number of virtuals per atom in the fragment
             nremove = 0
