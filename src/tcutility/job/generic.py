@@ -121,16 +121,14 @@ class Job:
             yet for :class:`CRESTJob <tcutility.job.crest.CRESTJob>` and :class:`QCGJob <tcutility.job.crest.QCGJob>`. For the latter objects the job will always be rerun.
             This will be fixed in a later version of TCutility.
         """
+        # see if we can use quick_status
         for server in self._servers:
-            # see if we can use quick_status, otherwise use the slow method
-            try:
-                res = results.quick_status(self.workdir)
-                if not res.fatal:
-                    return True
-                continue
-            except Exception:
-                pass
+            res = results.quick_status(self.workdir)
+            if not res.fatal:
+                return True
 
+        # otherwise use the slow method
+        for server in self._servers:
             res = server.execute(f'tcutility read -s {j(server.pwd(), self.rundir, self.name)}')
             if res in ['SUCCESS', 'SUCCESS(W)', 'COMPLETING', 'CONFIGURING', 'PENDING', 'RUNNING']:
                 return True
