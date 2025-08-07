@@ -20,8 +20,7 @@ class CRESTJob(Job):
         self.spin_polarization(0)
         self.md_temperature(400)
         self.md_length(1)
-        self.xtb_path('xtb')
-        self.crest_path('crest')
+        self.crest_path = 'crest'
 
     def _setup_job(self):
         self.add_postamble('mkdir rotamers')
@@ -49,11 +48,15 @@ class CRESTJob(Job):
 
         return True
 
-    def xtb_path(self, val: str):
-        self.options['-xnam'] = val
 
+    @property
+    def crest_path(self) -> str:
+        return self._crest_path
+
+    @crest_path.setter
     def crest_path(self, val: str):
         self._crest_path = val
+
 
     def spin_polarization(self, val: int):
         '''
@@ -322,11 +325,12 @@ class QCGJob(CRESTJob):
 
 
 if __name__ == '__main__':
-    with CRESTJob() as job:
+    with CRESTJob(test_mode=True) as job:
         job.rundir = 'tmp/SN2'
         job.name = 'CREST'
-        job.molecule('../../../test/fixtures/xyz/transitionstate_radical_addition.xyz')
-        job.solvent('water')
+        # job.molecule('../../../test/fixtures/xyz/transitionstate_radical_addition.xyz')
+        # job.solvent('water')
+        job.crest_path = 'crest'
         # job.sbatch(p='tc', ntasks_per_node=32)
 
     # with QCGJob(test_mode=True) as job:
