@@ -39,11 +39,11 @@ class NestedDict(dict):
 
 		d = self
 		for i, key in enumerate(keys):
-			d.setdefault(key, {})
+			d.setdefault(key.lower(), NestedDict())
 			if i == len(keys) - 1:
-				d[key] = val
+				d[key.lower()] = val
 			else:
-				d = d[key]
+				d = d[key.lower()]
 
 	def get(self, *keys: Tuple[Any]) -> Any:
 		'''
@@ -66,10 +66,14 @@ class NestedDict(dict):
 		'''
 		d = self
 		for key in keys:
-			if key not in d:
+			if key.lower() not in d:
 				return
-			d = d[key]
+			d = d[key.lower()]
 		return d
+
+	def __getitem__(self, key):
+		r = dict.__getitem__(self, key.lower())
+		return r
 
 
 if __name__ == '__main__':
