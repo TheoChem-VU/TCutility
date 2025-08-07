@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.job.adf &#8212; TCutility v0.16.11 documentation</title>
+    <title>tcutility.job.adf &#8212; TCutility v0.16.10 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=18e3de63"></script>
+    <script src="../../../_static/documentation_options.js?v=bc9b5a7a"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -251,6 +251,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job.ams</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMSJob</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Job</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
 <span class="n">j</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
 
@@ -662,6 +663,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">decompose_elstat</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;decompose_elstat&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">counter_poise</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;counter_poise&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scf0_calculation</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;sfo0_calculation&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frag_occupations</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;EDA&quot;</span>
@@ -793,6 +795,15 @@
 <span class="s2">        &quot;&quot;&quot;</span></div>
 
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_write_frag_occupations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">FragOccupations</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">frag</span><span class="p">,</span> <span class="n">occs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frag_occupations</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">FragOccupations</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;    </span><span class="si">{</span><span class="n">frag</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="k">for</span> <span class="n">symm</span><span class="p">,</span> <span class="n">occ</span> <span class="ow">in</span> <span class="n">occs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">FragOccupations</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;        </span><span class="si">{</span><span class="n">symm</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">occ</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">FragOccupations</span> <span class="o">+=</span> <span class="s1">&#39;    SubEnd</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">FragOccupations</span> <span class="o">+=</span> <span class="s1">&#39;  End</span><span class="se">\n</span><span class="s1">&#39;</span>
+
 <div class="viewcode-block" id="ADFFragmentJob.frag_occupations">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.adf.ADFFragmentJob.frag_occupations">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">frag_occupations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subspecies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -806,23 +817,39 @@
 <span class="sd">            beta: the number of beta electrons. If set to ``None`` we will guess the number of electrons based on the spin-polarization set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="k">def</span><span class="w"> </span><span class="nf">_divide_electrons</span><span class="p">(</span><span class="n">n_elec</span><span class="p">,</span> <span class="n">spin_pol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Divide electrons over alpha and beta spins.</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="n">total_elec</span> <span class="o">=</span> <span class="n">n_elec</span> <span class="o">-</span> <span class="n">charge</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">total_elec</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">total_elec</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">a</span> <span class="o">+=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">spin_pol</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">b</span> <span class="o">-=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">spin_pol</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">total_elec</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="n">spin_pol</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TCJobError</span><span class="p">(</span><span class="n">job_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> 
+                    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Got an </span><span class="si">{</span><span class="p">(</span><span class="s2">&quot;even&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;odd&quot;</span><span class="p">)[</span><span class="n">total_elec</span><span class="o">%</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1"> number of electrons (</span><span class="si">{</span><span class="n">total_elec</span><span class="si">}</span><span class="s1">), but an </span><span class="si">{</span><span class="p">(</span><span class="s2">&quot;even&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;odd&quot;</span><span class="p">)[</span><span class="n">spin_pol</span><span class="o">%</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1"> spin-polarization (</span><span class="si">{</span><span class="n">spin_pol</span><span class="si">}</span><span class="s1">), which is incompatible.&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">!=</span> <span class="n">total_elec</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TCJobError</span><span class="p">(</span><span class="n">job_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> 
+                    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Got alpha=</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s1"> and beta=</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s1"> for a total of </span><span class="si">{</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="si">}</span><span class="s1">, but we need </span><span class="si">{</span><span class="n">total_elec</span><span class="si">}</span><span class="s1">. Check your base electron count (</span><span class="si">{</span><span class="n">n_elec</span><span class="si">}</span><span class="s1">), charge (</span><span class="si">{</span><span class="n">charge</span><span class="si">}</span><span class="s1">) and spin-polarization (</span><span class="si">{</span><span class="n">spin_pol</span><span class="si">}</span><span class="s1">).&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">b</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TCJobError</span><span class="p">(</span><span class="n">job_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> 
+                    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Got negative electrons for </span><span class="si">{</span><span class="n">total_elec</span><span class="si">}</span><span class="s1"> electrons with </span><span class="si">{</span><span class="n">spin_pol</span><span class="si">}</span><span class="s1"> spin polarization.&#39;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+
         <span class="n">child_job</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_jobs</span><span class="p">[</span><span class="n">frag</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">alpha</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">beta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">spinpol</span> <span class="o">=</span> <span class="n">child_job</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">SpinPolarization</span> <span class="ow">or</span> <span class="mi">0</span>
             <span class="n">charge</span> <span class="o">=</span> <span class="n">child_job</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">ams</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">charge</span> <span class="ow">or</span> <span class="mi">0</span>
-            <span class="n">nelectrons</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">atnum</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">child_job</span><span class="o">.</span><span class="n">_molecule</span><span class="p">)</span> <span class="o">-</span> <span class="n">charge</span>
-            <span class="n">alpha</span> <span class="o">=</span> <span class="n">nelectrons</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">spinpol</span>
-            <span class="n">beta</span>  <span class="o">=</span> <span class="n">nelectrons</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">_divide_electrons</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">atnum</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">child_job</span><span class="o">.</span><span class="n">_molecule</span><span class="p">),</span> <span class="n">spinpol</span><span class="p">,</span> <span class="n">charge</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;FragOccupations&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">FragOccupations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">FragOccupations</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; End&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">FragOccupations</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    </span><span class="si">{</span><span class="n">frag</span><span class="si">}</span>
-<span class="s2">      </span><span class="si">{</span><span class="n">subspecies</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;A&#39;</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s2"> // </span><span class="si">{</span><span class="n">beta</span><span class="si">}</span>
-<span class="s2">    SubEnd</span>
-<span class="s2">  End</span>
-<span class="s2">        &quot;&quot;&quot;</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frag_occupations</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">frag</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frag_occupations</span><span class="p">[</span><span class="n">frag</span><span class="p">][</span><span class="n">subspecies</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s1"> // </span><span class="si">{</span><span class="n">beta</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_frag_occupations</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="ADFFragmentJob.run">
@@ -1322,10 +1349,6 @@
         <span class="n">job</span><span class="o">.</span><span class="n">irrep_occupations</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;28 // 26&#39;</span><span class="p">)</span>
         <span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;exammple.xyz&#39;</span><span class="p">)</span>
 
-
-    <span class="c1"># with ADFFragmentJob(test_mode=True) as job:</span>
-    <span class="c1">#     job.frag_occupations(&#39;A&#39;, &#39;28 // 26&#39;)</span>
-    <span class="c1">#     job.molecule(&#39;exammple.xyz&#39;)</span>
 </pre></div>
 
                 </article>
