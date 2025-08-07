@@ -7,6 +7,7 @@ from tcutility.errors import TCCompDetailsError, TCJobError
 from tcutility.job.ams import AMSJob
 from tcutility.job.generic import Job
 from typing import List
+import math
 
 j = os.path.join
 
@@ -368,6 +369,7 @@ class ADFFragmentJob(ADFJob):
         self.decompose_elstat = kwargs.pop('decompose_elstat', False)
         self.counter_poise = kwargs.pop('counter_poise', False)
         self.scf0_calculation = kwargs.pop('sfo0_calculation', False)
+        self._frag_occupations = {}
         self.child_jobs = {}
         super().__init__(*args, **kwargs)
         self.name = "EDA"
@@ -490,6 +492,15 @@ class ADFFragmentJob(ADFJob):
   End
         """
 
+    def _write_frag_occupations(self):
+        self.settings.input.adf.FragOccupations = "\n"
+        for frag, occs in self._frag_occupations.items():
+            self.settings.input.adf.FragOccupations += f'    {frag}\n'
+            for symm, occ in occs.items():
+                self.settings.input.adf.FragOccupations += f'        {symm} {occ}\n'
+            self.settings.input.adf.FragOccupations += '    SubEnd\n'
+        self.settings.input.adf.FragOccupations += '  End\n'
+
     def frag_occupations(self, frag=None, subspecies=None, alpha=None, beta=None):
         """
         Set the occupations of the fragments.
@@ -501,23 +512,39 @@ class ADFFragmentJob(ADFJob):
             beta: the number of beta electrons. If set to ``None`` we will guess the number of electrons based on the spin-polarization set.
         """
 
+        def _divide_electrons(n_elec, spin_pol=0, charge=0):
+            '''
+            Divide electrons over alpha and beta spins.
+            '''
+            total_elec = n_elec - charge
+            a, b = total_elec // 2, total_elec // 2
+            a += math.ceil(spin_pol / 2)
+            b -= math.floor(spin_pol / 2)
+
+            if total_elec % 2 != spin_pol % 2:
+                raise TCJobError(job_class=self.__class__.__name__, 
+                    message=f'Got an {("even", "odd")[total_elec%2]} number of electrons ({total_elec}), but an {("even", "odd")[spin_pol%2]} spin-polarization ({spin_pol}), which is incompatible.')
+
+            if a + b != total_elec:
+                raise TCJobError(job_class=self.__class__.__name__, 
+                    message=f'Got alpha={a} and beta={b} for a total of {a+b}, but we need {total_elec}. Check your base electron count ({n_elec}), charge ({charge}) and spin-polarization ({spin_pol}).')
+
+            if a < 0 or b < 0:
+                raise TCJobError(job_class=self.__class__.__name__, 
+                    message=f'Got negative electrons for {total_elec} electrons with {spin_pol} spin polarization.')
+
+            return a, b
+
         child_job = self.child_jobs[frag]
 
         if alpha is None and beta is None:
             spinpol = child_job.settings.input.adf.SpinPolarization or 0
             charge = child_job.settings.input.ams.system.charge or 0
-            nelectrons = sum(atom.atnum for atom in child_job._molecule) - charge
-            alpha = nelectrons // 2 + spinpol
-            beta  = nelectrons // 2
+            alpha, beta = _divide_electrons(sum(atom.atnum for atom in child_job._molecule), spinpol, charge)
 
-        self.settings.input.adf.setdefault("FragOccupations", "")
-        self.settings.input.adf.FragOccupations = self.settings.input.adf.FragOccupations.replace(" End", "")
-        self.settings.input.adf.FragOccupations += f"""
-    {frag}
-      {subspecies or 'A'} {alpha} // {beta}
-    SubEnd
-  End
-        """
+        self._frag_occupations.setdefault(frag, {})
+        self._frag_occupations[frag][subspecies] = f'{alpha} // {beta}'
+        self._write_frag_occupations()
 
     def run(self):
         """
@@ -991,7 +1018,3 @@ if __name__ == "__main__":
         job.irrep_occupations('A', '28 // 26')
         job.molecule('exammple.xyz')
 
-
-    # with ADFFragmentJob(test_mode=True) as job:
-    #     job.frag_occupations('A', '28 // 26')
-    #     job.molecule('exammple.xyz')
