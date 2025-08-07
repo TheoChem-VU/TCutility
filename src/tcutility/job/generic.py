@@ -121,12 +121,14 @@ class Job:
             yet for :class:`CRESTJob <tcutility.job.crest.CRESTJob>` and :class:`QCGJob <tcutility.job.crest.QCGJob>`. For the latter objects the job will always be rerun.
             This will be fixed in a later version of TCutility.
         """
+        # see if we can use quick_status
         for server in self._servers:
-            if isinstance(server, connect.Local):
-                res = results.quick_status(self.workdir)
-                if not res.fatal:
-                    return True
+            res = results.quick_status(self.workdir)
+            if not res.fatal:
+                return True
 
+        # otherwise use the slow method
+        for server in self._servers:
             res = server.execute(f'tcutility read -s {j(server.pwd(), self.rundir, self.name)}')
             if res in ['SUCCESS', 'SUCCESS(W)', 'COMPLETING', 'CONFIGURING', 'PENDING', 'RUNNING']:
                 return True
@@ -187,7 +189,7 @@ class Job:
         Run this job. We detect if we are using slurm. If we are we submit this job using sbatch. Otherwise, we will run the job locally.
         """
         if self.can_skip():
-            log.info(f"Skipping calculation {j(self.rundir, self.name)}, it is already finished or currently pending or running.")
+            log.debug(f"Skipping calculation {j(self.rundir, self.name)}, it is already finished or currently pending or running.")
             return
 
         server = self._select_server()
