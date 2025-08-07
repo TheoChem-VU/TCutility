@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tcutility.results.ams &#8212; TCutility v0.16.10 documentation</title>
+    <title>tcutility.results.ams &#8212; TCutility v0.16.11 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=bc9b5a7a"></script>
+    <script src="../../../_static/documentation_options.js?v=18e3de63"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -469,7 +469,6 @@
 <span class="sd">            - **code (str)** – calculation status written as a single character, one of (&quot;S&quot;, &quot;R&quot;, &quot;U&quot;, &quot;W&quot; &quot;F&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">files</span> <span class="o">=</span> <span class="n">get_calc_files</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
-    <span class="n">reader_ams</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="s2">&quot;ams.rkf&quot;</span><span class="p">])</span>
 
     <span class="n">ret</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">fatal</span> <span class="o">=</span> <span class="kc">True</span>
@@ -477,17 +476,27 @@
     <span class="n">ret</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">reasons</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="n">termination_status</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;General&quot;</span><span class="p">,</span> <span class="s2">&quot;termination status&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-
     <span class="c1"># parse the logfile to find errors and warnings</span>
     <span class="k">if</span> <span class="s2">&quot;log&quot;</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="s2">&quot;log&quot;</span><span class="p">])</span> <span class="k">as</span> <span class="n">logfile</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">logfile</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">logfile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="c1"># the termination status is at the end of the file, so we start reading from the end</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="c1"># the first 25 characters include the timestamp and two spaces</span>
-                <span class="n">line_</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="mi">25</span><span class="p">:]</span>
+                <span class="n">line_</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="mi">25</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
                 <span class="c1"># errors and warnings have a predictable format</span>
                 <span class="k">if</span> <span class="n">line_</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;error:&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">line_</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;warning: &quot;</span><span class="p">):</span>
                     <span class="n">ret</span><span class="o">.</span><span class="n">reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line_</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="s2">&quot;normal termination&quot;</span> <span class="ow">in</span> <span class="n">line_</span><span class="p">:</span>
+                    <span class="n">ret</span><span class="o">.</span><span class="n">fatal</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">ret</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;SUCCESS&quot;</span>
+                    <span class="n">ret</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;S&quot;</span>
+                    <span class="k">return</span> <span class="n">ret</span>
+
+
+    <span class="n">reader_ams</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="s2">&quot;ams.rkf&quot;</span><span class="p">])</span>
+    <span class="n">termination_status</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;General&quot;</span><span class="p">,</span> <span class="s2">&quot;termination status&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">termination_status</span> <span class="o">==</span> <span class="s2">&quot;NORMAL TERMINATION&quot;</span><span class="p">:</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">fatal</span> <span class="o">=</span> <span class="kc">False</span>
