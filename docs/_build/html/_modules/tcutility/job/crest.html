@@ -245,7 +245,7 @@
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scm</span><span class="w"> </span><span class="kn">import</span> <span class="n">plams</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">molecules</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.job.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Job</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">spell_check</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 
@@ -257,12 +257,16 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">CRESTJob</span><span class="p">(</span><span class="n">Job</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_crest_path</span> <span class="o">=</span> <span class="s1">&#39;crest&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_default_options</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_default_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spin_polarization</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">md_temperature</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">md_length</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">crest_path</span> <span class="o">=</span> <span class="s1">&#39;crest&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">xtb_path</span> <span class="o">=</span> <span class="s1">&#39;xtb&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_charge</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_spinpol</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_temp</span> <span class="o">=</span> <span class="mi">400</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mdlen</span> <span class="o">=</span> <span class="s1">&#39;x1&#39;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_postamble</span><span class="p">(</span><span class="s1">&#39;mkdir rotamers&#39;</span><span class="p">)</span>
@@ -279,25 +283,26 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_molecule</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">j</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workdir</span><span class="p">,</span> <span class="s1">&#39;coords.xyz&#39;</span><span class="p">))</span>
 
-        <span class="n">options</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s1">&#39;coords.xyz&#39;</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s1">&#39;-xnam &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">xtb_path</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;--noreftopo&#39;</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s1">&#39;-c </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_charge</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s1">&#39;-u </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_spinpol</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s1">&#39;-tnmd </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_temp</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s1">&#39;-mdlen </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_mdlen</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-        <span class="p">]</span>
-
-        <span class="n">options</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+        <span class="n">options</span> <span class="o">+=</span> <span class="s1">&#39; --noreftopo&#39;</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runfile_path</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">runf</span><span class="p">:</span>
-            <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/sh</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># the shebang is not written by default by ADF</span>
+            <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/sh</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_preambles</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">crest_path</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">options</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_crest_path</span><span class="si">}</span><span class="s1"> coords.xyz </span><span class="si">{</span><span class="n">options</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_postambles</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="kc">True</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">crest_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_crest_path</span>
+
+    <span class="nd">@crest_path</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">crest_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_crest_path</span> <span class="o">=</span> <span class="n">val</span>
+
 
 <div class="viewcode-block" id="CRESTJob.spin_polarization">
 <a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.crest.CRESTJob.spin_polarization">[docs]</a>
@@ -305,7 +310,7 @@
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Set the spin-polarization of the system.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_spinpol</span> <span class="o">=</span> <span class="n">val</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;-uhf&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
 
 
 <div class="viewcode-block" id="CRESTJob.multiplicity">
@@ -322,7 +327,7 @@
 
 <span class="sd">        The multiplicity is equal to 2*S+1 for spin-polarization of S.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_spinpol</span> <span class="o">=</span> <span class="p">(</span><span class="n">val</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;-uhf&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">val</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span></div>
 
 
 <div class="viewcode-block" id="CRESTJob.charge">
@@ -331,7 +336,7 @@
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Set the charge of the system.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_charge</span> <span class="o">=</span> <span class="n">val</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;-chrg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
 
 
 <div class="viewcode-block" id="CRESTJob.md_temperature">
@@ -340,7 +345,7 @@
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Set the temperature of the molecular dynamics steps. Defaults to 400K.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_temp</span> <span class="o">=</span> <span class="n">val</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;-tnmd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
 
 
 <div class="viewcode-block" id="CRESTJob.md_length">
@@ -349,7 +354,78 @@
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Set the length of the molecular dynamics steps. The default length will be multiplied by this value, e.g. the default value is 1.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mdlen</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;x</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">&#39;</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;-mdlen&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;x</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">&#39;</span></div>
+
+
+<div class="viewcode-block" id="CRESTJob.solvent">
+<a class="viewcode-back" href="../../../api/tcutility.job.html#tcutility.job.crest.CRESTJob.solvent">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">solvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;alpb&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Model solvation using the ALPB or GBSA model.</span>
+<span class="sd">        For available solvents see the `XTB documentation &lt;https://xtb-docs.readthedocs.io/en/latest/gbsa.html#parameterized-solvents&gt;`_.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name: the name of the solvent you want to use. If ``None`` turns off solvation.</span>
+<span class="sd">            model: the name of the model to use. Must be ``alpb`` or ``gbsa``. Defaults to ``alpb``.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;-alpb&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;alpb&#39;</span><span class="p">,</span> <span class="s1">&#39;gbsa&#39;</span><span class="p">],</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">_alpb_solvents</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;acetone&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;acetonitrile&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;aniline&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;benzaldehyde&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;benzene&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;ch2cl2&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;chcl3&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;cs2&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;dioxane&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;dmf&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;dmso&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;ether&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;ethylacetate&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;furane&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;hexandecane&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;hexane&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;methanol&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;nitromethane&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;octanol&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;woctanol&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;phenol&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;toluene&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;thf&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;water&#39;</span>
+        <span class="p">]</span>
+
+        <span class="n">_gbsa_solvents</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;acetone&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;acetonitrile&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;CH2Cl2&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;CHCl3&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;CS2&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;DMF&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;DMSO&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;ether&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;H2O&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;methanol&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;n-hexane&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;THF&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;toluene&#39;</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;alpb&#39;</span><span class="p">:</span>
+            <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_alpb_solvents</span><span class="p">,</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;-alpb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">spell_check</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_gbsa_solvents</span><span class="p">,</span> <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;-alpb&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;-g&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span></div>
 
 
     <span class="nd">@property</span>
@@ -403,7 +479,6 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">QCGJob</span><span class="p">(</span><span class="n">CRESTJob</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">crest_path</span> <span class="o">=</span> <span class="s1">&#39;crest&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_nsolv</span> <span class="o">=</span> <span class="mi">10</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fix_solute</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ensemble_generation_mode</span> <span class="o">=</span> <span class="s1">&#39;NCI-MTD&#39;</span>
@@ -510,7 +585,7 @@
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">runfile_path</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">runf</span><span class="p">:</span>
             <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;#!/bin/sh</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_preambles</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">crest_path</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">options</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_crest_path</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">options</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="n">runf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_postambles</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="kc">True</span>
@@ -542,19 +617,21 @@
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="c1"># with CRESTJob() as job:</span>
-    <span class="c1">#     job.rundir = &#39;tmp/SN2&#39;</span>
-    <span class="c1">#     job.name = &#39;CREST&#39;</span>
-    <span class="c1">#     job.molecule(&#39;../../../test/fixtures/xyz/transitionstate_radical_addition.xyz&#39;)</span>
-    <span class="c1">#     job.sbatch(p=&#39;tc&#39;, ntasks_per_node=32)</span>
+    <span class="k">with</span> <span class="n">CRESTJob</span><span class="p">(</span><span class="n">test_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="s1">&#39;tmp/SN2&#39;</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;CREST&#39;</span>
+        <span class="c1"># job.molecule(&#39;../../../test/fixtures/xyz/transitionstate_radical_addition.xyz&#39;)</span>
+        <span class="c1"># job.solvent(&#39;water&#39;)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">crest_path</span> <span class="o">=</span> <span class="s1">&#39;crest&#39;</span>
+        <span class="c1"># job.sbatch(p=&#39;tc&#39;, ntasks_per_node=32)</span>
 
-    <span class="k">with</span> <span class="n">QCGJob</span><span class="p">(</span><span class="n">test_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">job</span><span class="p">:</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">rundir</span> <span class="o">=</span> <span class="s1">&#39;calculations/Ammonia&#39;</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;QCG&#39;</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">molecule</span><span class="p">(</span><span class="s1">&#39;ammonia.xyz&#39;</span><span class="p">)</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">solvent</span><span class="p">(</span><span class="s1">&#39;water&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">_solvent</span><span class="p">)</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">sbatch</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="s1">&#39;tc&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+    <span class="c1"># with QCGJob(test_mode=True) as job:</span>
+    <span class="c1">#     job.rundir = &#39;calculations/Ammonia&#39;</span>
+    <span class="c1">#     job.name = &#39;QCG&#39;</span>
+    <span class="c1">#     job.molecule(&#39;ammonia.xyz&#39;)</span>
+    <span class="c1">#     job.solvent(&#39;water&#39;, 10)</span>
+    <span class="c1">#     print(job._solvent)</span>
+    <span class="c1">#     job.sbatch(p=&#39;tc&#39;, n=32)</span>
 
     <span class="c1"># for i in range(40):</span>
     <span class="c1">#     with CRESTJob(test_mode=False, overwrite=True) as job:</span>
