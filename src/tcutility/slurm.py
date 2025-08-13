@@ -68,6 +68,8 @@ def squeue(server: connect.Server = connect.Local()) -> results.Result:
     for line in output:
         [ret[col].append(val) for col, val in zip(columns, line.split())]
 
+    ret.directory = [os.path.abspath(d) for d in ret.directory]
+
     return ret
 
 
