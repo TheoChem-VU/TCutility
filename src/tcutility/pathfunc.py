@@ -189,7 +189,7 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
     # given the substitutions we build a regex pattern and a glob pattern
     glob_pattern = pattern
     for sub in substitutions:
-        pattern = pattern.replace("{" + sub + "}", "([a-zA-Z0-9_-]+)")
+        pattern = pattern.replace("{" + sub + "}", "([a-zA-Z0-9_.-]+)")
         glob_pattern = glob_pattern.replace("{" + sub + "}", "*")
 
     # get all applicable subdirectories
