@@ -20,6 +20,14 @@ tcutility.report.figure\_resizer module
    :show-inheritance:
    :undoc-members:
 
+tcutility.report.report module
+------------------------------
+
+.. automodule:: tcutility.report.report
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 Module contents
 ---------------
 

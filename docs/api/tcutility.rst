@@ -106,14 +106,6 @@ tcutility.pathfunc module
    :show-inheritance:
    :undoc-members:
 
-tcutility.report module
------------------------
-
-.. automodule:: tcutility.report
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
 tcutility.slurm module
 ----------------------
 

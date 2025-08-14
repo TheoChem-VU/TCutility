@@ -245,16 +245,22 @@
                 <article class="bd-article">
                   
   <h1>Source code for tcutility.results.result</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;Module containing the TCutility.results.result.Result class.&#39;&#39;&#39;</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">dictfunc</span>
+<span></span><span class="sd">&quot;&quot;&quot;Module containing the TCutility.results.result.Result class.&quot;&quot;&quot;</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">dictfunc</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Result">
 <a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Result</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary. </span>
-<span class="sd">    The class works case-insensitively, but will retain the case of the key when it was first set.&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class used for storing results from AMS calculations. The class is functionally a dictionary, but allows dot notation to access variables in the dictionary.</span>
+<span class="sd">    The class works case-insensitively, but will retain the case of the key when it was first set.&quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -268,20 +274,20 @@
                 <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;Calling of a dictionary subclass should not be possible, instead we raise an error with information about the key and method that were attempted to be called.&#39;&#39;&#39;</span>
-        <span class="n">head</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_parent_tree</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parent_tree</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calling of a dictionary subclass should not be possible, instead we raise an error with information about the key and method that were attempted to be called.&quot;&quot;&quot;</span>
+        <span class="n">head</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_parent_tree</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parent_tree</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Tried to call method &quot;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s1">&quot; from </span><span class="si">{</span><span class="n">head</span><span class="si">}</span><span class="s1">, but </span><span class="si">{</span><span class="n">head</span><span class="si">}</span><span class="s1"> is empty&#39;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;Override str method to prevent printing of hidden keys. You can still print them if you call repr instead of str.&#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Override str method to prevent printing of hidden keys. You can still print them if you call repr instead of str.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span>
 
 <div class="viewcode-block" id="Result.items">
 <a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.items">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;We override the items method from dict in order to skip certain keys. We want to hide keys starting and ending</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;We override the items method from dict in order to skip certain keys. We want to hide keys starting and ending</span>
 <span class="sd">        with dunders, as they should not be exposed to the user.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span></div>
 
 
@@ -289,19 +295,20 @@
 <a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.keys">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">original_keys</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">original_keys</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">))]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">original_keys</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">))]</span></div>
 
 
 <div class="viewcode-block" id="Result.multi_keys">
 <a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.multi_keys">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">multi_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return multi_keys for this Result object. These are unnested keys that can be used if you want a flattened Result object.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">def</span><span class="w"> </span><span class="nf">dict_to_list</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Return a nested dictionary as a list of keys and values.</span>
-<span class="sd">            &#39;&#39;&#39;</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="n">lst</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="k">return</span> <span class="p">[[</span><span class="n">a</span><span class="p">]]</span>
@@ -318,12 +325,12 @@
         <span class="c1"># cast this object to a list of keys and values</span>
         <span class="n">mks</span> <span class="o">=</span> <span class="n">dict_to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="c1"># write the multi-keys separated with dots</span>
-        <span class="n">mks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mk</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">mk</span> <span class="ow">in</span> <span class="n">mks</span><span class="p">]</span>
+        <span class="n">mks</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mk</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">mk</span> <span class="ow">in</span> <span class="n">mks</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">mks</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__set_empty</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="n">val</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__get_case</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
@@ -346,22 +353,22 @@
         <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="n">key_</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">key_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;Hashing of a dictionary subclass should not be possible, instead we should raise an error to let the user know</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Hashing of a dictionary subclass should not be possible, instead we should raise an error to let the user know</span>
 <span class="sd">        that they made a mistake. Also give information of which key was being read.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Tried to hash </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_parent_tree</span><span class="p">()</span><span class="si">}</span><span class="s1">, but it is empty&#39;</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tried to hash </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_parent_tree</span><span class="p">()</span><span class="si">}</span><span class="s2">, but it is empty&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;TCutility.results.result.Result&#39;</span>
+        <span class="k">return</span> <span class="s2">&quot;TCutility.results.result.Result&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;Make sure that keys starting and ending in &quot;__&quot; are skipped&#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">([</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">))])</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make sure that keys starting and ending in &quot;__&quot; are skipped&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">([</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">))])</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__sizeof__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Magic method used by `sys.getsizeof &lt;https://docs.python.org/3/library/sys.html#sys.getsizeof&gt;`_ to determine the memory footprint of this object.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">s</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__sizeof__</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">multi_keys</span><span class="p">():</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_multi_key</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
@@ -370,27 +377,27 @@
 <div class="viewcode-block" id="Result.getsizeof">
 <a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.getsizeof">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">getsizeof</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the size of this object in bytes.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sizeof__</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Result.get_parent_tree">
 <a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.get_parent_tree">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_parent_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;Method to get the path from this object to the parent object. The result is presented in a formatted string&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Method to get the path from this object to the parent object. The result is presented in a formatted string&quot;&quot;&quot;</span>
         <span class="c1"># every parent except the top-most parent has defined a __parent__ attribute</span>
-        <span class="k">if</span> <span class="s1">&#39;__parent__&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;Head&#39;</span>
+        <span class="k">if</span> <span class="s2">&quot;__parent__&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;Head&quot;</span>
         <span class="c1"># iteratively build the tree using the __name__ attribute.</span>
         <span class="n">parent_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent__</span><span class="o">.</span><span class="n">get_parent_tree</span><span class="p">()</span>
-        <span class="n">parent_names</span> <span class="o">+=</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">parent_names</span> <span class="o">+=</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__name__</span>
         <span class="k">return</span> <span class="n">parent_names</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__set_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="c1"># This function checks if the key has been set. </span>
+        <span class="c1"># This function checks if the key has been set.</span>
         <span class="c1"># If it has not, we create a new Result object and set it at the desired key</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_case</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">val</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
@@ -410,8 +417,7 @@
 <div class="viewcode-block" id="Result.prune">
 <a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.prune">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">prune</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;Remove empty paths of this object.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove empty paths of this object.&quot;&quot;&quot;</span>
         <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
@@ -425,25 +431,28 @@
 
 <div class="viewcode-block" id="Result.get_multi_key">
 <a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.get_multi_key">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_multi_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Method that returns the value of a &quot;multikey&quot;. The multikey is multiple keys joined by dots. </span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_multi_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method that returns the value of a &quot;multikey&quot;. The multikey is multiple keys joined by dots.</span>
 <span class="sd">        E.g. res.properties.energy.bond can be gotten by calling res.get_multi_key(&quot;properties.energy.bond&quot;)</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span>
-        <span class="k">for</span> <span class="n">keypart</span> <span class="ow">in</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">keypart</span> <span class="ow">in</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">keypart</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default</span>
         <span class="k">return</span> <span class="n">data</span></div>
 
 
 <div class="viewcode-block" id="Result.as_plams_settings">
 <a class="viewcode-back" href="../../../api/tcutility.results.html#tcutility.results.result.Result.as_plams_settings">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">as_plams_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns this Result object as a plams.Settings object.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">scm</span><span class="w"> </span><span class="kn">import</span> <span class="n">plams</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">dictfunc</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">scm</span><span class="w"> </span><span class="kn">import</span> <span class="n">plams</span>
 
         <span class="n">clean_dict</span> <span class="o">=</span> <span class="n">dictfunc</span><span class="o">.</span><span class="n">list_to_dict</span><span class="p">(</span><span class="n">dictfunc</span><span class="o">.</span><span class="n">dict_to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">plams</span><span class="o">.</span><span class="n">Settings</span><span class="p">(</span><span class="n">clean_dict</span><span class="p">)</span></div>
@@ -464,12 +473,12 @@
 
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
     <span class="c1"># print(ret.adf)</span>
     <span class="c1"># print(dict(ret.adf))</span>
     <span class="c1"># print(bool(ret.adf))</span>
-    <span class="n">ret</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+    <span class="n">ret</span><span class="o">.</span><span class="n">adf</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
     <span class="c1"># ret.adf.system.atoms = []</span>
     <span class="c1"># ret.adf.system.atoms.append(&#39;test 1 2 3&#39;)</span>
 
