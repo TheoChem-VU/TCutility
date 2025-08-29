@@ -91,6 +91,8 @@ def get_pages(data):
 	url = data['message']['URL']
 	if 'ceur.' in url:
 		return 'e' + url.split('ceur.')[-1]
+	if 'cphc.' in url:
+		return 'e' + url.split('cphc.')[-1]
 
 
 def is_accepted(data):
@@ -220,3 +222,5 @@ def _format_book_chapter(data: dict, style: str) -> str:
 	return citation
 
 
+
+# print(cite('https://chemistry-europe.onlinelibrary.wiley.com/doi/epdf/10.1002/cphc.202400728'))
