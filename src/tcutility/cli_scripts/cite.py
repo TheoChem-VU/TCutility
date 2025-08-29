@@ -275,9 +275,9 @@ def generate_citations(objects: List[str], wiley: bool, acs: bool, rsc: bool, ou
                 paragraphs = format_paragraph(methodology_references[obj.lower()], style=style)
 
             # if we still dont have a paragraphs we check if it is a DOI
-            if paragraphs is None and obj.startswith("10."):
-                print("DOI")
-                paragraph_title = f"DOI: <b>{obj}</b>"
+            if paragraphs is None:
+                print("Article")
+                paragraph_title = f"Article: <b>{obj}</b>"
                 paragraphs = format_paragraph([obj], style=style)
 
             if paragraphs is None:
