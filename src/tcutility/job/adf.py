@@ -368,7 +368,7 @@ class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
         self.decompose_elstat = kwargs.pop('decompose_elstat', False)
         self.counter_poise = kwargs.pop('counter_poise', False)
-        self.scf0_calculation = kwargs.pop('sfo0_calculation', False)
+        self.scf0_calculation = kwargs.pop('SCF0_calculation', False)
         self._frag_occupations = {}
         self.child_jobs = {}
         super().__init__(*args, **kwargs)
