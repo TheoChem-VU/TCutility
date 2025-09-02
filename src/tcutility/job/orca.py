@@ -156,6 +156,9 @@ class ORCAJob(Job):
             if option == "main":
                 continue
 
+            if option.lower() == "frag":
+                continue
+
             if isinstance(block, results.Result):
                 ret += f"%{option}\n"
 
@@ -179,6 +182,13 @@ class ORCAJob(Job):
                 else:
                     ret += f"    {atom.symbol:3} {atom.x: >13f} {atom.y: >13f} {atom.z: >13f}\n"
             ret += "*\n"
+
+
+        if 'frag' in self.settings:
+            ret += f"%Frag\n"
+            for key, val in self.settings.frag.items():
+                ret += f"    {key} {val}\n"
+            ret += "END\n\n"
 
         return ret
 
@@ -231,7 +241,79 @@ class ORCAJob(Job):
         return j(self.workdir, "OPT.xyz")
 
 
+
+class ORCAFragmentJob(ORCAJob):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._fragments = {}  # store data for fragments here
+        self.main('EDA')
+
+
+    def add_fragment(self, mol: plams.Molecule, name: str = None, charge: int = 0, spin_polarization: int = 0):
+        """
+        Add a fragment to this job. Optionally give the name, charge and spin-polarization of the fragment as well.
+
+        Args:
+            mol: the molecule corresponding to the fragment.
+            name: the name of the fragment. By default it will be set to ``fragment{N+1}`` if ``N`` is the number of fragments already present.
+            charge: the charge of the fragment to be added.
+            spin_polarization: the spin-polarization of the fragment to be added.
+        """ 
+        # store the molecule, charge, multiplicity and spinflip per fragment
+        if isinstance(mol, str):
+            mol = plams.Molecule(mol)
+
+        if self._molecule is None:
+            self._molecule = mol
+        else:
+            self._molecule += mol
+
+        if name is None:
+            i = 1
+            while str(i) in self._fragments:
+                i += 1
+            name = str(i)
+
+        self._fragments[name] = (mol, charge, spin_polarization, spin_polarization < 0)
+        self._write_eda()
+
+    def _write_eda(self):
+        self.settings.EDA = {}
+        self.settings.Frag.Definition = '\n'
+        spin_pol_total = 0
+        charge_total = 0
+        fragidx = 0
+        mol_idx = 0
+        self._molecule = plams.Molecule()
+        for data in self._fragments.values():
+            fragidx += 1
+            self.settings.EDA[f'FRAG{fragidx}'] = '"' + " ".join([main for main in self.settings.main if main.lower() not in ['eda', 'sp', 'opt', 'freq', 'optts', 'neb']]) + '"'
+            self.settings.EDA[f'FRAG{fragidx}_C'] = data[1]
+            self.settings.EDA[f'FRAG{fragidx}_M'] = abs(data[2]) + 1
+            if data[3]:
+                self.settings.EDA[f'FRAG{fragidx}_SF'] = 'TRUE'
+
+            self._molecule += data[0]
+
+            self.settings.Frag.Definition += '        ' + str(fragidx) + ' {' +f'{mol_idx}:{mol_idx+len(data[0])-1}' + '} end\n'
+            mol_idx += len(data[0])
+
+            charge_total += data[1]
+            spin_pol_total += data[2]
+
+        self.settings.Frag.Definition += '    end'
+        self._multiplicity = abs(spin_pol_total) + 1
+        self._charge = charge_total
+
+
+
 if __name__ == "__main__":
-    job = ORCAJob()
-    job.main("OPT cc-pVTZ")
-    job.remove_main("OPT OPTTS NEB")
+    # job = ORCAJob()
+    # job.main("OPT cc-pVTZ")
+    # job.remove_main("OPT OPTTS NEB")
+
+    with ORCAFragmentJob() as job:
+        job.main('BP86 TZVP')
+        job.add_fragment("/Users/yumanhordijk/PhD/Programs/TheoCheM/TCutility/examples/orca_fragmentjob/frag1.xyz", spin_polarization=-1)
+        job.add_fragment("/Users/yumanhordijk/PhD/Programs/TheoCheM/TCutility/examples/orca_fragmentjob/frag2.xyz", spin_polarization=1)
+    # job.remove_main("OPT OPTTS NEB")
