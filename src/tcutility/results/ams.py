@@ -415,7 +415,10 @@ def get_pes(calc_dir: str) -> Result:
     ret.nscan_coords = reader_ams.read("PESScan", "nScanCoord")
     ret.scan_coord_name = [reader_ams.read("PESScan", f"ScanCoord({i+1})").strip() for i in range(ret.nscan_coords)]
     ret.npoints = [reader_ams.read("PESScan", f"nPoints({i+1})") for i in range(ret.nscan_coords)]
-    ret.scan_coord = [np.linspace(reader_ams.read("PESScan", f"RangeStart({i+1})"), reader_ams.read("PESScan", f"RangeEnd({i+1})"), ret.npoints[i]) * constants.BOHR2ANG for i in range(ret.nscan_coords)]
+    
+    conversion_factors = [constants.BOHR2ANG if name.startswith('Distance') else 180/np.pi for name in ret.scan_coord_name]
+
+    ret.scan_coord = [np.linspace(reader_ams.read("PESScan", f"RangeStart({i+1})"), reader_ams.read("PESScan", f"RangeEnd({i+1})"), ret.npoints[i]) * f for i, f in zip(range(ret.nscan_coords), conversion_factors)]
     if ("PESScan", "PES") in reader_ams:
         # if we have the PES we can get the energies and coordinates
         ret.energies = np.array(reader_ams.read("PESScan", "PES")).reshape(*ret.npoints) * constants.HA2KCALMOL
