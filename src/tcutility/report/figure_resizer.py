@@ -17,6 +17,7 @@ def _analyse_img(file, plot=False):
     Function used for analysing and getting useful information from an image.
     This includes circle locations and sizes.
     """
+    import cv2
     import matplotlib.pyplot as plt
 
     # Read image
