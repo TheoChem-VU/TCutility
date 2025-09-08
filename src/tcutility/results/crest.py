@@ -1,7 +1,7 @@
 import os
 
 from tcutility import molecule, pathfunc
-from tcutility.results import Result
+from tcutility.results.result import Result
 
 j = os.path.join
 
@@ -44,13 +44,13 @@ def get_calc_files(calc_dir: str) -> Result:
         if file.endswith("hessian"):
             ret.hessian = os.path.abspath(file)
             continue
-        if file.endswith('crest_conformers.xyz'):
+        if file.endswith("crest_conformers.xyz"):
             ret.conformers = os.path.abspath(file)
             continue
-        if file.endswith('crest_rotamers.xyz'):
+        if file.endswith("crest_rotamers.xyz"):
             ret.rotamers = os.path.abspath(file)
             continue
-        if file.endswith('crest_best.xyz'):
+        if file.endswith("crest_best.xyz"):
             ret.best = os.path.abspath(file)
             continue
         ret.extra.append(os.path.abspath(file))
@@ -81,7 +81,7 @@ def get_version(info: Result) -> Result:
             ret.full = version
             ret.major = version.split(".")[0]
             ret.minor = version.split(".")[1]
-            ret.micro = ''
+            ret.micro = ""
             return ret
 
 
@@ -106,7 +106,7 @@ def get_input(info: Result) -> Result:
             line = line.strip()
             if line.startswith("Command line input:"):
                 # next line contains the call
-                call = lines[i+1].strip().removeprefix('>').strip().split()
+                call = lines[i + 1].strip().removeprefix(">").strip().split()
 
     ret.call = " ".join(call)
     ### TASK
@@ -269,15 +269,15 @@ def get_molecules(info: Result) -> Result:
     if "conformers" in info.files:
         with open(info.files.conformers) as ensemble:
             lines = ensemble.readlines()
-            number_of_mols = len(lines)//(ret.number_of_atoms + 2)
-            mol_lines = [lines[i*(ret.number_of_atoms + 2):(i+1)*(ret.number_of_atoms + 2)] for i in range(number_of_mols)]
+            number_of_mols = len(lines) // (ret.number_of_atoms + 2)
+            mol_lines = [lines[i * (ret.number_of_atoms + 2) : (i + 1) * (ret.number_of_atoms + 2)] for i in range(number_of_mols)]
             ret.conformers = [molecule.from_string("".join(mol_lines_)) for mol_lines_ in mol_lines]
 
     if "rotamers" in info.files:
         with open(info.files.rotamers) as ensemble:
             lines = ensemble.readlines()
-            number_of_mols = len(lines)//(ret.number_of_atoms + 2)
-            mol_lines = [lines[i*(ret.number_of_atoms + 2):(i+1)*(ret.number_of_atoms + 2)] for i in range(number_of_mols)]
+            number_of_mols = len(lines) // (ret.number_of_atoms + 2)
+            mol_lines = [lines[i * (ret.number_of_atoms + 2) : (i + 1) * (ret.number_of_atoms + 2)] for i in range(number_of_mols)]
             ret.rotamers = [molecule.from_string("".join(mol_lines_)) for mol_lines_ in mol_lines]
 
     return ret

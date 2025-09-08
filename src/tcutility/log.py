@@ -9,7 +9,7 @@ from typing import Any, Generator, Iterable, List, Sequence, TypeVar, Union
 
 import numpy as np
 
-from tcutility import ensure_2d
+from tcutility.typing_utilities import ensure_2d
 
 # from threading import Thread
 
@@ -23,6 +23,7 @@ max_width = 0  # maximum width of printed messages. Default 0 means unbounded
 print_date = True  # print time stamp before a logged message
 log_level = 20  # the level of verbosity. Messages with a log_level >= this number will be sent to logfile
 add_caller_name = False  # whether to include the caller name in the message
+
 
 class Emojis:
     """
@@ -196,6 +197,8 @@ def rectangle_list(values: Sequence, spaces_before: int = 0, level: int = 20):
     This function prints a list of strings in a rectangle to the output.
     This is similar to what the ls program does in unix.
     """
+    prev_mat = None
+    prev_col_lens = []
     n_shell_col = os.get_terminal_size().columns
     # we first have to determine the correct dimensions of our rectangle
     for ncol in range(1, n_shell_col):
@@ -217,7 +220,13 @@ def rectangle_list(values: Sequence, spaces_before: int = 0, level: int = 20):
         prev_col_lens = col_lens
         prev_mat = mat
 
-    # then print the strings with the right column widths
+    # then print the strings with the right column widths if the prev_mat is not None
+    if prev_mat is None:
+        return
+
+    if prev_col_lens is None:
+        return
+
     for row in prev_mat:
         log(" " * spaces_before + "  ".join([x.ljust(col_len) for x, col_len in zip(row, prev_col_lens)]), level=level)
 
@@ -267,6 +276,8 @@ def loadbar(sequence: Union[Iterable[T], Sequence[T]], comment: str = "", Nsegme
 
     # track when the loading bar started. We use this to calculate the ETA later
     loading_bar_start_time = perf_counter()
+
+    i = -1  # Initialize i to handle case when sequence is empty
     for i, val in enumerate(sequence):
         # we only print the loading bar on every Nsteps iterations
         if i % (N // min(N, Nsteps)) != 0:
@@ -297,7 +308,7 @@ def loadbar(sequence: Union[Iterable[T], Sequence[T]], comment: str = "", Nsegme
             eta = f"{time_left:.1f}"
 
         # build the loading bar string
-        s = f'{i:{Ndigits}}/{N} {"├" if i > 0 else "|"}{filled + cursor + empty}{"│"} {i/N:4.0%} {comment} [ETA: {eta}s]'.ljust(max_length)
+        s = f"{i:{Ndigits}}/{N} {'├' if i > 0 else '|'}{filled + cursor + empty}{'│'} {i / N:4.0%} {comment} [ETA: {eta}s]".ljust(max_length)
 
         # update the max loading bar string length
         max_length = max(len(s), max_length)
@@ -306,7 +317,7 @@ def loadbar(sequence: Union[Iterable[T], Sequence[T]], comment: str = "", Nsegme
         yield val
 
     # plot the final iteration at 100% filled
-    s = f'{i+1:{Ndigits}}/{N} {"├"}{"─"*(Nsegments+1)}┤ 100% {comment}'.ljust(max_length)
+    s = f"{i + 1:{Ndigits}}/{N} {'├'}{'─' * (Nsegments + 1)}┤ 100% {comment}".ljust(max_length)
     log(s, end="\r", level=level)
     log(level=level)
 
@@ -397,7 +408,6 @@ def warn(message: str, level: int = 30, caller_level: int = 2):
         log("[WARNING] " + message, level=level)
 
 
-
 def error(message: str, level: int = 40, caller_level: int = 2):
     """
     Print an error message.
@@ -408,7 +418,6 @@ def error(message: str, level: int = 40, caller_level: int = 2):
         log("[ERROR] " + message, level=level)
 
 
-
 def critical(message: str, level: int = 50, caller_level: int = 2):
     """
     Print a critical message.
@@ -417,7 +426,6 @@ def critical(message: str, level: int = 50, caller_level: int = 2):
         log(f"[CRITICAL]({caller_name(caller_level)}): " + message, level=level)
     else:
         log("[CRITICAL] " + message, level=level)
-
 
 
 def caller_name(level: int = 1) -> str:

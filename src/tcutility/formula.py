@@ -1,4 +1,5 @@
 from typing import Union
+
 from scm import plams
 
 
@@ -31,13 +32,13 @@ def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str
     Parse and return a string containing a molecular formula that will show up properly in LaTeX, HTML or unicode.
 
     Args:
-        molecule: ``plams.Molecule`` object or a string that contains the molecular formula to be parsed. 
+        molecule: ``plams.Molecule`` object or a string that contains the molecular formula to be parsed.
             It can be either single molecule or a reaction. Molecules should be separated by ``+`` or ``->``.
         mode: the formatter to convert the string to. Should be ``unicode``, ``html``, ``latex``, ``pyplot``.
 
     Returns:
-        A string that is formatted to be rendered nicely in either HTML or LaTeX. 
-        In the returned strings any numbers will be subscripted and ``+``, ``-``, ``*`` and ``•`` will be superscripted. 
+        A string that is formatted to be rendered nicely in either HTML or LaTeX.
+        In the returned strings any numbers will be subscripted and ``+``, ``-``, ``*`` and ``•`` will be superscripted.
         For ``latex`` and ``pyplot`` modes we apply ``\\mathrm`` to letters.
 
     Examples:
@@ -77,10 +78,10 @@ def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str
                 partret = partret.replace(num, "₀₁₂₃₄₅₆₇₈₉"[int(num)])
 
         partret_ = partret
-        partret = ''
+        partret = ""
         for char in partret_:
             if char.isalpha() and mode in ["latex", "pyplot"]:
-                partret += f"\mathrm{{{char}}}"
+                partret += rf"\mathrm{{{char}}}"
             else:
                 partret += char
 
@@ -88,16 +89,16 @@ def molecule(molecule: Union[str, plams.Molecule], mode: str = "unicode") -> str
         for sign in "+-•":
             # negative charges should be denoted by em dash and not a normal dash
             if mode in ["latex", "pyplot"]:
-                partret = partret.replace(sign, f'^{sign.replace("-", "—")}')
+                partret = partret.replace(sign, f"^{sign.replace('-', '—')}")
             if mode == "html":
-                partret = partret.replace(sign, f'<sup>{sign.replace("-", "—")}</sup>')
+                partret = partret.replace(sign, f"<sup>{sign.replace('-', '—')}</sup>")
             if mode == "unicode":
                 partret = partret.replace(sign, "⁺⁻•"["+-•".index(sign)])
         # replace the part in the original string
         molstring = molstring.replace(part, partret)
 
-    if mode == 'pyplot':
-        return fr"${molstring}$"
+    if mode == "pyplot":
+        return rf"${molstring}$"
 
     return molstring
 
@@ -107,4 +108,4 @@ if __name__ == "__main__":
     # mol = plams.Molecule(r"D:\Users\Yuman\Desktop\PhD\TCutility\test\fixtures\chloromethane_sn2_ts\ts sn2.results\output.xyz")
     # print(molecule(mol))
 
-    print(molecule('NMe2*', mode='latex'))
+    print(molecule("NMe2*", mode="latex"))

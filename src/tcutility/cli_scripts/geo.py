@@ -4,7 +4,9 @@ from typing import Dict, List, Tuple
 
 import click
 from strenum import StrEnum
-from tcutility import geometry, molecule, results
+
+from tcutility import geometry, molecule
+from tcutility.results.read import read
 
 
 class GeometricParameter(StrEnum):
@@ -15,7 +17,7 @@ class GeometricParameter(StrEnum):
     ANGLE = "Angle"
     DIHEDRAL = "Dihedral"
     PYRAMIDAL = "Pyramidal"
-    SUMOFANGLES = 'SumOfAngles'
+    SUMOFANGLES = "SumOfAngles"
 
 
 geometric_character_to_info_mapping: Dict[GeometricParameter, Tuple[str, str, int]] = {
@@ -38,7 +40,7 @@ def calculate_geometry_parameter(path: str, atom_indices: List[str], pyramidal: 
     \b
     Calculate geometrical parameters for atoms at the provided ATOM_INDICES (NB: counting starts at 1).
     PATH should be an XYZ-file or a calculation directory.
-    
+
     \b
     For 0 indices we return all coordinates of the molecule in PATH.
     For 1 index this program returns the cartesian coordinate for this atom.
@@ -47,15 +49,15 @@ def calculate_geometry_parameter(path: str, atom_indices: List[str], pyramidal: 
     For 4 indices return dihedral angle by calculating the angle between normal vectors
         described by atoms at indices 1-2-3 and indices 2-3-4.
     \b
-    If the -p/--pyramidal flag is turned on it calculates 360° - ang1 - ang2 - ang3, 
-        where ang1, ang2 and ang3 are the angles described by indices 2-1-3, 3-1-4 
+    If the -p/--pyramidal flag is turned on it calculates 360° - ang1 - ang2 - ang3,
+        where ang1, ang2 and ang3 are the angles described by indices 2-1-3, 3-1-4
         and 4-1-2 respectively.
     If the -s/--soa flag is turned on it calculates ang1 + ang2 + ang3.
     """
     try:
         mol = molecule.load(path)
     except IsADirectoryError:
-        mol = results.read(path).molecule.output
+        mol = read(path).molecule.output
 
     assert 0 <= len(atom_indices) <= 4, f"Number of atom indices must be 1, 2, 3 or 4, not {len(atom_indices)}"
 
@@ -66,7 +68,7 @@ def calculate_geometry_parameter(path: str, atom_indices: List[str], pyramidal: 
 
     atom_indices = [int(i) - 1 for i in atom_indices]
 
-    atoms = "-".join([f"{mol[i+1].symbol}{i+1}" for i in atom_indices])
+    atoms = "-".join([f"{mol[i + 1].symbol}{i + 1}" for i in atom_indices])
 
     param_value = geometry.parameter(mol, *atom_indices, pyramidal=pyramidal, sum_of_angles=soa)
 

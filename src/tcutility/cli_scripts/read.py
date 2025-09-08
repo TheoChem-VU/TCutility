@@ -2,7 +2,8 @@ from pprint import pprint
 from typing import List
 
 import click
-from tcutility import results
+
+from tcutility.results.read import read
 
 
 @click.command()
@@ -12,7 +13,7 @@ from tcutility import results
 @click.argument("keys", nargs=-1)
 def read_results(status: bool, properties: bool, workdir: str, keys: List[str]):
     """Read results from a calculation."""
-    res = results.read(workdir)
+    res = read(workdir)
 
     if status:
         print(res.status.name)  # type: ignore # status is a str

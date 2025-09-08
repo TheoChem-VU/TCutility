@@ -1,34 +1,27 @@
 from __future__ import annotations
 
+from importlib.util import find_spec
+
+from tcutility import environment, errors
+
+if find_spec("pandas") is None:
+    raise errors.MissingOptionalPackageError("pandas")
+
 import copy
-import functools
 import pathlib as pl
 from itertools import zip_longest
-from typing import Dict, List, Optional, Sequence, Union
+from typing import Dict, List, Literal, Optional, Sequence, Set, Union
 
-import attrs
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-import tcutility.log as log
 from tcutility.analysis.vdd import charge
 from tcutility.constants import VDD_UNITS
 from tcutility.results import result
 
 PRINT_FORMAT = {"me": "%+.0f", "e": "%+.3f"}
 
-
-def change_unit_decorator(func):
-    @functools.wraps(func)
-    def wrapper(self, unit: str = "me", *args, **kwargs):
-        current_unit = self.unit
-        self.change_unit(unit)
-        result = func(self, *args, **kwargs)
-        self.change_unit(current_unit)
-        return result
-
-    return wrapper
+__all__ = ["VDDChargeManager", "create_vdd_charge_manager"]
 
 
 def create_vdd_charge_manager(results: result.Result) -> VDDChargeManager:
@@ -51,23 +44,18 @@ def create_vdd_charge_manager(results: result.Result) -> VDDChargeManager:
     return VDDChargeManager(vdd_charges, is_fragment_calculation, calc_dir, mol_charge)
 
 
-@attrs.define
 class VDDChargeManager:
     """Class to manage the VDD charges. It can be used to print the VDD charges in a nice table and write them to a text file or excel file."""
 
-    vdd_charges: Dict[str, List[charge.VDDCharge]]  # {"vdd": [VDDCharge, ...], "irrep1": [VDDCharge, ...], ...}
-    is_fragment_calculation: bool
-    calc_dir: pl.Path
-    mol_charge: int
-    name: str = attrs.field(init=False)
-    unit: str = attrs.field(init=False, default="e")  # unit of the VDD charges. Available units are "me" (mili-electrons) and "e" (electrons)
-    irreps: List[str] = attrs.field(init=False, default=set())
-
-    def __attrs_post_init__(self):
-        self.irreps = list(self.vdd_charges.keys())
-        self.name = self.calc_dir.name if self.calc_dir is not None else self.name
+    def __init__(self, vdd_charges: Dict[str, List[charge.VDDCharge]], is_fragment_calculation: bool, calc_dir: pl.Path, mol_charge: int):
+        self.vdd_charges = vdd_charges
+        self.is_fragment_calculation = is_fragment_calculation
+        self.calc_dir = calc_dir
+        self.mol_charge = mol_charge
+        self.name = self.calc_dir.name if self.calc_dir is not None else ""
+        self.unit = "e"  # unit of the VDD charges. Available units are "me" (mili-electrons) and "e" (electrons)
+        self.irreps: Set[str] = set(self.vdd_charges.keys())
         self.change_unit("me")
-        log.info(f"VDDChargeManager created for {self.name}")
 
     def __str__(self) -> str:
         """Prints the VDD charges in a nice table. Checks if the calculation is a fragment calculation and prints the summed VDD charges if it is."""
@@ -98,15 +86,15 @@ class VDDChargeManager:
         [charge.change_unit(ratio) for charges in self.vdd_charges.values() for charge in charges]
         self.unit = new_unit
 
-    @change_unit_decorator
-    def get_vdd_charges(self) -> Dict[str, List[charge.VDDCharge]]:
+    def get_vdd_charges(self, unit: Literal["e", "me"] = "me") -> Dict[str, List[charge.VDDCharge]]:
         """Get the VDD charges in the specified unit ([me] or [e])."""
+        self.change_unit(unit)
         return copy.deepcopy(self.vdd_charges)
 
-    @change_unit_decorator
-    def get_summed_vdd_charges(self, irreps: Optional[Sequence[str]] = None) -> Dict[str, Dict[str, float]]:
+    def get_summed_vdd_charges(self, irreps: Optional[Sequence[str]] = None, unit: Literal["e", "me"] = "me") -> Dict[str, Dict[str, float]]:
         """Get the summed VDD charges per fragment for the specified unit ([me] or [e])."""
-        irreps = irreps if irreps is not None else self.irreps
+        self.change_unit(unit)
+        irreps = irreps if irreps is not None else list(self.irreps)
         summed_vdd_charges: Dict[str, Dict[str, float]] = {}
 
         for irrep in irreps:
@@ -120,6 +108,7 @@ class VDDChargeManager:
 
     def get_vdd_charges_dataframe(self) -> pd.DataFrame:
         """Get the VDD charges as a pandas DataFrame in a specified unit ([me] or [e])."""
+
         frag_indices = [charge.frag_index for charge in self.vdd_charges["vdd"]]
         atom_symbols = [f"{charge.atom_index}{charge.atom_symbol}" for charge in self.vdd_charges["vdd"]]
         charges = [[charge.charge for charge in charges] for _, charges in self.vdd_charges.items()]
@@ -162,6 +151,7 @@ class VDDChargeManager:
                         f.write(manager.get_summed_vdd_charges_table()) if manager.is_fragment_calculation else f.write("No fragment calculation\n")
                     f.write("\n\n")
 
+    @environment.requires_optional_package("openpyxl")
     def write_to_excel(self, output_file: Optional[Union[str, pl.Path]] = None) -> None:
         """Write the VDD charges to an excel file. Results are written to two sheets: "VDD charges" and "Summed VDD charges"."""
         file = pl.Path(output_file) if output_file is not None else self.calc_dir / f"vdd_charges_{self.name}.xlsx"
@@ -175,8 +165,11 @@ class VDDChargeManager:
                 df_summed = self.get_summed_vdd_charges_dataframe()
                 df_summed.to_excel(writer, sheet_name=f"Summed VDD charges  (in {self.unit})", index=False, float_format=PRINT_FORMAT[self.unit])
 
+    @environment.requires_optional_package("matplotlib")
     def plot_vdd_charges_per_atom(self, output_file: Optional[Union[str, pl.Path]] = None, unit: str = "me") -> None:
         """Plot the VDD charges as a bar graph for each irrep."""
+        import matplotlib.pyplot as plt
+
         file = pl.Path(output_file) if output_file is not None else self.calc_dir / f"vdd_charges_{self.name}.png"
         file = file.with_suffix(".png") if not file.suffix == ".png" else file
         self.change_unit(unit)

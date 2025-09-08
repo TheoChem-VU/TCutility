@@ -1,6 +1,7 @@
 import os
 
-from tcutility import cache, log
+import tcutility.log as log
+from tcutility import cache
 
 
 def _load_data() -> dict:

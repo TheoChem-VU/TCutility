@@ -3,9 +3,11 @@ from typing import Dict, List
 import numpy as np
 from scm.plams import KFReader
 
-from tcutility import constants, ensure_list
-from tcutility.results import Result, cache
-from tcutility.tc_typing import arrays
+import tcutility.results.cache as cache
+from tcutility import constants
+from tcutility.results.cache import TrackKFReader
+from tcutility.results.result import Result
+from tcutility.typing_utilities import Array1D, ensure_list
 
 # ------------------------------------------------------------- #
 # ------------------- Calculation Settings -------------------- #
@@ -110,7 +112,7 @@ def get_calc_settings(info: Result) -> Result:
 # ----------------------- VDD charges ------------------------- #
 
 
-def _read_vdd_charges(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
+def _read_vdd_charges(kf_reader: KFReader) -> Array1D[np.float64]:
     """Returns the VDD charges from the KFReader object."""
     vdd_scf: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_SCF Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
     vdd_ini: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_initial Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
@@ -119,19 +121,19 @@ def _read_vdd_charges(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
     return np.array([float((scf - ini)) for scf, ini in zip(vdd_scf, vdd_ini)])
 
 
-def _read_vdd_charges_initial(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
+def _read_vdd_charges_initial(kf_reader: KFReader) -> Array1D[np.float64]:
     """Returns the initial VDD charges from the KFReader object."""
     vdd_ini: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_initial Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
     return np.array(vdd_ini)
 
 
-def _read_vdd_charges_SCF(kf_reader: KFReader) -> arrays.Array1D[np.float64]:
+def _read_vdd_charges_SCF(kf_reader: KFReader) -> Array1D[np.float64]:
     """Returns the SCF VDD charges from the KFReader object."""
     vdd_scf: List[float] = ensure_list(kf_reader.read("Properties", "AtomCharge_SCF Voronoi"))  # type: ignore since plams does not include typing for KFReader. List[float] is returned
     return np.array(vdd_scf)
 
 
-def _get_vdd_charges_per_irrep(results_type: KFReader) -> Dict[str, arrays.Array1D[np.float64]]:
+def _get_vdd_charges_per_irrep(results_type: KFReader) -> Dict[str, Array1D[np.float64]]:
     """Extracts the Voronoi Deformation Density charges from the fragment calculation sorted per irrep."""
     symlabels = str(results_type.read("Symmetry", "symlab")).split()  # split on whitespace
 
@@ -151,7 +153,7 @@ def _get_vdd_charges_per_irrep(results_type: KFReader) -> Dict[str, arrays.Array
 # ----------------------- Vibrations ------------------------- #
 
 
-def _read_vibrations(reader: cache.TrackKFReader) -> Result:
+def _read_vibrations(reader: TrackKFReader) -> Result:
     ret = Result()
     ret.number_of_modes = reader.read("Vibrations", "nNormalModes")
     ret.frequencies = ensure_list(reader.read("Vibrations", "Frequencies[cm-1]"))
@@ -161,7 +163,7 @@ def _read_vibrations(reader: cache.TrackKFReader) -> Result:
     ret.character = "minimum" if ret.number_of_imag_modes == 0 else "transitionstate"
     ret.modes = []
     for i in range(ret.number_of_modes):
-        ret.modes.append(reader.read("Vibrations", f"NoWeightNormalMode({i+1})"))
+        ret.modes.append(reader.read("Vibrations", f"NoWeightNormalMode({i + 1})"))
     return ret
 
 
@@ -237,7 +239,6 @@ def get_properties(info: Result) -> Result:
                 ret.energy.elstat.Ven = float(Ven) * constants.HA2KCALMOL
                 ret.energy.elstat.Vnn = float(Vnn) * constants.HA2KCALMOL
             skip_next -= 1
-
 
     # print(info.files)
 

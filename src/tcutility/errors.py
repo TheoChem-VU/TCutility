@@ -39,3 +39,40 @@ class TCCompDetailsError(TCError):
         self.section = section
         self.message = message
         super().__init__(f"Error in {section}: {message}")
+
+
+# -----------------
+# Package / Dependency installation errors
+# -----------------
+
+
+class MissingOptionalPackageError(TCError):
+    """
+    Missing optional package related error.
+
+    This is a template taken from the PLAMS package
+    (https://github.com/SCM-NV/PLAMS/blob/trunk/src/scm/plams/core/errors.py).
+    """
+
+    extras_install = {
+        "pandas": "vdd",
+        "attrs": "vdd",
+        "openpyxl": "vdd",
+        "matplotlib": "plot",
+        "scipy": "analysis",
+        "networkx": "analysis",
+        "h5py": "analysis",
+        "docx": "report",
+        "htmldocx": "report",
+        "opencv-python": "report",
+        "pyfmo": "adf",
+        "requests": "cite",
+    }
+
+    def __init__(self, package_name: str):
+        msg = f"The optional package '{package_name}' is required for this TCutility functionality, but is not available. "
+        if (extras_name := self.extras_install.get(package_name, None)) is not None:
+            msg += f"It can be installed using the command: pip install 'tcutility[{extras_name}]'. "
+        msg += "Please install and try again."
+
+        super().__init__(msg)

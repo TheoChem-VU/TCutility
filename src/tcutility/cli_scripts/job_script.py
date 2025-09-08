@@ -3,8 +3,10 @@
 import os
 
 import click
-import tcutility
-from tcutility import job as tcjob
+
+from tcutility import molecule
+from tcutility.job.adf import ADFJob
+from tcutility.job.dftb import DFTBJob
 
 
 @click.command()
@@ -26,16 +28,16 @@ def optimize_geometry(level: str, charge: int, spinpol: int, output: str, keep: 
     if output is None:
         output = xyzfile.removesuffix(".xyz") + "_optimized.xyz"
 
-    mol = tcutility.molecule.load(xyzfile)
+    mol = molecule.load(xyzfile)
 
     # get the correct job class object and set the level-of-theory
     level = level or mol.flags.level_of_theory or "GFN1-xTB"  # type: ignore # mol flags can be any
     if level.lower() == "gfn1-xtb":
-        job = tcjob.DFTBJob(delete_on_finish=not keep)  # by default DFTBJob uses GFN1-xTB
+        job = DFTBJob(delete_on_finish=not keep)  # by default DFTBJob uses GFN1-xTB
     else:
         # if we are not using GFN1-xTB we will use ADF
         parts = level.split("/")
-        job = tcjob.ADFJob(delete_on_finish=not keep)
+        job = ADFJob(delete_on_finish=not keep)
         job.functional(parts[0])
         if len(parts) > 1:
             job.basis_set(parts[1])
@@ -43,7 +45,7 @@ def optimize_geometry(level: str, charge: int, spinpol: int, output: str, keep: 
     job.molecule(mol)
     job.optimization()
     job.charge(charge or mol.flags.charge or 0)  # type: ignore # mol flags can be any
-    if isinstance(job, tcjob.ADFJob):
+    if isinstance(job, ADFJob):
         job.spin_polarization(spinpol or mol.flags.spinpol or 0)  # type: ignore # mol flags can be any
 
     job.rundir = os.path.split(xyzfile)[0]

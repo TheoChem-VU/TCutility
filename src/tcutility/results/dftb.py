@@ -1,5 +1,7 @@
-from tcutility.results import cache, Result
-from tcutility import ensure_list, constants
+from tcutility import constants
+from tcutility.results import cache
+from tcutility.results.result import Result
+from tcutility.typing_utilities import ensure_list
 
 
 def get_calc_settings(info: Result) -> Result:
@@ -9,10 +11,10 @@ def get_calc_settings(info: Result) -> Result:
 
     assert info.engine == "dftb", f"This function reads DFTB data, not {info.engine} data"
 
-    if info.input.task == 'PESScan':
+    if info.input.task == "PESScan":
         return Result()
 
-    assert "dftb.rkf" in info.files, f'Missing dftb.rkf file, [{", ".join([": ".join(item) for item in info.files.items()])}]'
+    assert "dftb.rkf" in info.files, f"Missing dftb.rkf file, [{', '.join([': '.join(item) for item in info.files.items()])}]"
 
     ret = Result()
 
@@ -36,10 +38,10 @@ def get_properties(info: Result) -> Result:
 
     assert info.engine == "dftb", f"This function reads DFTB data, not {info.engine} data"
 
-    if info.input.task == 'PESScan':
+    if info.input.task == "PESScan":
         return Result()
 
-    assert "dftb.rkf" in info.files, f'Missing dftb.rkf file, [{", ".join([": ".join(item) for item in info.files.items()])}]'
+    assert "dftb.rkf" in info.files, f"Missing dftb.rkf file, [{', '.join([': '.join(item) for item in info.files.items()])}]"
 
     reader_dftb = cache.get(info.files["dftb.rkf"])
     ret = Result()
@@ -56,7 +58,7 @@ def get_properties(info: Result) -> Result:
     for i in range(1, number_of_properties + 1):
         subtypes.append(reader_dftb.read("Properties", f"Subtype({i})").strip())
         types.append(reader_dftb.read("Properties", f"Type({i})").strip())
-        if types[-1] == 'Energy':
+        if types[-1] == "Energy":
             values.append(reader_dftb.read("Properties", f"Value({i})") * constants.HA2KCALMOL)
         else:
             values.append(reader_dftb.read("Properties", f"Value({i})"))
@@ -65,11 +67,11 @@ def get_properties(info: Result) -> Result:
     for typ, subtyp, value in zip(types, subtypes, values):
         ret[typ.replace(" ", "_")][subtyp] = value
 
-    if ret.energy['DFTB Final Energy']:
-        ret.energy.bond = ret.energy['DFTB Final Energy']
+    if ret.energy["DFTB Final Energy"]:
+        ret.energy.bond = ret.energy["DFTB Final Energy"]
 
     # we also read vibrations
-    if ('Vibrations', 'nNormalModes') in reader_dftb:
+    if ("Vibrations", "nNormalModes") in reader_dftb:
         ret.vibrations.number_of_modes = reader_dftb.read("Vibrations", "nNormalModes")
         ret.vibrations.frequencies = ensure_list(reader_dftb.read("Vibrations", "Frequencies[cm-1]"))
         if ("Vibrations", "Intensities[km/mol]") in reader_dftb:
@@ -78,7 +80,7 @@ def get_properties(info: Result) -> Result:
         ret.vibrations.character = "minimum" if ret.vibrations.number_of_imag_modes == 0 else "transitionstate"
         ret.vibrations.modes = []
         for i in range(ret.vibrations.number_of_modes):
-            ret.vibrations.modes.append(reader_dftb.read("Vibrations", f"NoWeightNormalMode({i+1})"))
+            ret.vibrations.modes.append(reader_dftb.read("Vibrations", f"NoWeightNormalMode({i + 1})"))
 
     if ("Thermodynamics", "Gibbs free Energy") in reader_dftb:
         ret.energy.gibbs = reader_dftb.read("Thermodynamics", "Gibbs free Energy") * constants.HA2KCALMOL

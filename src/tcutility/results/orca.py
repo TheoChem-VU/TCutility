@@ -1,9 +1,10 @@
-from tcutility.results import Result
-from tcutility import constants, slurm
 import os
-from scm import plams
-import numpy as np
 
+import numpy as np
+from scm import plams
+
+from tcutility import constants, slurm
+from tcutility.results.result import Result
 
 j = os.path.join
 
@@ -26,16 +27,16 @@ def get_calc_files(calc_dir: str) -> Result:
     ret = Result()
     ret.root = os.path.abspath(calc_dir)
     for file in files:
-        with open(file, errors='ignore') as f:
+        with open(file, errors="ignore") as f:
             lines = f.readlines()
             # detect the output file
             if any(["* O   R   C   A *" in line for line in lines]):
                 ret.out = os.path.abspath(file)
-                continue    
+                continue
 
             # detect the input file
             # there should be lines starting with ! and also the system line, starting with * xyz, * xyzfile, * gzmtfile or * int
-            if any([line.startswith('!') for line in lines]) and any([(len(line.split()) > 2 and line.split()[0] == '*' and line.split()[1] in ['xyz', 'xyzfile', 'gzmtfile', 'int']) for line in lines]):
+            if any([line.startswith("!") for line in lines]) and any([(len(line.split()) > 2 and line.split()[0] == "*" and line.split()[1] in ["xyz", "xyzfile", "gzmtfile", "int"]) for line in lines]):
                 ret.inp = os.path.abspath(file)
                 continue
 
@@ -87,7 +88,7 @@ def get_input(info: Result) -> Result:
     ret = Result()
 
     # we read the input file first
-    if 'inp' in info.files:
+    if "inp" in info.files:
         with open(info.files.inp) as inp:
             lines = inp.readlines()
     # if we don't have it we read the output file, which contains the input as a block
@@ -158,7 +159,7 @@ def get_input(info: Result) -> Result:
     if coordinates in ["xyz", "int"]:
         ret.system.molecule = plams.Molecule()
         for line in system_lines:
-            line = line.replace(':', '')
+            line = line.replace(":", "")
             ret.system.molecule.add_atom(plams.Atom(symbol=line.split()[0], coords=[float(x) for x in line.split()[1:4]]))
 
     ret.task = "SinglePoint"
@@ -186,19 +187,19 @@ def get_level_of_theory(info: Result) -> Result:
     sett = info.input
     ret = Result()
     main = [x.lower() for x in sett.main]
-    ret.method = 'HF'
+    ret.method = "HF"
     for method in ["MP2", "CCSD", "CCSD(T)", "CCSDT"]:
         if method.lower() in main:
             ret.method = method
             break
 
-    ret.basis.type = 'def2-SVP'
+    ret.basis.type = "def2-SVP"
     for bs in ["cc-pVDZ", "cc-pVTZ", "cc-pVQZ", "cc-pV5Z", "aug-cc-pVDZ", "aug-cc-pVTZ", "aug-cc-pVQZ", "aug-cc-pV5Z"]:
         if bs.lower() in main:
             ret.basis.type = bs
 
     used_qros = sett.sections.mdci.UseQROs and sett.sections.mdci.UseQROs.lower() == "true"
-    ret.summary = f'{"QRO-" if used_qros else ""}{method}/{ret.basis.type}'
+    ret.summary = f"{'QRO-' if used_qros else ''}{method}/{ret.basis.type}"
 
     return ret
 
@@ -232,7 +233,7 @@ def get_calc_settings(info: Result) -> Result:
     # determine if the wavefunction are unrestricted or not
     ret.unrestricted = any(tag in main for tag in ["uhf", "uno"])
     ret.used_qros = info.input.sections.mdci.UseQROs and info.input.sections.mdci.UseQROs.lower() == "true"
-    ret.frequencies = "freq" in main or 'numfreq' in main
+    ret.frequencies = "freq" in main or "numfreq" in main
     ret.charge = int(info.input.system.charge)
     ret.spin_polarization = int(info.input.system.multiplicity) - 1
     ret.multiplicity = int(info.input.system.multiplicity)
@@ -287,12 +288,7 @@ def get_calculation_status(calc_dir: str) -> Result:
 
     # get the statuscode from the workdir
     state = slurm.workdir_info(os.path.abspath(files.root)).statuscode
-    state_name = {
-        'CG': 'COMPLETING',
-        'CF': 'CONFIGURING',
-        'PD': 'PENDING',
-        'R': 'RUNNING'
-    }.get(state, 'UNKNOWN')
+    state_name = {"CG": "COMPLETING", "CF": "CONFIGURING", "PD": "PENDING", "R": "RUNNING"}.get(state, "UNKNOWN")
 
     ret.fatal = False
     ret.name = state_name
@@ -561,4 +557,3 @@ def get_properties(info: Result) -> Result:
         ret.spin_contamination = (ret.s2 - ret.s2_expected) / ret.s2_expected
 
     return ret
-

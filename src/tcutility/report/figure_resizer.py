@@ -5,16 +5,20 @@ This module is used for resizing pictures containing molecules.
 import os
 from typing import Dict, Optional, Union
 
-import cv2
-import matplotlib.pyplot as plt
 import numpy as np
 
+from tcutility import environment
 
+
+@environment.requires_optional_package("matplotlib")
+@environment.requires_optional_package("opencv-python")
 def _analyse_img(file, plot=False):
     """
     Function used for analysing and getting useful information from an image.
     This includes circle locations and sizes.
     """
+    import matplotlib.pyplot as plt
+
     # Read image
     img = cv2.imread(file, cv2.IMREAD_UNCHANGED)
     img = _remove_padding(img)
@@ -46,10 +50,13 @@ def _analyse_img(file, plot=False):
     return circles, img
 
 
+@environment.requires_optional_package("opencv-python")
 def _remove_padding(img):
     """
     Function used to remove padding from an image.
     """
+    import cv2
+
     gray = cv2.cvtColor(img, cv2.COLOR_BGRA2GRAY)
     gray = 255 * (gray < 240).astype(np.uint8)  # To invert the text to white
     coords = cv2.findNonZero(gray)  # Find all non-zero points (text)
@@ -58,6 +65,7 @@ def _remove_padding(img):
     return rect
 
 
+@environment.requires_optional_package("opencv-python")
 def resize(img_paths, circle_numbers: Optional[Dict] = None, padding: Union[str, int, float] = 0):
     """
     The main function for this module.
@@ -72,6 +80,8 @@ def resize(img_paths, circle_numbers: Optional[Dict] = None, padding: Union[str,
             Alternatively a string consisting of a number and a `%` sign can be given to add relative padding.
             E.g. `padding='10%'` will add a 10% padding to the images.
     """
+    import cv2
+
     circles = {}
     imgs = {}
 

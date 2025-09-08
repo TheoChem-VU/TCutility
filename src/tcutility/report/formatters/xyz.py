@@ -4,8 +4,8 @@ from typing import List, Optional, TypeVar, Union
 
 import scm.plams as plams
 
-from tcutility import results
-from tcutility.results import Result
+from tcutility.results.read import read
+from tcutility.results.result import Result
 
 
 @dataclass
@@ -37,7 +37,7 @@ def check_if_job_is_suitable_for_xyz_format(obj: Union[Result, str]) -> bool:
     Other calculations such as PES scans, IRCs, etc. are not suitable.
     """
     if isinstance(obj, str):
-        obj = results.read(obj)
+        obj = read(obj)
 
     if obj is None or not obj:
         return False
@@ -53,7 +53,7 @@ def check_if_job_is_suitable_for_xyz_format(obj: Union[Result, str]) -> bool:
     return task.lower() in ["geometryoptimization", "singlepoint", "transitionstatesearch"]  # type: ignore  # Result object has no static typing
 
 
-def get_data_for_xyz_format(obj: results.Result) -> XYZData:
+def get_data_for_xyz_format(obj: Result) -> XYZData:
     return_data = XYZData(E=None, H=None, G=None, num_imag_modes=None, imag_freqs=None, molecule=None)
     if not obj.properties or obj.properties is None:
         return return_data
@@ -112,7 +112,7 @@ def format_xyz(data: XYZData, title: Union[str, None]) -> str:
 
 
 class StandardXYZFormatter:
-    def format(self, results: results.Result, title: Union[str, None] = None) -> str:
+    def format(self, results: Result, title: Union[str, None] = None) -> str:
         write_str = ""
 
         # The program will crash whwen trying to get data from a calculation, so check before proceeding

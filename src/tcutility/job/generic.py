@@ -1,19 +1,28 @@
 import os
 import stat
 import subprocess as sp
-from typing import List, Union
-import numpy as np
+from typing import List, TypeVar, Union
 
 import dictfunc
+import numpy as np
 from scm import plams
 
-from tcutility import log, molecule, results, slurm, connect, cache
-from tcutility.environment import OSName, get_os_name
+# These renaming imports are necessary to avoid circular imports (see the __init__.py file in the src/tcutility folder)
+import tcutility.connect as connect
+import tcutility.log as log
+import tcutility.molecule as molecule
+import tcutility.slurm as slurm
+from tcutility.cache import cache
 from tcutility.errors import TCJobError
+from tcutility.results.read import quick_status
+from tcutility.results.result import Result
+
+__all__ = []  # Job must not be imported with 'from tcutility.job import *'
 
 j = os.path.join
 
-@cache.cache
+
+@cache
 def _python_path(server: connect.Server = connect.Local()):
     """
     Sometimes it is necessary to have the Python path as some environments don't have its path.
@@ -23,19 +32,22 @@ def _python_path(server: connect.Server = connect.Local()):
     try:
         python = server.execute("which python")
     except sp.CalledProcessError:
-        python == ""
-        
+        python = ""
+
     if python == "" or not server.path_exists(python):
         try:
             python = server.execute("which python3")
         except sp.CalledProcessError:
-            python == ""
+            python = ""
 
     # we default to the python executable
     if python == "" or not server.path_exists(python):
         python = "python"
 
     return python
+
+
+TJob = TypeVar("TJob", bound="Job")
 
 
 class Job:
@@ -51,10 +63,9 @@ class Job:
         wait_for_finish: whether to wait for this job to finish running before continuing your runscript.
         delete_on_finish: whether to remove the workdir for this job after it is finished running.
     """
-    def __init__(
-        self, *base_jobs: List["Job"], test_mode: bool = None, overwrite: bool = None, wait_for_finish: bool = None, delete_on_finish: bool = None, delete_on_fail: bool = None, use_slurm: bool = True
-    ):
-        self._sbatch = results.Result()
+
+    def __init__(self, *base_jobs: List[TJob], test_mode: bool = False, overwrite: bool = False, wait_for_finish: bool = True, delete_on_finish: bool = False, delete_on_fail: bool = False, use_slurm: bool = True):
+        self._sbatch = Result()
         self._molecule = None
         self._molecule_path = None
         self.slurm_job_id = None
@@ -66,23 +77,18 @@ class Job:
         self._servers = [connect.Local()]
         self._server_weights = [1]
         self._selected_server = None
+        self.settings = plams.Settings()
 
         self.test_mode = test_mode
         self.overwrite = overwrite
         self.wait_for_finish = wait_for_finish
         self.delete_on_finish = delete_on_finish
+        self.delete_on_fail = delete_on_fail
         self.use_slurm = use_slurm
 
         # update this job with base_jobs
         for base_job in base_jobs:
             self.__dict__.update(base_job.copy().__dict__)
-
-        self.test_mode = self.test_mode if test_mode is None else test_mode
-        self.overwrite = self.overwrite if overwrite is None else overwrite
-        self.wait_for_finish = self.wait_for_finish if wait_for_finish is None else wait_for_finish
-        self.delete_on_finish = self.delete_on_finish if delete_on_finish is None else delete_on_finish
-        self.delete_on_fail = delete_on_fail if delete_on_fail is None else delete_on_fail
-        self.use_slurm = self.use_slurm if use_slurm is None else use_slurm
 
         # self.server = connect.get_current_server()
         # if self.server != connect.Local:
@@ -100,7 +106,7 @@ class Job:
 
     def _select_server(self) -> connect.Server:
         """
-        Select a server to run on based on the currently selected servers and their weights, 
+        Select a server to run on based on the currently selected servers and their weights,
         this will only choose a server once.
         """
         if self._selected_server is None:
@@ -123,14 +129,14 @@ class Job:
         """
         # see if we can use quick_status
         for server in self._servers:
-            res = results.quick_status(self.workdir)
+            res = quick_status(self.workdir)
             if not res.fatal:
                 return True
 
         # otherwise use the slow method
         for server in self._servers:
-            res = server.execute(f'tcutility read -s {j(server.pwd(), self.rundir, self.name)}')
-            if res in ['SUCCESS', 'SUCCESS(W)', 'COMPLETING', 'CONFIGURING', 'PENDING', 'RUNNING']:
+            res = server.execute(f"tcutility read -s {j(server.pwd(), self.rundir, self.name)}")
+            if res in ["SUCCESS", "SUCCESS(W)", "COMPLETING", "CONFIGURING", "PENDING", "RUNNING"]:
                 return True
 
         return False
@@ -140,7 +146,7 @@ class Job:
         Check whether the job is currently managed by slurm.
         We check this by loading the calculation and checking if the job status is 'RUNNING', 'COMPLETING', 'CONFIGURING' or 'PENDING'.
         """
-        res = results.quick_status(self.workdir)
+        res = quick_status(self.workdir)
         return res.status.name in ["RUNNING", "COMPLETING", "CONFIGURING", "PENDING"]
 
     def __repr__(self):
@@ -206,7 +212,7 @@ class Job:
             self.add_postamble(f"if [[ `tcutility read -s {self.workdir}` = FAILED || `tcutility read -s {self.workdir}` = UNKNOWN ]]; then rm -r {self.workdir}; fi;")
 
         for postscript in self._postscripts:
-            self._postambles.append(f'{_python_path(server)} {postscript[0]} {" ".join(postscript[1])}')
+            self._postambles.append(f"{_python_path(server)} {postscript[0]} {' '.join(postscript[1])}")
 
         # setup the job and check if it was successfull
         setup_success = self._setup_job()
@@ -239,9 +245,9 @@ class Job:
             if self.wait_for_finish:
                 slurm.wait_for_job(self.slurm_job_id, server=server)
         else:
-            os_name = get_os_name()
+            os_name = connect.get_os_name()
 
-            if os_name == OSName.WINDOWS:
+            if os_name == connect.OSName.WINDOWS:
                 raise TCJobError("Generic Job", "Running jobs on Windows is not supported.")
 
             # if we are not using slurm, we can execute the file. For this we need special permissions, so we have to set that first.
@@ -329,7 +335,7 @@ class Job:
         """
         raise NotImplementedError("You must implement the _setup_job method in your subclass.")
 
-    def molecule(self, mol: Union[str, plams.Molecule, plams.Atom, List[plams.Atom]]):
+    def molecule(self, mol: Union[str, plams.Molecule, plams.Atom, List[plams.Atom]]) -> plams.Molecule:
         """
         Add a molecule to this calculation in various formats.
         If the molecule has a populated ``{mol}.flags.charge``, ``{mol}.flags.spin_polarization``
@@ -337,13 +343,13 @@ class Job:
         job.
 
         Args:
-            mol: the molecule to read, can be a path (str). 
-                If the path exists already we read it. If it does not exist yet, 
-                it will be read in later. mol can also be a ``plams.Molecule`` object 
+            mol: the molecule to read, can be a path (str).
+                If the path exists already we read it. If it does not exist yet,
+                it will be read in later. mol can also be a ``plams.Molecule`` object
                 or a single ``plams.Atom`` object or a list of ``plams.Atom`` objects.
 
         Examples:
-            
+
             .. tabs::
 
                 .. group-tab:: Job script
@@ -373,7 +379,7 @@ class Job:
                         H      -0.58149793      -1.00718395       1.13712667
                         H       1.16299585      -0.00000000       1.13712667
 
-            This is equivalent to 
+            This is equivalent to
 
             .. tabs::
 
@@ -425,18 +431,19 @@ class Job:
 
         # check for settings in the molecule
         if isinstance(mol, plams.Molecule):
-            if not hasattr(mol, 'flags'):
+            if not hasattr(mol, "flags"):
                 return
             if mol.flags.charge:
-                if callable(getattr(self, 'charge', None)):
+                if callable(getattr(self, "charge", None)):
                     self.charge(mol.flags.charge)
             if mol.flags.spin_polarization:
-                if callable(getattr(self, 'spin_polarization', None)):
+                if callable(getattr(self, "spin_polarization", None)):
                     self.spin_polarization(mol.flags.charge)
             if mol.flags.solvent:
-                if callable(getattr(self, 'solvent', None)):
-                    self.charge(mol.flags.solvent)
+                if callable(getattr(self, "solvent", None)):
+                    self.solvent(mol.flags.solvent)
 
+        return self._molecule
 
     def copy(self):
         """
@@ -450,7 +457,7 @@ class Job:
         # copy everthing in the lists
         lsts = [[copy.copy(x) for x in lst] for lst in lsts]
         # and return a new result object
-        cp.__dict__.update(results.Result(dictfunc.list_to_dict(lsts)))
+        cp.__dict__.update(Result(dictfunc.list_to_dict(lsts)))
         return cp
 
     def add_server(self, server: connect.Server, weight: float = 1):

@@ -3,7 +3,10 @@ import platform
 import subprocess as sp
 import time
 
-from tcutility import cache, log, results, connect
+import tcutility.cache as cache
+import tcutility.connect as connect
+import tcutility.log as log
+from tcutility.results.result import Result
 
 
 @cache.cache
@@ -31,7 +34,7 @@ def has_slurm(server: connect.Server = connect.Local()) -> bool:
 
 
 @cache.timed_cache(3)
-def squeue(server: connect.Server = connect.Local()) -> results.Result:
+def squeue(server: connect.Server = connect.Local()) -> Result:
     """
     Get information about jobs managed by slurm using squeue.
 
@@ -47,7 +50,7 @@ def squeue(server: connect.Server = connect.Local()) -> results.Result:
 
         By default this function uses a timed cache (see :func:`timed_cache <tcutility.cache.timed_cache>`) with a 3 second delay to lessen the load on HPC systems.
     """
-    ret = results.Result()
+    ret = Result()
 
     if not has_slurm(server=server):
         return ret
@@ -71,7 +74,7 @@ def squeue(server: connect.Server = connect.Local()) -> results.Result:
     return ret
 
 
-def sbatch(runfile: str, server: connect.Server = connect.Local(), **options: dict) -> results.Result:
+def sbatch(runfile: str, server: connect.Server = connect.Local(), **options: dict) -> Result:
     """
     Submit a job to slurm using sbatch.
 
@@ -102,7 +105,7 @@ def sbatch(runfile: str, server: connect.Server = connect.Local(), **options: di
 
     cmd = cmd + runfile
 
-    ret = results.Result()
+    ret = Result()
     ret.command = cmd
 
     # run the job
@@ -117,7 +120,7 @@ def sbatch(runfile: str, server: connect.Server = connect.Local(), **options: di
     return ret
 
 
-def workdir_info(workdir: str, server: connect.Server = connect.Local()) -> results.Result:
+def workdir_info(workdir: str, server: connect.Server = connect.Local()) -> Result:
     """
     Function that gets squeue information given a working directory. This will return None if the directory is not being actively referenced by slurm.
 
@@ -145,7 +148,7 @@ def wait_for_job(slurmid: int, check_every: int = 60, server: connect.Server = c
 
     Args:
         slurmid: the ID of the slurm job we are waiting for.
-        check_every: the amount of seconds to wait before checking squeue again. 
+        check_every: the amount of seconds to wait before checking squeue again.
             Don't put this too low, or you will anger the cluster people.
     """
     while slurmid in squeue(server=server).id:

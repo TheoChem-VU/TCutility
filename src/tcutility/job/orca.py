@@ -4,9 +4,15 @@ from typing import List, Union
 
 from scm import plams
 
-from tcutility import ensure_list, log, results, slurm, spell_check
+import tcutility.log as log
+import tcutility.slurm as slurm
+import tcutility.spell_check as spell_check
 from tcutility.errors import TCMoleculeError
 from tcutility.job.generic import Job
+from tcutility.results.result import Result
+from tcutility.typing_utilities import ensure_list
+
+__all__ = ["ORCAJob"]
 
 j = os.path.join
 
@@ -14,7 +20,7 @@ j = os.path.join
 class ORCAJob(Job):
     def __init__(self, use_tmpdir=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.settings = results.Result()
+        self.settings = Result()
         self.settings.main = set()
         self._charge = 0
         self._multiplicity = 1
@@ -119,7 +125,7 @@ class ORCAJob(Job):
 
         return mem, ntasks
 
-    def molecule(self, mol: Union[str, plams.Molecule, plams.Atom, List[plams.Atom]], natoms: int = None):
+    def molecule(self, mol: Union[str, plams.Molecule, plams.Atom, List[plams.Atom]], natoms: Union[int, None] = None):
         """
         Add a molecule to this calculation in various formats.
 
@@ -156,7 +162,7 @@ class ORCAJob(Job):
             if option == "main":
                 continue
 
-            if isinstance(block, results.Result):
+            if isinstance(block, Result):
                 ret += f"%{option}\n"
 
                 for key, val in block.items():

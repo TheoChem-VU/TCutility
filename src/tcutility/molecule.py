@@ -3,9 +3,11 @@ from typing import Dict, List, Union
 
 from scm import plams
 
-from tcutility import ensure_list
-from tcutility.results import result
 from tcutility.data import atom
+from tcutility.results import result
+from tcutility.typing_utilities import ensure_list
+
+__all__ = ["load", "save", "from_string", "guess_fragments", "number_of_electrons", "write_mol_to_xyz_file", "write_mol_to_amv_file"]
 
 
 def number_of_electrons(mol: plams.Molecule, charge: int = 0) -> int:
@@ -120,7 +122,7 @@ def load(path) -> plams.Molecule:
 
 def from_string(s: str) -> plams.Molecule:
     """
-    Load a molecule from a string. Currently only supports simple XYZ-files, 
+    Load a molecule from a string. Currently only supports simple XYZ-files,
     e.g. not extended XYZ-files with flags.
 
     Args:
@@ -132,7 +134,7 @@ def from_string(s: str) -> plams.Molecule:
         A new molecule object with the elements and coordinates from the input.
 
     Example:
-        
+
         .. code-block::
 
             s = \"""
@@ -246,7 +248,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
         for frag_name, frag_mol in fragment_mols.items():
             # obtain atom indices that belong to the fragment
             indices = []
-            index_line = ensure_list(mol.flags['frag_' + frag_name])
+            index_line = ensure_list(mol.flags["frag_" + frag_name])
             # indices are given as lists of integers or strings
             # string indices would be given as ``N-M``
             # so we need to treat those specially
@@ -258,7 +260,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
                 else:
                     raise ValueError(f"Fragment index {indx} could not be parsed.")
             # add atoms to the fragment molecule
-            [frag_mol.add_atom(atoms[i-1]) for i in indices]
+            [frag_mol.add_atom(atoms[i - 1]) for i in indices]
             # and initialize the flags
             frag_mol.flags = result.Result({"tags": set()})
 
@@ -275,7 +277,7 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
     if len(fragment_names) > 0:
         # initialize some empty molecules to hold the fragments
         fragment_mols = {name: plams.Molecule() for name in fragment_names}
-        # go trough atoms, if they have a ``frag`` tag behind them 
+        # go trough atoms, if they have a ``frag`` tag behind them
         # add them to the corresponding molecule
         for at in atoms:
             # get the fragment the atom belongs to and add it to the list
@@ -289,6 +291,8 @@ def guess_fragments(mol: plams.Molecule) -> Dict[str, plams.Molecule]:
                 frag_mol.flags["spinpol"] = mol.flags[f"spinpol_{frag_name}"]
 
         return result.Result(fragment_mols)
+
+    raise ValueError("Could not guess fragments from the molecule. Please make sure the molecule defines fragments using either of the two supported methods.")
 
 
 # =============================================================================
@@ -361,7 +365,7 @@ def write_mol_to_amv_file(out_file: Union[str, pl.Path], mols: Union[List[plams.
     return None
 
 
-def save(mol: plams.Molecule, path: str, comment: str = None):
+def save(mol: plams.Molecule, path: str, comment: str = ""):
     """Save a molecule in a custom xyz file format.
     Molecule and atom flags can be provided as the "flags" parameter of the object (mol.flags and atom.flags).
     """

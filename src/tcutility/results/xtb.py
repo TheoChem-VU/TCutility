@@ -2,8 +2,9 @@ import os
 
 import numpy as np
 
-from tcutility import constants, molecule
-from tcutility.results import Result
+import tcutility.constants as constants
+import tcutility.molecule as molecule
+from tcutility.results.result import Result
 
 j = os.path.join
 
