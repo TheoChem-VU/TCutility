@@ -1,7 +1,7 @@
 import pathlib as pl
 from enum import StrEnum
 
-import tcutility.results as results
+from tcutility.results.read import read
 
 
 class OutputFileNames(StrEnum):
@@ -16,7 +16,7 @@ def main():
     current_dir = pl.Path(__file__).parent.resolve()
     output_doc_folder = current_dir.parent / "_static" / "result"
     path_to_adf_calc_folder = current_dir.parent.parent / "test" / "fixtures" / "ethanol"
-    info = results.read(path_to_adf_calc_folder)
+    info = read(path_to_adf_calc_folder)
 
     multi_keys = info.multi_keys()
 
