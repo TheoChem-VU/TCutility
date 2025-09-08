@@ -22,16 +22,18 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: '3.13'
 
       - name: Build package
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install -e .
+          pip install ".[dev, vdd, analysis, report]"
 
       - name: Install documentation dependencies (see [docs] in pyproject.toml)
-        run: pip install ".[docs]"
+        run: pip install ".[dev, "analysis", "report", "vdd"]"
+
 
       - name: Run sphinx-apidoc
         run: cd docs; sphinx-apidoc -f -o api ../src/tcutility/
@@ -42,6 +44,6 @@ jobs:
           for script in docs/utility_doc_scripts/*.py; do
             python $script
           done
-          
+
       - name: Build the docs
         run: cd docs; sphinx-build . ./_build/html
