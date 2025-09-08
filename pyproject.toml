@@ -55,11 +55,15 @@ exclude = [
 ] # exclude packages matching these glob patterns (empty by default)
 namespaces = false # to disable scanning PEP 420 namespaces (true by default)
 
+[dependency-groups]
+dev = []
+
 [project.scripts]
 tcutility = "tcutility.cli_scripts.tcparser:tcutility"
 
 [project.optional-dependencies]
 dev = [
+  "gitpython>=3.1.45",
   "ruff>=0.0.250",
   "pytest-cov>=4.1.0",
   "pytest>=7.4.4",
