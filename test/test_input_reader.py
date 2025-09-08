@@ -1,5 +1,6 @@
 import os
-from tcutility import results
+
+from tcutility.results.ams import get_ams_input
 
 j = os.path.join
 
@@ -8,4 +9,4 @@ def test_reading() -> None:
     input_dir = j(os.path.split(__file__)[0], "fixtures", "input_files")
     for file in os.listdir(input_dir):
         with open(j(input_dir, file)) as inp:
-            results.ams.get_ams_input(inp.read())
+            get_ams_input(inp.read())

@@ -1,4 +1,4 @@
-from tcutility import ensure_2d
+from tcutility.typing_utilities import ensure_2d
 
 
 def test_0d_1():

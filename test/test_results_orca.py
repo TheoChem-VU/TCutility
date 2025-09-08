@@ -1,17 +1,20 @@
-from tcutility import results, constants
 import os
+
+import tcutility.results.read as results
+from tcutility import constants
+from tcutility.results.result import Result
 
 j = os.path.join
 
 
 def test_read_orca() -> None:
     res = results.read(j(os.path.split(__file__)[0], "fixtures", "orca", "optimization"))
-    assert isinstance(res, results.Result)
+    assert isinstance(res, Result)
 
 
 def test_read_orca2() -> None:
     res = results.read(j(os.path.split(__file__)[0], "fixtures", "orca", "sp_freq"))
-    assert isinstance(res, results.Result)
+    assert isinstance(res, Result)
 
 
 def test_read_engine() -> None:

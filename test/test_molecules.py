@@ -1,8 +1,12 @@
 import os
-from tcutility import molecule
+
 from scm import plams
 
+from tcutility import molecule
+
 j = os.path.join
+
+# TODO: Make the xyzfile and mol variable a fixture
 
 
 def test_atom_flags() -> None:
@@ -66,21 +70,21 @@ def test_guess_fragments() -> None:
     xyzfile = j(os.path.split(__file__)[0], "fixtures", "xyz", "NaCl.xyz")
     mol = molecule.load(xyzfile)
     frags = molecule.guess_fragments(mol)
-    assert frags['Na'][1].symbol == 'Na'
+    assert frags["Na"][1].symbol == "Na"
 
 
 def test_guess_fragments2() -> None:
     xyzfile = j(os.path.split(__file__)[0], "fixtures", "xyz", "NaCl.xyz")
     mol = molecule.load(xyzfile)
     frags = molecule.guess_fragments(mol)
-    assert frags['Na'].flags['charge'] == 1
+    assert frags["Na"].flags["charge"] == 1
 
 
 def test_guess_fragments3() -> None:
     xyzfile = j(os.path.split(__file__)[0], "fixtures", "xyz", "NaCl_homolytic.xyz")
     mol = molecule.load(xyzfile)
     frags = molecule.guess_fragments(mol)
-    assert frags['Cl'].flags['spinpol'] == 1
+    assert frags["Cl"].flags["spinpol"] == 1
 
 
 if __name__ == "__main__":
