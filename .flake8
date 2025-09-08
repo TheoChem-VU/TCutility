@@ -1,5 +1,0 @@
-[flake8]
-exclude=docs
-max-line-length=200
-exclude=doc, examples
-per-file-ignores = __init__.py:F401
