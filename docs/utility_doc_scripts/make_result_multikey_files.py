@@ -1,4 +1,4 @@
-﻿import pathlib as pl
+import pathlib as pl
 from enum import StrEnum
 
 import tcutility.results as results

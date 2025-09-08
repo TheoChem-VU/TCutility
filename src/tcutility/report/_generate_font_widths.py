@@ -2,14 +2,14 @@ import subprocess as sp
 import os
 
 fonts = [
-	'calibri',
-	'arial',
-	'times new roman',
-	'helvetica',
-	'garamond',
+    "calibri",
+    "arial",
+    "times new roman",
+    "helvetica",
+    "garamond",
 ]
 
-characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ⁿⁱ₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₒₓₔαβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ.,/?<>{}[]()+-_=^:;%* '
+characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ⁿⁱ₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₒₓₔαβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ.,/?<>{}[]()+-_=^:;%* "
 
 script = """
 const jsdom = require("jsdom");
@@ -33,13 +33,13 @@ for (let j = 0; j < fonts.length; j++) {
     console.log(font.replaceAll(" ", "_") + " " + chars[i] + " " + getTextWidth(chars[i], "1pt " + font));
   }
 }
-""".replace('[CHARACTERS]', characters).replace('[FONTS]', ", ".join(['"' + font + '"' for font in fonts]))
+""".replace("[CHARACTERS]", characters).replace("[FONTS]", ", ".join(['"' + font + '"' for font in fonts]))
 
-with open('char_width.js', 'w+') as js_script:
-	js_script.write(script)
+with open("char_width.js", "w+") as js_script:
+    js_script.write(script)
 
-with open('_char_widths.txt', 'w+') as out:
-	for line in sp.check_output(['node', 'char_width.js']).decode().splitlines():
-		out.write(line + '\n')
+with open("_char_widths.txt", "w+") as out:
+    for line in sp.check_output(["node", "char_width.js"]).decode().splitlines():
+        out.write(line + "\n")
 
-os.remove('char_width.js')
+os.remove("char_width.js")

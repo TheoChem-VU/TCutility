@@ -1,4 +1,4 @@
-﻿import pathlib as pl
+import pathlib as pl
 
 from tcutility.analysis.vdd.manager import VDDChargeManager, create_vdd_charge_manager
 from tcutility.results.read import read

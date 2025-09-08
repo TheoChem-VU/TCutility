@@ -135,7 +135,7 @@ def workdir_info(workdir: str, server: connect.Server = connect.Local()) -> Resu
         return None
 
     workdir_index = sq.directory.index(workdir)
-    ret = results.Result()
+    ret = Result()
     for key, vals in sq.items():
         ret[key] = vals[workdir_index]
 
