@@ -6,11 +6,10 @@ Using the read function, we can extract information such as the symmetry and vib
 import pathlib as pl
 from pprint import pprint
 
-import tcutility.results as results
+from tcutility import read
 
 calc_dir = pl.Path(__file__).parent.parent / "test" / "fixtures" / "ethanol"
-info = results.read(calc_dir)
-pprint(info.multi_keys())
+info = read(calc_dir)
 pprint(info.adf.symmetry)
 pprint(info.properties.vibrations.number_of_imag_modes)
 pprint(info.properties.vibrations.vdd)
