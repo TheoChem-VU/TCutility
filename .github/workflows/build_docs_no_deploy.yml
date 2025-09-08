@@ -29,7 +29,7 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install -e .
-          pip install ".[dev, vdd, analysis, report]"
+          pip install ".[dev, "analysis", "report", "vdd"]"
 
       - name: Install documentation dependencies (see [docs] in pyproject.toml)
         run: pip install ".[dev, "analysis", "report", "vdd"]"
