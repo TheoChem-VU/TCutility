@@ -5,7 +5,6 @@ from typing import List
 
 import numpy as np
 from scm import plams
-import scipy.interpolate
 
 from tcutility import constants, ensure_list
 from tcutility.results import Result, cache
