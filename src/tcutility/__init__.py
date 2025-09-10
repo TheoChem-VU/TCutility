@@ -20,7 +20,7 @@ from tcutility.job.nmr import NMRJob
 from tcutility.job.orca import ORCAJob
 from tcutility.job.xtb import XTBJob
 from tcutility.molecule import from_string, guess_fragments, load, number_of_electrons, save, write_mol_to_amv_file, write_mol_to_xyz_file
-from tcutility.report.report import SI
+# from tcutility.report.report import SI
 from tcutility.results.read import get_info, quick_status, read
 from tcutility.results.result import Result
 from tcutility.timer import timer
@@ -76,6 +76,6 @@ __all__ = [
     "functional_name_from_path_safe_name",
     "get_functional",
     "get_available_functionals",
-    "SI",
+    # "SI",
     "timed_cache",
 ]
