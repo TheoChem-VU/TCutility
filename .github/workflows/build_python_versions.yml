@@ -24,7 +24,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -e .
-          pip install ".[dev, analysis, report, vdd, plot, connect]"
+          pip install ".[dev,analysis,report,vdd,plot,connect]"
 
       - name: Lint with ruff
         run: |
