@@ -252,7 +252,6 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scm</span><span class="w"> </span><span class="kn">import</span> <span class="n">plams</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.interpolate</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">tcutility</span><span class="w"> </span><span class="kn">import</span> <span class="n">constants</span><span class="p">,</span> <span class="n">ensure_list</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.results</span><span class="w"> </span><span class="kn">import</span> <span class="n">Result</span><span class="p">,</span> <span class="n">cache</span>
@@ -690,29 +689,32 @@
         <span class="c1"># if we have the PES we can get the energies and coordinates</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader_ams</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;PESScan&quot;</span><span class="p">,</span> <span class="s2">&quot;PES&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">*</span><span class="n">ret</span><span class="o">.</span><span class="n">npoints</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">HA2KCALMOL</span>
         <span class="c1"># return an interpolator for the energies</span>
-        <span class="n">ret</span><span class="o">.</span><span class="n">energy_interpolator</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">RegularGridInterpolator</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">scan_coord</span><span class="p">,</span> <span class="n">ret</span><span class="o">.</span><span class="n">energies</span><span class="p">)</span>
 
-        <span class="c1"># generate the coordinate arrays to be able to interpolate</span>
-        <span class="n">_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">ret</span><span class="o">.</span><span class="n">molecules</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">*</span><span class="n">ret</span><span class="o">.</span><span class="n">npoints</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">molecules</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">3</span><span class="p">)</span>
-        <span class="c1"># this interpolator is a temporary one, it will be used to get the coordinates only, not the </span>
-        <span class="c1"># whole molecule including atomic number, data, etc.</span>
-        <span class="n">_coordinate_interpolator</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">RegularGridInterpolator</span><span class="p">(</span><span class="n">ret</span><span class="o">.</span><span class="n">scan_coord</span><span class="p">,</span> <span class="n">_coords</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39; !!! We remove this to remove our scipy dependency !!!</span>
+<span class="sd">        ret.energy_interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, ret.energies)</span>
 
-        <span class="c1"># this function replaces the interpolator and uses the interpolator to generate molecules </span>
-        <span class="c1"># at specific PES coordinates</span>
-        <span class="k">def</span><span class="w"> </span><span class="nf">molecule_interpolator</span><span class="p">(</span><span class="n">xi</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-            <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span>
-            <span class="n">yi</span> <span class="o">=</span> <span class="n">_coordinate_interpolator</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span>
-            <span class="n">mols</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">yi</span><span class="p">:</span>
-                <span class="n">mol</span> <span class="o">=</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
-                <span class="k">for</span> <span class="n">atnum</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">atnums</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-                    <span class="n">mol</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">plams</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="n">atnum</span><span class="o">=</span><span class="n">atnum</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coord</span><span class="p">))</span>
-                <span class="n">mols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-                
-            <span class="k">return</span> <span class="n">mols</span>
+<span class="sd">        # generate the coordinate arrays to be able to interpolate</span>
+<span class="sd">        _coords = np.array([np.array(mol) for mol in ret.molecules]).reshape(*ret.npoints, len(ret.molecules[0]), 3)</span>
+<span class="sd">        # this interpolator is a temporary one, it will be used to get the coordinates only, not the </span>
+<span class="sd">        # whole molecule including atomic number, data, etc.</span>
+<span class="sd">        _coordinate_interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, _coords)</span>
 
-        <span class="n">ret</span><span class="o">.</span><span class="n">molecule_interpolator</span> <span class="o">=</span> <span class="n">molecule_interpolator</span>
+<span class="sd">        # this function replaces the interpolator and uses the interpolator to generate molecules </span>
+<span class="sd">        # at specific PES coordinates</span>
+<span class="sd">        def molecule_interpolator(xi: np.ndarray) -&gt; np.ndarray:</span>
+<span class="sd">            xi = np.atleast_2d(xi)</span>
+<span class="sd">            yi = _coordinate_interpolator(xi)</span>
+<span class="sd">            mols = []</span>
+<span class="sd">            for y in yi:</span>
+<span class="sd">                mol = plams.Molecule()</span>
+<span class="sd">                for atnum, coord in zip(atnums, y):</span>
+<span class="sd">                    mol.add_atom(plams.Atom(atnum=atnum, coords=coord))</span>
+<span class="sd">                mols.append(mol)</span>
+<span class="sd">                </span>
+<span class="sd">            return mols</span>
+
+<span class="sd">        ret.molecule_interpolator = molecule_interpolator</span>
+<span class="sd">        &#39;&#39;&#39;</span>
 
     <span class="c1"># if only one coord is given, flatten some parameters</span>
     <span class="k">if</span> <span class="n">ret</span><span class="o">.</span><span class="n">nscan_coords</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
