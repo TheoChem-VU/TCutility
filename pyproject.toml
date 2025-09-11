@@ -21,7 +21,6 @@ dependencies = [
   "docx>=0.2.4",
   "htmldocx>=0.0.6",
   "plams",
-  "scipy>=1.8",
   "dictfunc",
   "listfunc",
   "pytest>=7.4.4",

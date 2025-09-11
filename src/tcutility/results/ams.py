@@ -5,7 +5,6 @@ from typing import List
 
 import numpy as np
 from scm import plams
-import scipy.interpolate
 
 from tcutility import constants, ensure_list
 from tcutility.results import Result, cache
@@ -423,6 +422,8 @@ def get_pes(calc_dir: str) -> Result:
         # if we have the PES we can get the energies and coordinates
         ret.energies = np.array(reader_ams.read("PESScan", "PES")).reshape(*ret.npoints) * constants.HA2KCALMOL
         # return an interpolator for the energies
+
+        ''' !!! We remove this to remove our scipy dependency !!!
         ret.energy_interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, ret.energies)
 
         # generate the coordinate arrays to be able to interpolate
@@ -446,6 +447,7 @@ def get_pes(calc_dir: str) -> Result:
             return mols
 
         ret.molecule_interpolator = molecule_interpolator
+        '''
 
     # if only one coord is given, flatten some parameters
     if ret.nscan_coords == 1:
