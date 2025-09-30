@@ -93,6 +93,27 @@ class Job:
         # if self.server != connect.Local:
         #     self.sbatch(**self.server.sbatch_defaults)
 
+
+    def _prune_settings(self):
+        """
+        """
+        new = []
+        sett = self.settings.flatten()
+        # print()
+        for row, v in list(sett.items()):
+            if v == plams.Settings():
+                sett.pop(row)
+                continue
+            # if '__parent__' in row:
+            #     continue
+            # if '__name__' in row:
+            #     continue
+            print(row, v)
+        self.settings = sett.unflatten()
+            # new.append(row)
+
+        # self.settings = prune(self.settings)
+
     def __enter__(self):
         return self
 
