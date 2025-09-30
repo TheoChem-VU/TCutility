@@ -77,7 +77,6 @@ class Job:
         self._servers = [connect.Local()]
         self._server_weights = [1]
         self._selected_server = None
-        # self.settings = plams.Settings()
 
         self.test_mode = test_mode
         self.overwrite = overwrite
@@ -190,27 +189,6 @@ class Job:
         """
         raise NotImplementedError("You must implement the _setup_job method in your subclass.")
 
-
-    def _prune_settings(self):
-        """
-        """
-        new = []
-        sett = self.settings.flatten()
-        # print()
-        for row, v in list(sett.items()):
-            if v == plams.Settings():
-                sett.pop(row)
-                continue
-            # if '__parent__' in row:
-            #     continue
-            # if '__name__' in row:
-            #     continue
-            print(row, v)
-        self.settings = sett.unflatten()
-            # new.append(row)
-
-        # self.settings = prune(self.settings)
-
     def run(self):
         """
         Run this job. We detect if we are using slurm. If we are we submit this job using sbatch. Otherwise, we will run the job locally.
@@ -237,7 +215,6 @@ class Job:
 
         # setup the job and check if it was successfull
         setup_success = self._setup_job()
-        # remove empty settings from this job as they might show up in the final input file
 
         if self.test_mode or not setup_success:
             return
