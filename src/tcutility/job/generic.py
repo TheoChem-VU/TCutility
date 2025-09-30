@@ -77,7 +77,6 @@ class Job:
         self._servers = [connect.Local()]
         self._server_weights = [1]
         self._selected_server = None
-        self.settings = plams.Settings()
 
         self.test_mode = test_mode
         self.overwrite = overwrite
