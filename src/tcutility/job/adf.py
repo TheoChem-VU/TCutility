@@ -864,7 +864,19 @@ class DensfJob(Job):
         self.settings.grid_extend = grid_extend
 
     def grid(self, args):
-        self.settings.grid = "\n" + "\n".join(args) + "EXTEND 7.5\n"
+        self.settings.grid = "\n" + "\n".join(args)
+        self.settings.grid_extend = 7.5
+
+    def grid_around_mol(self, mol, spacing=0.106):
+        coords = mol.as_array()
+        origin = coords.min(axis=0) - 7.5
+        delta = coords.max(axis=0) - coords.min(axis=0) + 15
+        nsteps = (delta / spacing).astype(int)
+        self.settings.grid = f"\n{origin[0]} {origin[1]} {origin[2]}\n"
+        self.settings.grid += f"{nsteps[0]} {nsteps[1]} {nsteps[2]}\n"
+        self.settings.grid += f"1.0 0.0 0.0 {delta[0]}\n"
+        self.settings.grid += f"0.0 1.0 0.0 {delta[1]}\n"
+        self.settings.grid += f"0.0 0.0 1.0 {delta[2]}"
 
     @environment.requires_optional_package("pyfmo")
     def orbital(self, orbital: Union["pyfmo.orbitals.sfo.SFO", "pyfmo.orbitals.mo.MO"]):  # noqa: F821
@@ -964,10 +976,11 @@ class DensfJob(Job):
         The output cube file paths that will be/were calculated by this job.
         """
         paths = []
+        outname = self.settings.grid if self.settings.grid.lower() in ["coarse", "medium", "fine"] else "custom_grid"
         if self.cube_file_prefix is None:
-            cuboutput = f"{os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{self.settings.grid}"
+            cuboutput = f"{os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}"
         else:
-            cuboutput = f"{self.cube_file_prefix}{self.settings.grid}"
+            cuboutput = f"{self.cube_file_prefix}{outname}"
 
         for mo in self._mos:
             spin_part = "" if mo.spin == "AB" else f"_{mo.spin}"
