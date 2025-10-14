@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tcutility.formula &#8212; TCutility v0.16.11 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=18e3de63"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tcutility/formula';</script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item"><!-- _templates/logo.html -->
+<style>
+    .myDiv {
+      color: #323232;
+      font-size: 30px;
+      font-weight: 400;
+      line-height: : 33px;
+      text-decoration: none;
+    }
+</style>
+<div class="myDiv">
+    <a href="/index.html">
+        <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
+        TCutility
+    </a>
+</div></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><!-- _templates/star.html -->
+<a href=https://github.com/TheoChem-VU><i class="fa-brands fa-github"></i> TheoCheM</a></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><!-- _templates/star.html -->
+<a href=https://github.com/TheoChem-VU><i class="fa-brands fa-github"></i> TheoCheM</a></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tcutility.formula</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tcutility.formula</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">scm</span><span class="w"> </span><span class="kn">import</span> <span class="n">plams</span>
+
+
+<div class="viewcode-block" id="parse_molecule">
+<a class="viewcode-back" href="../../api/tcutility.html#tcutility.formula.parse_molecule">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_molecule</span><span class="p">(</span><span class="n">molecule</span><span class="p">:</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Analyse a molecule and return the molstring describing its parts. Each part will then be separated by a ``+`` sign in the new string.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        molecule: ``plams.Molecule`` object to be parsed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A string that contains each part of the molecule separated by a ``+`` sign, for use in :func:`molecule` function for further formatting.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># to separate a molecule we need to have bonds</span>
+    <span class="n">molecule</span><span class="o">.</span><span class="n">guess_bonds</span><span class="p">()</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># go through each part of the molecule</span>
+    <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">molecule</span><span class="o">.</span><span class="n">separate</span><span class="p">():</span>
+        <span class="c1"># get a dictionary of counts for each element</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">get_formula</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># add all elements with their number, but only if the number is larger than 1.</span>
+        <span class="c1"># this prevents the creation of strings containing e.g. C1H3Cl2</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">sym</span> <span class="o">+</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">sym</span><span class="p">,</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">items</span><span class="p">()]))</span>
+
+    <span class="k">return</span> <span class="s2">&quot; + &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="molecule">
+<a class="viewcode-back" href="../../api/tcutility.html#tcutility.formula.molecule">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule</span><span class="p">(</span><span class="n">molecule</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">],</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;unicode&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse and return a string containing a molecular formula that will show up properly in LaTeX, HTML or unicode.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        molecule: ``plams.Molecule`` object or a string that contains the molecular formula to be parsed.</span>
+<span class="sd">            It can be either single molecule or a reaction. Molecules should be separated by ``+`` or ``-&gt;``.</span>
+<span class="sd">        mode: the formatter to convert the string to. Should be ``unicode``, ``html``, ``latex``, ``pyplot``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A string that is formatted to be rendered nicely in either HTML or LaTeX.</span>
+<span class="sd">        In the returned strings any numbers will be subscripted and ``+``, ``-``, ``*`` and ``•`` will be superscripted.</span>
+<span class="sd">        For ``latex`` and ``pyplot`` modes we apply ``\\mathrm`` to letters.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; molecule(&#39;C9H18NO*&#39;)</span>
+<span class="sd">        &#39;C₉H₁₈NO•&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; molecule(&#39;C2H2 + CH3* -&gt; C2H2CH3&#39;, mode=&#39;html&#39;)</span>
+<span class="sd">        &#39;C&lt;sub&gt;2&lt;/sub&gt;H&lt;sub&gt;2&lt;/sub&gt; + CH&lt;sub&gt;3&lt;/sub&gt;&lt;sup&gt;•&lt;/sup&gt; -&gt; C&lt;sub&gt;2&lt;/sub&gt;H&lt;sub&gt;2&lt;/sub&gt;CH3&#39;</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        The :func:`parse_molecule` function is used to convert ``plams.Molecule`` objects to a molecular formula.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># to take care of plus-signs used to denote reactions we have to first split</span>
+    <span class="c1"># the molstring into its parts.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">):</span>
+        <span class="n">molstring</span> <span class="o">=</span> <span class="n">parse_molecule</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">molstring</span> <span class="o">=</span> <span class="n">molecule</span>
+
+    <span class="n">molstring</span> <span class="o">=</span> <span class="n">molstring</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;•&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">molstring</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+        <span class="c1"># if part is only a plus-sign we skip this part. This is only true when the plus-sign</span>
+        <span class="c1"># is used to denote a reaction</span>
+        <span class="k">if</span> <span class="n">part</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;-&gt;&quot;</span><span class="p">]:</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># parse the part</span>
+        <span class="n">partret</span> <span class="o">=</span> <span class="n">part</span>
+        <span class="c1"># numbers should be subscript</span>
+        <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="s2">&quot;0123456789&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;latex&quot;</span><span class="p">,</span> <span class="s2">&quot;pyplot&quot;</span><span class="p">]:</span>
+                <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;html&quot;</span><span class="p">:</span>
+                <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;&lt;sub&gt;</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2">&lt;/sub&gt;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;unicode&quot;</span><span class="p">:</span>
+                <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="s2">&quot;₀₁₂₃₄₅₆₇₈₉&quot;</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)])</span>
+
+        <span class="n">partret_</span> <span class="o">=</span> <span class="n">partret</span>
+        <span class="n">partret</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">partret_</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">char</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;latex&quot;</span><span class="p">,</span> <span class="s2">&quot;pyplot&quot;</span><span class="p">]:</span>
+                <span class="n">partret</span> <span class="o">+=</span> <span class="sa">rf</span><span class="s2">&quot;\mathrm</span><span class="se">{{</span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">partret</span> <span class="o">+=</span> <span class="n">char</span>
+
+        <span class="c1"># signs should be superscript</span>
+        <span class="k">for</span> <span class="n">sign</span> <span class="ow">in</span> <span class="s2">&quot;+-•&quot;</span><span class="p">:</span>
+            <span class="c1"># negative charges should be denoted by em dash and not a normal dash</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;latex&quot;</span><span class="p">,</span> <span class="s2">&quot;pyplot&quot;</span><span class="p">]:</span>
+                <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sign</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;^</span><span class="si">{</span><span class="n">sign</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;—&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;html&quot;</span><span class="p">:</span>
+                <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sign</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;&lt;sup&gt;</span><span class="si">{</span><span class="n">sign</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;—&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&lt;/sup&gt;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;unicode&quot;</span><span class="p">:</span>
+                <span class="n">partret</span> <span class="o">=</span> <span class="n">partret</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sign</span><span class="p">,</span> <span class="s2">&quot;⁺⁻•&quot;</span><span class="p">[</span><span class="s2">&quot;+-•&quot;</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">sign</span><span class="p">)])</span>
+        <span class="c1"># replace the part in the original string</span>
+        <span class="n">molstring</span> <span class="o">=</span> <span class="n">molstring</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">partret</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;pyplot&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">rf</span><span class="s2">&quot;$</span><span class="si">{</span><span class="n">molstring</span><span class="si">}</span><span class="s2">$&quot;</span>
+
+    <span class="k">return</span> <span class="n">molstring</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># print(molecule(&quot;F- + CH3Cl&quot;, &quot;html&quot;))</span>
+    <span class="c1"># mol = plams.Molecule(r&quot;D:\Users\Yuman\Desktop\PhD\TCutility\test\fixtures\chloromethane_sn2_ts\ts sn2.results\output.xyz&quot;)</span>
+    <span class="c1"># print(molecule(mol))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">molecule</span><span class="p">(</span><span class="s2">&quot;NMe2*&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;latex&quot;</span><span class="p">))</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, TheoCheM VU Amsterdam.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

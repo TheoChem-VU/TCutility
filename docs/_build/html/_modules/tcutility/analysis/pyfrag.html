@@ -1,0 +1,539 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tcutility.analysis.pyfrag &#8212; TCutility v0.16.11 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=18e3de63"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tcutility/analysis/pyfrag';</script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item"><!-- _templates/logo.html -->
+<style>
+    .myDiv {
+      color: #323232;
+      font-size: 30px;
+      font-weight: 400;
+      line-height: : 33px;
+      text-decoration: none;
+    }
+</style>
+<div class="myDiv">
+    <a href="/index.html">
+        <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
+        TCutility
+    </a>
+</div></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><!-- _templates/star.html -->
+<a href=https://github.com/TheoChem-VU><i class="fa-brands fa-github"></i> TheoCheM</a></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><!-- _templates/star.html -->
+<a href=https://github.com/TheoChem-VU><i class="fa-brands fa-github"></i> TheoCheM</a></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tcutility.analysis.pyfrag</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tcutility.analysis.pyfrag</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scm</span><span class="w"> </span><span class="kn">import</span> <span class="n">plams</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.cache</span><span class="w"> </span><span class="kn">import</span> <span class="n">cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.environment</span><span class="w"> </span><span class="kn">import</span> <span class="n">requires_optional_package</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">parameter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.pathfunc</span><span class="w"> </span><span class="kn">import</span> <span class="n">match</span>
+
+
+<div class="viewcode-block" id="get_pyfrag_results">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.get_pyfrag_results">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_pyfrag_results</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">PyFragResult</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="PyFragResult">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyFragResult</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">step_prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Step.&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frag_results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step_results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_order</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mask</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">step_prefix</span> <span class="o">=</span> <span class="n">step_prefix</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">frag_path</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;frag_</span><span class="si">{frag}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_frag_results</span><span class="p">[</span><span class="n">info</span><span class="o">.</span><span class="n">frag</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_pyfrag_results</span><span class="p">(</span><span class="n">frag_path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">step_path</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_prefix</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{step}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_step_results</span><span class="o">.</span><span class="n">append</span><span class="p">({})</span>
+            <span class="k">for</span> <span class="n">dir_name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">step_path</span><span class="p">):</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">step_path</span><span class="p">,</span> <span class="n">dir_name</span><span class="p">)</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">get_pyfrag_results</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_step_results</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">dir_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">step</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyFragResult.get_property">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.get_property">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">calc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;complex&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">]]</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">res</span><span class="p">[</span><span class="n">calc</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get_multi_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_results</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">p</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">]]</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frag_results</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyFragResult.get_geometry">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.get_geometry">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">calc</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;calc&quot;</span><span class="p">,</span> <span class="s2">&quot;complex&quot;</span><span class="p">)</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">parameter</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="n">calc</span><span class="p">]</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_results</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">g</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="PyFragResult.get_molecules">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.get_molecules">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_molecules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">calc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;complex&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">plams</span><span class="o">.</span><span class="n">Molecule</span><span class="p">]:</span>
+        <span class="n">mols</span> <span class="o">=</span> <span class="p">[</span><span class="n">res</span><span class="p">[</span><span class="n">calc</span><span class="p">]</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">input</span> <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_results</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">mols</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">mols</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">]]]</span></div>
+
+
+<div class="viewcode-block" id="PyFragResult.sort_by">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.sort_by">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sort_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">],</span> <span class="n">calc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;complex&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">calc</span><span class="o">=</span><span class="n">calc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PyFragResult.set_mask">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.set_mask">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mask</span> <span class="o">=</span> <span class="n">mask</span></div>
+
+
+<div class="viewcode-block" id="PyFragResult.set_coord">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.set_coord">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coord</span> <span class="o">=</span> <span class="n">coord</span></div>
+
+
+<div class="viewcode-block" id="PyFragResult.coord">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.coord">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">coord</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coord</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="PyFragResult.set_property">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.set_property">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vals</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ts_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_energy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">energies</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">energies</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">energies</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">energies</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="PyFragResult.total_energy">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.total_energy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">total_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interaction_energy</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">strain_energy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PyFragResult.interaction_energy">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.interaction_energy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interaction_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s2">&quot;energy.bond&quot;</span><span class="p">,</span> <span class="s2">&quot;complex&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PyFragResult.strain_energy">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.strain_energy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">strain_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">fragment</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">frag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragments</span><span class="p">:</span>
+                <span class="n">t</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strain_energy</span><span class="p">(</span><span class="n">frag</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">t</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="s2">&quot;energy.bond&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;frag_</span><span class="si">{</span><span class="n">fragment</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frag_results</span><span class="p">[</span><span class="n">fragment</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">bond</span></div>
+
+
+<div class="viewcode-block" id="PyFragResult.overlap">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.overlap">[docs]</a>
+    <span class="nd">@requires_optional_package</span><span class="p">(</span><span class="s2">&quot;pyfmo&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orb1</span><span class="p">,</span> <span class="n">orb2</span><span class="p">,</span> <span class="n">calc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;complex&quot;</span><span class="p">,</span> <span class="n">absolute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">orb</span><span class="o">.</span><span class="n">sfos</span><span class="p">[</span><span class="n">orb1</span><span class="p">]</span> <span class="o">@</span> <span class="n">orb</span><span class="o">.</span><span class="n">sfos</span><span class="p">[</span><span class="n">orb2</span><span class="p">]</span> <span class="k">for</span> <span class="n">orb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orbs</span><span class="p">(</span><span class="n">calc</span><span class="p">)])</span>
+        <span class="k">if</span> <span class="n">absolute</span><span class="p">:</span>
+            <span class="n">S</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">S</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="PyFragResult.orbital_energy_gap">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.orbital_energy_gap">[docs]</a>
+    <span class="nd">@requires_optional_package</span><span class="p">(</span><span class="s2">&quot;pyfmo&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">orbital_energy_gap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orb1</span><span class="p">,</span> <span class="n">orb2</span><span class="p">,</span> <span class="n">calc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;complex&quot;</span><span class="p">):</span>
+        <span class="n">dE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">orb</span><span class="o">.</span><span class="n">sfos</span><span class="p">[</span><span class="n">orb1</span><span class="p">]</span><span class="o">.</span><span class="n">energy</span> <span class="o">-</span> <span class="n">orb</span><span class="o">.</span><span class="n">sfos</span><span class="p">[</span><span class="n">orb2</span><span class="p">]</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span> <span class="k">for</span> <span class="n">orb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orbs</span><span class="p">(</span><span class="n">calc</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="n">dE</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="PyFragResult.sfo_coefficient">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.sfo_coefficient">[docs]</a>
+    <span class="nd">@requires_optional_package</span><span class="p">(</span><span class="s2">&quot;pyfmo&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sfo_coefficient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sfo</span><span class="p">,</span> <span class="n">mo</span><span class="p">,</span> <span class="n">calc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;complex&quot;</span><span class="p">):</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">orb</span><span class="o">.</span><span class="n">sfos</span><span class="p">[</span><span class="n">sfo</span><span class="p">]</span><span class="o">.</span><span class="n">coefficient</span><span class="p">(</span><span class="n">orb</span><span class="o">.</span><span class="n">mos</span><span class="p">[</span><span class="n">mo</span><span class="p">])</span> <span class="k">for</span> <span class="n">orb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orbs</span><span class="p">(</span><span class="n">calc</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="n">C</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_mask</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="PyFragResult.orbs">
+<a class="viewcode-back" href="../../../api/tcutility.analysis.html#tcutility.PyFragResult.orbs">[docs]</a>
+    <span class="nd">@cache</span>
+    <span class="nd">@requires_optional_package</span><span class="p">(</span><span class="s2">&quot;pyfmo&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">orbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">calc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;complex&quot;</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyfmo</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">pyfmo</span><span class="o">.</span><span class="n">Orbitals</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="n">calc</span><span class="p">]</span><span class="o">.</span><span class="n">files</span><span class="p">[</span><span class="s2">&quot;adf.rkf&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_results</span><span class="p">]</span></div>
+</div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+    <span class="n">res_C</span> <span class="o">=</span> <span class="n">get_pyfrag_results</span><span class="p">(</span><span class="s2">&quot;/Users/yumanhordijk/PhD/Projects/RadicalAdditionASMEDA/data/DFT/TS_C_O/PyFrag_OLYP_TZ2P&quot;</span><span class="p">)</span>
+    <span class="n">res_X</span> <span class="o">=</span> <span class="n">get_pyfrag_results</span><span class="p">(</span><span class="s2">&quot;/Users/yumanhordijk/PhD/Projects/RadicalAdditionASMEDA/data/DFT/TS_X_O/PyFrag_OLYP_TZ2P&quot;</span><span class="p">)</span>
+
+    <span class="n">res_C</span><span class="o">.</span><span class="n">set_coord</span><span class="p">(</span><span class="n">res_C</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">res_X</span><span class="o">.</span><span class="n">set_coord</span><span class="p">(</span><span class="n">res_X</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="n">res_C</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="n">res_C</span><span class="o">.</span><span class="n">coord</span><span class="p">())</span>
+    <span class="n">res_X</span><span class="o">.</span><span class="n">sort_by</span><span class="p">(</span><span class="n">res_X</span><span class="o">.</span><span class="n">coord</span><span class="p">())</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_C</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_C</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="s2">&quot;Methyl(SOMO)_A&quot;</span><span class="p">,</span> <span class="s2">&quot;Substrate(LUMO)_A&quot;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;C-addition&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_X</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_X</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="s2">&quot;Methyl(SOMO)_A&quot;</span><span class="p">,</span> <span class="s2">&quot;Substrate(LUMO)_A&quot;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;X-addition&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\langle SOMO | LUMO \rangle$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_C</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_C</span><span class="o">.</span><span class="n">orbital_energy_gap</span><span class="p">(</span><span class="s2">&quot;Methyl(SOMO)_A&quot;</span><span class="p">,</span> <span class="s2">&quot;Substrate(LUMO)_A&quot;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;C-addition&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_X</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_X</span><span class="o">.</span><span class="n">orbital_energy_gap</span><span class="p">(</span><span class="s2">&quot;Methyl(SOMO)_A&quot;</span><span class="p">,</span> <span class="s2">&quot;Substrate(LUMO)_A&quot;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;X-addition&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$|\epsilon_</span><span class="si">{SOMO}</span><span class="s2"> - \epsilon_</span><span class="si">{LUMO}</span><span class="s2">|$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_C</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_C</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="s2">&quot;Methyl(LUMO)_B&quot;</span><span class="p">,</span> <span class="s2">&quot;Substrate(7A_B)_B&quot;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;C-addition&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_X</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_X</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="s2">&quot;Methyl(LUMO)_B&quot;</span><span class="p">,</span> <span class="s2">&quot;Substrate(7A_B)_B&quot;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;X-addition&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\langle SUMO | HOMO \rangle$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_C</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_C</span><span class="o">.</span><span class="n">orbital_energy_gap</span><span class="p">(</span><span class="s2">&quot;Methyl(LUMO)_B&quot;</span><span class="p">,</span> <span class="s2">&quot;Substrate(7A_B)_B&quot;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;C-addition&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res_X</span><span class="o">.</span><span class="n">coord</span><span class="p">(),</span> <span class="n">res_X</span><span class="o">.</span><span class="n">orbital_energy_gap</span><span class="p">(</span><span class="s2">&quot;Methyl(LUMO)_B&quot;</span><span class="p">,</span> <span class="s2">&quot;Substrate(7A_B)_B&quot;</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;X-addition&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$|\epsilon_</span><span class="si">{SUMO}</span><span class="s2"> - \epsilon_</span><span class="si">{HOMO}</span><span class="s2">|$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, TheoCheM VU Amsterdam.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

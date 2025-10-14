@@ -1,0 +1,908 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>tcutility &#8212; TCutility v0.16.11 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=18e3de63"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/modules';</script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="tcutility package" href="tcutility.html" />
+    <link rel="prev" title="tcutility.report.formatters package" href="tcutility.report.formatters.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item"><!-- _templates/logo.html -->
+<style>
+    .myDiv {
+      color: #323232;
+      font-size: 30px;
+      font-weight: 400;
+      line-height: : 33px;
+      text-decoration: none;
+    }
+</style>
+<div class="myDiv">
+    <a href="/index.html">
+        <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
+        TCutility
+    </a>
+</div></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><!-- _templates/star.html -->
+<a href=https://github.com/TheoChem-VU><i class="fa-brands fa-github"></i> TheoCheM</a></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><!-- _templates/star.html -->
+<a href=https://github.com/TheoChem-VU><i class="fa-brands fa-github"></i> TheoCheM</a></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="tcutility.html">tcutility package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.analysis.html">tcutility.analysis package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.task_specific.html">tcutility.analysis.task_specific package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vdd.html">tcutility.analysis.vdd package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html">tcutility.analysis.vibration package</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.cli_scripts.html">tcutility.cli_scripts package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.data.html">tcutility.data package</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.postscripts.html">tcutility.job.postscripts package</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.report.html">tcutility.report package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.report.formatters.html">tcutility.report.formatters package</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.results.html">tcutility.results package</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tcutility</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="tcutility">
+<h1>tcutility<a class="headerlink" href="#tcutility" title="Link to this heading">#</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tcutility.html">tcutility package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.html">tcutility.analysis package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.html#module-tcutility.analysis.pyfrag">tcutility.analysis.pyfrag module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.analysis.html#module-tcutility.analysis">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.cli_scripts.html">tcutility.cli_scripts package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.cli_scripts.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.cli_scripts.html#module-tcutility.cli_scripts.cite">tcutility.cli_scripts.cite module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.cli_scripts.html#module-tcutility.cli_scripts.concatenate_irc">tcutility.cli_scripts.concatenate_irc module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.cli_scripts.html#module-tcutility.cli_scripts.geo">tcutility.cli_scripts.geo module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.cli_scripts.html#module-tcutility.cli_scripts.job_script">tcutility.cli_scripts.job_script module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.cli_scripts.html#module-tcutility.cli_scripts.read">tcutility.cli_scripts.read module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.cli_scripts.html#module-tcutility.cli_scripts.resize_figures">tcutility.cli_scripts.resize_figures module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.cli_scripts.html#module-tcutility.cli_scripts.tcparser">tcutility.cli_scripts.tcparser module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.cli_scripts.html#module-tcutility.cli_scripts">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.data.html">tcutility.data package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.data.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.atom">tcutility.data.atom module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.basis_sets">tcutility.data.basis_sets module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.cosmo">tcutility.data.cosmo module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.functionals">tcutility.data.functionals module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.data.html#module-tcutility.data.molecules">tcutility.data.molecules module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.data.html#module-tcutility.data">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#module-tcutility.job.adf">tcutility.job.adf module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#module-tcutility.job.ams">tcutility.job.ams module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#module-tcutility.job.crest">tcutility.job.crest module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#module-tcutility.job.dftb">tcutility.job.dftb module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#module-tcutility.job.generic">tcutility.job.generic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#module-tcutility.job.nmr">tcutility.job.nmr module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#module-tcutility.job.orca">tcutility.job.orca module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#module-tcutility.job.xtb">tcutility.job.xtb module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.job.html#module-tcutility.job">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.report.html">tcutility.report package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.report.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.report.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.report.html#module-tcutility.report.character">tcutility.report.character module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.report.html#module-tcutility.report.figure_resizer">tcutility.report.figure_resizer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.report.html#module-tcutility.report.report">tcutility.report.report module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.report.html#module-tcutility.report">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.results.html">tcutility.results package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#module-tcutility.results.adf">tcutility.results.adf module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#module-tcutility.results.ams">tcutility.results.ams module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#module-tcutility.results.cache">tcutility.results.cache module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#module-tcutility.results.crest">tcutility.results.crest module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#module-tcutility.results.dftb">tcutility.results.dftb module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#module-tcutility.results.orca">tcutility.results.orca module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#module-tcutility.results.read">tcutility.results.read module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#module-tcutility.results.result">tcutility.results.result module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#module-tcutility.results.xtb">tcutility.results.xtb module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.results.html#module-tcutility.results">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.cache">tcutility.cache module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.cache.timed_cache"><code class="docutils literal notranslate"><span class="pre">timed_cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.cache.cache"><code class="docutils literal notranslate"><span class="pre">cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.cache.cache_file"><code class="docutils literal notranslate"><span class="pre">cache_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.cite">tcutility.cite module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.cite.cite"><code class="docutils literal notranslate"><span class="pre">cite()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.connect">tcutility.connect module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.connect.OSName"><code class="docutils literal notranslate"><span class="pre">OSName</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.OSName.WINDOWS"><code class="docutils literal notranslate"><span class="pre">OSName.WINDOWS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.OSName.LINUX"><code class="docutils literal notranslate"><span class="pre">OSName.LINUX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.OSName.MACOS"><code class="docutils literal notranslate"><span class="pre">OSName.MACOS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection"><code class="docutils literal notranslate"><span class="pre">Connection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.open"><code class="docutils literal notranslate"><span class="pre">Connection.open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.close"><code class="docutils literal notranslate"><span class="pre">Connection.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.full_path"><code class="docutils literal notranslate"><span class="pre">Connection.full_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.execute"><code class="docutils literal notranslate"><span class="pre">Connection.execute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.ls"><code class="docutils literal notranslate"><span class="pre">Connection.ls()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.cd"><code class="docutils literal notranslate"><span class="pre">Connection.cd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.pwd"><code class="docutils literal notranslate"><span class="pre">Connection.pwd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.mkdir"><code class="docutils literal notranslate"><span class="pre">Connection.mkdir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.rm"><code class="docutils literal notranslate"><span class="pre">Connection.rm()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.rmtree"><code class="docutils literal notranslate"><span class="pre">Connection.rmtree()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.download"><code class="docutils literal notranslate"><span class="pre">Connection.download()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.upload"><code class="docutils literal notranslate"><span class="pre">Connection.upload()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.path_exists"><code class="docutils literal notranslate"><span class="pre">Connection.path_exists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.open_file"><code class="docutils literal notranslate"><span class="pre">Connection.open_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Connection.chmod"><code class="docutils literal notranslate"><span class="pre">Connection.chmod()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.connect.ServerFile"><code class="docutils literal notranslate"><span class="pre">ServerFile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.connect.Server"><code class="docutils literal notranslate"><span class="pre">Server</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Server.server"><code class="docutils literal notranslate"><span class="pre">Server.server</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Server.sbatch_defaults"><code class="docutils literal notranslate"><span class="pre">Server.sbatch_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Server.preamble_defaults"><code class="docutils literal notranslate"><span class="pre">Server.preamble_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Server.postamble_defaults"><code class="docutils literal notranslate"><span class="pre">Server.postamble_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Server.program_modules"><code class="docutils literal notranslate"><span class="pre">Server.program_modules</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.connect.Local"><code class="docutils literal notranslate"><span class="pre">Local</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.server"><code class="docutils literal notranslate"><span class="pre">Local.server</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.sbatch_defaults"><code class="docutils literal notranslate"><span class="pre">Local.sbatch_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.preamble_defaults"><code class="docutils literal notranslate"><span class="pre">Local.preamble_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.postamble_defaults"><code class="docutils literal notranslate"><span class="pre">Local.postamble_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.program_modules"><code class="docutils literal notranslate"><span class="pre">Local.program_modules</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.execute"><code class="docutils literal notranslate"><span class="pre">Local.execute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.mkdir"><code class="docutils literal notranslate"><span class="pre">Local.mkdir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.rm"><code class="docutils literal notranslate"><span class="pre">Local.rm()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.rmtree"><code class="docutils literal notranslate"><span class="pre">Local.rmtree()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.download"><code class="docutils literal notranslate"><span class="pre">Local.download()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.upload"><code class="docutils literal notranslate"><span class="pre">Local.upload()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.path_exists"><code class="docutils literal notranslate"><span class="pre">Local.path_exists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.open_file"><code class="docutils literal notranslate"><span class="pre">Local.open_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.chmod"><code class="docutils literal notranslate"><span class="pre">Local.chmod()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.pwd"><code class="docutils literal notranslate"><span class="pre">Local.pwd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Local.ls"><code class="docutils literal notranslate"><span class="pre">Local.ls()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.connect.Ada"><code class="docutils literal notranslate"><span class="pre">Ada</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Ada.server"><code class="docutils literal notranslate"><span class="pre">Ada.server</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Ada.sbatch_defaults"><code class="docutils literal notranslate"><span class="pre">Ada.sbatch_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Ada.preamble_defaults"><code class="docutils literal notranslate"><span class="pre">Ada.preamble_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Ada.program_modules"><code class="docutils literal notranslate"><span class="pre">Ada.program_modules</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Ada.postamble_defaults"><code class="docutils literal notranslate"><span class="pre">Ada.postamble_defaults</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.connect.Snellius"><code class="docutils literal notranslate"><span class="pre">Snellius</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Snellius.server"><code class="docutils literal notranslate"><span class="pre">Snellius.server</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Snellius.sbatch_defaults"><code class="docutils literal notranslate"><span class="pre">Snellius.sbatch_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.connect.Snellius.program_modules"><code class="docutils literal notranslate"><span class="pre">Snellius.program_modules</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.connect.get_current_server"><code class="docutils literal notranslate"><span class="pre">get_current_server()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.constants">tcutility.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.environment">tcutility.environment module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.environment.requires_optional_package"><code class="docutils literal notranslate"><span class="pre">requires_optional_package()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.errors">tcutility.errors module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.errors.TCError"><code class="docutils literal notranslate"><span class="pre">TCError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.errors.TCJobError"><code class="docutils literal notranslate"><span class="pre">TCJobError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.errors.TCMoleculeError"><code class="docutils literal notranslate"><span class="pre">TCMoleculeError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.errors.TCCompDetailsError"><code class="docutils literal notranslate"><span class="pre">TCCompDetailsError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.errors.MissingOptionalPackageError"><code class="docutils literal notranslate"><span class="pre">MissingOptionalPackageError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.errors.MissingOptionalPackageError.extras_install"><code class="docutils literal notranslate"><span class="pre">MissingOptionalPackageError.extras_install</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.formula">tcutility.formula module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.formula.parse_molecule"><code class="docutils literal notranslate"><span class="pre">parse_molecule()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.formula.molecule"><code class="docutils literal notranslate"><span class="pre">molecule()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.geometry">tcutility.geometry module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform"><code class="docutils literal notranslate"><span class="pre">Transform</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.apply"><code class="docutils literal notranslate"><span class="pre">Transform.apply()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.combine_transforms"><code class="docutils literal notranslate"><span class="pre">Transform.combine_transforms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.translate"><code class="docutils literal notranslate"><span class="pre">Transform.translate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.rotate"><code class="docutils literal notranslate"><span class="pre">Transform.rotate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.scale"><code class="docutils literal notranslate"><span class="pre">Transform.scale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.reflect"><code class="docutils literal notranslate"><span class="pre">Transform.reflect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.get_rotmat"><code class="docutils literal notranslate"><span class="pre">Transform.get_rotmat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.get_translation"><code class="docutils literal notranslate"><span class="pre">Transform.get_translation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.Transform.to_vtkTransform"><code class="docutils literal notranslate"><span class="pre">Transform.to_vtkTransform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.KabschTransform"><code class="docutils literal notranslate"><span class="pre">KabschTransform</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.MolTransform"><code class="docutils literal notranslate"><span class="pre">MolTransform</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.MolTransform.center"><code class="docutils literal notranslate"><span class="pre">MolTransform.center()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.MolTransform.align_to_vector"><code class="docutils literal notranslate"><span class="pre">MolTransform.align_to_vector()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.geometry.MolTransform.align_to_plane"><code class="docutils literal notranslate"><span class="pre">MolTransform.align_to_plane()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.get_rotmat"><code class="docutils literal notranslate"><span class="pre">get_rotmat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.rotmat_to_angles"><code class="docutils literal notranslate"><span class="pre">rotmat_to_angles()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.apply_rotmat"><code class="docutils literal notranslate"><span class="pre">apply_rotmat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.rotate"><code class="docutils literal notranslate"><span class="pre">rotate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.geometry.vector_align_rotmat"><code class="docutils literal notranslate"><span class="pre">vector_align_rotmat()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.log">tcutility.log module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis"><code class="docutils literal notranslate"><span class="pre">Emojis</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.wait"><code class="docutils literal notranslate"><span class="pre">Emojis.wait</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.good"><code class="docutils literal notranslate"><span class="pre">Emojis.good</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.cancel"><code class="docutils literal notranslate"><span class="pre">Emojis.cancel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.sleep"><code class="docutils literal notranslate"><span class="pre">Emojis.sleep</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.fail"><code class="docutils literal notranslate"><span class="pre">Emojis.fail</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.send"><code class="docutils literal notranslate"><span class="pre">Emojis.send</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.receive"><code class="docutils literal notranslate"><span class="pre">Emojis.receive</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.empty"><code class="docutils literal notranslate"><span class="pre">Emojis.empty</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.finish"><code class="docutils literal notranslate"><span class="pre">Emojis.finish</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.warning"><code class="docutils literal notranslate"><span class="pre">Emojis.warning</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.question"><code class="docutils literal notranslate"><span class="pre">Emojis.question</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.info"><code class="docutils literal notranslate"><span class="pre">Emojis.info</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.rarrow"><code class="docutils literal notranslate"><span class="pre">Emojis.rarrow</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.larrow"><code class="docutils literal notranslate"><span class="pre">Emojis.larrow</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.lrarrow"><code class="docutils literal notranslate"><span class="pre">Emojis.lrarrow</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.rlarrow"><code class="docutils literal notranslate"><span class="pre">Emojis.rlarrow</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.log.Emojis.angstrom"><code class="docutils literal notranslate"><span class="pre">Emojis.angstrom</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.NoPrint"><code class="docutils literal notranslate"><span class="pre">NoPrint</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.time_stamp"><code class="docutils literal notranslate"><span class="pre">time_stamp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.log"><code class="docutils literal notranslate"><span class="pre">log()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.flow"><code class="docutils literal notranslate"><span class="pre">flow()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.table"><code class="docutils literal notranslate"><span class="pre">table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.rectangle_list"><code class="docutils literal notranslate"><span class="pre">rectangle_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.loadbar"><code class="docutils literal notranslate"><span class="pre">loadbar()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.boxed"><code class="docutils literal notranslate"><span class="pre">boxed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.debug"><code class="docutils literal notranslate"><span class="pre">debug()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.info"><code class="docutils literal notranslate"><span class="pre">info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.warn"><code class="docutils literal notranslate"><span class="pre">warn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.error"><code class="docutils literal notranslate"><span class="pre">error()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.critical"><code class="docutils literal notranslate"><span class="pre">critical()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.log.caller_name"><code class="docutils literal notranslate"><span class="pre">caller_name()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.molecule">tcutility.molecule module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.molecule.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.molecule.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.molecule.from_string"><code class="docutils literal notranslate"><span class="pre">from_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.molecule.guess_fragments"><code class="docutils literal notranslate"><span class="pre">guess_fragments()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.molecule.number_of_electrons"><code class="docutils literal notranslate"><span class="pre">number_of_electrons()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.molecule.write_mol_to_xyz_file"><code class="docutils literal notranslate"><span class="pre">write_mol_to_xyz_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.molecule.write_mol_to_amv_file"><code class="docutils literal notranslate"><span class="pre">write_mol_to_amv_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.pathfunc">tcutility.pathfunc module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.pathfunc.split_all"><code class="docutils literal notranslate"><span class="pre">split_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.pathfunc.get_subdirectories"><code class="docutils literal notranslate"><span class="pre">get_subdirectories()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.pathfunc.path_depth"><code class="docutils literal notranslate"><span class="pre">path_depth()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.pathfunc.match"><code class="docutils literal notranslate"><span class="pre">match()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.slurm">tcutility.slurm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.spell_check">tcutility.spell_check module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.spell_check.naive_recursive"><code class="docutils literal notranslate"><span class="pre">naive_recursive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.spell_check.wagner_fischer"><code class="docutils literal notranslate"><span class="pre">wagner_fischer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.spell_check.get_closest"><code class="docutils literal notranslate"><span class="pre">get_closest()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.spell_check.make_suggestion"><code class="docutils literal notranslate"><span class="pre">make_suggestion()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.spell_check.check"><code class="docutils literal notranslate"><span class="pre">check()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.timer">tcutility.timer module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.timer.timer"><code class="docutils literal notranslate"><span class="pre">timer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.timer.print_timings"><code class="docutils literal notranslate"><span class="pre">print_timings()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility.typing_utilities">tcutility.typing_utilities module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.typing_utilities.ensure_list"><code class="docutils literal notranslate"><span class="pre">ensure_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.typing_utilities.squeeze_list"><code class="docutils literal notranslate"><span class="pre">squeeze_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.typing_utilities.ensure_2d"><code class="docutils literal notranslate"><span class="pre">ensure_2d()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.html#module-tcutility">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.ADFFragmentJob"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFFragmentJob.add_fragment"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.add_fragment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFFragmentJob.frag_occupations"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.frag_occupations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFFragmentJob.guess_fragments"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.guess_fragments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFFragmentJob.remove_virtuals"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.remove_virtuals()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFFragmentJob.run"><code class="docutils literal notranslate"><span class="pre">ADFFragmentJob.run()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.ADFJob"><code class="docutils literal notranslate"><span class="pre">ADFJob</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFJob.SCF"><code class="docutils literal notranslate"><span class="pre">ADFJob.SCF()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFJob.SCF_convergence"><code class="docutils literal notranslate"><span class="pre">ADFJob.SCF_convergence()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFJob.basis_set"><code class="docutils literal notranslate"><span class="pre">ADFJob.basis_set()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFJob.excitations"><code class="docutils literal notranslate"><span class="pre">ADFJob.excitations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFJob.functional"><code class="docutils literal notranslate"><span class="pre">ADFJob.functional()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFJob.irrep_occupations"><code class="docutils literal notranslate"><span class="pre">ADFJob.irrep_occupations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFJob.multiplicity"><code class="docutils literal notranslate"><span class="pre">ADFJob.multiplicity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFJob.occupations"><code class="docutils literal notranslate"><span class="pre">ADFJob.occupations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFJob.quality"><code class="docutils literal notranslate"><span class="pre">ADFJob.quality()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFJob.relativity"><code class="docutils literal notranslate"><span class="pre">ADFJob.relativity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFJob.solvent"><code class="docutils literal notranslate"><span class="pre">ADFJob.solvent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFJob.spin_polarization"><code class="docutils literal notranslate"><span class="pre">ADFJob.spin_polarization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFJob.symmetry"><code class="docutils literal notranslate"><span class="pre">ADFJob.symmetry()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ADFJob.unrestricted"><code class="docutils literal notranslate"><span class="pre">ADFJob.unrestricted()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.AMSJob"><code class="docutils literal notranslate"><span class="pre">AMSJob</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.AMSJob.IRC"><code class="docutils literal notranslate"><span class="pre">AMSJob.IRC()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.AMSJob.PESScan"><code class="docutils literal notranslate"><span class="pre">AMSJob.PESScan()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.AMSJob.charge"><code class="docutils literal notranslate"><span class="pre">AMSJob.charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.AMSJob.constraint"><code class="docutils literal notranslate"><span class="pre">AMSJob.constraint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.AMSJob.electric_field"><code class="docutils literal notranslate"><span class="pre">AMSJob.electric_field()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.AMSJob.geometry_convergence"><code class="docutils literal notranslate"><span class="pre">AMSJob.geometry_convergence()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.AMSJob.optimization"><code class="docutils literal notranslate"><span class="pre">AMSJob.optimization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.AMSJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">AMSJob.output_mol_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.AMSJob.single_point"><code class="docutils literal notranslate"><span class="pre">AMSJob.single_point()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.AMSJob.transition_state"><code class="docutils literal notranslate"><span class="pre">AMSJob.transition_state()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.AMSJob.use_version"><code class="docutils literal notranslate"><span class="pre">AMSJob.use_version()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.AMSJob.vibrations"><code class="docutils literal notranslate"><span class="pre">AMSJob.vibrations()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.CRESTJob"><code class="docutils literal notranslate"><span class="pre">CRESTJob</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.CRESTJob.best_conformer_path"><code class="docutils literal notranslate"><span class="pre">CRESTJob.best_conformer_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.CRESTJob.charge"><code class="docutils literal notranslate"><span class="pre">CRESTJob.charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.CRESTJob.conformer_directory"><code class="docutils literal notranslate"><span class="pre">CRESTJob.conformer_directory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.CRESTJob.crest_path"><code class="docutils literal notranslate"><span class="pre">CRESTJob.crest_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.CRESTJob.get_conformer_xyz"><code class="docutils literal notranslate"><span class="pre">CRESTJob.get_conformer_xyz()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.CRESTJob.get_rotamer_xyz"><code class="docutils literal notranslate"><span class="pre">CRESTJob.get_rotamer_xyz()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.CRESTJob.md_length"><code class="docutils literal notranslate"><span class="pre">CRESTJob.md_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.CRESTJob.md_temperature"><code class="docutils literal notranslate"><span class="pre">CRESTJob.md_temperature()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.CRESTJob.multiplicity"><code class="docutils literal notranslate"><span class="pre">CRESTJob.multiplicity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.CRESTJob.rotamer_directory"><code class="docutils literal notranslate"><span class="pre">CRESTJob.rotamer_directory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.CRESTJob.solvent"><code class="docutils literal notranslate"><span class="pre">CRESTJob.solvent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.CRESTJob.spin_polarization"><code class="docutils literal notranslate"><span class="pre">CRESTJob.spin_polarization()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.QCGJob"><code class="docutils literal notranslate"><span class="pre">QCGJob</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.QCGJob.alpb"><code class="docutils literal notranslate"><span class="pre">QCGJob.alpb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.QCGJob.best_ensemble_path"><code class="docutils literal notranslate"><span class="pre">QCGJob.best_ensemble_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.QCGJob.ensemble_directory"><code class="docutils literal notranslate"><span class="pre">QCGJob.ensemble_directory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.QCGJob.ensemble_mode"><code class="docutils literal notranslate"><span class="pre">QCGJob.ensemble_mode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.QCGJob.get_ensemble_xyz"><code class="docutils literal notranslate"><span class="pre">QCGJob.get_ensemble_xyz()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.QCGJob.nofix"><code class="docutils literal notranslate"><span class="pre">QCGJob.nofix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.QCGJob.nsolv"><code class="docutils literal notranslate"><span class="pre">QCGJob.nsolv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.QCGJob.solvent"><code class="docutils literal notranslate"><span class="pre">QCGJob.solvent()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.DFTBJob"><code class="docutils literal notranslate"><span class="pre">DFTBJob</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.DFTBJob.kspace"><code class="docutils literal notranslate"><span class="pre">DFTBJob.kspace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.DFTBJob.model"><code class="docutils literal notranslate"><span class="pre">DFTBJob.model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.DFTBJob.solvent"><code class="docutils literal notranslate"><span class="pre">DFTBJob.solvent()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.NMRJob"><code class="docutils literal notranslate"><span class="pre">NMRJob</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.NMRJob.add_nics_point"><code class="docutils literal notranslate"><span class="pre">NMRJob.add_nics_point()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob"><code class="docutils literal notranslate"><span class="pre">ORCAJob</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.QRO"><code class="docutils literal notranslate"><span class="pre">ORCAJob.QRO()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.basis_set"><code class="docutils literal notranslate"><span class="pre">ORCAJob.basis_set()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.charge"><code class="docutils literal notranslate"><span class="pre">ORCAJob.charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.get_input"><code class="docutils literal notranslate"><span class="pre">ORCAJob.get_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.get_memory_usage"><code class="docutils literal notranslate"><span class="pre">ORCAJob.get_memory_usage()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.ghost_atoms"><code class="docutils literal notranslate"><span class="pre">ORCAJob.ghost_atoms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.main"><code class="docutils literal notranslate"><span class="pre">ORCAJob.main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.method"><code class="docutils literal notranslate"><span class="pre">ORCAJob.method()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.molecule"><code class="docutils literal notranslate"><span class="pre">ORCAJob.molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.multiplicity"><code class="docutils literal notranslate"><span class="pre">ORCAJob.multiplicity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.optimization"><code class="docutils literal notranslate"><span class="pre">ORCAJob.optimization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">ORCAJob.output_mol_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.reference"><code class="docutils literal notranslate"><span class="pre">ORCAJob.reference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.remove_main"><code class="docutils literal notranslate"><span class="pre">ORCAJob.remove_main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.single_point"><code class="docutils literal notranslate"><span class="pre">ORCAJob.single_point()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.spin_polarization"><code class="docutils literal notranslate"><span class="pre">ORCAJob.spin_polarization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.transition_state"><code class="docutils literal notranslate"><span class="pre">ORCAJob.transition_state()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.ORCAJob.vibrations"><code class="docutils literal notranslate"><span class="pre">ORCAJob.vibrations()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.XTBJob"><code class="docutils literal notranslate"><span class="pre">XTBJob</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.XTBJob.PESScan"><code class="docutils literal notranslate"><span class="pre">XTBJob.PESScan()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.XTBJob.charge"><code class="docutils literal notranslate"><span class="pre">XTBJob.charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.XTBJob.model"><code class="docutils literal notranslate"><span class="pre">XTBJob.model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.XTBJob.multiplicity"><code class="docutils literal notranslate"><span class="pre">XTBJob.multiplicity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.XTBJob.optimization"><code class="docutils literal notranslate"><span class="pre">XTBJob.optimization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.XTBJob.output_mol_path"><code class="docutils literal notranslate"><span class="pre">XTBJob.output_mol_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.XTBJob.solvent"><code class="docutils literal notranslate"><span class="pre">XTBJob.solvent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.XTBJob.spin_polarization"><code class="docutils literal notranslate"><span class="pre">XTBJob.spin_polarization()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.XTBJob.vibrations"><code class="docutils literal notranslate"><span class="pre">XTBJob.vibrations()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.from_string"><code class="docutils literal notranslate"><span class="pre">from_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.guess_fragments"><code class="docutils literal notranslate"><span class="pre">guess_fragments()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.number_of_electrons"><code class="docutils literal notranslate"><span class="pre">number_of_electrons()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.write_mol_to_amv_file"><code class="docutils literal notranslate"><span class="pre">write_mol_to_amv_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.write_mol_to_xyz_file"><code class="docutils literal notranslate"><span class="pre">write_mol_to_xyz_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.get_info"><code class="docutils literal notranslate"><span class="pre">get_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.quick_status"><code class="docutils literal notranslate"><span class="pre">quick_status()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.read"><code class="docutils literal notranslate"><span class="pre">read()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.Result"><code class="docutils literal notranslate"><span class="pre">Result</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Result.as_plams_settings"><code class="docutils literal notranslate"><span class="pre">Result.as_plams_settings()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Result.copy"><code class="docutils literal notranslate"><span class="pre">Result.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Result.get_multi_key"><code class="docutils literal notranslate"><span class="pre">Result.get_multi_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Result.get_parent_tree"><code class="docutils literal notranslate"><span class="pre">Result.get_parent_tree()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Result.getsizeof"><code class="docutils literal notranslate"><span class="pre">Result.getsizeof()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Result.items"><code class="docutils literal notranslate"><span class="pre">Result.items()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Result.keys"><code class="docutils literal notranslate"><span class="pre">Result.keys()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Result.multi_keys"><code class="docutils literal notranslate"><span class="pre">Result.multi_keys()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Result.prune"><code class="docutils literal notranslate"><span class="pre">Result.prune()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.timer"><code class="docutils literal notranslate"><span class="pre">timer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.Connection"><code class="docutils literal notranslate"><span class="pre">Connection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.cd"><code class="docutils literal notranslate"><span class="pre">Connection.cd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.chmod"><code class="docutils literal notranslate"><span class="pre">Connection.chmod()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.close"><code class="docutils literal notranslate"><span class="pre">Connection.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.download"><code class="docutils literal notranslate"><span class="pre">Connection.download()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.execute"><code class="docutils literal notranslate"><span class="pre">Connection.execute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.full_path"><code class="docutils literal notranslate"><span class="pre">Connection.full_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.ls"><code class="docutils literal notranslate"><span class="pre">Connection.ls()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.mkdir"><code class="docutils literal notranslate"><span class="pre">Connection.mkdir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.open"><code class="docutils literal notranslate"><span class="pre">Connection.open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.open_file"><code class="docutils literal notranslate"><span class="pre">Connection.open_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.path_exists"><code class="docutils literal notranslate"><span class="pre">Connection.path_exists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.pwd"><code class="docutils literal notranslate"><span class="pre">Connection.pwd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.rm"><code class="docutils literal notranslate"><span class="pre">Connection.rm()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.rmtree"><code class="docutils literal notranslate"><span class="pre">Connection.rmtree()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Connection.upload"><code class="docutils literal notranslate"><span class="pre">Connection.upload()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.Local"><code class="docutils literal notranslate"><span class="pre">Local</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.chmod"><code class="docutils literal notranslate"><span class="pre">Local.chmod()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.download"><code class="docutils literal notranslate"><span class="pre">Local.download()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.execute"><code class="docutils literal notranslate"><span class="pre">Local.execute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.ls"><code class="docutils literal notranslate"><span class="pre">Local.ls()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.mkdir"><code class="docutils literal notranslate"><span class="pre">Local.mkdir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.open_file"><code class="docutils literal notranslate"><span class="pre">Local.open_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.path_exists"><code class="docutils literal notranslate"><span class="pre">Local.path_exists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.postamble_defaults"><code class="docutils literal notranslate"><span class="pre">Local.postamble_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.preamble_defaults"><code class="docutils literal notranslate"><span class="pre">Local.preamble_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.program_modules"><code class="docutils literal notranslate"><span class="pre">Local.program_modules</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.pwd"><code class="docutils literal notranslate"><span class="pre">Local.pwd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.rm"><code class="docutils literal notranslate"><span class="pre">Local.rm()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.rmtree"><code class="docutils literal notranslate"><span class="pre">Local.rmtree()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.sbatch_defaults"><code class="docutils literal notranslate"><span class="pre">Local.sbatch_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.server"><code class="docutils literal notranslate"><span class="pre">Local.server</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Local.upload"><code class="docutils literal notranslate"><span class="pre">Local.upload()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.Server"><code class="docutils literal notranslate"><span class="pre">Server</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Server.postamble_defaults"><code class="docutils literal notranslate"><span class="pre">Server.postamble_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Server.preamble_defaults"><code class="docutils literal notranslate"><span class="pre">Server.preamble_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Server.program_modules"><code class="docutils literal notranslate"><span class="pre">Server.program_modules</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Server.sbatch_defaults"><code class="docutils literal notranslate"><span class="pre">Server.sbatch_defaults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Server.server"><code class="docutils literal notranslate"><span class="pre">Server.server</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.ServerFile"><code class="docutils literal notranslate"><span class="pre">ServerFile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.cache"><code class="docutils literal notranslate"><span class="pre">cache()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.cache_file"><code class="docutils literal notranslate"><span class="pre">cache_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.cite"><code class="docutils literal notranslate"><span class="pre">cite()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.requires_optional_package"><code class="docutils literal notranslate"><span class="pre">requires_optional_package()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.Transform"><code class="docutils literal notranslate"><span class="pre">Transform</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Transform.apply"><code class="docutils literal notranslate"><span class="pre">Transform.apply()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Transform.combine_transforms"><code class="docutils literal notranslate"><span class="pre">Transform.combine_transforms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Transform.get_rotmat"><code class="docutils literal notranslate"><span class="pre">Transform.get_rotmat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Transform.get_translation"><code class="docutils literal notranslate"><span class="pre">Transform.get_translation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Transform.reflect"><code class="docutils literal notranslate"><span class="pre">Transform.reflect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Transform.rotate"><code class="docutils literal notranslate"><span class="pre">Transform.rotate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Transform.scale"><code class="docutils literal notranslate"><span class="pre">Transform.scale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Transform.to_vtkTransform"><code class="docutils literal notranslate"><span class="pre">Transform.to_vtkTransform()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.Transform.translate"><code class="docutils literal notranslate"><span class="pre">Transform.translate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.KabschTransform"><code class="docutils literal notranslate"><span class="pre">KabschTransform</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.MolTransform"><code class="docutils literal notranslate"><span class="pre">MolTransform</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.MolTransform.align_to_plane"><code class="docutils literal notranslate"><span class="pre">MolTransform.align_to_plane()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.MolTransform.align_to_vector"><code class="docutils literal notranslate"><span class="pre">MolTransform.align_to_vector()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.MolTransform.center"><code class="docutils literal notranslate"><span class="pre">MolTransform.center()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.get_rotmat"><code class="docutils literal notranslate"><span class="pre">get_rotmat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.rotmat_to_angles"><code class="docutils literal notranslate"><span class="pre">rotmat_to_angles()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.apply_rotmat"><code class="docutils literal notranslate"><span class="pre">apply_rotmat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.rotate"><code class="docutils literal notranslate"><span class="pre">rotate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.vector_align_rotmat"><code class="docutils literal notranslate"><span class="pre">vector_align_rotmat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult"><code class="docutils literal notranslate"><span class="pre">PyFragResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.coord"><code class="docutils literal notranslate"><span class="pre">PyFragResult.coord()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.fragments"><code class="docutils literal notranslate"><span class="pre">PyFragResult.fragments</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.get_geometry"><code class="docutils literal notranslate"><span class="pre">PyFragResult.get_geometry()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.get_molecules"><code class="docutils literal notranslate"><span class="pre">PyFragResult.get_molecules()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.get_property"><code class="docutils literal notranslate"><span class="pre">PyFragResult.get_property()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.interaction_energy"><code class="docutils literal notranslate"><span class="pre">PyFragResult.interaction_energy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.orbital_energy_gap"><code class="docutils literal notranslate"><span class="pre">PyFragResult.orbital_energy_gap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.orbs"><code class="docutils literal notranslate"><span class="pre">PyFragResult.orbs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.overlap"><code class="docutils literal notranslate"><span class="pre">PyFragResult.overlap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.set_coord"><code class="docutils literal notranslate"><span class="pre">PyFragResult.set_coord()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.set_mask"><code class="docutils literal notranslate"><span class="pre">PyFragResult.set_mask()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.set_property"><code class="docutils literal notranslate"><span class="pre">PyFragResult.set_property()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.sfo_coefficient"><code class="docutils literal notranslate"><span class="pre">PyFragResult.sfo_coefficient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.sort_by"><code class="docutils literal notranslate"><span class="pre">PyFragResult.sort_by()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.strain_energy"><code class="docutils literal notranslate"><span class="pre">PyFragResult.strain_energy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.total_energy"><code class="docutils literal notranslate"><span class="pre">PyFragResult.total_energy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.PyFragResult.ts_idx"><code class="docutils literal notranslate"><span class="pre">PyFragResult.ts_idx</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.get_pyfrag_results"><code class="docutils literal notranslate"><span class="pre">get_pyfrag_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.concatenate_irc_trajectories"><code class="docutils literal notranslate"><span class="pre">concatenate_irc_trajectories()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.VDDCharge"><code class="docutils literal notranslate"><span class="pre">VDDCharge</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.VDDCharge.change_unit"><code class="docutils literal notranslate"><span class="pre">VDDCharge.change_unit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.VDDCharge.atom_index"><code class="docutils literal notranslate"><span class="pre">VDDCharge.atom_index</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.VDDCharge.atom_symbol"><code class="docutils literal notranslate"><span class="pre">VDDCharge.atom_symbol</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.VDDCharge.charge"><code class="docutils literal notranslate"><span class="pre">VDDCharge.charge</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcutility.html#tcutility.VDDCharge.frag_index"><code class="docutils literal notranslate"><span class="pre">VDDCharge.frag_index</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.avg_relative_bond_length_delta"><code class="docutils literal notranslate"><span class="pre">avg_relative_bond_length_delta()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.determine_ts_reactioncoordinate"><code class="docutils literal notranslate"><span class="pre">determine_ts_reactioncoordinate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.validate_transitionstate"><code class="docutils literal notranslate"><span class="pre">validate_transitionstate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.functional_name_from_path_safe_name"><code class="docutils literal notranslate"><span class="pre">functional_name_from_path_safe_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.get_functional"><code class="docutils literal notranslate"><span class="pre">get_functional()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.get_available_functionals"><code class="docutils literal notranslate"><span class="pre">get_available_functionals()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.html#tcutility.timed_cache"><code class="docutils literal notranslate"><span class="pre">timed_cache()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="tcutility.report.formatters.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">tcutility.report.formatters package</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="tcutility.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">tcutility package</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/modules.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, TheoCheM VU Amsterdam.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

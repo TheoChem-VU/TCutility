@@ -1,0 +1,614 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>tcutility.analysis.vdd package &#8212; TCutility v0.16.11 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=18e3de63"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/tcutility.analysis.vdd';</script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="tcutility.analysis.vibration package" href="tcutility.analysis.vibration.html" />
+    <link rel="prev" title="tcutility.analysis.task_specific package" href="tcutility.analysis.task_specific.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item"><!-- _templates/logo.html -->
+<style>
+    .myDiv {
+      color: #323232;
+      font-size: 30px;
+      font-weight: 400;
+      line-height: : 33px;
+      text-decoration: none;
+    }
+</style>
+<div class="myDiv">
+    <a href="/index.html">
+        <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
+        TCutility
+    </a>
+</div></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><!-- _templates/star.html -->
+<a href=https://github.com/TheoChem-VU><i class="fa-brands fa-github"></i> TheoCheM</a></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><!-- _templates/star.html -->
+<a href=https://github.com/TheoChem-VU><i class="fa-brands fa-github"></i> TheoCheM</a></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="tcutility.html">tcutility package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="tcutility.analysis.html">tcutility.analysis package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.task_specific.html">tcutility.analysis.task_specific package</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">tcutility.analysis.vdd package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.analysis.vibration.html">tcutility.analysis.vibration package</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.cli_scripts.html">tcutility.cli_scripts package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.data.html">tcutility.data package</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.job.html">tcutility.job package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.job.postscripts.html">tcutility.job.postscripts package</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="tcutility.report.html">tcutility.report package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcutility.report.formatters.html">tcutility.report.formatters package</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="tcutility.results.html">tcutility.results package</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="modules.html" class="nav-link">tcutility</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="tcutility.html" class="nav-link">tcutility package</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="tcutility.analysis.html" class="nav-link">tcutility.analysis package</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tcutility.analysis.vdd package</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="tcutility-analysis-vdd-package">
+<h1>tcutility.analysis.vdd package<a class="headerlink" href="#tcutility-analysis-vdd-package" title="Link to this heading">#</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-tcutility.analysis.vdd.charge">
+<span id="tcutility-analysis-vdd-charge-module"></span><h2>tcutility.analysis.vdd.charge module<a class="headerlink" href="#module-tcutility.analysis.vdd.charge" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.charge.VDDCharge">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VDDCharge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frag_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/charge.html#VDDCharge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.charge.VDDCharge" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.charge.VDDCharge.atom_index">
+<span class="sig-name descname"><span class="pre">atom_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#tcutility.analysis.vdd.charge.VDDCharge.atom_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.charge.VDDCharge.atom_symbol">
+<span class="sig-name descname"><span class="pre">atom_symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><a class="headerlink" href="#tcutility.analysis.vdd.charge.VDDCharge.atom_symbol" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.charge.VDDCharge.charge">
+<span class="sig-name descname"><span class="pre">charge</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><a class="headerlink" href="#tcutility.analysis.vdd.charge.VDDCharge.charge" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.charge.VDDCharge.frag_index">
+<span class="sig-name descname"><span class="pre">frag_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#tcutility.analysis.vdd.charge.VDDCharge.frag_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.charge.VDDCharge.change_unit">
+<span class="sig-name descname"><span class="pre">change_unit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ratio</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/charge.html#VDDCharge.change_unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.charge.VDDCharge.change_unit" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tcutility.analysis.vdd.manager">
+<span id="tcutility-analysis-vdd-manager-module"></span><h2>tcutility.analysis.vdd.manager module<a class="headerlink" href="#module-tcutility.analysis.vdd.manager" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VDDChargeManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vdd_charges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_fragment_calculation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_charge</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to manage the VDD charges. It can be used to print the VDD charges in a nice table and write them to a text file or excel file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.charge_is_conserved">
+<span class="sig-name descname"><span class="pre">charge_is_conserved</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.charge_is_conserved"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.charge_is_conserved" title="Link to this definition">#</a></dt>
+<dd><p>Check if the total charge of the molecule is conserved. The total charge is the sum of the VDD charges.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.change_unit">
+<span class="sig-name descname"><span class="pre">change_unit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_unit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.change_unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.change_unit" title="Link to this definition">#</a></dt>
+<dd><p>Change the unit of the VDD charges. Available units are “me” (mili-electrons) and “e” (electrons).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges">
+<span class="sig-name descname"><span class="pre">get_vdd_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'me'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_vdd_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges" title="Link to this definition">#</a></dt>
+<dd><p>Get the VDD charges in the specified unit ([me] or [e]).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#tcutility.analysis.vdd.charge.VDDCharge" title="tcutility.analysis.vdd.charge.VDDCharge"><code class="xref py py-class docutils literal notranslate"><span class="pre">VDDCharge</span></code></a>]]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges">
+<span class="sig-name descname"><span class="pre">get_summed_vdd_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">irreps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'me'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_summed_vdd_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges" title="Link to this definition">#</a></dt>
+<dd><p>Get the summed VDD charges per fragment for the specified unit ([me] or [e]).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_dataframe">
+<span class="sig-name descname"><span class="pre">get_vdd_charges_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_vdd_charges_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_dataframe" title="Link to this definition">#</a></dt>
+<dd><p>Get the VDD charges as a pandas DataFrame in a specified unit ([me] or [e]).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_dataframe">
+<span class="sig-name descname"><span class="pre">get_summed_vdd_charges_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_summed_vdd_charges_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_dataframe" title="Link to this definition">#</a></dt>
+<dd><p>Get the summed VDD charges as a pandas DataFrame in a specified unit ([me] or [e]).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_table">
+<span class="sig-name descname"><span class="pre">get_vdd_charges_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_vdd_charges_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_table" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_table">
+<span class="sig-name descname"><span class="pre">get_summed_vdd_charges_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.get_summed_vdd_charges_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_table" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.write_to_txt">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_to_txt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">managers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'me'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.write_to_txt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.write_to_txt" title="Link to this definition">#</a></dt>
+<dd><p>Write the VDD charges to a text file. It is a static method because multiple managers can be written to the same file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.write_to_excel">
+<span class="sig-name descname"><span class="pre">write_to_excel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.write_to_excel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.write_to_excel" title="Link to this definition">#</a></dt>
+<dd><p>Write the VDD charges to an excel file. Results are written to two sheets: “VDD charges” and “Summed VDD charges”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.VDDChargeManager.plot_vdd_charges_per_atom">
+<span class="sig-name descname"><span class="pre">plot_vdd_charges_per_atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'me'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#VDDChargeManager.plot_vdd_charges_per_atom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.VDDChargeManager.plot_vdd_charges_per_atom" title="Link to this definition">#</a></dt>
+<dd><p>Plot the VDD charges as a bar graph for each irrep.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tcutility.analysis.vdd.manager.create_vdd_charge_manager">
+<span class="sig-name descname"><span class="pre">create_vdd_charge_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tcutility/analysis/vdd/manager.html#create_vdd_charge_manager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tcutility.analysis.vdd.manager.create_vdd_charge_manager" title="Link to this definition">#</a></dt>
+<dd><p>Create a VDDChargeManager from a Result object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#tcutility.analysis.vdd.manager.VDDChargeManager" title="tcutility.analysis.vdd.manager.VDDChargeManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">VDDChargeManager</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-tcutility.analysis.vdd">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tcutility.analysis.vdd" title="Link to this heading">#</a></h2>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="tcutility.analysis.task_specific.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">tcutility.analysis.task_specific package</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="tcutility.analysis.vibration.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">tcutility.analysis.vibration package</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.analysis.vdd.charge">tcutility.analysis.vdd.charge module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.charge.VDDCharge"><code class="docutils literal notranslate"><span class="pre">VDDCharge</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.charge.VDDCharge.atom_index"><code class="docutils literal notranslate"><span class="pre">VDDCharge.atom_index</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.charge.VDDCharge.atom_symbol"><code class="docutils literal notranslate"><span class="pre">VDDCharge.atom_symbol</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.charge.VDDCharge.charge"><code class="docutils literal notranslate"><span class="pre">VDDCharge.charge</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.charge.VDDCharge.frag_index"><code class="docutils literal notranslate"><span class="pre">VDDCharge.frag_index</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.charge.VDDCharge.change_unit"><code class="docutils literal notranslate"><span class="pre">VDDCharge.change_unit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.analysis.vdd.manager">tcutility.analysis.vdd.manager module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.charge_is_conserved"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.charge_is_conserved()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.change_unit"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.change_unit()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_vdd_charges()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_summed_vdd_charges()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_dataframe"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_vdd_charges_dataframe()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_dataframe"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_summed_vdd_charges_dataframe()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_vdd_charges_table"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_vdd_charges_table()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.get_summed_vdd_charges_table"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.get_summed_vdd_charges_table()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.write_to_txt"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.write_to_txt()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.write_to_excel"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.write_to_excel()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.VDDChargeManager.plot_vdd_charges_per_atom"><code class="docutils literal notranslate"><span class="pre">VDDChargeManager.plot_vdd_charges_per_atom()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tcutility.analysis.vdd.manager.create_vdd_charge_manager"><code class="docutils literal notranslate"><span class="pre">create_vdd_charge_manager()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-tcutility.analysis.vdd">Module contents</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/tcutility.analysis.vdd.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, TheoCheM VU Amsterdam.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

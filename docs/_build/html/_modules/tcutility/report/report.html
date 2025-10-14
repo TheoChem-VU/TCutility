@@ -1,0 +1,1051 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tcutility.report.report &#8212; TCutility v0.16.11 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=18e3de63"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/tcutility/report/report';</script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/119413491"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item"><!-- _templates/logo.html -->
+<style>
+    .myDiv {
+      color: #323232;
+      font-size: 30px;
+      font-weight: 400;
+      line-height: : 33px;
+      text-decoration: none;
+    }
+</style>
+<div class="myDiv">
+    <a href="/index.html">
+        <img src="https://avatars.githubusercontent.com/u/119413491?s=60&v=4">
+        TCutility
+    </a>
+</div></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><!-- _templates/star.html -->
+<a href=https://github.com/TheoChem-VU><i class="fa-brands fa-github"></i> TheoCheM</a></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><!-- _templates/star.html -->
+<a href=https://github.com/TheoChem-VU><i class="fa-brands fa-github"></i> TheoCheM</a></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">tcutility.report.report</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for tcutility.report.report</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_spec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility</span><span class="w"> </span><span class="kn">import</span> <span class="n">errors</span>
+
+<span class="k">if</span> <span class="n">find_spec</span><span class="p">(</span><span class="s2">&quot;docx&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">MissingOptionalPackageError</span><span class="p">(</span><span class="s2">&quot;docx&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">find_spec</span><span class="p">(</span><span class="s2">&quot;htmldocx&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">MissingOptionalPackageError</span><span class="p">(</span><span class="s2">&quot;htmldocx&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">find_spec</span><span class="p">(</span><span class="s2">&quot;cv2&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="n">errors</span><span class="o">.</span><span class="n">MissingOptionalPackageError</span><span class="p">(</span><span class="s2">&quot;opencv-python&quot;</span><span class="p">)</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>  <span class="c1"># noqa: E402 # This is the opencv-python package</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">docx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">htmldocx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">PIL</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">PIL.Image</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">PIL.ImageDraw</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">PIL.ImageFont</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">docx.enum.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">WD_ALIGN_VERTICAL</span><span class="p">,</span> <span class="n">WD_TABLE_ALIGNMENT</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">docx.enum.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">WD_ALIGN_PARAGRAPH</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">docx.oxml</span><span class="w"> </span><span class="kn">import</span> <span class="n">OxmlElement</span><span class="p">,</span> <span class="n">parse_xml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">docx.oxml.ns</span><span class="w"> </span><span class="kn">import</span> <span class="n">nsdecls</span><span class="p">,</span> <span class="n">qn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">docx.shared</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cm</span><span class="p">,</span> <span class="n">Inches</span><span class="p">,</span> <span class="n">Pt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">htmldocx</span><span class="w"> </span><span class="kn">import</span> <span class="n">HtmlToDocx</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.report.formatters.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">WordFormatter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.report.formatters.xyz</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardXYZFormatter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.results.read</span><span class="w"> </span><span class="kn">import</span> <span class="n">read</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tcutility.results.result</span><span class="w"> </span><span class="kn">import</span> <span class="n">Result</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">docx.document</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">docx.oxml.ns</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">docx.oxml.shared</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_add_page_numbers</span><span class="p">(</span><span class="n">document</span><span class="p">:</span> <span class="s2">&quot;docx.document.Document&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">document</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">footer</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">alignment</span> <span class="o">=</span> <span class="n">WD_ALIGN_PARAGRAPH</span><span class="o">.</span><span class="n">CENTER</span>
+    <span class="n">run</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">footer</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">add_run</span><span class="p">()</span>
+    <span class="n">fldChar1</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:fldChar&quot;</span><span class="p">)</span>
+    <span class="n">fldChar1</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:fldCharType&quot;</span><span class="p">),</span> <span class="s2">&quot;begin&quot;</span><span class="p">)</span>
+
+    <span class="n">instrText</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:instrText&quot;</span><span class="p">)</span>
+    <span class="n">instrText</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;xml:space&quot;</span><span class="p">),</span> <span class="s2">&quot;preserve&quot;</span><span class="p">)</span>
+    <span class="n">instrText</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;PAGE&quot;</span>  <span class="c1"># type: ignore  # text not found in docx by mypy</span>
+
+    <span class="n">fldChar2</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:fldChar&quot;</span><span class="p">)</span>
+    <span class="n">fldChar2</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:fldCharType&quot;</span><span class="p">),</span> <span class="s2">&quot;end&quot;</span><span class="p">)</span>
+
+    <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fldChar1</span><span class="p">)</span>
+    <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">instrText</span><span class="p">)</span>
+    <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fldChar2</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_cell_border</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set a cell`s border</span>
+<span class="sd">    Usage:</span>
+
+<span class="sd">    _set_cell_border(</span>
+<span class="sd">        cell,</span>
+<span class="sd">        top={&quot;sz&quot;: 12, &quot;val&quot;: &quot;single&quot;, &quot;color&quot;: &quot;#FF0000&quot;, &quot;space&quot;: &quot;0&quot;},</span>
+<span class="sd">        bottom={&quot;sz&quot;: 12, &quot;color&quot;: &quot;#00FF00&quot;, &quot;val&quot;: &quot;single&quot;},</span>
+<span class="sd">        start={&quot;sz&quot;: 24, &quot;val&quot;: &quot;dashed&quot;, &quot;shadow&quot;: &quot;true&quot;},</span>
+<span class="sd">        end={&quot;sz&quot;: 12, &quot;val&quot;: &quot;dashed&quot;},</span>
+<span class="sd">    )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tc</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">_tc</span>
+    <span class="n">tcPr</span> <span class="o">=</span> <span class="n">tc</span><span class="o">.</span><span class="n">get_or_add_tcPr</span><span class="p">()</span>
+
+    <span class="c1"># check for tag existnace, if none found, then create one</span>
+    <span class="n">tcBorders</span> <span class="o">=</span> <span class="n">tcPr</span><span class="o">.</span><span class="n">first_child_found_in</span><span class="p">(</span><span class="s2">&quot;w:tcBorders&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">tcBorders</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tcBorders</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:tcBorders&quot;</span><span class="p">)</span>
+        <span class="n">tcPr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tcBorders</span><span class="p">)</span>
+
+    <span class="c1"># list over all available tags</span>
+    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">,</span> <span class="s2">&quot;insideH&quot;</span><span class="p">,</span> <span class="s2">&quot;insideV&quot;</span><span class="p">):</span>
+        <span class="n">edge_data</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">edge_data</span><span class="p">:</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;w:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+
+            <span class="c1"># check for tag existnace, if none found, then create one</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="n">tcBorders</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="n">tag</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
+            <span class="k">if</span> <span class="n">element</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">element</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+                <span class="n">tcBorders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+
+            <span class="c1"># looks like order of attributes is important</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;sz&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="s2">&quot;space&quot;</span><span class="p">,</span> <span class="s2">&quot;shadow&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">edge_data</span><span class="p">:</span>
+                    <span class="n">element</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)),</span> <span class="nb">str</span><span class="p">(</span><span class="n">edge_data</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_repeat_table_header</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;set repeat table row on every new page&quot;&quot;&quot;</span>
+    <span class="n">tr</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">_tr</span>
+    <span class="n">trPr</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">get_or_add_trPr</span><span class="p">()</span>
+    <span class="n">tblHeader</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:tblHeader&quot;</span><span class="p">)</span>
+    <span class="n">tblHeader</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:val&quot;</span><span class="p">),</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span>
+    <span class="n">trPr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tblHeader</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">row</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_cell_color</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+    <span class="n">shading_elm_1</span> <span class="o">=</span> <span class="n">parse_xml</span><span class="p">(</span><span class="sa">rf</span><span class="s1">&#39;&lt;w:shd </span><span class="si">{</span><span class="n">nsdecls</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1"> w:fill=&quot;</span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s1">&quot;/&gt;&#39;</span><span class="p">)</span>
+    <span class="n">cell</span><span class="o">.</span><span class="n">_tc</span><span class="o">.</span><span class="n">get_or_add_tcPr</span><span class="p">()</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shading_elm_1</span><span class="p">)</span>
+
+
+<span class="n">table_formatting</span> <span class="o">=</span> <span class="n">Result</span><span class="p">()</span>
+<span class="n">table_formatting</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">alignment</span> <span class="o">=</span> <span class="n">WD_TABLE_ALIGNMENT</span><span class="o">.</span><span class="n">CENTER</span>  <span class="c1"># type: ignore  # WD_TABLE_ALIGNMENT not found in docx by mypy</span>
+<span class="n">table_formatting</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">Pt</span><span class="p">(</span><span class="mf">10.5</span><span class="p">)</span>  <span class="c1"># type: ignore  # Pt not found in docx by mypy</span>
+
+
+<div class="viewcode-block" id="DocxFigure">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.DocxFigure">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DocxFigure</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">docx</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">Document</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">caption</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">doc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span> <span class="ow">or</span> <span class="n">Cm</span><span class="p">(</span><span class="mf">17.8</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">figures</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">html_parser</span> <span class="o">=</span> <span class="n">htmldocx</span><span class="o">.</span><span class="n">HtmlToDocx</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DocxFigure.add_image">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.DocxFigure.add_image">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span> <span class="n">col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">figures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span>
+                <span class="s2">&quot;img&quot;</span><span class="p">:</span> <span class="n">img</span><span class="p">,</span>
+                <span class="c1"># &#39;col&#39;: (col, col) if isinstance(col, int) else col,</span>
+                <span class="c1"># &#39;row&#39;: (row, row) if isinstance(row, int) else row,</span>
+                <span class="s2">&quot;col&quot;</span><span class="p">:</span> <span class="n">col</span><span class="p">,</span>
+                <span class="s2">&quot;row&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">,</span>
+                <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">label</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DocxFigure.write">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.DocxFigure.write">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">new_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stitch_images</span><span class="p">()</span>
+        <span class="n">new_img_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">new_img_path</span><span class="p">,</span> <span class="n">new_img</span><span class="p">)</span>
+
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">add_paragraph</span><span class="p">()</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">add_run</span><span class="p">()</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">add_picture</span><span class="p">(</span><span class="n">new_img_path</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_caption</span><span class="p">()</span>
+
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">new_img_path</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_stitch_images</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">grid_width</span><span class="p">,</span> <span class="n">grid_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">fig</span><span class="p">[</span><span class="s2">&quot;col&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">fig</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">figures</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">fig</span><span class="p">[</span><span class="s2">&quot;row&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">fig</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">figures</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">col_widths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">fig</span><span class="p">[</span><span class="s2">&quot;img&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">fig</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">figures</span> <span class="k">if</span> <span class="n">fig</span><span class="p">[</span><span class="s2">&quot;col&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">grid_width</span><span class="p">)]</span>
+        <span class="n">dpi</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">col_widths</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">360000</span> <span class="o">*</span> <span class="mf">0.393700787</span><span class="p">)</span>
+        <span class="n">letter_extra_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dpi</span> <span class="o">*</span> <span class="mi">12</span> <span class="o">/</span> <span class="mi">72</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="n">row_heights</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">fig</span><span class="p">[</span><span class="s2">&quot;img&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">letter_extra_rows</span> <span class="k">for</span> <span class="n">fig</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">figures</span> <span class="k">if</span> <span class="n">fig</span><span class="p">[</span><span class="s2">&quot;row&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">grid_height</span><span class="p">)]</span>
+
+        <span class="k">for</span> <span class="n">fig</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">figures</span><span class="p">:</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="n">row_heights</span><span class="p">[</span><span class="n">fig</span><span class="p">[</span><span class="s2">&quot;row&quot;</span><span class="p">]]</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">col_widths</span><span class="p">[</span><span class="n">fig</span><span class="p">[</span><span class="s2">&quot;col&quot;</span><span class="p">]]</span>
+
+            <span class="n">fig</span><span class="p">[</span><span class="s2">&quot;img&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">copyMakeBorder</span><span class="p">(</span><span class="n">fig</span><span class="p">[</span><span class="s2">&quot;img&quot;</span><span class="p">],</span> <span class="n">height</span> <span class="o">-</span> <span class="n">fig</span><span class="p">[</span><span class="s2">&quot;img&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span> <span class="o">-</span> <span class="n">fig</span><span class="p">[</span><span class="s2">&quot;img&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cv2</span><span class="o">.</span><span class="n">BORDER_CONSTANT</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">])</span>
+
+            <span class="n">font_path</span> <span class="o">=</span> <span class="s2">&quot;Times New Roman&quot;</span>
+            <span class="n">font_size</span> <span class="o">=</span> <span class="n">letter_extra_rows</span>
+
+            <span class="n">font</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font_path</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+            <span class="n">image_pil</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">fig</span><span class="p">[</span><span class="s2">&quot;img&quot;</span><span class="p">])</span>  <span class="c1"># Convert OpenCV image to PIL image</span>
+            <span class="n">draw</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">image_pil</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">fig</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]:</span>
+                <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">fig</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">],</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">fig</span><span class="p">[</span><span class="s2">&quot;img&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image_pil</span><span class="p">)</span>  <span class="c1"># Convert PIL image back to OpenCV image</span>
+
+        <span class="n">new_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">sum</span><span class="p">(</span><span class="n">row_heights</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">col_widths</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">360000</span> <span class="o">*</span> <span class="mf">0.393700787</span><span class="p">,</span> <span class="n">Inches</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">col_widths</span><span class="p">),</span> <span class="n">dpi</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">fig</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">figures</span><span class="p">:</span>
+            <span class="n">start_pos</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">row_heights</span><span class="p">[:</span> <span class="n">fig</span><span class="p">[</span><span class="s2">&quot;row&quot;</span><span class="p">]]),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">col_widths</span><span class="p">[:</span> <span class="n">fig</span><span class="p">[</span><span class="s2">&quot;col&quot;</span><span class="p">]])</span>
+            <span class="n">end_pos</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">row_heights</span><span class="p">[:</span> <span class="n">fig</span><span class="p">[</span><span class="s2">&quot;row&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">col_widths</span><span class="p">[:</span> <span class="n">fig</span><span class="p">[</span><span class="s2">&quot;col&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">new_img</span><span class="p">[</span><span class="n">start_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">:</span> <span class="n">end_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">start_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">:</span> <span class="n">end_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">fig</span><span class="p">[</span><span class="s2">&quot;img&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">new_img</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_write_caption</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">paragraph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">add_paragraph</span><span class="p">(</span><span class="s2">&quot;Figure S&quot;</span><span class="p">)</span>
+        <span class="n">paragraph</span><span class="o">.</span><span class="n">runs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bold</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># numbering field</span>
+        <span class="n">run</span> <span class="o">=</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">add_run</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">bold</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">fldChar</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:fldChar&quot;</span><span class="p">)</span>
+        <span class="n">fldChar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:fldCharType&quot;</span><span class="p">),</span> <span class="s2">&quot;begin&quot;</span><span class="p">)</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fldChar</span><span class="p">)</span>
+
+        <span class="n">instrText</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:instrText&quot;</span><span class="p">)</span>
+        <span class="n">instrText</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; SEQ Figure </span><span class="se">\\</span><span class="s2">* ARABIC&quot;</span>  <span class="c1"># type: ignore  # text not found in docx by mypy</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">instrText</span><span class="p">)</span>
+
+        <span class="n">fldChar</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:fldChar&quot;</span><span class="p">)</span>
+        <span class="n">fldChar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:fldCharType&quot;</span><span class="p">),</span> <span class="s2">&quot;end&quot;</span><span class="p">)</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fldChar</span><span class="p">)</span>
+
+        <span class="n">html_doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">html_parser</span><span class="o">.</span><span class="n">parse_html_string</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;b&gt;.&lt;/b&gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">caption</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">add_run</span> <span class="ow">in</span> <span class="n">html_doc</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">runs</span><span class="p">:</span>
+            <span class="n">run</span> <span class="o">=</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">add_run</span><span class="p">(</span><span class="n">add_run</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">bold</span> <span class="o">=</span> <span class="n">add_run</span><span class="o">.</span><span class="n">bold</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">italic</span> <span class="o">=</span> <span class="n">add_run</span><span class="o">.</span><span class="n">italic</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">underline</span> <span class="o">=</span> <span class="n">add_run</span><span class="o">.</span><span class="n">underline</span>  <span class="c1"># type: ignore  # underline not found in docx by mypy</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">superscript</span> <span class="o">=</span> <span class="n">add_run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">superscript</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">subscript</span> <span class="o">=</span> <span class="n">add_run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">subscript</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">strike</span> <span class="o">=</span> <span class="n">add_run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">strike</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">add_run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span></div>
+
+
+
+<div class="viewcode-block" id="DocxTable">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.DocxTable">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DocxTable</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">docx</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">Document</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;test.docx&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dont_save</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">docx</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">Document</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dont_save</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">file</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">docx</span><span class="o">.</span><span class="n">Document</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">docx</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">caption</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column_options</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">footnote</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mergers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">html_parser</span> <span class="o">=</span> <span class="n">htmldocx</span><span class="o">.</span><span class="n">HtmlToDocx</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DocxTable.add_column">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.DocxTable.add_column">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;single&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column_options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DocxTable.add_column_group">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.DocxTable.add_column_group">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_column_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_name</span><span class="p">,</span> <span class="n">column_names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;grouped&quot;</span><span class="p">,</span> <span class="n">group_name</span><span class="p">,</span> <span class="n">column_names</span><span class="p">])</span>
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column_options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">column_names</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="DocxTable.add_row">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.DocxTable.add_row">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="DocxTable.add_header_row">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.DocxTable.add_header_row">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_header_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;header&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="DocxTable.add_empty_row">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.DocxTable.add_empty_row">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_empty_row</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;empty&quot;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="DocxTable.merge_cells">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.DocxTable.merge_cells">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">merge_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mergers</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_correct_table_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">num_cols</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">([</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;single&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;grouped&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">num_rows</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_cols</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">columns</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="n">Cm</span><span class="p">(</span><span class="mf">0.1</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_rows</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">rows</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">add_row</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Ncols</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;single&quot;</span><span class="p">:</span>
+                <span class="n">Ncols</span> <span class="o">+=</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">col</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;grouped&quot;</span><span class="p">:</span>
+                <span class="n">Ncols</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">),</span> <span class="n">Ncols</span> <span class="o">-</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="DocxTable.write">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.DocxTable.write">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_caption</span><span class="p">()</span>
+        <span class="c1"># write the table caption</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">alignment</span> <span class="o">=</span> <span class="n">WD_ALIGN_PARAGRAPH</span><span class="o">.</span><span class="n">JUSTIFY</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_correct_table_dims</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mergers</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="n">num_cols</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">([</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;single&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;grouped&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="c1"># create a table</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">alignment</span> <span class="o">=</span> <span class="n">table_formatting</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">alignment</span>  <span class="c1"># type: ignore # Results object does not have typing</span>
+
+        <span class="c1"># write the column headers</span>
+        <span class="n">spacing_columns</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">col_idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;single&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">write_cell</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">col_idx</span><span class="p">,</span> <span class="n">col</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="n">table_formatting</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>  <span class="c1"># type: ignore  # results object does not have typing</span>
+                <span class="n">spacing_columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">col_idx</span> <span class="o">+=</span> <span class="mi">2</span>
+
+            <span class="k">if</span> <span class="n">col</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;grouped&quot;</span><span class="p">:</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">col_idx</span><span class="p">,</span> <span class="n">col_idx</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">col</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;sz&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="s2">&quot;single&quot;</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span><span class="p">},</span> <span class="n">font_size</span><span class="o">=</span><span class="n">table_formatting</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>  <span class="c1"># type: ignore  # results object does not have typing</span>
+
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">write_cell</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">col_idx</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="n">table_formatting</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>  <span class="c1"># type: ignore  # results object does not have typing</span>
+
+                <span class="n">spacing_columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col_idx</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                <span class="n">col_idx</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c1"># set the lines for the top and bottom header rows</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_cols</span><span class="p">):</span>
+            <span class="n">_set_cell_border</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">top</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;sz&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="s2">&quot;single&quot;</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span><span class="p">})</span>
+            <span class="n">_set_cell_border</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">bottom</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;sz&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="s2">&quot;single&quot;</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span><span class="p">})</span>
+
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_cols</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">spacing_columns</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">num_spacing_past</span> <span class="o">=</span> <span class="nb">len</span><span class="p">([</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">spacing_columns</span> <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">write_cell</span><span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span> <span class="o">-</span> <span class="n">num_spacing_past</span><span class="p">],</span> <span class="n">font_size</span><span class="o">=</span><span class="n">table_formatting</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">column_options</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">num_spacing_past</span><span class="p">])</span>  <span class="c1"># type: ignore  # results object does not have typing</span>
+
+            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;header&quot;</span><span class="p">:</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_cell</span><span class="p">(</span>
+                    <span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_cols</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+                    <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">top</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;sz&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="s2">&quot;single&quot;</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span><span class="p">},</span>
+                    <span class="n">bottom</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;sz&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="s2">&quot;single&quot;</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span><span class="p">},</span>
+                    <span class="n">bkgr_color</span><span class="o">=</span><span class="s2">&quot;F2F2F2&quot;</span><span class="p">,</span>
+                    <span class="n">font_size</span><span class="o">=</span><span class="n">table_formatting</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>  <span class="c1"># type: ignore  # font not found in docx by mypy</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;empty&quot;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_cols</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">write_cell</span><span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">_set_repeat_table_header</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">_set_repeat_table_header</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">rows</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_footnote</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dont_save</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="DocxTable.write_cell">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.DocxTable.write_cell">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">vert_alignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">bold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">italic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bkgr_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">col</span> <span class="o">=</span> <span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">col</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">col</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">runs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># cell.text = str(text).strip()</span>
+        <span class="n">alignment</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;center&quot;</span><span class="p">:</span> <span class="n">WD_ALIGN_PARAGRAPH</span><span class="o">.</span><span class="n">CENTER</span><span class="p">,</span>
+            <span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="n">WD_ALIGN_PARAGRAPH</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span>
+            <span class="s2">&quot;right&quot;</span><span class="p">:</span> <span class="n">WD_ALIGN_PARAGRAPH</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">,</span>
+        <span class="p">}[</span><span class="n">alignment</span><span class="p">]</span>
+
+        <span class="n">vert_alignment</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;center&quot;</span><span class="p">:</span> <span class="n">WD_ALIGN_VERTICAL</span><span class="o">.</span><span class="n">CENTER</span><span class="p">,</span>
+            <span class="s2">&quot;top&quot;</span><span class="p">:</span> <span class="n">WD_ALIGN_VERTICAL</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span>
+            <span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="n">WD_ALIGN_VERTICAL</span><span class="o">.</span><span class="n">BOTTOM</span><span class="p">,</span>
+        <span class="p">}[</span><span class="n">vert_alignment</span><span class="p">]</span>
+
+        <span class="c1"># for txt, settings in parse_text(text):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">html_parser</span><span class="o">.</span><span class="n">add_html_to_cell</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;–&quot;</span><span class="p">),</span> <span class="n">cell</span><span class="p">)</span>
+
+        <span class="n">cell</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignment</span>
+        <span class="n">cell</span><span class="o">.</span><span class="n">vertical_alignment</span> <span class="o">=</span> <span class="n">vert_alignment</span>
+        <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">cell</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">runs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">bold</span><span class="p">:</span>
+                <span class="n">run</span><span class="o">.</span><span class="n">bold</span> <span class="o">=</span> <span class="n">bold</span>
+            <span class="k">if</span> <span class="n">italic</span><span class="p">:</span>
+                <span class="n">run</span><span class="o">.</span><span class="n">italic</span> <span class="o">=</span> <span class="n">italic</span>
+            <span class="k">if</span> <span class="n">font_size</span><span class="p">:</span>
+                <span class="n">run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">font_size</span>
+
+        <span class="n">_set_cell_border</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">bkgr_color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_set_cell_color</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">bkgr_color</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cell</span></div>
+
+
+<div class="viewcode-block" id="DocxTable.add_footnote">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.DocxTable.add_footnote">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_footnote</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">bold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">italic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">footnote</span> <span class="o">=</span> <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">bold</span><span class="p">,</span> <span class="n">italic</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_write_footnote</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">footnote</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># set the lower line</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+            <span class="n">_set_cell_border</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;sz&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="s2">&quot;single&quot;</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;#000000&quot;</span><span class="p">})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">html_parser</span><span class="o">.</span><span class="n">add_html_to_document</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">footnote</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">runs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">footnote</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">run</span><span class="o">.</span><span class="n">bold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">footnote</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">footnote</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+                <span class="n">run</span><span class="o">.</span><span class="n">italic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">footnote</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">footnote</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
+                <span class="n">run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">footnote</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_write_caption</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">paragraph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">add_paragraph</span><span class="p">(</span><span class="s2">&quot;Table S&quot;</span><span class="p">)</span>
+        <span class="n">paragraph</span><span class="o">.</span><span class="n">runs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bold</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># numbering field</span>
+        <span class="n">run</span> <span class="o">=</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">add_run</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">bold</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">fldChar</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:fldChar&quot;</span><span class="p">)</span>
+        <span class="n">fldChar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:fldCharType&quot;</span><span class="p">),</span> <span class="s2">&quot;begin&quot;</span><span class="p">)</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fldChar</span><span class="p">)</span>
+
+        <span class="n">instrText</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:instrText&quot;</span><span class="p">)</span>
+        <span class="n">instrText</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; SEQ Table </span><span class="se">\\</span><span class="s2">* ARABIC&quot;</span>  <span class="c1"># type: ignore  # text not found in docx by mypy</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">instrText</span><span class="p">)</span>
+
+        <span class="n">fldChar</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:fldChar&quot;</span><span class="p">)</span>
+        <span class="n">fldChar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:fldCharType&quot;</span><span class="p">),</span> <span class="s2">&quot;end&quot;</span><span class="p">)</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fldChar</span><span class="p">)</span>
+
+        <span class="n">html_doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">html_parser</span><span class="o">.</span><span class="n">parse_html_string</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;b&gt;.&lt;/b&gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">caption</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">add_run</span> <span class="ow">in</span> <span class="n">html_doc</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">runs</span><span class="p">:</span>
+            <span class="n">run</span> <span class="o">=</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">add_run</span><span class="p">(</span><span class="n">add_run</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">bold</span> <span class="o">=</span> <span class="n">add_run</span><span class="o">.</span><span class="n">bold</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">italic</span> <span class="o">=</span> <span class="n">add_run</span><span class="o">.</span><span class="n">italic</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">underline</span> <span class="o">=</span> <span class="n">add_run</span><span class="o">.</span><span class="n">underline</span>  <span class="c1"># type: ignore  # underline not found in docx by mypy</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">superscript</span> <span class="o">=</span> <span class="n">add_run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">superscript</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">subscript</span> <span class="o">=</span> <span class="n">add_run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">subscript</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">strike</span> <span class="o">=</span> <span class="n">add_run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">strike</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">add_run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span></div>
+
+
+
+<div class="viewcode-block" id="SI">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.SI">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SI</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">font</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Arial&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the SI class for creating supporting information (SI) files in Microsoft Word format.</span>
+
+<span class="sd">        This class is responsible for creating and managing a Microsoft Word document that serves as supporting information (SI) for reports or publications.</span>
+<span class="sd">        It allows for the addition of various elements such as text, headings, and formatted content from HTML.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str | pl.Path): The location of the Word file. Does not have to have a file-extension.</span>
+<span class="sd">            overwrite (bool, optional): Whether to append to or overwrite the file. Defaults to False.</span>
+<span class="sd">            font (str, optional): The font to be used in the document. Defaults to &quot;Arial&quot;.</span>
+
+<span class="sd">        Attributes:</span>
+<span class="sd">            path (pl.Path): The path to the Word document.</span>
+<span class="sd">            doc (docx.Document): The Word document object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.docx&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">docx</span><span class="o">.</span><span class="n">Document</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="ow">or</span> <span class="n">overwrite</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">docx</span><span class="o">.</span><span class="n">Document</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">docx</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="s2">&quot;Normal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Times New Roman&quot;</span>  <span class="c1"># type: ignore  # font not found in docx by mypy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="s2">&quot;Normal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">Pt</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>  <span class="c1"># type: ignore  # font not found in docx by mypy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="s2">&quot;Normal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">paragraph_format</span><span class="o">.</span><span class="n">space_after</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># type: ignore  # paragraph_format not found in docx by mypy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">html_parser</span> <span class="o">=</span> <span class="n">htmldocx</span><span class="o">.</span><span class="n">HtmlToDocx</span><span class="p">()</span>  <span class="c1"># type: ignore  # HtmlToDocx not found in docx by mypy</span>
+
+        <span class="c1"># Set the font to the specified font</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">styles</span><span class="p">[</span><span class="s2">&quot;Normal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">font</span>  <span class="c1"># type: ignore  # font not found in docx by mypy</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Enables the use of the class as a context manager.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">sections</span><span class="p">:</span>
+            <span class="c1"># 1.9 cm</span>
+            <span class="n">section</span><span class="o">.</span><span class="n">left_margin</span> <span class="o">=</span> <span class="n">Cm</span><span class="p">(</span><span class="mf">1.9</span><span class="p">)</span>
+            <span class="n">section</span><span class="o">.</span><span class="n">right_margin</span> <span class="o">=</span> <span class="n">Cm</span><span class="p">(</span><span class="mf">1.9</span><span class="p">)</span>
+
+        <span class="n">_add_page_numbers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+
+<div class="viewcode-block" id="SI.add_figure">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.SI.add_figure">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocxFigure</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">DocxFigure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SI.add_table">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.SI.add_table">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocxTable</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">DocxTable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SI.add_xyz">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.SI.add_xyz">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Result</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span> <span class="n">title</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">formatter</span><span class="p">:</span> <span class="n">WordFormatter</span> <span class="o">=</span> <span class="n">StandardXYZFormatter</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds XYZ formatted content to the document.</span>
+
+<span class="sd">        This method is responsible for adding the coordinates and information about a calculation to the supporting information document.</span>
+<span class="sd">        It includes details such as the electronic bond energy, Gibb&#39;s free energy, enthalpy, imaginary mode, and the coordinates of the molecule.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            obj: A string specifying a calculation directory or a `TCutility.results.Result` object from a calculation.</span>
+<span class="sd">            title: The title to be written before the coordinates and information. If None, no title is added.</span>
+<span class="sd">            formatter: The formatter to be used for formatting the content. Defaults to `StandardXYZFormatter`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ret_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="c1"># Add the formatted content to the document</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">):</span>
+            <span class="n">calc_path</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">calc_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                <span class="k">return</span>  <span class="c1"># raise ValueError(f&quot;Invalid calculation directory: {calc_path}&quot;)</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+        <span class="n">ret_str</span> <span class="o">+=</span> <span class="n">formatter</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+
+        <span class="c1"># print(ret_str)</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">HtmlToDocx</span><span class="p">()</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_html_to_document</span><span class="p">(</span><span class="n">ret_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="SI.add_heading">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.SI.add_heading">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_heading</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a heading to the document.</span>
+
+<span class="sd">        This method allows for the addition of a heading to the Word document, with customizable text and level.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            text (str): The text of the heading.</span>
+<span class="sd">            level (int, optional): The level of the heading (determines the size and style). Defaults to 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">add_heading</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SI.add_page_break">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.SI.add_page_break">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_page_break</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">add_page_break</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SI.add_toc">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.SI.add_toc">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_toc</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">add_paragraph</span><span class="p">()</span>
+        <span class="n">title_run</span> <span class="o">=</span> <span class="n">title</span><span class="o">.</span><span class="n">add_run</span><span class="p">(</span><span class="s2">&quot;Contents&quot;</span><span class="p">)</span>
+        <span class="n">title_run</span><span class="o">.</span><span class="n">bold</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">title_run</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">Pt</span><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+        <span class="n">title</span><span class="o">.</span><span class="n">paragraph_format</span><span class="o">.</span><span class="n">space_after</span> <span class="o">=</span> <span class="n">Pt</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="c1"># figures</span>
+        <span class="n">paragraph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">add_paragraph</span><span class="p">()</span>
+        <span class="n">paragraph</span><span class="o">.</span><span class="n">paragraph_format</span><span class="o">.</span><span class="n">space_after</span> <span class="o">=</span> <span class="n">Pt</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">run</span> <span class="o">=</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">add_run</span><span class="p">()</span>
+        <span class="n">fldChar</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:fldChar&quot;</span><span class="p">)</span>
+        <span class="n">fldChar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:fldCharType&quot;</span><span class="p">),</span> <span class="s2">&quot;begin&quot;</span><span class="p">)</span>
+        <span class="n">fldChar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:dirty&quot;</span><span class="p">),</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span>
+        <span class="n">instrText</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:instrText&quot;</span><span class="p">)</span>
+        <span class="n">instrText</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;xml:space&quot;</span><span class="p">),</span> <span class="s2">&quot;preserve&quot;</span><span class="p">)</span>
+        <span class="n">instrText</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;TOC </span><span class="se">\\</span><span class="s1">h </span><span class="se">\\</span><span class="s1">z </span><span class="se">\\</span><span class="s1">c &quot;Figure&quot;&#39;</span>  <span class="c1"># type: ignore # &quot;Table&quot; of list of table and &quot;Figure&quot; for list of figure</span>
+        <span class="n">fldChar2</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:fldChar&quot;</span><span class="p">)</span>
+        <span class="n">fldChar2</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:fldCharType&quot;</span><span class="p">),</span> <span class="s2">&quot;separate&quot;</span><span class="p">)</span>
+        <span class="n">fldChar3</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:t&quot;</span><span class="p">)</span>
+        <span class="n">fldChar3</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Right-click to update field.&quot;</span>  <span class="c1"># type: ignore # text not found in docx by mypy</span>
+        <span class="n">fldChar2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fldChar3</span><span class="p">)</span>
+
+        <span class="n">fldChar4</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:fldChar&quot;</span><span class="p">)</span>
+        <span class="n">fldChar4</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:fldCharType&quot;</span><span class="p">),</span> <span class="s2">&quot;end&quot;</span><span class="p">)</span>
+
+        <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fldChar</span><span class="p">)</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">instrText</span><span class="p">)</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fldChar2</span><span class="p">)</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fldChar4</span><span class="p">)</span>
+
+        <span class="c1"># tables</span>
+        <span class="n">paragraph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">add_paragraph</span><span class="p">()</span>
+        <span class="n">paragraph</span><span class="o">.</span><span class="n">paragraph_format</span><span class="o">.</span><span class="n">space_after</span> <span class="o">=</span> <span class="n">Pt</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">run</span> <span class="o">=</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">add_run</span><span class="p">()</span>
+        <span class="n">fldChar</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:fldChar&quot;</span><span class="p">)</span>
+        <span class="n">fldChar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:fldCharType&quot;</span><span class="p">),</span> <span class="s2">&quot;begin&quot;</span><span class="p">)</span>
+        <span class="n">fldChar</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:dirty&quot;</span><span class="p">),</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span>
+        <span class="n">instrText</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:instrText&quot;</span><span class="p">)</span>
+        <span class="n">instrText</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;xml:space&quot;</span><span class="p">),</span> <span class="s2">&quot;preserve&quot;</span><span class="p">)</span>
+        <span class="n">instrText</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;TOC </span><span class="se">\\</span><span class="s1">h </span><span class="se">\\</span><span class="s1">z </span><span class="se">\\</span><span class="s1">c &quot;Table&quot;&#39;</span>  <span class="c1"># type: ignore # &quot;Table&quot; of list of table and &quot;Figure&quot; for list of figure</span>
+        <span class="n">fldChar2</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:fldChar&quot;</span><span class="p">)</span>
+        <span class="n">fldChar2</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:fldCharType&quot;</span><span class="p">),</span> <span class="s2">&quot;separate&quot;</span><span class="p">)</span>
+        <span class="n">fldChar3</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:t&quot;</span><span class="p">)</span>
+        <span class="n">fldChar3</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Right-click to update field.&quot;</span>  <span class="c1"># type: ignore # text not found in docx by mypy</span>
+        <span class="n">fldChar2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fldChar3</span><span class="p">)</span>
+
+        <span class="n">fldChar4</span> <span class="o">=</span> <span class="n">OxmlElement</span><span class="p">(</span><span class="s2">&quot;w:fldChar&quot;</span><span class="p">)</span>
+        <span class="n">fldChar4</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">qn</span><span class="p">(</span><span class="s2">&quot;w:fldCharType&quot;</span><span class="p">),</span> <span class="s2">&quot;end&quot;</span><span class="p">)</span>
+
+        <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fldChar</span><span class="p">)</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">instrText</span><span class="p">)</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fldChar2</span><span class="p">)</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">_r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fldChar4</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="get_subdirs">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.get_subdirs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_subdirs</span><span class="p">(</span><span class="n">root_folder</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Iteratively searches through a folder and returns all the most nested subdirs.&quot;&quot;&quot;</span>
+    <span class="n">most_nested_subdirs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">root_folder</span><span class="p">):</span>
+        <span class="c1"># If &#39;dirs&#39; is empty, it means &#39;root&#39; contains no subdirectories, thus it is most nested.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dirs</span><span class="p">:</span>
+            <span class="n">most_nested_subdirs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">root</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">most_nested_subdirs</span></div>
+
+
+
+<div class="viewcode-block" id="replace_files_rkf_to_ams_rkf">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.replace_files_rkf_to_ams_rkf">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">replace_files_rkf_to_ams_rkf</span><span class="p">(</span><span class="n">root_folder</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Iteratively searches through a folder and replaces all files with the extension &#39;.rkf&#39; to &#39;.ams.rkf&#39;, except if the file has &#39;adf.rkf&#39; in the name.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">root_folder</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.rkf&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;adf.rkf&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">new_name</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.rkf&quot;</span><span class="p">,</span> <span class="s2">&quot;.ams.rkf&quot;</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">root</span><span class="p">)</span> <span class="o">/</span> <span class="n">file</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">root</span><span class="p">)</span> <span class="o">/</span> <span class="n">new_name</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../../api/tcutility.report.html#tcutility.report.report.main">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">calc_dir</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;__file__&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;test&quot;</span> <span class="o">/</span> <span class="s2">&quot;fixtures&quot;</span>
+    <span class="n">main_path</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;__file__&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;examples&quot;</span>
+
+    <span class="c1"># all_subdirs = [folder for folder in calc_dir.iterdir() if folder.is_dir()]</span>
+    <span class="n">all_subdirs</span> <span class="o">=</span> <span class="n">get_subdirs</span><span class="p">(</span><span class="n">calc_dir</span><span class="p">)</span>
+    <span class="n">res_objects</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">dir_</span> <span class="ow">in</span> <span class="n">all_subdirs</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>  <span class="c1"># Try to read the results of the calculation</span>
+            <span class="n">res_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">read</span><span class="p">(</span><span class="n">dir_</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="k">with</span> <span class="n">SI</span><span class="p">(</span><span class="n">main_path</span> <span class="o">/</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">si</span><span class="p">:</span>
+        <span class="n">si</span><span class="o">.</span><span class="n">add_heading</span><span class="p">(</span><span class="s2">&quot;SI project&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">res_objects</span><span class="p">:</span>
+            <span class="n">si</span><span class="o">.</span><span class="n">add_xyz</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">)</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, TheoCheM VU Amsterdam.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
