@@ -621,8 +621,7 @@ class ADFFragmentJob(ADFJob):
             # # add the path to the child adf.rkf file as a dependency to the parent job
             self.settings.input.adf.fragments[child_name] = j(child.workdir, "adf.rkf")
 
-            # recast the plams.Settings object into a Result object as that is what run expects
-            child.settings = Result(child_setts[child_name])
+            child.settings = plams.Settings(child_setts[child_name])
 
             log.flow(f"Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}]", ["split"], level=10)
             log.flow(f"Charge:            {child.settings.input.ams.System.charge or 0}", ["straight", "straight"], level=10)
