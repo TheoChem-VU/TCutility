@@ -852,7 +852,7 @@ class DensfJob(Job):
     def __str__(self):
         return f"Densf({self.name}), running in {self.workdir}"
 
-    def gridsize(self, size="medium", grid_extend=7.5):
+    def gridsize(self, size="medium", extend: float = 7.5):
         """
         Set the size of the grid to be used by Densf.
 
@@ -861,15 +861,42 @@ class DensfJob(Job):
         """
         spell_check.check(size, ["coarse", "medium", "fine"], ignore_case=True)
         self.settings.grid = size
-        self.settings.grid_extend = grid_extend
+        self.settings.grid_extend = extend
 
-    def grid(self, args):
-        self.settings.grid = "\n" + "\n".join(args) + "EXTEND 7.5\n"
+    def grid(self, options: List[str], extend: float = 7.5):
+        """
+        Set the grid option in the DensfJob calculation.
+
+        Args:
+            options: a collection of strings that will be the rows of the grid option.
+            extend: the space between the grid edges and the molecule. Defaults to 7.5 angstrom.
+        """
+        self.settings.grid = "\n" + "\n".join(options)
+        self.settings.grid_extend = extend
+
+    def grid_around_mol(self, mol: plams.Molecule, spacing: float = 0.106, extend: float = 7.5):
+        """
+        Construct a grid around a molecule with a given spacing and extend.
+
+        Args:
+            mol: a molecule object to construct the grid around.
+            spacing: the spacing between each grid point. The grid is a regular grid, with equal spacing in all directions. Defaults to 0.106 angstrom.
+            extend: the space between the grid edges and the molecule. Defaults to 7.5 angstrom.
+        """
+        coords = mol.as_array()
+        origin = coords.min(axis=0) - extend
+        delta = coords.max(axis=0) - coords.min(axis=0) + 2 * extend
+        nsteps = (delta / spacing).astype(int)
+        self.settings.grid = f"\n{origin[0]} {origin[1]} {origin[2]}\n"
+        self.settings.grid += f"{nsteps[0]} {nsteps[1]} {nsteps[2]}\n"
+        self.settings.grid += f"1.0 0.0 0.0 {delta[0]}\n"
+        self.settings.grid += f"0.0 1.0 0.0 {delta[1]}\n"
+        self.settings.grid += f"0.0 0.0 1.0 {delta[2]}"
 
     @environment.requires_optional_package("pyfmo")
     def orbital(self, orbital: Union["pyfmo.orbitals.sfo.SFO", "pyfmo.orbitals.mo.MO"]):  # noqa: F821
         """
-        Add a PyOrb orbital for Densf to calculate.
+        Add a PyOrbb orbital for Densf to calculate.
         """
         import pyfmo
 
