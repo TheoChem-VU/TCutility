@@ -13,12 +13,6 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [closed]
-    branches: [main]
   release:
     types: [published]
 
@@ -86,3 +80,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
