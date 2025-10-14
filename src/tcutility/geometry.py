@@ -2,11 +2,6 @@ from math import atan2, cos, sin, sqrt
 from typing import Sequence, Tuple, Union
 
 import numpy as np
-<<<<<<< HEAD
-=======
-from math import sin, cos, atan2, sqrt
-from typing import Tuple, Union, Sequence
->>>>>>> main
 from scm import plams
 
 from tcutility import environment
