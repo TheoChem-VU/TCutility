@@ -246,6 +246,7 @@ class AMSJob(Job):
         self._check_job()
 
         # we will use plams to write the input and runscript
+        self._prune_settings()
         sett = plams.Settings(dictfunc.list_to_dict(dictfunc.dict_to_list(self.settings)))
         job = plams.AMSJob(name=self.name, molecule=self._molecule, settings=sett)
 
