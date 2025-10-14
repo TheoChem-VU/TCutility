@@ -303,6 +303,7 @@ class Local(Server):
     preamble_defaults = {}
     postamble_defaults = {}
     program_modules = {}
+    home = '~'
 
     def __init__(self):
         self.currdir = os.getcwd()
