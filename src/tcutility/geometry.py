@@ -2,6 +2,11 @@ from math import atan2, cos, sin, sqrt
 from typing import Sequence, Tuple, Union
 
 import numpy as np
+<<<<<<< HEAD
+=======
+from math import sin, cos, atan2, sqrt
+from typing import Tuple, Union, Sequence
+>>>>>>> main
 from scm import plams
 
 from tcutility import environment
@@ -274,7 +279,7 @@ class KabschTransform(Transform):
         # first do single value decomposition on covariance matrix
         # this step ensures that the algorithm is numerically stable
         # and removes problems with singular covariance matrices
-        U, _, V = scipy.linalg.svd(H)
+        U, _, V = np.linalg.svd(H)
 
         # get the sign of the determinant of V.T @ U.T
         sign = np.sign(np.linalg.det(V.T @ U.T))
@@ -609,7 +614,7 @@ def random_points_on_spheroid(coordinates: np.ndarray, Nsamples: int = 1, margin
 
     # we then do a singular-value decomposition to obtain
     # the three principle components (Vh) with their eigenvalues (s)
-    _, s, Vh = scipy.linalg.svd(Xc)
+    _, s, Vh = np.linalg.svd(Xc)
 
     # then compute a transformation matrix for generating the correct spheroid
     transform = Transform()
@@ -683,4 +688,6 @@ def parameter(coordinates: np.typing.ArrayLike, *indices: Sequence[int], pyramid
         n1 = n1 / np.linalg.norm(n1)
         n2 = n2 / np.linalg.norm(n2)
 
-        return np.arccos(n1 @ n2) / np.pi * 180
+        angle = np.arccos(n1 @ n2) / np.pi * 180
+
+        return angle
