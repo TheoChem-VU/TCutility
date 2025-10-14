@@ -96,23 +96,16 @@ class Job:
 
     def _prune_settings(self):
         """
+        This method removes empty keys in the internal settings object.
+        This is needed because when a key is accessed it sets it to an empty value.
         """
-        new = []
+        # flatten
         sett = self.settings.flatten()
-        # print()
         for row, v in list(sett.items()):
             if v == plams.Settings():
                 sett.pop(row)
                 continue
-            # if '__parent__' in row:
-            #     continue
-            # if '__name__' in row:
-            #     continue
-            print(row, v)
         self.settings = sett.unflatten()
-            # new.append(row)
-
-        # self.settings = prune(self.settings)
 
     def __enter__(self):
         return self
