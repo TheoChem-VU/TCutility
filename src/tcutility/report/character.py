@@ -1,6 +1,7 @@
 import os
 
-from tcutility import cache, log
+import tcutility.log as log
+from tcutility import cache
 
 
 def _load_data() -> dict:
@@ -44,7 +45,7 @@ def _load_data() -> dict:
 widths = _load_data()
 
 
-@cache.cache
+@cache
 def get_pixel_width(character: str, font: str = "calibri", font_size: float = 11) -> float:
     """
     Get the pixel width of a character for a given font and font-size.

@@ -1,8 +1,11 @@
-from tcutility import results
-from tcutility.analysis.vibration import ts_vibration
-import pytest
-import numpy as np
 from pathlib import Path
+
+import numpy as np
+import pytest
+
+from tcutility.analysis.vibration import ts_vibration
+from tcutility.results.read import read
+from tcutility.results.result import Result
 
 
 @pytest.fixture
@@ -11,8 +14,8 @@ def sn2_path() -> Path:
 
 
 @pytest.fixture
-def sn2_result() -> results.Result:
-    return results.read(Path(__file__).parent / "fixtures" / "chloromethane_sn2_ts")
+def sn2_result() -> Result:
+    return read(Path(__file__).parent / "fixtures" / "chloromethane_sn2_ts")
 
 
 @pytest.fixture
@@ -21,8 +24,8 @@ def rad_path() -> Path:
 
 
 @pytest.fixture
-def rad_result() -> results.Result:
-    return results.read(Path(__file__).parent / "fixtures" / "radical_addition_ts")
+def rad_result() -> Result:
+    return read(Path(__file__).parent / "fixtures" / "radical_addition_ts")
 
 
 def test_sn2_determine_rc(sn2_result) -> None:

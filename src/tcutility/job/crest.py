@@ -1,9 +1,14 @@
+import os
+from typing import Union
+
 from scm import plams
+
+import tcutility.log as log
+from tcutility import spell_check
 from tcutility.data import molecules
 from tcutility.job.generic import Job
-from tcutility import log, spell_check
-import os
 
+__all__ = ["CRESTJob", "QCGJob"]
 
 j = os.path.join
 
@@ -11,7 +16,7 @@ j = os.path.join
 class CRESTJob(Job):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._crest_path = 'crest'
+        self._crest_path = "crest"
         self.options = {}
         self._set_default_options()
 
@@ -20,34 +25,33 @@ class CRESTJob(Job):
         self.spin_polarization(0)
         self.md_temperature(400)
         self.md_length(1)
-        self.crest_path = 'crest'
+        self.crest_path = "crest"
 
     def _setup_job(self):
-        self.add_postamble('mkdir rotamers')
-        self.add_postamble('mkdir conformers')
-        self.add_postamble(f'split -d -l {len(self._molecule.atoms) + 2} -a 5 crest_conformers.xyz conformers/')
-        self.add_postamble(f'split -d -l {len(self._molecule.atoms) + 2} -a 5 crest_rotamers.xyz rotamers/')
+        self.add_postamble("mkdir rotamers")
+        self.add_postamble("mkdir conformers")
+        self.add_postamble(f"split -d -l {len(self._molecule.atoms) + 2} -a 5 crest_conformers.xyz conformers/")
+        self.add_postamble(f"split -d -l {len(self._molecule.atoms) + 2} -a 5 crest_rotamers.xyz rotamers/")
 
-        self.add_postamble('for file in conformers/* rotamers/*')
-        self.add_postamble('do')
+        self.add_postamble("for file in conformers/* rotamers/*")
+        self.add_postamble("do")
         self.add_postamble('    mv "$file" "$file.xyz"')
-        self.add_postamble('done')
+        self.add_postamble("done")
 
         os.makedirs(self.workdir, exist_ok=True)
 
-        self._molecule.write(j(self.workdir, 'coords.xyz'))
+        self._molecule.write(j(self.workdir, "coords.xyz"))
 
-        options = ' '.join([f'{k} {v}' for k, v in self.options.items()])
-        options += ' --noreftopo'
+        options = " ".join([f"{k} {v}" for k, v in self.options.items()])
+        options += " --noreftopo"
 
-        with open(self.runfile_path, 'w+') as runf:
-            runf.write('#!/bin/sh\n\n')
-            runf.write('\n'.join(self._preambles) + '\n\n')
-            runf.write(f'{self._crest_path} coords.xyz {options}\n')
-            runf.write('\n'.join(self._postambles))
+        with open(self.runfile_path, "w+") as runf:
+            runf.write("#!/bin/sh\n\n")
+            runf.write("\n".join(self._preambles) + "\n\n")
+            runf.write(f"{self._crest_path} coords.xyz {options}\n")
+            runf.write("\n".join(self._postambles))
 
         return True
-
 
     @property
     def crest_path(self) -> str:
@@ -57,150 +61,149 @@ class CRESTJob(Job):
     def crest_path(self, val: str):
         self._crest_path = val
 
-
     def spin_polarization(self, val: int):
-        '''
+        """
         Set the spin-polarization of the system.
-        '''
-        self.options['-uhf'] = val
+        """
+        self.options["-uhf"] = val
 
     def multiplicity(self, val: int):
-        '''
+        """
         Set the multiplicity of the system. If the value is not one the calculation will also be unrestricted.
         We use the following values:
-        
+
         1) singlet
         2) doublet
         3) triplet
         4) ...
 
         The multiplicity is equal to 2*S+1 for spin-polarization of S.
-        '''
-        self.options['-uhf'] = (val - 1)//2
+        """
+        self.options["-uhf"] = (val - 1) // 2
 
     def charge(self, val: int):
-        '''
+        """
         Set the charge of the system.
-        '''
-        self.options['-chrg'] = val
+        """
+        self.options["-chrg"] = val
 
     def md_temperature(self, val: float):
-        '''
+        """
         Set the temperature of the molecular dynamics steps. Defaults to 400K.
-        '''
-        self.options['-tnmd'] = val
+        """
+        self.options["-tnmd"] = val
 
     def md_length(self, val: float):
-        '''
+        """
         Set the length of the molecular dynamics steps. The default length will be multiplied by this value, e.g. the default value is 1.
-        '''
-        self.options['-mdlen'] = f'x{val}'
+        """
+        self.options["-mdlen"] = f"x{val}"
 
-    def solvent(self, name: str = None, model: str = 'alpb'):
-        '''
+    def solvent(self, name: Union[str, None] = None, model: str = "alpb"):
+        """
         Model solvation using the ALPB or GBSA model.
         For available solvents see the `XTB documentation <https://xtb-docs.readthedocs.io/en/latest/gbsa.html#parameterized-solvents>`_.
 
         Args:
             name: the name of the solvent you want to use. If ``None`` turns off solvation.
             model: the name of the model to use. Must be ``alpb`` or ``gbsa``. Defaults to ``alpb``.
-        '''
+        """
         if name is None:
-            self.options.pop('-g', None)
-            self.options.pop('-alpb', None)
+            self.options.pop("-g", None)
+            self.options.pop("-alpb", None)
             return
 
-        spell_check.check(model, ['alpb', 'gbsa'], ignore_case=True)
+        spell_check.check(model, ["alpb", "gbsa"], ignore_case=True)
 
         _alpb_solvents = [
-            'acetone',
-            'acetonitrile',
-            'aniline',
-            'benzaldehyde',
-            'benzene',
-            'ch2cl2',
-            'chcl3',
-            'cs2',
-            'dioxane',
-            'dmf',
-            'dmso',
-            'ether',
-            'ethylacetate',
-            'furane',
-            'hexandecane',
-            'hexane',
-            'methanol',
-            'nitromethane',
-            'octanol',
-            'woctanol',
-            'phenol',
-            'toluene',
-            'thf',
-            'water'
+            "acetone",
+            "acetonitrile",
+            "aniline",
+            "benzaldehyde",
+            "benzene",
+            "ch2cl2",
+            "chcl3",
+            "cs2",
+            "dioxane",
+            "dmf",
+            "dmso",
+            "ether",
+            "ethylacetate",
+            "furane",
+            "hexandecane",
+            "hexane",
+            "methanol",
+            "nitromethane",
+            "octanol",
+            "woctanol",
+            "phenol",
+            "toluene",
+            "thf",
+            "water",
         ]
 
         _gbsa_solvents = [
-            'acetone',
-            'acetonitrile',
-            'CH2Cl2',
-            'CHCl3',
-            'CS2',
-            'DMF',
-            'DMSO',
-            'ether',
-            'H2O',
-            'methanol',
-            'n-hexane',
-            'THF',
-            'toluene',
+            "acetone",
+            "acetonitrile",
+            "CH2Cl2",
+            "CHCl3",
+            "CS2",
+            "DMF",
+            "DMSO",
+            "ether",
+            "H2O",
+            "methanol",
+            "n-hexane",
+            "THF",
+            "toluene",
         ]
 
-        if model.lower() == 'alpb':
+        if model.lower() == "alpb":
             spell_check.check(name, _alpb_solvents, ignore_case=True)
-            self.options.pop('-g', None)
-            self.options['-alpb'] = name
+            self.options.pop("-g", None)
+            self.options["-alpb"] = name
         else:
             spell_check.check(name, _gbsa_solvents, ignore_case=True)
-            self.options.pop('-alpb', None)
-            self.options['-g'] = name
+            self.options.pop("-alpb", None)
+            self.options["-g"] = name
 
     @property
     def best_conformer_path(self):
-        return j(self.workdir, 'crest_best.xyz')
+        return j(self.workdir, "crest_best.xyz")
 
     @property
     def conformer_directory(self):
-        return j(self.workdir, 'conformers')
+        return j(self.workdir, "conformers")
 
     @property
     def rotamer_directory(self):
-        return j(self.workdir, 'rotamers')
+        return j(self.workdir, "rotamers")
 
-    def get_conformer_xyz(self, number: int = None):
-        '''
+    def get_conformer_xyz(self, number: Union[int, None] = None):
+        """
         Return paths to conformer xyz files for this job.
 
         Args:
             number: the number of files to return, defaults to 10. If the directory already exists, for example if the job was already run, we will return up to `number` files.
-        '''
+        """
         if os.path.exists(self.conformer_directory):
             return [j(self.conformer_directory, file) for i, file in enumerate(sorted(os.listdir(self.conformer_directory)))]
 
         for i in range(number or 10):
-            yield j(self.conformer_directory, f'{str(i).zfill(5)}.xyz')
+            yield j(self.conformer_directory, f"{str(i).zfill(5)}.xyz")
 
-    def get_rotamer_xyz(self, number: int = None):
-        '''
+    def get_rotamer_xyz(self, number: Union[int, None] = None):
+        """
         Return paths to rotamer xyz files for this job.
 
         Args:
             number: the number of files to return, defaults to 10. If the directory already exists, for example if the job was already run, we will return up to `number` files.
-        '''
+        """
         if os.path.exists(self.rotamer_directory):
             return [j(self.rotamer_directory, file) for i, file in enumerate(os.listdir(self.rotamer_directory))]
 
         for i in range(number or 10):
-            yield j(self.rotamer_directory, f'{str(i).zfill(5)}.xyz')
+            yield j(self.rotamer_directory, f"{str(i).zfill(5)}.xyz")
 
 
 class QCGJob(CRESTJob):
@@ -208,12 +211,12 @@ class QCGJob(CRESTJob):
         super().__init__(*args, **kwargs)
         self._nsolv = 10
         self._fix_solute = False
-        self._ensemble_generation_mode = 'NCI-MTD'
+        self._ensemble_generation_mode = "NCI-MTD"
         self._solvent = None
         self._nofix = True
 
-    def solvent(self, mol, nsolv=None):
-        if self._nsolv:
+    def solvent(self, name: Union[str, None] = None, model: str = "alpb", nsolv: Union[int, None] = None, mol: Union[str, plams.Molecule, plams.Atom, list, None] = None):
+        if nsolv:
             self._nsolv = nsolv
 
         if isinstance(mol, plams.Molecule):
@@ -226,7 +229,7 @@ class QCGJob(CRESTJob):
             # here we can get the molecule name using tcutility.data.molecules
             self._solvent = molecules.get(mol)
             # we can check if the alpb solvent name is defined in the xyz file
-            alpb = self._solvent.flags.get('alpb', None)
+            alpb = self._solvent.flags.get("alpb", None)
             if alpb:
                 self.alpb(alpb)
 
@@ -251,86 +254,86 @@ class QCGJob(CRESTJob):
         self._nofix = enable
 
     def _setup_job(self):
-        self.add_postamble('mkdir ensemble/ensemble')
-        self.add_postamble(f'split -d -l {len(self._molecule.atoms) + len(self._solvent.atoms) * self._nsolv + 2} -a 5 ensemble/final_ensemble.xyz ensemble/ensemble')
+        self.add_postamble("mkdir ensemble/ensemble")
+        self.add_postamble(f"split -d -l {len(self._molecule.atoms) + len(self._solvent.atoms) * self._nsolv + 2} -a 5 ensemble/final_ensemble.xyz ensemble/ensemble")
 
-        self.add_postamble('for file in ensemble/ensemble/*')
-        self.add_postamble('do')
+        self.add_postamble("for file in ensemble/ensemble/*")
+        self.add_postamble("do")
         self.add_postamble('    mv "$file" "$file.xyz"')
-        self.add_postamble('done')
+        self.add_postamble("done")
 
         if not self._solvent:
-            log.error(f'Did not provide a solvent molecule for this job. Call the {self.__class__.__name__}.solvent method to add one.')
+            log.error(f"Did not provide a solvent molecule for this job. Call the {self.__class__.__name__}.solvent method to add one.")
 
         os.makedirs(self.workdir, exist_ok=True)
 
-        self._molecule.write(j(self.workdir, 'coords.xyz'))
-        self._solvent.write(j(self.workdir, 'solvent.xyz'))
+        self._molecule.write(j(self.workdir, "coords.xyz"))
+        self._solvent.write(j(self.workdir, "solvent.xyz"))
 
         ensemble_mode_option = {
-            'NCI-MTD': '--ncimtd',
-            'MD': '--md',
-            'MTD': '--mtd',
+            "NCI-MTD": "--ncimtd",
+            "MD": "--md",
+            "MTD": "--mtd",
         }.get(self._ensemble_generation_mode, self._ensemble_generation_mode)
 
         options = [
-            'coords.xyz',
+            "coords.xyz",
             f'-xnam "{self.xtb_path}"',
-            '--qcg solvent.xyz',
-            '--ensemble',
-            f'--nsolv {self._nsolv}',
-            f'--chrg {self._charge}',
-            f'--uhf {self._spinpol}',
-            f'--tnmd {self._temp}',
-            f'--mdlen {50 * float(self._mdlen[1:])}',
+            "--qcg solvent.xyz",
+            "--ensemble",
+            f"--nsolv {self._nsolv}",
+            f"--chrg {self._charge}",
+            f"--uhf {self._spinpol}",
+            f"--tnmd {self._temp}",
+            f"--mdlen {50 * float(self._mdlen[1:])}",
             ensemble_mode_option,
         ]
 
         if self._alpb:
-            options.append(f'--alpb {self._alpb}')
+            options.append(f"--alpb {self._alpb}")
 
         if self._nofix:
-            options.append('--nofix')
+            options.append("--nofix")
 
-        options = ' '.join(options)
+        options = " ".join(options)
 
-        with open(self.runfile_path, 'w+') as runf:
-            runf.write('#!/bin/sh\n\n')
-            runf.write('\n'.join(self._preambles) + '\n\n')
-            runf.write(f'{self._crest_path} {options}\n')
-            runf.write('\n'.join(self._postambles))
+        with open(self.runfile_path, "w+") as runf:
+            runf.write("#!/bin/sh\n\n")
+            runf.write("\n".join(self._preambles) + "\n\n")
+            runf.write(f"{self._crest_path} {options}\n")
+            runf.write("\n".join(self._postambles))
 
         return True
 
     @property
     def ensemble_directory(self):
-        return j(self.workdir, 'ensemble', 'ensemble')
+        return j(self.workdir, "ensemble", "ensemble")
 
-    def get_ensemble_xyz(self, number: int = None):
-        '''
+    def get_ensemble_xyz(self, number: Union[int, None] = None):
+        """
         Return paths to conformer xyz files for this job.
 
         Args:
             number: the number of files to return, defaults to 10. If the directory already exists, for example if the job was already run, we will return up to `number` files.
-        '''
+        """
         if os.path.exists(self.ensemble_directory):
             return [j(self.ensemble_directory, file) for i, file in enumerate(sorted(os.listdir(self.ensemble_directory)))]
 
         for i in range(number or 10):
-            yield j(self.ensemble_directory, f'{str(i).zfill(5)}.xyz')
+            yield j(self.ensemble_directory, f"{str(i).zfill(5)}.xyz")
 
     @property
     def best_ensemble_path(self):
-        return j(self.workdir, 'ensemble', 'ensemble', 'crest_best.xyz')
+        return j(self.workdir, "ensemble", "ensemble", "crest_best.xyz")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     with CRESTJob(test_mode=True) as job:
-        job.rundir = 'tmp/SN2'
-        job.name = 'CREST'
+        job.rundir = "tmp/SN2"
+        job.name = "CREST"
         # job.molecule('../../../test/fixtures/xyz/transitionstate_radical_addition.xyz')
         # job.solvent('water')
-        job.crest_path = 'crest'
+        job.crest_path = "crest"
         # job.sbatch(p='tc', ntasks_per_node=32)
 
     # with QCGJob(test_mode=True) as job:

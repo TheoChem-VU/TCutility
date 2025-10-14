@@ -1,32 +1,28 @@
+import functools
 import os
-from enum import Enum, auto
-from tcutility import connect
+from importlib.util import find_spec
+from typing import Optional
+
+from tcutility import errors
 
 
-class OSName(Enum):
+def requires_optional_package(package_name: str, os_name: Optional[str] = None):
     """
-    An enumeration of the different operating systems.
+    Ensures a given package is available before running a function, otherwise raises an ImportError.
+    This can be used to check for optional dependencies which are required for specific functionality.
+
+    Arguments:
+        package_name (str): name of the required package
+        os_name (Optional[str]): name of the os that this package must be specified on, if omitted defaults to all os
     """
 
-    WINDOWS = auto()
-    LINUX = auto()
-    MACOS = auto()
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            if (os_name is None or os.name == os_name) and find_spec(package_name) is None:
+                raise errors.MissingOptionalPackageError(package_name)
+            return func(*args, **kwargs)
 
+        return wrapper
 
-def get_os_name(server: connect.Server = connect.Local()) -> OSName:
-    """
-    Get the name of the operating system. Returns a value from the :class:`OSName <tcutility.environment.OSName>` enumeration.
-    """
-    # if we are connected to a server we are on linux
-    if not isinstance(server, connect.Local):
-        return OSName.LINUX
-
-    os_name = os.name
-    if os_name == "nt":
-        return OSName.WINDOWS
-    elif os_name == "posix":
-        return OSName.LINUX
-    elif os_name == "mac":
-        return OSName.MACOS
-    else:
-        raise ValueError(f"Unknown operating system: {os_name}")
+    return decorator

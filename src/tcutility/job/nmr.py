@@ -4,6 +4,8 @@ from typing import Tuple
 from tcutility.job.adf import ADFJob
 from tcutility.job.generic import Job
 
+__all__ = ["NMRJob"]
+
 j = os.path.join
 
 
@@ -39,14 +41,14 @@ class NMRJob(Job):
         self.pre_nmr_job.settings.input.ams.System.ElectrostaticEmbedding.MultipolePotential.Coordinates = "\n" + "\n".join(multipole_coords) + "\n      End"
 
         # we copy the pre_nmr_job output files to the main job directory
-        self.pre_nmr_job.add_postamble(f'cp {j(self.pre_nmr_job.workdir, "adf.rkf")} {j(self.workdir, "TAPE21")}')
-        self.pre_nmr_job.add_postamble(f'cp {j(self.pre_nmr_job.workdir, "TAPE10")} {j(self.workdir, "TAPE10")}')
+        self.pre_nmr_job.add_postamble(f"cp {j(self.pre_nmr_job.workdir, 'adf.rkf')} {j(self.workdir, 'TAPE21')}")
+        self.pre_nmr_job.add_postamble(f"cp {j(self.pre_nmr_job.workdir, 'TAPE10')} {j(self.workdir, 'TAPE10')}")
         self.pre_nmr_job.run()
 
         # some extra settings for the main job
         self.dependency(self.pre_nmr_job)
         # NMR will name the calculation as TAPE21 instead of adf.rkf, so we rename it here
-        self.add_postamble(f'mv {j(self.workdir, "TAPE21")} {j(self.workdir, "adf.rkf")}')
+        self.add_postamble(f"mv {j(self.workdir, 'TAPE21')} {j(self.workdir, 'adf.rkf')}")
 
         # write the input for the NMR job
         # the ghost block holds the NICS points

@@ -1,12 +1,21 @@
 import os
 import pathlib as pl
 import uuid
+from importlib.util import find_spec
 from typing import TYPE_CHECKING, List, Tuple, Union
 
-import cv2
+from tcutility import errors
+
+if find_spec("docx") is None:
+    raise errors.MissingOptionalPackageError("docx")
+if find_spec("htmldocx") is None:
+    raise errors.MissingOptionalPackageError("htmldocx")
+if find_spec("cv2") is None:
+    raise errors.MissingOptionalPackageError("opencv-python")
+
+
+import cv2  # noqa: E402 # This is the opencv-python package
 import docx
-import docx.oxml
-import docx.oxml.ns
 import htmldocx
 import numpy as np
 import PIL
@@ -20,10 +29,10 @@ from docx.oxml.ns import nsdecls, qn
 from docx.shared import Cm, Inches, Pt
 from htmldocx import HtmlToDocx
 
-from tcutility import results
 from tcutility.report.formatters.generic import WordFormatter
 from tcutility.report.formatters.xyz import StandardXYZFormatter
-from tcutility.results import Result, read
+from tcutility.results.read import read
+from tcutility.results.result import Result
 
 if TYPE_CHECKING:
     import docx.document
@@ -104,7 +113,7 @@ def _set_cell_color(cell, color):
     cell._tc.get_or_add_tcPr().append(shading_elm_1)
 
 
-table_formatting = results.Result()
+table_formatting = Result()
 table_formatting.table.alignment = WD_TABLE_ALIGNMENT.CENTER  # type: ignore  # WD_TABLE_ALIGNMENT not found in docx by mypy
 table_formatting.font.size = Pt(10.5)  # type: ignore  # Pt not found in docx by mypy
 
@@ -636,8 +645,6 @@ def replace_files_rkf_to_ams_rkf(root_folder: pl.Path) -> None:
 
 
 def main():
-    from tcutility.results import read
-
     calc_dir = pl.Path("__file__").resolve().parents[0] / "test" / "fixtures"
     main_path = pl.Path("__file__").resolve().parents[0] / "examples"
 

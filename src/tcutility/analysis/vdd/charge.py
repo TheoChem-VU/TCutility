@@ -1,7 +1,7 @@
-import attrs
+from dataclasses import dataclass
 
 
-@attrs.define
+@dataclass
 class VDDCharge:
     atom_index: int  # index of the atom in the molecules
     atom_symbol: str  # symbol of the atom

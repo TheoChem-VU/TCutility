@@ -7,7 +7,6 @@ from tcutility.cli_scripts.read import read_results
 from tcutility.cli_scripts.resize_figures import resize
 
 
-
 @click.group()
 def tcutility():
     """TCutility command line interface."""

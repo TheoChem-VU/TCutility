@@ -1,5 +1,15 @@
 """Module containing functions for generating citations"""
 
+from importlib.util import find_spec
+
+from tcutility import errors
+
+if find_spec("docx") is None:
+    raise errors.MissingOptionalPackageError("docx")
+if find_spec("htmldocx") is None:
+    raise errors.MissingOptionalPackageError("htmldocx")
+
+
 import os
 from math import ceil
 from typing import List
@@ -9,7 +19,9 @@ import docx
 import htmldocx
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt
-from tcutility import cite, data, spell_check
+
+from tcutility import cite, spell_check
+from tcutility.data import functionals
 
 
 class Docx:
@@ -140,7 +152,7 @@ def format_paragraph(dois, style):
             raise exp
 
         print(f"  [{doi}] {citation}")
-        paragraph = f'[{doi_order.index(doi) + 1}] {cite.cite(doi, style=style, mode="html")}'
+        paragraph = f"[{doi_order.index(doi) + 1}] {cite.cite(doi, style=style, mode='html')}"
         paragraphs.append(paragraph)
 
     return paragraphs
@@ -220,7 +232,7 @@ def generate_citations(objects: List[str], wiley: bool, acs: bool, rsc: bool, ou
     Methodology D3BJ
       [10.1002/jcc.21759] S. Grimme, S. Ehrlich, L. Goerigk, J. Comput. Chem. 2011, 32, 1456-1465.
     """
-    available_citations = list(program_references.keys()) + list(methodology_references.keys()) + list(data.functionals.functionals.keys())
+    available_citations = list(program_references.keys()) + list(methodology_references.keys()) + list(functionals.functionals.keys())
     if list_citations:
         print("OBJECTS WITH AVAILABLE REFERENCES:")
         print("    Programs")
@@ -237,7 +249,7 @@ def generate_citations(objects: List[str], wiley: bool, acs: bool, rsc: bool, ou
 
         print("    Functionals")
         print("    ===========")
-        printables = [xc_info.path_safe_name for xc, xc_info in data.functionals.functionals.items() if len(xc_info.dois) > 0]  # type: ignore
+        printables = [xc_info.path_safe_name for xc, xc_info in functionals.functionals.items() if len(xc_info.dois) > 0]  # type: ignore
         _print_rect_list(printables, 4)
         print()
 
@@ -254,7 +266,7 @@ def generate_citations(objects: List[str], wiley: bool, acs: bool, rsc: bool, ou
             paragraphs = None  # try to format a functional
             paragraph_title = ""
             try:
-                xc_info = data.functionals.get(obj)
+                xc_info = functionals.get_functional(obj)
                 print("Functional", obj)
                 paragraph_title = f"XC-Functional: <b>{xc_info.name_html}</b>"
                 paragraphs = format_paragraph(xc_info.dois, style=style)

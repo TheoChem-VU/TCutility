@@ -3,9 +3,10 @@
 import numpy as np
 import pytest
 from scm.plams import KFReader
-from tcutility import results
+
 from tcutility.analysis.vdd import charge, manager
 from tcutility.results import ams
+from tcutility.results.read import read
 
 # VDDCharge, manager.VDDChargeManager, get_vdd_charges, _get_fragment_indices_from_input_order
 
@@ -21,7 +22,7 @@ def kfreader_fa_disordered_fragindices_cs():
 
 @pytest.fixture
 def vdd_manager_fa_disordered_fragindices_cs():
-    fa_results = results.read(current_dir / "fixtures" / "VDD" / "fa_acid_amide_cs")
+    fa_results = read(current_dir / "fixtures" / "VDD" / "fa_acid_amide_cs")
     return manager.create_vdd_charge_manager(fa_results)
 
 
@@ -32,7 +33,7 @@ def kfreader_fa_ordered_fragindices_cs():
 
 @pytest.fixture
 def vdd_manager_fa_ordered_fragindices_cs():
-    fa_results = results.read(current_dir / "fixtures" / "VDD" / "fa_squaramide_se_cs")
+    fa_results = read(current_dir / "fixtures" / "VDD" / "fa_squaramide_se_cs")
     return manager.create_vdd_charge_manager(fa_results)
 
 
@@ -43,7 +44,7 @@ def kfreader_fa_nosym():
 
 @pytest.fixture
 def vdd_manager_fa_nosym():
-    fa_results = results.read(current_dir / "fixtures" / "VDD" / "fa_donor_acceptor_nosym")
+    fa_results = read(current_dir / "fixtures" / "VDD" / "fa_donor_acceptor_nosym")
     return manager.create_vdd_charge_manager(fa_results)
 
 
@@ -54,7 +55,7 @@ def kfreader_geo_nosym():
 
 @pytest.fixture
 def vdd_manager_geo_nosym():
-    geo_results = results.read(current_dir / "fixtures" / "VDD" / "geo_nosym" / "geo_nosym.adf.rkf")
+    geo_results = read(current_dir / "fixtures" / "VDD" / "geo_nosym" / "geo_nosym.adf.rkf")
     return manager.create_vdd_charge_manager(geo_results)
 
 

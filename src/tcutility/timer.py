@@ -1,14 +1,18 @@
-from time import perf_counter
-import numpy as np
-from tcutility import log
-from types import FunctionType
-import listfunc
 import atexit
 import functools
-'''
+from time import perf_counter
+from types import FunctionType
+from typing import Dict, Sequence, Union
+
+import listfunc
+import numpy as np
+
+import tcutility.log as log
+
+"""
 Implements a decorator and context manager that records and stores the number of times a function
 has been called and also the amount of time taken in total/per call
-'''
+"""
 times = {}
 exec_start = perf_counter()
 
@@ -18,48 +22,49 @@ timer_level: int = 10
 
 
 class timer:
-    '''
+    """
     The main timer class. It acts both as a context-manager and decorator.
-    '''
-    def __init__(self, name: str = None, level: int = 20):
-        '''
+    """
+
+    def __init__(self, name: str = "", level: int = 20):
+        """
         Args:
             name: a custom name to give to the function.
             level: the level at which to record timings.
-        '''
+        """
         self.level = level
         if isinstance(name, FunctionType):
             if self.level < timer_level:
                 return name
             self.function = name
-            times.setdefault(name.__qualname__, {'calls': 0, 'timings': []})
+            times.setdefault(name.__qualname__, {"calls": 0, "timings": []})
         elif name is not None:
             self.name = name
-            times.setdefault(self.name, {'calls': 0, 'timings': []})
+            times.setdefault(self.name, {"calls": 0, "timings": []})
 
     def __enter__(self):
         self.start = perf_counter()
         return self
 
     def __exit__(self, *args, **kwargs):
-        times[self.name]['calls'] += 1
-        times[self.name]['timings'].append(perf_counter() - self.start)
+        times[self.name]["calls"] += 1
+        times[self.name]["timings"].append(perf_counter() - self.start)
 
     def __call__(self, *args, **kwargs):
-        if not hasattr(self, 'function') and isinstance(args[0], FunctionType):
+        if not hasattr(self, "function") and isinstance(args[0], FunctionType):
             if self.level < timer_level:
                 return args[0]
             self.function = args[0]
-            times.setdefault(self.function.__qualname__, {'calls': 0, 'timings': []})
+            times.setdefault(self.function.__qualname__, {"calls": 0, "timings": []})
             return self
 
-        times.setdefault(self.function.__qualname__, {'calls': 0, 'timings': []})
+        times.setdefault(self.function.__qualname__, {"calls": 0, "timings": []})
 
         if enabled and __debug__:
             start = perf_counter()
             ret = self.function(*args, **kwargs)
-            times[self.function.__qualname__]['calls'] += 1
-            times[self.function.__qualname__]['timings'].append(perf_counter() - start)
+            times[self.function.__qualname__]["calls"] += 1
+            times[self.function.__qualname__]["timings"].append(perf_counter() - start)
             return ret
         else:
             return self.function(*args, **kwargs)
@@ -72,12 +77,12 @@ def print_timings():
     if not enabled:
         return
 
-    if sum(time['calls'] for time in times.values()) == 0:
+    if sum(time["calls"] for time in times.values()) == 0:
         return
 
     names = list(times.keys())
     names = sorted(names)
-    names_splits = [name.split('.') for name in names]
+    names_splits = [name.split(".") for name in names]
 
     # generate names that are common to multiple names
     for i, name in enumerate(names_splits):
@@ -92,12 +97,12 @@ def print_timings():
                 names.append(longest_parent)
 
     names = sorted(names)
-    names_splits = [name.split('.') for name in names]
+    names_splits = [name.split(".") for name in names]
     # get the parents:
     parents = []
     parent_levels = []
     for i, (name, splits) in enumerate(zip(names, names_splits)):
-        parent = 'TOTAL'
+        parent = "TOTAL"
         parent_level = 0
         for name_, splits_ in zip(names[:i], names_splits[:i]):
             if listfunc.startswith(splits, splits_):
@@ -106,45 +111,45 @@ def print_timings():
         parents.append(parent)
         parent_levels.append(parent_level)
 
-    parent_times = {parent: {'timings': [sum([sum(times.get(name, {'timings': [0]})['timings']) for name in names if name.startswith(parent)])]} for parent in parents}
+    parent_times: Dict[str, Dict[str, Union[Sequence[float], float, int]]] = {parent: {"timings": [sum([sum(times.get(name, {"timings": [0]})["timings"]) for name in names if name.startswith(parent)])]} for parent in parents}
     for parent in parents:
         if parent in times:
-            parent_times[parent] = {'timings': times[parent]['timings'], 'calls': times[parent]['calls']}
-    parent_times['TOTAL'] = {'timings': [perf_counter() - exec_start], 'calls': 1}
+            parent_times[parent] = {"timings": times[parent]["timings"], "calls": times[parent]["calls"]}
+    parent_times["TOTAL"] = {"timings": [perf_counter() - exec_start], "calls": 1}
 
-    header = ['Function', 'Calls', 'Mean (s)', 'Time Spent (s)', 'Rel. Time']
+    header = ["Function", "Calls", "Mean (s)", "Time Spent (s)", "Rel. Time"]
     times_ = parent_times.copy()
     times_.update(times)
     lines = []
     for name, parent, level in zip(names, parents, parent_levels):
         line = []
-        line.append(name.replace(parent, ' > ' * level))  # function name
+        line.append(name.replace(parent, " > " * level))  # function name
         calls = times_[name].get("calls", 0)
         if calls == 0:
-            line.append('')
-            line.append('')
-            line.append('')
+            line.append("")
+            line.append("")
+            line.append("")
         else:
             mean = np.mean(times_[name]["timings"])
             total = np.sum(times_[name]["timings"])
             line.append(str(calls))
-            line.append(f'{mean:.3f}')
-            line.append(f'{total:.3f}')
+            line.append(f"{mean:.3f}")
+            line.append(f"{total:.3f}")
 
         try:
-            rel = sum(times_[name]["timings"])/sum(parent_times[parent]["timings"])*100
-            rel_total = sum(times_[name]["timings"])/sum(parent_times["TOTAL"]["timings"])*100
+            rel = sum(times_[name]["timings"]) / sum(parent_times[parent]["timings"]) * 100
+            rel_total = sum(times_[name]["timings"]) / sum(parent_times["TOTAL"]["timings"]) * 100
         except ZeroDivisionError:
             rel = 0
             rel_total = 0
-        if parent != 'TOTAL':
-            line.append(f'{rel_total: >3.0f}% ({rel: >3.0f}%)')
+        if parent != "TOTAL":
+            line.append(f"{rel_total: >3.0f}% ({rel: >3.0f}%)")
         else:
-            line.append(f'{rel_total: >3.0f}%')
+            line.append(f"{rel_total: >3.0f}%")
 
         lines.append(line)
-    lines.append(['TOTAL', '', '', f'{sum(times_["TOTAL"]["timings"]):.3f}', '100%'])
-    
+    lines.append(["TOTAL", "", "", f"{sum(times_['TOTAL']['timings']):.3f}", "100%"])
+
     log.table(lines, header=header, hline=[-2])
 
 
@@ -152,10 +157,10 @@ def print_timings():
 atexit.register(print_timings)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import time
 
-    @timer
+    @timer()
     def a(b):
         time.sleep(b)
         return b
@@ -166,18 +171,17 @@ if __name__ == '__main__':
         return b
 
     class A:
-        @timer
-        def a(self):
-            ...
+        @timer()
+        def a(self): ...
 
     print(a)
     print(b)
 
-    a(.3)
-    a(.3)
-    b(.2)
-    b(.2)
-    b(.2)
+    a(0.3)
+    a(0.3)
+    b(0.2)
+    b(0.2)
+    b(0.2)
 
     a = A()
     a.a()

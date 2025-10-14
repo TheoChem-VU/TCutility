@@ -6,11 +6,14 @@ from typing import List
 import numpy as np
 from scm import plams
 
-from tcutility import constants, ensure_list
-from tcutility.results import Result, cache
-from tcutility.tc_typing import arrays
+from tcutility import constants, environment
+from tcutility.results import cache
+from tcutility.results.result import Result
+from tcutility.typing_utilities import Array1D, ensure_list
 
 j = os.path.join
+
+__all__ = ["get_ams_info", "get_calc_files", "get_ams_version", "get_calculation_status", "get_molecules", "get_history", "get_input_blocks"]
 
 
 def get_calc_files(calc_dir: str) -> dict:
@@ -102,7 +105,7 @@ def get_ams_version(calc_dir: str) -> Result:
     ret.major = ret.full.split(".")[0]
     ret.minor = ret.full.split()[0].split(".")[1]
     ret.micro = ret.full.split()[1]
-    ret.date = datetime.strptime(ret.full.split('(')[-1].split(')')[0], "%Y-%m-%d")
+    ret.date = datetime.strptime(ret.full.split("(")[-1].split(")")[0], "%Y-%m-%d")
 
     return ret
 
@@ -161,7 +164,8 @@ def get_ams_info(calc_dir: str) -> Result:
     # and history variables
     ret.history = get_history(calc_dir)
 
-    ret.pes = get_pes(calc_dir)
+    # Only get pes if the task is "pesscan"
+    ret.pes = get_pes(calc_dir) if "pesscan" in ret.input.task else None
 
     cache.unload(ret.files["ams.rkf"])
     return ret
@@ -232,7 +236,6 @@ def get_calculation_status(calc_dir: str) -> Result:
                     ret.code = "S"
                     return ret
 
-
     reader_ams = cache.get(files["ams.rkf"])
     termination_status = str(reader_ams.read("General", "termination status")).strip()
 
@@ -282,7 +285,7 @@ def get_calculation_status(calc_dir: str) -> Result:
 # -------------------- Fragment indices ----------------------- #
 
 
-def _get_fragment_indices_from_input_order(results_type) -> arrays.Array1D:
+def _get_fragment_indices_from_input_order(results_type) -> Array1D:
     """Function to get the fragment indices from the input order. This is needed because the fragment indices are stored in internal order in the rkf file."""
     frag_indices = np.array(results_type.read("Geometry", "fragment and atomtype index")).reshape(2, -1)  # 1st row: Fragment index; 2nd row atomtype index
     atom_order = np.array(results_type.read("Geometry", "atom order index")).reshape(2, -1)  # 1st row: input order; 2nd row: internal order
@@ -365,6 +368,7 @@ def get_molecules(calc_dir: str) -> Result:
     return ret
 
 
+@environment.requires_optional_package("scipy")
 def get_pes(calc_dir: str) -> Result:
     """
     Function to get PES scan variables.
@@ -383,11 +387,13 @@ def get_pes(calc_dir: str) -> Result:
             - ``npoints`` **list[int] | int** – number of scan points for the scan-coordinates.
                 If there is more than one scan-coordinates it will be a list of integers, otherwise it will be a single integer.
             - ``energies`` **np.ndarray** - array containing energies with shape ``npoints``.
-            - ``energy_interpolator`` **scipy.interpolate.RegularGridInterpolator** - interpolator 
+            - ``energy_interpolator`` **scipy.interpolate.RegularGridInterpolator** - interpolator
                 object used for obtaining energies at any point on the PES. Cannot be used for extrapolation.
             - ``molecule_interpolator`` **fuction** - interpolator used to obtain molecular coordinates at
                 any point on the PES. Cannot be used for extrapolation.
     """
+    import scipy.interpolate
+
     # read history mols
     files = get_calc_files(calc_dir)
     # all info is stored in reader_ams
@@ -399,7 +405,7 @@ def get_pes(calc_dir: str) -> Result:
 
     ret = Result()
 
-    history_indices = reader_ams.read('PESScan', 'HistoryIndices')
+    history_indices = reader_ams.read("PESScan", "HistoryIndices")
     atnums = ensure_list(reader_ams.read("InputMolecule", "AtomicNumbers"))  # type: ignore plams does not include type hints. Returns list[int]
     ret.molecules = []
     for i in history_indices:
@@ -412,12 +418,12 @@ def get_pes(calc_dir: str) -> Result:
 
     # read general info
     ret.nscan_coords = reader_ams.read("PESScan", "nScanCoord")
-    ret.scan_coord_name = [reader_ams.read("PESScan", f"ScanCoord({i+1})").strip() for i in range(ret.nscan_coords)]
-    ret.npoints = [reader_ams.read("PESScan", f"nPoints({i+1})") for i in range(ret.nscan_coords)]
-    
-    conversion_factors = [constants.BOHR2ANG if name.startswith('Distance') else 180/np.pi for name in ret.scan_coord_name]
+    ret.scan_coord_name = [reader_ams.read("PESScan", f"ScanCoord({i + 1})").strip() for i in range(ret.nscan_coords)]
+    ret.npoints = [reader_ams.read("PESScan", f"nPoints({i + 1})") for i in range(ret.nscan_coords)]
 
-    ret.scan_coord = [np.linspace(reader_ams.read("PESScan", f"RangeStart({i+1})"), reader_ams.read("PESScan", f"RangeEnd({i+1})"), ret.npoints[i]) * f for i, f in zip(range(ret.nscan_coords), conversion_factors)]
+    conversion_factors = [constants.BOHR2ANG if name.startswith("Distance") else 180 / np.pi for name in ret.scan_coord_name]
+
+    ret.scan_coord = [np.linspace(reader_ams.read("PESScan", f"RangeStart({i + 1})"), reader_ams.read("PESScan", f"RangeEnd({i + 1})"), ret.npoints[i]) * f for i, f in zip(range(ret.nscan_coords), conversion_factors)]
     if ("PESScan", "PES") in reader_ams:
         # if we have the PES we can get the energies and coordinates
         ret.energies = np.array(reader_ams.read("PESScan", "PES")).reshape(*ret.npoints) * constants.HA2KCALMOL
@@ -428,11 +434,11 @@ def get_pes(calc_dir: str) -> Result:
 
         # generate the coordinate arrays to be able to interpolate
         _coords = np.array([np.array(mol) for mol in ret.molecules]).reshape(*ret.npoints, len(ret.molecules[0]), 3)
-        # this interpolator is a temporary one, it will be used to get the coordinates only, not the 
+        # this interpolator is a temporary one, it will be used to get the coordinates only, not the
         # whole molecule including atomic number, data, etc.
         _coordinate_interpolator = scipy.interpolate.RegularGridInterpolator(ret.scan_coord, _coords)
 
-        # this function replaces the interpolator and uses the interpolator to generate molecules 
+        # this function replaces the interpolator and uses the interpolator to generate molecules
         # at specific PES coordinates
         def molecule_interpolator(xi: np.ndarray) -> np.ndarray:
             xi = np.atleast_2d(xi)
@@ -443,7 +449,7 @@ def get_pes(calc_dir: str) -> Result:
                 for atnum, coord in zip(atnums, y):
                     mol.add_atom(plams.Atom(atnum=atnum, coords=coord))
                 mols.append(mol)
-                
+
             return mols
 
         ret.molecule_interpolator = molecule_interpolator
@@ -516,14 +522,14 @@ def get_history(calc_dir: str) -> Result:
                 # Molecule are special, because we will convert them to plams.Molecule objects first
                 if item == "Molecule":
                     mol = plams.Molecule()
-                    coords = np.array(reader_ams.read("History", f"Coords({i+1})")).reshape(natoms, 3) * constants.BOHR2ANG
+                    coords = np.array(reader_ams.read("History", f"Coords({i + 1})")).reshape(natoms, 3) * constants.BOHR2ANG
                     for atnum, coord in zip(atnums, coords):
                         mol.add_atom(plams.Atom(atnum=atnum, coords=coord))
                     mol.guess_bonds()
                     ret.molecule.append(mol)
                 # other variables are just added as-is
                 else:
-                    val = reader_ams.read("History", f"{item}({i+1})")
+                    val = reader_ams.read("History", f"{item}({i + 1})")
                     ret[item.lower()].append(val)
 
         if "converged" not in ret.keys() and ("PESScan", "HistoryIndices") in reader_ams:

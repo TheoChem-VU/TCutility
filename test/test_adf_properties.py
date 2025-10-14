@@ -1,17 +1,19 @@
 ﻿import pathlib as pl
 
 import pytest
-from tcutility import results
+
+from tcutility.results.read import read
+from tcutility.results.result import Result
 
 
 @pytest.fixture()
-def ethane_res() -> results.Result:
-    return results.read(pl.Path(__file__).parent / "fixtures" / "ethane_adf")
+def ethane_res() -> Result:
+    return read(pl.Path(__file__).parent / "fixtures" / "ethane_adf")
 
 
 @pytest.fixture()
-def unrestricted_res() -> results.Result:
-    return results.read(pl.Path(__file__).parent / "fixtures" / "radical_addition_ts/geometry")
+def unrestricted_res() -> Result:
+    return read(pl.Path(__file__).parent / "fixtures" / "radical_addition_ts/geometry")
 
 
 def test_energy_terms(ethane_res):
@@ -33,5 +35,5 @@ def test_s2_spinpol1(unrestricted_res):
     assert round(unrestricted_res.properties.spin_contamination, 4) == 0.0113
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pytest.main()

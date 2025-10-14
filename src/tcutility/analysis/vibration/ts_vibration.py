@@ -1,7 +1,12 @@
-import numpy as np
 import warnings
-from tcutility import results
+
+import numpy as np
 from scm import plams
+
+from tcutility.results.read import read
+from tcutility.results.result import Result
+
+__all__ = ["determine_ts_reactioncoordinate", "avg_relative_bond_length_delta", "validate_transitionstate"]
 
 
 def avg_relative_bond_length_delta(base: plams.Molecule, pos: plams.Molecule, neg: plams.Molecule, atom1: int, atom2: int) -> float:
@@ -23,11 +28,11 @@ def avg_relative_bond_length_delta(base: plams.Molecule, pos: plams.Molecule, ne
     return (x + y) / 2
 
 
-def determine_ts_reactioncoordinate(data: results.Result, mode_index: int = 0, bond_tolerance: float = 1.28, min_delta_dist: float = 0.0) -> np.ndarray:
+def determine_ts_reactioncoordinate(data: Result, mode_index: int = 0, bond_tolerance: float = 1.28, min_delta_dist: float = 0.0) -> np.ndarray:
     """Function to retrieve reaction coordinate from a given transitionstate, using the first imaginary frequency.
 
     Args:
-        data: TCutility.results.Result object containing calculation data
+        data: TCutility.Result object containing calculation data
         mode_index: vibrational mode index to analyze
         bond_tolerance: parameter for plams.Molecule.guess_bonds() function
         min_delta_dist: minimum relative bond length change before qualifying as active atom. If 0, all bond changes are counted
@@ -80,7 +85,7 @@ def validate_transitionstate(calc_dir: str, rcatoms: list = None, analyze_modes:
         If multiple modes are analyzed, returns True if at least one mode contains the expected reaction coordinates.
     """
 
-    data = results.read(calc_dir)
+    data = read(calc_dir)
     assert "modes" in data.properties.vibrations, "Vibrational data is required, but was not present in .rkf file"
 
     nimag = sum(1 for x in data.properties.vibrations.frequencies if x < 0)

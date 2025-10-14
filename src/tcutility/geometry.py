@@ -1,22 +1,33 @@
+from math import atan2, cos, sin, sqrt
+from typing import Sequence, Tuple, Union
+
 import numpy as np
+<<<<<<< HEAD
+=======
 from math import sin, cos, atan2, sqrt
 from typing import Tuple, Union, Sequence
+>>>>>>> main
 from scm import plams
+
+from tcutility import environment
+
+__all__ = ["Transform", "KabschTransform", "MolTransform", "get_rotmat", "rotmat_to_angles", "apply_rotmat", "rotate", "vector_align_rotmat"]
 
 
 class Transform:
-    '''
+    """
     Transformation matrix that handles rotation, translation and scaling of sets of 3D coordinates.
 
     Build and return a transformation matrix.
     This 4x4 matrix encodes rotations, translations and scaling.
-    
+
     :math:`\\textbf{M} = \\begin{bmatrix} \\textbf{R}\\text{diag}(S) & \\textbf{T} \\\\ \\textbf{0}_3 & 1 \\end{bmatrix}`
 
     where :math:`\\textbf{R} \\in \\mathbb{R}^{3 \\times 3}`, :math:`\\textbf{T} \\in \\mathbb{R}^{3 \\times 1}` and :math:`\\textbf{0}_3 = [0, 0, 0] \\in \\mathbb{R}^{1 \\times 3}`.
 
     When applied to a coordinates :math:`[\\textbf{x}, \\textbf{y}, \\textbf{z}, \\textbf{1}]^T \\in \\mathbb{R}^{n \\times 4}` it will apply these transformations simultaneously.
-    '''
+    """
+
     def __init__(self):
         # initialize an empty transformation matrix
         self.M = self._build_matrix()
@@ -146,7 +157,7 @@ class Transform:
         where :math:`n` is the normal vector of the plane to reflect along.
 
         Args:
-            normal: the normal vector of the plane to reflect across. 
+            normal: the normal vector of the plane to reflect across.
                 If not given or ``None``, it will be set to one unit along the x-axis, i.e. a reflection along the yz-plane.
 
         References:
@@ -163,9 +174,9 @@ class Transform:
         self.M = self.M @ self._build_matrix(R=R)
 
     def _build_matrix(self, R: np.ndarray = None, T: np.ndarray = None, S: np.ndarray = None) -> np.ndarray:
-        '''
+        """
         Build the transformation matrix for this object.
-        '''
+        """
         # set the default matrix and vectors
         R = R if R is not None else get_rotmat()
         T = T if T is not None else np.array([0, 0, 0])
@@ -181,6 +192,7 @@ class Transform:
 
     def to_vtkTransform(self):
         import vtk
+
         vtktrans = vtk.vtkTransform()
         vtktrans.PostMultiply()
 
@@ -194,12 +206,11 @@ class Transform:
         return vtktrans
 
 
-
 class KabschTransform(Transform):
     """
-    Use Kabsch-Umeyama algorithm to calculate the optimal transformation matrix :math:`T_{Kabsch}` that minimizes the 
-    RMSD between two sets of coordinates :math:`X \\in \\mathbb{R}^{N \\times 3}` and :math:`Y \\in \\mathbb{R}^{N \\times 3}`, such that 
-    
+    Use Kabsch-Umeyama algorithm to calculate the optimal transformation matrix :math:`T_{Kabsch}` that minimizes the
+    RMSD between two sets of coordinates :math:`X \\in \\mathbb{R}^{N \\times 3}` and :math:`Y \\in \\mathbb{R}^{N \\times 3}`, such that
+
     :math:`\\text{arg}\\min_{T_{Kabsch}} \\text{RMSD}(T_{Kabsch}(X), Y)`
 
     It is numerically stable and works when the covariance matrix is singular.
@@ -211,8 +222,8 @@ class KabschTransform(Transform):
         Y: array containing the second set of coordinates. These coordinates is the target to transform to.
 
     .. warning::
-        In principle, the Kabsch-Umeyama algorithm does not care about the dimensions of the coordinates, 
-        however we will always assume 3D coordinates as that is our most common use-case. Further, the :class:`Transform` class also assumes 3D coordinates. 
+        In principle, the Kabsch-Umeyama algorithm does not care about the dimensions of the coordinates,
+        however we will always assume 3D coordinates as that is our most common use-case. Further, the :class:`Transform` class also assumes 3D coordinates.
         If you would like to make use of 2D or 1D Transforms we suggest you simply set the correct axes to zero.
 
     .. seealso::
@@ -225,9 +236,9 @@ class KabschTransform(Transform):
 
             from tcutility import geometry
             import numpy as np
-    
+
             # create two arrays that are the same
-            X, Y = np.arange(5 * 3).reshape(5, 3), np.arange(5 * 3).reshape(5, 3)  
+            X, Y = np.arange(5 * 3).reshape(5, 3), np.arange(5 * 3).reshape(5, 3)
 
             # create a transformation matrix to change X
             Tx = geometry.Transform()
@@ -235,10 +246,10 @@ class KabschTransform(Transform):
             Tx.translate(x=1, y=1, z=1)
 
             X = Tx(X)
-            
+
             # get the Kabsch transformation matrix
             Tkabsch = geometry.KabschTransform(X, Y)
-    
+
             # check if applying the transformation matrix to X yields Y
             assert np.isclose(Tkabsch(X), Y).all()
 
@@ -247,7 +258,11 @@ class KabschTransform(Transform):
         | https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem
         | https://en.wikipedia.org/wiki/Kabsch_algorithm
     """
+
+    @environment.requires_optional_package("scipy")
     def __init__(self, X: np.ndarray, Y: np.ndarray):
+        import scipy
+
         # make sure arrays are 2d and the same size
         X, Y = np.atleast_2d(X), np.atleast_2d(Y)
         assert X.shape == Y.shape, f"Matrices X with shape {X.shape} and Y with shape {Y.shape} are not the same size"
@@ -284,7 +299,7 @@ class KabschTransform(Transform):
 
 
 class MolTransform(Transform):
-    '''
+    """
     A subclass of :class:`Transform` that is designed to generate transformation for a molecule.
     It adds, among others, methods for aligning atoms to specific vectors, planes, or setting the centroid of the molecule.
     The nice thing is that the class applies the transformations based only on the atom indices given by the user.
@@ -294,19 +309,20 @@ class MolTransform(Transform):
 
     .. note::
         Indexing starts at 1 instead of 0.
-    '''
+    """
+
     def __init__(self, mol: plams.Molecule):
         self.mol = mol
         super().__init__()
 
     def center(self, *indices):
-        '''
+        """
         Center the molecule on given indices or by its centroid.
 
         Args:
-            indices: the indices that are used to center the molecule. 
+            indices: the indices that are used to center the molecule.
                 If not given the centering will be done based on all atoms.
-        '''
+        """
         tmol = self.apply(self.mol)
         if len(indices) == 0:
             indices = range(1, len(tmol) + 1)
@@ -314,14 +330,14 @@ class MolTransform(Transform):
         self.translate(-np.mean(C, axis=0))
 
     def align_to_vector(self, index1: int, index2: int, vector: Sequence[float] = None):
-        '''
+        """
         Align the molecule such that a bond lays on a given vector.
 
         Args:
             index1: index of the first atom.
             index2: index of the second atom.
             vector: the vector to align the atoms to. If not given or `None` it defaults to `(1, 0, 0)`.
-        '''
+        """
         # get the transformed mol
         tmol = self.apply(self.mol)
         # and coordinates
@@ -333,7 +349,7 @@ class MolTransform(Transform):
         self.rotate(R)
 
     def align_to_plane(self, index1: int, index2: int, index3: int, vector: Sequence[float] = None):
-        '''
+        """
         Align a molecule such that the normal of the plane defined by three atoms is aligned to a given vector.
 
         Args:
@@ -341,7 +357,7 @@ class MolTransform(Transform):
             index2: index of the second atom.
             index3: index of the third atom.
             vector: the vector to align the atoms to. If not given or `None` it defaults to (0, 1, 0).
-        '''
+        """
         # get the transformed mol
         tmol = self.apply(self.mol)
         # and coordinates
@@ -406,7 +422,7 @@ def get_rotmat(x: float = None, y: float = None, z: float = None) -> np.ndarray:
 
 def rotmat_to_angles(R: np.ndarray) -> Tuple[float]:
     thetax = atan2(R[2, 1], R[2, 2])
-    thetay = atan2(-R[2, 0], sqrt(R[2, 1]**2 + R[2, 2]**2))
+    thetay = atan2(-R[2, 0], sqrt(R[2, 1] ** 2 + R[2, 2] ** 2))
     thetaz = atan2(R[1, 0], R[0, 0])
     return thetax, thetay, thetaz
 
@@ -417,7 +433,7 @@ def apply_rotmat(coords: np.ndarray, R: np.ndarray) -> np.ndarray:
 
     Args:
         coords: the coordinates :math`\\in \\mathbb{R}^{n \\times 3}` to rotate.
-        R: the rotation matrix to apply. 
+        R: the rotation matrix to apply.
 
     Returns:
         New coordinates :math`\\in \\mathbb{R}^{n \\times 3}` rotated using the given rotation matrix.
@@ -501,7 +517,7 @@ def RMSD(X: np.ndarray, Y: np.ndarray, axis: Union[int, None] = None, use_kabsch
     Args:
         X: the first set of coordinates to compare. It must have the same dimensions as ``Y``.
         Y: the second set of coordinates to compare. It must have the same dimensions as ``X``.
-        axis: axis to compare. Defaults to ``None``. 
+        axis: axis to compare. Defaults to ``None``.
         use_kabsch: whether to use Kabsch' algorithm to align ``X`` and ``Y`` before calculating the RMSD. Defaults to ``True``.
         include_mirror: return the lowest value between the RMSD of the supplied coordinates and also the RMSD of mirrored X with Y.
             This will only be done if ``use_kabsch == True``.
@@ -510,7 +526,7 @@ def RMSD(X: np.ndarray, Y: np.ndarray, axis: Union[int, None] = None, use_kabsch
         RMSD in the units of X and Y. If ``axis`` is set to an integer this function will return a vector of RMSD's along that axis.
 
     .. note::
-        It is generally recommended to enable the use of the Kabsch-Umeyama algorithm prior to calculating the RMSD. 
+        It is generally recommended to enable the use of the Kabsch-Umeyama algorithm prior to calculating the RMSD.
         This will ensure you get the lowest possible RMSD for you sets of coordinates.
 
     .. seealso::
@@ -561,7 +577,7 @@ def random_points_on_sphere(shape: Tuple[int], radius: float = 1) -> np.ndarray:
 
 def random_points_in_anular_sphere(shape: Tuple[int], min_radius: float = 0, max_radius: float = 1):
     """
-    Generate random points in an sphere or anular sphere with specified radii. 
+    Generate random points in an sphere or anular sphere with specified radii.
     An anular sphere is a hollow sphere of a certain thickness.
 
     Args:
@@ -576,6 +592,7 @@ def random_points_in_anular_sphere(shape: Tuple[int], min_radius: float = 0, max
     return random_points_on_sphere(shape, random_radii)
 
 
+@environment.requires_optional_package("scipy")
 def random_points_on_spheroid(coordinates: np.ndarray, Nsamples: int = 1, margin: float = 0):
     """
     Generate random points on a spheroid generated by a set of coordinates.
@@ -588,6 +605,8 @@ def random_points_on_spheroid(coordinates: np.ndarray, Nsamples: int = 1, margin
     Returns:
         Array of coordinates on a spheroid.
     """
+    import scipy
+
     # for this to work we should first get the centroid of our molecule
     centroid = np.mean(coordinates, axis=0)
     # and get the centered coordiantes
@@ -600,29 +619,29 @@ def random_points_on_spheroid(coordinates: np.ndarray, Nsamples: int = 1, margin
     # then compute a transformation matrix for generating the correct spheroid
     transform = Transform()
     transform.translate(centroid)
-    transform.rotate((np.diag(s/2 + margin) @ Vh).T)
+    transform.rotate((np.diag(s / 2 + margin) @ Vh).T)
 
-    # to sample the spheroid we generate points on a 
+    # to sample the spheroid we generate points on a
     # sphere and transform them to our spheroid
     p = random_points_on_sphere((Nsamples, Xc.shape[1]))
     return transform(p)
 
 
 def parameter(coordinates: np.typing.ArrayLike, *indices: Sequence[int], pyramidal: bool = False, sum_of_angles: bool = False):
-    '''
+    """
     Return geometry information about a set of coordinates given 1 to 4 indices.
     If 1 index is given we return the coordinate at that index.
     If 2 indices are given we return the distance between the coordinates at the indices.
     If 3 indices are given we return the angle between the vector from index 1 to 2 and the vector from index 2 to 3.
     If 4 indices are given we return the dihedral angle or the pyramidalization angle (if `pyramidal` is set to `True`) or the sum-of-angles (if `sum_of_angles` is set to `True`).
-    
+
     Args:
         coordinates: set of coordinates to calculate parameters for.
         indices: 1 to 4 integers specifying the indices to use in the coordinates set.
         pyramidal: if 4 indices are given return the pyramidalization angle in degrees.
         sum_of_angles: if 4 indices are given return the sum of the angles between the first index and the rest in degrees.
 
-    '''
+    """
     assert 1 <= len(indices) <= 4, "Number of indices must be between 1, 2, 3 or 4"
 
     coordinates = np.array(coordinates)

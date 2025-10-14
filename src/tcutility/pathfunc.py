@@ -1,9 +1,9 @@
+import glob
 import os
 import re
-from typing import Dict, List
-import glob
+from typing import Dict, List, Union
 
-from tcutility import results
+from tcutility.results.result import Result
 
 j = os.path.join
 
@@ -35,14 +35,14 @@ def split_all(path: str) -> List[str]:
         path = a
 
 
-def get_subdirectories(root: str, include_intermediates: bool = False, max_depth: int = None, _current_depth: int = 0) -> List[str]:
+def get_subdirectories(root: str, include_intermediates: bool = False, max_depth: Union[int, None] = None, _current_depth: int = 0) -> List[str]:
     """
     Get all sub-directories of a root directory.
 
     Args:
         root: the root directory.
         include_intermediates: whether to include intermediate sub-directories instead of only the lowest levels.
-        max_depth: the maximum depth depth to look for subdirectories, 
+        max_depth: the maximum depth depth to look for subdirectories,
             e.g. setting it to `1` will return only the contents of the `root` path.
 
     Returns:
@@ -99,7 +99,7 @@ def get_subdirectories(root: str, include_intermediates: bool = False, max_depth
                 contents.append(entry.path)
                 continue
 
-            sub_contents = list(get_subdirectories(entry.path, include_intermediates=include_intermediates, _current_depth=_current_depth+1, max_depth=max_depth))
+            sub_contents = list(get_subdirectories(entry.path, include_intermediates=include_intermediates, _current_depth=_current_depth + 1, max_depth=max_depth))
 
             if include_intermediates or len(sub_contents) == 0:
                 contents.append(entry.path)
@@ -116,7 +116,7 @@ def path_depth(path: str) -> int:
     return len(split_all(path))
 
 
-def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
+def match(root: str, pattern: str, sort_by: Union[str, None] = None) -> Dict[str, dict]:
     """
     Find and return information about subdirectories of a root that match a given pattern.
 
@@ -124,7 +124,7 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
         root: the root of the subdirectories to look in.
         pattern: a string specifying the pattern the subdirectories should correspond to.
             It should look similar to a format string, without the ``f`` in front of the string.
-            Inside curly braces you can put a variable name, which you can later extract from the results.
+            Inside curly braces you can put a variable name, which you can later extract from the
             Anything inside curly braces will be matched to word characters (``[a-zA-Z0-9_-]``) including dashes and underscores.
         sort_by: the key to sort the results by. If not given, the results will be returned in the order they were found.
 
@@ -181,7 +181,7 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
             [2024/01/17 14:39:08] root/NH3-BH3/M06-2X_TZ2P   NH3-BH3   M06-2X       TZ2P
             [2024/01/17 14:39:08] root/SN2/BLYP_TZ2P         SN2       BLYP         TZ2P
             [2024/01/17 14:39:08] root/NH3-BH3/BLYP_QZ4P     NH3-BH3   BLYP         QZ4P
-"""
+    """
     # get the number and names of substitutions in the given pattern
     substitutions = re.findall(r"{(\w+)}", pattern)
     # the pattern should resolve to words and may contain - and _
@@ -199,16 +199,16 @@ def match(root: str, pattern: str, sort_by: str = None) -> Dict[str, dict]:
     regex = re.compile(pattern)
 
     # go through all applicable subdirectories and retrieve the information we want
-    ret = results.Result()
+    ret = Result()
     for subdir in subdirs:
         # subdir = os.path.relpath(subdir, root)
-        subdir = subdir[len(f'{root}/'):]
+        subdir = subdir[len(f"{root}/") :]
         p = j(root, subdir)
         re_match = regex.fullmatch(subdir)
-        ret[p] = results.Result(**{substitutions[i]: re_match.group(i + 1) for i in range(len(substitutions))})
+        ret[p] = Result(**{substitutions[i]: re_match.group(i + 1) for i in range(len(substitutions))})
 
     if not sort_by:
         return ret
 
     # if requested we sort the results before returning them
-    return results.Result(sorted(ret.items(), key=lambda d: d[1][sort_by]))
+    return Result(sorted(ret.items(), key=lambda d: d[1][sort_by]))

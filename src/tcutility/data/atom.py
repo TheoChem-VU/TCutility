@@ -53,32 +53,32 @@ def parse_element(val):
 
 
 def radius(element):
-    '''
+    """
     Args:
         element: the symbol, name or atom number of the element. See :func:`parse_element`.
-    Return: 
+    Return:
         The empirical covalent radius of an element in angstroms, up to element 96.
-    '''
+    """
     num = parse_element(element)
     return _radii.get(num)
 
 
-def color(element, mode: str = 'rgb'):
-    '''
+def color(element, mode: str = "rgb"):
+    """
     Args:
         element: the symbol, name or atom number of the element. See :func:`parse_element`.
         mode: the type of color to return. Can be `rgb` or `hex`.
 
     Return:
-        The standard CPK colors of the elements, up to element 109. 
+        The standard CPK colors of the elements, up to element 109.
         If the mode is `rgb` returns a tuple of RGB values between `0` and `255`.
-    '''
+    """
     num = parse_element(element)
     c = _colors[num]
-    if mode == 'rgb':
+    if mode == "rgb":
         return c
-    if mode == 'hex':
-        return '#%02x%02x%02x' % tuple(c)
+    if mode == "hex":
+        return "#%02x%02x%02x" % tuple(c)
 
 
 def atom_number(element):

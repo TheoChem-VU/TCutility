@@ -3,8 +3,9 @@ from typing import List, Tuple, Union
 
 import numpy as np
 from scm.plams import Molecule
+
 from tcutility.log import log
-from tcutility.results import read
+from tcutility.results.read import read
 from tcutility.results.result import Result
 
 

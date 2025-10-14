@@ -1,7 +1,6 @@
 import pathlib as pl
 
-from tcutility import formula
-from tcutility.report.report import SI
+from tcutility import SI, formula
 
 
 def write_xyz_SI():
@@ -69,35 +68,5 @@ def make_main_energy_table(table):
     table.add_footnote("<sup>a</sup> Computed at the ZORA-UOLYP/TZ2P level of theory. <sup>b</sup> Non-existent: structure not found.")
 
 
-def write_table_SI():
-    pwd = pl.Path("/scistor/tc/sle337/Promotie/VS_Collab/conformers/calculations/geo/anion_binding_different_radii")
-    with SI(pwd / "main_tables_figures.docx", overwrite=True) as si_doc:
-        si_doc.add_toc()
-        si_doc.add_page_break()
-
-        with si_doc.add_table() as table:
-            make_main_energy_table(table)
-        si_doc.add_page_break()
-
-        # with main.add_figure() as figure:
-        #     figure.caption = f'a) ASM and b) EDA energy terms along the C=X stretching of the reaction of {formula.molecule("H2C=X + CH3•", "html")} (X={formula.molecule("CH2", "html")}, NH, O) via the <b>C</b>-addition pathway.'
-        #     figure.caption += f'Transition states are respresented as dots. The consistent C=X distance is shown as the vertical grey line.'
-        #     figure.add_image('../figs/ASM_CNO.png', 0, 0, label='a)')
-        #     figure.add_image('../figs/EDA_CNO.png', 0, 1, label='b)')
-        # main.add_page_break()
-
-        # with si_doc.add_figure() as figure:
-        #     figure.caption = f"Activation strain model (top row) and energy decomposition analysis (bottom row) energy terms along the C=X stretching of the reaction of {formula.molecule('H2C=X + CH3•', 'html')}"
-        #     figure.caption += f"(X={formula.molecule('CH2', 'html')}, NH, O) via the <b>C</b>-addition pathway. The consistent C=X stretch (0.0235 Å) is shown as the vertical grey line."
-        #     figure.add_image("../figs/Multiplot_CNO_0.png", 0, 0)
-        #     figure.add_image("../figs/Multiplot_CNO_1.png", 0, 1)
-        #     figure.add_image("../figs/Multiplot_CNO_2.png", 0, 2)
-        #     figure.add_image("../figs/Multiplot_CNO_3.png", 1, 0)
-        #     figure.add_image("../figs/Multiplot_CNO_4.png", 1, 1)
-        #     figure.add_image("../figs/Multiplot_CNO_5.png", 1, 2)
-        # si_doc.add_page_break()
-
-
 if __name__ == "__main__":
     write_xyz_SI()
-    write_table_SI()

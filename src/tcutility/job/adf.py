@@ -1,16 +1,21 @@
+import math
 import os
-from typing import TYPE_CHECKING, Dict, Optional
+from typing import TYPE_CHECKING, Dict, List, Optional, Union
 
+import dictfunc
 from scm import plams
 
-from tcutility import data, formula, log, molecule, results, spell_check
+import tcutility.log as log
+from tcutility import environment, formula, molecule, spell_check
+from tcutility.data import basis_sets, cosmo, functionals
 from tcutility.errors import TCCompDetailsError, TCJobError
 from tcutility.job.ams import AMSJob
 from tcutility.job.generic import Job
-from typing import List
-import math
+from tcutility.results.result import Result
 
 j = os.path.join
+
+__all__ = ["ADFJob", "ADFFragmentJob"]
 
 if TYPE_CHECKING:
     import pyfmo
@@ -18,7 +23,7 @@ if TYPE_CHECKING:
 
 class ADFJob(AMSJob):
     def __init__(self, *args, **kwargs):
-        self.settings = results.Result()
+        self.settings: plams.Settings = plams.Settings()
         self._functional = None
         self._core = None
         self.solvent("vacuum")
@@ -48,7 +53,7 @@ class ADFJob(AMSJob):
         .. seealso::
             :mod:`tcutility.data.basis_sets` for an overview of the available basis-sets in ADF.
         """
-        spell_check.check(typ, data.basis_sets.available_basis_sets["ADF"], ignore_case=True)
+        spell_check.check(typ, basis_sets.available_basis_sets["ADF"], ignore_case=True)
         spell_check.check(core, ["None", "Small", "Large"], ignore_case=True)
         if self._functional == "r2SCAN-3c" and typ != "mTZ2P":
             log.debug(f"Basis set {typ} is not allowed with r2SCAN-3c, switching to mTZ2P.")
@@ -154,7 +159,7 @@ class ADFJob(AMSJob):
         if iterations in [0, 1]:
             self.settings.input.ams.EngineDebugging.AlwaysClaimSuccess = "Yes"
 
-    def functional(self, funtional_name: str, dispersion: str = None):
+    def functional(self, funtional_name: str, dispersion: str = ""):
         """
         Set the functional to be used by the calculation. This also sets the dispersion if it is specified in the functional name.
 
@@ -184,10 +189,10 @@ class ADFJob(AMSJob):
         if functional == "SSB-D":
             raise TCCompDetailsError(section="Functional", message='There are two functionals called SSB-D, please use "GGA:SSB-D" or "MetaGGA:SSB-D".')
 
-        if not data.functionals.get(functional):
+        if not functionals.get_functional(functional):
             raise TCCompDetailsError(section="Functional", message=f"XC-functional {functional} not found.")
         else:
-            func = data.functionals.get(functional)
+            func = functionals.get_functional(functional)
             self.settings.input.adf.update(func.adf_settings)
 
     def relativity(self, level: str = "Scalar"):
@@ -203,7 +208,7 @@ class ADFJob(AMSJob):
         spell_check.check(level, ["Scalar", "None", "Spin-Orbit"], ignore_case=True)
         self.settings.input.adf.relativity.level = level
 
-    def solvent(self, name: str = None, eps: float = None, rad: float = None, use_klamt: bool = False, radii: Optional[Dict[str, float]] = None):
+    def solvent(self, name: Union[str, None] = None, eps: Union[float, None] = None, rad: Union[float, None] = None, use_klamt: bool = False, radii: Optional[Dict[str, float]] = None):
         """
         Model solvation using COSMO for this calculation.
 
@@ -221,7 +226,7 @@ class ADFJob(AMSJob):
             :mod:`tcutility.data.cosmo` for an overview of the available solvent names and formulas.
         """
         if name:
-            spell_check.check(name, data.cosmo.available_solvents, ignore_case=True, insertion_cost=0.3)
+            spell_check.check(name, cosmo.available_solvents, ignore_case=True, insertion_cost=0.3)
             self._solvent = name
         else:
             self._solvent = f"COSMO(eps={eps} rad={rad})"
@@ -269,7 +274,7 @@ class ADFJob(AMSJob):
             # we simply remove it from the geometryoptimization block
             self.settings.input.ams.GeometryOptimization.pop("InitialHessian", None)
 
-    def excitations(self, excitation_number: int = 10, excitation_type: str = '', method: str = 'Davidson', use_TDA: bool = False, energy_gap: List[float] = None):
+    def excitations(self, excitation_number: int = 10, excitation_type: str = "", method: str = "Davidson", use_TDA: bool = False, energy_gap: Union[None, List[float]] = None):
         """
         Calculate the electronic excitations using TD-DFT.
 
@@ -283,9 +288,9 @@ class ADFJob(AMSJob):
             energy_gap: list with two variables from which to limit excitations calculated i.e. ``(0, 0.3)`` in Hartrees. Defaults to ``None``.
         """
         # clean the input first
-        [self.settings.input.adf.Excitations.pop(key, None) for key in ['davidson', 'exact', 'bse', 'singleorbtrans', 'stda', 'stddft', 'tda-dftb', 'td-dftb']]
-        [self.settings.input.adf.pop(key, None) for key in ['cvndft', 'tda']]
-        [self.settings.input.adf.Excitations.pop(key, None) for key in ['allowed', 'onlysing', 'onlytrip', 'sopert']]
+        [self.settings.input.adf.Excitations.pop(key, None) for key in ["davidson", "exact", "bse", "singleorbtrans", "stda", "stddft", "tda-dftb", "td-dftb"]]
+        [self.settings.input.adf.pop(key, None) for key in ["cvndft", "tda"]]
+        [self.settings.input.adf.Excitations.pop(key, None) for key in ["allowed", "onlysing", "onlytrip", "sopert"]]
 
         if method is None:
             return
@@ -352,12 +357,12 @@ class ADFJob(AMSJob):
         self.settings.input.adf.Excitations.Lowest = excitation_number
 
         if use_TDA:
-            self.settings.input.adf.TDA = 'Yes'
+            self.settings.input.adf.TDA = "Yes"
 
         if energy_gap is not None:
-            self.settings.input.adf.MODIFYEXCITATION.UseOccVirtRange = f'{energy_gap[0]} {energy_gap[1]}'
-            if self.settings.input.adf.relativity.level.lower() == 'scalar'  or 'spin-orbit':
-                self.settings.input.adf.MODIFYEXCITATION.UseScaledZORA = ' '
+            self.settings.input.adf.MODIFYEXCITATION.UseOccVirtRange = f"{energy_gap[0]} {energy_gap[1]}"
+            if self.settings.input.adf.relativity.level.lower() == "scalar" or "spin-orbit":
+                self.settings.input.adf.MODIFYEXCITATION.UseScaledZORA = " "
 
 
 def copy_atom(atom):
@@ -365,18 +370,17 @@ def copy_atom(atom):
     return plams.Atom(symbol=s, coords=c)
 
 
-
 class ADFFragmentJob(ADFJob):
     def __init__(self, *args, **kwargs):
-        self.decompose_elstat = kwargs.pop('decompose_elstat', False)
-        self.counter_poise = kwargs.pop('counter_poise', False)
-        self.scf0_calculation = kwargs.pop('sfo0_calculation', False)
+        self.decompose_elstat = kwargs.pop("decompose_elstat", False)
+        self.counter_poise = kwargs.pop("counter_poise", False)
+        self.scf0_calculation = kwargs.pop("sfo0_calculation", False)
         self._frag_occupations = {}
         self.child_jobs = {}
         super().__init__(*args, **kwargs)
         self.name = "EDA"
 
-    def add_fragment(self, mol: plams.Molecule, name: str = None, charge: int = 0, spin_polarization: int = 0):
+    def add_fragment(self, mol: plams.Molecule, name: Union[None, str] = None, charge: int = 0, spin_polarization: int = 0):
         """
         Add a fragment to this job. Optionally give the name, charge and spin-polarization of the fragment as well.
 
@@ -412,7 +416,7 @@ class ADFFragmentJob(ADFJob):
                 raise TCJobError(job_class=self.__class__.__name__, message="The atoms in the new fragment are already present in the other fragments.")
 
         name = name or f"fragment{len(self.child_jobs) + 1}"
-        self.child_jobs[name] = ADFJob(test_mode=self.test_mode)
+        self.child_jobs[name] = ADFJob(test_mode=self.test_mode, delete_on_finish=self.delete_on_finish, overwrite=self.overwrite, wait_for_finish=self.wait_for_finish, use_slurm=self.use_slurm)
         self.child_jobs[name].molecule(mol)
         if charge:
             self.child_jobs[name].charge(charge)
@@ -475,20 +479,20 @@ class ADFFragmentJob(ADFJob):
             if self._core.lower() != "none":
                 raise TCJobError(job_class=self.__class__.__name__, message="Cannot guess number of virtual orbitals for calculations with a frozen core.")
             # the basis-set has to be present in the prepared data
-            if self._basis_set.lower() not in [bs.lower() for bs in data.basis_sets._number_of_orbitals.keys()]:
+            if self._basis_set.lower() not in [bs.lower() for bs in basis_sets._number_of_orbitals.keys()]:
                 raise TCJobError(job_class=self.__class__.__name__, message=f"Cannot guess number of virtual orbitals for calculations with the {self._basis_set} basis-set.")
 
             # sum up the number of virtuals per atom in the fragment
             nremove = 0
             for atom in self.child_jobs[frag]._molecule:
-                nremove += data.basis_sets.number_of_virtuals(atom.symbol, self._basis_set)
+                nremove += basis_sets.number_of_virtuals(atom.symbol, self._basis_set)
             # positive charge adds a virtual and negative removes a virtual
             nremove += self.child_jobs[frag].settings.input.ams.System.charge or 0
 
         self.settings.input.adf.setdefault("RemoveFragOrbitals", "")
         self.settings.input.adf.RemoveFragOrbitals += f"""
     {frag}
-      {subspecies or 'A'} {nremove}
+      {subspecies or "A"} {nremove}
     SubEnd
   End
         """
@@ -496,11 +500,11 @@ class ADFFragmentJob(ADFJob):
     def _write_frag_occupations(self):
         self.settings.input.adf.FragOccupations = "\n"
         for frag, occs in self._frag_occupations.items():
-            self.settings.input.adf.FragOccupations += f'    {frag}\n'
+            self.settings.input.adf.FragOccupations += f"    {frag}\n"
             for symm, occ in occs.items():
-                self.settings.input.adf.FragOccupations += f'        {symm} {occ}\n'
-            self.settings.input.adf.FragOccupations += '    SubEnd\n'
-        self.settings.input.adf.FragOccupations += '  End\n'
+                self.settings.input.adf.FragOccupations += f"        {symm} {occ}\n"
+            self.settings.input.adf.FragOccupations += "    SubEnd\n"
+        self.settings.input.adf.FragOccupations += "  End\n"
 
     def frag_occupations(self, frag=None, subspecies=None, alpha=None, beta=None):
         """
@@ -514,25 +518,24 @@ class ADFFragmentJob(ADFJob):
         """
 
         def _divide_electrons(n_elec, spin_pol=0, charge=0):
-            '''
+            """
             Divide electrons over alpha and beta spins.
-            '''
+            """
             total_elec = n_elec - charge
             a, b = total_elec // 2, total_elec // 2
             a += math.ceil(spin_pol / 2)
             b -= math.floor(spin_pol / 2)
 
             if total_elec % 2 != spin_pol % 2:
-                raise TCJobError(job_class=self.__class__.__name__, 
-                    message=f'Got an {("even", "odd")[total_elec%2]} number of electrons ({total_elec}), but an {("even", "odd")[spin_pol%2]} spin-polarization ({spin_pol}), which is incompatible.')
+                raise TCJobError(job_class=self.__class__.__name__, message=f"Got an {('even', 'odd')[total_elec % 2]} number of electrons ({total_elec}), but an {('even', 'odd')[spin_pol % 2]} spin-polarization ({spin_pol}), which is incompatible.")
 
             if a + b != total_elec:
-                raise TCJobError(job_class=self.__class__.__name__, 
-                    message=f'Got alpha={a} and beta={b} for a total of {a+b}, but we need {total_elec}. Check your base electron count ({n_elec}), charge ({charge}) and spin-polarization ({spin_pol}).')
+                raise TCJobError(
+                    job_class=self.__class__.__name__, message=f"Got alpha={a} and beta={b} for a total of {a + b}, but we need {total_elec}. Check your base electron count ({n_elec}), charge ({charge}) and spin-polarization ({spin_pol})."
+                )
 
             if a < 0 or b < 0:
-                raise TCJobError(job_class=self.__class__.__name__, 
-                    message=f'Got negative electrons for {total_elec} electrons with {spin_pol} spin polarization.')
+                raise TCJobError(job_class=self.__class__.__name__, message=f"Got negative electrons for {total_elec} electrons with {spin_pol} spin polarization.")
 
             return a, b
 
@@ -544,7 +547,7 @@ class ADFFragmentJob(ADFJob):
             alpha, beta = _divide_electrons(sum(atom.atnum for atom in child_job._molecule), spinpol, charge)
 
         self._frag_occupations.setdefault(frag, {})
-        self._frag_occupations[frag][subspecies] = f'{alpha} // {beta}'
+        self._frag_occupations[frag][subspecies] = f"{alpha} // {beta}"
         self._write_frag_occupations()
 
     def run(self):
@@ -584,9 +587,9 @@ class ADFFragmentJob(ADFJob):
 
         # we now update the child settings with the parent settings
         # this is because we have to propagate settings such as functionals, basis sets etc.
-        sett = self.settings.as_plams_settings()  # first create a plams settings object
+        sett = plams.Settings(dictfunc.list_to_dict(dictfunc.dict_to_list(self.settings)))  # Ensure the correct format for PLAMS
         # same for the children
-        child_setts = {name: child.settings.as_plams_settings() for name, child in self.child_jobs.items()}
+        child_setts = plams.Settings({name: dictfunc.list_to_dict(dictfunc.dict_to_list(child.settings)) for name, child in self.child_jobs.items()})
         # update the children using the parent settings
         [child_sett.update(sett) for child_sett in child_setts.values()]
         [child_sett.input.adf.pop("RemoveFragOrbitals", None) for child_sett in child_setts.values()]
@@ -619,12 +622,12 @@ class ADFFragmentJob(ADFJob):
             self.settings.input.adf.fragments[child_name] = j(child.workdir, "adf.rkf")
 
             # recast the plams.Settings object into a Result object as that is what run expects
-            child.settings = results.Result(child_setts[child_name])
-            
-            log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}]', ['split'], level=10)
-            log.flow(f'Charge:            {child.settings.input.ams.System.charge or 0}', ['straight', 'straight'], level=10)
-            log.flow(f'Spin-Polarization: {child.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'], level=10)
-            log.flow(f'Work dir:          {child.workdir}', ['straight', 'straight'], level=10)
+            child.settings = Result(child_setts[child_name])
+
+            log.flow(f"Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}]", ["split"], level=10)
+            log.flow(f"Charge:            {child.settings.input.ams.System.charge or 0}", ["straight", "straight"], level=10)
+            log.flow(f"Spin-Polarization: {child.settings.input.adf.SpinPolarization or 0}", ["straight", "straight"], level=10)
+            log.flow(f"Work dir:          {child.workdir}", ["straight", "straight"], level=10)
 
             if child.can_skip():
                 log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"], level=10)
@@ -646,11 +649,10 @@ class ADFFragmentJob(ADFJob):
                 child_STOFIT.settings.input.adf.pop("NumericalQuality")
                 child_STOFIT.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
-
-                log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] with STOFIT', ['split'], level=10)
-                log.flow(f'Charge:            {child_STOFIT.settings.input.ams.System.charge or 0}', ['straight', 'straight'], level=10)
-                log.flow(f'Spin-Polarization: {child_STOFIT.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'], level=10)
-                log.flow(f'Work dir:          {child_STOFIT.workdir}', ['straight', 'straight'], level=10)
+                log.flow(f"Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] with STOFIT", ["split"], level=10)
+                log.flow(f"Charge:            {child_STOFIT.settings.input.ams.System.charge or 0}", ["straight", "straight"], level=10)
+                log.flow(f"Spin-Polarization: {child_STOFIT.settings.input.adf.SpinPolarization or 0}", ["straight", "straight"], level=10)
+                log.flow(f"Work dir:          {child_STOFIT.workdir}", ["straight", "straight"], level=10)
 
                 if child_STOFIT.can_skip():
                     log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"], level=10)
@@ -674,11 +676,11 @@ class ADFFragmentJob(ADFJob):
                 child_NoElectrons.settings.input.adf.pop("NumericalQuality")
                 child_NoElectrons.settings.input.adf.BeckeGrid.Quality = "Excellent"
 
-                log.flow(f'Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] without Electrons', ['split'], level=10)
-                log.flow(f'Charge:            {child_NoElectrons.settings.input.ams.System.charge or 0}', ['straight', 'straight'], level=10)
-                log.flow(f'Spin-Polarization: {child_NoElectrons.settings.input.adf.SpinPolarization or 0}', ['straight', 'straight'], level=10)
-                log.flow(f'Work dir:          {child_NoElectrons.workdir}', ['straight', 'straight'], level=10)
-                
+                log.flow(f"Fragment ({i}/{len(self.child_jobs)}) {child_name} [{formula.molecule(child._molecule)}] without Electrons", ["split"], level=10)
+                log.flow(f"Charge:            {child_NoElectrons.settings.input.ams.System.charge or 0}", ["straight", "straight"], level=10)
+                log.flow(f"Spin-Polarization: {child_NoElectrons.settings.input.adf.SpinPolarization or 0}", ["straight", "straight"], level=10)
+                log.flow(f"Work dir:          {child_NoElectrons.workdir}", ["straight", "straight"], level=10)
+
                 if child_NoElectrons.can_skip():
                     log.flow(log.Emojis.warning + " Already ran, skipping", ["straight", "end"], level=10)
                     log.flow(level=10)
@@ -823,21 +825,20 @@ class ADFFragmentJob(ADFJob):
                 self.unrestricted((frag_job.settings.input.adf.Unrestricted or "no").lower() == "yes")
 
                 # we must repopulate the sbatch settings for the new run
-                self.name = f'complex_{frag}_Ghost'
-                log.flow(log.Emojis.good + f' Submitting {frag} with the basis-set of the complex', ['split'], level=10)
+                self.name = f"complex_{frag}_Ghost"
+                log.flow(log.Emojis.good + f" Submitting {frag} with the basis-set of the complex", ["split"], level=10)
                 [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
                 super().run()
-                log.flow(f'SlurmID: {self.slurm_job_id}', ['straight', 'end'], level=10)
+                log.flow(f"SlurmID: {self.slurm_job_id}", ["straight", "end"], level=10)
                 log.flow(level=10)
 
-        log.flow(log.Emojis.finish + ' Done, bye!', ['startinv'], level=10)
-
+        log.flow(log.Emojis.finish + " Done, bye!", ["startinv"], level=10)
 
 
 class DensfJob(Job):
-    def __init__(self, overwrite: bool = False, cube_file_prefix: str = None, *args, **kwargs):
+    def __init__(self, overwrite: bool = False, cube_file_prefix: Union[str, None] = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.settings = results.Result()
+        self.settings: plams.Settings = plams.Settings()
         self.rundir = "tmp"
         self.cube_file_prefix = cube_file_prefix
         self.name = "densf"
@@ -849,7 +850,7 @@ class DensfJob(Job):
         self.overwrite = overwrite
 
     def __str__(self):
-        return f"Densf({self.target}), running in {self.workdir}"
+        return f"Densf({self.name}), running in {self.workdir}"
 
     def gridsize(self, size="medium", grid_extend=7.5):
         """
@@ -863,9 +864,10 @@ class DensfJob(Job):
         self.settings.grid_extend = grid_extend
 
     def grid(self, args):
-        self.settings.grid = '\n' + '\n'.join(args) + 'EXTEND 7.5\n'
+        self.settings.grid = "\n" + "\n".join(args) + "EXTEND 7.5\n"
 
-    def orbital(self, orbital: "pyfmo.orbitals.sfo.SFO" or "pyfmo.orbitals.mo.MO"):  # noqa: F821
+    @environment.requires_optional_package("pyfmo")
+    def orbital(self, orbital: Union["pyfmo.orbitals.sfo.SFO", "pyfmo.orbitals.mo.MO"]):  # noqa: F821
         """
         Add a PyOrb orbital for Densf to calculate.
         """
@@ -921,8 +923,8 @@ class DensfJob(Job):
             if len(self._mos) > 0:
                 inpf.write("Orbitals SCF\n")
                 for orb in self._mos:
-                    if orb.spin in ['A', 'B']:
-                        spin = {'A': 'alpha', 'B': 'beta'}[orb.spin]
+                    if orb.spin in ["A", "B"]:
+                        spin = {"A": "alpha", "B": "beta"}[orb.spin]
                         inpf.write(f"    {spin}\n")
                     inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
                 inpf.write("END\n")
@@ -930,8 +932,8 @@ class DensfJob(Job):
             if len(self._sfos) > 0:
                 inpf.write("Orbitals SFO\n")
                 for orb in self._sfos:
-                    if orb.spin in ['A', 'B']:
-                        spin = {'A': 'alpha', 'B': 'beta'}[orb.spin]
+                    if orb.spin in ["A", "B"]:
+                        spin = {"A": "alpha", "B": "beta"}[orb.spin]
                         inpf.write(f"    {spin}\n")
                     inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
                 inpf.write("END\n")
@@ -940,7 +942,7 @@ class DensfJob(Job):
                 inpf.write(line + "\n")
 
             # cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size
-            outname = self.settings.grid if self.settings.grid.lower() in ['coarse', 'medium', 'fine'] else 'custom_grid'
+            outname = self.settings.grid if self.settings.grid.lower() in ["coarse", "medium", "fine"] else "custom_grid"
             if self.cube_file_prefix is None:
                 inpf.write(f"CUBOUTPUT {os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}\n")
             else:
@@ -997,7 +999,7 @@ class DensfJob(Job):
     def can_skip(self):
         if self.overwrite:
             return False
-            
+
         return all(os.path.exists(path) for path in self.output_cub_paths)
 
 
@@ -1014,6 +1016,5 @@ if __name__ == "__main__":
     # timer.timer_level = 40
 
     with ADFJob(test_mode=True) as job:
-        job.irrep_occupations('A', '28 // 26')
-        job.molecule('exammple.xyz')
-
+        job.irrep_occupations("A", "28 // 26")
+        job.molecule("exammple.xyz")
