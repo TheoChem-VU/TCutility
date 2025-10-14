@@ -991,10 +991,12 @@ class DensfJob(Job):
         The output cube file paths that will be/were calculated by this job.
         """
         paths = []
+        # the main cube file prefix for the generated cube files
+        outname = self.settings.grid if self.settings.grid.lower() in ["coarse", "medium", "fine"] else "custom_grid"
         if self.cube_file_prefix is None:
-            cuboutput = f"{os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{self.settings.grid}"
+            cuboutput = f"{os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}"
         else:
-            cuboutput = f"{self.cube_file_prefix}{self.settings.grid}"
+            cuboutput = f"{self.cube_file_prefix}{outname}"
 
         for mo in self._mos:
             spin_part = "" if mo.spin == "AB" else f"_{mo.spin}"
