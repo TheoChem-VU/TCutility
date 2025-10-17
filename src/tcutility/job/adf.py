@@ -619,7 +619,8 @@ class ADFFragmentJob(ADFJob):
             child.rundir = j(self.rundir, self.name)
 
             # # add the path to the child adf.rkf file as a dependency to the parent job
-            self.settings.input.adf.fragments[child_name] = j(child.workdir, "adf.rkf")
+            # self.settings.input.adf.fragments[child_name] = j(child.workdir, "adf.rkf")
+            self.settings.input.adf.fragments[child_name] = j("..", f"frag_{child_name}", "adf.rkf")
 
             # recast the plams.Settings object into a Result object as that is what run expects
             child.settings = Result(child_setts[child_name])
@@ -752,7 +753,7 @@ class ADFFragmentJob(ADFJob):
             # set the fragment references correctly
             self.settings.input.adf.pop("fragments")
             for frag_name in frag_names:
-                self.settings.input.adf.fragments[frag_name + "_STOFIT"] = j(elstat_jobs["frag_" + frag_name + "_STOFIT"].workdir, "adf.rkf")
+                self.settings.input.adf.fragments[frag_name + "_STOFIT"] = j("..", f"frag_{frag_name}_STOFIT", "adf.rkf")
             self.settings.input.adf.STOFIT = ""
             self.settings.input.adf.PRINT += " Elstat"
             [self._sbatch.pop(key, None) for key in ["D", "chdir", "J", "job_name", "o", "output"]]
@@ -780,9 +781,9 @@ class ADFFragmentJob(ADFJob):
 
                 # set the fragment references correctly
                 self.settings.input.adf.pop("fragments")
-                self.settings.input.adf.fragments[frag + "_NoElectrons"] = j(elstat_jobs["frag_" + frag + "_NoElectrons"].workdir, "adf.rkf")
+                self.settings.input.adf.fragments[frag + "_NoElectrons"] = j("..", f"frag_{frag}_NoElectrons", "adf.rkf")
                 for other_frag in other_frags:
-                    self.settings.input.adf.fragments[other_frag + "_STOFIT"] = j(elstat_jobs["frag_" + other_frag + "_STOFIT"].workdir, "adf.rkf")
+                    self.settings.input.adf.fragments[other_frag + "_STOFIT"] = j("..", f"frag_{frag}_STOFIT", "adf.rkf")
 
                 other_charge = sum([elstat_jobs["frag_" + other_frag + "_STOFIT"].settings.input.ams.System.charge for other_frag in other_frags])
                 total_charge = other_charge + (elstat_jobs["frag_" + frag + "_NoElectrons"].settings.input.ams.System.charge)

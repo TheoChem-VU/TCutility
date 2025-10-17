@@ -294,23 +294,18 @@ class Job:
         Set a dependency between this job and otherjob.
         This means that this job will run after the other job is finished running succesfully.
         """
-        print(self)
-        print(otherjob)
-        print(otherjob.can_skip(), otherjob.in_queue(), otherjob.slurm_job_id)
-        print()
-        # if otherjob.can_skip() and not otherjob.in_queue():
-        #     return
-
         if hasattr(otherjob, "slurm_job_id"):
             self.sbatch(dependency=otherjob.slurm_job_id)
-            # self.sbatch(kill_on_invalid_dep="Yes")
 
     @property
     def workdir(self):
         """
         The working directory of this job. All important files are written here, for example the input file and runscript.
         """
-        return j(self._select_server().pwd(), self.rundir, self.name)
+        server = self._select_server()
+        pwd = server.pwd()
+        pwd = pwd.replace(server.home, '~')
+        return j(pwd, self.rundir, self.name)
 
     @property
     def runfile_path(self):
