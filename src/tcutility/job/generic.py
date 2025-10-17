@@ -89,9 +89,18 @@ class Job:
         for base_job in base_jobs:
             self.__dict__.update(base_job.copy().__dict__)
 
-        # self.server = connect.get_current_server()
-        # if self.server != connect.Local:
-        #     self.sbatch(**self.server.sbatch_defaults)
+    def _prune_settings(self):
+        """
+        This method removes empty keys in the internal settings object.
+        This is needed because when a key is accessed it sets it to an empty value.
+        """
+        # flatten
+        sett = self.settings.flatten()
+        for row, v in list(sett.items()):
+            if v == plams.Settings():
+                sett.pop(row)
+                continue
+        self.settings = sett.unflatten()
 
     def __enter__(self):
         return self
