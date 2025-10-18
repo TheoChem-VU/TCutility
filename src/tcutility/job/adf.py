@@ -1018,28 +1018,28 @@ class DensfJob(Job):
 
         for mo in self._mos:
             spin_part = "" if mo.spin == "AB" else f"_{mo.spin}"
-            paths.append(f"{cuboutput}%SCF_{mo.symmetry.replace(':', '_')}{spin_part}%{mo.symmetry_index}.cub")
+            paths[mo] = f"{cuboutput}%SCF_{mo.symmetry.replace(':', '_')}{spin_part}%{mo.symmetry_index}.cub"
 
         for sfo in self._sfos:
             spin_part = "" if sfo.spin == "AB" else f"_{sfo.spin}"
-            paths.append(f"{cuboutput}%SFO_{sfo.symmetry.replace(':', '_')}{spin_part}%{sfo.symmetry_index}.cub")
+            paths[sfo] = f"{cuboutput}%SFO_{sfo.symmetry.replace(':', '_')}{spin_part}%{sfo.symmetry_index}.cub"
 
         for extra in self._extras:
             if extra == "Density SCF":
-                paths.append(f"{cuboutput}%SCF%Density.cub")
+                paths[extra] = f"{cuboutput}%SCF%Density.cub"
 
             if extra.startswith("NCI"):
-                paths.append(f"{cuboutput}%SCF%FitDenSigned.cub")
-                paths.append(f"{cuboutput}%SCF%Fitdensity.cub")
-                paths.append(f"{cuboutput}%SCF%FitNCI.cub")
-                paths.append(f"{cuboutput}%SCF%FitRDG.cub")
-                paths.append(f"{cuboutput}%SCF%FitRDGforNCI.cub")
+                paths[extra] = f"{cuboutput}%SCF%FitDenSigned.cub"
+                paths[extra] = f"{cuboutput}%SCF%Fitdensity.cub"
+                paths[extra] = f"{cuboutput}%SCF%FitNCI.cub"
+                paths[extra] = f"{cuboutput}%SCF%FitRDG.cub"
+                paths[extra] = f"{cuboutput}%SCF%FitRDGforNCI.cub"
                 if "both" in extra.lower():
-                    paths.append(f"{cuboutput}%SCF%DenSigned.cub")
-                    paths.append(f"{cuboutput}%SCF%Density.cub")
-                    paths.append(f"{cuboutput}%SCF%NCI.cub")
-                    paths.append(f"{cuboutput}%SCF%RDG.cub")
-                    paths.append(f"{cuboutput}%SCF%RDGforNCI.cub")
+                    paths[extra] = f"{cuboutput}%SCF%DenSigned.cub"
+                    paths[extra] = f"{cuboutput}%SCF%Density.cub"
+                    paths[extra] = f"{cuboutput}%SCF%NCI.cub"
+                    paths[extra] = f"{cuboutput}%SCF%RDG.cub"
+                    paths[extra] = f"{cuboutput}%SCF%RDGforNCI.cub"
 
         return paths
 
@@ -1047,7 +1047,7 @@ class DensfJob(Job):
         if self.overwrite:
             return False
 
-        return all(os.path.exists(path) for path in self.output_cub_paths)
+        return all(os.path.exists(path) for path in self.output_cub_paths.values())
 
 
 if __name__ == "__main__":
