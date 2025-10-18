@@ -841,6 +841,7 @@ class DensfJob(Job):
         self.settings: plams.Settings = plams.Settings()
         self.rundir = "tmp"
         self.cube_file_prefix = cube_file_prefix
+        self.use_vtk = False
         self.name = "densf"
         self.gridsize()
         self._mos = []
@@ -851,6 +852,9 @@ class DensfJob(Job):
 
     def __str__(self):
         return f"Densf({self.name}), running in {self.workdir}"
+
+    def generate_vtk(self, enabled=True):
+        self.use_vtk = enabled
 
     def gridsize(self, size="medium", extend: float = 7.5):
         """
@@ -969,19 +973,31 @@ class DensfJob(Job):
                 inpf.write(line + "\n")
 
             # cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size
-            outname = self.settings.grid if self.settings.grid.lower() in ["coarse", "medium", "fine"] else "custom_grid"
-            if self.cube_file_prefix is None:
-                inpf.write(f"CUBOUTPUT {os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}\n")
+            if self.use_vtk:
+                # if want a vtk output we must write the full path
+                obj = (self._mos + self._sfos)
+                inpf.write(f"VTKFILE {self.output_cub_paths[obj[0]]}\n")
             else:
-                inpf.write(f"CUBOUTPUT {self.cube_file_prefix}{outname}\n")
+                outname = self.settings.grid if self.settings.grid.lower() in ["coarse", "medium", "fine"] else "custom_grid"
+                if self.cube_file_prefix is None:
+                    inpf.write(f"CUBOUTPUT {os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}\n")
+                else:
+                    inpf.write(f"CUBOUTPUT {self.cube_file_prefix}{outname}\n")
             inpf.write("eor\n")
 
-        # the runfile should simply execute the input file.
-        with open(self.runfile_path, "w+") as runf:
-            runf.write("#!/bin/sh\n\n")
-            runf.write("\n".join(self._preambles) + "\n\n")
-            runf.write(f"sh {self.inputfile_path}\n")
-            runf.write("\n".join(self._postambles))
+        if on_windows:
+            # the runfile should simply execute the input file.
+            with open(self.runfile_path, "w+") as runf:
+                runf.write("\n".join(self._preambles) + "\n\n")
+                runf.write(f"%AMSHOME%/msys/usr/bin/bash.exe {self.inputfile_path}\n")
+                runf.write("\n".join(self._postambles))
+        else:
+            # the runfile should simply execute the input file.
+            with open(self.runfile_path, "w+") as runf:
+                runf.write("#!/bin/sh\n\n")
+                runf.write("\n".join(self._preambles) + "\n\n")
+                runf.write(f"sh {self.inputfile_path}\n")
+                runf.write("\n".join(self._postambles))
 
         return True
 
@@ -990,7 +1006,7 @@ class DensfJob(Job):
         """
         The output cube file paths that will be/were calculated by this job.
         """
-        paths = []
+        paths = {}
         # the main cube file prefix for the generated cube files
         outname = self.settings.grid if self.settings.grid.lower() in ["coarse", "medium", "fine"] else "custom_grid"
         if self.cube_file_prefix is None:
