@@ -904,26 +904,26 @@ class DensfJob(Job):
         """
         import pyfmo
 
-        if isinstance(orbital, (pyfmo.orbitals.sfo.SFO, pyfmo.orbitals2.objects.SFO)):
+        if isinstance(orbital, pyfmo.orbitals.objects.SFO):
             self._sfos.append(orbital)
-        elif isinstance(orbital, (pyfmo.orbitals.mo.MO, pyfmo.orbitals2.objects.MO)):
+        elif isinstance(orbital, pyfmo.orbitals.objects.MO):
             self._mos.append(orbital)
         else:
             raise TCJobError(job_class=self.__class__.__name__, message=f"Unknown object {orbital} of type{type(orbital)}. It should be a pyfmo.orbitals.sfo.SFO or pyfmo.orbitals.mos.MO object.")
 
         # check if the ADFFile is the same for all added orbitals
         if self.settings.ADFFile is None:
-            self.settings.ADFFile = orbital.kfpath
+            self.settings.ADFFile = orbital.parent.parent.kfpath
 
-        elif self.settings.ADFFile != orbital.kfpath:
+        elif self.settings.ADFFile != orbital.parent.parent.kfpath:
             raise TCJobError(job_class=self.__class__.__name__, message="RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
     def density(self, orbitals: "pyfmo.orbitals.Orbitals"):  # noqa: F821
         # check if the ADFFile is the same for all added orbitals
         if self.settings.ADFFile is None:
-            self.settings.ADFFile = orbitals.kfpath
+            self.settings.ADFFile = orbitals.parent.parent.kfpath
 
-        elif self.settings.ADFFile != orbitals.kfpath:
+        elif self.settings.ADFFile != orbitals.parent.parent.kfpath:
             raise ValueError("RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
         self._extras.append("Density SCF")
