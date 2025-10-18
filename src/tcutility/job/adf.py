@@ -1,6 +1,7 @@
 import math
 import os
 from typing import TYPE_CHECKING, Dict, List, Optional, Union
+import platform
 
 import dictfunc
 from scm import plams
@@ -940,6 +941,7 @@ class DensfJob(Job):
         self._extras.append(f"NCI {density} RHOVDW={rhovdw} RDG={rdg}")
 
     def _setup_job(self):
+        on_windows = platform.system() == 'Windows'
         os.makedirs(self.workdir, exist_ok=True)
 
         # set up the input file. This should always contain calling of the densf program, as per the SCM documentation
