@@ -1010,6 +1010,7 @@ class DensfJob(Job):
         """
         paths = {}
         # the main cube file prefix for the generated cube files
+        file_fmt = ".vtk" if self.use_vtk else ".cub"
         outname = self.settings.grid if self.settings.grid.lower() in ["coarse", "medium", "fine"] else "custom_grid"
         if self.cube_file_prefix is None:
             cuboutput = f"{os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}"
@@ -1018,28 +1019,28 @@ class DensfJob(Job):
 
         for mo in self._mos:
             spin_part = "" if mo.spin == "AB" else f"_{mo.spin}"
-            paths[mo] = f"{cuboutput}%SCF_{mo.symmetry.replace(':', '_')}{spin_part}%{mo.symmetry_index}.cub"
+            paths[mo] = f"{cuboutput}%SCF_{mo.symmetry.replace(':', '_')}{spin_part}%{mo.symmetry_index}{file_fmt}"
 
         for sfo in self._sfos:
             spin_part = "" if sfo.spin == "AB" else f"_{sfo.spin}"
-            paths[sfo] = f"{cuboutput}%SFO_{sfo.symmetry.replace(':', '_')}{spin_part}%{sfo.symmetry_index}.cub"
+            paths[sfo] = f"{cuboutput}%SFO_{sfo.symmetry.replace(':', '_')}{spin_part}%{sfo.symmetry_index}{file_fmt}"
 
         for extra in self._extras:
             if extra == "Density SCF":
-                paths[extra] = f"{cuboutput}%SCF%Density.cub"
+                paths[extra] = f"{cuboutput}%SCF%Density{file_fmt}"
 
             if extra.startswith("NCI"):
-                paths[extra] = f"{cuboutput}%SCF%FitDenSigned.cub"
-                paths[extra] = f"{cuboutput}%SCF%Fitdensity.cub"
-                paths[extra] = f"{cuboutput}%SCF%FitNCI.cub"
-                paths[extra] = f"{cuboutput}%SCF%FitRDG.cub"
-                paths[extra] = f"{cuboutput}%SCF%FitRDGforNCI.cub"
+                paths[extra] = f"{cuboutput}%SCF%FitDenSigned{file_fmt}"
+                paths[extra] = f"{cuboutput}%SCF%Fitdensity{file_fmt}"
+                paths[extra] = f"{cuboutput}%SCF%FitNCI{file_fmt}"
+                paths[extra] = f"{cuboutput}%SCF%FitRDG{file_fmt}"
+                paths[extra] = f"{cuboutput}%SCF%FitRDGforNCI{file_fmt}"
                 if "both" in extra.lower():
-                    paths[extra] = f"{cuboutput}%SCF%DenSigned.cub"
-                    paths[extra] = f"{cuboutput}%SCF%Density.cub"
-                    paths[extra] = f"{cuboutput}%SCF%NCI.cub"
-                    paths[extra] = f"{cuboutput}%SCF%RDG.cub"
-                    paths[extra] = f"{cuboutput}%SCF%RDGforNCI.cub"
+                    paths[extra] = f"{cuboutput}%SCF%DenSigned{file_fmt}"
+                    paths[extra] = f"{cuboutput}%SCF%Density{file_fmt}"
+                    paths[extra] = f"{cuboutput}%SCF%NCI{file_fmt}"
+                    paths[extra] = f"{cuboutput}%SCF%RDG{file_fmt}"
+                    paths[extra] = f"{cuboutput}%SCF%RDGforNCI{file_fmt}"
 
         return paths
 
