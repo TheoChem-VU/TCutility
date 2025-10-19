@@ -888,7 +888,7 @@ class DensfJob(Job):
             spacing: the spacing between each grid point. The grid is a regular grid, with equal spacing in all directions. Defaults to 0.106 angstrom.
             extend: the space between the grid edges and the molecule. Defaults to 7.5 angstrom.
         """
-        coords = mol.as_array()
+        coords = mol.as_array() / 0.529177  # convert coords to bohr
         origin = coords.min(axis=0) - extend
         delta = coords.max(axis=0) - coords.min(axis=0) + 2 * extend
         nsteps = (delta / spacing).astype(int)
