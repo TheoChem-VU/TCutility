@@ -2,6 +2,7 @@ import os
 import stat
 import subprocess as sp
 from typing import List, TypeVar, Union
+import platform
 
 import dictfunc
 import numpy as np
@@ -255,14 +256,17 @@ class Job:
         else:
             os_name = connect.get_os_name()
 
-            if os_name == connect.OSName.WINDOWS:
-                raise TCJobError("Generic Job", "Running jobs on Windows is not supported.")
-
             # if we are not using slurm, we can execute the file. For this we need special permissions, so we have to set that first.
             os.chmod(self.runfile_path, os.stat(self.runfile_path).st_mode | stat.S_IEXEC)
 
             runfile_dir, runscript = os.path.split(self.runfile_path)
-            command = ["./" + runscript] if os.name == "posix" else ["sh", runscript]
+            if os_name == connect.OSName.WINDOWS:
+                command = [runscript]
+            elif os.name == "posix":
+                command = ["./" + runscript]
+            else:
+                command = ["sh", runscript]
+
             print(f"Running command: {command} in directory: {runfile_dir}")
 
             with open(f"{os.path.split(self.runfile_path)[0]}/{self.name}.out", "w+") as out:
@@ -321,7 +325,10 @@ class Job:
         """
         The file path to the runscript of this job.
         """
-        return j(self.workdir, f"{self.name}.run")
+        if platform.system() == "Windows":
+            return j(self.workdir, f"{self.name}.bat")
+        else:
+            return j(self.workdir, f"{self.name}.run")
 
     @property
     def inputfile_path(self):
