@@ -7,7 +7,7 @@ import dictfunc
 from scm import plams
 
 import tcutility.log as log
-from tcutility import environment, formula, molecule, spell_check
+from tcutility import environment, formula, molecule, spell_check, constants
 from tcutility.data import basis_sets, cosmo, functionals
 from tcutility.errors import TCCompDetailsError, TCJobError
 from tcutility.job.ams import AMSJob
@@ -888,7 +888,7 @@ class DensfJob(Job):
             spacing: the spacing between each grid point. The grid is a regular grid, with equal spacing in all directions. Defaults to 0.106 angstrom.
             extend: the space between the grid edges and the molecule. Defaults to 7.5 angstrom.
         """
-        coords = mol.as_array() / 0.529177  # convert coords to bohr
+        coords = mol.as_array() * constants.ANG2BOHR  # convert coords to bohr
         origin = coords.min(axis=0) - extend
         delta = coords.max(axis=0) - coords.min(axis=0) + 2 * extend
         nsteps = (delta / spacing).astype(int)
@@ -919,12 +919,18 @@ class DensfJob(Job):
         elif self.settings.ADFFile != orbital.parent.parent.kfpath:
             raise TCJobError(job_class=self.__class__.__name__, message="RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
-    def density(self, orbitals: "pyfmo.orbitals.Orbitals"):  # noqa: F821
+    def density(self, obj: Union[str, "pyfmo.orbitals.Orbitals"]):  # noqa: F821
         # check if the ADFFile is the same for all added orbitals
-        if self.settings.ADFFile is None:
-            self.settings.ADFFile = orbitals.parent.parent.kfpath
+        if isinstance(obj, str):
+            path = os.path.normpath(obj)
+        elif isinstance(obj, pyfmo.Orbitals):
+            ...
 
-        elif self.settings.ADFFile != orbitals.parent.parent.kfpath:
+
+        if self.settings.ADFFile is None:
+            self.settings.ADFFile = obj.parent.parent.kfpath
+
+        elif self.settings.ADFFile != obj.parent.parent.kfpath:
             raise ValueError("RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
         self._extras.append("Density SCF")
