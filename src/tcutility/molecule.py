@@ -100,6 +100,7 @@ def load(path) -> plams.Molecule:
         lines = [line.strip() for line in f.readlines()]
 
     mol = plams.Molecule()
+    mol.properties.source = path
 
     natoms = int(lines[0])
     mol.comment = lines[1]
