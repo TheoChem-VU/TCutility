@@ -102,12 +102,12 @@ class EDAExcitation:
             for forbs, torbs in zip(self.from_orbs, self.to_orbs):
                 forb_character = 1
                 for forb in forbs:
-                    forb_all_coeffs = self.orbs_complex.data.matrices.coefficients.total[forb.index]
+                    forb_all_coeffs = self.orbs_complex.data['matrices']['coefficients']['total'][forb.index]
                     forb_frag_coeffs = forb_all_coeffs[frag_SFO_idxs]
                     forb_character *= sum(forb_frag_coeffs**2) / sum(forb_all_coeffs**2)
                     torb_character = 1
                     for torb in torbs:
-                        torb_all_coeffs = self.orbs_complex.data.matrices.coefficients.total[torb.index]
+                        torb_all_coeffs = self.orbs_complex.data['matrices']['coefficients']['total'][torb.index]
                         torb_frag_coeffs = torb_all_coeffs[frag_SFO_idxs]
                         torb_character *= sum(torb_frag_coeffs**2) / sum(torb_all_coeffs**2)
 
@@ -151,10 +151,10 @@ class EDAExcitations:
     def __init__(self, calc_dir: str):
         self.res_complex = results.read(os.path.join(calc_dir, 'complex'))
         if has_pyfmo:
-            self.orbs_complex = pyfmo.orbitals2.objects.Orbitals(self.res_complex.files['adf.rkf'])
+            self.orbs_complex = pyfmo.Orbitals(self.res_complex.files['adf.rkf'])
             frags = self.orbs_complex.fragments
             self.res_frags = {frag: results.read(os.path.join(calc_dir, f'frag_{frag}')) for frag in frags}
-            self.orbs_frags = {frag: pyfmo.orbitals2.objects.Orbitals(self.res_frags[frag].files['adf.rkf']) for frag in frags}
+            self.orbs_frags = {frag: pyfmo.Orbitals(self.res_frags[frag].files['adf.rkf']) for frag in frags}
         self._load()
 
     def __iter__(self):
@@ -207,6 +207,6 @@ class EDAExcitations:
 
 if __name__ == '__main__':
     excs = EDAExcitations('/Users/yumanhordijk/PhD/Programs/TheoCheM/TCutility/examples/job/uvvis/fragment_unrestricted')
-    # print(exc.excitations[0].fragment_characters)
+    print(excs.excitations[3].fragment_characters)
     for exc in excs:
         print(exc)
