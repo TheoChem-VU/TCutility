@@ -953,7 +953,7 @@ class DensfJob(Job):
         # set up the input file. This should always contain calling of the densf program, as per the SCM documentation
         with open(self.inputfile_path, "w+") as inpf:
             inpf.write("$AMSBIN/densf << eor\n")
-            inpf.write(f"ADFFile {os.path.abspath(self.settings.ADFFile)}\n")
+            inpf.write(f"ADFFile {self.settings.ADFFile}\n")
             inpf.write(f"GRID {self.settings.grid}\n")
             inpf.write("END\n")
             if self.settings.grid_extend:
@@ -965,7 +965,7 @@ class DensfJob(Job):
                     if orb.spin in ["A", "B"]:
                         spin = {"A": "alpha", "B": "beta"}[orb.spin]
                         inpf.write(f"    {spin}\n")
-                    inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
+                    inpf.write(f"    {orb.symmetry} {orb.densf_index}\n")
                 inpf.write("END\n")
 
             if len(self._sfos) > 0:
@@ -974,7 +974,7 @@ class DensfJob(Job):
                     if orb.spin in ["A", "B"]:
                         spin = {"A": "alpha", "B": "beta"}[orb.spin]
                         inpf.write(f"    {spin}\n")
-                    inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
+                    inpf.write(f"    {orb.symmetry} {orb.densf_index}\n")
                 inpf.write("END\n")
 
             for line in self._extras:
@@ -1019,17 +1019,17 @@ class DensfJob(Job):
         file_fmt = ".vtk" if self.use_vtk else ".cub"
         outname = self.settings.grid if self.settings.grid.lower() in ["coarse", "medium", "fine"] else "custom_grid"
         if self.cube_file_prefix is None:
-            cuboutput = f"{os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}"
+            cuboutput = f"{self.settings.ADFFile}.densf/{outname}"
         else:
             cuboutput = f"{self.cube_file_prefix}{outname}"
-
+            
         for mo in self._mos:
             spin_part = "" if mo.spin == "AB" else f"_{mo.spin}"
-            paths[mo] = f"{cuboutput}%SCF_{mo.symmetry.replace(':', '_')}{spin_part}%{mo.symmetry_index}{file_fmt}"
+            paths[mo] = f"{cuboutput}%SCF_{mo.symmetry.replace(':', '_')}{spin_part}%{mo.densf_index}{file_fmt}"
 
         for sfo in self._sfos:
             spin_part = "" if sfo.spin == "AB" else f"_{sfo.spin}"
-            paths[sfo] = f"{cuboutput}%SFO_{sfo.symmetry.replace(':', '_')}{spin_part}%{sfo.symmetry_index}{file_fmt}"
+            paths[sfo] = f"{cuboutput}%SFO_{sfo.symmetry.replace(':', '_')}{spin_part}%{sfo.densf_index}{file_fmt}"
 
         for extra in self._extras:
             if extra == "Density SCF":
