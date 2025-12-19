@@ -10,8 +10,38 @@ import numpy as np
 from tcutility import environment
 
 
+@environment.requires_optional_package("cv2")
+def _remove_background(img):
+    import cv2
+
+    # Create mask and models
+
+    mask = np.zeros(img.shape[:2], np.uint8)
+    bgdModel = np.zeros((1, 65), np.float64)
+    fgdModel = np.zeros((1, 65), np.float64)
+
+    # Apply GrabCut
+
+    cv2.grabCut(img, mask, None, bgdModel, fgdModel, 5)
+
+    # Create binary mask
+
+    mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype("uint8")
+
+    # Convert to RGBA and apply mask to alpha channel
+
+    output_rgba = cv2.cvtColor(img, cv2.COLOR_BGR2BGRA)
+    # output_rgba[:, :, 3] = mask2 * 255  # 0 for background, 255 for foreground
+    mask = output_rgba[:, :, :3] == (255, 255, 255)
+    mask = np.all(mask, axis=2)
+    print(1 - mask)
+    output_rgba[:, :, 3] = (1 - mask) * 255
+
+    # Save as PNG to preserve transparency
+    return output_rgba
+
 @environment.requires_optional_package("matplotlib")
-@environment.requires_optional_package("opencv-python")
+@environment.requires_optional_package("cv2")
 def _analyse_img(file, plot=False):
     """
     Function used for analysing and getting useful information from an image.
@@ -23,6 +53,7 @@ def _analyse_img(file, plot=False):
     # Read image
     img = cv2.imread(file, cv2.IMREAD_UNCHANGED)
     img = _remove_padding(img)
+    img = _remove_background(img)
     # Smooth it
     img_copy = img.copy()
 
@@ -31,7 +62,7 @@ def _analyse_img(file, plot=False):
     img_gray = cv2.cvtColor(img_gray, cv2.COLOR_BGRA2GRAY)
 
     # Apply Hough transform to greyscale image
-    circles = cv2.HoughCircles(img_gray, cv2.HOUGH_GRADIENT_ALT, 1.5, 100, param1=400, param2=0.8, minRadius=0, maxRadius=800)
+    circles = cv2.HoughCircles(img_gray, cv2.HOUGH_GRADIENT_ALT, 1.5, 40, param1=400, param2=0.8, minRadius=0, maxRadius=800)
     circles = np.uint16(np.around(circles))[0]
     circles = circles[(-circles[:, 2]).argsort()]
 
@@ -48,10 +79,11 @@ def _analyse_img(file, plot=False):
         plt.imshow(img_copy)
         plt.draw()
         plt.pause(0.001)
+
     return circles, img
 
 
-@environment.requires_optional_package("opencv-python")
+@environment.requires_optional_package("cv2")
 def _remove_padding(img):
     """
     Function used to remove padding from an image.
@@ -66,7 +98,7 @@ def _remove_padding(img):
     return rect
 
 
-@environment.requires_optional_package("opencv-python")
+@environment.requires_optional_package("cv2")
 def resize(img_paths, circle_numbers: Optional[Dict] = None, padding: Union[str, int, float] = 0):
     """
     The main function for this module.
