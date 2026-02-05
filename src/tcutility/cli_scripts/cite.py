@@ -146,13 +146,13 @@ def format_paragraph(dois, style):
         if doi not in doi_order:
             doi_order.append(doi)
         try:
-            citation = cite.cite(doi, style=style, mode="plain")
+            citation = cite(doi, style=style, mode="plain")
         except Exception as exp:
             print("\t" + str(exp))
             raise exp
 
         print(f"  [{doi}] {citation}")
-        paragraph = f"[{doi_order.index(doi) + 1}] {cite.cite(doi, style=style, mode='html')}"
+        paragraph = f"[{doi_order.index(doi) + 1}] {cite(doi, style=style, mode='html')}"
         paragraphs.append(paragraph)
 
     return paragraphs
