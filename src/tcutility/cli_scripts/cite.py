@@ -259,7 +259,7 @@ def generate_citations(objects: List[str], wiley: bool, acs: bool, rsc: bool, ou
         with open(objects[0]) as inp:
             objects = [line.strip() for line in inp.readlines()]
 
-    style = "wiley" if wiley else "acs" if acs else "rsc"
+    style = "rsc" if rsc else "acs" if acs else "wiley"
 
     with Docx(file=output, overwrite=True) as out:
         for obj in objects:
