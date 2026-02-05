@@ -12,6 +12,8 @@ from tcutility.connect import Connection, Local, Server, ServerFile
 from tcutility.data.functionals import categories, functional_name_from_path_safe_name, functionals, get_available_functionals, get_functional
 from tcutility.environment import requires_optional_package
 from tcutility.geometry import KabschTransform, MolTransform, Transform, apply_rotmat, get_rotmat, rotate, rotmat_to_angles, vector_align_rotmat
+from tcutility.job.workflow import WorkFlow
+from tcutility.job import workflow_db
 from tcutility.job.adf import ADFFragmentJob, ADFJob, DensfJob
 from tcutility.job.ams import AMSJob
 from tcutility.job.crest import CRESTJob, QCGJob
