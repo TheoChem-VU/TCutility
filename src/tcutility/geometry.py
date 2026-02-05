@@ -310,6 +310,11 @@ class MolTransform(Transform):
         self.mol = mol
         super().__init__()
 
+    def atom_to_index(self, atom):
+        if isinstance(atom, int):
+            return atom
+        return self.mol.atoms.index(atom) + 1
+
     def center(self, *indices):
         """
         Center the molecule on given indices or by its centroid.
@@ -318,6 +323,7 @@ class MolTransform(Transform):
             indices: the indices that are used to center the molecule.
                 If not given the centering will be done based on all atoms.
         """
+        indices = [self.atom_to_index(i) for i in indices]
         tmol = self.apply(self.mol)
         if len(indices) == 0:
             indices = range(1, len(tmol) + 1)
@@ -333,6 +339,8 @@ class MolTransform(Transform):
             index2: index of the second atom.
             vector: the vector to align the atoms to. If not given or `None` it defaults to `(1, 0, 0)`.
         """
+        index1 = self.atom_to_index(index1)
+        index2 = self.atom_to_index(index2)
         # get the transformed mol
         tmol = self.apply(self.mol)
         # and coordinates
@@ -353,6 +361,9 @@ class MolTransform(Transform):
             index3: index of the third atom.
             vector: the vector to align the atoms to. If not given or `None` it defaults to (0, 1, 0).
         """
+        index1 = self.atom_to_index(index1)
+        index2 = self.atom_to_index(index2)
+        index3 = self.atom_to_index(index3)
         # get the transformed mol
         tmol = self.apply(self.mol)
         # and coordinates
