@@ -155,7 +155,7 @@ def flow(message: str = "", tags: List[str] = ["straight"], level: int = 20) -> 
     log(s + message, level=level)
 
 
-def table(rows: List[List[Any]], header: Union[List[str], None] = None, sep: str = "   ", hline: List[int] = [], level: int = 20) -> str:
+def table(rows: List[List[Any]], header: Union[List[str], None] = None, sep: str = "   ", hline: List[int] = [], formats: List[str] = None, level: int = 20) -> str:
     r"""
     Print a table given rows and a header. Values in rows will be cast to strings first.
 
@@ -178,7 +178,13 @@ def table(rows: List[List[Any]], header: Union[List[str], None] = None, sep: str
         rows = [header] + rows
         hline = [0] + hline
 
-    rows = [[str(x) for x in row] for row in rows]
+    if formats is not None:
+        for i in range(ncols):
+            if formats[i] is None:
+                formats[i] = '{}'
+    else:
+        formats = ['{}'] * ncols
+    rows = [rows[0]] + [[fmt.format(x) for fmt, x in zip(formats, row)] for row in rows[1:]]
 
     column_sizes = [max(len(row[i]) for row in rows) for i in range(ncols)]
     return_str = ""
