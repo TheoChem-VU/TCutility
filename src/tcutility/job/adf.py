@@ -922,16 +922,13 @@ class DensfJob(Job):
     def density(self, obj: Union[str, "pyfmo.orbitals.Orbitals"]):  # noqa: F821
         # check if the ADFFile is the same for all added orbitals
         if isinstance(obj, str):
-            path = os.path.normpath(obj)
+            self.settings.ADFFile = os.path.normpath(obj)
         elif isinstance(obj, pyfmo.Orbitals):
-            ...
+            if self.settings.ADFFile is None:
+                self.settings.ADFFile = obj.parent.parent.kfpath
 
-
-        if self.settings.ADFFile is None:
-            self.settings.ADFFile = obj.parent.parent.kfpath
-
-        elif self.settings.ADFFile != obj.parent.parent.kfpath:
-            raise ValueError("RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
+            elif self.settings.ADFFile != obj.parent.parent.kfpath:
+                raise ValueError("RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
         self._extras.append("Density SCF")
 
