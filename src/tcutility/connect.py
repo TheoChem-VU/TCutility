@@ -432,7 +432,11 @@ def get_current_server() -> Server:
 
     # print(ifconfig)
     for cls in Server.__subclasses__():
+        if cls is Local:
+            continue
+            
         ping = sp.check_output(["ping", cls.server, "-c", "1"])
+
         for part in ping.decode().split():
             if part.startswith("(") and part.endswith("):"):
                 ip_address = part[1:-2].split(".")[:3]
