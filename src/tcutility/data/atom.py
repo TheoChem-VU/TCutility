@@ -16,6 +16,10 @@ with open(data_dir / "radius.txt") as data:
     lines = data.readlines()
 _radii = {int(line.split(",")[0]): float(line.split(",")[1].strip()) for line in lines}
 
+with open(data_dir / "ionic_radius.txt") as data:
+    lines = data.readlines()
+_ionic_radii = {(int(line.split(",")[0]), line.split(",")[1], int(line.split(",")[2])): float(line.split(",")[3].strip()) for line in lines}
+
 with open(data_dir / "color.txt") as data:
     lines = data.readlines()
 _colors = {int(line.split(",")[0]): [int(x.strip()) for x in line.split(",")[1:]] for line in lines}
@@ -58,9 +62,27 @@ def radius(element):
         element: the symbol, name or atom number of the element. See :func:`parse_element`.
     Return:
         The empirical covalent radius of an element in angstroms, up to element 96.
+    Source:
+        https://en.wikipedia.org/wiki/Atomic_radii_of_the_elements_(data_page)
     """
     num = parse_element(element)
     return _radii.get(num)
+
+
+def ionic_radius(element, charge=0, spin_state=None):
+    """
+    Args:
+        element: the symbol, name or atom number of the element. See :func:`parse_element`.
+        charge: the charge of the ion.
+        spin_state: some elements are classified as `high` or `low` spin. Other elements have spin-state `none`.
+    Return:
+        The empirical covalent radius of an element in angstroms, up to element 96.
+    Source:
+        https://en.wikipedia.org/wiki/Ionic_radius
+    """
+    num = parse_element(element)
+    spin_state = str(spin_state)
+    return _ionic_radii.get((num, spin_state, charge))
 
 
 def color(element, mode: str = "rgb"):
@@ -72,6 +94,8 @@ def color(element, mode: str = "rgb"):
     Return:
         The standard CPK colors of the elements, up to element 109.
         If the mode is `rgb` returns a tuple of RGB values between `0` and `255`.
+    Source:
+        https://en.wikipedia.org/wiki/CPK_coloring
     """
     num = parse_element(element)
     c = _colors[num]
@@ -97,3 +121,4 @@ def element(element):
 
 if __name__ == "__main__":
     print(symbol(0))
+    print(ionic_radius(1, -1))
