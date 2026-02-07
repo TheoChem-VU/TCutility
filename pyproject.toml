@@ -21,6 +21,7 @@ dependencies = [
   "platformdirs>=4.3.6",
   "requests>=2.32.4",
   "strenum>=0.4.15",
+  "jsonpickle>=3.1.0",
 ]
 # Current maintainers
 maintainers = [{ name = "TheoCheM group" }]
