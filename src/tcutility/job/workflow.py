@@ -4,6 +4,7 @@ import subprocess as sp
 import dill
 import tcutility
 from tcutility import cache, connect
+from typing import List
 import jsonpickle
 import os
 import hashlib
@@ -51,7 +52,7 @@ def _python_path(server: connect.Server = connect.Local()):
 
 
 class WorkFlow:
-    def __init__(self, server = None, delete_files: bool = True, preambles: list[str] = None, postambles: list[str] = None, sbatch: dict = None):
+    def __init__(self, server = None, delete_files: bool = True, preambles: List[str] = None, postambles: List[str] = None, sbatch: dict = None):
         self.server = server
         if server is None:
             self.server = tcutility.connect.get_current_server()()
