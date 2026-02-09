@@ -4,14 +4,14 @@ import subprocess as sp
 import dill
 import tcutility
 from tcutility import cache, connect
-from typing import List
+from typing import List, Any
 import jsonpickle
 import os
 import hashlib
 import json
 
 
-def hash(obj):
+def hash(obj: Any) -> str:
     '''
     Hash any python object using SHA-256. If the object is a dictionary use JSON to
     put it in a standard format. If there are non-picklable objects
@@ -27,7 +27,7 @@ def hash(obj):
 
 
 @cache
-def _python_path(server: connect.Server = connect.Local()):
+def _python_path(server: connect.Server = connect.Local()) -> str:
     """
     Sometimes it is necessary to have the Python path as some environments don't have its path.
     This function attempts to find the Python path and returns it.
@@ -53,6 +53,12 @@ def _python_path(server: connect.Server = connect.Local()):
 
 class WorkFlow:
     def __init__(self, server = None, delete_files: bool = True, preambles: List[str] = None, postambles: List[str] = None, sbatch: dict = None):
+        '''
+        The ``WorkFlow`` decorator is used to generate Python scripts of functions and running/submitting them.
+
+        Example usage:
+
+        '''
         self.server = server
         if server is None:
             self.server = tcutility.connect.get_current_server()()
@@ -73,7 +79,7 @@ class WorkFlow:
 
     def restart(self, *args, **kwargs):
         tcutility.job.workflow_db.delete_data(self.get_hash(args, kwargs))
-        self._call_method(*args, **kwargs)
+        return self._call_method(*args, **kwargs)
 
     def __call__(self, *args, **kwargs):
         return self._call_method(*args, **kwargs)
@@ -84,6 +90,7 @@ class WorkFlow:
         self.name = func.__name__
         self.parameters = inspect.signature(func).parameters
         self._call_method = self.execute
+
         return self
 
     def __str__(self):
@@ -110,13 +117,6 @@ class WorkFlow:
         return s
 
     def _write_files(self, args: dict):
-        unique_id = uuid.uuid4()
-        file_name = '.' + self.name + '_' + str(unique_id)
-
-        self.sh_path = f'{file_name}.sh'
-        self.py_path = f'{file_name}.py'
-        self.out_path = f'{file_name}.out'
-
         with self.server.open_file(self.py_path, 'w+') as script:
             script.write('#====== LOAD STATE ========#\n')
             script.write('import dill\n')
@@ -143,9 +143,15 @@ class WorkFlow:
             script.write(f'''@atexit.register
 def on_exception():
     if tcutility.job.workflow_db.get_status("{self.hash}") == "RUNNING":
-        tcutility.job.workflow_db.set_failed("{self.hash}")\n\n\n''')
-            script.write(extract_func_code(self.func))
-            script.write(f'\n\n\n# indicate to the db that this wf has finished:\ntcutility.job.workflow_db.set_finished("{self.hash}")\n')
+        tcutility.job.workflow_db.set_failed("{self.hash}")
+
+def __end_workflow__():
+    tcutility.job.workflow_db.set_finished("{self.hash}")
+    exit()\n\n\n''')
+            code_lines = extract_func_code(self.func)
+            code_lines = handle_return_statements(code_lines, self.return_path)
+            script.write(code_lines)
+            script.write(f'\n\n\n# indicate to the db that this wf has finished:\n__end_workflow__()\n')
 
         with self.server.open_file(self.sh_path, 'w') as file:
             file.write('#!/bin/bash\n\n')
@@ -160,7 +166,7 @@ def on_exception():
 
             if self.delete_files:
                 file.write(f'rm {self.py_path}\n')
-                # file.write(f'rm {self.out_path}\n')
+                file.write(f'rm {self.out_path}\n')
                 file.write(f'rm {self.sh_path}\n')
 
     def get_hash(self, *args, **kwargs):
@@ -168,6 +174,12 @@ def on_exception():
 
     def execute(self, sbatch=None, dependency=None, *args, **kwargs):
         self.hash = self.get_hash(args, kwargs)
+
+        file_name = '.' + self.name + '_' + self.get_hash()
+        self.sh_path = f'{file_name}.sh'
+        self.py_path = f'{file_name}.py'
+        self.out_path = f'{file_name}.out'
+        self.return_path = f'{file_name}.json'
 
         if dependency is None:
             dependency = []
@@ -205,7 +217,7 @@ def on_exception():
             box += f'    hash = {self.hash}'
 
             tcutility.log.boxed(box)
-            return self
+            return self.__load_return()
 
         _args = {}
         for param_name, arg in zip(self.parameters, args):
@@ -241,10 +253,14 @@ def on_exception():
             self.server.chmod(744, self.sh_path)
             with open(self.out_path, "w+") as out:
                 sp.run(command, cwd=runfile_dir, stdout=out, shell=True)
-        return self
+        return self.__load_return()
+
+    def __load_return(self):
+        with open(self.return_path) as ret:
+            return jsonpickle.decode(ret.read())
 
 
-def extract_func_code(func: callable) -> str:
+def extract_func_code(func: callable) -> List[str]:
     '''
     Function used to extract and clean code from a function.
     '''
@@ -303,7 +319,24 @@ def extract_func_code(func: callable) -> str:
     # use base_indentation to properly align code to be all the way left
     code_lines = [line[base_indent:] for line in code_lines]
 
-    return '\n'.join(code_lines)
+    return code_lines
+
+
+def handle_return_statements(lines: List[str], return_file: str) -> str:
+    # go through the script and check if there are any return statements
+    new_lines = []
+    for line in lines:
+        if not line.strip().startswith('return'):
+            new_lines.append(line)
+            continue
+
+        return_variable = line.removeprefix('return').strip()
+        indent = ' ' * (len(line) - len(line.lstrip()))
+        new_lines.append(indent + f"with open('{return_file}', 'w+') as ret:")
+        new_lines.append(indent + f"    ret.write(jsonpickle.encode({return_variable}))")
+        new_lines.append(indent + '__end_workflow__()')
+
+    return '\n'.join(new_lines)
 
 
 def ruff_check_script(path: str, ignored_codes=None) -> bool:
@@ -337,18 +370,20 @@ def ruff_check_script(path: str, ignored_codes=None) -> bool:
 if __name__ == '__main__':
     @WorkFlow(
         # sbatch={'p': 'rome', 'n': 32, 't': '120:00:00'},
-        deletfe_files=False,
+        delete_files=True,
         )
     def sn2(molecule) -> None:
         import tcutility
-        print('Test')
+        from scm import plams
+
+        molecule = plams.Molecule(molecule)
         
         with tcutility.DFTBJob(use_slurm=False) as job:
             job.molecule(molecule)
 
-        print(molecule)
         molecule.translate((-1, -1, -1))
-        print(molecule)
+        
+        return molecule
 
     res = sn2(molecule='example.xyz')
     print(res)
