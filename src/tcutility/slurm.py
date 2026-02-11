@@ -3,13 +3,13 @@ import platform
 import subprocess as sp
 import time
 
-import tcutility.cache as cache
+from tcutility.cache import cache, timed_cache
 import tcutility.connect as connect
 import tcutility.log as log
 from tcutility.results.result import Result
 
 
-@cache.cache
+@cache
 def has_slurm(server: connect.Server = connect.Local()) -> bool:
     """
     Function to check if the current platform uses slurm.
@@ -33,7 +33,7 @@ def has_slurm(server: connect.Server = connect.Local()) -> bool:
         return False
 
 
-@cache.timed_cache(3)
+@timed_cache(3)
 def squeue(server: connect.Server = connect.Local()) -> Result:
     """
     Get information about jobs managed by slurm using squeue.

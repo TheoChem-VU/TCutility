@@ -1,12 +1,14 @@
 import atexit
 import os
+import platform
 import shutil
 import subprocess as sp
 import uuid
 from datetime import datetime
 from enum import Enum, auto
 
-from tcutility import cache, environment, log
+from tcutility import environment, log
+import tcutility.cache as cache
 from tcutility.results import result as results
 
 
@@ -417,7 +419,7 @@ class Snellius(Server):
     }
 
 
-@cache.cache
+@cache
 def get_current_server() -> Server:
     """
     Return the `Server`-subclass of the server location of the current shell.

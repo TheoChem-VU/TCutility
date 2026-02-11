@@ -7,7 +7,7 @@ import dictfunc
 from scm import plams
 
 import tcutility.log as log
-from tcutility import environment, formula, molecule, spell_check, constants
+from tcutility import environment, formula, molecule, spell_check, constants, connect
 from tcutility.data import basis_sets, cosmo, functionals
 from tcutility.errors import TCCompDetailsError, TCJobError
 from tcutility.job.ams import AMSJob
