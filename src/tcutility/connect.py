@@ -461,12 +461,12 @@ def get_os_name(server: "Local" = Local()) -> OSName:
     if not isinstance(server, Local):
         return OSName.LINUX
 
-    os_name = os.name
-    if os_name == "nt":
+    os_name = os.uname().sysname
+    if os_name == "Windows":
         return OSName.WINDOWS
-    elif os_name == "posix":
+    elif os_name == "Linux":
         return OSName.LINUX
-    elif os_name == "mac":
+    elif os_name == "Darwin":
         return OSName.MACOS
     else:
         raise ValueError(f"Unknown operating system: {os_name}")
