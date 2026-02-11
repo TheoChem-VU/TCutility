@@ -453,7 +453,7 @@ def _close_all_connections():
 atexit.register(_close_all_connections)
 
 
-def get_os_name(server: "Local" = Local()) -> OSName:
+def get_os_name(server: Server = Local()) -> OSName:
     """
     Get the name of the operating system. Returns a value from the :class:`OSName <tcutility.environment.OSName>` enumeration.
     """
@@ -461,7 +461,7 @@ def get_os_name(server: "Local" = Local()) -> OSName:
     if not isinstance(server, Local):
         return OSName.LINUX
 
-    os_name = os.uname().sysname
+    os_name = platform.system()
     if os_name == "Windows":
         return OSName.WINDOWS
     elif os_name == "Linux":
