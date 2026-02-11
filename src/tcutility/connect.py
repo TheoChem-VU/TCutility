@@ -472,5 +472,19 @@ def get_os_name(server: Server = Local()) -> OSName:
         raise ValueError(f"Unknown operating system: {os_name}")
 
 
+@cache
+def on_windows(server: Server = Local()) -> bool:
+    return get_os_name(server) == OSName.WINDOWS
+
+@cache
+def on_linux(server: Server = Local()) -> bool:
+    return get_os_name(server) == OSName.LINUX
+
+@cache
+def on_macos(server: Server = Local()) -> bool:
+    return get_os_name(server) == OSName.MACOS
+
+
 if __name__ == "__main__":
     print(get_current_server())
+    print(get_os_name())
