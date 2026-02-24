@@ -417,7 +417,7 @@ class Snellius(Server):
     }
 
 
-@cache.cache
+@cache
 def get_current_server() -> Server:
     """
     Return the `Server`-subclass of the server location of the current shell.
