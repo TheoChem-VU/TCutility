@@ -16,11 +16,11 @@ def concatenate_irc_paths(jobs: List[str], reverse: bool, output: str, log_level
     """
     Combine separated IRC paths.
 
-    Scripts that takes in two or more directories containing an IRC file ("ams.rkf") and concatenates them through the RMSD values. Produces a .xyz and .amv file in the specified output directory.
-    The output directory is specified with the -o flag. If not specified, the output will be written to the current working directory.
-    In addition, the -r flag can be used to reverse the trajectory.
+    Scripts that takes in two or more directories containing an IRC file (``ams.rkf``) and concatenates them through the RMSD values. Produces a ``.xyz`` and ``.amv`` file in the specified output directory.
+    The output directory is specified with the ``-o`` flag. If not specified, the output will be written to the current working directory.
+    In addition, the ``-r`` flag can be used to reverse the trajectory.
 
-    Note: ALWAYS visualize the .amv file in AMSView to verify the trajectory.
+    .. note:: Always visualize the ``.amv`` file in AMSView to verify the trajectory.
     """
     outputdir = pl.Path(output).resolve()
     job_dirs = [pl.Path(directory).resolve() for directory in jobs]
