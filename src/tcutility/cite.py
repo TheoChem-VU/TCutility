@@ -3,6 +3,7 @@ import os
 
 from tcutility import environment, spell_check
 from tcutility.cache import cache_file
+import numpy as np
 
 __all__ = ["cite", "_get_doi_data", "_get_doi_data_from_title", "_get_publisher_city", "_get_journal_abbreviation"]
 
