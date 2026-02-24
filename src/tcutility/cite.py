@@ -20,7 +20,6 @@ def _get_doi_data(doi: str) -> dict:
     """
     import requests
 
-    print(f"http://api.crossref.org/works/{doi}")
     data = requests.get(f"http://api.crossref.org/works/{doi}").text
     if data == "Resource not found.":
         raise ValueError(f"Could not find DOI {doi}.")
