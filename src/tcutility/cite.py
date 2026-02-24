@@ -4,7 +4,7 @@ import os
 from tcutility import environment, spell_check
 from tcutility.cache import cache
 
-__all__ = ["cite"]
+__all__ = ["cite", "_get_doi_data", "_get_doi_data_from_title", "_get_publisher_city", "_get_journal_abbreviation"]
 
 
 # @cache.cache_file('dois')
