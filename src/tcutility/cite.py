@@ -39,7 +39,7 @@ def _get_journal_abbreviation(journal: str) -> str:
     """
     import requests
 
-    return requests.get(f"https://abbreviso.toolforge.org/a/{journal}").text
+    return requests.get(f"https://abbreviso.toolforge.org/a/{journal}").text.replace('amp;', '&')
 
 
 @cache_file('tcutility_publisher_city')
