@@ -2,14 +2,14 @@ import json
 import os
 
 from tcutility import environment, spell_check
-from tcutility.cache import cache
+from tcutility.cache import cache_file
 
 __all__ = ["cite", "_get_doi_data", "_get_doi_data_from_title", "_get_publisher_city", "_get_journal_abbreviation"]
 
 
 # @cache.cache_file('dois')
 @environment.requires_optional_package("requests")
-@cache
+@cache_file('tcutility_citation')
 def _get_doi_data(doi: str) -> dict:
     """
     Get information about an article using the crossref.org API.
@@ -42,7 +42,7 @@ def _get_journal_abbreviation(journal: str) -> str:
     return requests.get(f"https://abbreviso.toolforge.org/a/{journal}").text
 
 
-@cache
+@cache_file('tcutility_publisher_city')
 def _get_publisher_city(publisher: str) -> str:
     """
     Get the city of a publisher.
@@ -52,6 +52,7 @@ def _get_publisher_city(publisher: str) -> str:
     return cities.get(publisher)
 
 
+@cache_file('tcutility_citation')
 def cite(doi: str, style: str = "wiley", mode="html") -> str:
     """
     Format an article in a certain style.
