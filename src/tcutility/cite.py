@@ -30,6 +30,25 @@ def _get_doi_data(doi: str) -> dict:
 # @cache.cache_file('journal_abbrvs')
 @environment.requires_optional_package("requests")
 @cache
+@cache_file('tcutility_citation')
+def _get_doi_data_from_title(title: str):
+    import requests
+
+    citedby = requests.get(f"http://api.crossref.org/works?query.title={title}").text
+    citedby = json.loads(citedby)["message"]["items"]
+    citedby = [row for row in citedby if row['type'] == 'journal-article']
+    nearnesses = []
+    for row in citedby:
+        title = ''.join(row['title'])
+        nearness = spell_check.wagner_fischer(title, title)
+        nearness = nearness / len(title)
+        nearnesses.append(nearness)
+
+    if len(nearnesses) == 0:
+        return
+
+    nearest_idx = np.argmin(nearnesses)
+    return citedby[nearest_idx]
 def _get_journal_abbreviation(journal: str) -> str:
     """
     Get the journal name abbreviation using the abbreviso API.
