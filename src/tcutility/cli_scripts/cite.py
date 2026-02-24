@@ -192,7 +192,7 @@ def _print_rect_list(printables, spaces_before=0):
         print(" " * spaces_before + "  ".join([x.ljust(col_len) for x, col_len in zip(row, prev_col_lens)]))
 
 
-@click.command()
+@click.command("cite")
 @click.argument("objects", type=str, nargs=-1, required=False)
 @click.option("-w", "--wiley", help="Set the citation style to Wiley. This is the default style.", flag_value="wiley", default=True)
 @click.option("-a", "--acs", help="Set the citation style to ACS.", flag_value="acs")

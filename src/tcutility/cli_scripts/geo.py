@@ -30,7 +30,7 @@ geometric_character_to_info_mapping: Dict[GeometricParameter, Tuple[str, str, in
 }
 
 
-@click.command()
+@click.command("geo")
 @click.argument("path", type=click.Path(exists=True))
 @click.argument("atom_indices", type=str, nargs=-1)
 @click.option("-p", "--pyramidal", is_flag=True, default=False, help="Instead of calculating a dihedral angle, calculate pyramidalisation angle.")

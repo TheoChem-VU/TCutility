@@ -7,7 +7,7 @@ from tcutility.log import log
 from tcutility.molecule import write_mol_to_amv_file, write_mol_to_xyz_file
 
 
-@click.command()
+@click.command("concat-irc")
 @click.argument("jobs", nargs=-1, type=click.Path(exists=True))
 @click.option("-r", "--reverse", is_flag=True, help="Reverses the trajectory")
 @click.option("-o", "--output", type=click.Path(), default="./", help="Directory in which the output file will be saved")

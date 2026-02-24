@@ -8,7 +8,7 @@ import click
 from tcutility.report import figure_resizer
 
 
-@click.command()
+@click.command("resize")
 @click.option("-f", "--folder", type=click.Path(exists=True))
 @click.option(
     "-p",
