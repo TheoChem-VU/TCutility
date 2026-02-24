@@ -27,9 +27,7 @@ def _get_doi_data(doi: str) -> dict:
     return data
 
 
-# @cache.cache_file('journal_abbrvs')
 @environment.requires_optional_package("requests")
-@cache
 @cache_file('tcutility_citation')
 def _get_doi_data_from_title(title: str):
     import requests
@@ -49,6 +47,10 @@ def _get_doi_data_from_title(title: str):
 
     nearest_idx = np.argmin(nearnesses)
     return citedby[nearest_idx]
+
+
+@environment.requires_optional_package("requests")
+@cache_file('tcutility_journal_abbrvs')
 def _get_journal_abbreviation(journal: str) -> str:
     """
     Get the journal name abbreviation using the abbreviso API.
