@@ -2,6 +2,7 @@ import os
 
 from tcutility import results
 from tcutility.job.ams import AMSJob
+from scm import plams
 
 __all__ = ["DFTBJob"]
 
@@ -16,7 +17,7 @@ class DFTBJob(AMSJob):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.settings = results.Result()
+        self.settings = plams.Settings()
         self._model = None
         self.kspace("Good")
         self.single_point()

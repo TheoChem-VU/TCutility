@@ -1,12 +1,13 @@
 import math
 import os
 from typing import TYPE_CHECKING, Dict, List, Optional, Union
+import platform
 
 import dictfunc
 from scm import plams
 
 import tcutility.log as log
-from tcutility import environment, formula, molecule, spell_check
+from tcutility import environment, formula, molecule, spell_check, constants
 from tcutility.data import basis_sets, cosmo, functionals
 from tcutility.errors import TCCompDetailsError, TCJobError
 from tcutility.job.ams import AMSJob
@@ -841,6 +842,7 @@ class DensfJob(Job):
         self.settings: plams.Settings = plams.Settings()
         self.rundir = "tmp"
         self.cube_file_prefix = cube_file_prefix
+        self.use_vtk = False
         self.name = "densf"
         self.gridsize()
         self._mos = []
@@ -851,6 +853,9 @@ class DensfJob(Job):
 
     def __str__(self):
         return f"Densf({self.name}), running in {self.workdir}"
+
+    def generate_vtk(self, enabled=True):
+        self.use_vtk = enabled
 
     def gridsize(self, size="medium", extend: float = 7.5):
         """
@@ -883,7 +888,7 @@ class DensfJob(Job):
             spacing: the spacing between each grid point. The grid is a regular grid, with equal spacing in all directions. Defaults to 0.106 angstrom.
             extend: the space between the grid edges and the molecule. Defaults to 7.5 angstrom.
         """
-        coords = mol.as_array()
+        coords = mol.as_array() * constants.ANG2BOHR  # convert coords to bohr
         origin = coords.min(axis=0) - extend
         delta = coords.max(axis=0) - coords.min(axis=0) + 2 * extend
         nsteps = (delta / spacing).astype(int)
@@ -900,27 +905,30 @@ class DensfJob(Job):
         """
         import pyfmo
 
-        if isinstance(orbital, (pyfmo.orbitals.sfo.SFO, pyfmo.orbitals2.objects.SFO)):
+        if isinstance(orbital, pyfmo.orbitals.objects.SFO):
             self._sfos.append(orbital)
-        elif isinstance(orbital, (pyfmo.orbitals.mo.MO, pyfmo.orbitals2.objects.MO)):
+        elif isinstance(orbital, pyfmo.orbitals.objects.MO):
             self._mos.append(orbital)
         else:
             raise TCJobError(job_class=self.__class__.__name__, message=f"Unknown object {orbital} of type{type(orbital)}. It should be a pyfmo.orbitals.sfo.SFO or pyfmo.orbitals.mos.MO object.")
 
         # check if the ADFFile is the same for all added orbitals
         if self.settings.ADFFile is None:
-            self.settings.ADFFile = orbital.kfpath
+            self.settings.ADFFile = orbital.parent.parent.kfpath
 
-        elif self.settings.ADFFile != orbital.kfpath:
+        elif self.settings.ADFFile != orbital.parent.parent.kfpath:
             raise TCJobError(job_class=self.__class__.__name__, message="RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
-    def density(self, orbitals: "pyfmo.orbitals.Orbitals"):  # noqa: F821
+    def density(self, obj: Union[str, "pyfmo.orbitals.Orbitals"]):  # noqa: F821
         # check if the ADFFile is the same for all added orbitals
-        if self.settings.ADFFile is None:
-            self.settings.ADFFile = orbitals.kfpath
+        if isinstance(obj, str):
+            self.settings.ADFFile = os.path.normpath(obj)
+        elif isinstance(obj, pyfmo.Orbitals):
+            if self.settings.ADFFile is None:
+                self.settings.ADFFile = obj.parent.parent.kfpath
 
-        elif self.settings.ADFFile != orbitals.kfpath:
-            raise ValueError("RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
+            elif self.settings.ADFFile != obj.parent.parent.kfpath:
+                raise ValueError("RKF file that was previously set not the same as the one being set now. Please start a new job for each RKF file.")
 
         self._extras.append("Density SCF")
 
@@ -936,12 +944,13 @@ class DensfJob(Job):
         self._extras.append(f"NCI {density} RHOVDW={rhovdw} RDG={rdg}")
 
     def _setup_job(self):
+        on_windows = platform.system() == 'Windows'
         os.makedirs(self.workdir, exist_ok=True)
 
         # set up the input file. This should always contain calling of the densf program, as per the SCM documentation
         with open(self.inputfile_path, "w+") as inpf:
             inpf.write("$AMSBIN/densf << eor\n")
-            inpf.write(f"ADFFile {os.path.abspath(self.settings.ADFFile)}\n")
+            inpf.write(f"ADFFile {self.settings.ADFFile}\n")
             inpf.write(f"GRID {self.settings.grid}\n")
             inpf.write("END\n")
             if self.settings.grid_extend:
@@ -953,7 +962,7 @@ class DensfJob(Job):
                     if orb.spin in ["A", "B"]:
                         spin = {"A": "alpha", "B": "beta"}[orb.spin]
                         inpf.write(f"    {spin}\n")
-                    inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
+                    inpf.write(f"    {orb.symmetry} {orb.densf_index}\n")
                 inpf.write("END\n")
 
             if len(self._sfos) > 0:
@@ -962,26 +971,38 @@ class DensfJob(Job):
                     if orb.spin in ["A", "B"]:
                         spin = {"A": "alpha", "B": "beta"}[orb.spin]
                         inpf.write(f"    {spin}\n")
-                    inpf.write(f"    {orb.symmetry} {orb.symmetry_index}\n")
+                    inpf.write(f"    {orb.symmetry} {orb.densf_index}\n")
                 inpf.write("END\n")
 
             for line in self._extras:
                 inpf.write(line + "\n")
 
             # cuboutput prefix is always the original run directory containing the adf.rkf file and includes the grid size
-            outname = self.settings.grid if self.settings.grid.lower() in ["coarse", "medium", "fine"] else "custom_grid"
-            if self.cube_file_prefix is None:
-                inpf.write(f"CUBOUTPUT {os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}\n")
+            if self.use_vtk:
+                # if want a vtk output we must write the full path
+                obj = (self._mos + self._sfos)
+                inpf.write(f"VTKFILE {self.output_cub_paths[obj[0]]}\n")
             else:
-                inpf.write(f"CUBOUTPUT {self.cube_file_prefix}{outname}\n")
+                outname = self.settings.grid if self.settings.grid.lower() in ["coarse", "medium", "fine"] else "custom_grid"
+                if self.cube_file_prefix is None:
+                    inpf.write(f"CUBOUTPUT {os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}\n")
+                else:
+                    inpf.write(f"CUBOUTPUT {self.cube_file_prefix}{outname}\n")
             inpf.write("eor\n")
 
-        # the runfile should simply execute the input file.
-        with open(self.runfile_path, "w+") as runf:
-            runf.write("#!/bin/sh\n\n")
-            runf.write("\n".join(self._preambles) + "\n\n")
-            runf.write(f"sh {self.inputfile_path}\n")
-            runf.write("\n".join(self._postambles))
+        if on_windows:
+            # the runfile should simply execute the input file.
+            with open(self.runfile_path, "w+") as runf:
+                runf.write("\n".join(self._preambles) + "\n\n")
+                runf.write(f"%AMSHOME%/msys/usr/bin/bash.exe {self.inputfile_path}\n")
+                runf.write("\n".join(self._postambles))
+        else:
+            # the runfile should simply execute the input file.
+            with open(self.runfile_path, "w+") as runf:
+                runf.write("#!/bin/sh\n\n")
+                runf.write("\n".join(self._preambles) + "\n\n")
+                runf.write(f"sh {self.inputfile_path}\n")
+                runf.write("\n".join(self._postambles))
 
         return True
 
@@ -990,38 +1011,39 @@ class DensfJob(Job):
         """
         The output cube file paths that will be/were calculated by this job.
         """
-        paths = []
+        paths = {}
         # the main cube file prefix for the generated cube files
+        file_fmt = ".vtk" if self.use_vtk else ".cub"
         outname = self.settings.grid if self.settings.grid.lower() in ["coarse", "medium", "fine"] else "custom_grid"
         if self.cube_file_prefix is None:
-            cuboutput = f"{os.path.split(os.path.abspath(self.settings.ADFFile))[0]}/{outname}"
+            cuboutput = f"{self.settings.ADFFile}.densf/{outname}"
         else:
             cuboutput = f"{self.cube_file_prefix}{outname}"
-
+            
         for mo in self._mos:
             spin_part = "" if mo.spin == "AB" else f"_{mo.spin}"
-            paths.append(f"{cuboutput}%SCF_{mo.symmetry.replace(':', '_')}{spin_part}%{mo.symmetry_index}.cub")
+            paths[mo] = f"{cuboutput}%SCF_{mo.symmetry.replace(':', '_')}{spin_part}%{mo.densf_index}{file_fmt}"
 
         for sfo in self._sfos:
             spin_part = "" if sfo.spin == "AB" else f"_{sfo.spin}"
-            paths.append(f"{cuboutput}%SFO_{sfo.symmetry.replace(':', '_')}{spin_part}%{sfo.symmetry_index}.cub")
+            paths[sfo] = f"{cuboutput}%SFO_{sfo.symmetry.replace(':', '_')}{spin_part}%{sfo.densf_index}{file_fmt}"
 
         for extra in self._extras:
             if extra == "Density SCF":
-                paths.append(f"{cuboutput}%SCF%Density.cub")
+                paths[extra] = f"{cuboutput}%SCF%Density{file_fmt}"
 
             if extra.startswith("NCI"):
-                paths.append(f"{cuboutput}%SCF%FitDenSigned.cub")
-                paths.append(f"{cuboutput}%SCF%Fitdensity.cub")
-                paths.append(f"{cuboutput}%SCF%FitNCI.cub")
-                paths.append(f"{cuboutput}%SCF%FitRDG.cub")
-                paths.append(f"{cuboutput}%SCF%FitRDGforNCI.cub")
+                paths[extra] = f"{cuboutput}%SCF%FitDenSigned{file_fmt}"
+                paths[extra] = f"{cuboutput}%SCF%Fitdensity{file_fmt}"
+                paths[extra] = f"{cuboutput}%SCF%FitNCI{file_fmt}"
+                paths[extra] = f"{cuboutput}%SCF%FitRDG{file_fmt}"
+                paths[extra] = f"{cuboutput}%SCF%FitRDGforNCI{file_fmt}"
                 if "both" in extra.lower():
-                    paths.append(f"{cuboutput}%SCF%DenSigned.cub")
-                    paths.append(f"{cuboutput}%SCF%Density.cub")
-                    paths.append(f"{cuboutput}%SCF%NCI.cub")
-                    paths.append(f"{cuboutput}%SCF%RDG.cub")
-                    paths.append(f"{cuboutput}%SCF%RDGforNCI.cub")
+                    paths[extra] = f"{cuboutput}%SCF%DenSigned{file_fmt}"
+                    paths[extra] = f"{cuboutput}%SCF%Density{file_fmt}"
+                    paths[extra] = f"{cuboutput}%SCF%NCI{file_fmt}"
+                    paths[extra] = f"{cuboutput}%SCF%RDG{file_fmt}"
+                    paths[extra] = f"{cuboutput}%SCF%RDGforNCI{file_fmt}"
 
         return paths
 
@@ -1029,7 +1051,7 @@ class DensfJob(Job):
         if self.overwrite:
             return False
 
-        return all(os.path.exists(path) for path in self.output_cub_paths)
+        return all(os.path.exists(path) for path in self.output_cub_paths.values())
 
 
 if __name__ == "__main__":

@@ -185,6 +185,14 @@ class Result(dict):
         clean_dict = dictfunc.list_to_dict(dictfunc.dict_to_list(self))
         return plams.Settings(clean_dict)
 
+    def as_dict(self):
+        """
+        Returns this Result object as a dict object.
+        """
+
+        clean_dict = dictfunc.list_to_dict(dictfunc.dict_to_list(self))
+        return clean_dict
+        
     def copy(self):
         # cast this object to a list of keys and values
         lsts = dictfunc.dict_to_list(self)

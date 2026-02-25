@@ -348,8 +348,8 @@ class Local(Server):
     def path_exists(self, path: str) -> bool:
         return os.path.exists(os.path.join(self.currdir, path))
 
-    def open_file(self, file_path: str):
-        return open(file_path, mode="w+")
+    def open_file(self, file_path: str, mode:str = 'w+'):
+        return open(file_path, mode=mode)
 
     def chmod(self, rights: int, path: str):
         os.chmod(os.path.join(self.currdir, path), int(str(rights), base=8))
@@ -432,7 +432,11 @@ def get_current_server() -> Server:
 
     # print(ifconfig)
     for cls in Server.__subclasses__():
+        if cls is Local:
+            continue
+            
         ping = sp.check_output(["ping", cls.server, "-c", "1"])
+
         for part in ping.decode().split():
             if part.startswith("(") and part.endswith("):"):
                 ip_address = part[1:-2].split(".")[:3]

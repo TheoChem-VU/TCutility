@@ -6,6 +6,7 @@ from pathlib import Path
 import click
 
 from tcutility.report import figure_resizer
+import matplotlib.pyplot as plt
 
 
 @click.command()
@@ -37,13 +38,21 @@ def resize(folder: Path, padding: str):
         root = tk.Tk()
         root.withdraw()
         img_paths = filedialog.askopenfilenames()
+        root.quit()
 
     for img_path in img_paths:
-        figure_resizer._analyse_img(img_path, plot=True)
-        circle = input(f"Select circle for {img_path}, leave empty to skip: ")
-        if circle == "":
-            continue
+        print(img_path)
+        try:
+            figure_resizer._analyse_img(img_path, plot=True)
+            # plt.show()
+            # plt.pause(0.001)
+            circle = input(f"Select circle for {img_path}, leave empty to skip: ")
 
-        circle_numbers[img_path] = int(circle)
+            if circle == "":
+                continue
+
+            circle_numbers[img_path] = int(circle)
+        except Exception as e:
+            print(e)
 
     figure_resizer.resize(img_paths, circle_numbers=circle_numbers, padding=padding)

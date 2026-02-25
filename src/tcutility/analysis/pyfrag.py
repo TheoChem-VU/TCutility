@@ -4,6 +4,7 @@ from typing import List, Union
 import numpy as np
 from scm import plams
 
+import tcutility
 from tcutility.cache import cache
 from tcutility.environment import requires_optional_package
 from tcutility.geometry import parameter
@@ -29,13 +30,14 @@ class PyFragResult:
         self._load()
 
     def _load(self):
-        for frag_path, info in match(self.path, "frag_{frag}").items():
-            self._frag_results[info.frag] = get_pyfrag_results(frag_path)
-        for step_path, info in match(self.path, self.step_prefix + "{step}", sort_by="step").items():
+        for frag_path, info in tcutility.log.loadbar(match(self.path, "frag_{frag}").items()):
+            self._frag_results[info.frag] = tcutility.read(frag_path)
+
+        for step_path, info in tcutility.log.loadbar(match(self.path, self.step_prefix + "{step}", sort_by="step").items()):
             self._step_results.append({})
             for dir_name in os.listdir(step_path):
                 p = os.path.join(step_path, dir_name)
-                res = get_pyfrag_results(p)
+                res = tcutility.read(p)
                 self._step_results[-1][dir_name] = res
 
             self._order.append(int(info.step.removeprefix("0")))

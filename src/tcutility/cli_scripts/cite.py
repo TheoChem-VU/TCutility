@@ -146,13 +146,13 @@ def format_paragraph(dois, style):
         if doi not in doi_order:
             doi_order.append(doi)
         try:
-            citation = cite.cite(doi, style=style, mode="plain")
+            citation = cite(doi, style=style, mode="plain")
         except Exception as exp:
             print("\t" + str(exp))
             raise exp
 
         print(f"  [{doi}] {citation}")
-        paragraph = f"[{doi_order.index(doi) + 1}] {cite.cite(doi, style=style, mode='html')}"
+        paragraph = f"[{doi_order.index(doi) + 1}] {cite(doi, style=style, mode='html')}"
         paragraphs.append(paragraph)
 
     return paragraphs
@@ -259,7 +259,7 @@ def generate_citations(objects: List[str], wiley: bool, acs: bool, rsc: bool, ou
         with open(objects[0]) as inp:
             objects = [line.strip() for line in inp.readlines()]
 
-    style = "wiley" if wiley else "acs" if acs else "rsc"
+    style = "rsc" if rsc else "acs" if acs else "wiley"
 
     with Docx(file=output, overwrite=True) as out:
         for obj in objects:
