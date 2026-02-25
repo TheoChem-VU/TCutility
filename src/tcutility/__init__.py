@@ -1,4 +1,5 @@
 # Job imports
+from tcutility.cache import cache, cache_file, timed_cache
 from tcutility import log
 from tcutility.analysis.pyfrag import PyFragResult, get_pyfrag_results
 from tcutility.analysis.task_specific.irc import concatenate_irc_trajectories
@@ -6,8 +7,7 @@ from tcutility.analysis.vdd.charge import VDDCharge
 
 # from tcutility.analysis.vdd.manager import VDDChargeManager, create_vdd_charge_manager # Don't load in vdd as it has an annoying pandas dependency that cannot be avoided upon importing
 from tcutility.analysis.vibration.ts_vibration import avg_relative_bond_length_delta, determine_ts_reactioncoordinate, validate_transitionstate
-from tcutility.cache import cache, cache_file, timed_cache
-from tcutility.cite import cite
+from tcutility.cite import cite, _get_doi_data, _get_doi_data_from_title, _get_doi_data_from_query, _get_publisher_city, _get_journal_abbreviation
 from tcutility.connect import Connection, Local, Server, ServerFile
 from tcutility.data.functionals import categories, functional_name_from_path_safe_name, functionals, get_available_functionals, get_functional
 from tcutility.environment import requires_optional_package

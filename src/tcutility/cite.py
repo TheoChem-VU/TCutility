@@ -2,14 +2,14 @@ import json
 import os
 
 from tcutility import environment, spell_check
-from tcutility.cache import cache
+from tcutility.cache import cache_file
+import numpy as np
 
-__all__ = ["cite"]
+__all__ = ["cite", "_get_doi_data", "_get_doi_data_from_title", "_get_doi_data_from_query", "_get_publisher_city", "_get_journal_abbreviation"]
 
 
-# @cache.cache_file('dois')
 @environment.requires_optional_package("requests")
-@cache
+@cache_file('tcutility_citation')
 def _get_doi_data(doi: str) -> dict:
     """
     Get information about an article using the crossref.org API.
@@ -19,7 +19,6 @@ def _get_doi_data(doi: str) -> dict:
     """
     import requests
 
-    print(f"http://api.crossref.org/works/{doi}")
     data = requests.get(f"http://api.crossref.org/works/{doi}").text
     if data == "Resource not found.":
         raise ValueError(f"Could not find DOI {doi}.")
@@ -27,9 +26,98 @@ def _get_doi_data(doi: str) -> dict:
     return data
 
 
-# @cache.cache_file('journal_abbrvs')
 @environment.requires_optional_package("requests")
-@cache
+@cache_file('tcutility_citation')
+def _get_doi_data_from_title(title: str):
+    import requests
+
+    citedby = requests.get(f"http://api.crossref.org/works?query.title={title}").text
+    citedby = json.loads(citedby)["message"]["items"]
+    citedby = [row for row in citedby if row['type'] == 'journal-article']
+    nearnesses = []
+    for row in citedby:
+        title = ''.join(row['title'])
+        nearness = spell_check.wagner_fischer(title, title)
+        nearness = nearness / len(title)
+        nearnesses.append(nearness)
+
+    if len(nearnesses) == 0:
+        return
+
+    nearest_idx = np.argmin(nearnesses)
+    return citedby[nearest_idx]
+
+
+@environment.requires_optional_package("requests")
+@cache_file('tcutility_citation')
+def _get_doi_data_from_query(**queries):
+    import requests
+
+    valid_queries = [
+        "affiliation",
+        "degree",
+        "event-acronym",
+        "bibliographic",
+        "container-title",
+        "publisher-name",
+        "author",
+        "event-theme",
+        "standards-body-acronym",
+        "chair",
+        "event-location",
+        "translator",
+        "funder-name",
+        "event-name",
+        "publisher-location",
+        "title",
+        "standards-body-name",
+        "contributor",
+        "description",
+        "editor",
+        "event-sponsor"
+        ]
+
+    query_strings = []
+    for query, value in queries.items():
+        if value is None:
+            continue
+
+        query = query.replace('_', '-')
+
+        if query not in valid_queries:
+            raise ValueError(f'Query "{query}" is not a valid query!')
+        if isinstance(value, str):
+            query_strings.append(f'query.{query}={value.replace("&", "")}')
+        else:
+            for v in value:
+                query_strings.append(f'query.{query}={v.replace("&", "")}')
+
+    query_string = '&'.join(query_strings)
+    citedby = requests.get(f"http://api.crossref.org/works?{query_string}").text
+    # print(f"http://api.crossref.org/works?{query_string}")
+    citedby = json.loads(citedby)["message"]["items"]
+    citedby = [row for row in citedby if row['type'] == 'journal-article']
+    nearnesses = []
+    for row in citedby:
+        title = ''.join(row['title'])
+        nearness = spell_check.wagner_fischer(title, title)
+        nearness = nearness / len(title)
+        nearnesses.append(nearness)
+
+    if len(nearnesses) == 0:
+        return
+
+    nearest_idx = np.argmin(nearnesses)
+    return citedby[nearest_idx]
+
+# data = _get_doi_data_from_query(title="AGMFNet: Attention-guided multi-scale feature fusion network for infrared small target detection",
+#     author=("He", "Liu", "Yang", "Yuan"), publisher_name="Elsevier")
+# print(data)
+
+# exit()
+
+@environment.requires_optional_package("requests")
+@cache_file('tcutility_journal_abbrvs')
 def _get_journal_abbreviation(journal: str) -> str:
     """
     Get the journal name abbreviation using the abbreviso API.
@@ -39,10 +127,10 @@ def _get_journal_abbreviation(journal: str) -> str:
     """
     import requests
 
-    return requests.get(f"https://abbreviso.toolforge.org/a/{journal}").text
+    return requests.get(f"https://abbreviso.toolforge.org/a/{journal}").text.replace('amp;', '&')
 
 
-@cache
+@cache_file('tcutility_publisher_city')
 def _get_publisher_city(publisher: str) -> str:
     """
     Get the city of a publisher.
@@ -52,6 +140,7 @@ def _get_publisher_city(publisher: str) -> str:
     return cities.get(publisher)
 
 
+@cache_file('tcutility_citation')
 def cite(doi: str, style: str = "wiley", mode="html") -> str:
     """
     Format an article in a certain style.
