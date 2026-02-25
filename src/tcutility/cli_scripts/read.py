@@ -6,7 +6,7 @@ import click
 from tcutility.results.read import read
 
 
-@click.command()
+@click.command("read")
 @click.option("-s", "--status", is_flag=True, help="Shortcut to only print the status of the calculation.")
 @click.option("-p", "--properties", is_flag=True, help="Shortcut to only print calculated properties for the calculation.")
 @click.argument("workdir")

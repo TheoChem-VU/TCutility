@@ -30,29 +30,30 @@ geometric_character_to_info_mapping: Dict[GeometricParameter, Tuple[str, str, in
 }
 
 
-@click.command()
+@click.command("geo")
 @click.argument("path", type=click.Path(exists=True))
 @click.argument("atom_indices", type=str, nargs=-1)
 @click.option("-p", "--pyramidal", is_flag=True, default=False, help="Instead of calculating a dihedral angle, calculate pyramidalisation angle.")
-@click.option("-s", "--soa", is_flag=True, default=False, help="Instead of calculating a dihedral angle, calculate sum-of-angles angle.")
+@click.option("-s", "--soa", is_flag=True, default=False, help="Instead of calculating a dihedral angle, calculate sum-of-angles.")
 def calculate_geometry_parameter(path: str, atom_indices: List[str], pyramidal: bool, soa: bool) -> None:
     """
-    \b
-    Calculate geometrical parameters for atoms at the provided ATOM_INDICES (NB: counting starts at 1).
-    PATH should be an XYZ-file or a calculation directory.
+    Calculate geometrical parameters for atoms at the provided ``ATOM_INDICES``.
+    ``PATH`` should be an ``.xyz``-file or a calculation directory.
 
     \b
-    For 0 indices we return all coordinates of the molecule in PATH.
+    For 0 indices we return all coordinates of the molecule in ``PATH``.
     For 1 index this program returns the cartesian coordinate for this atom.
     For 2 indices return bond length between atoms.
     For 3 indices return bond angle, with the second index being the central atom.
     For 4 indices return dihedral angle by calculating the angle between normal vectors
-        described by atoms at indices 1-2-3 and indices 2-3-4.
+        described by atoms at indices ``1-2-3`` and indices ``2-3-4``.
     \b
-    If the -p/--pyramidal flag is turned on it calculates 360° - ang1 - ang2 - ang3,
-        where ang1, ang2 and ang3 are the angles described by indices 2-1-3, 3-1-4
-        and 4-1-2 respectively.
-    If the -s/--soa flag is turned on it calculates ang1 + ang2 + ang3.
+    If the ``-p``/``--pyramidal`` flag is turned on it calculates ``360° - ang1 - ang2 - ang3``,
+        where ``ang1``, ``ang2`` and ``ang3`` are the angles described by indices ``2-1-3``, ``3-1-4``
+        and ``4-1-2`` respectively.
+    If the ``-s``/``--soa`` flag is turned on it calculates ``ang1 + ang2 + ang3``.
+
+    .. note:: Atom counting starts at 1.
     """
     try:
         mol = molecule.load(path)
