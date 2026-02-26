@@ -73,7 +73,7 @@ class Connection:
     def open(self):
         self.__enter__()
 
-    @environment.requires_optional_package("connect")
+    @environment.requires_optional_package("paramiko")
     def __enter__(self):
         import paramiko
 
