@@ -52,14 +52,57 @@ def _python_path(server: connect.Server = connect.Local()) -> str:
 
 
 class WorkFlow:
-    def __init__(self, server = None, delete_files: bool = True, preambles: List[str] = None, postambles: List[str] = None, sbatch: dict = None):
-        '''
-        The ``WorkFlow`` decorator is used to generate Python scripts of functions and running/submitting them.
+    '''
+    The ``WorkFlow`` class is used to generate Python scripts of functions and running/submitting them.
+    ``WorkFlow`` objects act as decorators for functions and supports writing the function as a python script that
+    can be submitted. It also supports checking for the status of previous runs of the workflow. If there are return
+    statements in the script, they will be written to an output file, loaded, and returned to the user.
+    
+    Args:
+        server: Server object that provides sbatch defaults and standard pre- and postambles.
+        delete_files: Whether to delete files after the workflow has finished running. 
+            This will not delete output files that are needed for the return statements in the function.
+        preambles: Preambles used when running the script remotely.
+        postambles: Postambles used when running the script remotely.
+        sbatch: Sbatch settings used when running the script remotely.
 
-        Example usage:
+    Example usage:
 
-        '''
+    .. code-block::
+        python
+        
+        @WorkFlow()
+        def optimize(molecule: str) -> "plams.Molecule":
+            import tcutility
+            from scm import plams
+            
+            with tcutility.DFTBJob() as job:
+                job.molecule(molecule)
+                job.optimization()
+
+            return plams.Molecule(job.output_mol_path)
+
+        optimized_mol = optimize('example.xyz')
+        print(optimized_mol)
+    
+    Gives as output:
+
+    .. code-block::
+
+          Atoms: 
+            1         C      -1.560651       0.018909      -0.343850
+            2         C      -0.564164       0.536286       0.648202
+            3         H       0.579596      -0.095326       0.334690
+            4        Cl      -0.849164       0.123036       2.289769
+            5         H      -0.271691       1.576823       0.520219
+            6         H      -1.197774       0.186010      -1.358023
+            7         H      -2.514720       0.543213      -0.231771
+            8         H      -1.740146      -1.045976      -0.197945
+            9         F       1.478087      -0.563635       0.032020
+    '''
+    def __init__(self, server: connect.Server = None, delete_files: bool = True, preambles: List[str] = None, postambles: List[str] = None, sbatch: dict = None):
         self.server = server
+        self.server.__enter__()
         if server is None:
             self.server = tcutility.connect.get_current_server()()
         self.preambles = preambles
