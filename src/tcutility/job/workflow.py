@@ -294,12 +294,13 @@ def __end_workflow__():
         return self.__load_return()
 
     def __load_return(self):
-        return WorkFlowOutput(self.return_path)
+        return WorkFlowOutput(self.return_path, self.name)
 
 
 class WorkFlowOutput:
-    def __init__(self, path: str):
+    def __init__(self, path: str, workflow_name: str):
         self.path = path
+        self.workflow_name = workflow_name
 
     @property
     def is_available(self):
@@ -314,7 +315,7 @@ class WorkFlowOutput:
             return jsonpickle.decode(ret.read())
 
     def __str__(self):
-        return f'WorkFlowOutput({self.path}) = {self.value}'
+        return f'WorkFlowOutput({self.workflow_name}).value = {self.value}'
 
 
 def extract_func_code(func: callable) -> List[str]:
