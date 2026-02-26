@@ -106,18 +106,19 @@ class WorkFlow:
         if server is None:
             self.server = tcutility.connect.Local()
         
+        current_server = tcutility.connect.get_current_server()
         self.preambles = preambles
         if preambles is None:
-            self.preambles = self.server.preamble_defaults.get('AMS', [])
-            self.preambles.append(self.server.program_modules.get('AMS', {}).get('latest', ''))
+            self.preambles = current_server.preamble_defaults.get('AMS', [])
+            self.preambles.append(current_server.program_modules.get('AMS', {}).get('latest', ''))
 
         self.postambles = postambles
         if postambles is None:
-            self.postambles = self.server.postamble_defaults.get('AMS', [])
+            self.postambles = current_server.postamble_defaults.get('AMS', [])
 
         self.sbatch = sbatch
         if sbatch is None:
-            self.sbatch = self.server.sbatch_defaults
+            self.sbatch = current_server.sbatch_defaults
 
         self.delete_files = delete_files
 
