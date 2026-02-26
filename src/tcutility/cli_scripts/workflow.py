@@ -76,22 +76,23 @@ workflow.add_command(status)
 def clear(use_hash: bool = False, name: str = None):
     if use_hash:
         workflow_db.delete(name)
+        return
+
+    hashes = []
+    for hsh, data in workflow_db.read_all().items():
+        if data.get('workflow_name', None) == name:
+            hashes.append(hsh)
+
+    if len(hashes) == 0:
+        print(f'I could not find any runs for WorkFlow({name}).')
+        return
+
+    proceed = input(f'This will delete {len(hashes)} workflow runs; proceed? (y/[n]): ')
+    if proceed == 'y':
+        for hsh in hashes:
+            workflow_db.delete(hsh)
     else:
-        hashes = []
-        for hsh, data in workflow_db.read_all().items():
-            if data.get('workflow_name', None) == name:
-                hashes.append(hsh)
-
-        if len(hashes) == 0:
-            print(f'I could not find any runs for WorkFlow({name}).')
-            return
-
-        proceed = input(f'This will delete {len(hashes)} workflow runs; proceed? (y/[n]): ')
-        if proceed == 'y':
-            for hsh in hashes:
-                workflow_db.delete(hsh)
-        else:
-            print('Cancelling ...')
+        print('Cancelling ...')
 
 
 workflow.add_command(clear)
