@@ -208,14 +208,10 @@ def __end_workflow__():
                 file.write(f'rm {self.out_path}\n')
                 file.write(f'rm {self.sh_path}\n')
 
-    def get_hash(self, *args, **kwargs):
-        return hash({'wf': self.func, 'args': args, 'kwargs': kwargs})
     def execute(self, *args, dependency=None, restart=False, **kwargs):
+        self.hash = hash({'wf': self.func, 'args': args, 'kwargs': kwargs})
 
-    def execute(self, sbatch=None, dependency=None, *args, **kwargs):
-        self.hash = self.get_hash(args, kwargs)
-
-        file_name = '.' + self.name + '_' + self.get_hash()
+        file_name = '.' + self.name + '_' + self.hash
         self.sh_path = f'{file_name}.sh'
         self.py_path = f'{file_name}.py'
         self.out_path = f'{file_name}.out'
