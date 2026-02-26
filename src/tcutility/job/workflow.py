@@ -104,7 +104,6 @@ class WorkFlow:
         self.server = server
         if server is None:
             self.server = tcutility.connect.get_current_server()()
-        self.server.__enter__()
         self.preambles = preambles
         if preambles is None:
             self.preambles = self.server.preamble_defaults.get('AMS', [])
@@ -291,7 +290,6 @@ def __end_workflow__():
             with open(self.out_path, "w+") as out:
                 sp.run(command, cwd=runfile_dir, stdout=out, shell=True)
 
-        self.server.__exit__()
         return self.__load_return()
 
     def __load_return(self):
