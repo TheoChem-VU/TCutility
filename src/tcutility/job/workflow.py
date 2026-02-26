@@ -235,6 +235,7 @@ def __end_workflow__():
                 if not hasattr(dep, 'slurm_job_id'):
                     continue
                 self.sbatch['dependency'] = self.sbatch['dependency'] + f':{dep.slurm_job_id}'
+
         if tcutility.job.workflow_db.can_skip(self.hash):
             if tcutility.job.workflow_db.get_status(self.hash) == 'RUNNING':
                 slurm_job_id = tcutility.job.workflow_db.read(self.hash).get('slurm_job_id', None)
@@ -260,6 +261,9 @@ def __end_workflow__():
             tcutility.log.boxed(box)
             return self.__load_return()
 
+        # if we don't skip we write a new db entry
+        tcutility.job.workflow_db.write(self.hash, workflow_name=self.name, status='RUNNING')
+
         _args = {}
         for param_name, arg in zip(self.parameters, args):
             _args[param_name] = arg
@@ -281,7 +285,7 @@ def __end_workflow__():
                 self.sbatch.setdefault("o", self.out_path)
             sbatch_result = tcutility.slurm.sbatch(self.sh_path, self.server, **self.sbatch)
             self.slurm_job_id = sbatch_result.id
-            tcutility.job.workflow_db.update(self.hash, workflow_name=self.name, status='RUNNING', slurm_job_id=self.slurm_job_id)
+            tcutility.job.workflow_db.update(self.hash, slurm_job_id=self.slurm_job_id)
         else:
             runfile_dir, runscript = os.path.split(self.sh_path)
             if runfile_dir == '':
