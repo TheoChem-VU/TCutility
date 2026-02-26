@@ -426,22 +426,20 @@ def ruff_check_script(path: str, ignored_codes=None) -> bool:
 
 
 if __name__ == '__main__':
-    @WorkFlow(
-        # sbatch={'p': 'rome', 'n': 32, 't': '120:00:00'},
-        delete_files=True,
-        )
-    def sn2(molecule) -> None:
+    from scm import plams
+    @WorkFlow()
+    def optimize(molecule: str) -> "plams.Molecule":
         import tcutility
         from scm import plams
+        import time
 
-        molecule = plams.Molecule(molecule)
+        time.sleep(10)
         
-        with tcutility.DFTBJob(use_slurm=False) as job:
+        with tcutility.DFTBJob() as job:
             job.molecule(molecule)
+            job.optimization()
+        return plams.Molecule(job.output_mol_path)
 
-        molecule.translate((-1, -1, -1))
-        
-        return molecule
-
-    res = sn2(molecule='example.xyz')
-    print(res)
+    optimized_mol = optimize('example.xyz', restart=True)
+    # optimized_mol = optimize(optimized_mol, restart=False)
+    print(optimized_mol)
