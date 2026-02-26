@@ -235,14 +235,14 @@ def __end_workflow__():
                 if not hasattr(dep, 'slurm_job_id'):
                     continue
                 self.sbatch['dependency'] = self.sbatch['dependency'] + f':{dep.slurm_job_id}'
-
         if tcutility.job.workflow_db.can_skip(self.hash):
             if tcutility.job.workflow_db.get_status(self.hash) == 'RUNNING':
-                tcutility.log.info('Workflow is currently running.')
+                slurm_job_id = tcutility.job.workflow_db.read(self.hash).get('slurm_job_id', None)
+                tcutility.log.info(f'Workflow is currently running (SLURMJOBID={slurm_job_id}.')
             elif tcutility.job.workflow_db.get_status(self.hash) == 'SUCCESS':
                 tcutility.log.info('Workflow run has already been completed!')
             elif tcutility.job.workflow_db.get_status(self.hash) == 'FAILED':
-                tcutility.log.info('Workflow was run but failed')
+                tcutility.log.info('Workflow was run but failed.')
 
             # Add slurm_job_id to self if it is skippable
             temp_data = tcutility.job.workflow_db.read(self.hash)
