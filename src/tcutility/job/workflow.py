@@ -265,10 +265,6 @@ def __end_workflow__():
             _args[param_name] = arg
         _args.update(kwargs)
 
-        # This update does not check for double entries!
-        if sbatch is not None:
-            self.sbatch.update(sbatch)
-
         for param_name, param in self.parameters.items():
             if param.default != param.empty:
                 _args.setdefault(param_name, param.default)
