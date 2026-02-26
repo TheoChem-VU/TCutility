@@ -120,10 +120,6 @@ class WorkFlow:
 
         self.delete_files = delete_files
 
-    def restart(self, *args, **kwargs):
-        tcutility.job.workflow_db.delete_data(self.get_hash(args, kwargs))
-        return self._call_method(*args, **kwargs)
-
     def __call__(self, *args, **kwargs):
         return self._call_method(*args, **kwargs)
 
@@ -214,6 +210,7 @@ def __end_workflow__():
 
     def get_hash(self, *args, **kwargs):
         return hash({'wf': self.func, 'args': args, 'kwargs': kwargs})
+    def execute(self, *args, dependency=None, restart=False, **kwargs):
 
     def execute(self, sbatch=None, dependency=None, *args, **kwargs):
         self.hash = self.get_hash(args, kwargs)
@@ -224,6 +221,11 @@ def __end_workflow__():
         self.out_path = f'{file_name}.out'
         self.return_path = f'{file_name}.json'
 
+        # if a restart was requested we simply delete known data
+        if restart:
+            tcutility.job.workflow_db.delete_data(self.hash)
+
+        # set up dependencies between jobs
         if dependency is None:
             dependency = []
 
