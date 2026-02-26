@@ -1,12 +1,14 @@
 import atexit
 import os
+import platform
 import shutil
 import subprocess as sp
 import uuid
 from datetime import datetime
 from enum import Enum, auto
 
-from tcutility import cache, environment, log
+from tcutility import environment, log
+import tcutility.cache as cache
 from tcutility.results import result as results
 
 
@@ -453,7 +455,7 @@ def _close_all_connections():
 atexit.register(_close_all_connections)
 
 
-def get_os_name(server: "Local" = Local()) -> OSName:
+def get_os_name(server: Server = Local()) -> OSName:
     """
     Get the name of the operating system. Returns a value from the :class:`OSName <tcutility.environment.OSName>` enumeration.
     """
@@ -461,16 +463,30 @@ def get_os_name(server: "Local" = Local()) -> OSName:
     if not isinstance(server, Local):
         return OSName.LINUX
 
-    os_name = os.name
-    if os_name == "nt":
+    os_name = platform.system()
+    if os_name == "Windows":
         return OSName.WINDOWS
-    elif os_name == "posix":
+    elif os_name == "Linux":
         return OSName.LINUX
-    elif os_name == "mac":
+    elif os_name == "Darwin":
         return OSName.MACOS
     else:
         raise ValueError(f"Unknown operating system: {os_name}")
 
 
+@cache
+def on_windows(server: Server = Local()) -> bool:
+    return get_os_name(server) == OSName.WINDOWS
+
+@cache
+def on_linux(server: Server = Local()) -> bool:
+    return get_os_name(server) == OSName.LINUX
+
+@cache
+def on_macos(server: Server = Local()) -> bool:
+    return get_os_name(server) == OSName.MACOS
+
+
 if __name__ == "__main__":
     print(get_current_server())
+    print(get_os_name())
