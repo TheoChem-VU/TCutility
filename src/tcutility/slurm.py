@@ -3,7 +3,7 @@ import platform
 import subprocess as sp
 import time
 
-from tcutility.cache import cache, timed_cache
+from tcutility import cache, timed_cache
 import tcutility.connect as connect
 import tcutility.log as log
 from tcutility.results.result import Result
@@ -48,7 +48,7 @@ def squeue(server: connect.Server = connect.Local()) -> Result:
 
     .. note::
 
-        By default this function uses a timed cache (see :func:`timed_cache <tcutility.cache.timed_cache>`) with a 3 second delay to lessen the load on HPC systems.
+        By default this function uses a timed cache (see :func:`timed_cache <tcutility.timed_cache>`) with a 3 second delay to lessen the load on HPC systems.
     """
     ret = Result()
 

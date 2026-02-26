@@ -2,6 +2,7 @@ import functools
 import json
 import os
 import time
+import datetime
 
 import platformdirs
 
@@ -91,6 +92,7 @@ def _get_from_cache_file(file, func, args, kwargs):
     # we now go through the data
     # it is formatted as a list of dicts
     # each dict has the 'func', 'args', 'kwargs' and 'value' keys
+    matches = {}
     for datum in data:
         # func is set as the function qualname
         if datum["func"] != func.__qualname__:
@@ -105,7 +107,15 @@ def _get_from_cache_file(file, func, args, kwargs):
             continue
 
         # if we did not exit the loop yet we return the value
-        return datum["value"]
+        ctime = datetime.datetime.fromisoformat(datum["creation_time"])
+        matches[ctime] = datum
+
+    # if we didn't find matches we return None
+    if len(matches) == 0:
+        return
+
+    # else we return the latest match
+    return max(matches.items(), key=lambda r: r[0])[1]
 
 
 def _write_to_cache_file(file, func, args, kwargs, value):
@@ -117,7 +127,7 @@ def _write_to_cache_file(file, func, args, kwargs, value):
         data = json.loads(cfile.read())
 
     # add the new results to the file
-    new = {"func": func.__qualname__, "args": args, "kwargs": kwargs, "value": value}
+    new = {"func": func.__qualname__, "args": args, "kwargs": kwargs, "value": value, "creation_time": str(datetime.datetime.now())}
     data.append(new)
 
     with open(os.path.join(_cache_dir, file), "w+") as cfile:
@@ -133,15 +143,16 @@ def _clear_cache_file(file):
         cfile.write("[]")
 
 
-def cache_file(file):
+def cache_file(file: str, expiration_time: datetime.timedelta=None):
     """
     Function decorator that stores results of a function to a file.
-    Because results are written to a file the values persist between Python sessions.
+    Because results are written to a file, the values persist between Python sessions.
     This is useful, for example, for online API calls.
 
     Args:
         file: the filepath to store function call results to.
             Files will be stored in the platform dependent temporary file directory.
+        expiration_time: the time delay before the cache expires.
 
     .. seealso::
         `platformdirs.user_cache_dir <https://platformdirs.readthedocs.io/en/latest/api.html#platformdirs.user_cache_dir>`_ for information on the temporary directory.
@@ -157,7 +168,15 @@ def cache_file(file):
             # check if the arguments were called before
             cached = _get_from_cache_file(file, func, args, kwargs)
             if cached is not None:
-                return cached
+                # if we don't have an expiration time we always returned cached value
+                if expiration_time is None:
+                    return cached["value"]
+
+                # if we have an expiration time we check if we are still within it
+                # if we are we return the cached value
+                ctime = datetime.datetime.fromisoformat(cached['creation_time'])
+                if datetime.datetime.now() < ctime + expiration_time:
+                    return cached["value"]
 
             # if it is not present we add it to the cache file
             res = func(*args, **kwargs)

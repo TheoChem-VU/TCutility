@@ -192,7 +192,7 @@ def _print_rect_list(printables, spaces_before=0):
         print(" " * spaces_before + "  ".join([x.ljust(col_len) for x, col_len in zip(row, prev_col_lens)]))
 
 
-@click.command()
+@click.command("cite")
 @click.argument("objects", type=str, nargs=-1, required=False)
 @click.option("-w", "--wiley", help="Set the citation style to Wiley. This is the default style.", flag_value="wiley", default=True)
 @click.option("-a", "--acs", help="Set the citation style to ACS.", flag_value="acs")
@@ -209,28 +209,32 @@ def generate_citations(objects: List[str], wiley: bool, acs: bool, rsc: bool, ou
     If the supplied object is also a file path it will read each line as a separate object.
 
     Example usage:
+    
+    .. code-block::
 
-    > tc cite ADF
-    Program ORCA
-      [10.1002/wcms.81] F. Neese, WIREs Comput. Mol. Sci. 2011, 2, 73-78.
-      [10.1063/5.0004608] F. Neese, F. Wennmohs, U. Becker, C. Riplinger, J. Chem. Phys. 2020, 152.
-      [10.1002/wcms.1606] F. Neese, WIREs Comput. Mol. Sci. 2022, 12.
+        > tc cite ADF
+        Program ORCA
+          [10.1002/wcms.81] F. Neese, WIREs Comput. Mol. Sci. 2011, 2, 73-78.
+          [10.1063/5.0004608] F. Neese, F. Wennmohs, U. Becker, C. Riplinger, J. Chem. Phys. 2020, 152.
+          [10.1002/wcms.1606] F. Neese, WIREs Comput. Mol. Sci. 2022, 12.
 
-    > tc cite BP86 BLYP OLYP OPBE D3BJ
-    Functional BP86
-      [10.1103/PhysRevA.38.3098] A. D. Becke, Phys. Rev. A 1988, 38, 3098-3100.
-      [10.1103/PhysRevB.33.8800] J. P. Perdew, W. Yue, Phys. Rev. B 1986, 33, 8800-8802.
-    Functional BLYP
-      [10.1103/PhysRevA.38.3098] A. D. Becke, Phys. Rev. A 1988, 38, 3098-3100.
-      [10.1103/PhysRevB.37.785] C. Lee, W. Yang, R. G. Parr, Phys. Rev. B 1988, 37, 785-789.
-    Functional OLYP
-      [10.1080/00268970010018431] N. C. Handy, A. J. Cohen, Mol. Phys. 2001, 99, 403-412.
-      [10.1103/PhysRevB.37.785] C. Lee, W. Yang, R. G. Parr, Phys. Rev. B 1988, 37, 785-789.
-    Functional OPBE
-      [10.1080/00268970010018431] N. C. Handy, A. J. Cohen, Mol. Phys. 2001, 99, 403-412.
-      [10.1103/PhysRevLett.77.3865] J. P. Perdew, K. Burke, M. Ernzerhof, Phys. Rev. Lett. 1996, 77, 3865-3868.
-    Methodology D3BJ
-      [10.1002/jcc.21759] S. Grimme, S. Ehrlich, L. Goerigk, J. Comput. Chem. 2011, 32, 1456-1465.
+    .. code-block::
+    
+        > tc cite BP86 BLYP OLYP OPBE D3BJ
+        Functional BP86
+          [10.1103/PhysRevA.38.3098] A. D. Becke, Phys. Rev. A 1988, 38, 3098-3100.
+          [10.1103/PhysRevB.33.8800] J. P. Perdew, W. Yue, Phys. Rev. B 1986, 33, 8800-8802.
+        Functional BLYP
+          [10.1103/PhysRevA.38.3098] A. D. Becke, Phys. Rev. A 1988, 38, 3098-3100.
+          [10.1103/PhysRevB.37.785] C. Lee, W. Yang, R. G. Parr, Phys. Rev. B 1988, 37, 785-789.
+        Functional OLYP
+          [10.1080/00268970010018431] N. C. Handy, A. J. Cohen, Mol. Phys. 2001, 99, 403-412.
+          [10.1103/PhysRevB.37.785] C. Lee, W. Yang, R. G. Parr, Phys. Rev. B 1988, 37, 785-789.
+        Functional OPBE
+          [10.1080/00268970010018431] N. C. Handy, A. J. Cohen, Mol. Phys. 2001, 99, 403-412.
+          [10.1103/PhysRevLett.77.3865] J. P. Perdew, K. Burke, M. Ernzerhof, Phys. Rev. Lett. 1996, 77, 3865-3868.
+        Methodology D3BJ
+          [10.1002/jcc.21759] S. Grimme, S. Ehrlich, L. Goerigk, J. Comput. Chem. 2011, 32, 1456-1465.
     """
     available_citations = list(program_references.keys()) + list(methodology_references.keys()) + list(functionals.functionals.keys())
     if list_citations:

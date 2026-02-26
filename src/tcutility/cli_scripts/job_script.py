@@ -9,7 +9,7 @@ from tcutility.job.adf import ADFJob
 from tcutility.job.dftb import DFTBJob
 
 
-@click.command()
+@click.command("optimize")
 @click.option(
     "-l",
     "--level",
