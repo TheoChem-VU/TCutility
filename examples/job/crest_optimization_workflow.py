@@ -27,10 +27,8 @@ def find_global_minimum(molecule: str):
             adf_job.name = f'optimization_{i+1}'
 
         results = read(adf_job.calc_dir)
+        print(results.molecule.output)
+        print(results.properties.energy.bond)
 
 
-find_global_minimum(os.path.abspath('butane.xyz'))
-
-
-
-
+find_global_minimum(os.path.abspath('butane.xyz'), restart=True)
