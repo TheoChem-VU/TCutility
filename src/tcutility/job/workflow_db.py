@@ -1,8 +1,9 @@
 import os
-import fcntl
+# import fcntl
+import platformdirs
 
 
-DBPATH = os.path.split(__file__)[0] + '/.workflow.txt'
+DBPATH = platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True) + '/.workflow.txt'
 if not os.path.exists(DBPATH):
     with open(DBPATH, 'w+'):
         ...
