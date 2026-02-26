@@ -67,6 +67,7 @@ class MissingOptionalPackageError(TCError):
         "opencv-python": "report",
         "pyfmo": "adf",
         "requests": "cite",
+        "paramiko": "connect",
     }
 
     def __init__(self, package_name: str):
