@@ -3,8 +3,8 @@ import platformdirs
 from typing import List, Tuple, Dict
 import tcutility
 
-# CACHEDIR = 
-DBPATH = platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True) + '/workflows.csv'
+CACHEDIR = platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True)
+DBPATH = CACHEDIR + '/workflows.csv'
 # DBPATH = 'test.csv'
 # create a new db file if it doesnt exist yet
 if not os.path.exists(DBPATH):
