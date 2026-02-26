@@ -43,7 +43,7 @@ def parse_line(line: str) -> Tuple[str, dict]:
     # read anything after the hash
     for part in line.split(',')[1:]:
         k, v = part.split('=')
-        data[k.strip()] = v.strip('')
+        data[k.strip()] = v.strip()
 
     # return the hash and data separately
     return hsh, data
@@ -88,7 +88,6 @@ def delete(hsh: str) -> None:
     with open(DBPATH, 'w+') as db:
         for line in new_lines:
             db.write(line)
-
 
 # #### CONVENIENCE FUNCTIONS
 
