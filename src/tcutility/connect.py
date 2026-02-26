@@ -256,19 +256,19 @@ class Connection:
         test = self.execute(f"test -e {path}; echo $?")
         return test == "0"
 
-    def open_file(self, file_path: str):
-        return ServerFile(file_path, self)
+    def open_file(self, file_path: str, mode: str = "w+"):
+        return ServerFile(file_path, self, mode)
 
     def chmod(self, rights: int, file_path: str):
         self.execute(f"chmod {rights} {file_path}")
 
 
 class ServerFile:
-    def __init__(self, file_path: str, server: Connection):
+    def __init__(self, file_path: str, server: Connection, mode: str = "w+"):
         self.server = server
         self.file_path = file_path
         self.tmp_path = str(uuid.uuid4())
-        self.file = open(self.tmp_path, mode="w+")
+        self.file = open(self.tmp_path, mode=mode)
 
     def __enter__(self):
         return self.file
@@ -350,7 +350,7 @@ class Local(Server):
     def path_exists(self, path: str) -> bool:
         return os.path.exists(os.path.join(self.currdir, path))
 
-    def open_file(self, file_path: str, mode:str = 'w+'):
+    def open_file(self, file_path: str, mode: str = 'w+'):
         return open(file_path, mode=mode)
 
     def chmod(self, rights: int, path: str):
