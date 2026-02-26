@@ -10,12 +10,20 @@ import os
 
 @click.group("workflow")
 def workflow():
+    '''
+    The ``tcutility workflow`` subcommand gives a few tools for reading the statuses of, and clearing of past workflow runs.
+    '''
     pass
 
 @click.command("status")
 @click.option("-h", "--hash", "use_hash", is_flag=True)
-@click.argument("name")
+@click.argument("name", required=False)
 def status(use_hash: bool = False, name: str = None):
+    '''
+    Read the statuses of completed and currently running workflow runs.
+    Use the ``name`` argument to specify a specific workflow type or a specific hash when the ``-h/--hash`` flag is turned on.
+    If ``name`` is not given, prints the statuses of all workflow runs and provides an overview of the number of runs per workflow.
+    '''
     if use_hash:
         print(workflow_db.get_status(name))
         return
@@ -72,8 +80,12 @@ workflow.add_command(status)
 
 @click.command("clear")
 @click.option("-h", "--hash", "use_hash", is_flag=True)
-@click.argument("name")
+@click.argument("name", required=True)
 def clear(use_hash: bool = False, name: str = None):
+    '''
+    Clears data related to workflow runs.
+    Use the ``name`` argument to specify a specific workflow type or a specific hash when the ``-h/--hash`` flag is turned on.
+    '''
     if use_hash:
         workflow_db.delete(name)
         return
@@ -100,6 +112,9 @@ workflow.add_command(clear)
 
 @click.command("where")
 def where():
+    '''
+    Prints where workflow data is stored.
+    '''
     print(f'CACHEDIR: {workflow_db.CACHEDIR}')
     print(f'DBPATH:   {workflow_db.DBPATH}')
 
