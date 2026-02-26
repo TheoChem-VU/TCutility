@@ -96,11 +96,6 @@ def set_finished(hsh, **kwargs):
     '''
     Checks if a workflow with specific args and kwargs has finished.
     '''
-    data = get_data(hsh)
-    for k, v in data.items():
-        if v.endswith("\n"):
-            v=v.strip('\n')
-        kwargs[k]=v
     set_status(hsh, 'SUCCESS', **kwargs)
 
 
