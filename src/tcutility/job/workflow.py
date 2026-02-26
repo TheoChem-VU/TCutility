@@ -213,7 +213,7 @@ def __end_workflow__():
     def execute(self, *args, dependency=None, restart=False, **kwargs):
         self.hash = hash({'wf': self.func, 'args': args, 'kwargs': kwargs})
 
-        file_name = platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU") + '/.' + self.name + '_' + self.hash
+        file_name = os.path.join(platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU"), self.name, self.hash)
         self.sh_path = f'{file_name}.sh'
         self.py_path = f'{file_name}.py'
         self.out_path = f'{file_name}.out'
