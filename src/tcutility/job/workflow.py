@@ -103,7 +103,8 @@ class WorkFlow:
     def __init__(self, server: connect.Server = None, delete_files: bool = True, preambles: List[str] = None, postambles: List[str] = None, sbatch: dict = None):
         self.server = server
         if server is None:
-            self.server = tcutility.connect.get_current_server()()
+            self.server = tcutility.connect.Local()
+        
         self.preambles = preambles
         if preambles is None:
             self.preambles = self.server.preamble_defaults.get('AMS', [])
