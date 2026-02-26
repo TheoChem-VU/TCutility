@@ -212,12 +212,12 @@ def __end_workflow__():
 
     def execute(self, *args, dependency=None, restart=False, **kwargs):
         self.hash = hash({'wf': self.func, 'args': args, 'kwargs': kwargs})
-
-        file_name = os.path.join(platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU"), self.name, self.hash)
-        self.sh_path = f'{file_name}.sh'
-        self.py_path = f'{file_name}.py'
-        self.out_path = f'{file_name}.out'
-        self.return_path = f'{file_name}.json'
+        cache_dir = os.path.join(platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True), self.name)
+        os.makedirs(cache_dir, exist_ok=True)
+        self.sh_path = os.path.join(cache_dir, f'{self.hash}.sh')
+        self.py_path = os.path.join(cache_dir, f'{self.hash}.py')
+        self.out_path = os.path.join(cache_dir, f'{self.hash}.out')
+        self.return_path = os.path.join(cache_dir, f'{self.hash}.json')
 
         # if a restart was requested we simply delete known data
         if restart:
