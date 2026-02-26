@@ -296,6 +296,8 @@ def __end_workflow__():
             self.server.chmod(744, self.sh_path)
             with open(self.out_path, "w+") as out:
                 sp.run(command, cwd=runfile_dir, stdout=out, shell=True)
+
+        self.server.__exit__()
         return self.__load_return()
 
     def __load_return(self):
