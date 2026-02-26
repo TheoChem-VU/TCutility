@@ -71,21 +71,23 @@ class WorkFlow:
 
     .. code-block::
         python
-        
-        @WorkFlow()
+
+        @WorkFlow(delete_files=False)
         def optimize(molecule: str) -> "plams.Molecule":
             import tcutility
             from scm import plams
+            import time
             
-            with tcutility.DFTBJob() as job:
+            with tcutility.DFTBJob(use_slurm=False) as job:
                 job.molecule(molecule)
                 job.optimization()
 
             return plams.Molecule(job.output_mol_path)
 
-        optimized_mol = optimize('example.xyz')
+
+        optimized_mol = optimize(os.path.abspath('example.xyz'), restart=False)
         print(optimized_mol)
-    
+
     Gives as output:
 
     .. code-block::
