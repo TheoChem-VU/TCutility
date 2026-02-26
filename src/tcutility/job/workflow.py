@@ -436,11 +436,11 @@ if __name__ == '__main__':
 
         time.sleep(10)
         
-        with tcutility.DFTBJob() as job:
+        with tcutility.DFTBJob(use_slurm=False) as job:
             job.molecule(molecule)
             job.optimization()
         return plams.Molecule(job.output_mol_path)
 
-    optimized_mol = optimize('example.xyz', restart=True)
+    optimized_mol = optimize('example.xyz', restart=False)
     # optimized_mol = optimize(optimized_mol, restart=False)
     print(optimized_mol)
