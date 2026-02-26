@@ -11,7 +11,7 @@ def find_global_minimum(molecule: str):
 
     # we first perform a CRESTJob calculation to
     # obtain the conformers of the molecule of interest
-    with CRESTJob() as crest_job:
+    with CRESTJob(use_slurm=False) as crest_job:
         crest_job.molecule(molecule)
         crest_job.name = 'crest'
 
@@ -20,7 +20,7 @@ def find_global_minimum(molecule: str):
     # we now go through the 5 lowest-energy conformers
     for i, xyz in enumerate(crest_job.get_conformer_xyz(5)):
         # and reoptimize them using ADF
-        with ADFJob() as adf_job:
+        with ADFJob(use_slurm=False) as adf_job:
             adf_job.molecule(xyz)
             adf_job.functional('OLYP')
             adf_job.basis_set('DZP')
