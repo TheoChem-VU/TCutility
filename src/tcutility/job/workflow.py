@@ -221,7 +221,7 @@ def __end_workflow__():
 
         # if a restart was requested we simply delete known data
         if restart:
-            tcutility.job.workflow_db.delete_data(self.hash)
+            tcutility.job.workflow_db.delete(self.hash)
 
         # set up dependencies between jobs
         if dependency is None:
@@ -245,10 +245,8 @@ def __end_workflow__():
                 tcutility.log.info('Workflow was run but failed')
 
             # Add slurm_job_id to self if it is skippable
-            temp_data = tcutility.job.workflow_db.get_data(self.hash)
-
-            if 'slurm_job_id' in temp_data:
-                self.slurm_job_id = temp_data["slurm_job_id"]
+            temp_data = tcutility.job.workflow_db.read(self.hash)
+            self.slurm_job_id = temp_data.get("slurm_job_id", None)
 
             box = f'WorkFlow({self.name}):\n    args = (\n'
             for arg in args:
@@ -283,7 +281,7 @@ def __end_workflow__():
                 self.sbatch.setdefault("o", self.out_path)
             sbatch_result = tcutility.slurm.sbatch(self.sh_path, self.server, **self.sbatch)
             self.slurm_job_id = sbatch_result.id
-            tcutility.job.workflow_db.set_running(self.hash, slurm_job_id=self.slurm_job_id)
+            tcutility.job.workflow_db.update(self.hash, workflow_name=self.name, status='RUNNING', slurm_job_id=self.slurm_job_id)
         else:
             runfile_dir, runscript = os.path.split(self.sh_path)
             if runfile_dir == '':
