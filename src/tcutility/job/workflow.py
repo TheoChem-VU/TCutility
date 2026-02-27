@@ -202,6 +202,7 @@ def on_exception():
 
 def __end_workflow__():
     tcutility.job.workflow_db.set_finished("{self.hash}")
+    tcutility.job.workflow_db.update("{self.hash}", stage=None, slurm_job_id=None)
     exit()\n\n\n''')
             code_lines = extract_func_code(self.func)
             code_lines = handle_return_statements(code_lines, self.return_path)
@@ -265,8 +266,7 @@ def __end_workflow__():
             return self.__load_return()
 
         # if we don't skip we write a new db entry
-        tcutility.job.workflow_db.write(self.hash, workflow_name=self.name, status='RUNNING')
-
+        tcutility.job.workflow_db.write(self.hash, workflow_name=self.name, status='RUNNING', run_directory=self.run_directory)
         _args = {}
         for param_name, arg in zip(self.parameters, args):
             _args[param_name] = arg

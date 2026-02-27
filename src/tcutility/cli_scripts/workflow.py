@@ -43,9 +43,9 @@ def status(use_hash: bool = False, name: str = None):
             workflow_name_counts[workflow_name] += 1
 
             if name is None:
-                rows.append((status, workflow_name, data.get('slurm_job_id', ''), hsh))
+                rows.append((status, workflow_name, data.get('slurm_job_id', ''), hsh, data.get('stage', '')))
             else:
-                rows.append((status, data.get('slurm_job_id', ''), hsh))
+                rows.append((status, data.get('slurm_job_id', ''), hsh, data.get('stage', '')))
 
     if len(rows) == 0:
         if name is None:
@@ -71,9 +71,9 @@ def status(use_hash: bool = False, name: str = None):
 
     print()
     if name is None:
-        log.table(rows, header=('Status', 'Workflow', 'SlurmJobID', 'Hash'))
+        log.table(rows, header=('Status', 'Workflow', 'SlurmJobID', 'Hash', 'Stage'))
     else:
-        log.table(rows, header=('Status', 'SlurmJobID', 'Hash'))
+        log.table(rows, header=('Status', 'SlurmJobID', 'Hash', 'Stage'))
 
 workflow.add_command(status)
 

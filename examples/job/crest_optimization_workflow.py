@@ -3,12 +3,14 @@ import os
 from tcutility.results.read import quick_status
 
 # to create a WorkFlow we simply decorate a function with a WorkFlow object
-@WorkFlow()
+@WorkFlow(delete_files=True)
 def find_global_minimum(molecule: str):
     # any imports that are needed in the workflow
     # need to be imported within the function
     from tcutility import CRESTJob, ADFJob, read
+    from tcutility import workflow_status
 
+    workflow_status.stage('Performing CREST calculation')
     # we first perform a CRESTJob calculation to
     # obtain the conformers of the molecule of interest
     with CRESTJob(use_slurm=False) as crest_job:
@@ -20,7 +22,9 @@ def find_global_minimum(molecule: str):
 
     new_molecules = []
     new_energies = []
-    for i, xyz in enumerate(crest_job.get_conformer_xyz(5)):
+    conformers = crest_job.get_conformer_xyz(5)
+    for i, xyz in enumerate(conformers):
+        workflow_status.stage(f'Performing conformer optimization {i+1}/{len(conformers)}')
         # and reoptimize them using ADF
         with ADFJob(use_slurm=False) as adf_job:
             adf_job.molecule(xyz)
