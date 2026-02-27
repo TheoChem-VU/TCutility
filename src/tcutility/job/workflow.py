@@ -124,6 +124,8 @@ class WorkFlow:
 
         self._user_sbatch = sbatch
         self.delete_files = delete_files
+        self.cache_dir = os.path.join(platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True), self.name, 'runs')
+        self.results_dir = os.path.join(platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True), self.name, 'results')
 
     def get_sbatch(self):
         sbatch = {}
@@ -217,18 +219,15 @@ def __end_workflow__():
                 file.write(line + '\n')
 
             if self.delete_files:
-                file.write(f'rm {self.py_path}\n')
-                file.write(f'rm {self.out_path}\n')
-                file.write(f'rm {self.sh_path}\n')
+                file.write(f'rm -r {self.run_directory}\n')
 
     def execute(self, *args, dependency=None, restart=False, **kwargs):
         self.hash = hash({'wf': self.func, 'args': args, 'kwargs': kwargs})
-        cache_dir = os.path.join(platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True), self.name)
-        self.run_directory = os.path.join(cache_dir, self.hash)
+        self.run_directory = os.path.join(self.cache_dir, self.hash)
         self.sh_path = os.path.join(self.run_directory, f'{self.hash}.sh')
         self.py_path = os.path.join(self.run_directory, f'{self.hash}.py')
         self.out_path = os.path.join(self.run_directory, f'{self.hash}.out')
-        self.return_path = os.path.join(self.run_directory, f'{self.hash}.json')
+        self.return_path = os.path.join(self.results_dir, f'{self.hash}.json')
         os.makedirs(self.run_directory, exist_ok=True)
 
         # if a restart was requested we simply delete known data
@@ -459,7 +458,6 @@ if __name__ == '__main__':
             job.optimization()
 
         return plams.Molecule(job.output_mol_path)
-
 
     optimized_mol = DFTB(os.path.abspath('example.xyz'), restart=False)
     print(optimized_mol)
