@@ -294,7 +294,7 @@ def __end_workflow__():
             if any(option not in self.sbatch for option in ["D", "chdir"]):
                 self.sbatch.setdefault("D", self.run_directory)
 
-            sbatch_result = tcutility.slurm.sbatch(f'./{self.hash}.sh', self.server, **self.sbatch)
+            sbatch_result = tcutility.slurm.sbatch(f'{self.hash}.sh', self.server, **self.sbatch)
             self.slurm_job_id = sbatch_result.id
             tcutility.job.workflow_db.update(self.hash, slurm_job_id=self.slurm_job_id)
         else:
