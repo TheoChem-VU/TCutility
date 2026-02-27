@@ -1,9 +1,10 @@
 from tcutility import WorkFlow
 import os
+from tcutility.results.read import quick_status
 
 # to create a WorkFlow we simply decorate a function
 # with a WorkFlow object
-@WorkFlow(delete_files=False)
+@WorkFlow()
 def find_global_minimum(molecule: str):
     # any imports that are needed in the workflow
     # need to be imported within the function
@@ -14,10 +15,11 @@ def find_global_minimum(molecule: str):
     with CRESTJob(use_slurm=False) as crest_job:
         crest_job.molecule(molecule)
         crest_job.name = 'crest'
+        crest_job.md_temperature(500)
+        crest_job.md_length('2x')
 
     new_molecules = []
     new_energies = []
-    # we now go through the 5 lowest-energy conformers
     for i, xyz in enumerate(crest_job.get_conformer_xyz(5)):
         # and reoptimize them using ADF
         with ADFJob(use_slurm=False) as adf_job:
@@ -26,9 +28,18 @@ def find_global_minimum(molecule: str):
             adf_job.basis_set('DZP')
             adf_job.name = f'optimization_{i+1}'
 
-        results = read(adf_job.calc_dir)
-        print(results.molecule.output)
-        print(results.properties.energy.bond)
+        # load the results
+        results = read(adf_job.workdir)
+        # and store the energies and molecules
+        new_molecules.append(results.molecule.output)
+        new_energies.append(results.properties.energy.bond)
 
 
-find_global_minimum(os.path.abspath('butane.xyz'), restart=True)
+    lowest_energy_molecule = min(new_molecules, key=lambda mol: new_energies[new_molecules.index(mol)])
+    return lowest_energy_molecule
+
+
+mol = find_global_minimum(os.path.abspath('water_dimer.xyz'), restart=False)
+print(mol)
+mol = find_global_minimum(os.path.abspath('butane.xyz'), restart=False)
+print(mol)
