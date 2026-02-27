@@ -215,11 +215,12 @@ def __end_workflow__():
     def execute(self, *args, dependency=None, restart=False, **kwargs):
         self.hash = hash({'wf': self.func, 'args': args, 'kwargs': kwargs})
         cache_dir = os.path.join(platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True), self.name)
-        os.makedirs(cache_dir, exist_ok=True)
-        self.sh_path = os.path.join(cache_dir, f'{self.hash}.sh')
-        self.py_path = os.path.join(cache_dir, f'{self.hash}.py')
-        self.out_path = os.path.join(cache_dir, f'{self.hash}.out')
-        self.return_path = os.path.join(cache_dir, f'{self.hash}.json')
+        self.run_directory = os.path.join(cache_dir, self.hash)
+        self.sh_path = os.path.join(self.run_directory, f'{self.hash}.sh')
+        self.py_path = os.path.join(self.run_directory, f'{self.hash}.py')
+        self.out_path = os.path.join(self.run_directory, f'{self.hash}.out')
+        self.return_path = os.path.join(self.run_directory, f'{self.hash}.json')
+        os.makedirs(self.run_directory, exist_ok=True)
 
         # if a restart was requested we simply delete known data
         if restart:
@@ -289,13 +290,10 @@ def __end_workflow__():
             self.slurm_job_id = sbatch_result.id
             tcutility.job.workflow_db.update(self.hash, slurm_job_id=self.slurm_job_id)
         else:
-            runfile_dir, runscript = os.path.split(self.sh_path)
-            if runfile_dir == '':
-                runfile_dir = '.'
-            command = ["./" + runscript] if os.name == "posix" else ["sh", runscript]
+            command = [f'./{self.hash}.sh'] if os.name == "posix" else ["sh", self.sh_path]
             self.server.chmod(744, self.sh_path)
             with open(self.out_path, "w+") as out:
-                sp.run(command, cwd=runfile_dir, stdout=out, shell=True)
+                sp.run(command, cwd=self.run_directory, stdout=out, shell=True)
 
         return self.__load_return()
 
@@ -437,7 +435,7 @@ if __name__ == '__main__':
 
 
     @WorkFlow(delete_files=False)
-    def optimize(molecule: str) -> "plams.Molecule":
+    def DFTB(molecule: str) -> "plams.Molecule":
         import tcutility
         from scm import plams
         import time
@@ -445,9 +443,9 @@ if __name__ == '__main__':
         with tcutility.DFTBJob(use_slurm=False) as job:
             job.molecule(molecule)
             job.optimization()
-            
+
         return plams.Molecule(job.output_mol_path)
 
 
-    optimized_mol = optimize(os.path.abspath('example.xyz'), restart=False)
+    optimized_mol = DFTB(os.path.abspath('example.xyz'), restart=False)
     print(optimized_mol)
