@@ -184,29 +184,48 @@ class CRESTJob(Job):
         Return paths to conformer xyz files for this job.
 
         Args:
-            number: the number of files to return, defaults to 10. If the directory already exists, for example if the job was already run, we will return up to `number` files.
+            number: the number of files to return, defaults to ``10``. If the directory already exists, for example if the job was already run, we will return up to ``number`` files.
+                If set to ``None`` and the directory exists we return all files.
         """
-        if os.path.exists(self.conformer_directory):
-            ret = [j(self.conformer_directory, file) for i, file in enumerate(sorted(os.listdir(self.conformer_directory)))]
-            return ret
-
-        ret = []
-        for i in range(number or 10):
-            ret.append(j(self.conformer_directory, f"{str(i).zfill(5)}.xyz"))
-        return ret
+        return self._get_xyz(self.conformer_directory)
 
     def get_rotamer_xyz(self, number: Union[int, None] = None):
         """
         Return paths to rotamer xyz files for this job.
 
         Args:
-            number: the number of files to return, defaults to 10. If the directory already exists, for example if the job was already run, we will return up to `number` files.
+            number: the number of files to return, defaults to ``10``. If the directory already exists, for example if the job was already run, we will return up to ``number`` files.
+                If set to ``None`` and the directory exists we return all files.
         """
-        if os.path.exists(self.rotamer_directory):
-            return [j(self.rotamer_directory, file) for i, file in enumerate(os.listdir(self.rotamer_directory))]
+        return self._get_xyz(self.rotamer_directory)
 
-        for i in range(number or 10):
-            yield j(self.rotamer_directory, f"{str(i).zfill(5)}.xyz")
+    def _get_xyz(self, directory: str, number: Union[int, None] = None):
+        ret = []
+        # if the folder doesn't exist we make up some files that we expect to see
+        if not os.path.exists(directory):
+            # we cannot return everything so we return at most 10 files
+            if number is None:
+                number = 10
+
+            for i in range(number):
+                ret.append(j(directory, f"{str(i).zfill(5)}.xyz"))
+
+            return ret
+
+        files = {}  # store number and file here
+        for file in os.listdir(directory):
+            num = int(file.removesuffix('.xyz').removeprefix('0'))
+            files[num] = j(directory, file)
+
+        # if a number was not given we return everything
+        if number is None:
+            number = len(files)
+
+        sorted_nums = sorted(files.keys())
+        # return sorted list of 'number' files
+        return [files[i] for i in sorted_nums]
+
+
 
     def do_crossing(self, enabled: bool = True):
         """ 
