@@ -106,7 +106,7 @@ def get_input(info: Result) -> Result:
             line = line.strip()
             if line.startswith("Command line input:"):
                 # next line contains the call
-                call = lines[i + 1].strip().removeprefix(">").strip().split()
+                call = lines[i + 1].strip().removeprefix(">").removeprefix("$").strip().split()
 
     ret.call = " ".join(call)
     ### TASK
@@ -189,7 +189,7 @@ def get_input(info: Result) -> Result:
     return ret
 
 
-def get_calculation_status(info: Result) -> Result:
+def get_calculation_status(calc_dir: str) -> Result:
     """Function that returns the status of the ORCA calculation described in reader. In case of non-succes it will also give possible reasons for the errors/warnings.
 
     Args:
@@ -208,14 +208,14 @@ def get_calculation_status(info: Result) -> Result:
     ret.name = None
     ret.code = None
     ret.reasons = []
-
-    if "out" not in info.files:
+    files = get_calc_files(calc_dir)
+    if "out" not in files:
         ret.reasons.append("Calculation status unknown")
         ret.name = "UNKNOWN"
         ret.code = "U"
         return ret
 
-    with open(info.files.out) as out:
+    with open(files.out) as out:
         lines = out.readlines()
         if any(["[WARNING] Runtime exception occurred" in line for line in lines]):
             ret.fatal = True
@@ -228,7 +228,6 @@ def get_calculation_status(info: Result) -> Result:
                     break
                 ret.reasons.append(line.strip())
             return ret
-
         if any(["CREST terminated normally." in line for line in lines]):
             ret.fatal = False
             ret.name = "SUCCESS"
@@ -312,7 +311,7 @@ def get_info(calc_dir: str) -> Result:
     ret.version = get_version(ret)
 
     # # store the calculation status
-    ret.status = get_calculation_status(ret)
+    ret.status = get_calculation_status(calc_dir)
 
     # # read molecules
     ret.molecule = get_molecules(ret)
@@ -323,8 +322,8 @@ def get_info(calc_dir: str) -> Result:
 if __name__ == "__main__":
     from tcutility import log
 
-    ret = get_info("/Users/yumanhordijk/PhD/Projects/RadicalAdditionWorkflow/calculations/preparation/radicals/NMe2")
-    log.log(ret.files)
+    ret = get_info("/Users/yumanhordijk/PhD/Programs/TheoCheM/TCutility/examples/job/tmp/crest")
+    # log.log(ret.files)
     print(ret.status)
 
     # ret = get_info("/Users/yumanhordijk/PhD/ganesh_project/calculations/AlCl3_xtb/scan_1")
