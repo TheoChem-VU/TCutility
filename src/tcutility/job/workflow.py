@@ -9,6 +9,7 @@ import jsonpickle
 import os
 import hashlib
 import platformdirs
+import datetime
 import json
 
 
@@ -266,7 +267,7 @@ def __end_workflow__():
             return self.__load_return()
 
         # if we don't skip we write a new db entry
-        tcutility.job.workflow_db.write(self.hash, workflow_name=self.name, status='RUNNING', run_directory=self.run_directory, stage='Running')
+        tcutility.job.workflow_db.write(self.hash, workflow_name=self.name, status='RUNNING', run_directory=self.run_directory, stage='Running', start_time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))
         _args = {}
         for param_name, arg in zip(self.parameters, args):
             _args[param_name] = arg

@@ -89,7 +89,7 @@ def time_stamp():
     return f"[{now.year}/{str(now.month).zfill(2)}/{str(now.day).zfill(2)} {str(now.hour).zfill(2)}:{str(now.minute).zfill(2)}:{str(now.second).zfill(2)}] "
 
 
-def log(message: Any = "", level: int = 20, end: str = "\n"):
+def log(message: Any = "", level: int = 20, end: str = "\n", as_str: bool = False):
     r"""
     Print a nicely formatteed message.
     This function adds the current timestamp and supports multi-line printing (split on the ``\n`` escape character).
@@ -119,6 +119,7 @@ def log(message: Any = "", level: int = 20, end: str = "\n"):
 
     # Print each line separately
     splitted_message = str(message).split("\n")
+    new_message = ''
     for m in splitted_message:
         # handle lines that exceed the maximum print width
         if max_width > 0 and len(m) > max_width:
@@ -129,10 +130,15 @@ def log(message: Any = "", level: int = 20, end: str = "\n"):
         if print_date:
             m = time_stamp() + m
 
-        print(m, file=logfile, end=end, flush=True)
+        if as_str:
+            new_message += f'{m}\n'
+        else:
+            print(m, file=logfile, end=end, flush=True)
+
+    return new_message
 
 
-def flow(message: str = "", tags: List[str] = ["straight"], level: int = 20) -> None:
+def flow(message: str = "", tags: List[str] = ["straight"], level: int = 20, **kwargs) -> None:
     """
     Function to create flowchart-like output.
     It will print a message prepended by flow elements (arrows and lines).
@@ -155,7 +161,7 @@ def flow(message: str = "", tags: List[str] = ["straight"], level: int = 20) -> 
     log(s + message, level=level)
 
 
-def table(rows: List[List[Any]], header: Union[List[str], None] = None, sep: str = "   ", hline: List[int] = [], formats: List[str] = None, level: int = 20) -> str:
+def table(rows: List[List[Any]], header: Union[List[str], None] = None, sep: str = "   ", hline: List[int] = [], formats: List[str] = None, level: int = 20, **kwargs) -> str:
     r"""
     Print a table given rows and a header. Values in rows will be cast to strings first.
 
@@ -194,11 +200,11 @@ def table(rows: List[List[Any]], header: Union[List[str], None] = None, sep: str
         if i in hline:
             return_str += "─" * len(row_str) + "\n"
 
-    log(return_str, level=level)
+    log(return_str, level=level, **kwargs)
     return return_str
 
 
-def rectangle_list(values: Sequence, spaces_before: int = 0, level: int = 20):
+def rectangle_list(values: Sequence, spaces_before: int = 0, level: int = 20, **kwargs):
     """
     This function prints a list of strings in a rectangle to the output.
     This is similar to what the ls program does in unix.
@@ -240,7 +246,7 @@ def rectangle_list(values: Sequence, spaces_before: int = 0, level: int = 20):
 T = TypeVar("T")
 
 
-def loadbar(sequence: Union[Iterable[T], Sequence[T]], comment: str = "", Nsegments: int = 50, Nsteps: int = 10, level: int = 20) -> Generator[T, None, None]:
+def loadbar(sequence: Union[Iterable[T], Sequence[T]], comment: str = "", Nsegments: int = 50, Nsteps: int = 10, level: int = 20, **kwargs) -> Generator[T, None, None]:
     """
     Return values from an iterable ``sequence`` and also print a progress bar for the iteration over this sequence.
 

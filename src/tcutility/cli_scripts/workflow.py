@@ -6,6 +6,7 @@ import click
 from tcutility import workflow_db, log
 from tcutility.job.workflow import WorkFlowOutput
 import time
+import datetime
 
 LINE_UP = '\033[1A'
 LINE_CLEAR = '\x1b[2K'
@@ -24,21 +25,6 @@ def workflow():
     '''
     pass
 
-
-# def main():    
-#     i = 0
-#     rows = ['loop 0', 'abcdef', 'ghijklmnopqrstuvwxyz']
-#     print_lines(rows)
-#     while True:
-#         try:
-#             rows[0] = f'loop {i}'
-#             clear_lines(len(rows))
-#             print_lines(rows)
-#             i += 1
-#             time.sleep(.2)
-#         except KeyboardInterrupt:
-#             break
-
 @click.command("status")
 @click.option("-h", "--hash", "use_hash", is_flag=True)
 @click.argument("name", required=False)
@@ -48,12 +34,11 @@ def status(use_hash: bool = False, name: str = None):
     Use the ``name`` argument to specify a specific workflow type or a specific hash when the ``-h/--hash`` flag is turned on.
     If ``name`` is not given, prints the statuses of all workflow runs and provides an overview of the number of runs per workflow.
     '''
-    while True:
-        n_lines = 0
+
+    def get_str():
+        s = ''
         if use_hash:
-            s = workflow_db.get_status(name)
-            print(s)
-            n_lines = 1
+            s += workflow_db.get_status(name) + '\n'
         else:
             log.print_date = False
             rows = []
@@ -69,10 +54,24 @@ def status(use_hash: bool = False, name: str = None):
                     workflow_name_counts.setdefault(workflow_name, 0)
                     workflow_name_counts[workflow_name] += 1
 
-                    if name is None:
-                        rows.append((status, workflow_name, data.get('slurm_job_id', ''), hsh, data.get('stage', '')))
+                    start_time = data.get('start_time', None)
+                    if start_time is not None and status == 'RUNNING':
+                        t = datetime.datetime.strptime(start_time, '%Y-%m-%d-%H-%M-%S')
+                        td = datetime.datetime.now() - t
+                        run_time = ''
+                        if td >= datetime.timedelta(days=1):
+                            run_time += f'{td.days}-'
+                        if td >= datetime.timedelta(hours=1):
+                            run_time += f'{td.hours}:'
+                        run_time += f'{td.seconds//60}:{td.seconds%60:02}'
+
                     else:
-                        rows.append((status, data.get('slurm_job_id', ''), hsh, data.get('stage', '')))
+                        run_time = ''
+
+                    if name is None:
+                        rows.append((status, workflow_name, data.get('slurm_job_id', ''), hsh, run_time, data.get('stage', '')))
+                    else:
+                        rows.append((status, data.get('slurm_job_id', ''), hsh, run_time, data.get('stage', '')))
 
             if len(rows) == 0:
                 if name is None:
@@ -82,36 +81,34 @@ def status(use_hash: bool = False, name: str = None):
                 return
 
             if name is None:
-                print(f'Found {sum(list(status_counts.values()))} total run(s).')
-                print()
-                print(f' From the following workflows:')
-                n_lines += 3
+                s += f'Found {sum(list(status_counts.values()))} total run(s).' + '\n\n'
+                s += f' From the following workflows:' + '\n'
                 for workflow_name, nums in workflow_name_counts.items():
-                    print(f'  {nums:>5} {workflow_name}')
-                    n_lines += 1
+                    s += f'  {nums:>5} {workflow_name}\n'
 
             else:
-                print(f'Found {sum(list(status_counts.values()))} total run(s) for WorkFlow({name}):')
-                n_lines += 1
+                s += f'Found {sum(list(status_counts.values()))} total run(s) for WorkFlow({name}):\n\n'
 
-            print()
-            print(f' With the following statuses:')
-            n_lines += 2
+            s += f' With the following statuses:\n'
             for status, nums in status_counts.items():
-                n_lines += 1
-                print(f'  {nums:>5} {status}')
+                s += f'  {nums:>5} {status}\n'
 
-            print()
-            n_lines += 1
+            s += '\n' 
             if name is None:
-                s = log.table(rows, header=('Status', 'Workflow', 'SlurmJobID', 'Hash', 'Stage'))
+                s += log.table(rows, header=('Status', 'Workflow', 'SlurmJobID', 'Hash', 'RunTime', 'Stage'), as_str=True)
             else:
-                s = log.table(rows, header=('Status', 'SlurmJobID', 'Hash', 'Stage'))
+                s += log.table(rows, header=('Status', 'SlurmJobID', 'Hash', 'RunTime', 'Stage'), as_str=True)
 
-            n_lines += len(s.splitlines())
+        return s + '\n'
 
+    s = get_str()
+    print(s)
+    while True:
+        s = get_str()
+        n_lines = len(s.splitlines())
         clear_lines(n_lines+1)
-        time.sleep(5)
+        print(s)
+        time.sleep(1)
 
 workflow.add_command(status)
 
