@@ -144,6 +144,8 @@ class WorkFlow:
         self._call_method = self.execute
         self.cache_dir = os.path.join(platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True), self.name, 'runs')
         self.results_dir = os.path.join(platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True), self.name, 'results')
+        os.makedirs(self.cache_dir, exist_ok=True)
+        os.makedirs(self.results_dir, exist_ok=True)
         return self
 
     def __str__(self):
