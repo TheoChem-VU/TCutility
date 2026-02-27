@@ -5,7 +5,16 @@ import click
 
 from tcutility import workflow_db, log
 from tcutility.job.workflow import WorkFlowOutput
-import os
+import time
+
+LINE_UP = '\033[1A'
+LINE_CLEAR = '\x1b[2K'
+
+
+def clear_lines(n):
+    for _ in range(n):
+        print(LINE_UP, end=LINE_CLEAR)
+
 
 
 @click.group("workflow")
@@ -14,6 +23,21 @@ def workflow():
     The ``tcutility workflow`` subcommand gives a few tools for reading the statuses of, and clearing of past workflow runs.
     '''
     pass
+
+
+# def main():    
+#     i = 0
+#     rows = ['loop 0', 'abcdef', 'ghijklmnopqrstuvwxyz']
+#     print_lines(rows)
+#     while True:
+#         try:
+#             rows[0] = f'loop {i}'
+#             clear_lines(len(rows))
+#             print_lines(rows)
+#             i += 1
+#             time.sleep(.2)
+#         except KeyboardInterrupt:
+#             break
 
 @click.command("status")
 @click.option("-h", "--hash", "use_hash", is_flag=True)
@@ -24,56 +48,70 @@ def status(use_hash: bool = False, name: str = None):
     Use the ``name`` argument to specify a specific workflow type or a specific hash when the ``-h/--hash`` flag is turned on.
     If ``name`` is not given, prints the statuses of all workflow runs and provides an overview of the number of runs per workflow.
     '''
-    if use_hash:
-        print(workflow_db.get_status(name))
-        return
+    while True:
+        n_lines = 0
+        if use_hash:
+            s = workflow_db.get_status(name)
+            print(s)
+            n_lines = 1
+        else:
+            log.print_date = False
+            rows = []
+            status_counts = {}
+            workflow_name_counts = {}
+            for hsh, data in workflow_db.read_all().items():
+                if name is None or data.get('workflow_name', None) == name:
+                    status = data.get('status', 'UNKOWN')
+                    status_counts.setdefault(status, 0)
+                    status_counts[status] += 1
 
-    log.print_date = False
-    rows = []
-    status_counts = {}
-    workflow_name_counts = {}
-    for hsh, data in workflow_db.read_all().items():
-        if name is None or data.get('workflow_name', None) == name:
-            status = data.get('status', 'UNKOWN')
-            status_counts.setdefault(status, 0)
-            status_counts[status] += 1
+                    workflow_name = data.get('workflow_name', '')
+                    workflow_name_counts.setdefault(workflow_name, 0)
+                    workflow_name_counts[workflow_name] += 1
 
-            workflow_name = data.get('workflow_name', '')
-            workflow_name_counts.setdefault(workflow_name, 0)
-            workflow_name_counts[workflow_name] += 1
+                    if name is None:
+                        rows.append((status, workflow_name, data.get('slurm_job_id', ''), hsh, data.get('stage', '')))
+                    else:
+                        rows.append((status, data.get('slurm_job_id', ''), hsh, data.get('stage', '')))
+
+            if len(rows) == 0:
+                if name is None:
+                    print(f'I could not find any workflow runs.')
+                else:
+                    print(f'I could not find any runs for WorkFlow({name}).')
+                return
 
             if name is None:
-                rows.append((status, workflow_name, data.get('slurm_job_id', ''), hsh, data.get('stage', '')))
+                print(f'Found {sum(list(status_counts.values()))} total run(s).')
+                print()
+                print(f' From the following workflows:')
+                n_lines += 3
+                for workflow_name, nums in workflow_name_counts.items():
+                    print(f'  {nums:>5} {workflow_name}')
+                    n_lines += 1
+
             else:
-                rows.append((status, data.get('slurm_job_id', ''), hsh, data.get('stage', '')))
+                print(f'Found {sum(list(status_counts.values()))} total run(s) for WorkFlow({name}):')
+                n_lines += 1
 
-    if len(rows) == 0:
-        if name is None:
-            print(f'I could not find any workflow runs.')
-        else:
-            print(f'I could not find any runs for WorkFlow({name}).')
-        return
+            print()
+            print(f' With the following statuses:')
+            n_lines += 2
+            for status, nums in status_counts.items():
+                n_lines += 1
+                print(f'  {nums:>5} {status}')
 
-    if name is None:
-        print(f'Found {sum(list(status_counts.values()))} total run(s).')
-        print()
-        print(f' From the following workflows:')
-        for workflow_name, nums in workflow_name_counts.items():
-            print(f'  {nums:>5} {workflow_name}')
+            print()
+            n_lines += 1
+            if name is None:
+                s = log.table(rows, header=('Status', 'Workflow', 'SlurmJobID', 'Hash', 'Stage'))
+            else:
+                s = log.table(rows, header=('Status', 'SlurmJobID', 'Hash', 'Stage'))
 
-    else:
-        print(f'Found {sum(list(status_counts.values()))} total run(s) for WorkFlow({name}):')
+            n_lines += len(s.splitlines())
 
-    print()
-    print(f' With the following statuses:')
-    for status, nums in status_counts.items():
-        print(f'  {nums:>5} {status}')
-
-    print()
-    if name is None:
-        log.table(rows, header=('Status', 'Workflow', 'SlurmJobID', 'Hash', 'Stage'))
-    else:
-        log.table(rows, header=('Status', 'SlurmJobID', 'Hash', 'Stage'))
+        clear_lines(n_lines+1)
+        time.sleep(5)
 
 workflow.add_command(status)
 
