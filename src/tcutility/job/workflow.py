@@ -242,7 +242,7 @@ def __end_workflow__():
         if tcutility.job.workflow_db.can_skip(self.hash):
             if tcutility.job.workflow_db.get_status(self.hash) == 'RUNNING':
                 slurm_job_id = tcutility.job.workflow_db.read(self.hash).get('slurm_job_id', None)
-                tcutility.log.info(f'Workflow is currently running (SLURMJOBID={slurm_job_id}.')
+                tcutility.log.info(f'Workflow is currently running (SLURMJOBID={slurm_job_id}).')
             elif tcutility.job.workflow_db.get_status(self.hash) == 'SUCCESS':
                 tcutility.log.info('Workflow run has already been completed!')
             elif tcutility.job.workflow_db.get_status(self.hash) == 'FAILED':
@@ -286,9 +286,13 @@ def __end_workflow__():
         if tcutility.slurm.has_slurm():
             if any(option not in self.sbatch for option in ["o", "output"]):
                 self.sbatch.setdefault("o", self.out_path)
+
+            if any(option not in self.sbatch for option in ["D", "chdir"]):
+                self.sbatch.setdefault("D", self.run_directory)
+
             sbatch_result = tcutility.slurm.sbatch(self.sh_path, self.server, **self.sbatch)
             self.slurm_job_id = sbatch_result.id
-            tcutility.job.workflow_db.update(self.hash, slurm_job_id=self.slurm_job_id)
+            tcutility.job.workflow_db.update(f'./{self.hash}.sh', slurm_job_id=self.slurm_job_id)
         else:
             command = [f'./{self.hash}.sh'] if os.name == "posix" else ["sh", self.sh_path]
             self.server.chmod(744, self.sh_path)
