@@ -294,9 +294,9 @@ def __end_workflow__():
             if any(option not in self.sbatch for option in ["D", "chdir"]):
                 self.sbatch.setdefault("D", self.run_directory)
 
-            sbatch_result = tcutility.slurm.sbatch(self.sh_path, self.server, **self.sbatch)
+            sbatch_result = tcutility.slurm.sbatch(f'./{self.hash}.sh', self.server, **self.sbatch)
             self.slurm_job_id = sbatch_result.id
-            tcutility.job.workflow_db.update(f'./{self.hash}.sh', slurm_job_id=self.slurm_job_id)
+            tcutility.job.workflow_db.update(self.hash, slurm_job_id=self.slurm_job_id)
         else:
             command = [f'./{self.hash}.sh'] if os.name == "posix" else ["sh", self.sh_path]
             self.server.chmod(744, self.sh_path)
