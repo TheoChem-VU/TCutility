@@ -2,9 +2,8 @@ from tcutility import WorkFlow
 import os
 from tcutility.results.read import quick_status
 
-# to create a WorkFlow we simply decorate a function
-# with a WorkFlow object
-@WorkFlow(delete_files=False)
+# to create a WorkFlow we simply decorate a function with a WorkFlow object
+@WorkFlow()
 def find_global_minimum(molecule: str):
     # any imports that are needed in the workflow
     # need to be imported within the function
@@ -37,7 +36,6 @@ def find_global_minimum(molecule: str):
 
     lowest_energy_molecule = min(new_molecules, key=lambda mol: new_energies[new_molecules.index(mol)])
     return lowest_energy_molecule
-
 
 mol = find_global_minimum(os.path.abspath('water_dimer.xyz'))
 print(mol)
