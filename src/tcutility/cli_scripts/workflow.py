@@ -103,6 +103,7 @@ def clear(use_hash: bool = False, name: str = None):
     if proceed == 'y':
         for hsh in hashes:
             workflow_db.delete(hsh)
+        print()
     else:
         print('Cancelling ...')
 
