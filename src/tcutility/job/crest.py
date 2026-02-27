@@ -218,12 +218,12 @@ class CRESTJob(Job):
         """
         if enabled:
             # add -cross and remove -nocross
-            options['-cross'] = ''
-            options.pop('-nocross')
+            self.options['-cross'] = ''
+            self.options.pop('-nocross', None)
         else:
             # vice versa
-            options['-nocross'] = ''
-            options.pop('-cross')
+            self.options['-nocross'] = ''
+            self.options.pop('-cross', None)
 
 
 
