@@ -17,6 +17,7 @@ def find_global_minimum(molecule: str):
         crest_job.name = 'crest'
         crest_job.md_temperature(500)
         crest_job.md_length('2x')
+        crest_job.do_crossing(False)
 
     new_molecules = []
     new_energies = []

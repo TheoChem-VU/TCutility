@@ -208,6 +208,24 @@ class CRESTJob(Job):
         for i in range(number or 10):
             yield j(self.rotamer_directory, f"{str(i).zfill(5)}.xyz")
 
+    def do_crossing(self, enabled: bool = True):
+        """ 
+        Whether to perform the genetic crossing step.
+        It may be usefull to turn it off if you encounter a ``SIGSEGV`` error during the GC step.
+
+        Args:
+            enabled: turn crossing on or off.
+        """
+        if enabled:
+            # add -cross and remove -nocross
+            options['-cross'] = ''
+            options.pop('-nocross')
+        else:
+            # vice versa
+            options['-nocross'] = ''
+            options.pop('-cross')
+
+
 
 class QCGJob(CRESTJob):
     def __init__(self, *args, **kwargs):
