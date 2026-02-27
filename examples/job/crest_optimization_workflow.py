@@ -12,7 +12,7 @@ def find_global_minimum(molecule: str):
 
     # we first perform a CRESTJob calculation to
     # obtain the conformers of the molecule of interest
-    with CRESTJob(use_slurm=False) as crest_job:
+    with CRESTJob(use_slurm=False, delete_on_finish=True) as crest_job:
         crest_job.molecule(molecule)
         crest_job.name = 'crest'
         crest_job.md_temperature(500)
@@ -23,7 +23,7 @@ def find_global_minimum(molecule: str):
     new_energies = []
     for i, xyz in enumerate(crest_job.get_conformer_xyz(5)):
         # and reoptimize them using ADF
-        with ADFJob(use_slurm=False) as adf_job:
+        with ADFJob(use_slurm=False, delete_on_finish=True) as adf_job:
             adf_job.molecule(xyz)
             adf_job.functional('OLYP')
             adf_job.basis_set('DZP')
