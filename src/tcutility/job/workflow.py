@@ -124,8 +124,6 @@ class WorkFlow:
 
         self._user_sbatch = sbatch
         self.delete_files = delete_files
-        self.cache_dir = os.path.join(platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True), self.name, 'runs')
-        self.results_dir = os.path.join(platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True), self.name, 'results')
 
     def get_sbatch(self):
         sbatch = {}
@@ -144,7 +142,8 @@ class WorkFlow:
         self.name = func.__name__
         self.parameters = inspect.signature(func).parameters
         self._call_method = self.execute
-
+        self.cache_dir = os.path.join(platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True), self.name, 'runs')
+        self.results_dir = os.path.join(platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True), self.name, 'results')
         return self
 
     def __str__(self):
