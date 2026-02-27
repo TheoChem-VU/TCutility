@@ -35,12 +35,11 @@ def find_global_minimum(molecule: str):
         new_molecules.append(results.molecule.output)
         new_energies.append(results.properties.energy.bond)
 
-
     lowest_energy_molecule = min(new_molecules, key=lambda mol: new_energies[new_molecules.index(mol)])
     return lowest_energy_molecule
 
 
-mol = find_global_minimum(os.path.abspath('water_dimer.xyz'), restart=False)
+mol = find_global_minimum(os.path.abspath('water_dimer.xyz'))
 print(mol)
-mol = find_global_minimum(os.path.abspath('butane.xyz'), restart=False)
+mol = find_global_minimum(os.path.abspath('butane.xyz'))
 print(mol)
