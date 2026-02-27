@@ -4,7 +4,7 @@ from tcutility.results.read import quick_status
 
 # to create a WorkFlow we simply decorate a function
 # with a WorkFlow object
-@WorkFlow()
+@WorkFlow(delete_files=False)
 def find_global_minimum(molecule: str):
     # any imports that are needed in the workflow
     # need to be imported within the function
