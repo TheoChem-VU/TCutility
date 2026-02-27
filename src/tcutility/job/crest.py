@@ -187,7 +187,7 @@ class CRESTJob(Job):
             number: the number of files to return, defaults to ``10``. If the directory already exists, for example if the job was already run, we will return up to ``number`` files.
                 If set to ``None`` and the directory exists we return all files.
         """
-        return self._get_xyz(self.conformer_directory)
+        return self._get_xyz(self.conformer_directory, number)
 
     def get_rotamer_xyz(self, number: Union[int, None] = None):
         """
@@ -197,7 +197,7 @@ class CRESTJob(Job):
             number: the number of files to return, defaults to ``10``. If the directory already exists, for example if the job was already run, we will return up to ``number`` files.
                 If set to ``None`` and the directory exists we return all files.
         """
-        return self._get_xyz(self.rotamer_directory)
+        return self._get_xyz(self.rotamer_directory, number)
 
     def _get_xyz(self, directory: str, number: Union[int, None] = None):
         ret = []
@@ -221,8 +221,8 @@ class CRESTJob(Job):
         if number is None:
             number = len(files)
 
-        sorted_nums = sorted(files.keys())
         # return sorted list of 'number' files
+        sorted_nums = list(sorted(files.keys()))[:number]
         return [files[i] for i in sorted_nums]
 
 
