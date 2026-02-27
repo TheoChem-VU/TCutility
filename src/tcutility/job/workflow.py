@@ -58,6 +58,10 @@ class WorkFlow:
     ``WorkFlow`` objects act as decorators for functions and supports writing the function as a python script that
     can be submitted. It also supports checking for the status of previous runs of the workflow. If there are return
     statements in the script, they will be written to an output file, loaded, and returned to the user.
+
+    All ``WorkFlow``s will be automatically run in a unique directory to prevent conflicting calculations/files.
+    This means that any inputs that use relative paths may not work correctly. 
+    We therefore recommend using absolute paths.
     
     Args:
         server: Server object that provides sbatch defaults and standard pre- and postambles.
