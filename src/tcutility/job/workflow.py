@@ -112,21 +112,26 @@ class WorkFlow:
         if server is None:
             self.server = tcutility.connect.Local()
         
-        current_server = tcutility.connect.get_current_server()
+        self.current_server = tcutility.connect.get_current_server()
         self.preambles = preambles
         if preambles is None:
-            self.preambles = current_server.preamble_defaults.get('AMS', [])
-            self.preambles.append(current_server.program_modules.get('AMS', {}).get('latest', ''))
+            self.preambles = self.current_server.preamble_defaults.get('AMS', [])
+            self.preambles.append(self.current_server.program_modules.get('AMS', {}).get('latest', ''))
 
         self.postambles = postambles
         if postambles is None:
-            self.postambles = current_server.postamble_defaults.get('AMS', [])
+            self.postambles = self.current_server.postamble_defaults.get('AMS', [])
 
-        self.sbatch = sbatch
-        if sbatch is None:
-            self.sbatch = current_server.sbatch_defaults
-
+        self._user_sbatch = sbatch
         self.delete_files = delete_files
+
+    def get_sbatch(self):
+        sbatch = {}
+        if self._user_sbatch is None:
+            sbatch.update(self.current_server.sbatch_defaults)
+        else:
+            sbatch.update(self._user_sbatch)
+        return sbatch
 
     def __call__(self, *args, **kwargs):
         return self._call_method(*args, **kwargs)
@@ -234,15 +239,6 @@ def __end_workflow__():
         if dependency is None:
             dependency = []
 
-        if len(dependency) > 0:
-            if any(option not in self.sbatch for option in ['d', 'dependency']):
-                self.sbatch.setdefault('dependency', 'afterany')
-
-            for dep in dependency:
-                if not hasattr(dep, 'slurm_job_id'):
-                    continue
-                self.sbatch['dependency'] = self.sbatch['dependency'] + f':{dep.slurm_job_id}'
-
         if tcutility.job.workflow_db.can_skip(self.hash):
             if tcutility.job.workflow_db.get_status(self.hash) == 'RUNNING':
                 slurm_job_id = tcutility.job.workflow_db.read(self.hash).get('slurm_job_id', None)
@@ -288,13 +284,23 @@ def __end_workflow__():
             raise Exception('Python script will fail!')
 
         if tcutility.slurm.has_slurm():
-            if any(option not in self.sbatch for option in ["o", "output"]):
-                self.sbatch.setdefault("o", self.out_path)
+            sbatch = self.get_sbatch()
+            if len(dependency) > 0:
+                if any(option not in sbatch for option in ['d', 'dependency']):
+                    sbatch.setdefault('dependency', 'afterany')
 
-            if any(option not in self.sbatch for option in ["D", "chdir"]):
-                self.sbatch.setdefault("D", self.run_directory)
+                for dep in dependency:
+                    if not hasattr(dep, 'slurm_job_id'):
+                        continue
+                    sbatch['dependency'] = sbatch['dependency'] + f':{dep.slurm_job_id}'
 
-            sbatch_result = tcutility.slurm.sbatch(f"{self.hash}.sh", self.server, **self.sbatch)
+            if any(option not in sbatch for option in ["o", "output"]):
+                sbatch.setdefault("o", self.out_path)
+
+            if any(option not in sbatch for option in ["D", "chdir"]):
+                sbatch.setdefault("D", self.run_directory)
+
+            sbatch_result = tcutility.slurm.sbatch(f"{self.hash}.sh", self.server, **sbatch)
             self.slurm_job_id = sbatch_result.id
             tcutility.job.workflow_db.update(self.hash, slurm_job_id=self.slurm_job_id)
         else:
