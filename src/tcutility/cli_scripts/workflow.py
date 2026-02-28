@@ -27,14 +27,15 @@ def workflow():
 
 @click.command("status")
 @click.option("-h", "--hash", "use_hash", is_flag=True)
+@click.option("-x", "--exit", is_flag=True)
 @click.argument("name", required=False)
-def status(use_hash: bool = False, name: str = None):
+def status(use_hash: bool = False, name: str = None, exit: bool = False):
     '''
     Read the statuses of completed and currently running workflow runs.
     Use the ``name`` argument to specify a specific workflow type or a specific hash when the ``-h/--hash`` flag is turned on.
     If ``name`` is not given, prints the statuses of all workflow runs and provides an overview of the number of runs per workflow.
+    If the ``-x/--exit`` flag is set print the status once and then exit immediately. Otherwise, it will update every second.
     '''
-
     def get_str():
         s = ''
         if use_hash:
@@ -103,6 +104,10 @@ def status(use_hash: bool = False, name: str = None):
 
     s = get_str()
     print(s)
+
+    if exit:
+        return
+
     while True:
         s = get_str()
         n_lines = len(s.splitlines())
