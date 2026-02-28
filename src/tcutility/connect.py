@@ -126,7 +126,7 @@ class Connection:
         stdout = stdout.read().decode()
         stderr = stderr.read().decode()
         if stderr:
-            raise RuntimeError(stderr)
+            print(RuntimeError(stderr))
 
         return stdout.strip()
 
