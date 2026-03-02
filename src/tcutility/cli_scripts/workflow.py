@@ -36,6 +36,17 @@ def status(use_hash: bool = False, name: str = None, exit: bool = False):
     If ``name`` is not given, prints the statuses of all workflow runs and provides an overview of the number of runs per workflow.
     If the ``-x/--exit`` flag is set print the status once and then exit immediately. Otherwise, it will update every second.
     '''
+    def time_sort(time_str):
+        days = 0
+        if '-' in time_str:
+            days, time_str = time_str.split('-')
+        if ':' in time_str:
+            hours, time_str = time_str.split(':', 1)
+        minutes, seconds = time_str.split(':')
+
+        return days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds
+
+
     def sort_rows(rows):
         # sort by name first
         if name is None:
@@ -58,7 +69,7 @@ def status(use_hash: bool = False, name: str = None, exit: bool = False):
             if row[0] == 'RUNNING':
                 run_rows.append(row)
 
-        run_rows = list(sorted(rows, key=lambda row: row[-2]))
+        run_rows = list(sorted(rows, key=lambda row: time_sort(row[-2])))
         new_rows = misc_rows + pend_rows + run_rows
 
         return new_rows
