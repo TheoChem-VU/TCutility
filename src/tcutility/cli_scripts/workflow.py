@@ -37,14 +37,18 @@ def status(use_hash: bool = False, name: str = None, exit: bool = False):
     If the ``-x/--exit`` flag is set print the status once and then exit immediately. Otherwise, it will update every second.
     '''
     def time_sort(time_str):
+        if time_str == '':
+            return 0
         days = 0
+        hours = 0
         if '-' in time_str:
             days, time_str = time_str.split('-')
-        if ':' in time_str:
+        if time_str.count(':') == 2:
             hours, time_str = time_str.split(':', 1)
+
         minutes, seconds = time_str.split(':')
 
-        return days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds
+        return int(days) * 24 * 60 * 60 + int(hours) * 60 * 60 + int(minutes) * 60 + int(seconds)
 
 
     def sort_rows(rows):
