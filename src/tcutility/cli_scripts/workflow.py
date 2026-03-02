@@ -38,7 +38,6 @@ def status(use_hash: bool = False, name: str = None, exit: bool = False):
     '''
     def sort_rows(rows):
         # sort by name first
-        new_rows = []
         if name is None:
             rows = list(sorted(rows, key=lambda row: row[3]))
         else:
@@ -48,23 +47,21 @@ def status(use_hash: bool = False, name: str = None, exit: bool = False):
         # finished go on top
         # pending go in the middle
         # running goes on bottom
+        misc_rows = []
+        pend_rows = []
+        run_rows = []
         for row in rows:
             if row[0] not in ['PENDING', 'RUNNING']:
-                new_rows.append(row)
-
-        for row in rows:
-            if row in new_rows:
-                continue
+                misc_rows.append(row)
             if row[0] == 'PENDING':
-                new_rows.append(row)
-
-        for row in rows:
-            if row in new_rows:
-                continue
+                pend_rows.append(row)
             if row[0] == 'RUNNING':
-                new_rows.append(row)
+                run_rows.append(row)
 
-        return rows
+        run_rows = list(sorted(rows, key=lambda row: row[-2]))
+        new_rows = misc_rows + pend_rows + run_rows
+
+        return new_rows
 
 
     def get_str():
@@ -111,7 +108,6 @@ def status(use_hash: bool = False, name: str = None, exit: bool = False):
                 else:
                     return f'I could not find any runs for WorkFlow({name}).\n'
 
-            rows = sort_rows(rows)
             if name is None:
                 s += f'Found {sum(list(status_counts.values()))} total run(s).' + '\n\n'
                 s += f' From the following workflows:' + '\n'
@@ -126,6 +122,7 @@ def status(use_hash: bool = False, name: str = None, exit: bool = False):
                 s += f'  {nums:>5} {status}\n'
 
             s += '\n' 
+            rows = sort_rows(rows)
             if name is None:
                 s += log.table(rows, header=('Status', 'Workflow', 'SlurmJobID', 'Hash', 'RunTime', 'Stage'), as_str=True)
             else:
