@@ -207,7 +207,7 @@ def __end_workflow__():
     exit()
 
 # indicate to the db that the job has started running
-start_time=datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+start_time = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 tcutility.job.workflow_db.update("{self.hash}", start_time=start_time, status="RUNNING")\n\n\n''')
             code_lines = extract_func_code(self.func)
             code_lines = handle_return_statements(code_lines, self.return_path)
