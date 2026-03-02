@@ -76,10 +76,9 @@ def status(use_hash: bool = False, name: str = None, exit: bool = False):
 
             if len(rows) == 0:
                 if name is None:
-                    print(f'I could not find any workflow runs.')
+                    return f'I could not find any workflow runs.\n'
                 else:
-                    print(f'I could not find any runs for WorkFlow({name}).')
-                exit()
+                    return f'I could not find any runs for WorkFlow({name}).\n'
 
             if name is None:
                 s += f'Found {sum(list(status_counts.values()))} total run(s).' + '\n\n'
