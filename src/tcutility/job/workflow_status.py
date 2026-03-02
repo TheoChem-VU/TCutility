@@ -14,6 +14,10 @@ def _detect_hsh():
 
 def stage(message):
 	hsh = _detect_hsh()
-	sys.stdout.flush()
+	# if the job is not managed by tcutility we simply print the message
+	if hsh is None:
+		print(messag)
+		return
 
+	# otherwise update the workflow DB
 	workflow_db.update(hsh, stage=message)
