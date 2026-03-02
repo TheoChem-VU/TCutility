@@ -91,7 +91,7 @@ def status(use_hash: bool = False, name: str = None, exit: bool = False):
                         if td >= datetime.timedelta(days=1):
                             run_time += f'{td.days}-'
                         if td >= datetime.timedelta(hours=1):
-                            run_time += f'{td.hours}:'
+                            run_time += f'{td.//(60*60)}:'
                         run_time += f'{td.seconds//60}:{td.seconds%60:02}'
 
                     else:
