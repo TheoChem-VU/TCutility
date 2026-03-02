@@ -2,9 +2,11 @@ import os
 import platformdirs
 from typing import List, Tuple, Dict
 import tcutility
+from filelock import FileLock
 
 CACHEDIR = platformdirs.user_cache_dir(appname="TCutility", appauthor="TheoCheMVU", ensure_exists=True)
 DBPATH = CACHEDIR + '/workflows.csv'
+DBPATH_LOCK = FileLock(CACHEDIR + '/workflows.csv.lock')
 # DBPATH = 'test.csv'
 # create a new db file if it doesnt exist yet
 if not os.path.exists(DBPATH):
@@ -19,8 +21,9 @@ def write(hsh: str, **kwargs):
         s += f', {k}={v}'
     s += '\n'
 
-    with open(DBPATH, 'a') as db:
-        db.write(s)
+    with DBPATH_LOCK:
+        with open(DBPATH, 'a') as db:
+            db.write(s)
 
 def read(hsh: str) -> dict:
     '''
@@ -53,8 +56,9 @@ def read_all() -> Dict[str, dict]:
     '''
     Return all lines that are in the database.
     '''
-    with open(DBPATH) as db:
-        lines = db.readlines()
+    with DBPATH_LOCK:
+        with open(DBPATH) as db:
+            lines = db.readlines()
 
     # parse the lines we found
     parsed_lines = [parse_line(line) for line in lines]
@@ -92,13 +96,15 @@ def delete(hsh: str) -> None:
     # all_data.pop(hsh, None)
     # for _hsh, data in all_data.items():
     #     write(_hsh, data)
-    with open(DBPATH) as db:
-        lines = db.readlines()
+    with DBPATH_LOCK:
+        with open(DBPATH) as db:
+            lines = db.readlines()
 
     new_lines = [line for line in lines if line.split(',')[0] != hsh]
-    with open(DBPATH, 'w+') as db:
-        for line in new_lines:
-            db.write(line)
+    with DBPATH_LOCK:
+        with open(DBPATH, 'w+') as db:
+            for line in new_lines:
+                db.write(line)
 
 # #### CONVENIENCE FUNCTIONS
 
