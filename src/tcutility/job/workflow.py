@@ -195,7 +195,7 @@ class WorkFlow:
                     script.write(f'{arg_name} = jsonpickle.decode(\'{jsonpickle.encode(arg_val, unpicklable=True)}\')\n\n')
 
             script.write('#========= SCRIPT =========#\n')
-            script.write('import tcutility\nimport atexit\n\n\n')
+            script.write('import tcutility\nimport atexit\nimport datetime\n\n')
             script.write(f'''@atexit.register
 def on_exception():
     if tcutility.job.workflow_db.get_status("{self.hash}") == "RUNNING":
@@ -204,7 +204,11 @@ def on_exception():
 def __end_workflow__():
     tcutility.job.workflow_db.set_finished("{self.hash}")
     tcutility.job.workflow_db.update("{self.hash}", stage='Completed', slurm_job_id='')
-    exit()\n\n\n''')
+    exit()
+
+# indicate to the db that the job has started running
+start_time=datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+tcutility.job.workflow_db.update("{self.hash}", start_time=start_time, status="RUNNING")\n\n\n''')
             code_lines = extract_func_code(self.func)
             code_lines = handle_return_statements(code_lines, self.return_path)
             script.write(code_lines)
@@ -270,11 +274,11 @@ def __end_workflow__():
         tcutility.job.workflow_db.write(
             self.hash, 
             workflow_name=self.name, 
-            status='RUNNING', 
+            status='PENDING', 
             run_directory=self.run_directory, 
-            stage='Running', 
+            stage='Pending', 
             start_time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))
-        
+
         _args = {}
         for param_name, arg in zip(self.parameters, args):
             _args[param_name] = arg
