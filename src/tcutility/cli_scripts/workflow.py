@@ -36,6 +36,37 @@ def status(use_hash: bool = False, name: str = None, exit: bool = False):
     If ``name`` is not given, prints the statuses of all workflow runs and provides an overview of the number of runs per workflow.
     If the ``-x/--exit`` flag is set print the status once and then exit immediately. Otherwise, it will update every second.
     '''
+    def sort_rows(rows):
+        # sort by name first
+        new_rows = []
+        if name is None:
+            rows = list(sorted(rows, key=lambda row: row[3]))
+        else:
+            rows = list(sorted(rows, key=lambda row: row[2]))
+
+        # then sort by status
+        # finished go on top
+        # pending go in the middle
+        # running goes on bottom
+        for row in rows:
+            if row[0] not in ['PENDING', 'RUNNING']:
+                new_rows.append(row)
+
+        for row in rows:
+            if row in new_rows:
+                continue
+            if row[0] == 'PENDING':
+                new_rows.append(row)
+
+        for row in rows:
+            if row in new_rows:
+                continue
+            if row[0] == 'RUNNING':
+                new_rows.append(row)
+
+        return rows
+
+
     def get_str():
         s = ''
         if use_hash:
@@ -80,6 +111,7 @@ def status(use_hash: bool = False, name: str = None, exit: bool = False):
                 else:
                     return f'I could not find any runs for WorkFlow({name}).\n'
 
+            rows = sort_rows(rows)
             if name is None:
                 s += f'Found {sum(list(status_counts.values()))} total run(s).' + '\n\n'
                 s += f' From the following workflows:' + '\n'
