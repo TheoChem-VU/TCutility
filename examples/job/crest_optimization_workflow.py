@@ -1,6 +1,5 @@
 from tcutility import WorkFlow
 import os
-from tcutility.results.read import quick_status
 
 # to create a WorkFlow we simply decorate a function with a WorkFlow object
 @WorkFlow(delete_files=True)
