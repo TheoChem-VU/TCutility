@@ -79,7 +79,7 @@ def status(use_hash: bool = False, name: str = None, exit: bool = False):
                     print(f'I could not find any workflow runs.')
                 else:
                     print(f'I could not find any runs for WorkFlow({name}).')
-                return
+                exit()
 
             if name is None:
                 s += f'Found {sum(list(status_counts.values()))} total run(s).' + '\n\n'
@@ -107,7 +107,7 @@ def status(use_hash: bool = False, name: str = None, exit: bool = False):
 
     if exit:
         return
-
+ 
     while True:
         s = get_str()
         n_lines = len(s.splitlines())
