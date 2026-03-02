@@ -100,7 +100,7 @@ def status(use_hash: bool = False, name: str = None, exit: bool = False):
             else:
                 s += log.table(rows, header=('Status', 'SlurmJobID', 'Hash', 'RunTime', 'Stage'), as_str=True)
 
-        return s + '\n'
+        return s + '\n[Ctrl+C] to exit\n'
 
     s = get_str()
     print(s)
