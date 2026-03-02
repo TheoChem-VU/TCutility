@@ -228,8 +228,12 @@ tcutility.job.workflow_db.update("{self.hash}", start_time=start_time, status="R
             if self.delete_files:
                 file.write(f'rm -r {self.run_directory}\n')
 
-    def execute(self, *args, dependency=None, restart=False, **kwargs):
-        self.hash = hash({'wf': self.func, 'args': args, 'kwargs': kwargs})
+    def execute(self, *args, dependency=None, restart=False, user_hash=None, **kwargs):
+        if user_hash is None:
+            self.hash = hash({'wf': self.func, 'args': args, 'kwargs': kwargs})
+        else:
+            self.hash = user_hash
+
         self.run_directory = os.path.join(self.cache_dir, self.hash)
         self.sh_path = os.path.join(self.run_directory, f'{self.hash}.sh')
         self.py_path = os.path.join(self.run_directory, f'{self.hash}.py')
