@@ -16,7 +16,7 @@ def stage(message):
 	hsh = _detect_hsh()
 	# if the job is not managed by tcutility we simply print the message
 	if hsh is None:
-		print(messag)
+		print(message)
 		return
 
 	# otherwise update the workflow DB
