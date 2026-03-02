@@ -61,6 +61,17 @@ def read_all() -> Dict[str, dict]:
     # and construct a dictionary
     return {hsh: data for hsh, data in parsed_lines}
 
+def read_remote(server: tcutility.connect.Connection) -> Dict[str, dict]:
+    '''
+    Return all lines that are in the database.
+    '''
+    file = server.download('.cache/TCutility/workflows.csv', 'workflows.csv')
+    with open('workflows.csv') as db:
+        lines = db.readlines()
+    # parse the lines we found
+    parsed_lines = [parse_line(line) for line in lines]
+    # and construct a dictionary
+    return {hsh: data for hsh, data in parsed_lines}
 
 def update(hsh: str, **kwargs) -> None:
     '''
